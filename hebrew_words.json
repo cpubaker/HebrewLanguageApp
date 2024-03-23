@@ -2,6 +2,7 @@
     {
         "hebrew": "איש",
         "english": "man",
+        "transcription": "ish",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -9,6 +10,7 @@
     {
         "hebrew": "אישה",
         "english": "woman",
+        "transcription": "isha",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -16,6 +18,7 @@
     {
         "hebrew": "ילד",
         "english": "child",
+        "transcription": "yeled",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -23,6 +26,7 @@
     {
         "hebrew": "עץ",
         "english": "tree",
+        "transcription": "etz",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -30,6 +34,7 @@
     {
         "hebrew": "ספר",
         "english": "book",
+        "transcription": "sefer",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -37,6 +42,7 @@
     {
         "hebrew": "בית",
         "english": "house",
+        "transcription": "bayit",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -44,6 +50,7 @@
     {
         "hebrew": "מכונית",
         "english": "car",
+        "transcription": "mekhonit",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -51,6 +58,7 @@
     {
         "hebrew": "עיר",
         "english": "city",
+        "transcription": "ir",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -58,6 +66,7 @@
     {
         "hebrew": "מדינה",
         "english": "country",
+        "transcription": "medina",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -65,6 +74,7 @@
     {
         "hebrew": "דג",
         "english": "fish",
+        "transcription": "dag",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -72,6 +82,7 @@
     {
         "hebrew": "כלב",
         "english": "dog",
+        "transcription": "kelev",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -79,6 +90,7 @@
     {
         "hebrew": "חתול",
         "english": "cat",
+        "transcription": "khatul",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -86,6 +98,7 @@
     {
         "hebrew": "מחשב",
         "english": "computer",
+        "transcription": "makhshav",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -93,6 +106,7 @@
     {
         "hebrew": "כיסא",
         "english": "chair",
+        "transcription": "kise",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -100,6 +114,7 @@
     {
         "hebrew": "שולחן",
         "english": "table",
+        "transcription": "shulchan",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -107,6 +122,7 @@
     {
         "hebrew": "תפוח",
         "english": "apple",
+        "transcription": "tapuach",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -114,6 +130,7 @@
     {
         "hebrew": "מים",
         "english": "water",
+        "transcription": "mayim",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -121,13 +138,7 @@
     {
         "hebrew": "פרח",
         "english": "flower",
-        "correct": 0,
-        "wrong": 0,
-        "last_correct": false
-    },
-    {
-        "hebrew": "ספר",
-        "english": "book",
+        "transcription": "perach",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -135,6 +146,7 @@
     {
         "hebrew": "טלפון",
         "english": "phone",
+        "transcription": "telefon",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -142,6 +154,7 @@
     {
         "hebrew": "דלת",
         "english": "door",
+        "transcription": "delet",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -149,6 +162,7 @@
     {
         "hebrew": "חלון",
         "english": "window",
+        "transcription": "chalon",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -156,6 +170,7 @@
     {
         "hebrew": "עיתון",
         "english": "newspaper",
+        "transcription": "iton",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -163,6 +178,7 @@
     {
         "hebrew": "מפתח",
         "english": "key",
+        "transcription": "mafteach",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -170,6 +186,7 @@
     {
         "hebrew": "טלוויזיה",
         "english": "television",
+        "transcription": "televizia",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -177,6 +194,7 @@
     {
         "hebrew": "רחוב",
         "english": "street",
+        "transcription": "rechov",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -184,6 +202,7 @@
     {
         "hebrew": "מזג אוויר",
         "english": "weather",
+        "transcription": "mezeg avir",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -191,13 +210,15 @@
     {
         "hebrew": "שמש",
         "english": "sun",
-        "correct": 0,
+        "transcription": "shemesh",
+        "correct": 1,
         "wrong": 0,
-        "last_correct": false
+        "last_correct": true
     },
     {
         "hebrew": "ירח",
         "english": "moon",
+        "transcription": "yareach",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -205,6 +226,7 @@
     {
         "hebrew": "כוכב",
         "english": "star",
+        "transcription": "kochav",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -212,6 +234,7 @@
     {
         "hebrew": "אוכל",
         "english": "food",
+        "transcription": "ochel",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -219,6 +242,7 @@
     {
         "hebrew": "שתייה",
         "english": "drink",
+        "transcription": "shtiya",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -226,6 +250,7 @@
     {
         "hebrew": "מסעדה",
         "english": "restaurant",
+        "transcription": "misada",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -233,6 +258,7 @@
     {
         "hebrew": "בית ספר",
         "english": "school",
+        "transcription": "beit sefer",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -240,6 +266,7 @@
     {
         "hebrew": "אוניברסיטה",
         "english": "university",
+        "transcription": "universita",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -247,6 +274,7 @@
     {
         "hebrew": "מורה",
         "english": "teacher",
+        "transcription": "more",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -254,6 +282,7 @@
     {
         "hebrew": "תלמיד",
         "english": "student",
+        "transcription": "talmid",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -261,13 +290,15 @@
     {
         "hebrew": "רופא",
         "english": "doctor",
-        "correct": 0,
+        "transcription": "rofe",
+        "correct": 1,
         "wrong": 0,
-        "last_correct": false
+        "last_correct": true
     },
     {
         "hebrew": "אחות",
         "english": "nurse",
+        "transcription": "achot",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -275,6 +306,7 @@
     {
         "hebrew": "בית חולים",
         "english": "hospital",
+        "transcription": "beit cholim",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -282,6 +314,7 @@
     {
         "hebrew": "תרופה",
         "english": "medicine",
+        "transcription": "trufa",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -289,6 +322,7 @@
     {
         "hebrew": "פארק",
         "english": "park",
+        "transcription": "park",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -296,6 +330,7 @@
     {
         "hebrew": "משחק",
         "english": "game",
+        "transcription": "mis'chak",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -303,6 +338,7 @@
     {
         "hebrew": "ספורט",
         "english": "sport",
+        "transcription": "sport",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -310,6 +346,7 @@
     {
         "hebrew": "כדור",
         "english": "ball",
+        "transcription": "kadur",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -317,13 +354,15 @@
     {
         "hebrew": "שעה",
         "english": "hour",
-        "correct": 1,
+        "transcription": "sha'a",
+        "correct": 0,
         "wrong": 0,
-        "last_correct": true
+        "last_correct": false
     },
     {
         "hebrew": "דקה",
         "english": "minute",
+        "transcription": "daka",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -331,6 +370,7 @@
     {
         "hebrew": "שנייה",
         "english": "second",
+        "transcription": "shniya",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
@@ -338,6 +378,7 @@
     {
         "hebrew": "שנה",
         "english": "year",
+        "transcription": "shana",
         "correct": 0,
         "wrong": 0,
         "last_correct": false
