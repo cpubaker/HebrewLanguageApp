@@ -41,22 +41,28 @@ class HebrewLearningApp:
         
     def display_word(self):
         correct_translation = self.current_word['english']
-        wrong_translation = random.choice([w['english'] for w in self.words if w != self.current_word])
-        options = [correct_translation, wrong_translation]
+        correct_transcription = self.current_word['transcription']
+        wrong_word = random.choice([w for w in self.words if w != self.current_word])
+        wrong_translation = wrong_word['english']
+        wrong_transcription = wrong_word['transcription']
+        options = [
+            {"text": correct_translation, "transcription": correct_transcription},
+            {"text": wrong_translation, "transcription": wrong_transcription}
+        ]
         random.shuffle(options)
         
         self.label.config(text=self.current_word['hebrew'])
         self.feedback_label.config(text="")
         self.score_label.config(text=f"Correct: {self.current_word['correct']}, Wrong: {self.current_word['wrong']}")
+    
         
         for widget in self.button_frame.winfo_children():
             widget.destroy()
         
         for option in options:
-            btn = tk.Button(self.button_frame, text=option, command=lambda opt=option: self.check_answer(opt))
+            btn_text = f"{option['text']}\n({option['transcription']})"
+            btn = tk.Button(self.button_frame, text=btn_text, command=lambda opt=option['text']: self.check_answer(opt))
             btn.pack(side=tk.LEFT, padx=10)
-            if option == correct_translation:
-                self.correct_btn = btn
     
     def check_answer(self, translation):
         if translation == self.current_word['english']:

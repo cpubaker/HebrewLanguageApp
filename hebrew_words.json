@@ -275,9 +275,9 @@
         "hebrew": "מורה",
         "english": "teacher",
         "transcription": "more",
-        "correct": 0,
+        "correct": 1,
         "wrong": 0,
-        "last_correct": false
+        "last_correct": true
     },
     {
         "hebrew": "תלמיד",
