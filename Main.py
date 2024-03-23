@@ -73,7 +73,7 @@ class HebrewLearningApp:
     def save_progress(self):
         base_dir = os.path.dirname(__file__)  # Directory of the script
         file_path = os.path.join(base_dir, 'hebrew_words.json')  # Path to the JSON file
-        with open(file_path, 'w') as file:
+        with open('hebrew_words.json', 'w', encoding='utf-8') as file:  # Note the added encoding parameter
             json.dump(self.words, file, ensure_ascii=False, indent=4)
 
 def main():

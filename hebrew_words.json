@@ -1,3 +1,345 @@
 [
     {
-        "hebrew": 
+        "hebrew": "איש",
+        "english": "man",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "אישה",
+        "english": "woman",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "ילד",
+        "english": "child",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "עץ",
+        "english": "tree",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "ספר",
+        "english": "book",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "בית",
+        "english": "house",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "מכונית",
+        "english": "car",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "עיר",
+        "english": "city",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "מדינה",
+        "english": "country",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "דג",
+        "english": "fish",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "כלב",
+        "english": "dog",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "חתול",
+        "english": "cat",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "מחשב",
+        "english": "computer",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "כיסא",
+        "english": "chair",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "שולחן",
+        "english": "table",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "תפוח",
+        "english": "apple",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "מים",
+        "english": "water",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "פרח",
+        "english": "flower",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "ספר",
+        "english": "book",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "טלפון",
+        "english": "phone",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "דלת",
+        "english": "door",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "חלון",
+        "english": "window",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "עיתון",
+        "english": "newspaper",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "מפתח",
+        "english": "key",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "טלוויזיה",
+        "english": "television",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "רחוב",
+        "english": "street",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "מזג אוויר",
+        "english": "weather",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "שמש",
+        "english": "sun",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "ירח",
+        "english": "moon",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "כוכב",
+        "english": "star",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "אוכל",
+        "english": "food",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "שתייה",
+        "english": "drink",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "מסעדה",
+        "english": "restaurant",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "בית ספר",
+        "english": "school",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "אוניברסיטה",
+        "english": "university",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "מורה",
+        "english": "teacher",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "תלמיד",
+        "english": "student",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "רופא",
+        "english": "doctor",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "אחות",
+        "english": "nurse",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "בית חולים",
+        "english": "hospital",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "תרופה",
+        "english": "medicine",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "פארק",
+        "english": "park",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "משחק",
+        "english": "game",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "ספורט",
+        "english": "sport",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "כדור",
+        "english": "ball",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "שעה",
+        "english": "hour",
+        "correct": 1,
+        "wrong": 0,
+        "last_correct": true
+    },
+    {
+        "hebrew": "דקה",
+        "english": "minute",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "שנייה",
+        "english": "second",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "שנה",
+        "english": "year",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    }
+]
