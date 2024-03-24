@@ -8,25 +8,40 @@ class HebrewLearningApp:
         self.master = master
         self.master.title("Learn Hebrew")
         
+        # Load and set the application icon
+        icon_path = "app_icon.png"
+        icon_image = tk.PhotoImage(file=icon_path)
+        self.master.iconphoto(False, icon_image)
+        
         self.words = self.load_words()
         self.current_word = None
         self.correct_btn = None
         
-        self.label = tk.Label(master, text="", font=('Helvetica', 18))
-        self.label.pack(pady=20)
+        # Hebrew word label
+        self.hebrew_word_label = tk.Label(master, text="", font=('Helvetica', 18))
+        self.hebrew_word_label.pack(pady=10)
         
+        # Transcription label
+        self.transcription_label = tk.Label(master, text="", font=('Helvetica', 14))
+        self.transcription_label.pack(pady=5)
+        
+        # Answer buttons frame
         self.button_frame = tk.Frame(master)
         self.button_frame.pack(pady=20)
         
+        # Feedback label (correct or wrong)
         self.feedback_label = tk.Label(master, text="", font=('Helvetica', 14))
         self.feedback_label.pack(pady=10)
         
+        # Score label
         self.score_label = tk.Label(master, text="", font=('Helvetica', 14))
         self.score_label.pack(pady=5)
         
+        # Next word button
         self.next_button = tk.Button(master, text="Next", command=self.next_word)
         self.next_button.pack(pady=20)
         
+        # Load the first word
         self.next_word()
 
     def load_words(self):
@@ -41,27 +56,26 @@ class HebrewLearningApp:
         
     def display_word(self):
         correct_translation = self.current_word['english']
-        correct_transcription = self.current_word['transcription']
         wrong_word = random.choice([w for w in self.words if w != self.current_word])
         wrong_translation = wrong_word['english']
-        wrong_transcription = wrong_word['transcription']
-        options = [
-            {"text": correct_translation, "transcription": correct_transcription},
-            {"text": wrong_translation, "transcription": wrong_transcription}
-        ]
+        options = [correct_translation, wrong_translation]
         random.shuffle(options)
-        
-        self.label.config(text=self.current_word['hebrew'])
+
+        # Update the Hebrew word and transcription labels
+        self.hebrew_word_label.config(text=self.current_word['hebrew'])
+        self.transcription_label.config(text=f"({self.current_word['transcription']})")
+    
+        # Clear feedback and update score
         self.feedback_label.config(text="")
         self.score_label.config(text=f"Correct: {self.current_word['correct']}, Wrong: {self.current_word['wrong']}")
-    
-        
+
+        # Clear existing buttons
         for widget in self.button_frame.winfo_children():
             widget.destroy()
-        
+    
+        # Create new answer buttons
         for option in options:
-            btn_text = f"{option['text']}\n({option['transcription']})"
-            btn = tk.Button(self.button_frame, text=btn_text, command=lambda opt=option['text']: self.check_answer(opt))
+            btn = tk.Button(self.button_frame, text=option, command=lambda opt=option: self.check_answer(opt))
             btn.pack(side=tk.LEFT, padx=10)
     
     def check_answer(self, translation):
