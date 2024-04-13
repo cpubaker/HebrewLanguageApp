@@ -43,9 +43,9 @@
         "hebrew": "בית",
         "english": "house",
         "transcription": "bayit",
-        "correct": 0,
+        "correct": 1,
         "wrong": 0,
-        "last_correct": false
+        "last_correct": true
     },
     {
         "hebrew": "מכונית",
@@ -59,9 +59,9 @@
         "hebrew": "עיר",
         "english": "city",
         "transcription": "ir",
-        "correct": 0,
+        "correct": 1,
         "wrong": 0,
-        "last_correct": false
+        "last_correct": true
     },
     {
         "hebrew": "מדינה",
@@ -107,25 +107,25 @@
         "hebrew": "כיסא",
         "english": "chair",
         "transcription": "kise",
-        "correct": 0,
+        "correct": 1,
         "wrong": 0,
-        "last_correct": false
+        "last_correct": true
     },
     {
         "hebrew": "שולחן",
         "english": "table",
         "transcription": "shulchan",
-        "correct": 0,
+        "correct": 1,
         "wrong": 0,
-        "last_correct": false
+        "last_correct": true
     },
     {
         "hebrew": "תפוח",
         "english": "apple",
         "transcription": "tapuach",
-        "correct": 0,
+        "correct": 1,
         "wrong": 0,
-        "last_correct": false
+        "last_correct": true
     },
     {
         "hebrew": "מים",
@@ -139,7 +139,7 @@
         "hebrew": "פרח",
         "english": "flower",
         "transcription": "perach",
-        "correct": 2,
+        "correct": 3,
         "wrong": 0,
         "last_correct": true
     },
@@ -155,7 +155,7 @@
         "hebrew": "דלת",
         "english": "door",
         "transcription": "delet",
-        "correct": 1,
+        "correct": 2,
         "wrong": 0,
         "last_correct": true
     },
@@ -171,9 +171,9 @@
         "hebrew": "עיתון",
         "english": "newspaper",
         "transcription": "iton",
-        "correct": 0,
+        "correct": 1,
         "wrong": 0,
-        "last_correct": false
+        "last_correct": true
     },
     {
         "hebrew": "מפתח",
@@ -203,9 +203,9 @@
         "hebrew": "מזג אוויר",
         "english": "weather",
         "transcription": "mezeg avir",
-        "correct": 0,
+        "correct": 1,
         "wrong": 0,
-        "last_correct": false
+        "last_correct": true
     },
     {
         "hebrew": "שמש",
@@ -251,7 +251,7 @@
         "hebrew": "מסעדה",
         "english": "restaurant",
         "transcription": "misada",
-        "correct": 1,
+        "correct": 2,
         "wrong": 0,
         "last_correct": true
     },
@@ -259,7 +259,7 @@
         "hebrew": "בית ספר",
         "english": "school",
         "transcription": "beit sefer",
-        "correct": 1,
+        "correct": 2,
         "wrong": 0,
         "last_correct": true
     },
@@ -276,8 +276,8 @@
         "english": "teacher",
         "transcription": "more",
         "correct": 2,
-        "wrong": 0,
-        "last_correct": true
+        "wrong": 1,
+        "last_correct": false
     },
     {
         "hebrew": "תלמיד",
@@ -291,7 +291,7 @@
         "hebrew": "רופא",
         "english": "doctor",
         "transcription": "rofe",
-        "correct": 2,
+        "correct": 3,
         "wrong": 0,
         "last_correct": true
     },
@@ -299,9 +299,9 @@
         "hebrew": "אחות",
         "english": "nurse",
         "transcription": "achot",
-        "correct": 0,
+        "correct": 1,
         "wrong": 0,
-        "last_correct": false
+        "last_correct": true
     },
     {
         "hebrew": "בית חולים",
@@ -315,9 +315,9 @@
         "hebrew": "תרופה",
         "english": "medicine",
         "transcription": "trufa",
-        "correct": 0,
+        "correct": 1,
         "wrong": 0,
-        "last_correct": false
+        "last_correct": true
     },
     {
         "hebrew": "פארק",
@@ -339,15 +339,15 @@
         "hebrew": "ספורט",
         "english": "sport",
         "transcription": "sport",
-        "correct": 0,
+        "correct": 1,
         "wrong": 0,
-        "last_correct": false
+        "last_correct": true
     },
     {
         "hebrew": "כדור",
         "english": "ball",
         "transcription": "kadur",
-        "correct": 1,
+        "correct": 2,
         "wrong": 0,
         "last_correct": true
     },
@@ -382,5 +382,477 @@
         "correct": 1,
         "wrong": 0,
         "last_correct": true
+    },
+    {
+        "hebrew": "אוֹדוֹת",
+        "english": "about, with regard to, concerning",
+        "transcription": "odot",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "אַחַר",
+        "english": "after",
+        "transcription": "achar",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "מֵאֲחוֹרֵי",
+        "english": "behind",
+        "transcription": "me'achorei",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "אֶל",
+        "english": "to, towards, into",
+        "transcription": "el",
+        "correct": 1,
+        "wrong": 0,
+        "last_correct": true
+    },
+    {
+        "hebrew": "אֵצֶל",
+        "english": "at, in the possession of; near",
+        "transcription": "etzel",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "אֶת",
+        "english": "(used before a definite direct object)",
+        "transcription": "et",
+        "correct": 1,
+        "wrong": 0,
+        "last_correct": true
+    },
+    {
+        "hebrew": "בְּ",
+        "english": "in; by",
+        "transcription": "be",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "בְּאֶמְצָעוּת",
+        "english": "by means of, using",
+        "transcription": "be'emtza'ut",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "בִּגְלַל",
+        "english": "because of, due to",
+        "transcription": "biglal",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "בִּזְכוּת",
+        "english": "thanks to, due to; in favour of",
+        "transcription": "bizchut",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "בֵּין",
+        "english": "between, amongst",
+        "transcription": "ben",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "בְּלִי",
+        "english": "without",
+        "transcription": "bli",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "בְּמַהֲלַךְ",
+        "english": "during, over the course of",
+        "transcription": "bemahalach",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "בְּמַעֲמַד",
+        "english": "in the presence of (somebody)",
+        "transcription": "bema'amad",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "בִּמְקוֹם",
+        "english": "instead of",
+        "transcription": "bimkom",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "בַּעַד",
+        "english": "for, in favour of; in exchange for; through, via (lit.)",
+        "transcription": "ba'ad",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "בְּעִקְבוֹת",
+        "english": "following; as a result of",
+        "transcription": "be'ikvot",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "בְּעִקְבוֹת",
+        "english": "following, in the trail of; as a result of, because of",
+        "transcription": "be'ikvot",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "בִּפְנֵי",
+        "english": "facing (someone); in the face of",
+        "transcription": "bifnei",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "בְּקֶרֶב",
+        "english": "among, amidst; internally, on the inside",
+        "transcription": "bekerev",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "בִּשְׁבִיל",
+        "english": "for, for the sake of",
+        "transcription": "bishvil",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "בְּשֵׁם",
+        "english": "on behalf of, in the name of",
+        "transcription": "beshem",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "בְּתוֹךְ",
+        "english": "inside",
+        "transcription": "betoch",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "זוּלַת",
+        "english": "apart from, other than, beside",
+        "transcription": "zulat",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "כְּ",
+        "english": "as, like, in the role of; about, approximately",
+        "transcription": "ke",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "כְּלַפֵּי",
+        "english": "in relation to, vis-a-vis; towards",
+        "transcription": "klapei",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "כְּמוֹ",
+        "english": "like, as, similarly to",
+        "transcription": "kmo",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "כְּמוֹת",
+        "english": "like, as (literary)",
+        "transcription": "kmot",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "כְּנֶגֶד",
+        "english": "against; compared to, as opposed to; in exchange for",
+        "transcription": "keneged",
+        "correct": 0,
+        "wrong": 1,
+        "last_correct": false
+    },
+    {
+        "hebrew": "לְ",
+        "english": "to; for; of (indicating possession, with יש/אין)",
+        "transcription": "le",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "לְאוֹרֶךְ",
+        "english": "along, throughout",
+        "transcription": "le'orech",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "לְגַבֵּי",
+        "english": "regarding, concerning",
+        "transcription": "legabei",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "לְדִבְרֵי",
+        "english": "according to (also לדבריו/ה של...)",
+        "transcription": "ledivrei",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "לְיַד",
+        "english": "near, next to",
+        "transcription": "leyad",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "לִידֵי",
+        "english": "into the hands of; to, over to, for, to the attention of",
+        "transcription": "lidei",
+        "correct": 1,
+        "wrong": 0,
+        "last_correct": true
+    },
+    {
+        "hebrew": "לְמַעַן",
+        "english": "for the sake of, for the benefit of; in order to, so that (lit.)",
+        "transcription": "lema'an",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "לְפִי",
+        "english": "according to",
+        "transcription": "lefi",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "לִפְנֵי",
+        "english": "before, in front of",
+        "transcription": "lifnei",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "לִקְרַאת",
+        "english": "towards, forward to, for, in preparation to",
+        "transcription": "likrat",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "לְרוֹחַב",
+        "english": "across",
+        "transcription": "lerochav",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "מוּל",
+        "english": "against; opposite, in front of",
+        "transcription": "mul",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "מִן",
+        "english": "from, of; than, compared to",
+        "transcription": "min",
+        "correct": 1,
+        "wrong": 0,
+        "last_correct": true
+    },
+    {
+        "hebrew": "מֵעַל",
+        "english": "above, over; on top of",
+        "transcription": "me'al",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "מִפְּנֵי",
+        "english": "from, away from; because (with ש־)",
+        "transcription": "mipnei",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "מִתַּחַת",
+        "english": "under, below",
+        "transcription": "mitachat",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "נֶגֶד",
+        "english": "against",
+        "transcription": "neged",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "עֲבוּר",
+        "english": "for",
+        "transcription": "avur",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "עַד",
+        "english": "until, up to",
+        "transcription": "ad",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "עַל",
+        "english": "on, upon; over; about, regarding",
+        "transcription": "al",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "עַל גַּב",
+        "english": "on, upon",
+        "transcription": "al gav",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "עַל גַּבֵּי",
+        "english": "on, upon",
+        "transcription": "al gabei",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "עַל יַד",
+        "english": "next to",
+        "transcription": "al yad",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "עַל יְדֵי",
+        "english": "by, via (in a passive construction); by means of",
+        "transcription": "al yedei",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "עַל פִּי",
+        "english": "according to, in accordance with",
+        "transcription": "al pi",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "עַל פְּנֵי",
+        "english": "over, on the surface of; above",
+        "transcription": "al pnei",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "עִם",
+        "english": "with (forms עימי, עימו etc. are literary)",
+        "transcription": "im",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "לְעוּמַּת",
+        "english": "compared with",
+        "transcription": "le'umat",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "שֶׁל",
+        "english": "of, belonging to",
+        "transcription": "shel",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
+    },
+    {
+        "hebrew": "תַּחַת",
+        "english": "under, below, beneath; in exchange for",
+        "transcription": "tachat",
+        "correct": 0,
+        "wrong": 0,
+        "last_correct": false
     }
 ]
