@@ -19,9 +19,9 @@
         "hebrew": "ילד",
         "english": "child",
         "transcription": "yeled",
-        "correct": 0,
+        "correct": 1,
         "wrong": 0,
-        "last_correct": false
+        "last_correct": true
     },
     {
         "hebrew": "עץ",
@@ -75,7 +75,7 @@
         "hebrew": "דג",
         "english": "fish",
         "transcription": "dag",
-        "correct": 1,
+        "correct": 2,
         "wrong": 0,
         "last_correct": true
     },
@@ -611,9 +611,9 @@
         "hebrew": "כְּנֶגֶד",
         "english": "against; compared to, as opposed to; in exchange for",
         "transcription": "keneged",
-        "correct": 0,
+        "correct": 1,
         "wrong": 1,
-        "last_correct": false
+        "last_correct": true
     },
     {
         "hebrew": "לְ",
@@ -723,9 +723,9 @@
         "hebrew": "מֵעַל",
         "english": "above, over; on top of",
         "transcription": "me'al",
-        "correct": 0,
+        "correct": 1,
         "wrong": 0,
-        "last_correct": false
+        "last_correct": true
     },
     {
         "hebrew": "מִפְּנֵי",
@@ -828,7 +828,7 @@
         "english": "with (forms עימי, עימו etc. are literary)",
         "transcription": "im",
         "correct": 0,
-        "wrong": 0,
+        "wrong": 1,
         "last_correct": false
     },
     {

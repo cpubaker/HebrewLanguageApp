@@ -1,0 +1,3920 @@
+Sentence: המשפחה [MASK] לשדה בבוקר.
+Token: יצאה | Score: 0.3378
+Token: הגיעה | Score: 0.1963
+Token: חזרה | Score: 0.0845
+Token: נסעה | Score: 0.0774
+Token: יוצאת | Score: 0.0594
+
+Sentence: המשפחה [MASK] לעבודה בלילה.
+Token: יוצאת | Score: 0.2011
+Token: חוזרת | Score: 0.0710
+Token: יצאה | Score: 0.0662
+Token: התקבלה | Score: 0.0635
+Token: הולכת | Score: 0.0529
+
+Sentence: הספר [MASK] לספרייה בבוקר.
+Token: ##יה | Score: 0.1551
+Token: מוכן | Score: 0.0423
+Token: עבר | Score: 0.0403
+Token: פתוח | Score: 0.0391
+Token: ##ה | Score: 0.0283
+
+Sentence: הבית [MASK] לבית הכנסת בבוקר.
+Token: צמוד | Score: 0.2969
+Token: הסמוך | Score: 0.1607
+Token: הצמוד | Score: 0.0485
+Token: הקרוב | Score: 0.0414
+Token: הופך | Score: 0.0407
+
+Sentence: התלמידים [MASK] לשדה בלילה.
+Token: יצאו | Score: 0.4369
+Token: הגיעו | Score: 0.1561
+Token: יוצאים | Score: 0.0718
+Token: מגיעים | Score: 0.0530
+Token: שבו | Score: 0.0359
+
+Sentence: המשפחה [MASK] לשוק כל יום.
+Token: יוצאת | Score: 0.8810
+Token: יצאה | Score: 0.0312
+Token: הולכת | Score: 0.0303
+Token: יוצאים | Score: 0.0120
+Token: חוזרת | Score: 0.0065
+
+Sentence: החתול [MASK] לאוניברסיטה בערב.
+Token: יצא | Score: 0.1164
+Token: בדרך | Score: 0.1059
+Token: הגיע | Score: 0.1005
+Token: נכנס | Score: 0.0890
+Token: הולך | Score: 0.0758
+
+Sentence: המשפחה [MASK] לעבודה בשבוע שעבר.
+Token: התקבלה | Score: 0.4642
+Token: שבה | Score: 0.1592
+Token: חזרה | Score: 0.1459
+Token: יצאה | Score: 0.0345
+Token: הגיעה | Score: 0.0290
+
+Sentence: הילדים [MASK] לעבודה בשבוע שעבר.
+Token: חזרו | Score: 0.1868
+Token: התקבלו | Score: 0.1733
+Token: יצאו | Score: 0.1397
+Token: שבו | Score: 0.1104
+Token: נשלחו | Score: 0.0693
+
+Sentence: המשפחה [MASK] לעבודה כל יום.
+Token: יוצאת | Score: 0.3825
+Token: מגיעה | Score: 0.1265
+Token: הולכת | Score: 0.0934
+Token: חוזרת | Score: 0.0915
+Token: זקוקה | Score: 0.0455
+
+Sentence: התלמידים [MASK] לבית הכנסת בבוקר.
+Token: הגיעו | Score: 0.3444
+Token: מגיעים | Score: 0.1172
+Token: יצאו | Score: 0.0839
+Token: נכנסו | Score: 0.0545
+Token: שבו | Score: 0.0280
+
+Sentence: המורה [MASK] לעבודה בערב.
+Token: מגיעה | Score: 0.0989
+Token: מגיע | Score: 0.0844
+Token: חוזרת | Score: 0.0526
+Token: יוצא | Score: 0.0439
+Token: מוכנה | Score: 0.0410
+
+Sentence: הספר [MASK] לספרייה בערב.
+Token: ##יה | Score: 0.4075
+Token: עבר | Score: 0.0675
+Token: ##יות | Score: 0.0570
+Token: ##ה | Score: 0.0430
+Token: עובר | Score: 0.0200
+
+Sentence: החתול [MASK] לעבודה כל יום.
+Token: זמין | Score: 0.2225
+Token: ##ים | Score: 0.1336
+Token: מוכן | Score: 0.0756
+Token: יוצא | Score: 0.0290
+Token: זקוק | Score: 0.0276
+
+Sentence: החתול [MASK] לשוק בחודש האחרון.
+Token: יצא | Score: 0.8630
+Token: יוצא | Score: 0.0471
+Token: שיצא | Score: 0.0288
+Token: נכנס | Score: 0.0196
+Token: ייצא | Score: 0.0105
+
+Sentence: הבית [MASK] לבית הכנסת בחודש האחרון.
+Token: הפך | Score: 0.2026
+Token: נכנס | Score: 0.1874
+Token: שהפך | Score: 0.0851
+Token: חזר | Score: 0.0717
+Token: שנכנס | Score: 0.0463
+
+Sentence: התלמידים [MASK] לשוק באוקטובר האחרון.
+Token: יצאו | Score: 0.8193
+Token: שיצאו | Score: 0.0774
+Token: יוצאים | Score: 0.0196
+Token: נכנסו | Score: 0.0157
+Token: הגיעו | Score: 0.0087
+
+Sentence: האיש [MASK] לבית הכנסת בערב.
+Token: נכנס | Score: 0.3550
+Token: הלך | Score: 0.1519
+Token: הגיע | Score: 0.1243
+Token: בא | Score: 0.0554
+Token: הולך | Score: 0.0359
+
+Sentence: הבית [MASK] לשוק בשבוע שעבר.
+Token: יצא | Score: 0.8206
+Token: נכנס | Score: 0.0631
+Token: שיצא | Score: 0.0298
+Token: ייצא | Score: 0.0108
+Token: יוצא | Score: 0.0093
+
+Sentence: הבית [MASK] לשוק בלילה.
+Token: יוצא | Score: 0.3691
+Token: יצא | Score: 0.2217
+Token: נכנס | Score: 0.0730
+Token: פונה | Score: 0.0474
+Token: פתוח | Score: 0.0362
+
+Sentence: הבית [MASK] לכיתה בלילה.
+Token: צמוד | Score: 0.1428
+Token: שייך | Score: 0.0448
+Token: מחובר | Score: 0.0416
+Token: עובר | Score: 0.0378
+Token: מחולק | Score: 0.0363
+
+Sentence: האיש [MASK] לבית הספר בערב.
+Token: הלך | Score: 0.3367
+Token: נכנס | Score: 0.0782
+Token: הגיע | Score: 0.0736
+Token: חזר | Score: 0.0629
+Token: הולך | Score: 0.0619
+
+Sentence: הבית [MASK] לספרייה בבוקר.
+Token: פתוח | Score: 0.1039
+Token: עובר | Score: 0.0703
+Token: צמוד | Score: 0.0575
+Token: הופך | Score: 0.0396
+Token: סגור | Score: 0.0387
+
+Sentence: הבית [MASK] לשוק בבוקר.
+Token: יוצא | Score: 0.2974
+Token: יצא | Score: 0.2782
+Token: פונה | Score: 0.0584
+Token: נכנס | Score: 0.0532
+Token: ייצא | Score: 0.0440
+
+Sentence: האישה [MASK] לכיתה בלילה.
+Token: עולה | Score: 0.4697
+Token: מגיעה | Score: 0.1276
+Token: נכנסת | Score: 0.0915
+Token: עלתה | Score: 0.0548
+Token: נכנסה | Score: 0.0270
+
+Sentence: החתול [MASK] לשוק באוקטובר האחרון.
+Token: יצא | Score: 0.8858
+Token: שיצא | Score: 0.0389
+Token: נכנס | Score: 0.0186
+Token: יוצא | Score: 0.0163
+Token: יצאה | Score: 0.0076
+
+Sentence: המשפחה [MASK] לבית הכנסת בבוקר.
+Token: הגיעה | Score: 0.3015
+Token: יצאה | Score: 0.0888
+Token: הלכה | Score: 0.0740
+Token: נכנסה | Score: 0.0539
+Token: באה | Score: 0.0488
+
+Sentence: המשפחה [MASK] לשדה בחודש האחרון.
+Token: הגיעה | Score: 0.2352
+Token: חזרה | Score: 0.1989
+Token: שבה | Score: 0.1396
+Token: יצאה | Score: 0.0933
+Token: עברה | Score: 0.0400
+
+Sentence: המורה [MASK] לכיתה בערב.
+Token: מגיעה | Score: 0.2778
+Token: עולה | Score: 0.2470
+Token: נכנסת | Score: 0.0908
+Token: חוזרת | Score: 0.0774
+Token: יוצאת | Score: 0.0323
+
+Sentence: האיש [MASK] לבית הכנסת בלילה.
+Token: נכנס | Score: 0.5460
+Token: הגיע | Score: 0.0803
+Token: מגיע | Score: 0.0521
+Token: הולך | Score: 0.0471
+Token: הלך | Score: 0.0454
+
+Sentence: המשפחה [MASK] לאוניברסיטה בשבוע שעבר.
+Token: התקבלה | Score: 0.1989
+Token: שבה | Score: 0.1573
+Token: הגיעה | Score: 0.1010
+Token: נרשמה | Score: 0.0948
+Token: נכנסה | Score: 0.0769
+
+Sentence: המשפחה [MASK] לכיתה כל יום.
+Token: מגיעה | Score: 0.2461
+Token: חוזרת | Score: 0.1613
+Token: נכנסת | Score: 0.1418
+Token: עולה | Score: 0.1003
+Token: יוצאת | Score: 0.0601
+
+Sentence: האיש [MASK] לשדה כל יום.
+Token: יוצא | Score: 0.3019
+Token: נכנס | Score: 0.1138
+Token: מגיע | Score: 0.1082
+Token: הולך | Score: 0.0840
+Token: יצא | Score: 0.0646
+
+Sentence: החתול [MASK] לשדה בבוקר.
+Token: יוצא | Score: 0.2301
+Token: מגיע | Score: 0.1956
+Token: יצא | Score: 0.1643
+Token: הגיע | Score: 0.1095
+Token: נוסע | Score: 0.0310
+
+Sentence: האישה [MASK] לבית הספר כל יום.
+Token: מגיעה | Score: 0.4234
+Token: הולכת | Score: 0.1729
+Token: חוזרת | Score: 0.1328
+Token: יוצאת | Score: 0.0786
+Token: באה | Score: 0.0310
+
+Sentence: התלמידים [MASK] לאוניברסיטה בערב.
+Token: מגיעים | Score: 0.1503
+Token: יגיעו | Score: 0.0717
+Token: עולים | Score: 0.0641
+Token: ילכו | Score: 0.0621
+Token: התקבלו | Score: 0.0549
+
+Sentence: הספר [MASK] לבית הכנסת בלילה.
+Token: נכנס | Score: 0.2193
+Token: הגיע | Score: 0.0419
+Token: נמסר | Score: 0.0413
+Token: ייכנס | Score: 0.0346
+Token: יוצא | Score: 0.0266
+
+Sentence: הילדים [MASK] לאוניברסיטה באוקטובר האחרון.
+Token: התקבלו | Score: 0.3150
+Token: שבו | Score: 0.1508
+Token: חזרו | Score: 0.1033
+Token: הגיעו | Score: 0.0899
+Token: נרשמו | Score: 0.0867
+
+Sentence: המשפחה [MASK] לספרייה בחודש האחרון.
+Token: עברה | Score: 0.4305
+Token: חזרה | Score: 0.1059
+Token: נרשמה | Score: 0.0786
+Token: הגיעה | Score: 0.0452
+Token: שבה | Score: 0.0420
+
+Sentence: המכונית [MASK] לכיתה כל יום.
+Token: מגיעה | Score: 0.3167
+Token: עולה | Score: 0.0901
+Token: יוצאת | Score: 0.0656
+Token: נכנסת | Score: 0.0597
+Token: חוזרת | Score: 0.0486
+
+Sentence: המכונית [MASK] לבית הכנסת בבוקר.
+Token: מגיעה | Score: 0.1904
+Token: הגיעה | Score: 0.1361
+Token: חזרה | Score: 0.0613
+Token: בדרכה | Score: 0.0496
+Token: נוסעת | Score: 0.0439
+
+Sentence: המכונית [MASK] לעבודה בלילה.
+Token: מתאימה | Score: 0.1850
+Token: מיועדת | Score: 0.1777
+Token: נוחה | Score: 0.1436
+Token: מותאמת | Score: 0.0898
+Token: מוכנה | Score: 0.0389
+
+Sentence: החתול [MASK] לספרייה בבוקר.
+Token: הגיע | Score: 0.1343
+Token: נכנס | Score: 0.1228
+Token: מגיע | Score: 0.0833
+Token: הולך | Score: 0.0478
+Token: יצא | Score: 0.0386
+
+Sentence: המשפחה [MASK] לשוק בשבוע שעבר.
+Token: יצאה | Score: 0.8244
+Token: נכנסה | Score: 0.0558
+Token: שיצאה | Score: 0.0223
+Token: חזרה | Score: 0.0130
+Token: הגיעה | Score: 0.0097
+
+Sentence: המשפחה [MASK] לספרייה באוקטובר האחרון.
+Token: עברה | Score: 0.4815
+Token: חזרה | Score: 0.1041
+Token: הועברה | Score: 0.0774
+Token: שבה | Score: 0.0661
+Token: הגיעה | Score: 0.0461
+
+Sentence: המורה [MASK] לבית הספר כל יום.
+Token: מגיעה | Score: 0.6696
+Token: חוזרת | Score: 0.1211
+Token: יוצאת | Score: 0.0290
+Token: הולכת | Score: 0.0281
+Token: נכנסת | Score: 0.0250
+
+Sentence: המכונית [MASK] לכיתה בערב.
+Token: עלתה | Score: 0.1656
+Token: עולה | Score: 0.1564
+Token: מגיעה | Score: 0.0861
+Token: הגיעה | Score: 0.0620
+Token: חזרה | Score: 0.0438
+
+Sentence: הבית [MASK] לאוניברסיטה כל יום.
+Token: מחוץ | Score: 0.0947
+Token: יוצא | Score: 0.0879
+Token: הופך | Score: 0.0709
+Token: צמוד | Score: 0.0618
+Token: חוזר | Score: 0.0606
+
+Sentence: המורה [MASK] לשוק בבוקר.
+Token: יצאה | Score: 0.4792
+Token: יוצאת | Score: 0.1758
+Token: תצא | Score: 0.1475
+Token: יצא | Score: 0.0815
+Token: יוצא | Score: 0.0150
+
+Sentence: התלמידים [MASK] לבית הכנסת באוקטובר האחרון.
+Token: הגיעו | Score: 0.3923
+Token: שבו | Score: 0.1410
+Token: נכנסו | Score: 0.1219
+Token: פרצו | Score: 0.0568
+Token: עלו | Score: 0.0329
+
+Sentence: התלמידים [MASK] לספרייה בערב.
+Token: חוזרים | Score: 0.1261
+Token: מגיעים | Score: 0.1093
+Token: עולים | Score: 0.0723
+Token: עוברים | Score: 0.0642
+Token: הגיעו | Score: 0.0446
+
+Sentence: האישה [MASK] לשוק בערב.
+Token: יוצאת | Score: 0.4570
+Token: יצאה | Score: 0.2610
+Token: תצא | Score: 0.1776
+Token: הולכת | Score: 0.0222
+Token: נכנסה | Score: 0.0148
+
+Sentence: החתול [MASK] לכיתה כל יום.
+Token: עולה | Score: 0.4528
+Token: נכנס | Score: 0.1060
+Token: חוזר | Score: 0.0806
+Token: ##ים | Score: 0.0680
+Token: מגיע | Score: 0.0394
+
+Sentence: האישה [MASK] לשדה באוקטובר האחרון.
+Token: הגיעה | Score: 0.2467
+Token: שבה | Score: 0.1886
+Token: חזרה | Score: 0.1576
+Token: יצאה | Score: 0.0832
+Token: נכנסה | Score: 0.0607
+
+Sentence: המורה [MASK] לעבודה כל יום.
+Token: יוצא | Score: 0.2464
+Token: מגיע | Score: 0.1833
+Token: מוכן | Score: 0.0876
+Token: חוזר | Score: 0.0805
+Token: מגיעה | Score: 0.0293
+
+Sentence: הבית [MASK] לעבודה בערב.
+Token: מתאים | Score: 0.2367
+Token: פתוח | Score: 0.1330
+Token: מוכן | Score: 0.0511
+Token: אידיאלי | Score: 0.0496
+Token: עובד | Score: 0.0416
+
+Sentence: הבית [MASK] לבית הספר כל יום.
+Token: מחוץ | Score: 0.1255
+Token: חוזר | Score: 0.1159
+Token: הופך | Score: 0.0924
+Token: צמוד | Score: 0.0543
+Token: מגיע | Score: 0.0390
+
+Sentence: האיש [MASK] לספרייה באוקטובר האחרון.
+Token: הגיע | Score: 0.1540
+Token: נכנס | Score: 0.1520
+Token: חזר | Score: 0.1328
+Token: שהגיע | Score: 0.1160
+Token: שנכנס | Score: 0.0901
+
+Sentence: המורה [MASK] לבית הספר בערב.
+Token: מגיעה | Score: 0.2495
+Token: חוזרת | Score: 0.1349
+Token: הגיעה | Score: 0.0868
+Token: תגיע | Score: 0.0645
+Token: חזרה | Score: 0.0631
+
+Sentence: המורה [MASK] לעבודה בשבוע שעבר.
+Token: התקבלה | Score: 0.2740
+Token: חזרה | Score: 0.2522
+Token: יצאה | Score: 0.0893
+Token: שבה | Score: 0.0889
+Token: נשלחה | Score: 0.0415
+
+Sentence: הילדים [MASK] לבית הספר בשבוע שעבר.
+Token: חזרו | Score: 0.2968
+Token: הגיעו | Score: 0.2581
+Token: שבו | Score: 0.1614
+Token: נכנסו | Score: 0.0405
+Token: הלכו | Score: 0.0253
+
+Sentence: התלמידים [MASK] לעבודה בשבוע שעבר.
+Token: התקבלו | Score: 0.2424
+Token: יצאו | Score: 0.1862
+Token: חזרו | Score: 0.1199
+Token: נשלחו | Score: 0.0517
+Token: הגיעו | Score: 0.0418
+
+Sentence: הילדים [MASK] לשוק בבוקר.
+Token: יצאו | Score: 0.7006
+Token: יוצאים | Score: 0.1853
+Token: ילכו | Score: 0.0373
+Token: הולכים | Score: 0.0132
+Token: הלכו | Score: 0.0108
+
+Sentence: התלמידים [MASK] לעבודה בבוקר.
+Token: יוצאים | Score: 0.2257
+Token: יצאו | Score: 0.1920
+Token: מגיעים | Score: 0.0802
+Token: חוזרים | Score: 0.0731
+Token: חזרו | Score: 0.0242
+
+Sentence: המכונית [MASK] לספרייה בלילה.
+Token: עוברת | Score: 0.1974
+Token: מגיעה | Score: 0.1553
+Token: נוסעת | Score: 0.0724
+Token: עברה | Score: 0.0536
+Token: חוזרת | Score: 0.0314
+
+Sentence: האיש [MASK] לאוניברסיטה בשבוע שעבר.
+Token: שנכנס | Score: 0.3186
+Token: שהגיע | Score: 0.2300
+Token: נכנס | Score: 0.0894
+Token: הגיע | Score: 0.0608
+Token: שחזר | Score: 0.0475
+
+Sentence: התלמידים [MASK] לבית הספר בחודש האחרון.
+Token: הגיעו | Score: 0.2551
+Token: חזרו | Score: 0.2033
+Token: שבו | Score: 0.1679
+Token: נכנסו | Score: 0.0663
+Token: שהגיעו | Score: 0.0419
+
+Sentence: הבית [MASK] לכיתה בשבוע שעבר.
+Token: עלה | Score: 0.3581
+Token: חזר | Score: 0.1347
+Token: עבר | Score: 0.1038
+Token: נכנס | Score: 0.0802
+Token: שעלה | Score: 0.0451
+
+Sentence: החתול [MASK] לכיתה בלילה.
+Token: עולה | Score: 0.6564
+Token: נכנס | Score: 0.0682
+Token: ##ים | Score: 0.0374
+Token: עלה | Score: 0.0271
+Token: מגיע | Score: 0.0207
+
+Sentence: הילדים [MASK] לשדה כל יום.
+Token: יוצאים | Score: 0.3954
+Token: מגיעים | Score: 0.1581
+Token: חוזרים | Score: 0.1125
+Token: הולכים | Score: 0.0647
+Token: יצאו | Score: 0.0634
+
+Sentence: המורה [MASK] לאוניברסיטה בערב.
+Token: מגיע | Score: 0.1043
+Token: יגיע | Score: 0.0525
+Token: חוזר | Score: 0.0521
+Token: הגיע | Score: 0.0422
+Token: נכנס | Score: 0.0367
+
+Sentence: הבית [MASK] לבית הספר בחודש האחרון.
+Token: חזר | Score: 0.1700
+Token: נכנס | Score: 0.0920
+Token: עבר | Score: 0.0828
+Token: הפך | Score: 0.0555
+Token: שהפך | Score: 0.0503
+
+Sentence: האישה [MASK] לבית הספר בבוקר.
+Token: מגיעה | Score: 0.1867
+Token: חוזרת | Score: 0.1039
+Token: הולכת | Score: 0.0999
+Token: יוצאת | Score: 0.0742
+Token: הגיעה | Score: 0.0695
+
+Sentence: האיש [MASK] לבית הספר בבוקר.
+Token: הלך | Score: 0.2564
+Token: הגיע | Score: 0.1152
+Token: נכנס | Score: 0.0749
+Token: חזר | Score: 0.0625
+Token: הולך | Score: 0.0588
+
+Sentence: המשפחה [MASK] לשוק בחודש האחרון.
+Token: יצאה | Score: 0.7589
+Token: נכנסה | Score: 0.1001
+Token: יוצאת | Score: 0.0457
+Token: שיצאה | Score: 0.0164
+Token: הגיעה | Score: 0.0089
+
+Sentence: התלמידים [MASK] לבית הכנסת בחודש האחרון.
+Token: הגיעו | Score: 0.4262
+Token: נכנסו | Score: 0.1822
+Token: שבו | Score: 0.0705
+Token: חזרו | Score: 0.0512
+Token: פרצו | Score: 0.0429
+
+Sentence: המכונית [MASK] לבית הספר בערב.
+Token: חזרה | Score: 0.1733
+Token: הגיעה | Score: 0.0888
+Token: מגיעה | Score: 0.0759
+Token: נוסעת | Score: 0.0542
+Token: יצאה | Score: 0.0411
+
+Sentence: המורה [MASK] לבית הכנסת באוקטובר האחרון.
+Token: הגיעה | Score: 0.4949
+Token: נכנסה | Score: 0.1734
+Token: חזרה | Score: 0.0488
+Token: נשלחה | Score: 0.0292
+Token: עברה | Score: 0.0283
+
+Sentence: האישה [MASK] לספרייה כל יום.
+Token: הולכת | Score: 0.2849
+Token: מגיעה | Score: 0.2313
+Token: חוזרת | Score: 0.1391
+Token: נכנסת | Score: 0.1080
+Token: עוברת | Score: 0.0302
+
+Sentence: החתול [MASK] לאוניברסיטה בלילה.
+Token: נכנס | Score: 0.1775
+Token: יצא | Score: 0.1335
+Token: הגיע | Score: 0.0815
+Token: בדרך | Score: 0.0773
+Token: הולך | Score: 0.0678
+
+Sentence: התלמידים [MASK] לעבודה בלילה.
+Token: יוצאים | Score: 0.1995
+Token: חוזרים | Score: 0.0876
+Token: מגיעים | Score: 0.0798
+Token: יצאו | Score: 0.0651
+Token: לומדים | Score: 0.0534
+
+Sentence: התלמידים [MASK] לאוניברסיטה בשבוע שעבר.
+Token: התקבלו | Score: 0.1869
+Token: הגיעו | Score: 0.1606
+Token: שבו | Score: 0.1408
+Token: חזרו | Score: 0.1357
+Token: נרשמו | Score: 0.0811
+
+Sentence: המורה [MASK] לשוק כל יום.
+Token: יוצאת | Score: 0.7010
+Token: יוצא | Score: 0.1393
+Token: יצאה | Score: 0.0507
+Token: הולכת | Score: 0.0179
+Token: יוצאים | Score: 0.0144
+
+Sentence: הבית [MASK] לעבודה בבוקר.
+Token: פתוח | Score: 0.1440
+Token: עובד | Score: 0.0895
+Token: מתאים | Score: 0.0858
+Token: מוכן | Score: 0.0762
+Token: סגור | Score: 0.0661
+
+Sentence: המכונית [MASK] לבית הכנסת באוקטובר האחרון.
+Token: הגיעה | Score: 0.4096
+Token: נכנסה | Score: 0.1699
+Token: חזרה | Score: 0.0608
+Token: הועברה | Score: 0.0549
+Token: עברה | Score: 0.0314
+
+Sentence: הבית [MASK] לבית הכנסת בלילה.
+Token: צמוד | Score: 0.3967
+Token: הסמוך | Score: 0.1315
+Token: הצמוד | Score: 0.0747
+Token: הקרוב | Score: 0.0482
+Token: מחוץ | Score: 0.0381
+
+Sentence: הילדים [MASK] לכיתה בחודש האחרון.
+Token: עלו | Score: 0.3484
+Token: חזרו | Score: 0.1660
+Token: הגיעו | Score: 0.1145
+Token: נכנסו | Score: 0.0765
+Token: שעלו | Score: 0.0719
+
+Sentence: האישה [MASK] לספרייה בשבוע שעבר.
+Token: עברה | Score: 0.1612
+Token: הגיעה | Score: 0.1468
+Token: נכנסה | Score: 0.1366
+Token: הועברה | Score: 0.1190
+Token: חזרה | Score: 0.0913
+
+Sentence: האיש [MASK] לכיתה בבוקר.
+Token: נכנס | Score: 0.2451
+Token: עולה | Score: 0.1939
+Token: הגיע | Score: 0.1705
+Token: עלה | Score: 0.1274
+Token: מגיע | Score: 0.0231
+
+Sentence: החתול [MASK] לספרייה באוקטובר האחרון.
+Token: הגיע | Score: 0.2429
+Token: נכנס | Score: 0.2222
+Token: חזר | Score: 0.1784
+Token: נלקח | Score: 0.0384
+Token: עלה | Score: 0.0312
+
+Sentence: המכונית [MASK] לבית הספר באוקטובר האחרון.
+Token: הגיעה | Score: 0.3289
+Token: חזרה | Score: 0.1266
+Token: הועברה | Score: 0.0700
+Token: נכנסה | Score: 0.0631
+Token: נשלחה | Score: 0.0564
+
+Sentence: הבית [MASK] לבית הכנסת בערב.
+Token: צמוד | Score: 0.2932
+Token: הסמוך | Score: 0.1570
+Token: הצמוד | Score: 0.0782
+Token: הקרוב | Score: 0.0483
+Token: הפך | Score: 0.0459
+
+Sentence: הילדים [MASK] לאוניברסיטה בלילה.
+Token: ילכו | Score: 0.1348
+Token: הולכים | Score: 0.1207
+Token: מגיעים | Score: 0.1191
+Token: יצאו | Score: 0.0750
+Token: יוצאים | Score: 0.0511
+
+Sentence: הספר [MASK] לעבודה באוקטובר האחרון.
+Token: התקבל | Score: 0.5922
+Token: יצא | Score: 0.1851
+Token: חזר | Score: 0.0389
+Token: הועבר | Score: 0.0142
+Token: נכנס | Score: 0.0129
+
+Sentence: המורה [MASK] לאוניברסיטה כל יום.
+Token: מגיע | Score: 0.3156
+Token: חוזר | Score: 0.2247
+Token: יוצא | Score: 0.0743
+Token: הולך | Score: 0.0610
+Token: נכנס | Score: 0.0513
+
+Sentence: המורה [MASK] לבית הכנסת בשבוע שעבר.
+Token: הגיעה | Score: 0.5721
+Token: נכנסה | Score: 0.1429
+Token: חזרה | Score: 0.0445
+Token: הלכה | Score: 0.0331
+Token: שבה | Score: 0.0205
+
+Sentence: המשפחה [MASK] לספרייה בערב.
+Token: עברה | Score: 0.2770
+Token: חוזרת | Score: 0.1066
+Token: עוברת | Score: 0.0685
+Token: חזרה | Score: 0.0475
+Token: הולכת | Score: 0.0381
+
+Sentence: המורה [MASK] לשדה בלילה.
+Token: הגיע | Score: 0.1871
+Token: יצא | Score: 0.1100
+Token: מגיע | Score: 0.1008
+Token: יוצא | Score: 0.0888
+Token: הגיעה | Score: 0.0427
+
+Sentence: המורה [MASK] לכיתה בלילה.
+Token: עולה | Score: 0.2288
+Token: מגיעה | Score: 0.2213
+Token: נכנסת | Score: 0.1554
+Token: מגיע | Score: 0.0687
+Token: חוזרת | Score: 0.0569
+
+Sentence: החתול [MASK] לשדה באוקטובר האחרון.
+Token: הגיע | Score: 0.4002
+Token: יצא | Score: 0.1889
+Token: חזר | Score: 0.0689
+Token: נכנס | Score: 0.0611
+Token: נלקח | Score: 0.0595
+
+Sentence: התלמידים [MASK] לספרייה בחודש האחרון.
+Token: חזרו | Score: 0.1835
+Token: הגיעו | Score: 0.1497
+Token: נרשמו | Score: 0.1421
+Token: עברו | Score: 0.1298
+Token: התקבלו | Score: 0.0927
+
+Sentence: המשפחה [MASK] לבית הכנסת בשבוע שעבר.
+Token: הגיעה | Score: 0.3918
+Token: שבה | Score: 0.1527
+Token: נכנסה | Score: 0.0973
+Token: הלכה | Score: 0.0675
+Token: חזרה | Score: 0.0621
+
+Sentence: האישה [MASK] לבית הספר בלילה.
+Token: הולכת | Score: 0.1944
+Token: מגיעה | Score: 0.1830
+Token: חוזרת | Score: 0.1075
+Token: יוצאת | Score: 0.0829
+Token: באה | Score: 0.0557
+
+Sentence: הספר [MASK] לאוניברסיטה כל יום.
+Token: יוצא | Score: 0.1854
+Token: נכנס | Score: 0.1496
+Token: חוזר | Score: 0.1168
+Token: מגיע | Score: 0.0911
+Token: מחוץ | Score: 0.0362
+
+Sentence: הספר [MASK] לבית הספר בשבוע שעבר.
+Token: הגיע | Score: 0.3091
+Token: חזר | Score: 0.2016
+Token: הועבר | Score: 0.0840
+Token: יצא | Score: 0.0435
+Token: עבר | Score: 0.0420
+
+Sentence: המורה [MASK] לעבודה בלילה.
+Token: מגיע | Score: 0.1726
+Token: מוכן | Score: 0.0858
+Token: יוצא | Score: 0.0427
+Token: נשלח | Score: 0.0351
+Token: זמין | Score: 0.0270
+
+Sentence: הילדים [MASK] לבית הספר כל יום.
+Token: חוזרים | Score: 0.4023
+Token: מגיעים | Score: 0.3292
+Token: הולכים | Score: 0.0752
+Token: יוצאים | Score: 0.0513
+Token: באים | Score: 0.0323
+
+Sentence: התלמידים [MASK] לבית הכנסת בשבוע שעבר.
+Token: הגיעו | Score: 0.5648
+Token: שבו | Score: 0.0934
+Token: נכנסו | Score: 0.0816
+Token: פרצו | Score: 0.0421
+Token: עלו | Score: 0.0368
+
+Sentence: החתול [MASK] לבית הספר כל יום.
+Token: מגיע | Score: 0.3178
+Token: חוזר | Score: 0.1551
+Token: הגיע | Score: 0.0715
+Token: מגיעה | Score: 0.0536
+Token: נכנס | Score: 0.0484
+
+Sentence: הבית [MASK] לבית הספר בבוקר.
+Token: מחוץ | Score: 0.1999
+Token: הסמוך | Score: 0.0919
+Token: צמוד | Score: 0.0409
+Token: שייך | Score: 0.0376
+Token: הופך | Score: 0.0306
+
+Sentence: המורה [MASK] לאוניברסיטה בשבוע שעבר.
+Token: הגיע | Score: 0.2800
+Token: הגיעה | Score: 0.1100
+Token: חזר | Score: 0.0826
+Token: התקבל | Score: 0.0445
+Token: נכנס | Score: 0.0331
+
+Sentence: האישה [MASK] לשדה בערב.
+Token: יצאה | Score: 0.2707
+Token: הגיעה | Score: 0.1504
+Token: יוצאת | Score: 0.0901
+Token: נסעה | Score: 0.0634
+Token: חזרה | Score: 0.0479
+
+Sentence: האיש [MASK] לעבודה בלילה.
+Token: יצא | Score: 0.1138
+Token: התקבל | Score: 0.0745
+Token: יוצא | Score: 0.0710
+Token: הלך | Score: 0.0507
+Token: נשלח | Score: 0.0330
+
+Sentence: המורה [MASK] לאוניברסיטה בבוקר.
+Token: מגיע | Score: 0.1333
+Token: חוזר | Score: 0.0798
+Token: יוצא | Score: 0.0572
+Token: הולך | Score: 0.0494
+Token: הגיע | Score: 0.0480
+
+Sentence: התלמידים [MASK] לשדה בשבוע שעבר.
+Token: הגיעו | Score: 0.4201
+Token: חזרו | Score: 0.1688
+Token: שבו | Score: 0.0960
+Token: יצאו | Score: 0.0758
+Token: נסעו | Score: 0.0375
+
+Sentence: החתול [MASK] לשדה בשבוע שעבר.
+Token: הגיע | Score: 0.3270
+Token: חזר | Score: 0.3056
+Token: יצא | Score: 0.1012
+Token: נכנס | Score: 0.0450
+Token: הלך | Score: 0.0346
+
+Sentence: האיש [MASK] לספרייה בלילה.
+Token: נכנס | Score: 0.2063
+Token: הולך | Score: 0.0837
+Token: הלך | Score: 0.0728
+Token: הגיע | Score: 0.0580
+Token: מחוץ | Score: 0.0516
+
+Sentence: הספר [MASK] לספרייה בחודש האחרון.
+Token: עבר | Score: 0.4290
+Token: עלה | Score: 0.1073
+Token: נכנס | Score: 0.0923
+Token: הגיע | Score: 0.0568
+Token: חזר | Score: 0.0356
+
+Sentence: האישה [MASK] לכיתה כל יום.
+Token: מגיעה | Score: 0.3245
+Token: עולה | Score: 0.1810
+Token: נכנסת | Score: 0.1768
+Token: יוצאת | Score: 0.0309
+Token: שמגיעה | Score: 0.0303
+
+Sentence: החתול [MASK] לאוניברסיטה בשבוע שעבר.
+Token: התקבל | Score: 0.1964
+Token: הגיע | Score: 0.1616
+Token: נרשם | Score: 0.1308
+Token: חזר | Score: 0.0972
+Token: נכנס | Score: 0.0927
+
+Sentence: האיש [MASK] לבית הכנסת כל יום.
+Token: נכנס | Score: 0.3256
+Token: מגיע | Score: 0.2372
+Token: הולך | Score: 0.1673
+Token: חוזר | Score: 0.0340
+Token: יוצא | Score: 0.0305
+
+Sentence: המורה [MASK] לבית הספר בבוקר.
+Token: מגיעה | Score: 0.3268
+Token: חוזרת | Score: 0.1339
+Token: יוצאת | Score: 0.0820
+Token: הגיעה | Score: 0.0697
+Token: תגיע | Score: 0.0570
+
+Sentence: הספר [MASK] לשוק בלילה.
+Token: יוצא | Score: 0.4444
+Token: יצא | Score: 0.3099
+Token: שיצא | Score: 0.0294
+Token: שיוצא | Score: 0.0230
+Token: נכנס | Score: 0.0188
+
+Sentence: האיש [MASK] לשדה בערב.
+Token: יצא | Score: 0.2820
+Token: הגיע | Score: 0.1524
+Token: הלך | Score: 0.1089
+Token: בא | Score: 0.0800
+Token: נכנס | Score: 0.0464
+
+Sentence: המורה [MASK] לכיתה כל יום.
+Token: מגיעה | Score: 0.3934
+Token: נכנסת | Score: 0.2216
+Token: חוזרת | Score: 0.0714
+Token: עולה | Score: 0.0705
+Token: מגיע | Score: 0.0553
+
+Sentence: הספר [MASK] לספרייה באוקטובר האחרון.
+Token: עבר | Score: 0.4359
+Token: עלה | Score: 0.1060
+Token: הגיע | Score: 0.0954
+Token: יצא | Score: 0.0666
+Token: חזר | Score: 0.0499
+
+Sentence: המכונית [MASK] לבית הכנסת בערב.
+Token: הגיעה | Score: 0.1678
+Token: חזרה | Score: 0.0931
+Token: נכנסה | Score: 0.0695
+Token: מגיעה | Score: 0.0666
+Token: הועברה | Score: 0.0436
+
+Sentence: האיש [MASK] לשוק כל יום.
+Token: יוצא | Score: 0.7189
+Token: שיוצא | Score: 0.0719
+Token: הולך | Score: 0.0647
+Token: נכנס | Score: 0.0373
+Token: יצא | Score: 0.0312
+
+Sentence: התלמידים [MASK] לכיתה בבוקר.
+Token: עולים | Score: 0.3511
+Token: מגיעים | Score: 0.1650
+Token: חוזרים | Score: 0.0813
+Token: עלו | Score: 0.0716
+Token: הגיעו | Score: 0.0437
+
+Sentence: הספר [MASK] לשוק כל יום.
+Token: יוצא | Score: 0.8278
+Token: שיוצא | Score: 0.0916
+Token: יצא | Score: 0.0408
+Token: שיצא | Score: 0.0075
+Token: היוצא | Score: 0.0054
+
+Sentence: המשפחה [MASK] לכיתה באוקטובר האחרון.
+Token: עלתה | Score: 0.5980
+Token: שבה | Score: 0.0755
+Token: עברה | Score: 0.0571
+Token: הגיעה | Score: 0.0566
+Token: חזרה | Score: 0.0383
+
+Sentence: החתול [MASK] לעבודה בשבוע שעבר.
+Token: חזר | Score: 0.3734
+Token: התקבל | Score: 0.1482
+Token: יצא | Score: 0.0855
+Token: הלך | Score: 0.0470
+Token: הגיע | Score: 0.0281
+
+Sentence: הילדים [MASK] לשדה בחודש האחרון.
+Token: הגיעו | Score: 0.3427
+Token: חזרו | Score: 0.2312
+Token: שבו | Score: 0.0785
+Token: יצאו | Score: 0.0763
+Token: נסעו | Score: 0.0318
+
+Sentence: הילדים [MASK] לשדה בבוקר.
+Token: יצאו | Score: 0.5347
+Token: הגיעו | Score: 0.0951
+Token: נסעו | Score: 0.0642
+Token: שבו | Score: 0.0427
+Token: יוצאים | Score: 0.0325
+
+Sentence: המורה [MASK] לספרייה בשבוע שעבר.
+Token: הגיעה | Score: 0.3217
+Token: חזרה | Score: 0.1064
+Token: עברה | Score: 0.0934
+Token: נשלחה | Score: 0.0532
+Token: נרשמה | Score: 0.0382
+
+Sentence: הבית [MASK] לשוק בערב.
+Token: יוצא | Score: 0.2931
+Token: יצא | Score: 0.2393
+Token: פונה | Score: 0.0657
+Token: נכנס | Score: 0.0529
+Token: ייצא | Score: 0.0412
+
+Sentence: הספר [MASK] לשדה באוקטובר האחרון.
+Token: יצא | Score: 0.3382
+Token: הגיע | Score: 0.2531
+Token: חזר | Score: 0.0667
+Token: נכנס | Score: 0.0552
+Token: הועבר | Score: 0.0541
+
+Sentence: הילדים [MASK] לעבודה כל יום.
+Token: יוצאים | Score: 0.4033
+Token: מגיעים | Score: 0.1174
+Token: חוזרים | Score: 0.0976
+Token: הולכים | Score: 0.0876
+Token: באים | Score: 0.0460
+
+Sentence: האישה [MASK] לשדה בבוקר.
+Token: יצאה | Score: 0.2792
+Token: הגיעה | Score: 0.2261
+Token: יוצאת | Score: 0.0744
+Token: חזרה | Score: 0.0587
+Token: נסעה | Score: 0.0499
+
+Sentence: הספר [MASK] לבית הספר באוקטובר האחרון.
+Token: הגיע | Score: 0.2946
+Token: הועבר | Score: 0.1855
+Token: חזר | Score: 0.1062
+Token: התקבל | Score: 0.0572
+Token: נמסר | Score: 0.0550
+
+Sentence: החתול [MASK] לעבודה בבוקר.
+Token: יוצא | Score: 0.2228
+Token: יצא | Score: 0.0853
+Token: מוכן | Score: 0.0779
+Token: עובד | Score: 0.0607
+Token: הולך | Score: 0.0327
+
+Sentence: החתול [MASK] לבית הכנסת בחודש האחרון.
+Token: הגיע | Score: 0.3601
+Token: נכנס | Score: 0.3508
+Token: חזר | Score: 0.0865
+Token: הלך | Score: 0.0160
+Token: מגיע | Score: 0.0149
+
+Sentence: הילדים [MASK] לשוק בשבוע שעבר.
+Token: יצאו | Score: 0.8097
+Token: שיצאו | Score: 0.0618
+Token: הלכו | Score: 0.0179
+Token: נכנסו | Score: 0.0167
+Token: הגיעו | Score: 0.0105
+
+Sentence: הספר [MASK] לבית הכנסת בערב.
+Token: נכנס | Score: 0.0964
+Token: מועבר | Score: 0.0719
+Token: נמסר | Score: 0.0535
+Token: הועבר | Score: 0.0482
+Token: עובר | Score: 0.0434
+
+Sentence: הילדים [MASK] לכיתה בערב.
+Token: עולים | Score: 0.4000
+Token: חוזרים | Score: 0.1150
+Token: מגיעים | Score: 0.1044
+Token: יעלו | Score: 0.0606
+Token: עלו | Score: 0.0283
+
+Sentence: המשפחה [MASK] לשדה באוקטובר האחרון.
+Token: הגיעה | Score: 0.2645
+Token: שבה | Score: 0.2092
+Token: חזרה | Score: 0.1486
+Token: יצאה | Score: 0.0706
+Token: עברה | Score: 0.0440
+
+Sentence: המשפחה [MASK] לשדה בלילה.
+Token: יצאה | Score: 0.3459
+Token: הגיעה | Score: 0.1283
+Token: יוצאת | Score: 0.1163
+Token: נסעה | Score: 0.0598
+Token: חזרה | Score: 0.0409
+
+Sentence: הבית [MASK] לכיתה בחודש האחרון.
+Token: עלה | Score: 0.2052
+Token: נכנס | Score: 0.2027
+Token: חזר | Score: 0.1266
+Token: עבר | Score: 0.0886
+Token: עולה | Score: 0.0373
+
+Sentence: הבית [MASK] לעבודה באוקטובר האחרון.
+Token: חזר | Score: 0.2412
+Token: התקבל | Score: 0.1293
+Token: יצא | Score: 0.1180
+Token: נכנס | Score: 0.0743
+Token: הלך | Score: 0.0376
+
+Sentence: המשפחה [MASK] לשוק בערב.
+Token: יצאה | Score: 0.5874
+Token: יוצאת | Score: 0.2927
+Token: תצא | Score: 0.0475
+Token: נסעה | Score: 0.0125
+Token: נכנסה | Score: 0.0091
+
+Sentence: המכונית [MASK] לשדה בשבוע שעבר.
+Token: הגיעה | Score: 0.3228
+Token: חזרה | Score: 0.2928
+Token: שבה | Score: 0.0528
+Token: נכנסה | Score: 0.0471
+Token: יצאה | Score: 0.0457
+
+Sentence: התלמידים [MASK] לשדה בבוקר.
+Token: יצאו | Score: 0.4342
+Token: הגיעו | Score: 0.2319
+Token: שבו | Score: 0.0484
+Token: נסעו | Score: 0.0411
+Token: חזרו | Score: 0.0337
+
+Sentence: האיש [MASK] לעבודה כל יום.
+Token: יוצא | Score: 0.3357
+Token: מגיע | Score: 0.1632
+Token: הולך | Score: 0.0553
+Token: בא | Score: 0.0526
+Token: חוזר | Score: 0.0348
+
+Sentence: האיש [MASK] לשדה בחודש האחרון.
+Token: הגיע | Score: 0.3994
+Token: חזר | Score: 0.1485
+Token: נכנס | Score: 0.1127
+Token: שהגיע | Score: 0.0656
+Token: יצא | Score: 0.0608
+
+Sentence: הבית [MASK] לשוק בחודש האחרון.
+Token: יצא | Score: 0.7905
+Token: נכנס | Score: 0.0961
+Token: יוצא | Score: 0.0265
+Token: שיצא | Score: 0.0211
+Token: ייצא | Score: 0.0087
+
+Sentence: המשפחה [MASK] לאוניברסיטה באוקטובר האחרון.
+Token: התקבלה | Score: 0.2641
+Token: שבה | Score: 0.1462
+Token: הצטרפה | Score: 0.0881
+Token: נרשמה | Score: 0.0792
+Token: נכנסה | Score: 0.0736
+
+Sentence: החתול [MASK] לעבודה בערב.
+Token: זמין | Score: 0.1008
+Token: מוכן | Score: 0.0948
+Token: ##ים | Score: 0.0469
+Token: עובד | Score: 0.0407
+Token: נחמד | Score: 0.0350
+
+Sentence: החתול [MASK] לאוניברסיטה בבוקר.
+Token: הולך | Score: 0.1512
+Token: יצא | Score: 0.1025
+Token: הלך | Score: 0.0743
+Token: הגיע | Score: 0.0720
+Token: בדרך | Score: 0.0647
+
+Sentence: הבית [MASK] לשוק באוקטובר האחרון.
+Token: יצא | Score: 0.7883
+Token: נכנס | Score: 0.1060
+Token: שיצא | Score: 0.0209
+Token: פרץ | Score: 0.0116
+Token: יוצא | Score: 0.0100
+
+Sentence: האיש [MASK] לעבודה בערב.
+Token: יצא | Score: 0.1747
+Token: הלך | Score: 0.1375
+Token: התקבל | Score: 0.1007
+Token: חזר | Score: 0.0488
+Token: יוצא | Score: 0.0382
+
+Sentence: האיש [MASK] לשוק בבוקר.
+Token: יצא | Score: 0.5997
+Token: הלך | Score: 0.1363
+Token: יוצא | Score: 0.1067
+Token: נכנס | Score: 0.0389
+Token: הולך | Score: 0.0246
+
+Sentence: הספר [MASK] לשוק באוקטובר האחרון.
+Token: יצא | Score: 0.8824
+Token: שיצא | Score: 0.0605
+Token: נכנס | Score: 0.0106
+Token: יוצא | Score: 0.0070
+Token: הגיע | Score: 0.0064
+
+Sentence: הספר [MASK] לספרייה בלילה.
+Token: ##יה | Score: 0.0798
+Token: מיועד | Score: 0.0740
+Token: שייך | Score: 0.0528
+Token: הראשון | Score: 0.0480
+Token: החדש | Score: 0.0424
+
+Sentence: התלמידים [MASK] לספרייה באוקטובר האחרון.
+Token: חזרו | Score: 0.1762
+Token: התקבלו | Score: 0.1406
+Token: עברו | Score: 0.1388
+Token: הגיעו | Score: 0.1231
+Token: נרשמו | Score: 0.0830
+
+Sentence: הספר [MASK] לשדה בבוקר.
+Token: יוצא | Score: 0.2487
+Token: יצא | Score: 0.1733
+Token: נשלח | Score: 0.1450
+Token: מגיע | Score: 0.0817
+Token: הגיע | Score: 0.0587
+
+Sentence: המשפחה [MASK] לבית הכנסת בחודש האחרון.
+Token: הגיעה | Score: 0.3190
+Token: נכנסה | Score: 0.1659
+Token: שבה | Score: 0.1272
+Token: חזרה | Score: 0.0654
+Token: הלכה | Score: 0.0322
+
+Sentence: המשפחה [MASK] לבית הספר כל יום.
+Token: מגיעה | Score: 0.4459
+Token: חוזרת | Score: 0.1944
+Token: הולכת | Score: 0.0922
+Token: יוצאת | Score: 0.0876
+Token: עוברת | Score: 0.0205
+
+Sentence: המורה [MASK] לשדה באוקטובר האחרון.
+Token: הגיעה | Score: 0.3740
+Token: הגיע | Score: 0.2608
+Token: נשלחה | Score: 0.0523
+Token: חזרה | Score: 0.0405
+Token: יצאה | Score: 0.0338
+
+Sentence: המכונית [MASK] לאוניברסיטה בלילה.
+Token: מגיעה | Score: 0.0902
+Token: עוברת | Score: 0.0547
+Token: יוצאת | Score: 0.0538
+Token: הועברה | Score: 0.0497
+Token: עברה | Score: 0.0469
+
+Sentence: המשפחה [MASK] לאוניברסיטה בערב.
+Token: נסעה | Score: 0.1415
+Token: הגיעה | Score: 0.0963
+Token: התקבלה | Score: 0.0955
+Token: עברה | Score: 0.0917
+Token: נרשמה | Score: 0.0787
+
+Sentence: האישה [MASK] לבית הכנסת בשבוע שעבר.
+Token: הגיעה | Score: 0.3442
+Token: נכנסה | Score: 0.2584
+Token: שבה | Score: 0.0771
+Token: הלכה | Score: 0.0455
+Token: חזרה | Score: 0.0414
+
+Sentence: החתול [MASK] לאוניברסיטה באוקטובר האחרון.
+Token: הגיע | Score: 0.2053
+Token: יצא | Score: 0.1316
+Token: התקבל | Score: 0.1281
+Token: נכנס | Score: 0.1201
+Token: נרשם | Score: 0.0696
+
+Sentence: המורה [MASK] לספרייה כל יום.
+Token: מגיע | Score: 0.2527
+Token: מגיעה | Score: 0.1645
+Token: חוזר | Score: 0.0737
+Token: חוזרת | Score: 0.0647
+Token: נכנס | Score: 0.0373
+
+Sentence: האישה [MASK] לבית הספר בחודש האחרון.
+Token: שבה | Score: 0.2280
+Token: הגיעה | Score: 0.1677
+Token: נכנסה | Score: 0.1129
+Token: חזרה | Score: 0.0997
+Token: התקבלה | Score: 0.0709
+
+Sentence: המכונית [MASK] לשוק בשבוע שעבר.
+Token: יצאה | Score: 0.7402
+Token: שיצאה | Score: 0.1205
+Token: נכנסה | Score: 0.0502
+Token: חזרה | Score: 0.0159
+Token: הגיעה | Score: 0.0140
+
+Sentence: החתול [MASK] לבית הכנסת כל יום.
+Token: נכנס | Score: 0.3411
+Token: מגיע | Score: 0.2481
+Token: הולך | Score: 0.1105
+Token: חוזר | Score: 0.1068
+Token: יוצא | Score: 0.0281
+
+Sentence: המכונית [MASK] לעבודה באוקטובר האחרון.
+Token: חזרה | Score: 0.4733
+Token: התקבלה | Score: 0.1431
+Token: יצאה | Score: 0.0751
+Token: נכנסה | Score: 0.0506
+Token: נשלחה | Score: 0.0443
+
+Sentence: האישה [MASK] לעבודה כל יום.
+Token: יוצאת | Score: 0.3650
+Token: מגיעה | Score: 0.1657
+Token: הולכת | Score: 0.1144
+Token: חוזרת | Score: 0.1000
+Token: באה | Score: 0.0199
+
+Sentence: החתול [MASK] לעבודה בלילה.
+Token: נחמד | Score: 0.0776
+Token: זמין | Score: 0.0748
+Token: אוהב | Score: 0.0700
+Token: מוכן | Score: 0.0681
+Token: ##ים | Score: 0.0597
+
+Sentence: המורה [MASK] לשוק בשבוע שעבר.
+Token: יצאה | Score: 0.8586
+Token: נכנסה | Score: 0.0302
+Token: יצא | Score: 0.0261
+Token: שיצאה | Score: 0.0261
+Token: תצא | Score: 0.0080
+
+Sentence: האישה [MASK] לכיתה באוקטובר האחרון.
+Token: עלתה | Score: 0.5084
+Token: נכנסה | Score: 0.1566
+Token: הגיעה | Score: 0.0615
+Token: שבה | Score: 0.0430
+Token: עולה | Score: 0.0332
+
+Sentence: האישה [MASK] לבית הספר בשבוע שעבר.
+Token: הגיעה | Score: 0.2151
+Token: שבה | Score: 0.1854
+Token: חזרה | Score: 0.1138
+Token: נכנסה | Score: 0.0955
+Token: התקבלה | Score: 0.0837
+
+Sentence: המשפחה [MASK] לבית הכנסת כל יום.
+Token: מגיעה | Score: 0.4019
+Token: הולכת | Score: 0.2080
+Token: חוזרת | Score: 0.1057
+Token: יוצאת | Score: 0.0641
+Token: נכנסת | Score: 0.0318
+
+Sentence: החתול [MASK] לכיתה בחודש האחרון.
+Token: עולה | Score: 0.3189
+Token: עלה | Score: 0.2954
+Token: נכנס | Score: 0.0700
+Token: הגיע | Score: 0.0623
+Token: שעלה | Score: 0.0166
+
+Sentence: המורה [MASK] לכיתה בשבוע שעבר.
+Token: עלתה | Score: 0.5633
+Token: הגיעה | Score: 0.1083
+Token: חזרה | Score: 0.1029
+Token: נכנסה | Score: 0.0506
+Token: שבה | Score: 0.0302
+
+Sentence: האישה [MASK] לבית הכנסת בערב.
+Token: נכנסה | Score: 0.1657
+Token: הגיעה | Score: 0.1435
+Token: הולכת | Score: 0.1091
+Token: באה | Score: 0.0931
+Token: מגיעה | Score: 0.0791
+
+Sentence: האיש [MASK] לשוק באוקטובר האחרון.
+Token: שנכנס | Score: 0.2958
+Token: נכנס | Score: 0.2169
+Token: שיצא | Score: 0.2120
+Token: יצא | Score: 0.1603
+Token: הגיע | Score: 0.0183
+
+Sentence: המכונית [MASK] לכיתה בבוקר.
+Token: עולה | Score: 0.1516
+Token: מגיעה | Score: 0.1369
+Token: עלתה | Score: 0.0819
+Token: הגיעה | Score: 0.0580
+Token: חזרה | Score: 0.0557
+
+Sentence: האיש [MASK] לבית הספר כל יום.
+Token: מגיע | Score: 0.2897
+Token: הולך | Score: 0.1930
+Token: חוזר | Score: 0.1148
+Token: יוצא | Score: 0.0690
+Token: נכנס | Score: 0.0550
+
+Sentence: התלמידים [MASK] לבית הספר בלילה.
+Token: הגיעו | Score: 0.2034
+Token: מגיעים | Score: 0.1705
+Token: יצאו | Score: 0.0972
+Token: חוזרים | Score: 0.0657
+Token: שבו | Score: 0.0506
+
+Sentence: הספר [MASK] לעבודה בבוקר.
+Token: מתאים | Score: 0.2308
+Token: מיועד | Score: 0.1307
+Token: מעולה | Score: 0.0538
+Token: מצוין | Score: 0.0538
+Token: מומלץ | Score: 0.0394
+
+Sentence: האיש [MASK] לספרייה בערב.
+Token: הלך | Score: 0.2029
+Token: נכנס | Score: 0.1509
+Token: הגיע | Score: 0.0966
+Token: הולך | Score: 0.0534
+Token: מגיע | Score: 0.0434
+
+Sentence: הבית [MASK] לשוק כל יום.
+Token: יוצא | Score: 0.8501
+Token: יצא | Score: 0.0332
+Token: נכנס | Score: 0.0277
+Token: שיוצא | Score: 0.0200
+Token: הולך | Score: 0.0096
+
+Sentence: האיש [MASK] לאוניברסיטה באוקטובר האחרון.
+Token: שנכנס | Score: 0.3607
+Token: שהגיע | Score: 0.1629
+Token: נכנס | Score: 0.1484
+Token: הגיע | Score: 0.0824
+Token: שחזר | Score: 0.0296
+
+Sentence: האישה [MASK] לשוק באוקטובר האחרון.
+Token: יצאה | Score: 0.6142
+Token: נכנסה | Score: 0.1785
+Token: שיצאה | Score: 0.1208
+Token: יוצאת | Score: 0.0107
+Token: הוצאה | Score: 0.0098
+
+Sentence: החתול [MASK] לאוניברסיטה כל יום.
+Token: יוצא | Score: 0.1494
+Token: הולך | Score: 0.0888
+Token: מגיע | Score: 0.0824
+Token: יצא | Score: 0.0743
+Token: נכנס | Score: 0.0686
+
+Sentence: המורה [MASK] לבית הכנסת כל יום.
+Token: מגיעה | Score: 0.5185
+Token: נכנסת | Score: 0.0948
+Token: הולכת | Score: 0.0922
+Token: חוזרת | Score: 0.0853
+Token: יוצאת | Score: 0.0311
+
+Sentence: המכונית [MASK] לשוק בערב.
+Token: תצא | Score: 0.4056
+Token: יוצאת | Score: 0.3466
+Token: יצאה | Score: 0.1227
+Token: תגיע | Score: 0.0222
+Token: נכנסה | Score: 0.0097
+
+Sentence: האישה [MASK] לאוניברסיטה בלילה.
+Token: נכנסה | Score: 0.1676
+Token: הולכת | Score: 0.1358
+Token: הגיעה | Score: 0.0734
+Token: נרשמה | Score: 0.0589
+Token: מגיעה | Score: 0.0444
+
+Sentence: האישה [MASK] לאוניברסיטה כל יום.
+Token: הולכת | Score: 0.4361
+Token: מגיעה | Score: 0.1484
+Token: יוצאת | Score: 0.0684
+Token: חוזרת | Score: 0.0539
+Token: נוסעת | Score: 0.0506
+
+Sentence: הספר [MASK] לאוניברסיטה באוקטובר האחרון.
+Token: התקבל | Score: 0.2279
+Token: הגיע | Score: 0.1541
+Token: יצא | Score: 0.0974
+Token: נכנס | Score: 0.0760
+Token: עבר | Score: 0.0556
+
+Sentence: הבית [MASK] לאוניברסיטה בלילה.
+Token: צמוד | Score: 0.4979
+Token: הופך | Score: 0.0322
+Token: יהפוך | Score: 0.0258
+Token: שייך | Score: 0.0256
+Token: מחוץ | Score: 0.0225
+
+Sentence: המכונית [MASK] לשדה באוקטובר האחרון.
+Token: הגיעה | Score: 0.3913
+Token: חזרה | Score: 0.2256
+Token: יצאה | Score: 0.0574
+Token: נכנסה | Score: 0.0573
+Token: שבה | Score: 0.0524
+
+Sentence: התלמידים [MASK] לבית הספר בערב.
+Token: הגיעו | Score: 0.2061
+Token: יצאו | Score: 0.1202
+Token: מגיעים | Score: 0.1042
+Token: חזרו | Score: 0.0764
+Token: שבו | Score: 0.0393
+
+Sentence: המורה [MASK] לבית הכנסת בחודש האחרון.
+Token: הגיעה | Score: 0.4563
+Token: נכנסה | Score: 0.2029
+Token: הגיע | Score: 0.0530
+Token: חזרה | Score: 0.0493
+Token: יצאה | Score: 0.0217
+
+Sentence: המכונית [MASK] לאוניברסיטה כל יום.
+Token: נוסעת | Score: 0.1994
+Token: יוצאת | Score: 0.1762
+Token: מגיעה | Score: 0.1654
+Token: נכנסת | Score: 0.0557
+Token: חוזרת | Score: 0.0351
+
+Sentence: האישה [MASK] לאוניברסיטה בבוקר.
+Token: הגיעה | Score: 0.1154
+Token: התקבלה | Score: 0.0986
+Token: נרשמה | Score: 0.0925
+Token: נכנסה | Score: 0.0806
+Token: נסעה | Score: 0.0805
+
+Sentence: המשפחה [MASK] לעבודה בבוקר.
+Token: יוצאת | Score: 0.2719
+Token: יצאה | Score: 0.1386
+Token: חוזרת | Score: 0.0741
+Token: מגיעה | Score: 0.0669
+Token: הולכת | Score: 0.0510
+
+Sentence: הבית [MASK] לשדה בלילה.
+Token: צמוד | Score: 0.1740
+Token: קרוב | Score: 0.0849
+Token: מחובר | Score: 0.0568
+Token: מחוץ | Score: 0.0503
+Token: הפך | Score: 0.0431
+
+Sentence: המכונית [MASK] לבית הכנסת בשבוע שעבר.
+Token: הגיעה | Score: 0.3823
+Token: נכנסה | Score: 0.2180
+Token: הועברה | Score: 0.0418
+Token: חזרה | Score: 0.0373
+Token: עלתה | Score: 0.0263
+
+Sentence: המשפחה [MASK] לבית הכנסת באוקטובר האחרון.
+Token: הגיעה | Score: 0.2713
+Token: שבה | Score: 0.2080
+Token: נכנסה | Score: 0.1260
+Token: חזרה | Score: 0.0713
+Token: הלכה | Score: 0.0624
+
+Sentence: הילדים [MASK] לכיתה באוקטובר האחרון.
+Token: עלו | Score: 0.4950
+Token: חזרו | Score: 0.1345
+Token: הגיעו | Score: 0.0895
+Token: נכנסו | Score: 0.0566
+Token: שבו | Score: 0.0437
+
+Sentence: הבית [MASK] לעבודה בחודש האחרון.
+Token: חזר | Score: 0.3353
+Token: התקבל | Score: 0.0930
+Token: יצא | Score: 0.0800
+Token: נכנס | Score: 0.0383
+Token: הפסיק | Score: 0.0284
+
+Sentence: הילדים [MASK] לשוק בחודש האחרון.
+Token: יצאו | Score: 0.7822
+Token: שיצאו | Score: 0.0697
+Token: יוצאים | Score: 0.0430
+Token: נכנסו | Score: 0.0172
+Token: באו | Score: 0.0129
+
+Sentence: הילדים [MASK] לשדה בשבוע שעבר.
+Token: הגיעו | Score: 0.2760
+Token: חזרו | Score: 0.2712
+Token: שבו | Score: 0.1381
+Token: יצאו | Score: 0.0783
+Token: נסעו | Score: 0.0415
+
+Sentence: התלמידים [MASK] לאוניברסיטה כל יום.
+Token: מגיעים | Score: 0.4003
+Token: חוזרים | Score: 0.1539
+Token: הולכים | Score: 0.0652
+Token: יוצאים | Score: 0.0649
+Token: נכנסים | Score: 0.0353
+
+Sentence: האיש [MASK] לשדה בבוקר.
+Token: הגיע | Score: 0.2906
+Token: יצא | Score: 0.2520
+Token: הלך | Score: 0.0745
+Token: בא | Score: 0.0701
+Token: חזר | Score: 0.0448
+
+Sentence: האישה [MASK] לבית הכנסת בבוקר.
+Token: הגיעה | Score: 0.1699
+Token: מגיעה | Score: 0.1317
+Token: נכנסה | Score: 0.1293
+Token: באה | Score: 0.0930
+Token: הולכת | Score: 0.0888
+
+Sentence: המכונית [MASK] לשדה בלילה.
+Token: יוצאת | Score: 0.2948
+Token: מגיעה | Score: 0.2699
+Token: תגיע | Score: 0.0597
+Token: נכנסת | Score: 0.0458
+Token: נוסעת | Score: 0.0365
+
+Sentence: המשפחה [MASK] לבית הכנסת בלילה.
+Token: הגיעה | Score: 0.2488
+Token: נכנסה | Score: 0.0954
+Token: הלכה | Score: 0.0542
+Token: יצאה | Score: 0.0525
+Token: מגיעה | Score: 0.0511
+
+Sentence: הילדים [MASK] לספרייה בלילה.
+Token: חוזרים | Score: 0.1932
+Token: הולכים | Score: 0.1314
+Token: עוברים | Score: 0.0998
+Token: מגיעים | Score: 0.0482
+Token: ילכו | Score: 0.0461
+
+Sentence: החתול [MASK] לספרייה בלילה.
+Token: נכנס | Score: 0.1143
+Token: ##ים | Score: 0.1091
+Token: זמין | Score: 0.0893
+Token: הגיע | Score: 0.0491
+Token: נמשך | Score: 0.0369
+
+Sentence: הספר [MASK] לשוק בחודש האחרון.
+Token: יצא | Score: 0.8268
+Token: שיצא | Score: 0.0729
+Token: נכנס | Score: 0.0289
+Token: יוצא | Score: 0.0183
+Token: שיוצא | Score: 0.0082
+
+Sentence: המשפחה [MASK] לבית הכנסת בערב.
+Token: הגיעה | Score: 0.2634
+Token: הלכה | Score: 0.1031
+Token: יצאה | Score: 0.0620
+Token: נכנסה | Score: 0.0608
+Token: באה | Score: 0.0471
+
+Sentence: הבית [MASK] לספרייה בשבוע שעבר.
+Token: עבר | Score: 0.3737
+Token: חזר | Score: 0.0905
+Token: נכנס | Score: 0.0670
+Token: הועבר | Score: 0.0568
+Token: נפתח | Score: 0.0271
+
+Sentence: הבית [MASK] לעבודה בשבוע שעבר.
+Token: התקבל | Score: 0.2578
+Token: חזר | Score: 0.2355
+Token: יצא | Score: 0.0622
+Token: שוחרר | Score: 0.0422
+Token: הלך | Score: 0.0332
+
+Sentence: החתול [MASK] לכיתה בערב.
+Token: עולה | Score: 0.8373
+Token: נכנס | Score: 0.0203
+Token: עלה | Score: 0.0191
+Token: מגיע | Score: 0.0183
+Token: הגיע | Score: 0.0171
+
+Sentence: האישה [MASK] לספרייה באוקטובר האחרון.
+Token: נכנסה | Score: 0.1740
+Token: עברה | Score: 0.1565
+Token: חזרה | Score: 0.1154
+Token: הועברה | Score: 0.1127
+Token: הגיעה | Score: 0.1017
+
+Sentence: הספר [MASK] לבית הספר בלילה.
+Token: נכנס | Score: 0.0919
+Token: מגיע | Score: 0.0725
+Token: מחוץ | Score: 0.0661
+Token: עובר | Score: 0.0512
+Token: יוצא | Score: 0.0465
+
+Sentence: התלמידים [MASK] לספרייה בלילה.
+Token: חוזרים | Score: 0.2025
+Token: מגיעים | Score: 0.1048
+Token: עוברים | Score: 0.0885
+Token: עולים | Score: 0.0757
+Token: הולכים | Score: 0.0343
+
+Sentence: התלמידים [MASK] לבית הספר בבוקר.
+Token: הגיעו | Score: 0.2030
+Token: יצאו | Score: 0.1529
+Token: מגיעים | Score: 0.1521
+Token: חזרו | Score: 0.0550
+Token: חוזרים | Score: 0.0427
+
+Sentence: המכונית [MASK] לספרייה בשבוע שעבר.
+Token: עברה | Score: 0.2796
+Token: הגיעה | Score: 0.1908
+Token: הועברה | Score: 0.1265
+Token: חזרה | Score: 0.1089
+Token: עלתה | Score: 0.0565
+
+Sentence: החתול [MASK] לספרייה בחודש האחרון.
+Token: נכנס | Score: 0.3067
+Token: הגיע | Score: 0.2355
+Token: חזר | Score: 0.1310
+Token: עלה | Score: 0.0222
+Token: חוזר | Score: 0.0221
+
+Sentence: הילדים [MASK] לספרייה כל יום.
+Token: חוזרים | Score: 0.3095
+Token: מגיעים | Score: 0.2030
+Token: הולכים | Score: 0.1538
+Token: נכנסים | Score: 0.0424
+Token: יוצאים | Score: 0.0407
+
+Sentence: הילדים [MASK] לאוניברסיטה בחודש האחרון.
+Token: התקבלו | Score: 0.2850
+Token: נרשמו | Score: 0.1434
+Token: חזרו | Score: 0.1215
+Token: הגיעו | Score: 0.1172
+Token: שבו | Score: 0.0434
+
+Sentence: הילדים [MASK] לשוק כל יום.
+Token: יוצאים | Score: 0.8684
+Token: יצאו | Score: 0.0436
+Token: הולכים | Score: 0.0408
+Token: שיוצאים | Score: 0.0086
+Token: יוצאות | Score: 0.0055
+
+Sentence: המכונית [MASK] לכיתה באוקטובר האחרון.
+Token: חזרה | Score: 0.2158
+Token: הגיעה | Score: 0.1662
+Token: עברה | Score: 0.1325
+Token: נכנסה | Score: 0.0856
+Token: עלתה | Score: 0.0714
+
+Sentence: המשפחה [MASK] לאוניברסיטה בחודש האחרון.
+Token: התקבלה | Score: 0.1954
+Token: נרשמה | Score: 0.1814
+Token: נכנסה | Score: 0.1251
+Token: שבה | Score: 0.0920
+Token: הצטרפה | Score: 0.0869
+
+Sentence: המורה [MASK] לכיתה באוקטובר האחרון.
+Token: עלתה | Score: 0.4493
+Token: הגיעה | Score: 0.1449
+Token: נכנסה | Score: 0.1017
+Token: חזרה | Score: 0.0410
+Token: עברה | Score: 0.0409
+
+Sentence: התלמידים [MASK] לשדה בערב.
+Token: יצאו | Score: 0.4054
+Token: הגיעו | Score: 0.1605
+Token: נסעו | Score: 0.0626
+Token: ירדו | Score: 0.0427
+Token: שבו | Score: 0.0333
+
+Sentence: החתול [MASK] לספרייה בשבוע שעבר.
+Token: הגיע | Score: 0.2463
+Token: חזר | Score: 0.2278
+Token: נכנס | Score: 0.1765
+Token: הלך | Score: 0.0584
+Token: עבר | Score: 0.0433
+
+Sentence: המכונית [MASK] לבית הספר כל יום.
+Token: מגיעה | Score: 0.4824
+Token: נוסעת | Score: 0.0850
+Token: יוצאת | Score: 0.0659
+Token: חוזרת | Score: 0.0622
+Token: שמגיעה | Score: 0.0391
+
+Sentence: האיש [MASK] לשוק בלילה.
+Token: יצא | Score: 0.5280
+Token: יוצא | Score: 0.2079
+Token: נכנס | Score: 0.0837
+Token: הלך | Score: 0.0644
+Token: הולך | Score: 0.0379
+
+Sentence: החתול [MASK] לבית הספר באוקטובר האחרון.
+Token: הגיע | Score: 0.3824
+Token: נכנס | Score: 0.0843
+Token: חזר | Score: 0.0671
+Token: נלקח | Score: 0.0515
+Token: הגיעה | Score: 0.0404
+
+Sentence: התלמידים [MASK] לבית הספר בשבוע שעבר.
+Token: הגיעו | Score: 0.4002
+Token: שבו | Score: 0.1829
+Token: חזרו | Score: 0.1374
+Token: נכנסו | Score: 0.0369
+Token: שהגיעו | Score: 0.0335
+
+Sentence: האישה [MASK] לעבודה בלילה.
+Token: יוצאת | Score: 0.2133
+Token: מגיעה | Score: 0.1489
+Token: חוזרת | Score: 0.0735
+Token: הולכת | Score: 0.0522
+Token: מתקבלת | Score: 0.0325
+
+Sentence: המכונית [MASK] לבית הספר בחודש האחרון.
+Token: הגיעה | Score: 0.2743
+Token: חזרה | Score: 0.1598
+Token: נכנסה | Score: 0.0823
+Token: שיצאה | Score: 0.0520
+Token: נשלחה | Score: 0.0517
+
+Sentence: התלמידים [MASK] לשוק בערב.
+Token: יצאו | Score: 0.8519
+Token: יוצאים | Score: 0.1052
+Token: ויצאו | Score: 0.0050
+Token: ילכו | Score: 0.0046
+Token: נסעו | Score: 0.0026
+
+Sentence: המורה [MASK] לבית הספר בחודש האחרון.
+Token: הגיעה | Score: 0.4066
+Token: נכנסה | Score: 0.1353
+Token: חזרה | Score: 0.1254
+Token: שבה | Score: 0.0559
+Token: נשלחה | Score: 0.0350
+
+Sentence: המכונית [MASK] לכיתה בחודש האחרון.
+Token: עלתה | Score: 0.2382
+Token: חזרה | Score: 0.1570
+Token: הגיעה | Score: 0.1398
+Token: עברה | Score: 0.0843
+Token: נכנסה | Score: 0.0749
+
+Sentence: הילדים [MASK] לאוניברסיטה בבוקר.
+Token: יצאו | Score: 0.1148
+Token: מגיעים | Score: 0.0920
+Token: הולכים | Score: 0.0719
+Token: ילכו | Score: 0.0690
+Token: הגיעו | Score: 0.0626
+
+Sentence: החתול [MASK] לבית הספר בחודש האחרון.
+Token: הגיע | Score: 0.4311
+Token: נכנס | Score: 0.1399
+Token: חזר | Score: 0.0897
+Token: יצא | Score: 0.0393
+Token: מגיע | Score: 0.0196
+
+Sentence: הבית [MASK] לעבודה בלילה.
+Token: האידיאלי | Score: 0.2112
+Token: מתאים | Score: 0.1985
+Token: אידיאלי | Score: 0.0895
+Token: נוח | Score: 0.0601
+Token: משמש | Score: 0.0427
+
+Sentence: הילדים [MASK] לבית הכנסת בשבוע שעבר.
+Token: הגיעו | Score: 0.4126
+Token: שבו | Score: 0.1249
+Token: נכנסו | Score: 0.1154
+Token: חזרו | Score: 0.0539
+Token: הלכו | Score: 0.0350
+
+Sentence: התלמידים [MASK] לספרייה כל יום.
+Token: מגיעים | Score: 0.3373
+Token: חוזרים | Score: 0.2787
+Token: הולכים | Score: 0.0662
+Token: נכנסים | Score: 0.0533
+Token: עוברים | Score: 0.0281
+
+Sentence: התלמידים [MASK] לשדה בחודש האחרון.
+Token: הגיעו | Score: 0.4265
+Token: חזרו | Score: 0.1155
+Token: יצאו | Score: 0.0761
+Token: שבו | Score: 0.0480
+Token: נכנסו | Score: 0.0414
+
+Sentence: האיש [MASK] לספרייה בבוקר.
+Token: הלך | Score: 0.1496
+Token: נכנס | Score: 0.1267
+Token: הגיע | Score: 0.1062
+Token: מגיע | Score: 0.0728
+Token: הולך | Score: 0.0666
+
+Sentence: המכונית [MASK] לבית הכנסת כל יום.
+Token: מגיעה | Score: 0.5430
+Token: נכנסת | Score: 0.0790
+Token: נוסעת | Score: 0.0655
+Token: יוצאת | Score: 0.0471
+Token: חוזרת | Score: 0.0469
+
+Sentence: הבית [MASK] לספרייה כל יום.
+Token: פתוח | Score: 0.2786
+Token: הופך | Score: 0.0657
+Token: מחובר | Score: 0.0537
+Token: צמוד | Score: 0.0480
+Token: משמש | Score: 0.0445
+
+Sentence: המשפחה [MASK] לכיתה בחודש האחרון.
+Token: עלתה | Score: 0.5755
+Token: הגיעה | Score: 0.0644
+Token: נכנסה | Score: 0.0483
+Token: שבה | Score: 0.0428
+Token: עברה | Score: 0.0405
+
+Sentence: התלמידים [MASK] לבית הכנסת בערב.
+Token: הגיעו | Score: 0.2979
+Token: מגיעים | Score: 0.1081
+Token: נכנסו | Score: 0.0815
+Token: יצאו | Score: 0.0687
+Token: עולים | Score: 0.0255
+
+Sentence: הילדים [MASK] לשדה באוקטובר האחרון.
+Token: הגיעו | Score: 0.3075
+Token: שבו | Score: 0.1604
+Token: חזרו | Score: 0.1552
+Token: נשלחו | Score: 0.0758
+Token: יצאו | Score: 0.0704
+
+Sentence: החתול [MASK] לבית הכנסת בלילה.
+Token: נכנס | Score: 0.2982
+Token: מגיע | Score: 0.1803
+Token: הגיע | Score: 0.1495
+Token: הולך | Score: 0.0598
+Token: יגיע | Score: 0.0493
+
+Sentence: הבית [MASK] לספרייה באוקטובר האחרון.
+Token: עבר | Score: 0.3599
+Token: נכנס | Score: 0.1423
+Token: חזר | Score: 0.0797
+Token: הראשון | Score: 0.0317
+Token: הועבר | Score: 0.0293
+
+Sentence: האיש [MASK] לכיתה באוקטובר האחרון.
+Token: שעלה | Score: 0.3581
+Token: שנכנס | Score: 0.1320
+Token: עלה | Score: 0.1195
+Token: שהגיע | Score: 0.1164
+Token: נכנס | Score: 0.0756
+
+Sentence: הילדים [MASK] לכיתה בשבוע שעבר.
+Token: עלו | Score: 0.3990
+Token: חזרו | Score: 0.2490
+Token: הגיעו | Score: 0.0721
+Token: נכנסו | Score: 0.0535
+Token: שעלו | Score: 0.0470
+
+Sentence: האיש [MASK] לעבודה בחודש האחרון.
+Token: התקבל | Score: 0.6603
+Token: חזר | Score: 0.0613
+Token: הגיע | Score: 0.0328
+Token: שב | Score: 0.0300
+Token: נכנס | Score: 0.0235
+
+Sentence: החתול [MASK] לכיתה בשבוע שעבר.
+Token: עלה | Score: 0.5011
+Token: הגיע | Score: 0.0690
+Token: נכנס | Score: 0.0631
+Token: חזר | Score: 0.0541
+Token: עלתה | Score: 0.0506
+
+Sentence: האיש [MASK] לכיתה בשבוע שעבר.
+Token: שעלה | Score: 0.3978
+Token: עלה | Score: 0.3251
+Token: הגיע | Score: 0.0513
+Token: שהגיע | Score: 0.0510
+Token: נכנס | Score: 0.0296
+
+Sentence: הבית [MASK] לכיתה כל יום.
+Token: חוזר | Score: 0.1852
+Token: נכנס | Score: 0.0941
+Token: הופך | Score: 0.0787
+Token: מחובר | Score: 0.0371
+Token: מגיע | Score: 0.0330
+
+Sentence: הילדים [MASK] לשדה בערב.
+Token: יצאו | Score: 0.5267
+Token: נסעו | Score: 0.0742
+Token: יוצאים | Score: 0.0565
+Token: הגיעו | Score: 0.0444
+Token: ירדו | Score: 0.0282
+
+Sentence: החתול [MASK] לשדה בערב.
+Token: יצא | Score: 0.1996
+Token: יוצא | Score: 0.1824
+Token: הגיע | Score: 0.1331
+Token: מגיע | Score: 0.1309
+Token: הלך | Score: 0.0288
+
+Sentence: המורה [MASK] לבית הכנסת בלילה.
+Token: מגיעה | Score: 0.2752
+Token: נכנסת | Score: 0.1016
+Token: הגיעה | Score: 0.0618
+Token: מגיע | Score: 0.0551
+Token: חוזרת | Score: 0.0543
+
+Sentence: המשפחה [MASK] לכיתה בשבוע שעבר.
+Token: עלתה | Score: 0.6957
+Token: שבה | Score: 0.0550
+Token: הגיעה | Score: 0.0419
+Token: חזרה | Score: 0.0394
+Token: נכנסה | Score: 0.0260
+
+Sentence: המכונית [MASK] לבית הכנסת בחודש האחרון.
+Token: הגיעה | Score: 0.3542
+Token: נכנסה | Score: 0.2273
+Token: חזרה | Score: 0.0682
+Token: הועברה | Score: 0.0379
+Token: שבה | Score: 0.0255
+
+Sentence: האיש [MASK] לספרייה כל יום.
+Token: מגיע | Score: 0.2560
+Token: נכנס | Score: 0.1238
+Token: הולך | Score: 0.1061
+Token: מתקשר | Score: 0.0620
+Token: חוזר | Score: 0.0593
+
+Sentence: החתול [MASK] לשוק כל יום.
+Token: יוצא | Score: 0.8012
+Token: יצא | Score: 0.0853
+Token: נכנס | Score: 0.0245
+Token: שיוצא | Score: 0.0237
+Token: הולך | Score: 0.0196
+
+Sentence: האישה [MASK] לכיתה בשבוע שעבר.
+Token: עלתה | Score: 0.6544
+Token: נכנסה | Score: 0.0803
+Token: הגיעה | Score: 0.0533
+Token: עולה | Score: 0.0437
+Token: שבה | Score: 0.0269
+
+Sentence: המשפחה [MASK] לשוק בבוקר.
+Token: יצאה | Score: 0.7141
+Token: יוצאת | Score: 0.1843
+Token: תצא | Score: 0.0215
+Token: נסעה | Score: 0.0177
+Token: נכנסה | Score: 0.0087
+
+Sentence: המשפחה [MASK] לספרייה בבוקר.
+Token: חוזרת | Score: 0.1637
+Token: עברה | Score: 0.1051
+Token: הולכת | Score: 0.0762
+Token: חזרה | Score: 0.0731
+Token: הגיעה | Score: 0.0557
+
+Sentence: החתול [MASK] לבית הספר בשבוע שעבר.
+Token: הגיע | Score: 0.4042
+Token: חזר | Score: 0.1639
+Token: נכנס | Score: 0.0962
+Token: הלך | Score: 0.0446
+Token: יצא | Score: 0.0332
+
+Sentence: התלמידים [MASK] לבית הספר באוקטובר האחרון.
+Token: שבו | Score: 0.3334
+Token: הגיעו | Score: 0.2007
+Token: חזרו | Score: 0.1071
+Token: נכנסו | Score: 0.0476
+Token: התקבלו | Score: 0.0416
+
+Sentence: המשפחה [MASK] לשוק באוקטובר האחרון.
+Token: יצאה | Score: 0.8074
+Token: נכנסה | Score: 0.0872
+Token: יוצאת | Score: 0.0224
+Token: שיצאה | Score: 0.0092
+Token: חזרה | Score: 0.0084
+
+Sentence: הספר [MASK] לבית הכנסת בבוקר.
+Token: נכנס | Score: 0.1187
+Token: מגיע | Score: 0.0677
+Token: הגיע | Score: 0.0550
+Token: יוצא | Score: 0.0485
+Token: נמסר | Score: 0.0442
+
+Sentence: האישה [MASK] לאוניברסיטה בערב.
+Token: נכנסה | Score: 0.1057
+Token: נרשמה | Score: 0.1052
+Token: התקבלה | Score: 0.0840
+Token: נסעה | Score: 0.0739
+Token: הגיעה | Score: 0.0670
+
+Sentence: המכונית [MASK] לאוניברסיטה באוקטובר האחרון.
+Token: הועברה | Score: 0.1556
+Token: נכנסה | Score: 0.1205
+Token: הגיעה | Score: 0.1099
+Token: עברה | Score: 0.1040
+Token: נמכרה | Score: 0.1038
+
+Sentence: האישה [MASK] לשוק בחודש האחרון.
+Token: יצאה | Score: 0.6088
+Token: נכנסה | Score: 0.1554
+Token: שיצאה | Score: 0.1363
+Token: יוצאת | Score: 0.0233
+Token: הוצאה | Score: 0.0077
+
+Sentence: האישה [MASK] לבית הכנסת באוקטובר האחרון.
+Token: נכנסה | Score: 0.3244
+Token: הגיעה | Score: 0.2635
+Token: שבה | Score: 0.0910
+Token: חזרה | Score: 0.0467
+Token: הלכה | Score: 0.0365
+
+Sentence: התלמידים [MASK] לשוק בבוקר.
+Token: יצאו | Score: 0.8657
+Token: יוצאים | Score: 0.0913
+Token: ויצאו | Score: 0.0061
+Token: נסעו | Score: 0.0033
+Token: שיצאו | Score: 0.0032
+
+Sentence: האישה [MASK] לספרייה בערב.
+Token: הולכת | Score: 0.1985
+Token: חוזרת | Score: 0.1465
+Token: עוברת | Score: 0.1079
+Token: מגיעה | Score: 0.0729
+Token: נוסעת | Score: 0.0326
+
+Sentence: המשפחה [MASK] לעבודה באוקטובר האחרון.
+Token: התקבלה | Score: 0.5539
+Token: שבה | Score: 0.1727
+Token: חזרה | Score: 0.0669
+Token: נשלחה | Score: 0.0312
+Token: הגיעה | Score: 0.0251
+
+Sentence: המשפחה [MASK] לאוניברסיטה בבוקר.
+Token: הגיעה | Score: 0.1478
+Token: התקבלה | Score: 0.1227
+Token: נסעה | Score: 0.1210
+Token: יצאה | Score: 0.0785
+Token: עברה | Score: 0.0618
+
+Sentence: המורה [MASK] לבית הספר באוקטובר האחרון.
+Token: הגיעה | Score: 0.4331
+Token: נכנסה | Score: 0.1069
+Token: חזרה | Score: 0.0944
+Token: נשלחה | Score: 0.0726
+Token: שבה | Score: 0.0555
+
+Sentence: המכונית [MASK] לשדה בחודש האחרון.
+Token: הגיעה | Score: 0.3714
+Token: חזרה | Score: 0.2556
+Token: נכנסה | Score: 0.0746
+Token: יצאה | Score: 0.0442
+Token: שבה | Score: 0.0372
+
+Sentence: הבית [MASK] לכיתה באוקטובר האחרון.
+Token: נכנס | Score: 0.1123
+Token: הראשון | Score: 0.0900
+Token: השני | Score: 0.0898
+Token: עלה | Score: 0.0897
+Token: עבר | Score: 0.0795
+
+Sentence: הספר [MASK] לשדה בלילה.
+Token: יוצא | Score: 0.1327
+Token: נכנס | Score: 0.0828
+Token: יצא | Score: 0.0597
+Token: נשלח | Score: 0.0474
+Token: מכוון | Score: 0.0361
+
+Sentence: הילדים [MASK] לבית הספר בבוקר.
+Token: יצאו | Score: 0.1369
+Token: מגיעים | Score: 0.1265
+Token: חוזרים | Score: 0.0958
+Token: הגיעו | Score: 0.0886
+Token: חזרו | Score: 0.0628
+
+Sentence: הילדים [MASK] לשדה בלילה.
+Token: יצאו | Score: 0.5028
+Token: יוצאים | Score: 0.1552
+Token: הגיעו | Score: 0.0355
+Token: מגיעים | Score: 0.0338
+Token: נסעו | Score: 0.0276
+
+Sentence: האיש [MASK] לשוק בחודש האחרון.
+Token: שיצא | Score: 0.2847
+Token: שנכנס | Score: 0.2415
+Token: יצא | Score: 0.2158
+Token: נכנס | Score: 0.1422
+Token: שיוצא | Score: 0.0204
+
+Sentence: האיש [MASK] לבית הספר בשבוע שעבר.
+Token: שהגיע | Score: 0.1815
+Token: הגיע | Score: 0.1767
+Token: שנכנס | Score: 0.1308
+Token: נכנס | Score: 0.1147
+Token: חזר | Score: 0.0694
+
+Sentence: הבית [MASK] לספרייה בערב.
+Token: פתוח | Score: 0.1369
+Token: עובר | Score: 0.0718
+Token: עבר | Score: 0.0529
+Token: סגור | Score: 0.0440
+Token: שייך | Score: 0.0340
+
+Sentence: הספר [MASK] לאוניברסיטה בערב.
+Token: מועבר | Score: 0.0672
+Token: עובר | Score: 0.0475
+Token: התקבל | Score: 0.0443
+Token: נכנס | Score: 0.0384
+Token: יוצא | Score: 0.0341
+
+Sentence: הספר [MASK] לספרייה כל יום.
+Token: נכנס | Score: 0.1423
+Token: ##יה | Score: 0.0545
+Token: מגיע | Score: 0.0473
+Token: חוזר | Score: 0.0467
+Token: מוכן | Score: 0.0432
+
+Sentence: החתול [MASK] לעבודה באוקטובר האחרון.
+Token: בדרך | Score: 0.0875
+Token: חזר | Score: 0.0866
+Token: יצא | Score: 0.0766
+Token: זמין | Score: 0.0478
+Token: מגיע | Score: 0.0461
+
+Sentence: האישה [MASK] לבית הכנסת בלילה.
+Token: הולכת | Score: 0.1611
+Token: מגיעה | Score: 0.1551
+Token: נכנסה | Score: 0.1258
+Token: נכנסת | Score: 0.0893
+Token: באה | Score: 0.0880
+
+Sentence: האיש [MASK] לשוק בערב.
+Token: יצא | Score: 0.6016
+Token: הלך | Score: 0.1308
+Token: יוצא | Score: 0.0973
+Token: נכנס | Score: 0.0512
+Token: הולך | Score: 0.0274
+
+Sentence: התלמידים [MASK] לאוניברסיטה באוקטובר האחרון.
+Token: התקבלו | Score: 0.3591
+Token: שבו | Score: 0.1024
+Token: נרשמו | Score: 0.1012
+Token: הגיעו | Score: 0.0793
+Token: חזרו | Score: 0.0638
+
+Sentence: החתול [MASK] לשדה בחודש האחרון.
+Token: הגיע | Score: 0.3692
+Token: יצא | Score: 0.2146
+Token: נכנס | Score: 0.1295
+Token: חזר | Score: 0.0738
+Token: הלך | Score: 0.0357
+
+Sentence: הילדים [MASK] לבית הכנסת באוקטובר האחרון.
+Token: הגיעו | Score: 0.2870
+Token: שבו | Score: 0.1899
+Token: נכנסו | Score: 0.1289
+Token: חזרו | Score: 0.0662
+Token: הובאו | Score: 0.0328
+
+Sentence: החתול [MASK] לשוק בלילה.
+Token: יצא | Score: 0.6426
+Token: יוצא | Score: 0.2433
+Token: ייצא | Score: 0.0305
+Token: הולך | Score: 0.0203
+Token: נכנס | Score: 0.0173
+
+Sentence: הבית [MASK] לבית הספר באוקטובר האחרון.
+Token: עבר | Score: 0.1698
+Token: נכנס | Score: 0.1033
+Token: חזר | Score: 0.0836
+Token: הועבר | Score: 0.0637
+Token: הפך | Score: 0.0475
+
+Sentence: האיש [MASK] לבית הכנסת בחודש האחרון.
+Token: נכנס | Score: 0.3391
+Token: הגיע | Score: 0.1689
+Token: שנכנס | Score: 0.1555
+Token: שהגיע | Score: 0.1191
+Token: פרץ | Score: 0.0349
+
+Sentence: המכונית [MASK] לספרייה בבוקר.
+Token: מגיעה | Score: 0.1757
+Token: עוברת | Score: 0.1168
+Token: חזרה | Score: 0.0649
+Token: נוסעת | Score: 0.0592
+Token: חוזרת | Score: 0.0568
+
+Sentence: המשפחה [MASK] לשדה בערב.
+Token: יצאה | Score: 0.3159
+Token: הגיעה | Score: 0.1231
+Token: נסעה | Score: 0.0975
+Token: יוצאת | Score: 0.0743
+Token: חזרה | Score: 0.0684
+
+Sentence: הספר [MASK] לאוניברסיטה בבוקר.
+Token: נכנס | Score: 0.0678
+Token: יוצא | Score: 0.0605
+Token: עולה | Score: 0.0507
+Token: התקבל | Score: 0.0465
+Token: יצא | Score: 0.0449
+
+Sentence: המשפחה [MASK] לשוק בלילה.
+Token: יצאה | Score: 0.4919
+Token: יוצאת | Score: 0.4025
+Token: תצא | Score: 0.0295
+Token: הולכת | Score: 0.0118
+Token: נכנסה | Score: 0.0111
+
+Sentence: החתול [MASK] לכיתה באוקטובר האחרון.
+Token: עלה | Score: 0.2350
+Token: נכנס | Score: 0.0997
+Token: עולה | Score: 0.0861
+Token: הגיע | Score: 0.0852
+Token: חזר | Score: 0.0557
+
+Sentence: התלמידים [MASK] לעבודה באוקטובר האחרון.
+Token: התקבלו | Score: 0.5736
+Token: יצאו | Score: 0.0621
+Token: שבו | Score: 0.0524
+Token: נשלחו | Score: 0.0512
+Token: חזרו | Score: 0.0409
+
+Sentence: האישה [MASK] לבית הכנסת בחודש האחרון.
+Token: הגיעה | Score: 0.3363
+Token: נכנסה | Score: 0.2604
+Token: שבה | Score: 0.1017
+Token: חזרה | Score: 0.0479
+Token: הלכה | Score: 0.0253
+
+Sentence: הספר [MASK] לאוניברסיטה בלילה.
+Token: נכנס | Score: 0.1081
+Token: ייכנס | Score: 0.0534
+Token: יצא | Score: 0.0358
+Token: יוצא | Score: 0.0320
+Token: שייך | Score: 0.0279
+
+Sentence: המורה [MASK] לבית הספר בשבוע שעבר.
+Token: הגיעה | Score: 0.5242
+Token: חזרה | Score: 0.1482
+Token: נכנסה | Score: 0.0645
+Token: שבה | Score: 0.0381
+Token: נשלחה | Score: 0.0291
+
+Sentence: הילדים [MASK] לספרייה באוקטובר האחרון.
+Token: חזרו | Score: 0.3025
+Token: הגיעו | Score: 0.1702
+Token: עברו | Score: 0.0979
+Token: שבו | Score: 0.0648
+Token: נכנסו | Score: 0.0645
+
+Sentence: האיש [MASK] לשדה באוקטובר האחרון.
+Token: הגיע | Score: 0.4251
+Token: נכנס | Score: 0.1198
+Token: חזר | Score: 0.1153
+Token: יצא | Score: 0.0503
+Token: שהגיע | Score: 0.0475
+
+Sentence: המורה [MASK] לשדה בשבוע שעבר.
+Token: הגיעה | Score: 0.4447
+Token: חזרה | Score: 0.2453
+Token: יצאה | Score: 0.0567
+Token: נסעה | Score: 0.0480
+Token: נכנסה | Score: 0.0309
+
+Sentence: האיש [MASK] לשדה בשבוע שעבר.
+Token: הגיע | Score: 0.3571
+Token: חזר | Score: 0.1767
+Token: שהגיע | Score: 0.0790
+Token: נכנס | Score: 0.0577
+Token: יצא | Score: 0.0541
+
+Sentence: החתול [MASK] לשוק בשבוע שעבר.
+Token: יצא | Score: 0.8825
+Token: שיצא | Score: 0.0528
+Token: נכנס | Score: 0.0146
+Token: יוצא | Score: 0.0093
+Token: ייצא | Score: 0.0057
+
+Sentence: המשפחה [MASK] לשדה כל יום.
+Token: יוצאת | Score: 0.4861
+Token: מגיעה | Score: 0.1636
+Token: חוזרת | Score: 0.1250
+Token: נוסעת | Score: 0.0394
+Token: הולכת | Score: 0.0381
+
+Sentence: האיש [MASK] לבית הכנסת באוקטובר האחרון.
+Token: נכנס | Score: 0.3888
+Token: הגיע | Score: 0.1546
+Token: שנכנס | Score: 0.1356
+Token: הובא | Score: 0.0574
+Token: שהגיע | Score: 0.0573
+
+Sentence: האישה [MASK] לעבודה בבוקר.
+Token: יוצאת | Score: 0.2304
+Token: מגיעה | Score: 0.1755
+Token: חוזרת | Score: 0.0965
+Token: הולכת | Score: 0.0727
+Token: יצאה | Score: 0.0490
+
+Sentence: האישה [MASK] לבית הספר בערב.
+Token: מגיעה | Score: 0.1161
+Token: חוזרת | Score: 0.1143
+Token: הולכת | Score: 0.1083
+Token: הגיעה | Score: 0.0676
+Token: באה | Score: 0.0585
+
+Sentence: הספר [MASK] לעבודה בשבוע שעבר.
+Token: התקבל | Score: 0.5953
+Token: חזר | Score: 0.0845
+Token: יצא | Score: 0.0654
+Token: הועבר | Score: 0.0406
+Token: שוחרר | Score: 0.0176
+
+Sentence: המכונית [MASK] לעבודה בשבוע שעבר.
+Token: חזרה | Score: 0.4270
+Token: התקבלה | Score: 0.2268
+Token: יצאה | Score: 0.0551
+Token: נכנסה | Score: 0.0498
+Token: נשלחה | Score: 0.0449
+
+Sentence: התלמידים [MASK] לכיתה בערב.
+Token: עולים | Score: 0.5396
+Token: מגיעים | Score: 0.0876
+Token: עלו | Score: 0.0789
+Token: חוזרים | Score: 0.0574
+Token: יעלו | Score: 0.0305
+
+Sentence: הבית [MASK] לשדה כל יום.
+Token: מחוץ | Score: 0.1452
+Token: יוצא | Score: 0.1131
+Token: חוזר | Score: 0.0878
+Token: מחובר | Score: 0.0663
+Token: הופך | Score: 0.0588
+
+Sentence: המורה [MASK] לספרייה בחודש האחרון.
+Token: הגיע | Score: 0.1881
+Token: הגיעה | Score: 0.1153
+Token: עברה | Score: 0.0616
+Token: נכנס | Score: 0.0609
+Token: עבר | Score: 0.0499
+
+Sentence: התלמידים [MASK] לעבודה בחודש האחרון.
+Token: התקבלו | Score: 0.4482
+Token: יצאו | Score: 0.1129
+Token: חזרו | Score: 0.0654
+Token: נשלחו | Score: 0.0420
+Token: נרשמו | Score: 0.0406
+
+Sentence: החתול [MASK] לבית הכנסת בבוקר.
+Token: מגיע | Score: 0.3173
+Token: נכנס | Score: 0.1500
+Token: הגיע | Score: 0.1155
+Token: הולך | Score: 0.0774
+Token: יגיע | Score: 0.0510
+
+Sentence: האישה [MASK] לשדה בלילה.
+Token: יוצאת | Score: 0.2684
+Token: יצאה | Score: 0.1842
+Token: הגיעה | Score: 0.0658
+Token: הולכת | Score: 0.0563
+Token: מגיעה | Score: 0.0522
+
+Sentence: הבית [MASK] לכיתה בבוקר.
+Token: צמוד | Score: 0.0931
+Token: עובר | Score: 0.0745
+Token: נכנס | Score: 0.0672
+Token: שייך | Score: 0.0602
+Token: הופך | Score: 0.0377
+
+Sentence: המכונית [MASK] לאוניברסיטה בבוקר.
+Token: מגיעה | Score: 0.0722
+Token: עברה | Score: 0.0630
+Token: נוסעת | Score: 0.0565
+Token: הגיעה | Score: 0.0563
+Token: יוצאת | Score: 0.0529
+
+Sentence: הילדים [MASK] לעבודה בלילה.
+Token: יוצאים | Score: 0.2834
+Token: יצאו | Score: 0.1336
+Token: חוזרים | Score: 0.0881
+Token: מגיעים | Score: 0.0692
+Token: הולכים | Score: 0.0625
+
+Sentence: הספר [MASK] לכיתה באוקטובר האחרון.
+Token: עלה | Score: 0.5366
+Token: הגיע | Score: 0.1170
+Token: נכנס | Score: 0.0700
+Token: עבר | Score: 0.0476
+Token: חזר | Score: 0.0410
+
+Sentence: הספר [MASK] לעבודה בערב.
+Token: מתאים | Score: 0.3153
+Token: מיועד | Score: 0.1724
+Token: מצוין | Score: 0.0395
+Token: מומלץ | Score: 0.0341
+Token: מצויין | Score: 0.0320
+
+Sentence: התלמידים [MASK] לכיתה כל יום.
+Token: מגיעים | Score: 0.3027
+Token: חוזרים | Score: 0.2533
+Token: עולים | Score: 0.1392
+Token: נכנסים | Score: 0.0661
+Token: מצטרפים | Score: 0.0513
+
+Sentence: האישה [MASK] לשוק בשבוע שעבר.
+Token: יצאה | Score: 0.6472
+Token: שיצאה | Score: 0.1575
+Token: נכנסה | Score: 0.1229
+Token: הוצאה | Score: 0.0101
+Token: חזרה | Score: 0.0064
+
+Sentence: המורה [MASK] לשוק בלילה.
+Token: יצאה | Score: 0.2432
+Token: יוצאת | Score: 0.2341
+Token: יצא | Score: 0.2260
+Token: תצא | Score: 0.0984
+Token: יוצא | Score: 0.0897
+
+Sentence: הילדים [MASK] לאוניברסיטה כל יום.
+Token: הולכים | Score: 0.2858
+Token: מגיעים | Score: 0.2010
+Token: חוזרים | Score: 0.1363
+Token: יוצאים | Score: 0.1245
+Token: באים | Score: 0.0236
+
+Sentence: האישה [MASK] לעבודה בערב.
+Token: יוצאת | Score: 0.1877
+Token: מגיעה | Score: 0.1168
+Token: חוזרת | Score: 0.1129
+Token: הולכת | Score: 0.0751
+Token: מתקבלת | Score: 0.0653
+
+Sentence: הבית [MASK] לבית הספר בערב.
+Token: מחוץ | Score: 0.1834
+Token: הסמוך | Score: 0.1116
+Token: שייך | Score: 0.0493
+Token: הקרוב | Score: 0.0456
+Token: הצמוד | Score: 0.0302
+
+Sentence: האישה [MASK] לכיתה בחודש האחרון.
+Token: עלתה | Score: 0.5177
+Token: נכנסה | Score: 0.1311
+Token: הגיעה | Score: 0.0821
+Token: עולה | Score: 0.0538
+Token: שבה | Score: 0.0328
+
+Sentence: החתול [MASK] לבית הכנסת בערב.
+Token: מגיע | Score: 0.2637
+Token: נכנס | Score: 0.1767
+Token: הגיע | Score: 0.1327
+Token: הולך | Score: 0.0874
+Token: חוזר | Score: 0.0473
+
+Sentence: האישה [MASK] לשדה בחודש האחרון.
+Token: הגיעה | Score: 0.2626
+Token: חזרה | Score: 0.1552
+Token: שבה | Score: 0.1370
+Token: יצאה | Score: 0.1022
+Token: נכנסה | Score: 0.0895
+
+Sentence: האישה [MASK] לספרייה בבוקר.
+Token: הולכת | Score: 0.2119
+Token: מגיעה | Score: 0.1622
+Token: חוזרת | Score: 0.1345
+Token: עוברת | Score: 0.0607
+Token: נכנסת | Score: 0.0482
+
+Sentence: החתול [MASK] לכיתה בבוקר.
+Token: עולה | Score: 0.5122
+Token: נכנס | Score: 0.1044
+Token: מגיע | Score: 0.0713
+Token: הגיע | Score: 0.0616
+Token: חוזר | Score: 0.0457
+
+Sentence: הספר [MASK] לבית הספר בערב.
+Token: מגיע | Score: 0.0774
+Token: חוזר | Score: 0.0626
+Token: עובר | Score: 0.0590
+Token: יוצא | Score: 0.0376
+Token: נכנס | Score: 0.0343
+
+Sentence: הבית [MASK] לאוניברסיטה בערב.
+Token: צמוד | Score: 0.1182
+Token: שייך | Score: 0.0976
+Token: עבר | Score: 0.0789
+Token: עובר | Score: 0.0622
+Token: הפך | Score: 0.0505
+
+Sentence: הילדים [MASK] לבית הספר באוקטובר האחרון.
+Token: שבו | Score: 0.2850
+Token: הגיעו | Score: 0.1806
+Token: חזרו | Score: 0.1724
+Token: התקבלו | Score: 0.0546
+Token: נכנסו | Score: 0.0436
+
+Sentence: התלמידים [MASK] לעבודה כל יום.
+Token: יוצאים | Score: 0.3320
+Token: חוזרים | Score: 0.1005
+Token: מגיעים | Score: 0.0875
+Token: מוכנים | Score: 0.0549
+Token: באים | Score: 0.0315
+
+Sentence: התלמידים [MASK] לשוק בחודש האחרון.
+Token: יצאו | Score: 0.7913
+Token: שיצאו | Score: 0.0497
+Token: נכנסו | Score: 0.0470
+Token: יוצאים | Score: 0.0332
+Token: הגיעו | Score: 0.0134
+
+Sentence: הבית [MASK] לבית הכנסת באוקטובר האחרון.
+Token: הפך | Score: 0.2529
+Token: נכנס | Score: 0.2188
+Token: עבר | Score: 0.0595
+Token: שהפך | Score: 0.0479
+Token: הסמוך | Score: 0.0380
+
+Sentence: האיש [MASK] לבית הכנסת בשבוע שעבר.
+Token: נכנס | Score: 0.2862
+Token: הגיע | Score: 0.1951
+Token: שנכנס | Score: 0.1382
+Token: שהגיע | Score: 0.0985
+Token: הובא | Score: 0.0585
+
+Sentence: הבית [MASK] לספרייה בחודש האחרון.
+Token: עבר | Score: 0.2631
+Token: נכנס | Score: 0.1578
+Token: חזר | Score: 0.1219
+Token: הפך | Score: 0.0485
+Token: נפתח | Score: 0.0435
+
+Sentence: הספר [MASK] לבית הכנסת בשבוע שעבר.
+Token: הגיע | Score: 0.3341
+Token: הועבר | Score: 0.1601
+Token: נכנס | Score: 0.0701
+Token: חזר | Score: 0.0620
+Token: עלה | Score: 0.0494
+
+Sentence: הילדים [MASK] לבית הכנסת בערב.
+Token: מגיעים | Score: 0.1429
+Token: הגיעו | Score: 0.0835
+Token: הולכים | Score: 0.0779
+Token: יצאו | Score: 0.0577
+Token: ילכו | Score: 0.0483
+
+Sentence: הספר [MASK] לספרייה בשבוע שעבר.
+Token: עבר | Score: 0.4812
+Token: עלה | Score: 0.0961
+Token: הגיע | Score: 0.0554
+Token: חזר | Score: 0.0459
+Token: יצא | Score: 0.0415
+
+Sentence: הספר [MASK] לכיתה בבוקר.
+Token: עולה | Score: 0.2456
+Token: נכנס | Score: 0.1195
+Token: מגיע | Score: 0.0560
+Token: מוכן | Score: 0.0538
+Token: עובר | Score: 0.0420
+
+Sentence: האיש [MASK] לאוניברסיטה בחודש האחרון.
+Token: שנכנס | Score: 0.4970
+Token: שהגיע | Score: 0.2237
+Token: נכנס | Score: 0.0642
+Token: שחזר | Score: 0.0357
+Token: שעלה | Score: 0.0293
+
+Sentence: האישה [MASK] לשדה בשבוע שעבר.
+Token: חזרה | Score: 0.2843
+Token: הגיעה | Score: 0.2107
+Token: שבה | Score: 0.1633
+Token: יצאה | Score: 0.0929
+Token: נכנסה | Score: 0.0315
+
+Sentence: האיש [MASK] לכיתה כל יום.
+Token: נכנס | Score: 0.1930
+Token: עולה | Score: 0.1665
+Token: מגיע | Score: 0.1192
+Token: שנכנס | Score: 0.1172
+Token: שמגיע | Score: 0.0726
+
+Sentence: הילדים [MASK] לספרייה בשבוע שעבר.
+Token: חזרו | Score: 0.3025
+Token: הגיעו | Score: 0.2231
+Token: עברו | Score: 0.0831
+Token: נכנסו | Score: 0.0536
+Token: נרשמו | Score: 0.0410
+
+Sentence: המכונית [MASK] לשדה כל יום.
+Token: מגיעה | Score: 0.4824
+Token: יוצאת | Score: 0.1189
+Token: נכנסת | Score: 0.0831
+Token: חוזרת | Score: 0.0598
+Token: תגיע | Score: 0.0293
+
+Sentence: הילדים [MASK] לבית הכנסת בחודש האחרון.
+Token: הגיעו | Score: 0.3480
+Token: נכנסו | Score: 0.1599
+Token: חזרו | Score: 0.1103
+Token: שבו | Score: 0.0832
+Token: הלכו | Score: 0.0434
+
+Sentence: האיש [MASK] לבית הספר בחודש האחרון.
+Token: הגיע | Score: 0.1671
+Token: שהגיע | Score: 0.1478
+Token: נכנס | Score: 0.1402
+Token: שנכנס | Score: 0.1309
+Token: חזר | Score: 0.0872
+
+Sentence: המורה [MASK] לשדה כל יום.
+Token: מגיעה | Score: 0.2646
+Token: יוצאת | Score: 0.0961
+Token: מגיע | Score: 0.0889
+Token: נכנסת | Score: 0.0829
+Token: חוזרת | Score: 0.0776
+
+Sentence: המשפחה [MASK] לבית הספר בבוקר.
+Token: הגיעה | Score: 0.1516
+Token: יצאה | Score: 0.1375
+Token: חזרה | Score: 0.1013
+Token: מגיעה | Score: 0.0720
+Token: חוזרת | Score: 0.0560
+
+Sentence: הילדים [MASK] לבית הכנסת כל יום.
+Token: מגיעים | Score: 0.3688
+Token: הולכים | Score: 0.1905
+Token: חוזרים | Score: 0.1025
+Token: נכנסים | Score: 0.0745
+Token: באים | Score: 0.0567
+
+Sentence: האישה [MASK] לעבודה באוקטובר האחרון.
+Token: התקבלה | Score: 0.6643
+Token: שבה | Score: 0.1155
+Token: חזרה | Score: 0.0518
+Token: נשלחה | Score: 0.0268
+Token: נכנסה | Score: 0.0239
+
+Sentence: האישה [MASK] לאוניברסיטה בחודש האחרון.
+Token: נרשמה | Score: 0.2357
+Token: נכנסה | Score: 0.2006
+Token: התקבלה | Score: 0.1512
+Token: שבה | Score: 0.0764
+Token: הצטרפה | Score: 0.0621
+
+Sentence: המורה [MASK] לשוק באוקטובר האחרון.
+Token: יצאה | Score: 0.7277
+Token: יצא | Score: 0.1940
+Token: שיצאה | Score: 0.0157
+Token: נכנסה | Score: 0.0113
+Token: יוצאת | Score: 0.0065
+
+Sentence: המכונית [MASK] לכיתה בשבוע שעבר.
+Token: עלתה | Score: 0.3954
+Token: הגיעה | Score: 0.1305
+Token: חזרה | Score: 0.1112
+Token: נכנסה | Score: 0.0655
+Token: עברה | Score: 0.0595
+
+Sentence: האיש [MASK] לעבודה באוקטובר האחרון.
+Token: התקבל | Score: 0.7185
+Token: חזר | Score: 0.0455
+Token: הגיע | Score: 0.0371
+Token: נכנס | Score: 0.0283
+Token: שב | Score: 0.0158
+
+Sentence: התלמידים [MASK] לעבודה בערב.
+Token: יוצאים | Score: 0.2454
+Token: יצאו | Score: 0.1579
+Token: חוזרים | Score: 0.0718
+Token: מגיעים | Score: 0.0586
+Token: מוזמנים | Score: 0.0297
+
+Sentence: האיש [MASK] לשוק בשבוע שעבר.
+Token: שיצא | Score: 0.2834
+Token: שנכנס | Score: 0.2644
+Token: יצא | Score: 0.1892
+Token: נכנס | Score: 0.1414
+Token: הגיע | Score: 0.0162
+
+Sentence: המכונית [MASK] לכיתה בלילה.
+Token: עולה | Score: 0.2905
+Token: מגיעה | Score: 0.1114
+Token: עלתה | Score: 0.1018
+Token: עוברת | Score: 0.0308
+Token: חזרה | Score: 0.0260
+
+Sentence: הספר [MASK] לעבודה כל יום.
+Token: מתאים | Score: 0.2386
+Token: מצוין | Score: 0.0975
+Token: מצויין | Score: 0.0677
+Token: מומלץ | Score: 0.0457
+Token: מעולה | Score: 0.0402
+
+Sentence: המשפחה [MASK] לבית הספר בערב.
+Token: הגיעה | Score: 0.1313
+Token: חזרה | Score: 0.1148
+Token: יצאה | Score: 0.0938
+Token: שבה | Score: 0.0663
+Token: עברה | Score: 0.0602
+
+Sentence: הבית [MASK] לכיתה בערב.
+Token: שייך | Score: 0.0989
+Token: עובר | Score: 0.0862
+Token: צמוד | Score: 0.0599
+Token: מחולק | Score: 0.0520
+Token: הופך | Score: 0.0350
+
+Sentence: האיש [MASK] לאוניברסיטה בבוקר.
+Token: הלך | Score: 0.3480
+Token: הגיע | Score: 0.1188
+Token: נכנס | Score: 0.1160
+Token: הולך | Score: 0.0467
+Token: חזר | Score: 0.0346
+
+Sentence: האישה [MASK] לשדה כל יום.
+Token: יוצאת | Score: 0.3502
+Token: הולכת | Score: 0.1458
+Token: חוזרת | Score: 0.1402
+Token: מגיעה | Score: 0.1361
+Token: נכנסת | Score: 0.0455
+
+Sentence: הילדים [MASK] לאוניברסיטה בשבוע שעבר.
+Token: התקבלו | Score: 0.2049
+Token: חזרו | Score: 0.1635
+Token: הגיעו | Score: 0.1365
+Token: שבו | Score: 0.1190
+Token: נרשמו | Score: 0.0921
+
+Sentence: המורה [MASK] לאוניברסיטה באוקטובר האחרון.
+Token: הגיע | Score: 0.2360
+Token: חזר | Score: 0.1253
+Token: נכנס | Score: 0.1205
+Token: התקבל | Score: 0.1115
+Token: הצטרף | Score: 0.0680
+
+Sentence: האישה [MASK] לעבודה בשבוע שעבר.
+Token: התקבלה | Score: 0.5665
+Token: חזרה | Score: 0.1233
+Token: שבה | Score: 0.1070
+Token: יצאה | Score: 0.0358
+Token: נכנסה | Score: 0.0231
+
+Sentence: המשפחה [MASK] לכיתה בבוקר.
+Token: עלתה | Score: 0.1678
+Token: עולה | Score: 0.1589
+Token: מגיעה | Score: 0.1016
+Token: חוזרת | Score: 0.0912
+Token: הגיעה | Score: 0.0613
+
+Sentence: הספר [MASK] לבית הכנסת כל יום.
+Token: נכנס | Score: 0.2575
+Token: מגיע | Score: 0.1682
+Token: יוצא | Score: 0.1474
+Token: חוזר | Score: 0.1108
+Token: הולך | Score: 0.0342
+
+Sentence: הספר [MASK] לבית הספר בחודש האחרון.
+Token: חזר | Score: 0.2565
+Token: הגיע | Score: 0.2318
+Token: נכנס | Score: 0.0655
+Token: יצא | Score: 0.0487
+Token: עבר | Score: 0.0376
+
+Sentence: הילדים [MASK] לעבודה באוקטובר האחרון.
+Token: התקבלו | Score: 0.2886
+Token: שבו | Score: 0.2042
+Token: חזרו | Score: 0.1009
+Token: יצאו | Score: 0.0823
+Token: נשלחו | Score: 0.0719
+
+Sentence: המשפחה [MASK] לאוניברסיטה כל יום.
+Token: הולכת | Score: 0.4257
+Token: יוצאת | Score: 0.1543
+Token: מגיעה | Score: 0.1103
+Token: חוזרת | Score: 0.0814
+Token: נוסעת | Score: 0.0437
+
+Sentence: הספר [MASK] לאוניברסיטה בשבוע שעבר.
+Token: התקבל | Score: 0.2200
+Token: הגיע | Score: 0.1508
+Token: הועבר | Score: 0.0868
+Token: יצא | Score: 0.0743
+Token: נכנס | Score: 0.0562
+
+Sentence: הבית [MASK] לשדה בשבוע שעבר.
+Token: חזר | Score: 0.2981
+Token: הועבר | Score: 0.0788
+Token: הגיע | Score: 0.0773
+Token: נכנס | Score: 0.0496
+Token: יצא | Score: 0.0439
+
+Sentence: המשפחה [MASK] לבית הספר בחודש האחרון.
+Token: שבה | Score: 0.2359
+Token: הגיעה | Score: 0.1683
+Token: חזרה | Score: 0.1398
+Token: נכנסה | Score: 0.0619
+Token: התקבלה | Score: 0.0548
+
+Sentence: התלמידים [MASK] לשוק כל יום.
+Token: יוצאים | Score: 0.8888
+Token: יצאו | Score: 0.0617
+Token: הולכים | Score: 0.0108
+Token: שיוצאים | Score: 0.0060
+Token: נכנסים | Score: 0.0057
+
+Sentence: הילדים [MASK] לבית הכנסת בבוקר.
+Token: מגיעים | Score: 0.1602
+Token: הגיעו | Score: 0.1323
+Token: הולכים | Score: 0.0771
+Token: יצאו | Score: 0.0688
+Token: נכנסו | Score: 0.0342
+
+Sentence: האיש [MASK] לכיתה בערב.
+Token: עולה | Score: 0.3440
+Token: עלה | Score: 0.1600
+Token: נכנס | Score: 0.1585
+Token: הגיע | Score: 0.1061
+Token: שעלה | Score: 0.0246
+
+Sentence: האישה [MASK] לספרייה בחודש האחרון.
+Token: נכנסה | Score: 0.1741
+Token: עברה | Score: 0.1638
+Token: הגיעה | Score: 0.1080
+Token: חזרה | Score: 0.0990
+Token: הועברה | Score: 0.0801
+
+Sentence: התלמידים [MASK] לבית הכנסת בלילה.
+Token: הגיעו | Score: 0.2464
+Token: מגיעים | Score: 0.1783
+Token: נכנסו | Score: 0.0829
+Token: יצאו | Score: 0.0593
+Token: עולים | Score: 0.0456
+
+Sentence: הספר [MASK] לבית הספר בבוקר.
+Token: מגיע | Score: 0.1167
+Token: חוזר | Score: 0.0630
+Token: יוצא | Score: 0.0583
+Token: נכנס | Score: 0.0522
+Token: עובר | Score: 0.0407
+
+Sentence: התלמידים [MASK] לכיתה בחודש האחרון.
+Token: עלו | Score: 0.4198
+Token: הגיעו | Score: 0.1324
+Token: חזרו | Score: 0.0910
+Token: שעלו | Score: 0.0737
+Token: נכנסו | Score: 0.0612
+
+Sentence: הספר [MASK] לכיתה בערב.
+Token: עולה | Score: 0.2555
+Token: עובר | Score: 0.0638
+Token: נכנס | Score: 0.0547
+Token: מוכן | Score: 0.0433
+Token: מחולק | Score: 0.0348
+
+Sentence: הילדים [MASK] לכיתה כל יום.
+Token: חוזרים | Score: 0.3391
+Token: מגיעים | Score: 0.2239
+Token: מצטרפים | Score: 0.0875
+Token: נכנסים | Score: 0.0754
+Token: עולים | Score: 0.0545
+
+Sentence: האיש [MASK] לאוניברסיטה בלילה.
+Token: נכנס | Score: 0.2833
+Token: הלך | Score: 0.2483
+Token: הגיע | Score: 0.0568
+Token: הולך | Score: 0.0525
+Token: שנכנס | Score: 0.0448
+
+Sentence: התלמידים [MASK] לאוניברסיטה בבוקר.
+Token: מגיעים | Score: 0.1878
+Token: התקבלו | Score: 0.0754
+Token: הגיעו | Score: 0.0713
+Token: עולים | Score: 0.0587
+Token: יגיעו | Score: 0.0517
+
+Sentence: הילדים [MASK] לבית הספר בחודש האחרון.
+Token: חזרו | Score: 0.3325
+Token: הגיעו | Score: 0.1971
+Token: שבו | Score: 0.1243
+Token: נכנסו | Score: 0.0547
+Token: הלכו | Score: 0.0354
+
+Sentence: המכונית [MASK] לספרייה כל יום.
+Token: מגיעה | Score: 0.3443
+Token: חוזרת | Score: 0.1165
+Token: עוברת | Score: 0.1088
+Token: נוסעת | Score: 0.0812
+Token: נכנסת | Score: 0.0808
+
+Sentence: החתול [MASK] לבית הספר בערב.
+Token: הגיע | Score: 0.2564
+Token: מגיע | Score: 0.1224
+Token: יגיע | Score: 0.0492
+Token: הולך | Score: 0.0486
+Token: נכנס | Score: 0.0485
+
+Sentence: הילדים [MASK] לכיתה בבוקר.
+Token: עולים | Score: 0.2610
+Token: מגיעים | Score: 0.1712
+Token: חוזרים | Score: 0.1707
+Token: יעלו | Score: 0.0309
+Token: יוצאים | Score: 0.0277
+
+Sentence: המשפחה [MASK] לספרייה כל יום.
+Token: חוזרת | Score: 0.3288
+Token: הולכת | Score: 0.1944
+Token: מגיעה | Score: 0.1413
+Token: עוברת | Score: 0.0542
+Token: יוצאת | Score: 0.0391
+
+Sentence: הבית [MASK] לבית הכנסת כל יום.
+Token: הופך | Score: 0.2638
+Token: צמוד | Score: 0.1794
+Token: נכנס | Score: 0.0856
+Token: חוזר | Score: 0.0628
+Token: הפך | Score: 0.0479
+
+Sentence: הילדים [MASK] לעבודה בערב.
+Token: יצאו | Score: 0.2755
+Token: יוצאים | Score: 0.2148
+Token: מגיעים | Score: 0.0638
+Token: חוזרים | Score: 0.0492
+Token: הולכים | Score: 0.0401
+
+Sentence: המכונית [MASK] לאוניברסיטה בערב.
+Token: הועברה | Score: 0.1175
+Token: עברה | Score: 0.0906
+Token: נוסעת | Score: 0.0540
+Token: הגיעה | Score: 0.0467
+Token: נכנסה | Score: 0.0427
+
+Sentence: המשפחה [MASK] לעבודה בחודש האחרון.
+Token: התקבלה | Score: 0.4054
+Token: שבה | Score: 0.1558
+Token: חזרה | Score: 0.1286
+Token: יצאה | Score: 0.0504
+Token: חוזרת | Score: 0.0372
+
+Sentence: האישה [MASK] לאוניברסיטה באוקטובר האחרון.
+Token: התקבלה | Score: 0.2518
+Token: נרשמה | Score: 0.1276
+Token: נכנסה | Score: 0.1236
+Token: שבה | Score: 0.0946
+Token: הגיעה | Score: 0.0733
+
+Sentence: המכונית [MASK] לאוניברסיטה בשבוע שעבר.
+Token: הועברה | Score: 0.2119
+Token: נכנסה | Score: 0.1371
+Token: הגיעה | Score: 0.0972
+Token: עברה | Score: 0.0802
+Token: נמכרה | Score: 0.0664
+
+Sentence: הספר [MASK] לעבודה בחודש האחרון.
+Token: התקבל | Score: 0.3629
+Token: יצא | Score: 0.1547
+Token: חזר | Score: 0.0823
+Token: נכנס | Score: 0.0251
+Token: נשלח | Score: 0.0230
+
+Sentence: המכונית [MASK] לאוניברסיטה בחודש האחרון.
+Token: נכנסה | Score: 0.2086
+Token: הועברה | Score: 0.1035
+Token: הגיעה | Score: 0.0943
+Token: נמכרה | Score: 0.0821
+Token: עברה | Score: 0.0722
+
+Sentence: האישה [MASK] לבית הספר באוקטובר האחרון.
+Token: שבה | Score: 0.1892
+Token: הגיעה | Score: 0.1706
+Token: התקבלה | Score: 0.1406
+Token: נשלחה | Score: 0.1073
+Token: נכנסה | Score: 0.0871
+
+Sentence: החתול [MASK] לשדה בלילה.
+Token: יצא | Score: 0.3021
+Token: יוצא | Score: 0.2155
+Token: הגיע | Score: 0.0918
+Token: מגיע | Score: 0.0825
+Token: נכנס | Score: 0.0616
+
+Sentence: המשפחה [MASK] לספרייה בשבוע שעבר.
+Token: עברה | Score: 0.3005
+Token: חזרה | Score: 0.1529
+Token: הגיעה | Score: 0.1096
+Token: הועברה | Score: 0.0666
+Token: שבה | Score: 0.0617
+
+Sentence: הספר [MASK] לעבודה בלילה.
+Token: מיועד | Score: 0.1135
+Token: מדריך | Score: 0.1056
+Token: מתאים | Score: 0.0748
+Token: מומלץ | Score: 0.0257
+Token: המדריך | Score: 0.0254
+
+Sentence: האישה [MASK] לעבודה בחודש האחרון.
+Token: התקבלה | Score: 0.5406
+Token: שבה | Score: 0.1159
+Token: חזרה | Score: 0.0981
+Token: יצאה | Score: 0.0382
+Token: נכנסה | Score: 0.0265
+
+Sentence: האישה [MASK] לכיתה בערב.
+Token: עולה | Score: 0.4372
+Token: מגיעה | Score: 0.1365
+Token: עלתה | Score: 0.0652
+Token: נכנסת | Score: 0.0518
+Token: הגיעה | Score: 0.0383
+
+Sentence: הספר [MASK] לשדה כל יום.
+Token: יוצא | Score: 0.4293
+Token: מגיע | Score: 0.0943
+Token: חוזר | Score: 0.0756
+Token: נכנס | Score: 0.0690
+Token: נשלח | Score: 0.0475
+
+Sentence: הילדים [MASK] לספרייה בבוקר.
+Token: חוזרים | Score: 0.1643
+Token: הולכים | Score: 0.1136
+Token: מגיעים | Score: 0.0925
+Token: עוברים | Score: 0.0771
+Token: ילכו | Score: 0.0469
+
+Sentence: הספר [MASK] לכיתה בלילה.
+Token: עולה | Score: 0.2145
+Token: נכנס | Score: 0.1589
+Token: ##יה | Score: 0.0606
+Token: מוכן | Score: 0.0311
+Token: שייך | Score: 0.0221
+
+Sentence: הבית [MASK] לשדה באוקטובר האחרון.
+Token: נכנס | Score: 0.2236
+Token: חזר | Score: 0.1109
+Token: עבר | Score: 0.0783
+Token: הועבר | Score: 0.0705
+Token: הגיע | Score: 0.0542
+
+Sentence: האישה [MASK] לאוניברסיטה בשבוע שעבר.
+Token: התקבלה | Score: 0.2163
+Token: נכנסה | Score: 0.1577
+Token: נרשמה | Score: 0.1330
+Token: שבה | Score: 0.1094
+Token: הגיעה | Score: 0.0746
+
+Sentence: המורה [MASK] לשדה בערב.
+Token: הגיעה | Score: 0.1991
+Token: יצאה | Score: 0.1382
+Token: הגיע | Score: 0.1129
+Token: נסעה | Score: 0.0570
+Token: חזרה | Score: 0.0512
+
+Sentence: התלמידים [MASK] לכיתה בלילה.
+Token: עולים | Score: 0.4558
+Token: מגיעים | Score: 0.1340
+Token: חוזרים | Score: 0.0988
+Token: עלו | Score: 0.0564
+Token: יעלו | Score: 0.0255
+
+Sentence: המשפחה [MASK] לכיתה בלילה.
+Token: עולה | Score: 0.2887
+Token: עלתה | Score: 0.2480
+Token: חוזרת | Score: 0.0811
+Token: מגיעה | Score: 0.0567
+Token: ירדה | Score: 0.0239
+
+Sentence: הספר [MASK] לשדה בשבוע שעבר.
+Token: הגיע | Score: 0.2734
+Token: יצא | Score: 0.2045
+Token: חזר | Score: 0.1578
+Token: הועבר | Score: 0.1048
+Token: נשלח | Score: 0.0371
+
+Sentence: המורה [MASK] לספרייה בלילה.
+Token: מגיע | Score: 0.0598
+Token: הראשי | Score: 0.0506
+Token: שלי | Score: 0.0428
+Token: מגיעה | Score: 0.0334
+Token: נכנס | Score: 0.0324
+
+Sentence: הספר [MASK] לבית הכנסת באוקטובר האחרון.
+Token: הגיע | Score: 0.2952
+Token: הועבר | Score: 0.2091
+Token: נכנס | Score: 0.0870
+Token: הובא | Score: 0.0606
+Token: חזר | Score: 0.0537
+
+Sentence: החתול [MASK] לבית הכנסת באוקטובר האחרון.
+Token: הגיע | Score: 0.3593
+Token: נכנס | Score: 0.2161
+Token: חזר | Score: 0.0781
+Token: הובא | Score: 0.0668
+Token: הלך | Score: 0.0295
+
+Sentence: המורה [MASK] לכיתה בבוקר.
+Token: מגיעה | Score: 0.2808
+Token: עולה | Score: 0.2047
+Token: נכנסת | Score: 0.1001
+Token: חוזרת | Score: 0.0758
+Token: יוצאת | Score: 0.0540
+
+Sentence: הספר [MASK] לשוק בערב.
+Token: יצא | Score: 0.4234
+Token: יוצא | Score: 0.4225
+Token: ייצא | Score: 0.0438
+Token: שיצא | Score: 0.0172
+Token: שיוצא | Score: 0.0164
+
+Sentence: הבית [MASK] לספרייה בלילה.
+Token: משמש | Score: 0.0696
+Token: פתוח | Score: 0.0578
+Token: מיועד | Score: 0.0535
+Token: הלאומי | Score: 0.0304
+Token: החדש | Score: 0.0274
+
+Sentence: האיש [MASK] לבית הכנסת בבוקר.
+Token: נכנס | Score: 0.2692
+Token: הגיע | Score: 0.2222
+Token: הלך | Score: 0.1079
+Token: מגיע | Score: 0.0593
+Token: בא | Score: 0.0567
+
+Sentence: המורה [MASK] לעבודה בבוקר.
+Token: מגיע | Score: 0.1525
+Token: יוצא | Score: 0.0969
+Token: חוזר | Score: 0.0664
+Token: מגיעה | Score: 0.0490
+Token: מוכן | Score: 0.0386
+
+Sentence: המכונית [MASK] לספרייה בחודש האחרון.
+Token: עברה | Score: 0.3078
+Token: הגיעה | Score: 0.1610
+Token: חזרה | Score: 0.1467
+Token: עלתה | Score: 0.0660
+Token: הועברה | Score: 0.0631
+
+Sentence: האיש [MASK] לבית הספר באוקטובר האחרון.
+Token: הגיע | Score: 0.2071
+Token: נכנס | Score: 0.1932
+Token: שהגיע | Score: 0.0973
+Token: שנכנס | Score: 0.0966
+Token: חזר | Score: 0.0602
+
+Sentence: הילדים [MASK] לעבודה בחודש האחרון.
+Token: התקבלו | Score: 0.3328
+Token: חזרו | Score: 0.1179
+Token: יצאו | Score: 0.1079
+Token: שבו | Score: 0.0829
+Token: נשלחו | Score: 0.0573
+
+Sentence: הילדים [MASK] לשוק בערב.
+Token: יצאו | Score: 0.7277
+Token: יוצאים | Score: 0.1618
+Token: ילכו | Score: 0.0554
+Token: הולכים | Score: 0.0057
+Token: ויצאו | Score: 0.0047
+
+Sentence: האיש [MASK] לאוניברסיטה בערב.
+Token: הלך | Score: 0.3873
+Token: נכנס | Score: 0.1259
+Token: הגיע | Score: 0.0642
+Token: הולך | Score: 0.0462
+Token: חזר | Score: 0.0331
+
+Sentence: המכונית [MASK] לעבודה בערב.
+Token: מתאימה | Score: 0.1557
+Token: מיועדת | Score: 0.1528
+Token: מוכנה | Score: 0.1331
+Token: נוחה | Score: 0.0483
+Token: מותאמת | Score: 0.0338
+
+Sentence: המורה [MASK] לאוניברסיטה בלילה.
+Token: מגיע | Score: 0.1439
+Token: נכנס | Score: 0.1023
+Token: חוזר | Score: 0.0905
+Token: יוצא | Score: 0.0563
+Token: הולך | Score: 0.0508
+
+Sentence: המשפחה [MASK] לאוניברסיטה בלילה.
+Token: התקבלה | Score: 0.1179
+Token: הגיעה | Score: 0.1056
+Token: עברה | Score: 0.0878
+Token: נרשמה | Score: 0.0713
+Token: נסעה | Score: 0.0704
+
+Sentence: התלמידים [MASK] לבית הספר כל יום.
+Token: מגיעים | Score: 0.4874
+Token: חוזרים | Score: 0.2508
+Token: יוצאים | Score: 0.0489
+Token: הולכים | Score: 0.0349
+Token: באים | Score: 0.0318
+
+Sentence: הילדים [MASK] לעבודה בבוקר.
+Token: יצאו | Score: 0.2568
+Token: יוצאים | Score: 0.2525
+Token: מגיעים | Score: 0.0791
+Token: הולכים | Score: 0.0657
+Token: חוזרים | Score: 0.0478
+
+Sentence: הספר [MASK] לשוק בשבוע שעבר.
+Token: יצא | Score: 0.7771
+Token: שיצא | Score: 0.1424
+Token: נכנס | Score: 0.0192
+Token: יצאה | Score: 0.0069
+Token: הגיע | Score: 0.0068
+
+Sentence: הילדים [MASK] לשוק באוקטובר האחרון.
+Token: יצאו | Score: 0.8179
+Token: שיצאו | Score: 0.0807
+Token: יוצאים | Score: 0.0192
+Token: נכנסו | Score: 0.0111
+Token: באו | Score: 0.0101
+
+Sentence: המשפחה [MASK] לבית הספר באוקטובר האחרון.
+Token: שבה | Score: 0.2789
+Token: הגיעה | Score: 0.1760
+Token: חזרה | Score: 0.0933
+Token: התקבלה | Score: 0.0915
+Token: נשלחה | Score: 0.0502
+
+Sentence: המכונית [MASK] לשוק בחודש האחרון.
+Token: יצאה | Score: 0.7840
+Token: שיצאה | Score: 0.0711
+Token: נכנסה | Score: 0.0573
+Token: יוצאת | Score: 0.0149
+Token: חזרה | Score: 0.0123
+
+Sentence: המורה [MASK] לכיתה בחודש האחרון.
+Token: עלתה | Score: 0.3337
+Token: הגיעה | Score: 0.1421
+Token: עולה | Score: 0.0914
+Token: עלה | Score: 0.0718
+Token: נכנסה | Score: 0.0662
+
+Sentence: המורה [MASK] לשדה בבוקר.
+Token: הגיע | Score: 0.2039
+Token: הגיעה | Score: 0.1636
+Token: יצאה | Score: 0.1292
+Token: יצא | Score: 0.0714
+Token: נסעה | Score: 0.0340
+
+Sentence: הילדים [MASK] לבית הספר בלילה.
+Token: חוזרים | Score: 0.1911
+Token: מגיעים | Score: 0.1489
+Token: הולכים | Score: 0.0869
+Token: יצאו | Score: 0.0676
+Token: יוצאים | Score: 0.0626
+
+Sentence: המשפחה [MASK] לבית הספר בשבוע שעבר.
+Token: שבה | Score: 0.2546
+Token: הגיעה | Score: 0.2154
+Token: חזרה | Score: 0.1736
+Token: התקבלה | Score: 0.0449
+Token: נכנסה | Score: 0.0400
+
+Sentence: האיש [MASK] לספרייה בשבוע שעבר.
+Token: הגיע | Score: 0.1860
+Token: שהגיע | Score: 0.1782
+Token: נכנס | Score: 0.1304
+Token: חזר | Score: 0.0986
+Token: שנכנס | Score: 0.0788
+
+Sentence: המכונית [MASK] לשדה בבוקר.
+Token: יוצאת | Score: 0.1702
+Token: מגיעה | Score: 0.1528
+Token: תגיע | Score: 0.1136
+Token: יצאה | Score: 0.1072
+Token: הגיעה | Score: 0.0970
+
+Sentence: המכונית [MASK] לספרייה באוקטובר האחרון.
+Token: עברה | Score: 0.3384
+Token: הגיעה | Score: 0.1908
+Token: חזרה | Score: 0.1514
+Token: הועברה | Score: 0.0722
+Token: עלתה | Score: 0.0461
+
+Sentence: הספר [MASK] לשדה בחודש האחרון.
+Token: יצא | Score: 0.2870
+Token: הגיע | Score: 0.2591
+Token: נכנס | Score: 0.1177
+Token: חזר | Score: 0.0871
+Token: נשלח | Score: 0.0247
+
+Sentence: האיש [MASK] לכיתה בחודש האחרון.
+Token: שעלה | Score: 0.4630
+Token: עלה | Score: 0.1307
+Token: שהגיע | Score: 0.1180
+Token: שנכנס | Score: 0.0876
+Token: הגיע | Score: 0.0397
+
+Sentence: המכונית [MASK] לשדה בערב.
+Token: יוצאת | Score: 0.1251
+Token: יצאה | Score: 0.1200
+Token: הגיעה | Score: 0.1175
+Token: מגיעה | Score: 0.1032
+Token: תגיע | Score: 0.0827
+
+Sentence: החתול [MASK] לשדה כל יום.
+Token: יוצא | Score: 0.1932
+Token: יצא | Score: 0.1211
+Token: הגיע | Score: 0.0947
+Token: מגיע | Score: 0.0925
+Token: נכנס | Score: 0.0810
+
+Sentence: המשפחה [MASK] לבית הספר בלילה.
+Token: הגיעה | Score: 0.1536
+Token: יצאה | Score: 0.0849
+Token: חזרה | Score: 0.0597
+Token: שבה | Score: 0.0591
+Token: חוזרת | Score: 0.0585
+
+Sentence: המכונית [MASK] לבית הספר בשבוע שעבר.
+Token: הגיעה | Score: 0.2999
+Token: חזרה | Score: 0.1135
+Token: נכנסה | Score: 0.0942
+Token: הועברה | Score: 0.0651
+Token: נשלחה | Score: 0.0466
+
+Sentence: האיש [MASK] לעבודה בשבוע שעבר.
+Token: התקבל | Score: 0.5853
+Token: חזר | Score: 0.0939
+Token: שב | Score: 0.0360
+Token: שוחרר | Score: 0.0300
+Token: התייצב | Score: 0.0260
+
+Sentence: המורה [MASK] לבית הספר בלילה.
+Token: מגיעה | Score: 0.3450
+Token: חוזרת | Score: 0.1221
+Token: הגיעה | Score: 0.0706
+Token: תגיע | Score: 0.0574
+Token: יוצאת | Score: 0.0469
+
+Sentence: החתול [MASK] לספרייה כל יום.
+Token: נכנס | Score: 0.2551
+Token: מגיע | Score: 0.0879
+Token: ##ים | Score: 0.0728
+Token: חוזר | Score: 0.0696
+Token: הולך | Score: 0.0463
+
+Sentence: המורה [MASK] לשדה בחודש האחרון.
+Token: הגיעה | Score: 0.4146
+Token: הגיע | Score: 0.2224
+Token: חזרה | Score: 0.0545
+Token: נכנסה | Score: 0.0441
+Token: יצאה | Score: 0.0299
+
+Sentence: התלמידים [MASK] לספרייה בבוקר.
+Token: מגיעים | Score: 0.1839
+Token: חוזרים | Score: 0.1594
+Token: עולים | Score: 0.0793
+Token: הגיעו | Score: 0.0554
+Token: עוברים | Score: 0.0515
+
+Sentence: האיש [MASK] לבית הספר בלילה.
+Token: הלך | Score: 0.2384
+Token: נכנס | Score: 0.1624
+Token: הולך | Score: 0.1072
+Token: הגיע | Score: 0.0754
+Token: בא | Score: 0.0430
+
+Sentence: הילדים [MASK] לספרייה בחודש האחרון.
+Token: חזרו | Score: 0.2924
+Token: הגיעו | Score: 0.1578
+Token: עברו | Score: 0.1087
+Token: נרשמו | Score: 0.0667
+Token: חוזרים | Score: 0.0631
+
+Sentence: התלמידים [MASK] לאוניברסיטה בלילה.
+Token: מגיעים | Score: 0.2571
+Token: הגיעו | Score: 0.0622
+Token: עולים | Score: 0.0610
+Token: חוזרים | Score: 0.0610
+Token: יגיעו | Score: 0.0566
+
+Sentence: האיש [MASK] לאוניברסיטה כל יום.
+Token: הולך | Score: 0.1470
+Token: שמגיע | Score: 0.1200
+Token: נכנס | Score: 0.1170
+Token: מגיע | Score: 0.1028
+Token: שנכנס | Score: 0.0819
+
+Sentence: הילדים [MASK] לספרייה בערב.
+Token: ילכו | Score: 0.1263
+Token: חוזרים | Score: 0.1009
+Token: הולכים | Score: 0.0800
+Token: עוברים | Score: 0.0706
+Token: מגיעים | Score: 0.0610
+
+Sentence: המורה [MASK] לבית הכנסת בבוקר.
+Token: מגיעה | Score: 0.2926
+Token: הגיעה | Score: 0.0824
+Token: חוזרת | Score: 0.0703
+Token: תגיע | Score: 0.0698
+Token: נכנסת | Score: 0.0561
+
+Sentence: המשפחה [MASK] לספרייה בלילה.
+Token: עברה | Score: 0.2173
+Token: חוזרת | Score: 0.1268
+Token: עוברת | Score: 0.0820
+Token: הולכת | Score: 0.0776
+Token: חזרה | Score: 0.0294
+
+Sentence: החתול [MASK] לספרייה בערב.
+Token: הגיע | Score: 0.1949
+Token: נכנס | Score: 0.0983
+Token: ##ים | Score: 0.0843
+Token: מגיע | Score: 0.0559
+Token: ##ה | Score: 0.0506
+
+Sentence: הבית [MASK] לשדה בחודש האחרון.
+Token: חזר | Score: 0.2614
+Token: נכנס | Score: 0.1990
+Token: הגיע | Score: 0.1136
+Token: יצא | Score: 0.0433
+Token: הועבר | Score: 0.0351
+
+Sentence: המורה [MASK] לאוניברסיטה בחודש האחרון.
+Token: הגיע | Score: 0.2618
+Token: חזר | Score: 0.1376
+Token: נכנס | Score: 0.1321
+Token: התקבל | Score: 0.0989
+Token: נרשם | Score: 0.0629
+
+Sentence: התלמידים [MASK] לאוניברסיטה בחודש האחרון.
+Token: התקבלו | Score: 0.2594
+Token: הגיעו | Score: 0.1333
+Token: נרשמו | Score: 0.1262
+Token: חזרו | Score: 0.0883
+Token: נכנסו | Score: 0.0594
+
+Sentence: הספר [MASK] לבית הספר כל יום.
+Token: חוזר | Score: 0.2783
+Token: מגיע | Score: 0.2714
+Token: יוצא | Score: 0.1020
+Token: נכנס | Score: 0.0446
+Token: מגיעים | Score: 0.0193
+
+Sentence: המכונית [MASK] לשוק בבוקר.
+Token: יוצאת | Score: 0.4224
+Token: תצא | Score: 0.3030
+Token: יצאה | Score: 0.1620
+Token: תגיע | Score: 0.0172
+Token: מגיעה | Score: 0.0109
+
+Sentence: הבית [MASK] לאוניברסיטה בחודש האחרון.
+Token: נכנס | Score: 0.3101
+Token: עבר | Score: 0.1495
+Token: נפתח | Score: 0.1251
+Token: חזר | Score: 0.0535
+Token: יצא | Score: 0.0421
+
+Sentence: המשפחה [MASK] לשדה בשבוע שעבר.
+Token: חזרה | Score: 0.3179
+Token: הגיעה | Score: 0.1873
+Token: שבה | Score: 0.1683
+Token: יצאה | Score: 0.0745
+Token: עברה | Score: 0.0254
+
+Sentence: התלמידים [MASK] לשדה כל יום.
+Token: יוצאים | Score: 0.3940
+Token: מגיעים | Score: 0.2412
+Token: חוזרים | Score: 0.0630
+Token: הולכים | Score: 0.0494
+Token: יצאו | Score: 0.0398
+
+Sentence: הילדים [MASK] לכיתה בלילה.
+Token: עולים | Score: 0.3520
+Token: חוזרים | Score: 0.2009
+Token: מגיעים | Score: 0.1310
+Token: יעלו | Score: 0.0365
+Token: נכנסים | Score: 0.0315
+
+Sentence: הילדים [MASK] לבית הספר בערב.
+Token: יצאו | Score: 0.1258
+Token: מגיעים | Score: 0.1002
+Token: חוזרים | Score: 0.0960
+Token: חזרו | Score: 0.0686
+Token: הגיעו | Score: 0.0666
+
+Sentence: הספר [MASK] לשדה בערב.
+Token: נשלח | Score: 0.2287
+Token: יוצא | Score: 0.1391
+Token: יצא | Score: 0.1290
+Token: הועבר | Score: 0.0463
+Token: הגיע | Score: 0.0434
+
+Sentence: הבית [MASK] לבית הספר בלילה.
+Token: מחוץ | Score: 0.2045
+Token: הסמוך | Score: 0.1070
+Token: הקרוב | Score: 0.0752
+Token: הצמוד | Score: 0.0749
+Token: צמוד | Score: 0.0663
+
+Sentence: התלמידים [MASK] לכיתה באוקטובר האחרון.
+Token: עלו | Score: 0.4104
+Token: הגיעו | Score: 0.1097
+Token: חזרו | Score: 0.0787
+Token: שבו | Score: 0.0771
+Token: נכנסו | Score: 0.0739
+
+Sentence: הילדים [MASK] לבית הכנסת בלילה.
+Token: מגיעים | Score: 0.2273
+Token: הולכים | Score: 0.1226
+Token: חוזרים | Score: 0.0635
+Token: הגיעו | Score: 0.0583
+Token: יוצאים | Score: 0.0570
+
+Sentence: המורה [MASK] לספרייה באוקטובר האחרון.
+Token: הגיע | Score: 0.1522
+Token: עברה | Score: 0.1080
+Token: הגיעה | Score: 0.1024
+Token: עבר | Score: 0.0787
+Token: חזר | Score: 0.0626
+
+Sentence: החתול [MASK] לבית הספר בלילה.
+Token: הגיע | Score: 0.2706
+Token: מגיע | Score: 0.1081
+Token: נכנס | Score: 0.0952
+Token: ##ים | Score: 0.0424
+Token: מחוץ | Score: 0.0382
+
+Sentence: המורה [MASK] לבית הכנסת בערב.
+Token: מגיעה | Score: 0.2298
+Token: הגיעה | Score: 0.1026
+Token: תגיע | Score: 0.0781
+Token: חוזרת | Score: 0.0736
+Token: נכנסת | Score: 0.0530
+
+Sentence: האישה [MASK] לשוק בבוקר.
+Token: יוצאת | Score: 0.4249
+Token: יצאה | Score: 0.3010
+Token: תצא | Score: 0.1500
+Token: הולכת | Score: 0.0390
+Token: נכנסה | Score: 0.0140
+
+Sentence: החתול [MASK] לבית הכנסת בשבוע שעבר.
+Token: הגיע | Score: 0.4219
+Token: נכנס | Score: 0.2091
+Token: חזר | Score: 0.0795
+Token: הובא | Score: 0.0485
+Token: הלך | Score: 0.0444
+
+Sentence: החתול [MASK] לבית הספר בבוקר.
+Token: הגיע | Score: 0.2271
+Token: מגיע | Score: 0.1829
+Token: הולך | Score: 0.0565
+Token: יגיע | Score: 0.0561
+Token: יצא | Score: 0.0520
+
+Sentence: הבית [MASK] לאוניברסיטה בשבוע שעבר.
+Token: עבר | Score: 0.2296
+Token: נכנס | Score: 0.1979
+Token: הועבר | Score: 0.0922
+Token: נפתח | Score: 0.0669
+Token: חזר | Score: 0.0611
+
+Sentence: התלמידים [MASK] לשדה באוקטובר האחרון.
+Token: הגיעו | Score: 0.3754
+Token: שבו | Score: 0.1058
+Token: חזרו | Score: 0.0861
+Token: יצאו | Score: 0.0715
+Token: נשלחו | Score: 0.0665
+
+Sentence: הילדים [MASK] לאוניברסיטה בערב.
+Token: יצאו | Score: 0.1449
+Token: ילכו | Score: 0.1382
+Token: מגיעים | Score: 0.0602
+Token: הולכים | Score: 0.0482
+Token: נסעו | Score: 0.0444
+
+Sentence: המכונית [MASK] לספרייה בערב.
+Token: עברה | Score: 0.1551
+Token: חזרה | Score: 0.1317
+Token: עוברת | Score: 0.0873
+Token: הגיעה | Score: 0.0713
+Token: מגיעה | Score: 0.0596
+
+Sentence: המכונית [MASK] לעבודה בחודש האחרון.
+Token: חזרה | Score: 0.6655
+Token: יצאה | Score: 0.0673
+Token: התקבלה | Score: 0.0545
+Token: נכנסה | Score: 0.0487
+Token: נשלחה | Score: 0.0243
+
+Sentence: החתול [MASK] לשוק בערב.
+Token: יצא | Score: 0.5866
+Token: יוצא | Score: 0.2796
+Token: ייצא | Score: 0.0630
+Token: הולך | Score: 0.0134
+Token: נכנס | Score: 0.0091
+
+Sentence: הספר [MASK] לאוניברסיטה בחודש האחרון.
+Token: התקבל | Score: 0.1960
+Token: נכנס | Score: 0.1367
+Token: הגיע | Score: 0.1367
+Token: יצא | Score: 0.0945
+Token: חזר | Score: 0.0565
+
+Sentence: המכונית [MASK] לבית הכנסת בלילה.
+Token: מגיעה | Score: 0.2226
+Token: הגיעה | Score: 0.1390
+Token: נכנסה | Score: 0.0427
+Token: נוסעת | Score: 0.0417
+Token: בדרכה | Score: 0.0395
+
+Sentence: האישה [MASK] לבית הכנסת כל יום.
+Token: הולכת | Score: 0.2951
+Token: מגיעה | Score: 0.2845
+Token: נכנסת | Score: 0.1487
+Token: חוזרת | Score: 0.0620
+Token: יוצאת | Score: 0.0509
+
+Sentence: האיש [MASK] לשדה בלילה.
+Token: יצא | Score: 0.2465
+Token: הלך | Score: 0.1610
+Token: הגיע | Score: 0.1212
+Token: נכנס | Score: 0.1193
+Token: בא | Score: 0.0726
+
+Sentence: התלמידים [MASK] לשוק בלילה.
+Token: יצאו | Score: 0.7718
+Token: יוצאים | Score: 0.1865
+Token: יוצאות | Score: 0.0039
+Token: ויצאו | Score: 0.0033
+Token: ילכו | Score: 0.0032
+
+Sentence: המכונית [MASK] לשוק באוקטובר האחרון.
+Token: יצאה | Score: 0.8618
+Token: שיצאה | Score: 0.0494
+Token: נכנסה | Score: 0.0351
+Token: חזרה | Score: 0.0094
+Token: הגיעה | Score: 0.0067
+
+Sentence: המכונית [MASK] לבית הספר בבוקר.
+Token: מגיעה | Score: 0.1699
+Token: חזרה | Score: 0.1005
+Token: יוצאת | Score: 0.0783
+Token: נוסעת | Score: 0.0619
+Token: הגיעה | Score: 0.0530
+
+Sentence: הספר [MASK] לשוק בבוקר.
+Token: יוצא | Score: 0.4836
+Token: יצא | Score: 0.3178
+Token: ייצא | Score: 0.0271
+Token: שיוצא | Score: 0.0222
+Token: שיצא | Score: 0.0174
+
+Sentence: החתול [MASK] לעבודה בחודש האחרון.
+Token: חזר | Score: 0.1341
+Token: יצא | Score: 0.0916
+Token: יוצא | Score: 0.0650
+Token: התקבל | Score: 0.0504
+Token: מגיע | Score: 0.0419
+
+Sentence: הבית [MASK] לבית הכנסת בשבוע שעבר.
+Token: נכנס | Score: 0.1486
+Token: הסמוך | Score: 0.0926
+Token: הפך | Score: 0.0693
+Token: שנכנס | Score: 0.0670
+Token: הצמוד | Score: 0.0525
+
+Sentence: התלמידים [MASK] לכיתה בשבוע שעבר.
+Token: עלו | Score: 0.5191
+Token: חזרו | Score: 0.1272
+Token: הגיעו | Score: 0.0815
+Token: שבו | Score: 0.0617
+Token: שעלו | Score: 0.0394
+
+Sentence: המשפחה [MASK] לכיתה בערב.
+Token: עולה | Score: 0.2468
+Token: עלתה | Score: 0.2006
+Token: מגיעה | Score: 0.0809
+Token: חוזרת | Score: 0.0708
+Token: יוצאת | Score: 0.0415
+
+Sentence: התלמידים [MASK] לבית הכנסת כל יום.
+Token: מגיעים | Score: 0.4799
+Token: נכנסים | Score: 0.0984
+Token: הולכים | Score: 0.0802
+Token: חוזרים | Score: 0.0693
+Token: באים | Score: 0.0508
+
+Sentence: המשפחה [MASK] לעבודה בערב.
+Token: יוצאת | Score: 0.2555
+Token: חוזרת | Score: 0.1007
+Token: יצאה | Score: 0.0799
+Token: מגיעה | Score: 0.0694
+Token: נוסעת | Score: 0.0600
+
+Sentence: המכונית [MASK] לשוק בלילה.
+Token: יוצאת | Score: 0.5559
+Token: תצא | Score: 0.2028
+Token: יצאה | Score: 0.1076
+Token: נכנסת | Score: 0.0231
+Token: תגיע | Score: 0.0141
+
+Sentence: הספר [MASK] לכיתה כל יום.
+Token: עולה | Score: 0.2026
+Token: חוזר | Score: 0.1742
+Token: נכנס | Score: 0.1467
+Token: מגיע | Score: 0.1186
+Token: מוכן | Score: 0.0249
+
+Sentence: הבית [MASK] לעבודה כל יום.
+Token: מוכן | Score: 0.2183
+Token: עובד | Score: 0.1384
+Token: פתוח | Score: 0.0648
+Token: מסודר | Score: 0.0442
+Token: מתאים | Score: 0.0436
+
+Sentence: התלמידים [MASK] לשוק בשבוע שעבר.
+Token: יצאו | Score: 0.8373
+Token: שיצאו | Score: 0.0422
+Token: נכנסו | Score: 0.0297
+Token: הגיעו | Score: 0.0142
+Token: חזרו | Score: 0.0107
+
+Sentence: הבית [MASK] לאוניברסיטה בבוקר.
+Token: צמוד | Score: 0.1388
+Token: עבר | Score: 0.0826
+Token: עובר | Score: 0.0661
+Token: שייך | Score: 0.0610
+Token: הופך | Score: 0.0501
+
+Sentence: המכונית [MASK] לעבודה כל יום.
+Token: מוכנה | Score: 0.3548
+Token: זמינה | Score: 0.1033
+Token: נוחה | Score: 0.0878
+Token: מתאימה | Score: 0.0745
+Token: מגיעה | Score: 0.0297
+
+Sentence: המורה [MASK] לספרייה בבוקר.
+Token: מגיע | Score: 0.1422
+Token: מגיעה | Score: 0.1401
+Token: נכנסת | Score: 0.0417
+Token: חוזרת | Score: 0.0400
+Token: נכנס | Score: 0.0319
+
+Sentence: המורה [MASK] לשוק בערב.
+Token: יצאה | Score: 0.5094
+Token: תצא | Score: 0.2086
+Token: יוצאת | Score: 0.1581
+Token: יצא | Score: 0.0284
+Token: נסעה | Score: 0.0176
+
+Sentence: האישה [MASK] לכיתה בבוקר.
+Token: עולה | Score: 0.2886
+Token: מגיעה | Score: 0.1472
+Token: עלתה | Score: 0.0876
+Token: הגיעה | Score: 0.0757
+Token: נכנסה | Score: 0.0509
+
+Sentence: החתול [MASK] לשוק בבוקר.
+Token: יצא | Score: 0.4356
+Token: יוצא | Score: 0.3976
+Token: ייצא | Score: 0.0621
+Token: הולך | Score: 0.0348
+Token: נכנס | Score: 0.0091
+
+Sentence: החתול [MASK] לאוניברסיטה בחודש האחרון.
+Token: הגיע | Score: 0.1975
+Token: יצא | Score: 0.1672
+Token: נכנס | Score: 0.1538
+Token: התקבל | Score: 0.0846
+Token: נרשם | Score: 0.0841
+
+Sentence: הבית [MASK] לבית הספר בשבוע שעבר.
+Token: חזר | Score: 0.0968
+Token: עבר | Score: 0.0625
+Token: נכנס | Score: 0.0512
+Token: שעבר | Score: 0.0440
+Token: הגיע | Score: 0.0391
+
+Sentence: המורה [MASK] לספרייה בערב.
+Token: מגיעה | Score: 0.1798
+Token: חוזרת | Score: 0.0685
+Token: הגיעה | Score: 0.0525
+Token: נכנסת | Score: 0.0446
+Token: תגיע | Score: 0.0383
+
+Sentence: האישה [MASK] לשוק בלילה.
+Token: יוצאת | Score: 0.6057
+Token: יצאה | Score: 0.1330
+Token: תצא | Score: 0.1306
+Token: הולכת | Score: 0.0392
+Token: נכנסת | Score: 0.0186
+
+Sentence: הבית [MASK] לאוניברסיטה באוקטובר האחרון.
+Token: עבר | Score: 0.3763
+Token: נכנס | Score: 0.2106
+Token: נפתח | Score: 0.0810
+Token: הועבר | Score: 0.0493
+Token: חזר | Score: 0.0275
+
+Sentence: האיש [MASK] לספרייה בחודש האחרון.
+Token: שהגיע | Score: 0.1773
+Token: נכנס | Score: 0.1600
+Token: שנכנס | Score: 0.1389
+Token: הגיע | Score: 0.1281
+Token: חזר | Score: 0.0956
+
+Sentence: הספר [MASK] לבית הכנסת בחודש האחרון.
+Token: הגיע | Score: 0.2814
+Token: נכנס | Score: 0.1540
+Token: חזר | Score: 0.1412
+Token: הועבר | Score: 0.0712
+Token: יצא | Score: 0.0525
+
+Sentence: הילדים [MASK] לשוק בלילה.
+Token: יצאו | Score: 0.5939
+Token: יוצאים | Score: 0.2895
+Token: ילכו | Score: 0.0535
+Token: הולכים | Score: 0.0139
+Token: יוצאות | Score: 0.0054
+
+Sentence: הבית [MASK] לשדה בבוקר.
+Token: יצא | Score: 0.0553
+Token: מחוץ | Score: 0.0466
+Token: יוצא | Score: 0.0466
+Token: הלך | Score: 0.0453
+Token: הגיע | Score: 0.0370
+
+Sentence: האיש [MASK] לעבודה בבוקר.
+Token: יצא | Score: 0.1717
+Token: הלך | Score: 0.1189
+Token: יוצא | Score: 0.0815
+Token: קם | Score: 0.0598
+Token: חזר | Score: 0.0540
+
+Sentence: האישה [MASK] לשוק כל יום.
+Token: יוצאת | Score: 0.7902
+Token: הולכת | Score: 0.0643
+Token: יצאה | Score: 0.0352
+Token: נכנסת | Score: 0.0198
+Token: תצא | Score: 0.0100
+
+Sentence: הספר [MASK] לכיתה בשבוע שעבר.
+Token: עלה | Score: 0.6605
+Token: הגיע | Score: 0.0770
+Token: נכנס | Score: 0.0393
+Token: חזר | Score: 0.0386
+Token: הועלה | Score: 0.0287
+
+Sentence: המכונית [MASK] לבית הספר בלילה.
+Token: מגיעה | Score: 0.1754
+Token: נוסעת | Score: 0.0742
+Token: יוצאת | Score: 0.0578
+Token: חזרה | Score: 0.0528
+Token: הגיעה | Score: 0.0521
+
+Sentence: המכונית [MASK] לעבודה בבוקר.
+Token: מוכנה | Score: 0.1631
+Token: מגיעה | Score: 0.1254
+Token: יוצאת | Score: 0.0726
+Token: מיועדת | Score: 0.0615
+Token: נוסעת | Score: 0.0551
+
+Sentence: הספר [MASK] לכיתה בחודש האחרון.
+Token: עלה | Score: 0.5892
+Token: עולה | Score: 0.1173
+Token: נכנס | Score: 0.0866
+Token: הגיע | Score: 0.0532
+Token: חזר | Score: 0.0296
+
+Sentence: התלמידים [MASK] לספרייה בשבוע שעבר.
+Token: חזרו | Score: 0.2474
+Token: הגיעו | Score: 0.2434
+Token: עברו | Score: 0.0876
+Token: נרשמו | Score: 0.0612
+Token: התקבלו | Score: 0.0602
+
+Sentence: המכונית [MASK] לשוק כל יום.
+Token: יוצאת | Score: 0.7752
+Token: נכנסת | Score: 0.0903
+Token: מגיעה | Score: 0.0274
+Token: יצאה | Score: 0.0167
+Token: חוזרת | Score: 0.0103
+
+Sentence: המורה [MASK] לשוק בחודש האחרון.
+Token: יצאה | Score: 0.4785
+Token: יצא | Score: 0.3921
+Token: נכנסה | Score: 0.0207
+Token: שיצאה | Score: 0.0157
+Token: יוצאת | Score: 0.0124
+
+Sentence: האישה [MASK] לספרייה בלילה.
+Token: הולכת | Score: 0.2740
+Token: מגיעה | Score: 0.1124
+Token: חוזרת | Score: 0.1081
+Token: נכנסת | Score: 0.0706
+Token: עוברת | Score: 0.0608
+
+Sentence: המורה [MASK] לעבודה בחודש האחרון.
+Token: התקבל | Score: 0.1912
+Token: התקבלה | Score: 0.1344
+Token: חזר | Score: 0.1231
+Token: חזרה | Score: 0.0679
+Token: יצא | Score: 0.0430
+
+Sentence: האיש [MASK] לכיתה בלילה.
+Token: עולה | Score: 0.2919
+Token: נכנס | Score: 0.2271
+Token: עלה | Score: 0.1533
+Token: הגיע | Score: 0.0763
+Token: שעלה | Score: 0.0535
+
+Sentence: הבית [MASK] לשדה בערב.
+Token: צמוד | Score: 0.0543
+Token: הפך | Score: 0.0510
+Token: מחוץ | Score: 0.0482
+Token: עובר | Score: 0.0440
+Token: פונה | Score: 0.0437
+
+Sentence: המורה [MASK] לעבודה באוקטובר האחרון.
+Token: התקבלה | Score: 0.3080
+Token: התקבל | Score: 0.2187
+Token: חזר | Score: 0.0549
+Token: נשלחה | Score: 0.0523
+Token: יצאה | Score: 0.0485
+

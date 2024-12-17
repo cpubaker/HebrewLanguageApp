@@ -1,1 +1,2 @@
-hebrew_words.json
+
+bottom_frame.pack(side="bottom", fill="x", pady=20)
