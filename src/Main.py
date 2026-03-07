@@ -3,7 +3,6 @@ from tkinter import messagebox
 import json
 import random
 import os
-from hebrew_guide import GUIDE_SECTIONS
 
 
 class HebrewLearningApp:
@@ -17,6 +16,7 @@ class HebrewLearningApp:
         # Project structure
         self.project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         self.words_file = os.path.join(self.project_root, "data", "input", "hebrew_words.json")
+        self.guide_dir = os.path.join(self.project_root, "data", "input", "guide")
         self.icon_file = os.path.join(self.project_root, "src", "ui", "app_icon.png")
 
         # App icon
@@ -24,10 +24,8 @@ class HebrewLearningApp:
 
         # Data
         self.words = self.load_words()
+        self.guide_sections = self.load_guide_sections()
         self.current_word = None
-
-        # Guide content
-        self.guide_sections = GUIDE_SECTIONS
 
         # Title
         self.title_label = tk.Label(
@@ -121,6 +119,44 @@ class HebrewLearningApp:
         with open(self.words_file, "r", encoding="utf-8") as file:
             return json.load(file)
 
+    def load_guide_sections(self):
+        if not os.path.exists(self.guide_dir):
+            messagebox.showerror(
+                "Folder not found",
+                f"Could not find guide folder:\n{self.guide_dir}"
+            )
+            self.master.destroy()
+            raise FileNotFoundError(self.guide_dir)
+
+        sections = {}
+
+        for filename in sorted(os.listdir(self.guide_dir)):
+            if not filename.endswith(".txt"):
+                continue
+
+            file_path = os.path.join(self.guide_dir, filename)
+
+            with open(file_path, "r", encoding="utf-8") as file:
+                content = file.read().strip()
+
+            if not content:
+                continue
+
+            lines = content.splitlines()
+            title = lines[0].strip()
+            body = "\n".join(lines[1:]).strip()
+
+            if title:
+                sections[title] = body
+
+        if not sections:
+            messagebox.showwarning(
+                "Guide is empty",
+                f"No guide sections were found in:\n{self.guide_dir}"
+            )
+
+        return sections
+
     def save_progress(self):
         with open(self.words_file, "w", encoding="utf-8") as file:
             json.dump(self.words, file, ensure_ascii=False, indent=4)
@@ -213,7 +249,7 @@ class HebrewLearningApp:
 
         section_listbox = tk.Listbox(
             left_frame,
-            width=24,
+            width=28,
             height=18,
             font=("Helvetica", 11),
             exportselection=False
@@ -237,7 +273,8 @@ class HebrewLearningApp:
         )
         text_widget.pack(fill="both", expand=True)
 
-        for section_name in self.guide_sections:
+        section_names = list(self.guide_sections.keys())
+        for section_name in section_names:
             section_listbox.insert(tk.END, section_name)
 
         def show_section(event=None):
@@ -256,8 +293,13 @@ class HebrewLearningApp:
 
         section_listbox.bind("<<ListboxSelect>>", show_section)
 
-        section_listbox.selection_set(0)
-        show_section()
+        if section_names:
+            section_listbox.selection_set(0)
+            show_section()
+        else:
+            text_title.config(text="Довідник порожній")
+            text_widget.insert("1.0", "У папці guide поки немає жодного розділу.")
+            text_widget.config(state="disabled")
 
 
 def main():
