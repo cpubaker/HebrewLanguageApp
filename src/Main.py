@@ -4,6 +4,8 @@ import json
 import random
 import os
 
+from matplotlib import container
+
 
 class HebrewLearningApp:
     def __init__(self, master):
@@ -264,14 +266,23 @@ class HebrewLearningApp:
         )
         text_title.pack(fill="x", pady=(0, 8))
 
+        text_container = tk.Frame(right_frame)
+        text_container.pack(fill="both", expand=True)
+
+        text_scrollbar = tk.Scrollbar(text_container, orient="vertical")
+        text_scrollbar.pack(side="right", fill="y")
+
         text_widget = tk.Text(
-            right_frame,
+            text_container,
             wrap="word",
             font=("Helvetica", 12),
             padx=10,
-            pady=10
+            pady=10,
+            yscrollcommand=text_scrollbar.set
         )
-        text_widget.pack(fill="both", expand=True)
+        text_widget.pack(side="left", fill="both", expand=True)
+
+        text_scrollbar.config(command=text_widget.yview)
 
         section_names = list(self.guide_sections.keys())
         for section_name in section_names:
@@ -290,6 +301,7 @@ class HebrewLearningApp:
             text_widget.delete("1.0", tk.END)
             text_widget.insert(tk.END, content)
             text_widget.config(state="disabled")
+            text_widget.yview_moveto(0)
 
         section_listbox.bind("<<ListboxSelect>>", show_section)
 
@@ -300,8 +312,7 @@ class HebrewLearningApp:
             text_title.config(text="Довідник порожній")
             text_widget.insert("1.0", "У папці guide поки немає жодного розділу.")
             text_widget.config(state="disabled")
-
-
+    
 def main():
     root = tk.Tk()
     app = HebrewLearningApp(root)
