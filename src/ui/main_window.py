@@ -6,6 +6,7 @@ from tkinter import messagebox
 from app_paths import AppPaths
 from data_service import HebrewDataService
 from ui.guide_window import GuideWindow
+from ui.verbs_window import VerbsWindow
 
 
 class HebrewLearningApp:
@@ -16,6 +17,7 @@ class HebrewLearningApp:
 
         self.words = self.data_service.load_words()
         self.guide_sections = self.data_service.load_guide_sections()
+        self.verbs = self.data_service.load_verbs()
         self.current_word = None
         self.icon_image = None
 
@@ -75,7 +77,7 @@ class HebrewLearningApp:
 
         next_button = tk.Button(
             controls_frame,
-            text="Next",
+            text="Далі",
             width=12,
             height=1,
             command=self.next_word,
@@ -90,6 +92,15 @@ class HebrewLearningApp:
             command=self.open_guide,
         )
         guide_button.pack(side=tk.LEFT, padx=8)
+
+        verbs_button = tk.Button(
+            controls_frame,
+            text="Дієслова",
+            width=12,
+            height=1,
+            command=self.open_verbs,
+        )
+        verbs_button.pack(side=tk.LEFT, padx=8)
 
     def set_app_icon(self):
         if os.path.exists(self.paths.icon_file):
@@ -165,3 +176,6 @@ class HebrewLearningApp:
 
     def open_guide(self):
         GuideWindow(self.master, self.guide_sections)
+
+    def open_verbs(self):
+        VerbsWindow(self.master, self.verbs)
