@@ -6,13 +6,13 @@
 - When making changes, prefer preserving the existing local-file workflow unless the task explicitly targets database or model integrations.
 
 ## Primary Entry Point
-- Main app entry point: `src/Main.py`
+- Main app entry point: `src/main.py`
 - Expected behavior: the app should start without errors when launched from the project root.
 - Typical launch command from the repository root:
-  - `python src/Main.py`
+  - `python src/main.py`
 
 ## Project Layout
-- `src/Main.py` - Tkinter bootstrap and main loop.
+- `src/main.py` - Tkinter bootstrap and main loop.
 - `src/ui/` - UI windows and application screens.
 - `src/data_service.py` - loading and saving local JSON/TXT content.
 - `src/app_paths.py` - path resolution for project data and assets.
@@ -27,13 +27,13 @@
 - Read the smallest relevant part of the codebase first. Do not rescan the whole repository if the task is clearly limited to one area.
 - For verb-content tasks, inspect `data/input/verbs/` first and only open code files if format or behavior is unclear.
 - For guide-content tasks, inspect `data/input/guide/` first.
-- For startup, file-loading, or missing-path issues, inspect `src/Main.py`, `src/app_paths.py`, and `src/data_service.py` first.
+- For startup, file-loading, or missing-path issues, inspect `src/main.py`, `src/app_paths.py`, and `src/data_service.py` first.
 - Preserve UTF-8 encoding for all Hebrew content files.
 - Keep numbered lesson filenames stable unless the task explicitly requires renaming.
 - Do not change text-file structure casually; UI logic depends on simple parsing:
   - first line = section title
   - remaining lines = section body
-- If changing file paths or data-loading behavior, verify that `python src/Main.py` still works.
+- If changing file paths or data-loading behavior, verify that `python src/main.py` still works.
 
 ## Data Conventions
 - Verb and guide `.txt` files are ordered by filename prefix such as `01_`, `02_`, `03_`.
@@ -49,11 +49,10 @@
 
 ## Validation
 - Minimum validation after code changes affecting startup, UI wiring, or file loading:
-  - run `python src/Main.py`
+  - run `python src/main.py`
 - Minimum validation after changing local data files:
   - confirm the target file still follows the title/body text format
-  - if relevant, run `python src/Main.py`
+  - if relevant, run `python src/main.py`
 
 ## Known Notes
-- The user refers to the entry point as `main.py`, but in this repository the actual file is `src/Main.py`.
 - Path handling is centralized in `src/app_paths.py`; reuse it instead of hardcoding relative paths in multiple places.

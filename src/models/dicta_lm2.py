@@ -15,8 +15,8 @@ if not torch.cuda.is_available():
     print("Попередження: CUDA недоступний. Модель працюватиме на CPU.")
 
 # Шляхи до файлів
-json_file_path = "Test_sentences.json"
-output_file_path = "DictaLM2_results.txt"
+json_file_path = "test_sentences.json"
+output_file_path = "dicta_lm2_results.txt"
 
 try:
     # Завантаження JSON-файлу

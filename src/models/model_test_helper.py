@@ -119,30 +119,30 @@ os.makedirs(output_folder, exist_ok=True)
 # DictaBERT
 dictabert_model = ModelTestHelper(
     model_name="dicta-il/dictabert",
-    output_file_path=os.path.join(output_folder, "DictaBert_results.txt")
+    output_file_path=os.path.join(output_folder, "dicta_bert_results.txt")
 )
-dictabert_model.run_test(json_file_path=os.path.join(input_folder, "Test_sentences.json"), max_sentences=10)
+dictabert_model.run_test(json_file_path=os.path.join(input_folder, "test_sentences.json"), max_sentences=10)
 
 # AlephBERT-Gimmel
 alephbert_model = ModelTestHelper(
     model_name="imvladikon/alephbertgimmel-base-512",
-    output_file_path=os.path.join(output_folder, "AlephBert_results.txt")
+    output_file_path=os.path.join(output_folder, "aleph_bert_results.txt")
 )
-alephbert_model.run_test(json_file_path=os.path.join(input_folder, "Test_sentences.json"), max_sentences=10)
+alephbert_model.run_test(json_file_path=os.path.join(input_folder, "test_sentences.json"), max_sentences=10)
 
 # HeBERT
 heber_model = ModelTestHelper(
     model_name="avichr/heBERT",
-    output_file_path=os.path.join(output_folder, "HeBert_results.txt"),
+    output_file_path=os.path.join(output_folder, "he_bert_results.txt"),
     use_pipeline=True,
     trust_remote_code=True
 )
-heber_model.run_test(json_file_path=os.path.join(input_folder, "Test_sentences.json"), max_sentences=10)
+heber_model.run_test(json_file_path=os.path.join(input_folder, "test_sentences.json"), max_sentences=10)
 
 # OpenAI GPT
 openai_model = ModelTestHelper(
     model_name="openai",
-    output_file_path=os.path.join(output_folder, "GPT_results.txt"),
+    output_file_path=os.path.join(output_folder, "gpt_results.txt"),
     use_openai=True
 )
-openai_model.run_test(json_file_path=os.path.join(input_folder, "Test_sentences.json"), max_sentences=10)
+openai_model.run_test(json_file_path=os.path.join(input_folder, "test_sentences.json"), max_sentences=10)

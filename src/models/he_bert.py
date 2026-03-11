@@ -12,8 +12,8 @@ def main():
     fill_mask = pipeline("fill-mask", model=model, tokenizer=tokenizer)
 
     # Load sentences from the JSON file
-    input_file = "Test_sentences.json"
-    output_file = "HeBert_result.txt"
+    input_file = "test_sentences.json"
+    output_file = "he_bert_result.txt"
 
     with open(input_file, "r", encoding="utf-8") as f:
         sentences = json.load(f)

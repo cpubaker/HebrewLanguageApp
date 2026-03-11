@@ -8,7 +8,7 @@ client = OpenAI()
 json_file_path = "sentences.json"
 
 # Шлях до файлу з результатами
-output_file_path = "GPT_results.txt"
+output_file_path = "gpt_results.txt"
 
 try:
     with open(json_file_path, "r", encoding="utf-8") as file:

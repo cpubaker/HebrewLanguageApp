@@ -5,10 +5,10 @@ from openai import OpenAI
 client = OpenAI()
 
 # Шлях до JSON-файлу
-json_file_path = "Test_combinations.json"
+json_file_path = "test_combinations.json"
 
 # Шлях до файлу з результатами
-output_file_path = "GPT_Generated_Sentences_MultiModel.txt"
+output_file_path = "gpt_generated_sentences_multi_model.txt"
 
 # Список моделей для тестування
 models = ["gpt-3.5-turbo", "gpt-3.5-turbo-16k", "gpt-4"]

@@ -14,8 +14,8 @@ fill_mask = pipeline(
 )
 
 # Шлях до JSON-файлу та файлу результатів
-json_file_path = "Test_sentences.json"
-output_file_path = "DictaBert_results.txt"
+json_file_path = "test_sentences.json"
+output_file_path = "dicta_bert_results.txt"
 
 try:
     # Завантаження JSON-файлу
