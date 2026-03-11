@@ -1,10 +1,12 @@
 import os
 import random
 import tkinter as tk
+from datetime import datetime
 from tkinter import messagebox
 
 from app_paths import AppPaths
 from data_service import HebrewDataService
+from ui.flashcards_window import FlashcardsWindow
 from ui.guide_window import GuideWindow
 from ui.verbs_window import VerbsWindow
 
@@ -102,6 +104,15 @@ class HebrewLearningApp:
         )
         verbs_button.pack(side=tk.LEFT, padx=8)
 
+        flashcards_button = tk.Button(
+            controls_frame,
+            text="Картки",
+            width=12,
+            height=1,
+            command=self.open_flashcards,
+        )
+        flashcards_button.pack(side=tk.LEFT, padx=8)
+
     def set_app_icon(self):
         if os.path.exists(self.paths.icon_file):
             try:
@@ -155,11 +166,12 @@ class HebrewLearningApp:
     def check_answer(self, translation):
         if translation == self.current_word["english"]:
             self.current_word["correct"] += 1
-            self.current_word["last_correct"] = True
+            self.current_word["last_correct"] = datetime.now().isoformat(
+                timespec="seconds"
+            )
             self.feedback_label.config(text="Correct!", fg="green")
         else:
             self.current_word["wrong"] += 1
-            self.current_word["last_correct"] = False
             self.feedback_label.config(text="Wrong!", fg="red")
 
         self.update_score()
@@ -179,3 +191,6 @@ class HebrewLearningApp:
 
     def open_verbs(self):
         VerbsWindow(self.master, self.verbs)
+
+    def open_flashcards(self):
+        FlashcardsWindow(self.master, self.words, self.data_service)

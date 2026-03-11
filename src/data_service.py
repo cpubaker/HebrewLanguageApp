@@ -19,7 +19,17 @@ class HebrewDataService:
             raise FileNotFoundError(self.paths.words_file)
 
         with open(self.paths.words_file, "r", encoding="utf-8") as file:
-            return json.load(file)
+            words = json.load(file)
+
+        for word in words:
+            word.setdefault("correct", 0)
+            word.setdefault("wrong", 0)
+
+            last_correct = word.get("last_correct", False)
+            if isinstance(last_correct, bool):
+                word["last_correct"] = False
+
+        return words
 
     def load_guide_sections(self):
         return self.load_text_sections(
