@@ -1,4 +1,5 @@
 import tkinter as tk
+import re
 
 
 class TextBrowserWindow:
@@ -76,6 +77,43 @@ class TextBrowserWindow:
         self.text_widget.pack(side="left", fill="both", expand=True)
 
         text_scrollbar.config(command=self.text_widget.yview)
+        self._configure_text_tags()
+
+    def _configure_text_tags(self):
+        self.text_widget.tag_configure(
+            "heading_1",
+            font=("Helvetica", 16, "bold"),
+            spacing1=10,
+            spacing3=6,
+        )
+        self.text_widget.tag_configure(
+            "heading_2",
+            font=("Helvetica", 14, "bold"),
+            spacing1=8,
+            spacing3=4,
+        )
+        self.text_widget.tag_configure(
+            "heading_3",
+            font=("Helvetica", 13, "bold"),
+            spacing1=6,
+            spacing3=4,
+        )
+        self.text_widget.tag_configure(
+            "paragraph",
+            font=("Helvetica", 12),
+            spacing1=2,
+            spacing3=8,
+        )
+        self.text_widget.tag_configure(
+            "list_item",
+            font=("Helvetica", 12),
+            lmargin1=18,
+            lmargin2=36,
+            spacing1=2,
+            spacing3=4,
+        )
+        self.text_widget.tag_configure("bold", font=("Helvetica", 12, "bold"))
+        self.text_widget.tag_configure("italic", font=("Helvetica", 12, "italic"))
 
     def _populate_sections(self):
         section_names = list(self.sections.keys())
@@ -103,6 +141,69 @@ class TextBrowserWindow:
         self.text_title.config(text=selected_section)
         self.text_widget.config(state="normal")
         self.text_widget.delete("1.0", tk.END)
-        self.text_widget.insert(tk.END, content)
+        self._render_markdown(content)
         self.text_widget.config(state="disabled")
         self.text_widget.yview_moveto(0)
+
+    def _render_markdown(self, content):
+        lines = content.splitlines()
+
+        for line in lines:
+            stripped_line = line.strip()
+
+            if not stripped_line:
+                self.text_widget.insert(tk.END, "\n")
+                continue
+
+            if stripped_line.startswith("### "):
+                self._insert_inline_markdown(stripped_line[4:], "heading_3")
+                self.text_widget.insert(tk.END, "\n")
+                continue
+
+            if stripped_line.startswith("## "):
+                self._insert_inline_markdown(stripped_line[3:], "heading_2")
+                self.text_widget.insert(tk.END, "\n")
+                continue
+
+            if stripped_line.startswith("# "):
+                self._insert_inline_markdown(stripped_line[2:], "heading_1")
+                self.text_widget.insert(tk.END, "\n")
+                continue
+
+            unordered_match = re.match(r"^[-*]\s+(.*)$", stripped_line)
+            if unordered_match:
+                self.text_widget.insert(tk.END, "- ", ("list_item",))
+                self._insert_inline_markdown(unordered_match.group(1), "list_item")
+                self.text_widget.insert(tk.END, "\n")
+                continue
+
+            ordered_match = re.match(r"^(\d+)\.\s+(.*)$", stripped_line)
+            if ordered_match:
+                self.text_widget.insert(
+                    tk.END,
+                    f"{ordered_match.group(1)}. ",
+                    ("list_item",),
+                )
+                self._insert_inline_markdown(ordered_match.group(2), "list_item")
+                self.text_widget.insert(tk.END, "\n")
+                continue
+
+            self._insert_inline_markdown(stripped_line, "paragraph")
+            self.text_widget.insert(tk.END, "\n")
+
+    def _insert_inline_markdown(self, text, block_tag):
+        parts = re.split(r"(\*\*.*?\*\*|\*.*?\*)", text)
+
+        for part in parts:
+            if not part:
+                continue
+
+            tags = [block_tag]
+            if part.startswith("**") and part.endswith("**") and len(part) >= 4:
+                part = part[2:-2]
+                tags.append("bold")
+            elif part.startswith("*") and part.endswith("*") and len(part) >= 2:
+                part = part[1:-1]
+                tags.append("italic")
+
+            self.text_widget.insert(tk.END, part, tuple(tags))

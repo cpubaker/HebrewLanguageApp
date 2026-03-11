@@ -1,5 +1,6 @@
 import json
 import os
+import re
 from tkinter import messagebox
 
 
@@ -59,7 +60,7 @@ class HebrewDataService:
         sections = {}
 
         for filename in sorted(os.listdir(directory)):
-            if not filename.endswith(".txt"):
+            if not filename.endswith((".md", ".txt")):
                 continue
 
             file_path = os.path.join(directory, filename)
@@ -69,9 +70,7 @@ class HebrewDataService:
             if not content:
                 continue
 
-            lines = content.splitlines()
-            title = lines[0].strip()
-            body = "\n".join(lines[1:]).strip()
+            title, body = self._split_markdown_section(content)
 
             if title:
                 sections[title] = body
@@ -80,3 +79,23 @@ class HebrewDataService:
             messagebox.showwarning(empty_title, empty_message)
 
         return sections
+
+    def _split_markdown_section(self, content):
+        lines = content.splitlines()
+
+        for index, line in enumerate(lines):
+            stripped_line = line.strip()
+            if not stripped_line:
+                continue
+
+            heading_match = re.match(r"^#{1,6}\s+(.*)$", stripped_line)
+            if heading_match:
+                title = heading_match.group(1).strip()
+                body = "\n".join(lines[index + 1 :]).strip()
+                return title, body
+
+            title = stripped_line
+            body = "\n".join(lines[index + 1 :]).strip()
+            return title, body
+
+        return "", ""

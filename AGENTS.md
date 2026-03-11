@@ -17,8 +17,8 @@
 - `src/data_service.py` - loading and saving local JSON/TXT content.
 - `src/app_paths.py` - path resolution for project data and assets.
 - `data/input/hebrew_words.json` - core vocabulary data.
-- `data/input/guide/` - guide sections stored as numbered `.txt` files.
-- `data/input/verbs/` - verb lessons stored as numbered `.txt` files.
+- `data/input/guide/` - guide sections stored as numbered `.md` files.
+- `data/input/verbs/` - verb lessons stored as numbered `.md` files.
 - `data/output/` - generated or model output artifacts; avoid treating this as source of truth.
 - `src/models/` - model-specific experiments and integrations.
 - `src/database/` - SQL scripts and database-related assets.
@@ -30,16 +30,18 @@
 - For startup, file-loading, or missing-path issues, inspect `src/main.py`, `src/app_paths.py`, and `src/data_service.py` first.
 - Preserve UTF-8 encoding for all Hebrew content files.
 - Keep numbered lesson filenames stable unless the task explicitly requires renaming.
-- Do not change text-file structure casually; UI logic depends on simple parsing:
-  - first line = section title
-  - remaining lines = section body
+- Do not change lesson file structure casually; UI logic expects either:
+  - first Markdown heading = section title
+  - or first non-empty line = section title
+  - remaining content = section body rendered with basic Markdown support
 - If changing file paths or data-loading behavior, verify that `python src/main.py` still works.
 
 ## Data Conventions
-- Verb and guide `.txt` files are ordered by filename prefix such as `01_`, `02_`, `03_`.
-- Empty `.txt` files are ignored by the loader.
-- Non-`.txt` files in guide/verb directories are ignored by the loader.
-- In text section files, the first non-empty line acts as the displayed title.
+- Verb and guide `.md` files are ordered by filename prefix such as `01_`, `02_`, `03_`.
+- Empty lesson files are ignored by the loader.
+- Non-lesson files in guide/verb directories are ignored by the loader.
+- In lesson files, the first Markdown heading is preferred as the displayed title.
+- If no Markdown heading exists, the first non-empty line is used as the displayed title.
 
 ## Safe Defaults For AI Agents
 - Assume the user's main working mode is the local Tkinter app unless they explicitly mention database, OpenAI, or local model experiments.
