@@ -8,6 +8,7 @@ class AppPaths:
     words_file: str
     guide_dir: str
     verbs_dir: str
+    reading_dir: str
     icon_file: str
 
     @classmethod
@@ -23,5 +24,6 @@ class AppPaths:
             words_file=os.path.join(project_root, "data", "input", "hebrew_words.json"),
             guide_dir=os.path.join(project_root, "data", "input", "guide"),
             verbs_dir=os.path.join(project_root, "data", "input", "verbs"),
+            reading_dir=os.path.join(project_root, "data", "input", "reading"),
             icon_file=os.path.join(project_root, "src", "ui", "app_icon.png"),
         )

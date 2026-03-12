@@ -49,6 +49,15 @@ class HebrewDataService:
             empty_message=f"No verbs were found in:\n{self.paths.verbs_dir}",
         )
 
+    def load_reading_sections(self):
+        return self.load_text_sections(
+            self.paths.reading_dir,
+            missing_title="Folder not found",
+            missing_message=f"Could not find reading folder:\n{self.paths.reading_dir}",
+            empty_title="Reading is empty",
+            empty_message=f"No reading texts were found in:\n{self.paths.reading_dir}",
+        )
+
     def save_words(self, words):
         with open(self.paths.words_file, "w", encoding="utf-8") as file:
             json.dump(words, file, ensure_ascii=False, indent=4)

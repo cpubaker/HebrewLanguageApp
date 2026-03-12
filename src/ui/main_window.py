@@ -8,6 +8,7 @@ from app_paths import AppPaths
 from data_service import HebrewDataService
 from ui.flashcards_window import FlashcardsWindow
 from ui.guide_window import GuideWindow
+from ui.reading_window import ReadingWindow
 from ui.verbs_window import VerbsWindow
 
 
@@ -20,6 +21,7 @@ class HebrewLearningApp:
         self.words = self.data_service.load_words()
         self.guide_sections = self.data_service.load_guide_sections()
         self.verbs = self.data_service.load_verbs()
+        self.reading_sections = self.data_service.load_reading_sections()
         self.current_word = None
         self.icon_image = None
 
@@ -77,8 +79,14 @@ class HebrewLearningApp:
         controls_frame = tk.Frame(self.master)
         controls_frame.pack(pady=10)
 
+        top_controls_frame = tk.Frame(controls_frame)
+        top_controls_frame.pack()
+
+        bottom_controls_frame = tk.Frame(controls_frame)
+        bottom_controls_frame.pack(pady=(8, 0))
+
         next_button = tk.Button(
-            controls_frame,
+            top_controls_frame,
             text="Далі",
             width=12,
             height=1,
@@ -87,7 +95,7 @@ class HebrewLearningApp:
         next_button.pack(side=tk.LEFT, padx=8)
 
         guide_button = tk.Button(
-            controls_frame,
+            top_controls_frame,
             text="Довідник",
             width=12,
             height=1,
@@ -96,7 +104,7 @@ class HebrewLearningApp:
         guide_button.pack(side=tk.LEFT, padx=8)
 
         verbs_button = tk.Button(
-            controls_frame,
+            top_controls_frame,
             text="Дієслова",
             width=12,
             height=1,
@@ -104,8 +112,17 @@ class HebrewLearningApp:
         )
         verbs_button.pack(side=tk.LEFT, padx=8)
 
+        reading_button = tk.Button(
+            bottom_controls_frame,
+            text="Читання",
+            width=12,
+            height=1,
+            command=self.open_reading,
+        )
+        reading_button.pack(side=tk.LEFT, padx=8)
+
         flashcards_button = tk.Button(
-            controls_frame,
+            bottom_controls_frame,
             text="Картки",
             width=12,
             height=1,
@@ -191,6 +208,9 @@ class HebrewLearningApp:
 
     def open_verbs(self):
         VerbsWindow(self.master, self.verbs)
+
+    def open_reading(self):
+        ReadingWindow(self.master, self.reading_sections)
 
     def open_flashcards(self):
         FlashcardsWindow(self.master, self.words, self.data_service)
