@@ -18,6 +18,7 @@
 - `src/app_paths.py` - path resolution for project data and assets.
 - `data/input/hebrew_words.json` - core vocabulary data.
 - `data/input/guide/` - guide sections stored as numbered `.md` files.
+- `data/input/reading/` - reading lessons stored as numbered `.md` files.
 - `data/input/verbs/` - verb lessons stored as numbered `.md` files.
 - `data/output/` - generated or model output artifacts; avoid treating this as source of truth.
 - `src/models/` - model-specific experiments and integrations.
@@ -27,6 +28,7 @@
 - Read the smallest relevant part of the codebase first. Do not rescan the whole repository if the task is clearly limited to one area.
 - For verb-content tasks, inspect `data/input/verbs/` first and only open code files if format or behavior is unclear.
 - For guide-content tasks, inspect `data/input/guide/` first.
+- For reading-content tasks, inspect `data/input/reading/` first and only open code files if format or behavior is unclear.
 - For startup, file-loading, or missing-path issues, inspect `src/main.py`, `src/app_paths.py`, and `src/data_service.py` first.
 - Preserve UTF-8 encoding for all Hebrew content files.
 - Keep numbered lesson filenames stable unless the task explicitly requires renaming.
@@ -37,9 +39,9 @@
 - If changing file paths or data-loading behavior, verify that `python src/main.py` still works.
 
 ## Data Conventions
-- Verb and guide `.md` files are ordered by filename prefix such as `01_`, `02_`, `03_`.
+- Verb, guide, and reading `.md` files are ordered by filename prefix such as `01_`, `02_`, `03_`.
 - Empty lesson files are ignored by the loader.
-- Non-lesson files in guide/verb directories are ignored by the loader.
+- Non-lesson files in guide/reading/verb directories are ignored by the loader.
 - In lesson files, the first Markdown heading is preferred as the displayed title.
 - If no Markdown heading exists, the first non-empty line is used as the displayed title.
 
@@ -54,6 +56,7 @@
   - run `python src/main.py`
 - Minimum validation after changing local data files:
   - confirm the target file still follows the title/body text format
+  - for `guide`, `reading`, or `verbs` content-only edits, running `python src/main.py` is optional unless loading behavior was changed
   - if relevant, run `python src/main.py`
 
 ## Known Notes
