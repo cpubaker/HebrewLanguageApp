@@ -1,7 +1,9 @@
-import json
+﻿import json
 import os
 import re
 from tkinter import messagebox
+
+from reading_levels import READING_LEVELS
 
 
 class HebrewDataService:
@@ -50,13 +52,30 @@ class HebrewDataService:
         )
 
     def load_reading_sections(self):
-        return self.load_text_sections(
-            self.paths.reading_dir,
-            missing_title="Folder not found",
-            missing_message=f"Could not find reading folder:\n{self.paths.reading_dir}",
-            empty_title="Reading is empty",
-            empty_message=f"No reading texts were found in:\n{self.paths.reading_dir}",
-        )
+        if not os.path.exists(self.paths.reading_dir):
+            messagebox.showerror(
+                "Folder not found",
+                f"Could not find reading folder:\n{self.paths.reading_dir}",
+            )
+            self.master.destroy()
+            raise FileNotFoundError(self.paths.reading_dir)
+
+        sections = []
+
+        for level in READING_LEVELS:
+            level_dir = os.path.join(self.paths.reading_dir, level)
+            if not os.path.isdir(level_dir):
+                continue
+
+            sections.extend(self._load_reading_sections_from_directory(level_dir, level))
+
+        if not sections:
+            messagebox.showwarning(
+                "Reading is empty",
+                f"No reading texts were found in:\n{self.paths.reading_dir}",
+            )
+
+        return sections
 
     def save_words(self, words):
         with open(self.paths.words_file, "w", encoding="utf-8") as file:
@@ -99,11 +118,40 @@ class HebrewDataService:
 
         return sections
 
+    def _load_reading_sections_from_directory(self, directory, level):
+        sections = []
+
+        for filename in sorted(os.listdir(directory)):
+            if not filename.endswith((".md", ".txt")):
+                continue
+
+            file_path = os.path.join(directory, filename)
+            with open(file_path, "r", encoding="utf-8") as file:
+                content = file.read().strip()
+
+            if not content:
+                continue
+
+            title, body = self._split_markdown_section(content)
+            if not title:
+                continue
+
+            sections.append(
+                {
+                    "title": title,
+                    "body": body,
+                    "level": level,
+                    "filename": filename,
+                }
+            )
+
+        return sections
+
     def _split_markdown_section(self, content):
-        lines = content.splitlines()
+        lines = content.lstrip("\ufeff").splitlines()
 
         for index, line in enumerate(lines):
-            stripped_line = line.strip()
+            stripped_line = line.strip().lstrip("\ufeff")
             if not stripped_line:
                 continue
 
@@ -118,3 +166,4 @@ class HebrewDataService:
             return title, body
 
         return "", ""
+

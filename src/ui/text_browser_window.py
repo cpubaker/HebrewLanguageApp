@@ -29,21 +29,23 @@ class TextBrowserWindow:
         container = tk.Frame(self.window, padx=12, pady=12)
         container.pack(fill="both", expand=True)
 
-        left_frame = tk.Frame(container)
-        left_frame.pack(side="left", fill="y", padx=(0, 12))
+        self.left_frame = tk.Frame(container)
+        self.left_frame.pack(side="left", fill="y", padx=(0, 12))
 
         right_frame = tk.Frame(container)
         right_frame.pack(side="right", fill="both", expand=True)
 
+        self._build_sidebar_controls(self.left_frame)
+
         section_label = tk.Label(
-            left_frame,
+            self.left_frame,
             text=list_label,
             font=("Helvetica", 12, "bold"),
         )
         section_label.pack(anchor="w", pady=(0, 8))
 
         self.section_listbox = tk.Listbox(
-            left_frame,
+            self.left_frame,
             width=28,
             height=18,
             font=("Helvetica", 11),
@@ -78,6 +80,9 @@ class TextBrowserWindow:
 
         text_scrollbar.config(command=self.text_widget.yview)
         self._configure_text_tags()
+
+    def _build_sidebar_controls(self, parent):
+        return None
 
     def _configure_text_tags(self):
         self.text_widget.tag_configure(
@@ -126,9 +131,7 @@ class TextBrowserWindow:
             self.show_section()
             return
 
-        self.text_title.config(text=self.empty_title)
-        self.text_widget.insert("1.0", self.empty_message)
-        self.text_widget.config(state="disabled")
+        self._show_empty_state()
 
     def show_section(self, event=None):
         selection = self.section_listbox.curselection()
@@ -138,7 +141,18 @@ class TextBrowserWindow:
         selected_section = self.section_listbox.get(selection[0])
         content = self.sections[selected_section]
 
-        self.text_title.config(text=selected_section)
+        self._display_section(selected_section, content)
+
+    def _show_empty_state(self, title=None, message=None):
+        self.text_title.config(text=title or self.empty_title)
+        self.text_widget.config(state="normal")
+        self.text_widget.delete("1.0", tk.END)
+        self.text_widget.insert("1.0", message or self.empty_message)
+        self.text_widget.config(state="disabled")
+        self.text_widget.yview_moveto(0)
+
+    def _display_section(self, title, content):
+        self.text_title.config(text=title)
         self.text_widget.config(state="normal")
         self.text_widget.delete("1.0", tk.END)
         self._render_markdown(content)
