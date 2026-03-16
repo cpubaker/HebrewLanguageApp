@@ -5,6 +5,7 @@ from datetime import datetime
 from tkinter import messagebox
 
 from app_paths import AppPaths
+from app_version import APP_NAME, get_version_label
 from data_service import HebrewDataService
 from ui.flashcards_window import FlashcardsWindow
 from ui.guide_window import GuideWindow
@@ -30,7 +31,7 @@ class HebrewLearningApp:
         self.next_word()
 
     def _configure_window(self):
-        self.master.title("Learn Hebrew")
+        self.master.title(f"{APP_NAME} {get_version_label()}")
         self.master.geometry("520x560")
         self.master.minsize(460, 500)
         self.master.configure(padx=20, pady=20)
@@ -129,6 +130,17 @@ class HebrewLearningApp:
             command=self.open_flashcards,
         )
         flashcards_button.pack(side=tk.LEFT, padx=8)
+
+        footer_frame = tk.Frame(self.master)
+        footer_frame.pack(side=tk.BOTTOM, fill="x", pady=(16, 0))
+
+        version_label = tk.Label(
+            footer_frame,
+            text=get_version_label(),
+            font=("Helvetica", 10),
+            fg="#666666",
+        )
+        version_label.pack(anchor="e")
 
     def set_app_icon(self):
         if os.path.exists(self.paths.icon_file):
