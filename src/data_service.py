@@ -26,10 +26,16 @@ class HebrewDataService:
         for word in words:
             word.setdefault("correct", 0)
             word.setdefault("wrong", 0)
+            word.setdefault("writing_correct", 0)
+            word.setdefault("writing_wrong", 0)
 
             last_correct = word.get("last_correct", False)
             if isinstance(last_correct, bool):
                 word["last_correct"] = False
+
+            writing_last_correct = word.get("writing_last_correct", False)
+            if isinstance(writing_last_correct, bool):
+                word["writing_last_correct"] = False
 
         return words
 

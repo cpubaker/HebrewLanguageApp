@@ -11,6 +11,7 @@ from ui.flashcards_window import FlashcardsWindow
 from ui.guide_window import GuideWindow
 from ui.reading_window import ReadingWindow
 from ui.verbs_window import VerbsWindow
+from ui.writing_window import WritingWindow
 
 
 class HebrewLearningApp:
@@ -131,6 +132,15 @@ class HebrewLearningApp:
         )
         flashcards_button.pack(side=tk.LEFT, padx=8)
 
+        writing_button = tk.Button(
+            bottom_controls_frame,
+            text="Писання",
+            width=12,
+            height=1,
+            command=self.open_writing,
+        )
+        writing_button.pack(side=tk.LEFT, padx=8)
+
         footer_frame = tk.Frame(self.master)
         footer_frame.pack(side=tk.BOTTOM, fill="x", pady=(16, 0))
 
@@ -226,3 +236,6 @@ class HebrewLearningApp:
 
     def open_flashcards(self):
         FlashcardsWindow(self.master, self.words, self.data_service)
+
+    def open_writing(self):
+        WritingWindow(self.master, self.words, self.data_service)
