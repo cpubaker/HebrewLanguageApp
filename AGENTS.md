@@ -16,6 +16,7 @@
 - `src/ui/` - UI windows and application screens.
 - `src/data_service.py` - loading and saving local JSON/TXT content.
 - `src/app_paths.py` - path resolution for project data and assets.
+- `tests/` - automated test suite for path resolution, data loading, and content integrity checks.
 - `data/input/hebrew_words.json` - core vocabulary data.
 - `data/input/guide/` - guide sections stored as numbered `.md` files.
 - `data/input/reading/` - reading lessons stored as numbered `.md` files.
@@ -23,6 +24,15 @@
 - `data/output/` - generated or model output artifacts; avoid treating this as source of truth.
 - `src/models/` - model-specific experiments and integrations.
 - `src/database/` - SQL scripts and database-related assets.
+
+## Tests
+- Automated tests live in `tests/`.
+- Run the full test suite from the repository root with:
+  - `python -m unittest discover -s tests -v`
+- After finishing any code or content change, prefer running the full test suite as a final verification step.
+- If a change affects startup, UI wiring, file loading, or path resolution, run both:
+  - `python -m unittest discover -s tests -v`
+  - `python src/main.py`
 
 ## Working Rules
 - Read the smallest relevant part of the codebase first. Do not rescan the whole repository if the task is clearly limited to one area.
@@ -52,9 +62,13 @@
 - When unsure about data format, inspect an adjacent example file in the same folder before editing.
 
 ## Validation
+- Preferred final validation after any change:
+  - run `python -m unittest discover -s tests -v`
 - Minimum validation after code changes affecting startup, UI wiring, or file loading:
+  - run `python -m unittest discover -s tests -v`
   - run `python src/main.py`
 - Minimum validation after changing local data files:
+  - run `python -m unittest discover -s tests -v`
   - confirm the target file still follows the title/body text format
   - for `guide`, `reading`, or `verbs` content-only edits, running `python src/main.py` is optional unless loading behavior was changed
   - if relevant, run `python src/main.py`
