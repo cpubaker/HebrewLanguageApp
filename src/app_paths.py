@@ -9,6 +9,10 @@ class AppPaths:
     guide_dir: str
     verbs_dir: str
     reading_dir: str
+    images_dir: str
+    verbs_images_dir: str
+    words_images_dir: str
+    reading_images_dir: str
     icon_file: str
 
     @classmethod
@@ -25,5 +29,15 @@ class AppPaths:
             guide_dir=os.path.join(project_root, "data", "input", "guide"),
             verbs_dir=os.path.join(project_root, "data", "input", "verbs"),
             reading_dir=os.path.join(project_root, "data", "input", "reading"),
+            images_dir=os.path.join(project_root, "data", "input", "images"),
+            verbs_images_dir=os.path.join(
+                project_root, "data", "input", "images", "verbs"
+            ),
+            words_images_dir=os.path.join(
+                project_root, "data", "input", "images", "words"
+            ),
+            reading_images_dir=os.path.join(
+                project_root, "data", "input", "images", "reading"
+            ),
             icon_file=os.path.join(project_root, "src", "ui", "app_icon.png"),
         )

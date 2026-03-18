@@ -49,13 +49,47 @@ class HebrewDataService:
         )
 
     def load_verbs(self):
-        return self.load_text_sections(
-            self.paths.verbs_dir,
-            missing_title="Folder not found",
-            missing_message=f"Could not find verbs folder:\n{self.paths.verbs_dir}",
-            empty_title="Verbs are empty",
-            empty_message=f"No verbs were found in:\n{self.paths.verbs_dir}",
-        )
+        if not os.path.exists(self.paths.verbs_dir):
+            messagebox.showerror(
+                "Folder not found",
+                f"Could not find verbs folder:\n{self.paths.verbs_dir}",
+            )
+            self.master.destroy()
+            raise FileNotFoundError(self.paths.verbs_dir)
+
+        sections = []
+
+        for filename in sorted(os.listdir(self.paths.verbs_dir)):
+            if not filename.endswith((".md", ".txt")):
+                continue
+
+            file_path = os.path.join(self.paths.verbs_dir, filename)
+            with open(file_path, "r", encoding="utf-8") as file:
+                content = file.read().strip()
+
+            if not content:
+                continue
+
+            title, body = self._split_markdown_section(content)
+            if not title:
+                continue
+
+            sections.append(
+                {
+                    "title": title,
+                    "body": body,
+                    "filename": filename,
+                    "image_path": self._find_verb_image_path(filename),
+                }
+            )
+
+        if not sections:
+            messagebox.showwarning(
+                "Verbs are empty",
+                f"No verbs were found in:\n{self.paths.verbs_dir}",
+            )
+
+        return sections
 
     def load_reading_sections(self):
         if not os.path.exists(self.paths.reading_dir):
@@ -152,6 +186,22 @@ class HebrewDataService:
             )
 
         return sections
+
+    def _find_verb_image_path(self, filename):
+        images_dir = getattr(self.paths, "verbs_images_dir", "")
+        if not images_dir:
+            return None
+
+        lesson_stem = os.path.splitext(filename)[0]
+        image_name = re.sub(r"^\d+[_-]*", "", lesson_stem).strip()
+        if not image_name:
+            return None
+
+        image_path = os.path.join(images_dir, f"{image_name}.png")
+        if os.path.exists(image_path):
+            return image_path
+
+        return None
 
     def _split_markdown_section(self, content):
         lines = content.lstrip("\ufeff").splitlines()

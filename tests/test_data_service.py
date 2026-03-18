@@ -28,6 +28,7 @@ class HebrewDataServiceTests(unittest.TestCase):
             guide_dir=str(self.root / "guide"),
             verbs_dir=str(self.root / "verbs"),
             reading_dir=str(self.root / "reading"),
+            verbs_images_dir=str(self.root / "images" / "verbs"),
         )
         self.service = HebrewDataService(self.master, self.paths)
 
@@ -164,6 +165,46 @@ class HebrewDataServiceTests(unittest.TestCase):
                     "body": "Short passage",
                     "level": "beginner",
                     "filename": "02_plain.txt",
+                },
+            ],
+        )
+        messagebox_mock.showwarning.assert_not_called()
+
+    @patch("data_service.messagebox")
+    def test_load_verbs_collects_image_paths_from_matching_png_files(
+        self, messagebox_mock
+    ):
+        verbs_dir = Path(self.paths.verbs_dir)
+        verbs_images_dir = Path(self.paths.verbs_images_dir)
+        verbs_dir.mkdir()
+        verbs_images_dir.mkdir(parents=True)
+
+        (verbs_dir / "01_walk.md").write_text(
+            "# Walk\n\nVerb notes",
+            encoding="utf-8",
+        )
+        (verbs_dir / "02_give.md").write_text(
+            "# Give\n\nUsage examples",
+            encoding="utf-8",
+        )
+        (verbs_images_dir / "walk.png").write_bytes(b"png")
+
+        sections = self.service.load_verbs()
+
+        self.assertEqual(
+            sections,
+            [
+                {
+                    "title": "Walk",
+                    "body": "Verb notes",
+                    "filename": "01_walk.md",
+                    "image_path": str(verbs_images_dir / "walk.png"),
+                },
+                {
+                    "title": "Give",
+                    "body": "Usage examples",
+                    "filename": "02_give.md",
+                    "image_path": None,
                 },
             ],
         )

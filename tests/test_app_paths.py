@@ -26,6 +26,21 @@ class AppPathsTests(unittest.TestCase):
             paths.reading_dir, str(PROJECT_ROOT / "data" / "input" / "reading")
         )
         self.assertEqual(
+            paths.images_dir, str(PROJECT_ROOT / "data" / "input" / "images")
+        )
+        self.assertEqual(
+            paths.verbs_images_dir,
+            str(PROJECT_ROOT / "data" / "input" / "images" / "verbs"),
+        )
+        self.assertEqual(
+            paths.words_images_dir,
+            str(PROJECT_ROOT / "data" / "input" / "images" / "words"),
+        )
+        self.assertEqual(
+            paths.reading_images_dir,
+            str(PROJECT_ROOT / "data" / "input" / "images" / "reading"),
+        )
+        self.assertEqual(
             paths.icon_file, str(PROJECT_ROOT / "src" / "ui" / "app_icon.png")
         )
 

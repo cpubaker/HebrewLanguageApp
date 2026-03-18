@@ -1,4 +1,5 @@
 import tkinter as tk
+import math
 import re
 
 
@@ -21,6 +22,7 @@ class TextBrowserWindow:
         self.window.title(window_title)
         self.window.geometry("760x480")
         self.window.minsize(680, 420)
+        self.section_image = None
 
         self._build_layout(list_label)
         self._populate_sections()
@@ -61,6 +63,11 @@ class TextBrowserWindow:
             anchor="w",
         )
         self.text_title.pack(fill="x", pady=(0, 8))
+
+        self.media_frame = tk.Frame(right_frame)
+        self.media_frame.pack(fill="x")
+
+        self.image_label = tk.Label(self.media_frame)
 
         text_container = tk.Frame(right_frame)
         text_container.pack(fill="both", expand=True)
@@ -145,6 +152,7 @@ class TextBrowserWindow:
 
     def _show_empty_state(self, title=None, message=None):
         self.text_title.config(text=title or self.empty_title)
+        self._clear_section_image()
         self.text_widget.config(state="normal")
         self.text_widget.delete("1.0", tk.END)
         self.text_widget.insert("1.0", message or self.empty_message)
@@ -221,3 +229,34 @@ class TextBrowserWindow:
                 tags.append("italic")
 
             self.text_widget.insert(tk.END, part, tuple(tags))
+
+    def _set_section_image(self, image_path):
+        if not image_path:
+            self._clear_section_image()
+            return
+
+        try:
+            image = tk.PhotoImage(file=image_path)
+        except tk.TclError:
+            self._clear_section_image()
+            return
+
+        scale_factor = max(
+            1,
+            math.ceil(max(image.width() / 260, image.height() / 220)),
+        )
+        if scale_factor > 1:
+            image = image.subsample(scale_factor, scale_factor)
+
+        self.section_image = image
+        self.image_label.config(image=self.section_image)
+
+        if not self.image_label.winfo_manager():
+            self.image_label.pack(anchor="center", pady=(0, 10))
+
+    def _clear_section_image(self):
+        self.section_image = None
+        self.image_label.config(image="")
+
+        if self.image_label.winfo_manager():
+            self.image_label.pack_forget()

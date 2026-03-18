@@ -19,6 +19,10 @@
 - `tests/` - automated test suite for path resolution, data loading, and content integrity checks.
 - `data/input/hebrew_words.json` - core vocabulary data.
 - `data/input/guide/` - guide sections stored as numbered `.md` files.
+- `data/input/images/` - local learning images grouped by content type.
+- `data/input/images/verbs/` - verb illustrations stored as `.png` files.
+- `data/input/images/words/` - word illustrations stored as `.png` files.
+- `data/input/images/reading/` - reading illustrations stored as `.png` files.
 - `data/input/reading/` - reading lessons stored as numbered `.md` files.
 - `data/input/verbs/` - verb lessons stored as numbered `.md` files.
 - `data/output/` - generated or model output artifacts; avoid treating this as source of truth.
@@ -39,9 +43,11 @@
 - For verb-content tasks, inspect `data/input/verbs/` first and only open code files if format or behavior is unclear.
 - For guide-content tasks, inspect `data/input/guide/` first.
 - For reading-content tasks, inspect `data/input/reading/` first and only open code files if format or behavior is unclear.
+- For image-related tasks, inspect the matching folder under `data/input/images/` first and only open code files if naming or loading behavior is unclear.
 - For startup, file-loading, or missing-path issues, inspect `src/main.py`, `src/app_paths.py`, and `src/data_service.py` first.
 - Preserve UTF-8 encoding for all Hebrew content files.
 - Keep numbered lesson filenames stable unless the task explicitly requires renaming.
+- Keep image filenames stable when they are used for loader-based matching.
 - Do not change lesson file structure casually; UI logic expects either:
   - first Markdown heading = section title
   - or first non-empty line = section title
@@ -52,6 +58,12 @@
 - Verb, guide, and reading `.md` files are ordered by filename prefix such as `01_`, `02_`, `03_`.
 - Empty lesson files are ignored by the loader.
 - Non-lesson files in guide/reading/verb directories are ignored by the loader.
+- Images for learning content live under `data/input/images/`.
+- Verb images are currently expected in `data/input/images/verbs/` as `.png` files.
+- Verb image matching currently follows the lesson filename stem without the numeric prefix:
+  - `01_walk.md` -> `walk.png`
+  - `06_give.md` -> `give.png`
+- Missing matching images should not break loading; the lesson should still remain available without an illustration.
 - In lesson files, the first Markdown heading is preferred as the displayed title.
 - If no Markdown heading exists, the first non-empty line is used as the displayed title.
 
