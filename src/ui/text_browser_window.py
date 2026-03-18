@@ -53,7 +53,13 @@ class TextBrowserWindow:
             font=("Helvetica", 11),
             exportselection=False,
         )
-        self.section_listbox.pack(fill="y")
+
+        section_scrollbar = tk.Scrollbar(self.left_frame, orient="vertical")
+        section_scrollbar.config(command=self.section_listbox.yview)
+        self.section_listbox.config(yscrollcommand=section_scrollbar.set)
+
+        section_scrollbar.pack(side="right", fill="y")
+        self.section_listbox.pack(side="left", fill="y")
         self.section_listbox.bind("<<ListboxSelect>>", self.show_section)
 
         self.text_title = tk.Label(
@@ -128,12 +134,12 @@ class TextBrowserWindow:
         self.text_widget.tag_configure("italic", font=("Helvetica", 12, "italic"))
 
     def _populate_sections(self):
-        section_names = list(self.sections.keys())
+        self.section_names = list(self.sections.keys())
 
-        for section_name in section_names:
+        for section_name in self.section_names:
             self.section_listbox.insert(tk.END, section_name)
 
-        if section_names:
+        if self.section_names:
             self.section_listbox.selection_set(0)
             self.show_section()
             return
@@ -145,7 +151,7 @@ class TextBrowserWindow:
         if not selection:
             return
 
-        selected_section = self.section_listbox.get(selection[0])
+        selected_section = self.section_names[selection[0]]
         content = self.sections[selected_section]
 
         self._display_section(selected_section, content)
