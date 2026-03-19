@@ -60,7 +60,7 @@ class HebrewDataService:
         sections = []
 
         for filename in sorted(os.listdir(self.paths.verbs_dir)):
-            if not filename.endswith((".md", ".txt")):
+            if not self._is_text_section_file(filename):
                 continue
 
             file_path = os.path.join(self.paths.verbs_dir, filename)
@@ -138,7 +138,7 @@ class HebrewDataService:
         sections = {}
 
         for filename in sorted(os.listdir(directory)):
-            if not filename.endswith((".md", ".txt")):
+            if not self._is_text_section_file(filename):
                 continue
 
             file_path = os.path.join(directory, filename)
@@ -162,7 +162,7 @@ class HebrewDataService:
         sections = []
 
         for filename in sorted(os.listdir(directory)):
-            if not filename.endswith((".md", ".txt")):
+            if not self._is_text_section_file(filename):
                 continue
 
             file_path = os.path.join(directory, filename)
@@ -202,6 +202,13 @@ class HebrewDataService:
             return image_path
 
         return None
+
+    def _is_text_section_file(self, filename):
+        if not filename.endswith((".md", ".txt")):
+            return False
+
+        lesson_stem = os.path.splitext(os.path.basename(filename))[0]
+        return bool(re.match(r"^\d+", lesson_stem))
 
     def _split_markdown_section(self, content):
         lines = content.lstrip("\ufeff").splitlines()

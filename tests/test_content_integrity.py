@@ -52,7 +52,7 @@ class ContentIntegrityTests(unittest.TestCase):
             self.assertGreater(len(lesson_files), 0, f"No files found in {lesson_dir}")
 
             for lesson_file in lesson_files:
-                if lesson_file.suffix.lower() not in {".md", ".txt"}:
+                if not self.service._is_text_section_file(lesson_file.name):
                     continue
 
                 content = lesson_file.read_text(encoding="utf-8").strip()

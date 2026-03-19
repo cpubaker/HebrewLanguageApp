@@ -19,6 +19,7 @@
 - `tests/` - automated test suite for path resolution, data loading, and content integrity checks.
 - `data/input/hebrew_words.json` - core vocabulary data.
 - `data/input/guide/` - guide sections stored as numbered `.md` files.
+- `data/input/guide/AGENTS.md` - local instructions for guide lesson structure, formatting, and writing style.
 - `data/input/images/` - local learning images grouped by content type.
 - `data/input/images/verbs/` - verb illustrations stored as `.png` files.
 - `data/input/images/words/` - word illustrations stored as `.png` files.
@@ -42,6 +43,7 @@
 - Read the smallest relevant part of the codebase first. Do not rescan the whole repository if the task is clearly limited to one area.
 - For verb-content tasks, inspect `data/input/verbs/` first and only open code files if format or behavior is unclear.
 - For guide-content tasks, inspect `data/input/guide/` first.
+- When editing files under `data/input/guide/`, follow the local `data/input/guide/AGENTS.md` instructions as well.
 - For reading-content tasks, inspect `data/input/reading/` first and only open code files if format or behavior is unclear.
 - For image-related tasks, inspect the matching folder under `data/input/images/` first and only open code files if naming or loading behavior is unclear.
 - For startup, file-loading, or missing-path issues, inspect `src/main.py`, `src/app_paths.py`, and `src/data_service.py` first.

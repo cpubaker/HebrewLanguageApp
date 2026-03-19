@@ -74,7 +74,7 @@ class HebrewDataServiceTests(unittest.TestCase):
         self.assertFalse(loaded_words[1]["writing_last_correct"])
 
     @patch("data_service.messagebox")
-    def test_load_text_sections_uses_title_and_skips_empty_or_unsupported_files(
+    def test_load_text_sections_uses_title_and_skips_empty_or_non_lesson_files(
         self, messagebox_mock
     ):
         guide_dir = Path(self.paths.guide_dir)
@@ -88,6 +88,14 @@ class HebrewDataServiceTests(unittest.TestCase):
             encoding="utf-8",
         )
         (guide_dir / "03_empty.md").write_text("   \n", encoding="utf-8")
+        (guide_dir / "AGENTS.md").write_text(
+            "# Local instructions\n\nDo not load this as a lesson.",
+            encoding="utf-8",
+        )
+        (guide_dir / "notes.md").write_text(
+            "# Scratchpad\n\nThis should stay out of the app.",
+            encoding="utf-8",
+        )
         (guide_dir / "notes.json").write_text("{}", encoding="utf-8")
 
         sections = self.service.load_text_sections(
@@ -106,6 +114,13 @@ class HebrewDataServiceTests(unittest.TestCase):
             },
         )
         messagebox_mock.showwarning.assert_not_called()
+
+    def test_is_text_section_file_accepts_numbered_lessons_only(self):
+        self.assertTrue(self.service._is_text_section_file("01_intro.md"))
+        self.assertTrue(self.service._is_text_section_file("02_intro.txt"))
+        self.assertFalse(self.service._is_text_section_file("AGENTS.md"))
+        self.assertFalse(self.service._is_text_section_file("notes.md"))
+        self.assertFalse(self.service._is_text_section_file("01_intro.json"))
 
     @patch("data_service.messagebox")
     def test_load_text_sections_missing_directory_raises_and_destroys_master(
