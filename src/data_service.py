@@ -7,6 +7,8 @@ from reading_levels import READING_LEVELS
 
 
 class HebrewDataService:
+    TRANSIENT_WORD_FIELDS = {"_word_id", "_contexts"}
+
     def __init__(self, master, paths):
         self.master = master
         self.paths = paths
@@ -36,6 +38,12 @@ class HebrewDataService:
             writing_last_correct = word.get("writing_last_correct", False)
             if isinstance(writing_last_correct, bool):
                 word["writing_last_correct"] = False
+
+            word["_word_id"] = self._build_word_id(word)
+
+        contexts_by_word_id = self.load_word_contexts(words)
+        for word in words:
+            word["_contexts"] = contexts_by_word_id.get(word["_word_id"], [])
 
         return words
 
@@ -119,8 +127,51 @@ class HebrewDataService:
         return sections
 
     def save_words(self, words):
+        sanitized_words = []
+        for word in words:
+            sanitized_words.append(
+                {
+                    key: value
+                    for key, value in word.items()
+                    if key not in self.TRANSIENT_WORD_FIELDS
+                }
+            )
+
         with open(self.paths.words_file, "w", encoding="utf-8") as file:
-            json.dump(words, file, ensure_ascii=False, indent=4)
+            json.dump(sanitized_words, file, ensure_ascii=False, indent=4)
+
+    def load_word_contexts(self, words):
+        contexts_file = getattr(self.paths, "context_sentences_file", "")
+        links_file = getattr(self.paths, "word_context_links_file", "")
+        if not contexts_file or not links_file:
+            return {}
+
+        if not os.path.exists(contexts_file) or not os.path.exists(links_file):
+            return {}
+
+        with open(contexts_file, "r", encoding="utf-8") as file:
+            contexts = json.load(file)
+
+        with open(links_file, "r", encoding="utf-8") as file:
+            word_context_links = json.load(file)
+
+        contexts_by_id = {
+            context["id"]: context
+            for context in contexts
+            if isinstance(context, dict) and context.get("id")
+        }
+
+        resolved_contexts = {}
+        for word in words:
+            word_id = word.get("_word_id") or self._build_word_id(word)
+            context_ids = word_context_links.get(word_id, [])
+            resolved_contexts[word_id] = [
+                contexts_by_id[context_id]
+                for context_id in context_ids
+                if context_id in contexts_by_id
+            ]
+
+        return resolved_contexts
 
     def load_text_sections(
         self,
@@ -221,6 +272,18 @@ class HebrewDataService:
     def _get_lesson_asset_name(self, filename):
         lesson_stem = os.path.splitext(filename)[0]
         return re.sub(r"^\d+[_-]*", "", lesson_stem).strip() or None
+
+    def _build_word_id(self, word):
+        for field_name in ("id", "english", "transcription", "hebrew"):
+            raw_value = str(word.get(field_name, "")).strip().lower()
+            if not raw_value:
+                continue
+
+            normalized = re.sub(r"[^a-z0-9]+", "_", raw_value).strip("_")
+            if normalized:
+                return f"word_{normalized}"
+
+        return "word_unknown"
 
     def _is_text_section_file(self, filename):
         if not filename.endswith((".md", ".txt")):

@@ -1,0 +1,412 @@
+[
+    {
+        "id": "ctx_dog_park_01",
+        "hebrew": "הכלב רץ בפארק.",
+        "translation": "The dog is running in the park."
+    },
+    {
+        "id": "ctx_dog_house_01",
+        "hebrew": "הכלב ישן ליד הבית.",
+        "translation": "The dog is sleeping next to the house."
+    },
+    {
+        "id": "ctx_star_city_01",
+        "hebrew": "הכוכב נראה מעל העיר.",
+        "translation": "The star is visible above the city."
+    },
+    {
+        "id": "ctx_television_house_01",
+        "hebrew": "אנחנו רואים טלוויזיה בבית.",
+        "translation": "We are watching television at home."
+    },
+    {
+        "id": "ctx_weather_country_01",
+        "hebrew": "מזג האוויר בארץ חם היום.",
+        "translation": "The weather in the country is hot today."
+    },
+    {
+        "id": "ctx_park_game_01",
+        "hebrew": "הילדים משחקים בפארק.",
+        "translation": "The children are playing in the park."
+    },
+    {
+        "id": "ctx_apple_water_01",
+        "hebrew": "אני אוכל תפוח ושותה מים.",
+        "translation": "I am eating an apple and drinking water."
+    },
+    {
+        "id": "ctx_book_house_01",
+        "hebrew": "יש ספר חדש בבית.",
+        "translation": "There is a new book at home."
+    },
+    {
+        "id": "ctx_cat_house_01",
+        "hebrew": "החתול יושב ליד הבית.",
+        "translation": "The cat is sitting next to the house."
+    },
+    {
+        "id": "ctx_people_street_01",
+        "hebrew": "האיש והאישה הולכים ברחוב.",
+        "translation": "The man and the woman are walking in the street."
+    },
+    {
+        "id": "ctx_tree_street_01",
+        "hebrew": "העץ עומד ליד הרחוב.",
+        "translation": "The tree stands next to the street."
+    },
+    {
+        "id": "ctx_car_street_01",
+        "hebrew": "המכונית חונה ברחוב.",
+        "translation": "The car is parked on the street."
+    },
+    {
+        "id": "ctx_fish_water_01",
+        "hebrew": "הדג שוחה במים.",
+        "translation": "The fish is swimming in the water."
+    },
+    {
+        "id": "ctx_computer_table_chair_01",
+        "hebrew": "המחשב על השולחן ליד הכיסא.",
+        "translation": "The computer is on the table next to the chair."
+    },
+    {
+        "id": "ctx_flower_window_01",
+        "hebrew": "הפרח עומד ליד החלון.",
+        "translation": "The flower stands next to the window."
+    },
+    {
+        "id": "ctx_phone_key_door_01",
+        "hebrew": "הטלפון והמפתח ליד הדלת.",
+        "translation": "The phone and the key are next to the door."
+    },
+    {
+        "id": "ctx_newspaper_table_01",
+        "hebrew": "העיתון על השולחן.",
+        "translation": "The newspaper is on the table."
+    },
+    {
+        "id": "ctx_sun_moon_year_01",
+        "hebrew": "השמש והירח נראים אחרת בכל שנה.",
+        "translation": "The sun and the moon look different every year."
+    },
+    {
+        "id": "ctx_food_drink_restaurant_01",
+        "hebrew": "במסעדה יש אוכל ושתייה.",
+        "translation": "There is food and drink in the restaurant."
+    },
+    {
+        "id": "ctx_school_teacher_student_01",
+        "hebrew": "בבית הספר המורה מדבר עם התלמיד.",
+        "translation": "At school the teacher speaks with the student."
+    },
+    {
+        "id": "ctx_university_student_computer_01",
+        "hebrew": "באוניברסיטה הסטודנט עובד עם מחשב.",
+        "translation": "At the university the student works with a computer."
+    },
+    {
+        "id": "ctx_doctor_nurse_hospital_medicine_01",
+        "hebrew": "בבית החולים הרופא נותן תרופה והאחות עוזרת.",
+        "translation": "At the hospital the doctor gives medicine and the nurse helps."
+    },
+    {
+        "id": "ctx_sport_ball_01",
+        "hebrew": "בפארק אנחנו משחקים בכדור ואוהבים ספורט.",
+        "translation": "In the park we play with a ball and love sport."
+    },
+    {
+        "id": "ctx_time_after_01",
+        "hebrew": "בשעה אחת, אחרי דקה ושנייה, אנחנו מתחילים.",
+        "translation": "At one o'clock, after a minute and a second, we begin."
+    },
+    {
+        "id": "ctx_odot_weather_01",
+        "hebrew": "אנחנו מדברים אודות מזג האוויר.",
+        "translation": "We are talking about the weather."
+    },
+    {
+        "id": "ctx_behind_house_01",
+        "hebrew": "החתול יושב מאחורי הבית.",
+        "translation": "The cat is sitting behind the house."
+    },
+    {
+        "id": "ctx_el_school_01",
+        "hebrew": "הילד הולך אל בית הספר.",
+        "translation": "The child is going to the school."
+    },
+    {
+        "id": "ctx_etzel_teacher_01",
+        "hebrew": "המפתח אצל המורה.",
+        "translation": "The key is with the teacher."
+    },
+    {
+        "id": "ctx_et_newspaper_01",
+        "hebrew": "אני קורא את העיתון.",
+        "translation": "I am reading the newspaper."
+    },
+    {
+        "id": "ctx_be_city_01",
+        "hebrew": "הילד גר בעיר.",
+        "translation": "The child lives in the city."
+    },
+    {
+        "id": "ctx_beemtzaut_key_01",
+        "hebrew": "אני פותח את הדלת באמצעות מפתח.",
+        "translation": "I open the door by means of a key."
+    },
+    {
+        "id": "ctx_biglal_rain_01",
+        "hebrew": "בגלל הגשם אנחנו בבית.",
+        "translation": "Because of the rain we are at home."
+    },
+    {
+        "id": "ctx_bizchut_teacher_01",
+        "hebrew": "בזכות המורה התלמיד מצליח.",
+        "translation": "Thanks to the teacher the student succeeds."
+    },
+    {
+        "id": "ctx_ben_ball_01",
+        "hebrew": "הכדור בין הכיסא לשולחן.",
+        "translation": "The ball is between the chair and the table."
+    },
+    {
+        "id": "ctx_bli_water_01",
+        "hebrew": "אני שותה מים בלי סוכר.",
+        "translation": "I drink water without sugar."
+    },
+    {
+        "id": "ctx_bemahalach_year_01",
+        "hebrew": "במהלך השנה אנחנו לומדים באוניברסיטה.",
+        "translation": "During the year we study at the university."
+    },
+    {
+        "id": "ctx_bemaamad_teacher_01",
+        "hebrew": "במעמד המורה התלמיד ענה.",
+        "translation": "In the presence of the teacher the student answered."
+    },
+    {
+        "id": "ctx_bimkom_water_01",
+        "hebrew": "במקום מים אני שותה תה.",
+        "translation": "Instead of water I drink tea."
+    },
+    {
+        "id": "ctx_baad_game_01",
+        "hebrew": "אני בעד המשחק הזה.",
+        "translation": "I am in favour of this game."
+    },
+    {
+        "id": "ctx_beikvot_game_01",
+        "hebrew": "בעקבות המשחק כולם הלכו לפארק.",
+        "translation": "Following the game everyone went to the park."
+    },
+    {
+        "id": "ctx_beikvot_rain_01",
+        "hebrew": "בעקבות הגשם הרחוב רטוב.",
+        "translation": "As a result of the rain the street is wet."
+    },
+    {
+        "id": "ctx_bifnei_teacher_01",
+        "hebrew": "התלמיד עומד בפני המורה.",
+        "translation": "The student stands facing the teacher."
+    },
+    {
+        "id": "ctx_bekerev_students_01",
+        "hebrew": "בקרב התלמידים הספר הזה מוכר.",
+        "translation": "Among the students this book is familiar."
+    },
+    {
+        "id": "ctx_bishvil_child_01",
+        "hebrew": "אני קונה תרופה בשביל הילד.",
+        "translation": "I am buying medicine for the child."
+    },
+    {
+        "id": "ctx_beshem_university_01",
+        "hebrew": "הדובר מדבר בשם האוניברסיטה.",
+        "translation": "The speaker is speaking on behalf of the university."
+    },
+    {
+        "id": "ctx_betoch_key_01",
+        "hebrew": "המפתח בתוך התיק.",
+        "translation": "The key is inside the bag."
+    },
+    {
+        "id": "ctx_zulat_teacher_01",
+        "hebrew": "זולת המורה, כולם הגיעו.",
+        "translation": "Apart from the teacher, everyone arrived."
+    },
+    {
+        "id": "ctx_ke_teacher_01",
+        "hebrew": "הוא עובד כמורה.",
+        "translation": "He works as a teacher."
+    },
+    {
+        "id": "ctx_klapei_student_01",
+        "hebrew": "היחס כלפי התלמיד מכבד.",
+        "translation": "The attitude towards the student is respectful."
+    },
+    {
+        "id": "ctx_kmo_cat_01",
+        "hebrew": "הילד רץ כמו חתול.",
+        "translation": "The child runs like a cat."
+    },
+    {
+        "id": "ctx_kmot_newspaper_01",
+        "hebrew": "כמות חברו, גם הוא קורא עיתון.",
+        "translation": "Like his friend, he also reads a newspaper."
+    },
+    {
+        "id": "ctx_keneged_hatsaah_01",
+        "hebrew": "הם הצביעו כנגד ההצעה.",
+        "translation": "They voted against the proposal."
+    },
+    {
+        "id": "ctx_le_student_01",
+        "hebrew": "אני נותן ספר לתלמיד.",
+        "translation": "I give a book to the student."
+    },
+    {
+        "id": "ctx_leorech_street_01",
+        "hebrew": "אנחנו הולכים לאורך הרחוב.",
+        "translation": "We are walking along the street."
+    },
+    {
+        "id": "ctx_legabei_medicine_01",
+        "hebrew": "לגבי התרופה, שאל את הרופא.",
+        "translation": "Regarding the medicine, ask the doctor."
+    },
+    {
+        "id": "ctx_ledivrei_teacher_01",
+        "hebrew": "לדברי המורה, הספר חשוב.",
+        "translation": "According to the teacher, the book is important."
+    },
+    {
+        "id": "ctx_leyad_window_01",
+        "hebrew": "הכיסא ליד החלון.",
+        "translation": "The chair is next to the window."
+    },
+    {
+        "id": "ctx_lidei_doctor_01",
+        "hebrew": "המסמך הגיע לידי הרופא.",
+        "translation": "The document reached the doctor."
+    },
+    {
+        "id": "ctx_lemaan_city_01",
+        "hebrew": "אנחנו עובדים למען העיר.",
+        "translation": "We work for the sake of the city."
+    },
+    {
+        "id": "ctx_lefi_newspaper_01",
+        "hebrew": "לפי העיתון, מחר חם.",
+        "translation": "According to the newspaper, tomorrow will be hot."
+    },
+    {
+        "id": "ctx_lifnei_house_01",
+        "hebrew": "לפני הבית יש עץ.",
+        "translation": "There is a tree in front of the house."
+    },
+    {
+        "id": "ctx_likrat_year_01",
+        "hebrew": "אנחנו מתכוננים לקראת השנה החדשה.",
+        "translation": "We are preparing for the new year."
+    },
+    {
+        "id": "ctx_lerochav_street_01",
+        "hebrew": "הכדור עף לרוחב הרחוב.",
+        "translation": "The ball flew across the street."
+    },
+    {
+        "id": "ctx_mul_house_01",
+        "hebrew": "המכונית עומדת מול הבית.",
+        "translation": "The car is standing opposite the house."
+    },
+    {
+        "id": "ctx_min_city_01",
+        "hebrew": "אני בא מן העיר.",
+        "translation": "I come from the city."
+    },
+    {
+        "id": "ctx_meal_moon_01",
+        "hebrew": "הירח מעל הבית.",
+        "translation": "The moon is above the house."
+    },
+    {
+        "id": "ctx_mipnei_game_01",
+        "hebrew": "המשחק בוטל מפני הגשם.",
+        "translation": "The game was cancelled because of the rain."
+    },
+    {
+        "id": "ctx_mitachat_table_01",
+        "hebrew": "הכדור מתחת לשולחן.",
+        "translation": "The ball is under the table."
+    },
+    {
+        "id": "ctx_neged_school_01",
+        "hebrew": "הם שיחקו נגד בית הספר השכן.",
+        "translation": "They played against the neighbouring school."
+    },
+    {
+        "id": "ctx_avur_teacher_01",
+        "hebrew": "המתנה היא עבור המורה.",
+        "translation": "The gift is for the teacher."
+    },
+    {
+        "id": "ctx_ad_hour_01",
+        "hebrew": "אני עובד עד השעה חמש.",
+        "translation": "I work until five o'clock."
+    },
+    {
+        "id": "ctx_al_city_01",
+        "hebrew": "אנחנו מדברים על העיר.",
+        "translation": "We are talking about the city."
+    },
+    {
+        "id": "ctx_al_gav_table_01",
+        "hebrew": "הספר על גב השולחן.",
+        "translation": "The book is on the back of the table."
+    },
+    {
+        "id": "ctx_al_gabei_chair_01",
+        "hebrew": "העיתון על גבי הכיסא.",
+        "translation": "The newspaper is on the chair."
+    },
+    {
+        "id": "ctx_al_yad_door_01",
+        "hebrew": "הכדור על יד הדלת.",
+        "translation": "The ball is next to the door."
+    },
+    {
+        "id": "ctx_al_yedei_teacher_01",
+        "hebrew": "הדלת נפתחה על ידי המורה.",
+        "translation": "The door was opened by the teacher."
+    },
+    {
+        "id": "ctx_al_pi_newspaper_01",
+        "hebrew": "על פי העיתון, העיר שקטה.",
+        "translation": "According to the newspaper, the city is quiet."
+    },
+    {
+        "id": "ctx_al_pnei_moon_01",
+        "hebrew": "הענן עבר על פני הירח.",
+        "translation": "The cloud passed over the moon."
+    },
+    {
+        "id": "ctx_im_teacher_01",
+        "hebrew": "אני יושב עם המורה.",
+        "translation": "I am sitting with the teacher."
+    },
+    {
+        "id": "ctx_leumat_year_01",
+        "hebrew": "לעומת השנה שעברה, השנה טובה.",
+        "translation": "Compared with last year, this year is good."
+    },
+    {
+        "id": "ctx_shel_computer_01",
+        "hebrew": "המחשב של המורה חדש.",
+        "translation": "The teacher's computer is new."
+    },
+    {
+        "id": "ctx_tachat_chair_01",
+        "hebrew": "הכדור תחת הכיסא.",
+        "translation": "The ball is beneath the chair."
+    }
+]

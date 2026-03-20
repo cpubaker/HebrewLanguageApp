@@ -28,6 +28,10 @@ class HebrewDataServiceTests(unittest.TestCase):
             guide_dir=str(self.root / "guide"),
             verbs_dir=str(self.root / "verbs"),
             reading_dir=str(self.root / "reading"),
+            context_sentences_file=str(self.root / "contexts" / "sentences.json"),
+            word_context_links_file=str(
+                self.root / "contexts" / "word_context_links.json"
+            ),
             verbs_audio_dir=str(self.root / "audio" / "verbs"),
             verbs_images_dir=str(self.root / "images" / "verbs"),
         )
@@ -67,12 +71,82 @@ class HebrewDataServiceTests(unittest.TestCase):
         self.assertEqual(
             loaded_words[0]["writing_last_correct"], "2026-03-17T10:00:00"
         )
+        self.assertEqual(loaded_words[0]["_word_id"], "word_peace")
+        self.assertEqual(loaded_words[0]["_contexts"], [])
         self.assertEqual(loaded_words[1]["correct"], 0)
         self.assertEqual(loaded_words[1]["wrong"], 0)
         self.assertEqual(loaded_words[1]["writing_correct"], 0)
         self.assertEqual(loaded_words[1]["writing_wrong"], 0)
         self.assertFalse(loaded_words[1]["last_correct"])
         self.assertFalse(loaded_words[1]["writing_last_correct"])
+        self.assertEqual(loaded_words[1]["_word_id"], "word_house")
+        self.assertEqual(loaded_words[1]["_contexts"], [])
+
+    def test_load_words_resolves_shared_contexts_without_duplication(self):
+        words = [
+            {
+                "hebrew": "כלב",
+                "english": "dog",
+                "transcription": "kelev",
+            },
+            {
+                "hebrew": "פארק",
+                "english": "park",
+                "transcription": "park",
+            },
+        ]
+        contexts_dir = self.root / "contexts"
+        contexts_dir.mkdir()
+
+        Path(self.paths.words_file).write_text(
+            json.dumps(words, ensure_ascii=False),
+            encoding="utf-8",
+        )
+        Path(self.paths.context_sentences_file).write_text(
+            json.dumps(
+                [
+                    {
+                        "id": "ctx_dog_park_01",
+                        "hebrew": "הכלב רץ בפארק.",
+                        "translation": "The dog is running in the park.",
+                    }
+                ],
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
+        Path(self.paths.word_context_links_file).write_text(
+            json.dumps(
+                {
+                    "word_dog": ["ctx_dog_park_01"],
+                    "word_park": ["ctx_dog_park_01"],
+                },
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
+
+        loaded_words = self.service.load_words()
+
+        self.assertEqual(loaded_words[0]["_contexts"][0]["id"], "ctx_dog_park_01")
+        self.assertEqual(loaded_words[1]["_contexts"][0]["id"], "ctx_dog_park_01")
+
+    def test_save_words_omits_transient_context_fields(self):
+        words = [
+            {
+                "hebrew": "כלב",
+                "english": "dog",
+                "transcription": "kelev",
+                "_word_id": "word_dog",
+                "_contexts": [{"id": "ctx_dog_park_01"}],
+            }
+        ]
+
+        self.service.save_words(words)
+
+        saved_words = json.loads(Path(self.paths.words_file).read_text(encoding="utf-8"))
+        self.assertNotIn("_word_id", saved_words[0])
+        self.assertNotIn("_contexts", saved_words[0])
 
     @patch("data_service.messagebox")
     def test_load_text_sections_uses_title_and_skips_empty_or_non_lesson_files(

@@ -152,6 +152,36 @@ class AppTheme:
         )
 
         style.configure(
+            "Success.TButton",
+            background=cls.PRIMARY,
+            foreground="#FFFFFF",
+        )
+        style.map(
+            "Success.TButton",
+            background=[
+                ("pressed", cls.PRIMARY_DARK),
+                ("active", cls.PRIMARY_DARK),
+                ("disabled", cls.PRIMARY),
+            ],
+            foreground=[("disabled", "#FFFFFF")],
+        )
+
+        style.configure(
+            "Danger.TButton",
+            background=cls.DANGER_SOFT,
+            foreground=cls.DANGER,
+        )
+        style.map(
+            "Danger.TButton",
+            background=[
+                ("pressed", cls.DANGER_SOFT),
+                ("active", cls.DANGER_SOFT),
+                ("disabled", cls.DANGER_SOFT),
+            ],
+            foreground=[("disabled", cls.DANGER)],
+        )
+
+        style.configure(
             "Secondary.TButton",
             background=cls.SURFACE_ALT,
             foreground=cls.TEXT,

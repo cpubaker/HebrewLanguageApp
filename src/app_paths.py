@@ -9,6 +9,9 @@ class AppPaths:
     guide_dir: str
     verbs_dir: str
     reading_dir: str
+    contexts_dir: str
+    context_sentences_file: str
+    word_context_links_file: str
     audio_dir: str
     verbs_audio_dir: str
     images_dir: str
@@ -31,6 +34,13 @@ class AppPaths:
             guide_dir=os.path.join(project_root, "data", "input", "guide"),
             verbs_dir=os.path.join(project_root, "data", "input", "verbs"),
             reading_dir=os.path.join(project_root, "data", "input", "reading"),
+            contexts_dir=os.path.join(project_root, "data", "input", "contexts"),
+            context_sentences_file=os.path.join(
+                project_root, "data", "input", "contexts", "sentences.json"
+            ),
+            word_context_links_file=os.path.join(
+                project_root, "data", "input", "contexts", "word_context_links.json"
+            ),
             audio_dir=os.path.join(project_root, "data", "input", "audio"),
             verbs_audio_dir=os.path.join(
                 project_root, "data", "input", "audio", "verbs"

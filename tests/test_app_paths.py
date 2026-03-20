@@ -26,6 +26,23 @@ class AppPathsTests(unittest.TestCase):
             paths.reading_dir, str(PROJECT_ROOT / "data" / "input" / "reading")
         )
         self.assertEqual(
+            paths.contexts_dir, str(PROJECT_ROOT / "data" / "input" / "contexts")
+        )
+        self.assertEqual(
+            paths.context_sentences_file,
+            str(PROJECT_ROOT / "data" / "input" / "contexts" / "sentences.json"),
+        )
+        self.assertEqual(
+            paths.word_context_links_file,
+            str(
+                PROJECT_ROOT
+                / "data"
+                / "input"
+                / "contexts"
+                / "word_context_links.json"
+            ),
+        )
+        self.assertEqual(
             paths.audio_dir, str(PROJECT_ROOT / "data" / "input" / "audio")
         )
         self.assertEqual(
