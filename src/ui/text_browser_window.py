@@ -103,13 +103,21 @@ class TextBrowserWindow:
         self.section_listbox.pack(side="left", fill="both", expand=True)
         self.section_listbox.bind("<<ListboxSelect>>", self.show_section)
 
+        title_row = ttk.Frame(content_card, style="Card.TFrame")
+        title_row.grid(row=0, column=0, sticky="ew")
+        title_row.columnconfigure(0, weight=1)
+
         self.text_title = ttk.Label(
-            content_card,
+            title_row,
             text="",
             style="Title.TLabel",
             anchor="w",
         )
         self.text_title.grid(row=0, column=0, sticky="ew")
+
+        self.header_controls_frame = ttk.Frame(title_row, style="Card.TFrame")
+        self.header_controls_frame.grid(row=0, column=1, sticky="e", padx=(12, 0))
+        self._build_header_controls(self.header_controls_frame)
 
         self.media_frame = ttk.Frame(content_card, style="Card.TFrame")
         self.media_frame.grid(row=1, column=0, sticky="ew", pady=(12, 0))
@@ -143,6 +151,9 @@ class TextBrowserWindow:
         self._configure_text_tags()
 
     def _build_sidebar_controls(self, parent):
+        return None
+
+    def _build_header_controls(self, parent):
         return None
 
     def _configure_text_tags(self):

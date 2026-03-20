@@ -28,6 +28,7 @@ class HebrewDataServiceTests(unittest.TestCase):
             guide_dir=str(self.root / "guide"),
             verbs_dir=str(self.root / "verbs"),
             reading_dir=str(self.root / "reading"),
+            verbs_audio_dir=str(self.root / "audio" / "verbs"),
             verbs_images_dir=str(self.root / "images" / "verbs"),
         )
         self.service = HebrewDataService(self.master, self.paths)
@@ -186,13 +187,15 @@ class HebrewDataServiceTests(unittest.TestCase):
         messagebox_mock.showwarning.assert_not_called()
 
     @patch("data_service.messagebox")
-    def test_load_verbs_collects_image_paths_from_matching_png_files(
+    def test_load_verbs_collects_image_and_audio_paths_from_matching_assets(
         self, messagebox_mock
     ):
         verbs_dir = Path(self.paths.verbs_dir)
         verbs_images_dir = Path(self.paths.verbs_images_dir)
+        verbs_audio_dir = Path(self.paths.verbs_audio_dir)
         verbs_dir.mkdir()
         verbs_images_dir.mkdir(parents=True)
+        verbs_audio_dir.mkdir(parents=True)
 
         (verbs_dir / "01_walk.md").write_text(
             "# Walk\n\nVerb notes",
@@ -203,6 +206,7 @@ class HebrewDataServiceTests(unittest.TestCase):
             encoding="utf-8",
         )
         (verbs_images_dir / "walk.png").write_bytes(b"png")
+        (verbs_audio_dir / "walk.mp3").write_bytes(b"mp3")
 
         sections = self.service.load_verbs()
 
@@ -214,12 +218,14 @@ class HebrewDataServiceTests(unittest.TestCase):
                     "body": "Verb notes",
                     "filename": "01_walk.md",
                     "image_path": str(verbs_images_dir / "walk.png"),
+                    "audio_path": str(verbs_audio_dir / "walk.mp3"),
                 },
                 {
                     "title": "Give",
                     "body": "Usage examples",
                     "filename": "02_give.md",
                     "image_path": None,
+                    "audio_path": None,
                 },
             ],
         )

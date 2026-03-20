@@ -26,6 +26,13 @@ class AppPathsTests(unittest.TestCase):
             paths.reading_dir, str(PROJECT_ROOT / "data" / "input" / "reading")
         )
         self.assertEqual(
+            paths.audio_dir, str(PROJECT_ROOT / "data" / "input" / "audio")
+        )
+        self.assertEqual(
+            paths.verbs_audio_dir,
+            str(PROJECT_ROOT / "data" / "input" / "audio" / "verbs"),
+        )
+        self.assertEqual(
             paths.images_dir, str(PROJECT_ROOT / "data" / "input" / "images")
         )
         self.assertEqual(

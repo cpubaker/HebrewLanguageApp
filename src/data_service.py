@@ -80,6 +80,7 @@ class HebrewDataService:
                     "body": body,
                     "filename": filename,
                     "image_path": self._find_verb_image_path(filename),
+                    "audio_path": self._find_verb_audio_path(filename),
                 }
             )
 
@@ -192,16 +193,34 @@ class HebrewDataService:
         if not images_dir:
             return None
 
-        lesson_stem = os.path.splitext(filename)[0]
-        image_name = re.sub(r"^\d+[_-]*", "", lesson_stem).strip()
-        if not image_name:
+        lesson_name = self._get_lesson_asset_name(filename)
+        if not lesson_name:
             return None
 
-        image_path = os.path.join(images_dir, f"{image_name}.png")
+        image_path = os.path.join(images_dir, f"{lesson_name}.png")
         if os.path.exists(image_path):
             return image_path
 
         return None
+
+    def _find_verb_audio_path(self, filename):
+        audio_dir = getattr(self.paths, "verbs_audio_dir", "")
+        if not audio_dir:
+            return None
+
+        lesson_name = self._get_lesson_asset_name(filename)
+        if not lesson_name:
+            return None
+
+        audio_path = os.path.join(audio_dir, f"{lesson_name}.mp3")
+        if os.path.exists(audio_path):
+            return audio_path
+
+        return None
+
+    def _get_lesson_asset_name(self, filename):
+        lesson_stem = os.path.splitext(filename)[0]
+        return re.sub(r"^\d+[_-]*", "", lesson_stem).strip() or None
 
     def _is_text_section_file(self, filename):
         if not filename.endswith((".md", ".txt")):

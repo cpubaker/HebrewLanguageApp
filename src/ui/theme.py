@@ -167,6 +167,25 @@ class AppTheme:
         )
 
         style.configure(
+            "Icon.TButton",
+            background=cls.SURFACE_ALT,
+            foreground=cls.PRIMARY_DARK,
+            font=("Segoe UI Symbol", 13),
+            padding=(10, 6),
+        )
+        style.map(
+            "Icon.TButton",
+            background=[
+                ("pressed", cls.SURFACE_MUTED),
+                ("active", cls.SURFACE_MUTED),
+                ("disabled", cls.SURFACE_MUTED),
+            ],
+            foreground=[
+                ("disabled", cls.MUTED_TEXT),
+            ],
+        )
+
+        style.configure(
             "TCheckbutton",
             background=cls.SURFACE,
             foreground=cls.TEXT,

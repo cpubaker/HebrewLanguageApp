@@ -20,6 +20,8 @@
 - `data/input/hebrew_words.json` - core vocabulary data.
 - `data/input/guide/` - guide sections stored as numbered `.md` files.
 - `data/input/guide/AGENTS.md` - local instructions for guide lesson structure, formatting, and writing style.
+- `data/input/audio/` - local learning audio grouped by content type.
+- `data/input/audio/verbs/` - verb pronunciations stored as `.mp3` files.
 - `data/input/images/` - local learning images grouped by content type.
 - `data/input/images/verbs/` - verb illustrations stored as `.png` files.
 - `data/input/images/words/` - word illustrations stored as `.png` files.
@@ -46,6 +48,7 @@
 - When editing files under `data/input/guide/`, follow the local `data/input/guide/AGENTS.md` instructions as well.
 - For reading-content tasks, inspect `data/input/reading/` first and only open code files if format or behavior is unclear.
 - For image-related tasks, inspect the matching folder under `data/input/images/` first and only open code files if naming or loading behavior is unclear.
+- For audio-related tasks, inspect the matching folder under `data/input/audio/` first and only open code files if naming or playback behavior is unclear.
 - For startup, file-loading, or missing-path issues, inspect `src/main.py`, `src/app_paths.py`, and `src/data_service.py` first.
 - Preserve UTF-8 encoding for all Hebrew content files.
 - Keep numbered lesson filenames stable unless the task explicitly requires renaming.
@@ -61,11 +64,17 @@
 - Empty lesson files are ignored by the loader.
 - Non-lesson files in guide/reading/verb directories are ignored by the loader.
 - Images for learning content live under `data/input/images/`.
+- Audio for learning content lives under `data/input/audio/`.
 - Verb images are currently expected in `data/input/images/verbs/` as `.png` files.
+- Verb audio is currently expected in `data/input/audio/verbs/` as `.mp3` files.
 - Verb image matching currently follows the lesson filename stem without the numeric prefix:
   - `01_walk.md` -> `walk.png`
   - `06_give.md` -> `give.png`
+- Verb audio matching follows the same lesson filename stem without the numeric prefix:
+  - `01_walk.md` -> `walk.mp3`
+  - `06_give.md` -> `give.mp3`
 - Missing matching images should not break loading; the lesson should still remain available without an illustration.
+- Missing matching audio should not break loading; the lesson should still remain available without pronunciation playback.
 - In lesson files, the first Markdown heading is preferred as the displayed title.
 - If no Markdown heading exists, the first non-empty line is used as the displayed title.
 
