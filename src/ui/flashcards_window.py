@@ -75,24 +75,15 @@ class FlashcardsWindow:
         )
         self.transcription_label.grid(row=2, column=0, sticky="ew")
 
-        self.context_text = tk.Text(
+        self.context_label = ttk.Label(
             card,
-            wrap="word",
-            height=2,
-            font=(AppTheme.FONT_FAMILY, 11),
-            padx=8,
-            pady=4,
+            text="",
+            style="CardBody.TLabel",
+            wraplength=620,
+            justify="right",
+            anchor="e",
         )
-        self.context_text.grid(row=3, column=0, sticky="ew", pady=(18, 0))
-        self.context_text.configure(
-            bg=AppTheme.SURFACE,
-            fg=AppTheme.TEXT,
-            insertbackground=AppTheme.TEXT,
-            highlightthickness=0,
-            borderwidth=0,
-            relief="flat",
-        )
-        self._configure_context_tags()
+        self.context_label.grid(row=3, column=0, sticky="ew", pady=(18, 0))
 
         self.context_translation_label = ttk.Label(
             card,
@@ -250,67 +241,24 @@ class FlashcardsWindow:
         self.know_button.grid(row=0, column=1, padx=(8, 0), sticky="ew")
 
     def _configure_context_tags(self):
-        self.context_text.tag_configure(
-            "context",
-            font=(AppTheme.FONT_FAMILY, 11),
-            justify="center",
-            foreground=AppTheme.TEXT,
-        )
-        self.context_text.tag_configure(
-            "context_muted",
-            font=(AppTheme.FONT_FAMILY, 11),
-            justify="center",
-            foreground=AppTheme.MUTED_TEXT,
-        )
-        self.context_text.tag_configure(
-            "context_bold",
-            font=(AppTheme.DISPLAY_FONT_FAMILY, 11, "bold"),
-            justify="center",
-            foreground=AppTheme.TEXT,
-        )
+        return
 
     def _render_context_text(self, text, *, bold=True):
-        self.context_text.config(state="normal")
-        self.context_text.delete("1.0", tk.END)
-
         if not text:
-            self.context_text.config(state="disabled")
+            self.context_label.config(text="", style="CardBody.TLabel")
             return
 
-        target = self.current_word.get("hebrew", "") if self.current_word else ""
-        if bold and target:
-            last_index = 0
-            for match in re.finditer(re.escape(target), text):
-                start, end = match.span()
-                if start > last_index:
-                    self.context_text.insert(
-                        tk.END, text[last_index:start], ("context",)
-                    )
-                self.context_text.insert(tk.END, text[start:end], ("context_bold",))
-                last_index = end
+        style = "CardBody.TLabel" if bold else "Muted.TLabel"
+        formatted_text = self._format_context_text(text)
+        self.context_label.config(text=formatted_text, style=style)
 
-            if last_index == 0:
-                self.context_text.insert(tk.END, text, ("context",))
-            elif last_index < len(text):
-                self.context_text.insert(tk.END, text[last_index:], ("context",))
-        else:
-            self.context_text.insert(tk.END, text, ("context_muted",))
+    def _format_context_text(self, text):
+        if self._contains_hebrew(text):
+            return f"\u202B{text}\u202C"
+        return text
 
-        self._resize_context_box()
-        self.context_text.config(state="disabled")
-
-    def _resize_context_box(self):
-        self.context_text.update_idletasks()
-
-        try:
-            display_lines = int(
-                self.context_text.count("1.0", "end-1c", "displaylines")[0]
-            )
-        except (tk.TclError, TypeError, ValueError, IndexError):
-            content = self.context_text.get("1.0", "end-1c")
-            display_lines = max(1, len(content) // 34)
-
-        self.context_text.configure(height=min(max(display_lines, 2), 5))
+    def _contains_hebrew(self, text):
+        return any("\u0590" <= char <= "\u05FF" for char in text)
 
     def _select_context(self, word):
         contexts = word.get("_contexts", [])
