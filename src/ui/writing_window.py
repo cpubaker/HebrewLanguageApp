@@ -2,7 +2,9 @@ import random
 import tkinter as tk
 import unicodedata
 from datetime import datetime
-from tkinter import messagebox
+from tkinter import messagebox, ttk
+
+from ui.theme import AppTheme
 
 
 class WritingWindow:
@@ -12,91 +14,112 @@ class WritingWindow:
         self.current_word = None
 
         self.window = tk.Toplevel(master)
+        AppTheme.apply(self.window)
         self.window.title("Писання")
-        self.window.geometry("560x460")
-        self.window.minsize(460, 400)
-        self.window.configure(padx=20, pady=20)
+        self.window.geometry("720x560")
+        self.window.minsize(600, 500)
 
         self._build_layout()
         self.next_word()
 
     def _build_layout(self):
-        title_label = tk.Label(
-            self.window,
+        container = ttk.Frame(self.window, style="App.TFrame", padding=24)
+        container.pack(fill="both", expand=True)
+        container.columnconfigure(0, weight=1)
+        container.rowconfigure(1, weight=1)
+
+        hero_card = ttk.Frame(container, style="Hero.TFrame", padding=(20, 18))
+        hero_card.grid(row=0, column=0, sticky="ew")
+        hero_card.columnconfigure(0, weight=1)
+
+        ttk.Label(
+            hero_card,
             text="Тренування письма",
-            font=("Helvetica", 18, "bold"),
-        )
-        title_label.pack(pady=(0, 20))
+            style="HeroTitle.TLabel",
+        ).grid(row=0, column=0, sticky="w")
+        ttk.Label(
+            hero_card,
+            text="Read the prompt and type the Hebrew word from memory.",
+            style="HeroBody.TLabel",
+            wraplength=600,
+            justify="left",
+        ).grid(row=1, column=0, sticky="w", pady=(8, 0))
 
-        subtitle_label = tk.Label(
-            self.window,
-            text="Подивіться на переклад і напишіть слово івритом.",
-            font=("Helvetica", 12),
-            fg="#444444",
-            wraplength=420,
-            justify="center",
-        )
-        subtitle_label.pack(pady=(0, 16))
+        card = ttk.Frame(container, style="Card.TFrame", padding=(28, 24))
+        card.grid(row=1, column=0, sticky="nsew", pady=(18, 0))
+        card.columnconfigure(0, weight=1)
 
-        prompt_title_label = tk.Label(
-            self.window,
+        ttk.Label(card, text="Writing Practice", style="Pill.TLabel").grid(
+            row=0, column=0, sticky="w"
+        )
+
+        ttk.Label(
+            card,
             text="Слово для перекладу",
-            font=("Helvetica", 12, "bold"),
-        )
-        prompt_title_label.pack()
+            style="Muted.TLabel",
+            anchor="center",
+            justify="center",
+        ).grid(row=1, column=0, sticky="ew", pady=(18, 6))
 
-        self.prompt_label = tk.Label(
-            self.window,
+        self.prompt_label = ttk.Label(
+            card,
             text="",
-            font=("Helvetica", 24, "bold"),
-            wraplength=420,
+            style="Display.TLabel",
+            wraplength=520,
             justify="center",
+            anchor="center",
         )
-        self.prompt_label.pack(pady=(8, 18))
+        self.prompt_label.grid(row=2, column=0, sticky="ew", pady=(0, 18))
 
-        self.answer_entry = tk.Entry(
-            self.window,
-            font=("Helvetica", 22),
+        self.answer_entry = ttk.Entry(
+            card,
+            font=(AppTheme.DISPLAY_FONT_FAMILY, 20),
             justify="center",
         )
-        self.answer_entry.pack(fill="x", padx=20)
+        self.answer_entry.grid(row=3, column=0, sticky="ew")
         self.answer_entry.bind("<Return>", self.submit_answer)
 
-        self.feedback_label = tk.Label(
-            self.window,
+        self.feedback_label = ttk.Label(
+            card,
             text="",
-            font=("Helvetica", 13, "bold"),
-            wraplength=420,
+            style="CardBody.TLabel",
+            wraplength=520,
             justify="center",
+            anchor="center",
         )
-        self.feedback_label.pack(pady=(16, 12))
+        self.feedback_label.grid(row=4, column=0, sticky="ew", pady=(18, 0))
 
-        self.stats_label = tk.Label(
-            self.window,
+        stats_card = ttk.Frame(card, style="Muted.TFrame", padding=(18, 14))
+        stats_card.grid(row=5, column=0, sticky="ew", pady=(18, 0))
+        stats_card.columnconfigure(0, weight=1)
+
+        self.stats_label = ttk.Label(
+            stats_card,
             text="",
-            font=("Helvetica", 12),
+            style="SurfaceMuted.TLabel",
             justify="center",
+            anchor="center",
         )
-        self.stats_label.pack(pady=(0, 18))
+        self.stats_label.grid(row=0, column=0, sticky="ew")
 
-        button_frame = tk.Frame(self.window)
-        button_frame.pack(pady=8)
+        button_frame = ttk.Frame(card, style="Card.TFrame")
+        button_frame.grid(row=6, column=0, pady=(20, 0))
 
-        self.check_button = tk.Button(
+        self.check_button = ttk.Button(
             button_frame,
             text="Перевірити",
-            width=14,
+            style="Accent.TButton",
             command=self.submit_answer,
         )
-        self.check_button.pack(side=tk.LEFT, padx=8)
+        self.check_button.grid(row=0, column=0, padx=(0, 8))
 
-        self.next_button = tk.Button(
+        self.next_button = ttk.Button(
             button_frame,
             text="Далі",
-            width=14,
+            style="Secondary.TButton",
             command=self.next_word,
         )
-        self.next_button.pack(side=tk.LEFT, padx=8)
+        self.next_button.grid(row=0, column=1, padx=(8, 0))
 
     def next_word(self):
         if not self.words:
@@ -116,7 +139,7 @@ class WritingWindow:
         self.prompt_label.config(text=prompt)
         self.answer_entry.config(state="normal")
         self.answer_entry.delete(0, tk.END)
-        self.feedback_label.config(text="", fg="#000000")
+        self.feedback_label.config(text="", style="CardBody.TLabel")
         self._update_stats()
         self._set_answer_state(answered=False)
         self.answer_entry.focus_set()
@@ -131,7 +154,7 @@ class WritingWindow:
         if not user_answer:
             self.feedback_label.config(
                 text="Введіть переклад івритом, щоб перевірити відповідь.",
-                fg="#b36b00",
+                style="Warning.TLabel",
             )
             return
 
@@ -142,14 +165,17 @@ class WritingWindow:
             self.current_word["writing_last_correct"] = datetime.now().isoformat(
                 timespec="seconds"
             )
-            self.feedback_label.config(text="Правильно!", fg="green")
+            self.feedback_label.config(text="Правильно!", style="Success.TLabel")
         else:
             self.current_word["writing_wrong"] = (
                 self.current_word.get("writing_wrong", 0) + 1
             )
             self.feedback_label.config(
-                text=f"Неправильно. Правильний варіант: {self.current_word.get('hebrew', '')}",
-                fg="red",
+                text=(
+                    "Неправильно. Правильний варіант: "
+                    f"{self.current_word.get('hebrew', '')}"
+                ),
+                style="Danger.TLabel",
             )
 
         self._update_stats()
@@ -168,7 +194,10 @@ class WritingWindow:
             last_correct_text = "Останньої правильної відповіді ще не було"
 
         self.stats_label.config(
-            text=f"Правильно: {correct}    Неправильно: {wrong}    Спроб: {total}\n{last_correct_text}"
+            text=(
+                f"Правильно: {correct}    Неправильно: {wrong}    Спроб: {total}\n"
+                f"{last_correct_text}"
+            )
         )
 
     def _set_answer_state(self, *, answered):

@@ -1,7 +1,9 @@
 import random
 import tkinter as tk
 from datetime import datetime
-from tkinter import messagebox
+from tkinter import messagebox, ttk
+
+from ui.theme import AppTheme
 
 
 class FlashcardsWindow:
@@ -11,79 +13,114 @@ class FlashcardsWindow:
         self.current_word = None
 
         self.window = tk.Toplevel(master)
+        AppTheme.apply(self.window)
         self.window.title("Картки")
-        self.window.geometry("520x420")
-        self.window.minsize(440, 360)
-        self.window.configure(padx=20, pady=20)
+        self.window.geometry("720x580")
+        self.window.minsize(600, 520)
 
         self._build_layout()
         self.next_card()
 
     def _build_layout(self):
-        title_label = tk.Label(
-            self.window,
+        container = ttk.Frame(self.window, style="App.TFrame", padding=24)
+        container.pack(fill="both", expand=True)
+        container.columnconfigure(0, weight=1)
+        container.rowconfigure(1, weight=1)
+
+        hero_card = ttk.Frame(container, style="Hero.TFrame", padding=(20, 18))
+        hero_card.grid(row=0, column=0, sticky="ew")
+        hero_card.columnconfigure(0, weight=1)
+
+        ttk.Label(
+            hero_card,
             text="Флеш-картки",
-            font=("Helvetica", 18, "bold"),
-        )
-        title_label.pack(pady=(0, 20))
+            style="HeroTitle.TLabel",
+        ).grid(row=0, column=0, sticky="w")
+        ttk.Label(
+            hero_card,
+            text="Reveal the translation after you decide whether you know the word.",
+            style="HeroBody.TLabel",
+            wraplength=560,
+            justify="left",
+        ).grid(row=1, column=0, sticky="w", pady=(8, 0))
 
-        self.hebrew_label = tk.Label(
-            self.window,
-            text="",
-            font=("Helvetica", 30, "bold"),
-        )
-        self.hebrew_label.pack(pady=(10, 10))
+        card = ttk.Frame(container, style="Card.TFrame", padding=(28, 24))
+        card.grid(row=1, column=0, sticky="nsew", pady=(18, 0))
+        card.columnconfigure(0, weight=1)
+        card.grid_anchor("n")
 
-        self.transcription_label = tk.Label(
-            self.window,
-            text="",
-            font=("Helvetica", 14),
-            fg="#444444",
+        ttk.Label(card, text="Flashcard", style="Pill.TLabel").grid(
+            row=0, column=0, sticky="w"
         )
-        self.transcription_label.pack(pady=(0, 18))
 
-        self.translation_label = tk.Label(
-            self.window,
+        self.hebrew_label = ttk.Label(
+            card,
             text="",
-            font=("Helvetica", 16, "bold"),
-            wraplength=380,
+            style="Display.TLabel",
+            anchor="center",
             justify="center",
         )
-        self.translation_label.pack(pady=(0, 18))
+        self.hebrew_label.grid(row=1, column=0, sticky="ew", pady=(18, 6))
 
-        self.stats_label = tk.Label(
-            self.window,
+        self.transcription_label = ttk.Label(
+            card,
             text="",
-            font=("Helvetica", 12),
+            style="Muted.TLabel",
+            anchor="center",
             justify="center",
         )
-        self.stats_label.pack(pady=(0, 18))
+        self.transcription_label.grid(row=2, column=0, sticky="ew")
 
-        button_frame = tk.Frame(self.window)
-        button_frame.pack(pady=10)
+        self.translation_label = ttk.Label(
+            card,
+            text="",
+            style="SectionTitle.TLabel",
+            wraplength=460,
+            justify="center",
+            anchor="center",
+        )
+        self.translation_label.grid(row=3, column=0, sticky="ew", pady=(20, 0))
 
-        self.dont_know_button = tk.Button(
+        stats_card = ttk.Frame(card, style="Muted.TFrame", padding=(18, 14))
+        stats_card.grid(row=4, column=0, sticky="ew", pady=(18, 0))
+        stats_card.columnconfigure(0, weight=1)
+
+        self.stats_label = ttk.Label(
+            stats_card,
+            text="",
+            style="SurfaceMuted.TLabel",
+            justify="center",
+            anchor="center",
+        )
+        self.stats_label.grid(row=0, column=0, sticky="ew")
+
+        button_frame = ttk.Frame(card, style="Card.TFrame")
+        button_frame.grid(row=5, column=0, pady=(24, 12))
+
+        self.dont_know_button = ttk.Button(
             button_frame,
             text="Не знаю",
-            width=12,
+            style="Secondary.TButton",
             command=lambda: self.answer_card(False),
         )
-        self.dont_know_button.pack(side=tk.LEFT, padx=8)
+        self.dont_know_button.grid(row=0, column=0, padx=(0, 8))
 
-        self.know_button = tk.Button(
+        self.know_button = ttk.Button(
             button_frame,
             text="Знаю",
-            width=12,
+            style="Accent.TButton",
             command=lambda: self.answer_card(True),
         )
-        self.know_button.pack(side=tk.LEFT, padx=8)
+        self.know_button.grid(row=0, column=1, padx=(8, 0))
 
-        self.next_button = tk.Button(
-            self.window,
+        self.next_button = ttk.Button(
+            card,
             text="Далі",
-            width=12,
+            style="Secondary.TButton",
             command=self.next_card,
         )
+        self.next_button.grid(row=6, column=0, pady=(18, 12))
+        self.next_button.grid_remove()
 
     def next_card(self):
         if not self.words:
@@ -131,7 +168,7 @@ class FlashcardsWindow:
         if last_correct:
             last_correct_text = f"Останнє 'Знаю': {last_correct}"
         else:
-            last_correct_text = "Останнє 'Знаю': ще не було"
+            last_correct_text = "Останнього 'Знаю' ще не було"
 
         self.stats_label.config(
             text=f"Знаю: {correct}    Не знаю: {wrong}\n{last_correct_text}"
@@ -141,9 +178,9 @@ class FlashcardsWindow:
         if answered:
             self.know_button.config(state="disabled")
             self.dont_know_button.config(state="disabled")
-            self.next_button.pack(pady=(12, 0))
+            self.next_button.grid()
             return
 
         self.know_button.config(state="normal")
         self.dont_know_button.config(state="normal")
-        self.next_button.pack_forget()
+        self.next_button.grid_remove()

@@ -1,6 +1,9 @@
-import tkinter as tk
 import math
 import re
+import tkinter as tk
+from tkinter import ttk
+
+from ui.theme import AppTheme
 
 
 class TextBrowserWindow:
@@ -19,77 +22,122 @@ class TextBrowserWindow:
         self.empty_message = empty_message
 
         self.window = tk.Toplevel(master)
+        AppTheme.apply(self.window)
         self.window.title(window_title)
-        self.window.geometry("760x480")
-        self.window.minsize(680, 420)
+        self.window.geometry("960x620")
+        self.window.minsize(800, 520)
         self.section_image = None
 
-        self._build_layout(list_label)
+        self._build_layout(window_title, list_label)
         self._populate_sections()
 
-    def _build_layout(self, list_label):
-        container = tk.Frame(self.window, padx=12, pady=12)
+    def _build_layout(self, window_title, list_label):
+        container = ttk.Frame(self.window, style="App.TFrame", padding=20)
         container.pack(fill="both", expand=True)
+        container.columnconfigure(0, weight=1)
+        container.rowconfigure(1, weight=1)
 
-        self.left_frame = tk.Frame(container)
-        self.left_frame.pack(side="left", fill="y", padx=(0, 12))
+        header_card = ttk.Frame(container, style="Hero.TFrame", padding=(20, 18))
+        header_card.grid(row=0, column=0, sticky="ew", pady=(0, 16))
+        header_card.columnconfigure(0, weight=1)
 
-        right_frame = tk.Frame(container)
-        right_frame.pack(side="right", fill="both", expand=True)
+        ttk.Label(
+            header_card,
+            text=window_title,
+            style="HeroTitle.TLabel",
+        ).grid(row=0, column=0, sticky="w")
+        ttk.Label(
+            header_card,
+            text="Browse lessons on the left and read the full content on the right.",
+            style="HeroBody.TLabel",
+            wraplength=760,
+            justify="left",
+        ).grid(row=1, column=0, sticky="w", pady=(8, 0))
+
+        content = ttk.Frame(container, style="App.TFrame")
+        content.grid(row=1, column=0, sticky="nsew")
+        content.columnconfigure(0, weight=0)
+        content.columnconfigure(1, weight=1)
+        content.rowconfigure(0, weight=1)
+
+        sidebar_card = ttk.Frame(content, style="Card.TFrame", padding=(16, 16))
+        sidebar_card.grid(row=0, column=0, sticky="ns", padx=(0, 16))
+
+        content_card = ttk.Frame(content, style="Card.TFrame", padding=(20, 18))
+        content_card.grid(row=0, column=1, sticky="nsew")
+        content_card.columnconfigure(0, weight=1)
+        content_card.rowconfigure(2, weight=1)
+
+        self.left_frame = ttk.Frame(sidebar_card, style="Card.TFrame")
+        self.left_frame.pack(fill="both", expand=True)
 
         self._build_sidebar_controls(self.left_frame)
 
-        section_label = tk.Label(
+        ttk.Label(
             self.left_frame,
             text=list_label,
-            font=("Helvetica", 12, "bold"),
-        )
-        section_label.pack(anchor="w", pady=(0, 8))
+            style="SectionTitle.TLabel",
+        ).pack(anchor="w", pady=(0, 8))
+
+        list_container = ttk.Frame(self.left_frame, style="Card.TFrame")
+        list_container.pack(fill="both", expand=True)
 
         self.section_listbox = tk.Listbox(
-            self.left_frame,
+            list_container,
             width=28,
             height=18,
-            font=("Helvetica", 11),
+            font=(AppTheme.FONT_FAMILY, 11),
             exportselection=False,
         )
+        AppTheme.style_listbox(self.section_listbox)
 
-        section_scrollbar = tk.Scrollbar(self.left_frame, orient="vertical")
+        section_scrollbar = ttk.Scrollbar(
+            list_container,
+            orient="vertical",
+            style="App.Vertical.TScrollbar",
+        )
         section_scrollbar.config(command=self.section_listbox.yview)
         self.section_listbox.config(yscrollcommand=section_scrollbar.set)
 
         section_scrollbar.pack(side="right", fill="y")
-        self.section_listbox.pack(side="left", fill="y")
+        self.section_listbox.pack(side="left", fill="both", expand=True)
         self.section_listbox.bind("<<ListboxSelect>>", self.show_section)
 
-        self.text_title = tk.Label(
-            right_frame,
+        self.text_title = ttk.Label(
+            content_card,
             text="",
-            font=("Helvetica", 14, "bold"),
+            style="Title.TLabel",
             anchor="w",
         )
-        self.text_title.pack(fill="x", pady=(0, 8))
+        self.text_title.grid(row=0, column=0, sticky="ew")
 
-        self.media_frame = tk.Frame(right_frame)
-        self.media_frame.pack(fill="x")
+        self.media_frame = ttk.Frame(content_card, style="Card.TFrame")
+        self.media_frame.grid(row=1, column=0, sticky="ew", pady=(12, 0))
 
-        self.image_label = tk.Label(self.media_frame)
+        self.image_label = ttk.Label(self.media_frame, style="CardBody.TLabel")
 
-        text_container = tk.Frame(right_frame)
-        text_container.pack(fill="both", expand=True)
+        text_container = ttk.Frame(content_card, style="Card.TFrame")
+        text_container.grid(row=2, column=0, sticky="nsew", pady=(12, 0))
+        text_container.columnconfigure(0, weight=1)
+        text_container.rowconfigure(0, weight=1)
 
-        text_scrollbar = tk.Scrollbar(text_container, orient="vertical")
-        text_scrollbar.pack(side="right", fill="y")
+        text_scrollbar = ttk.Scrollbar(
+            text_container,
+            orient="vertical",
+            style="App.Vertical.TScrollbar",
+        )
+        text_scrollbar.grid(row=0, column=1, sticky="ns", padx=(12, 0))
 
         self.text_widget = tk.Text(
             text_container,
             wrap="word",
-            font=("Helvetica", 12),
+            font=(AppTheme.FONT_FAMILY, 12),
             padx=10,
             pady=10,
             yscrollcommand=text_scrollbar.set,
         )
-        self.text_widget.pack(side="left", fill="both", expand=True)
+        AppTheme.style_text_widget(self.text_widget)
+        self.text_widget.grid(row=0, column=0, sticky="nsew")
 
         text_scrollbar.config(command=self.text_widget.yview)
         self._configure_text_tags()
@@ -100,38 +148,44 @@ class TextBrowserWindow:
     def _configure_text_tags(self):
         self.text_widget.tag_configure(
             "heading_1",
-            font=("Helvetica", 16, "bold"),
+            font=(AppTheme.DISPLAY_FONT_FAMILY, 16, "bold"),
             spacing1=10,
             spacing3=6,
         )
         self.text_widget.tag_configure(
             "heading_2",
-            font=("Helvetica", 14, "bold"),
+            font=(AppTheme.DISPLAY_FONT_FAMILY, 14, "bold"),
             spacing1=8,
             spacing3=4,
         )
         self.text_widget.tag_configure(
             "heading_3",
-            font=("Helvetica", 13, "bold"),
+            font=(AppTheme.DISPLAY_FONT_FAMILY, 13, "bold"),
             spacing1=6,
             spacing3=4,
         )
         self.text_widget.tag_configure(
             "paragraph",
-            font=("Helvetica", 12),
+            font=(AppTheme.FONT_FAMILY, 12),
             spacing1=2,
             spacing3=8,
         )
         self.text_widget.tag_configure(
             "list_item",
-            font=("Helvetica", 12),
+            font=(AppTheme.FONT_FAMILY, 12),
             lmargin1=18,
             lmargin2=36,
             spacing1=2,
             spacing3=4,
         )
-        self.text_widget.tag_configure("bold", font=("Helvetica", 12, "bold"))
-        self.text_widget.tag_configure("italic", font=("Helvetica", 12, "italic"))
+        self.text_widget.tag_configure(
+            "bold",
+            font=(AppTheme.DISPLAY_FONT_FAMILY, 12, "bold"),
+        )
+        self.text_widget.tag_configure(
+            "italic",
+            font=(AppTheme.FONT_FAMILY, 12, "italic"),
+        )
 
     def _populate_sections(self):
         self.section_names = list(self.sections.keys())

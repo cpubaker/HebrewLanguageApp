@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 
 from reading_levels import READING_LEVEL_LABELS, READING_LEVELS
 from ui.text_browser_window import TextBrowserWindow
@@ -20,27 +21,24 @@ class ReadingWindow(TextBrowserWindow):
         )
 
     def _build_sidebar_controls(self, parent):
-        filters_label = tk.Label(
+        ttk.Label(
             parent,
             text="Рівні",
-            font=("Helvetica", 11, "bold"),
-        )
-        filters_label.pack(anchor="w", pady=(0, 6))
+            style="SectionTitle.TLabel",
+        ).pack(anchor="w", pady=(0, 6))
 
         for level in READING_LEVELS:
             level_var = tk.BooleanVar(value=True)
             self.level_vars[level] = level_var
 
-            checkbox = tk.Checkbutton(
+            ttk.Checkbutton(
                 parent,
                 text=READING_LEVEL_LABELS[level],
                 variable=level_var,
-                anchor="w",
                 command=self._apply_filters,
-            )
-            checkbox.pack(anchor="w")
+            ).pack(anchor="w")
 
-        tk.Frame(parent, height=12).pack()
+        ttk.Separator(parent).pack(fill="x", pady=(12, 0))
 
     def _populate_sections(self):
         self._apply_filters()
