@@ -1,4 +1,4 @@
-# AGENTS.md
+﻿# AGENTS.md
 
 ## Purpose
 - This repository contains a desktop Hebrew learning app.
@@ -55,6 +55,7 @@
 - For flashcard-context tasks, inspect `data/input/contexts/` first and only open code files if context resolution or rendering behavior is unclear.
 - For startup, file-loading, or missing-path issues, inspect `src/main.py`, `src/app_paths.py`, and `src/data_service.py` first.
 - Preserve UTF-8 encoding for all Hebrew content files.
+- Reading lessons under `data/input/reading/beginner/` must use Hebrew diacritics (nikkud) in the Hebrew body text and in Hebrew vocabulary/verb entries unless the task explicitly says otherwise.
 - Keep numbered lesson filenames stable unless the task explicitly requires renaming.
 - Keep image filenames stable when they are used for loader-based matching.
 - Do not change lesson file structure casually; UI logic expects either:
@@ -105,3 +106,4 @@
 
 ## Known Notes
 - Path handling is centralized in `src/app_paths.py`; reuse it instead of hardcoding relative paths in multiple places.
+
