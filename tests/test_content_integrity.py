@@ -5,7 +5,7 @@ from pathlib import Path
 import test_support
 
 from app_paths import AppPaths
-from data_service import HebrewDataService
+from infrastructure.content_repository import ContentRepository
 from reading_levels import READING_LEVELS
 
 
@@ -16,7 +16,7 @@ class ContentIntegrityTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.paths = AppPaths.from_src_file(str(PROJECT_ROOT / "src" / "main.py"))
-        cls.service = HebrewDataService(cls.paths)
+        cls.content_repository = ContentRepository(cls.paths)
 
     def test_words_json_contains_required_fields(self):
         words_path = Path(self.paths.words_file)
@@ -47,18 +47,18 @@ class ContentIntegrityTests(unittest.TestCase):
             self.assertGreater(len(lesson_files), 0, f"No files found in {lesson_dir}")
 
             for lesson_file in lesson_files:
-                if not self.service._is_text_section_file(lesson_file.name):
+                if not self.content_repository._is_text_section_file(lesson_file.name):
                     continue
 
                 content = lesson_file.read_text(encoding="utf-8").strip()
                 if not content:
                     continue
 
-                title, _ = self.service._split_markdown_section(content)
+                title, _ = self.content_repository._split_markdown_section(content)
                 self.assertTrue(title, f"Could not extract title from {lesson_file.name}")
 
     def test_reading_sections_load_with_known_levels(self):
-        sections = self.service.load_reading_sections()
+        sections = self.content_repository.load_reading_sections()
 
         self.assertGreater(len(sections), 0)
 

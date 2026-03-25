@@ -7,12 +7,13 @@ from unittest.mock import patch
 
 import test_support
 
-from data_service import HebrewDataService
 from domain.errors import MissingDataPathError
-from domain.models import ContextSentence, ReadingSection, VerbLesson, Word
+from domain.models import ContextSentence, GuideSection, ReadingSection, VerbLesson, Word
+from infrastructure.content_repository import ContentRepository
+from infrastructure.progress_repository import ProgressRepository
 
 
-class HebrewDataServiceTests(unittest.TestCase):
+class RepositoryTests(unittest.TestCase):
     def setUp(self):
         self.temp_dir = tempfile.TemporaryDirectory()
         self.root = Path(self.temp_dir.name)
@@ -28,7 +29,8 @@ class HebrewDataServiceTests(unittest.TestCase):
             verbs_audio_dir=str(self.root / "audio" / "verbs"),
             verbs_images_dir=str(self.root / "images" / "verbs"),
         )
-        self.service = HebrewDataService(self.paths)
+        self.content_repository = ContentRepository(self.paths)
+        self.progress_repository = ProgressRepository(self.paths)
 
     def tearDown(self):
         self.temp_dir.cleanup()
@@ -54,7 +56,7 @@ class HebrewDataServiceTests(unittest.TestCase):
             encoding="utf-8",
         )
 
-        loaded_words = self.service.load_words()
+        loaded_words = self.content_repository.load_words()
 
         self.assertIsInstance(loaded_words[0], Word)
         self.assertEqual(loaded_words[0]["correct"], 2)
@@ -120,7 +122,7 @@ class HebrewDataServiceTests(unittest.TestCase):
             encoding="utf-8",
         )
 
-        loaded_words = self.service.load_words()
+        loaded_words = self.content_repository.load_words()
 
         self.assertIsInstance(loaded_words[0]["_contexts"][0], ContextSentence)
         self.assertEqual(loaded_words[0]["_contexts"][0]["id"], "ctx_dog_park_01")
@@ -137,7 +139,7 @@ class HebrewDataServiceTests(unittest.TestCase):
             }
         ]
 
-        self.service.save_words(words)
+        self.progress_repository.save_words(words)
 
         saved_words = json.loads(Path(self.paths.words_file).read_text(encoding="utf-8"))
         self.assertNotIn("_word_id", saved_words[0])
@@ -165,31 +167,32 @@ class HebrewDataServiceTests(unittest.TestCase):
         )
         (guide_dir / "notes.json").write_text("{}", encoding="utf-8")
 
-        sections = self.service.load_text_sections(
+        sections = self.content_repository.load_text_sections(
             self.paths.guide_dir,
             resource_label="guide folder",
         )
 
-        self.assertEqual(
-            sections,
-            {
-                "Alphabet": "Lesson body",
-                "Greetings": "Useful phrases",
-            },
-        )
+        self.assertEqual(len(sections), 2)
+        self.assertIsInstance(sections[0], GuideSection)
+        self.assertEqual(sections[0]["title"], "Alphabet")
+        self.assertEqual(sections[0]["body"], "Lesson body")
+        self.assertEqual(sections[0]["filename"], "01_heading.md")
+        self.assertEqual(sections[1]["title"], "Greetings")
+        self.assertEqual(sections[1]["body"], "Useful phrases")
+        self.assertEqual(sections[1]["filename"], "02_plain.txt")
 
     def test_is_text_section_file_accepts_numbered_lessons_only(self):
-        self.assertTrue(self.service._is_text_section_file("01_intro.md"))
-        self.assertTrue(self.service._is_text_section_file("02_intro.txt"))
-        self.assertFalse(self.service._is_text_section_file("AGENTS.md"))
-        self.assertFalse(self.service._is_text_section_file("notes.md"))
-        self.assertFalse(self.service._is_text_section_file("01_intro.json"))
+        self.assertTrue(self.content_repository._is_text_section_file("01_intro.md"))
+        self.assertTrue(self.content_repository._is_text_section_file("02_intro.txt"))
+        self.assertFalse(self.content_repository._is_text_section_file("AGENTS.md"))
+        self.assertFalse(self.content_repository._is_text_section_file("notes.md"))
+        self.assertFalse(self.content_repository._is_text_section_file("01_intro.json"))
 
     def test_load_text_sections_missing_directory_raises_missing_data_error(self):
         missing_dir = self.root / "missing"
 
         with self.assertRaises(MissingDataPathError) as error_context:
-            self.service.load_text_sections(
+            self.content_repository.load_text_sections(
                 str(missing_dir),
                 resource_label="guide folder",
             )
@@ -216,7 +219,7 @@ class HebrewDataServiceTests(unittest.TestCase):
         (advanced_dir / "ignore.md").write_text("   ", encoding="utf-8")
         (advanced_dir / "notes.json").write_text("{}", encoding="utf-8")
 
-        sections = self.service.load_reading_sections()
+        sections = self.content_repository.load_reading_sections()
 
         self.assertEqual(len(sections), 2)
         self.assertIsInstance(sections[0], ReadingSection)
@@ -248,7 +251,7 @@ class HebrewDataServiceTests(unittest.TestCase):
         (verbs_images_dir / "walk.png").write_bytes(b"png")
         (verbs_audio_dir / "walk.mp3").write_bytes(b"mp3")
 
-        sections = self.service.load_verbs()
+        sections = self.content_repository.load_verbs()
 
         self.assertEqual(len(sections), 2)
         self.assertIsInstance(sections[0], VerbLesson)

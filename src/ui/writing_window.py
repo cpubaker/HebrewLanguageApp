@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox, ttk
 
 from application.writing_session import WritingSession
+from ui.debounced_save import DebouncedSaveController
 from ui.theme import AppTheme
 
 
@@ -16,6 +17,8 @@ class WritingWindow:
         self.window.title("\u041f\u0438\u0441\u0430\u043d\u043d\u044f")
         self.window.geometry("720x560")
         self.window.minsize(600, 500)
+        self.window.protocol("WM_DELETE_WINDOW", self.close)
+        self.autosave = DebouncedSaveController(self.window, self.progress_service)
 
         self._build_layout()
         self.next_word()
@@ -173,7 +176,7 @@ class WritingWindow:
 
         self._update_stats()
         self._set_answer_state(answered=True)
-        self.progress_service.save_words(self.words)
+        self.autosave.request_save(self.words)
 
     def _update_stats(self):
         stats = self.session.current_stats()
@@ -208,3 +211,8 @@ class WritingWindow:
         self.answer_entry.config(state="normal")
         self.check_button.config(state="normal")
         self.next_button.config(state="disabled")
+
+    def close(self):
+        self.autosave.cancel()
+        self.progress_service.flush()
+        self.window.destroy()

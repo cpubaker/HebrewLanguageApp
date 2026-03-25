@@ -1,10 +1,12 @@
 import random
 from datetime import datetime
 
+from domain.models import normalize_words_collection
+
 
 class FlashcardSession:
     def __init__(self, words, rng=None):
-        self.words = words
+        self.words = normalize_words_collection(words)
         self.rng = rng or random.Random()
         self.current_word = None
         self.current_context = None
@@ -36,18 +38,9 @@ class FlashcardSession:
             return None
 
         if known:
-            if hasattr(self.current_word, "register_correct"):
-                self.current_word.register_correct(now=datetime.now())
-            else:
-                self.current_word["correct"] = self.current_word.get("correct", 0) + 1
-                self.current_word["last_correct"] = datetime.now().isoformat(
-                    timespec="seconds"
-                )
+            self.current_word.register_correct(now=datetime.now())
         else:
-            if hasattr(self.current_word, "register_wrong"):
-                self.current_word.register_wrong()
-            else:
-                self.current_word["wrong"] = self.current_word.get("wrong", 0) + 1
+            self.current_word.register_wrong()
 
         self.last_answer_known = known
         return {
@@ -60,16 +53,9 @@ class FlashcardSession:
         if not self.current_word:
             return {"correct": 0, "wrong": 0, "last_correct": False}
 
-        if hasattr(self.current_word, "vocabulary_score"):
-            score = self.current_word.vocabulary_score()
-            score["last_correct"] = self.current_word.get("last_correct", False)
-            return score
-
-        return {
-            "correct": self.current_word.get("correct", 0),
-            "wrong": self.current_word.get("wrong", 0),
-            "last_correct": self.current_word.get("last_correct", False),
-        }
+        score = self.current_word.vocabulary_score()
+        score["last_correct"] = self.current_word.get("last_correct", False)
+        return score
 
     def _select_context(self, word):
         contexts = word.get("_contexts", [])

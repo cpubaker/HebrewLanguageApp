@@ -2,10 +2,12 @@ import random
 import unicodedata
 from datetime import datetime
 
+from domain.models import normalize_words_collection
+
 
 class WritingSession:
     def __init__(self, words, rng=None):
-        self.words = words
+        self.words = normalize_words_collection(words)
         self.rng = rng or random.Random()
         self.current_word = None
         self.answered = False
@@ -48,22 +50,9 @@ class WritingSession:
         is_correct = normalized_answer == correct_answer
 
         if is_correct:
-            if hasattr(self.current_word, "register_writing_correct"):
-                self.current_word.register_writing_correct(now=datetime.now())
-            else:
-                self.current_word["writing_correct"] = (
-                    self.current_word.get("writing_correct", 0) + 1
-                )
-                self.current_word["writing_last_correct"] = datetime.now().isoformat(
-                    timespec="seconds"
-                )
+            self.current_word.register_writing_correct(now=datetime.now())
         else:
-            if hasattr(self.current_word, "register_writing_wrong"):
-                self.current_word.register_writing_wrong()
-            else:
-                self.current_word["writing_wrong"] = (
-                    self.current_word.get("writing_wrong", 0) + 1
-                )
+            self.current_word.register_writing_wrong()
 
         return {
             "status": "submitted",
@@ -76,17 +65,7 @@ class WritingSession:
         if not self.current_word:
             return {"correct": 0, "wrong": 0, "total": 0, "last_correct": False}
 
-        if hasattr(self.current_word, "writing_score"):
-            return self.current_word.writing_score()
-
-        correct = self.current_word.get("writing_correct", 0)
-        wrong = self.current_word.get("writing_wrong", 0)
-        return {
-            "correct": correct,
-            "wrong": wrong,
-            "total": correct + wrong,
-            "last_correct": self.current_word.get("writing_last_correct", False),
-        }
+        return self.current_word.writing_score()
 
     def _normalize_hebrew(self, text):
         normalized = unicodedata.normalize("NFC", text or "")

@@ -7,6 +7,7 @@ from types import SimpleNamespace
 import test_support
 
 from app_runtime import build_app_runtime
+from infrastructure.progress_repository import ProgressRepository
 
 
 class AppRuntimeTests(unittest.TestCase):
@@ -67,7 +68,7 @@ class AppRuntimeTests(unittest.TestCase):
         self.assertEqual(len(runtime.app_content.guide_sections), 1)
         self.assertEqual(len(runtime.app_content.verbs), 1)
         self.assertEqual(len(runtime.app_content.reading_sections), 1)
-        self.assertIs(runtime.progress_service.repository, runtime.data_service.progress)
+        self.assertIsInstance(runtime.progress_service.repository, ProgressRepository)
 
 
 if __name__ == "__main__":

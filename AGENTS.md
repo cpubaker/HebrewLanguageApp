@@ -26,7 +26,6 @@
 - `src/infrastructure/progress_repository.py` - persisting word progress back to local JSON.
 - `src/ui/` - UI windows and application screens.
 - `src/ui/sprint_window.py` - timed Sprint exercise UI with the 60-second quiz flow and final score screen.
-- `src/data_service.py` - compatibility facade that delegates to the content/progress repositories.
 - `src/app_paths.py` - path resolution for project data and assets.
 - `tests/` - automated test suite for path resolution, data loading, and content integrity checks.
 - `data/input/hebrew_words.json` - core vocabulary data.
@@ -68,7 +67,7 @@
 - For audio-related tasks, inspect the matching folder under `data/input/audio/` first and only open code files if naming or playback behavior is unclear.
 - For flashcard-context tasks, inspect `data/input/contexts/` first and only open code files if context resolution or rendering behavior is unclear.
 - For Sprint exercise tasks, inspect `src/ui/sprint_window.py` and `src/application/sprint_session.py` first.
-- For startup, file-loading, or missing-path issues, inspect `src/main.py`, `src/app_runtime.py`, `src/app_paths.py`, `src/data_service.py`, and the matching repository in `src/infrastructure/` first.
+- For startup, file-loading, or missing-path issues, inspect `src/main.py`, `src/app_runtime.py`, `src/app_paths.py`, and the matching repository in `src/infrastructure/` first.
 - Prefer changes in `src/application/` or `src/domain/` for business rules; change `src/ui/` only for presentation or interaction wiring.
 - Preserve UTF-8 encoding for all Hebrew content files.
 - Reading lessons under `data/input/reading/beginner/` must use Hebrew diacritics (nikkud) in the Hebrew body text and in Hebrew vocabulary/verb entries unless the task explicitly says otherwise.

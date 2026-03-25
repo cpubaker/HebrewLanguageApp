@@ -130,15 +130,15 @@ class ContentRepository:
         return resolved_contexts
 
     def load_text_sections(self, directory, *, resource_label):
-        sections = self._load_structured_text_sections(
+        return self._load_structured_text_sections(
             directory,
             resource_label=resource_label,
-            section_factory=lambda title, body, _filename: GuideSection.from_values(
+            section_factory=lambda title, body, filename: GuideSection.from_values(
                 title=title,
                 body=body,
+                filename=filename,
             ),
         )
-        return {section["title"]: section["body"] for section in sections}
 
     def _load_structured_text_sections(self, directory, *, resource_label, section_factory):
         if not os.path.exists(directory):

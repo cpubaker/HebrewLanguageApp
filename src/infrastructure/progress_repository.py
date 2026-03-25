@@ -1,4 +1,6 @@
 import json
+import os
+import tempfile
 
 from domain.models import Word
 
@@ -24,5 +26,21 @@ class ProgressRepository:
                 }
             )
 
-        with open(self.paths.words_file, "w", encoding="utf-8") as file:
-            json.dump(sanitized_words, file, ensure_ascii=False, indent=4)
+        target_dir = os.path.dirname(self.paths.words_file) or "."
+        file_descriptor, temp_path = tempfile.mkstemp(
+            dir=target_dir,
+            prefix="hebrew_words_",
+            suffix=".tmp",
+        )
+
+        try:
+            with os.fdopen(file_descriptor, "w", encoding="utf-8") as file:
+                json.dump(sanitized_words, file, ensure_ascii=False, indent=4)
+                file.flush()
+                os.fsync(file.fileno())
+
+            os.replace(temp_path, self.paths.words_file)
+        except Exception:
+            if os.path.exists(temp_path):
+                os.remove(temp_path)
+            raise

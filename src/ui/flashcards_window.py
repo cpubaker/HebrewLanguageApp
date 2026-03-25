@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox, ttk
 
 from application.flashcard_session import FlashcardSession
+from ui.debounced_save import DebouncedSaveController
 from ui.theme import AppTheme
 
 
@@ -16,6 +17,8 @@ class FlashcardsWindow:
         self.window.title("\u041a\u0430\u0440\u0442\u043a\u0438")
         self.window.geometry("760x720")
         self.window.minsize(680, 620)
+        self.window.protocol("WM_DELETE_WINDOW", self.close)
+        self.autosave = DebouncedSaveController(self.window, self.progress_service)
 
         self._build_layout()
         self.next_card()
@@ -194,7 +197,7 @@ class FlashcardsWindow:
         self.translation_label.config(text=current_word["english"])
         self._update_stats()
         self._set_answer_state(answered=True, known=known)
-        self.progress_service.save_words(self.words)
+        self.autosave.request_save(self.words)
 
     def _update_stats(self):
         stats = self.session.current_stats()
@@ -254,3 +257,8 @@ class FlashcardsWindow:
 
     def _contains_hebrew(self, text):
         return any("\u0590" <= char <= "\u05FF" for char in text)
+
+    def close(self):
+        self.autosave.cancel()
+        self.progress_service.flush()
+        self.window.destroy()

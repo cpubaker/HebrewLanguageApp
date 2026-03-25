@@ -1,10 +1,12 @@
 import random
 from datetime import datetime
 
+from domain.models import normalize_words_collection
+
 
 class VocabularySession:
     def __init__(self, words, rng=None):
-        self.words = words
+        self.words = normalize_words_collection(words)
         self.rng = rng or random.Random()
         self.current_word = None
         self.current_options = []
@@ -44,18 +46,9 @@ class VocabularySession:
         is_correct = selected_translation == correct_translation
 
         if is_correct:
-            if hasattr(self.current_word, "register_correct"):
-                self.current_word.register_correct(now=datetime.now())
-            else:
-                self.current_word["correct"] = self.current_word.get("correct", 0) + 1
-                self.current_word["last_correct"] = datetime.now().isoformat(
-                    timespec="seconds"
-                )
+            self.current_word.register_correct(now=datetime.now())
         else:
-            if hasattr(self.current_word, "register_wrong"):
-                self.current_word.register_wrong()
-            else:
-                self.current_word["wrong"] = self.current_word.get("wrong", 0) + 1
+            self.current_word.register_wrong()
 
         return {
             "is_correct": is_correct,
@@ -68,9 +61,4 @@ class VocabularySession:
         if not self.current_word:
             return {"correct": 0, "wrong": 0, "total": 0}
 
-        if hasattr(self.current_word, "vocabulary_score"):
-            return self.current_word.vocabulary_score()
-
-        correct = self.current_word.get("correct", 0)
-        wrong = self.current_word.get("wrong", 0)
-        return {"correct": correct, "wrong": wrong, "total": correct + wrong}
+        return self.current_word.vocabulary_score()

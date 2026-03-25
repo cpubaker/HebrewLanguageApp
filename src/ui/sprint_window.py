@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox, ttk
 
 from application.sprint_session import SprintSession
+from ui.debounced_save import DebouncedSaveController
 from ui.theme import AppTheme
 
 
@@ -29,6 +30,7 @@ class SprintWindow:
         self.window.geometry("760x720")
         self.window.minsize(680, 620)
         self.window.protocol("WM_DELETE_WINDOW", self.close)
+        self.autosave = DebouncedSaveController(self.window, self.progress_service)
 
         self.answer_buttons = {}
 
@@ -250,7 +252,7 @@ class SprintWindow:
             )
 
         self._update_result_label()
-        self.progress_service.save_words(self.words)
+        self.autosave.request_save(self.words)
 
         if self.remaining_seconds > 0:
             self._show_next_prompt()
@@ -290,4 +292,6 @@ class SprintWindow:
 
     def close(self):
         self._cancel_timer()
+        self.autosave.cancel()
+        self.progress_service.flush()
         self.window.destroy()

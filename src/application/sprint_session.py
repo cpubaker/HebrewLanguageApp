@@ -1,10 +1,12 @@
 import random
 from datetime import datetime
 
+from domain.models import normalize_words_collection
+
 
 class SprintSession:
     def __init__(self, words, rng=None):
-        self.words = words
+        self.words = normalize_words_collection(words)
         self.rng = rng or random.Random()
         self.current_word = None
         self.current_options = []
@@ -61,19 +63,10 @@ class SprintSession:
 
         if is_correct:
             self.correct_count += 1
-            if hasattr(self.current_word, "register_correct"):
-                self.current_word.register_correct(now=datetime.now())
-            else:
-                self.current_word["correct"] = self.current_word.get("correct", 0) + 1
-                self.current_word["last_correct"] = datetime.now().isoformat(
-                    timespec="seconds"
-                )
+            self.current_word.register_correct(now=datetime.now())
         else:
             self.wrong_count += 1
-            if hasattr(self.current_word, "register_wrong"):
-                self.current_word.register_wrong()
-            else:
-                self.current_word["wrong"] = self.current_word.get("wrong", 0) + 1
+            self.current_word.register_wrong()
 
         self.last_result = {
             "is_correct": is_correct,

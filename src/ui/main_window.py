@@ -4,6 +4,7 @@ from tkinter import messagebox, ttk
 
 from application.vocabulary_session import VocabularySession
 from app_version import APP_NAME, get_version_label
+from ui.debounced_save import DebouncedSaveController
 from ui.flashcards_window import FlashcardsWindow
 from ui.guide_window import GuideWindow
 from ui.reading_window import ReadingWindow
@@ -26,6 +27,7 @@ class HebrewLearningApp:
         self.session = VocabularySession(self.words)
         self.icon_image = None
         self.answer_buttons = {}
+        self.autosave = DebouncedSaveController(self.master, self.progress_service)
 
         self._configure_window()
         self._build_layout()
@@ -37,6 +39,7 @@ class HebrewLearningApp:
         self.master.geometry("760x780")
         self.master.minsize(680, 700)
         self.set_app_icon()
+        self.master.protocol("WM_DELETE_WINDOW", self.close)
 
     def _build_layout(self):
         container = ttk.Frame(self.master, style="App.TFrame", padding=24)
@@ -242,7 +245,7 @@ class HebrewLearningApp:
 
         self._update_answer_button_states(translation, correct_translation)
         self.update_score()
-        self.progress_service.save_words(self.words)
+        self.autosave.request_save(self.words)
 
     def _update_answer_button_states(self, selected_translation, correct_translation):
         for option, button in self.answer_buttons.items():
@@ -281,3 +284,8 @@ class HebrewLearningApp:
 
     def open_sprint(self):
         SprintWindow(self.master, self.words, self.progress_service)
+
+    def close(self):
+        self.autosave.cancel()
+        self.progress_service.flush()
+        self.master.destroy()

@@ -79,11 +79,16 @@ class Word(MappingRecord):
         if isinstance(self.get("writing_last_correct", False), bool):
             self["writing_last_correct"] = False
 
+    def normalize_runtime_fields(self):
+        self.normalize_loading_fields()
+        self.set_contexts(self.get("_contexts", []))
+        return self
+
     def set_word_id(self, word_id):
         self["_word_id"] = word_id
 
     def set_contexts(self, contexts):
-        self["_contexts"] = list(contexts)
+        self["_contexts"] = [ContextSentence.from_dict(context) for context in contexts]
 
     def register_correct(self, *, now=None):
         self["correct"] = self.get("correct", 0) + 1
@@ -177,3 +182,13 @@ class VerbLesson(MappingRecord):
                 "audio_path": audio_path,
             }
         )
+
+
+def normalize_words_collection(words):
+    normalized_words = [
+        Word.from_dict(word).normalize_runtime_fields() for word in words
+    ]
+    if isinstance(words, list):
+        words[:] = normalized_words
+        return words
+    return normalized_words

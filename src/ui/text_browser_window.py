@@ -200,13 +200,7 @@ class TextBrowserWindow:
         )
 
     def _populate_sections(self):
-        if isinstance(self.sections, dict):
-            self.section_items = [
-                {"title": title, "body": body}
-                for title, body in self.sections.items()
-            ]
-        else:
-            self.section_items = list(self.sections)
+        self.section_items = list(self.sections)
 
         for section in self.section_items:
             self.section_listbox.insert(tk.END, self._get_section_list_label(section))
