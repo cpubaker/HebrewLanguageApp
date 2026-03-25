@@ -61,13 +61,19 @@ class SprintSession:
 
         if is_correct:
             self.correct_count += 1
-            self.current_word["correct"] = self.current_word.get("correct", 0) + 1
-            self.current_word["last_correct"] = datetime.now().isoformat(
-                timespec="seconds"
-            )
+            if hasattr(self.current_word, "register_correct"):
+                self.current_word.register_correct(now=datetime.now())
+            else:
+                self.current_word["correct"] = self.current_word.get("correct", 0) + 1
+                self.current_word["last_correct"] = datetime.now().isoformat(
+                    timespec="seconds"
+                )
         else:
             self.wrong_count += 1
-            self.current_word["wrong"] = self.current_word.get("wrong", 0) + 1
+            if hasattr(self.current_word, "register_wrong"):
+                self.current_word.register_wrong()
+            else:
+                self.current_word["wrong"] = self.current_word.get("wrong", 0) + 1
 
         self.last_result = {
             "is_correct": is_correct,

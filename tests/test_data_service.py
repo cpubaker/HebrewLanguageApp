@@ -8,21 +8,14 @@ from unittest.mock import patch
 import test_support
 
 from data_service import HebrewDataService
-
-
-class DummyMaster:
-    def __init__(self):
-        self.destroy_called = False
-
-    def destroy(self):
-        self.destroy_called = True
+from domain.errors import MissingDataPathError
+from domain.models import ContextSentence, ReadingSection, VerbLesson, Word
 
 
 class HebrewDataServiceTests(unittest.TestCase):
     def setUp(self):
         self.temp_dir = tempfile.TemporaryDirectory()
         self.root = Path(self.temp_dir.name)
-        self.master = DummyMaster()
         self.paths = SimpleNamespace(
             words_file=str(self.root / "hebrew_words.json"),
             guide_dir=str(self.root / "guide"),
@@ -35,7 +28,7 @@ class HebrewDataServiceTests(unittest.TestCase):
             verbs_audio_dir=str(self.root / "audio" / "verbs"),
             verbs_images_dir=str(self.root / "images" / "verbs"),
         )
-        self.service = HebrewDataService(self.master, self.paths)
+        self.service = HebrewDataService(self.paths)
 
     def tearDown(self):
         self.temp_dir.cleanup()
@@ -63,6 +56,7 @@ class HebrewDataServiceTests(unittest.TestCase):
 
         loaded_words = self.service.load_words()
 
+        self.assertIsInstance(loaded_words[0], Word)
         self.assertEqual(loaded_words[0]["correct"], 2)
         self.assertEqual(loaded_words[0]["wrong"], 0)
         self.assertEqual(loaded_words[0]["writing_correct"], 0)
@@ -128,6 +122,7 @@ class HebrewDataServiceTests(unittest.TestCase):
 
         loaded_words = self.service.load_words()
 
+        self.assertIsInstance(loaded_words[0]["_contexts"][0], ContextSentence)
         self.assertEqual(loaded_words[0]["_contexts"][0]["id"], "ctx_dog_park_01")
         self.assertEqual(loaded_words[1]["_contexts"][0]["id"], "ctx_dog_park_01")
 
@@ -148,10 +143,7 @@ class HebrewDataServiceTests(unittest.TestCase):
         self.assertNotIn("_word_id", saved_words[0])
         self.assertNotIn("_contexts", saved_words[0])
 
-    @patch("data_service.messagebox")
-    def test_load_text_sections_uses_title_and_skips_empty_or_non_lesson_files(
-        self, messagebox_mock
-    ):
+    def test_load_text_sections_uses_title_and_skips_empty_or_non_lesson_files(self):
         guide_dir = Path(self.paths.guide_dir)
         guide_dir.mkdir()
         (guide_dir / "01_heading.md").write_text(
@@ -175,10 +167,7 @@ class HebrewDataServiceTests(unittest.TestCase):
 
         sections = self.service.load_text_sections(
             self.paths.guide_dir,
-            missing_title="Missing",
-            missing_message="Missing guide",
-            empty_title="Empty",
-            empty_message="Empty guide",
+            resource_label="guide folder",
         )
 
         self.assertEqual(
@@ -188,7 +177,6 @@ class HebrewDataServiceTests(unittest.TestCase):
                 "Greetings": "Useful phrases",
             },
         )
-        messagebox_mock.showwarning.assert_not_called()
 
     def test_is_text_section_file_accepts_numbered_lessons_only(self):
         self.assertTrue(self.service._is_text_section_file("01_intro.md"))
@@ -197,31 +185,20 @@ class HebrewDataServiceTests(unittest.TestCase):
         self.assertFalse(self.service._is_text_section_file("notes.md"))
         self.assertFalse(self.service._is_text_section_file("01_intro.json"))
 
-    @patch("data_service.messagebox")
-    def test_load_text_sections_missing_directory_raises_and_destroys_master(
-        self, messagebox_mock
-    ):
+    def test_load_text_sections_missing_directory_raises_missing_data_error(self):
         missing_dir = self.root / "missing"
 
-        with self.assertRaises(FileNotFoundError):
+        with self.assertRaises(MissingDataPathError) as error_context:
             self.service.load_text_sections(
                 str(missing_dir),
-                missing_title="Missing folder",
-                missing_message="Folder missing",
-                empty_title="Empty",
-                empty_message="No files",
+                resource_label="guide folder",
             )
 
-        self.assertTrue(self.master.destroy_called)
-        messagebox_mock.showerror.assert_called_once_with(
-            "Missing folder", "Folder missing"
-        )
+        self.assertEqual(error_context.exception.path, str(missing_dir))
+        self.assertEqual(error_context.exception.resource_label, "guide folder")
 
-    @patch("data_service.messagebox")
-    @patch("data_service.READING_LEVELS", ["beginner", "advanced"])
-    def test_load_reading_sections_collects_sections_with_metadata(
-        self, messagebox_mock
-    ):
+    @patch("infrastructure.content_repository.READING_LEVELS", ["beginner", "advanced"])
+    def test_load_reading_sections_collects_sections_with_metadata(self):
         reading_dir = Path(self.paths.reading_dir)
         beginner_dir = reading_dir / "beginner"
         advanced_dir = reading_dir / "advanced"
@@ -241,29 +218,18 @@ class HebrewDataServiceTests(unittest.TestCase):
 
         sections = self.service.load_reading_sections()
 
-        self.assertEqual(
-            sections,
-            [
-                {
-                    "title": "Intro",
-                    "body": "Easy text",
-                    "level": "beginner",
-                    "filename": "01_intro.md",
-                },
-                {
-                    "title": "Daily Life",
-                    "body": "Short passage",
-                    "level": "beginner",
-                    "filename": "02_plain.txt",
-                },
-            ],
-        )
-        messagebox_mock.showwarning.assert_not_called()
+        self.assertEqual(len(sections), 2)
+        self.assertIsInstance(sections[0], ReadingSection)
+        self.assertEqual(sections[0]["title"], "Intro")
+        self.assertEqual(sections[0]["body"], "Easy text")
+        self.assertEqual(sections[0]["level"], "beginner")
+        self.assertEqual(sections[0]["filename"], "01_intro.md")
+        self.assertEqual(sections[1]["title"], "Daily Life")
+        self.assertEqual(sections[1]["body"], "Short passage")
+        self.assertEqual(sections[1]["level"], "beginner")
+        self.assertEqual(sections[1]["filename"], "02_plain.txt")
 
-    @patch("data_service.messagebox")
-    def test_load_verbs_collects_image_and_audio_paths_from_matching_assets(
-        self, messagebox_mock
-    ):
+    def test_load_verbs_collects_image_and_audio_paths_from_matching_assets(self):
         verbs_dir = Path(self.paths.verbs_dir)
         verbs_images_dir = Path(self.paths.verbs_images_dir)
         verbs_audio_dir = Path(self.paths.verbs_audio_dir)
@@ -284,26 +250,18 @@ class HebrewDataServiceTests(unittest.TestCase):
 
         sections = self.service.load_verbs()
 
-        self.assertEqual(
-            sections,
-            [
-                {
-                    "title": "Walk",
-                    "body": "Verb notes",
-                    "filename": "01_walk.md",
-                    "image_path": str(verbs_images_dir / "walk.png"),
-                    "audio_path": str(verbs_audio_dir / "walk.mp3"),
-                },
-                {
-                    "title": "Give",
-                    "body": "Usage examples",
-                    "filename": "02_give.md",
-                    "image_path": None,
-                    "audio_path": None,
-                },
-            ],
-        )
-        messagebox_mock.showwarning.assert_not_called()
+        self.assertEqual(len(sections), 2)
+        self.assertIsInstance(sections[0], VerbLesson)
+        self.assertEqual(sections[0]["title"], "Walk")
+        self.assertEqual(sections[0]["body"], "Verb notes")
+        self.assertEqual(sections[0]["filename"], "01_walk.md")
+        self.assertEqual(sections[0]["image_path"], str(verbs_images_dir / "walk.png"))
+        self.assertEqual(sections[0]["audio_path"], str(verbs_audio_dir / "walk.mp3"))
+        self.assertEqual(sections[1]["title"], "Give")
+        self.assertEqual(sections[1]["body"], "Usage examples")
+        self.assertEqual(sections[1]["filename"], "02_give.md")
+        self.assertIsNone(sections[1]["image_path"])
+        self.assertIsNone(sections[1]["audio_path"])
 
 
 if __name__ == "__main__":

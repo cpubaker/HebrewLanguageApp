@@ -1,24 +1,19 @@
-import random
-import re
 import tkinter as tk
-from datetime import datetime
 from tkinter import messagebox, ttk
 
+from application.flashcard_session import FlashcardSession
 from ui.theme import AppTheme
 
 
 class FlashcardsWindow:
-    def __init__(self, master, words, data_service):
+    def __init__(self, master, words, progress_service):
         self.words = words
-        self.data_service = data_service
-        self.current_word = None
-        self.current_context = None
-        self.last_answer_known = None
-        self.last_context_ids = {}
+        self.progress_service = progress_service
+        self.session = FlashcardSession(words)
 
         self.window = tk.Toplevel(master)
         AppTheme.apply(self.window)
-        self.window.title("Картки")
+        self.window.title("\u041a\u0430\u0440\u0442\u043a\u0438")
         self.window.geometry("760x720")
         self.window.minsize(680, 620)
 
@@ -37,7 +32,7 @@ class FlashcardsWindow:
 
         ttk.Label(
             hero_card,
-            text="Флеш-картки",
+            text="\u0424\u043b\u0435\u0448-\u043a\u0430\u0440\u0442\u043a\u0438",
             style="HeroTitle.TLabel",
         ).grid(row=0, column=0, sticky="w")
         ttk.Label(
@@ -125,7 +120,7 @@ class FlashcardsWindow:
 
         self.dont_know_button = ttk.Button(
             button_frame,
-            text="Не знаю",
+            text="\u041d\u0435 \u0437\u043d\u0430\u044e",
             style="Secondary.TButton",
             command=lambda: self.answer_card(False),
         )
@@ -133,7 +128,7 @@ class FlashcardsWindow:
 
         self.know_button = ttk.Button(
             button_frame,
-            text="Знаю",
+            text="\u0417\u043d\u0430\u044e",
             style="Accent.TButton",
             command=lambda: self.answer_card(True),
         )
@@ -141,7 +136,7 @@ class FlashcardsWindow:
 
         self.next_button = ttk.Button(
             button_frame,
-            text="Далі",
+            text="\u0414\u0430\u043b\u0456",
             style="Secondary.TButton",
             command=self.next_card,
         )
@@ -154,71 +149,71 @@ class FlashcardsWindow:
         self.next_button.grid_remove()
 
     def next_card(self):
-        if not self.words:
-            messagebox.showwarning("Немає даних", "Список слів порожній.")
+        card = self.session.next_card()
+        if not card:
+            messagebox.showwarning(
+                "\u041d\u0435\u043c\u0430\u0454 \u0434\u0430\u043d\u0438\u0445",
+                "\u0421\u043f\u0438\u0441\u043e\u043a \u0441\u043b\u0456\u0432 \u043f\u043e\u0440\u043e\u0436\u043d\u0456\u0439.",
+            )
             self.window.destroy()
             return
 
-        candidates = self.words
-        if self.current_word and len(self.words) > 1:
-            candidates = [word for word in self.words if word is not self.current_word]
+        current_word = card["word"]
+        current_context = card["context"]
 
-        self.current_word = random.choice(candidates)
-        self.current_context = self._select_context(self.current_word)
-
-        self.hebrew_label.config(text=self.current_word["hebrew"])
+        self.hebrew_label.config(text=current_word["hebrew"])
         self.transcription_label.config(
-            text=f"({self.current_word.get('transcription', '')})"
+            text=f"({current_word.get('transcription', '')})"
         )
-        if self.current_context:
-            self._render_context_text(self.current_context.get("hebrew", ""))
+        if current_context:
+            self._render_context_text(current_context.get("hebrew", ""))
         else:
             self._render_context_text(
-                "Контекст для цього слова ще не додано.",
+                "\u041a\u043e\u043d\u0442\u0435\u043a\u0441\u0442 \u0434\u043b\u044f \u0446\u044c\u043e\u0433\u043e \u0441\u043b\u043e\u0432\u0430 \u0449\u0435 \u043d\u0435 \u0434\u043e\u0434\u0430\u043d\u043e.",
                 bold=False,
             )
+
         self.context_translation_label.config(text="")
         self.translation_label.config(text="")
-        self.last_answer_known = None
-
         self._update_stats()
         self._set_answer_state(answered=False)
 
     def answer_card(self, known):
-        if not self.current_word:
+        result = self.session.answer_card(known)
+        if not result:
             return
 
-        if known:
-            self.current_word["correct"] = self.current_word.get("correct", 0) + 1
-            self.current_word["last_correct"] = datetime.now().isoformat(
-                timespec="seconds"
-            )
-        else:
-            self.current_word["wrong"] = self.current_word.get("wrong", 0) + 1
+        current_context = result["context"]
+        current_word = result["word"]
 
-        if self.current_context:
+        if current_context:
             self.context_translation_label.config(
-                text=self.current_context.get("translation", "")
+                text=current_context.get("translation", "")
             )
 
-        self.translation_label.config(text=self.current_word["english"])
-        self.last_answer_known = known
+        self.translation_label.config(text=current_word["english"])
         self._update_stats()
         self._set_answer_state(answered=True, known=known)
-        self.data_service.save_words(self.words)
+        self.progress_service.save_words(self.words)
 
     def _update_stats(self):
-        correct = self.current_word.get("correct", 0)
-        wrong = self.current_word.get("wrong", 0)
-        last_correct = self.current_word.get("last_correct", False)
+        stats = self.session.current_stats()
+        last_correct = stats["last_correct"]
 
         if last_correct:
-            last_correct_text = f"Останнє 'Знаю': {last_correct}"
+            last_correct_text = (
+                f"\u041e\u0441\u0442\u0430\u043d\u043d\u0454 '\u0417\u043d\u0430\u044e': {last_correct}"
+            )
         else:
-            last_correct_text = "Останнього 'Знаю' ще не було"
+            last_correct_text = (
+                "\u041e\u0441\u0442\u0430\u043d\u043d\u044c\u043e\u0433\u043e '\u0417\u043d\u0430\u044e' \u0449\u0435 \u043d\u0435 \u0431\u0443\u043b\u043e"
+            )
 
         self.stats_label.config(
-            text=f"Знаю: {correct}    Не знаю: {wrong}\n{last_correct_text}"
+            text=(
+                f"\u0417\u043d\u0430\u044e: {stats['correct']}    "
+                f"\u041d\u0435 \u0437\u043d\u0430\u044e: {stats['wrong']}\n{last_correct_text}"
+            )
         )
 
     def _set_answer_state(self, *, answered, known=None):
@@ -259,25 +254,3 @@ class FlashcardsWindow:
 
     def _contains_hebrew(self, text):
         return any("\u0590" <= char <= "\u05FF" for char in text)
-
-    def _select_context(self, word):
-        contexts = word.get("_contexts", [])
-        if not contexts:
-            return None
-
-        if len(contexts) == 1:
-            context = contexts[0]
-        else:
-            previous_context_id = self.last_context_ids.get(word.get("_word_id"))
-            candidates = [
-                context
-                for context in contexts
-                if context.get("id") != previous_context_id
-            ]
-            context = random.choice(candidates or contexts)
-
-        context_id = context.get("id")
-        if context_id:
-            self.last_context_ids[word.get("_word_id")] = context_id
-
-        return context

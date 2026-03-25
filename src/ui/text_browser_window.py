@@ -18,6 +18,7 @@ class TextBrowserWindow:
         empty_message,
     ):
         self.sections = sections
+        self.section_items = []
         self.empty_title = empty_title
         self.empty_message = empty_message
 
@@ -199,12 +200,18 @@ class TextBrowserWindow:
         )
 
     def _populate_sections(self):
-        self.section_names = list(self.sections.keys())
+        if isinstance(self.sections, dict):
+            self.section_items = [
+                {"title": title, "body": body}
+                for title, body in self.sections.items()
+            ]
+        else:
+            self.section_items = list(self.sections)
 
-        for section_name in self.section_names:
-            self.section_listbox.insert(tk.END, section_name)
+        for section in self.section_items:
+            self.section_listbox.insert(tk.END, self._get_section_list_label(section))
 
-        if self.section_names:
+        if self.section_items:
             self.section_listbox.selection_set(0)
             self.show_section()
             return
@@ -216,10 +223,20 @@ class TextBrowserWindow:
         if not selection:
             return
 
-        selected_section = self.section_names[selection[0]]
-        content = self.sections[selected_section]
+        section = self.section_items[selection[0]]
+        self._display_section(
+            self._get_section_title(section),
+            self._get_section_body(section),
+        )
 
-        self._display_section(selected_section, content)
+    def _get_section_list_label(self, section):
+        return self._get_section_title(section)
+
+    def _get_section_title(self, section):
+        return section["title"]
+
+    def _get_section_body(self, section):
+        return section["body"]
 
     def _show_empty_state(self, title=None, message=None):
         self.text_title.config(text=title or self.empty_title)

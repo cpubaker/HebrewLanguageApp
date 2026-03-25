@@ -12,16 +12,11 @@ from reading_levels import READING_LEVELS
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
-class DummyMaster:
-    def destroy(self):
-        raise AssertionError("Real content integrity checks should not destroy the UI")
-
-
 class ContentIntegrityTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.paths = AppPaths.from_src_file(str(PROJECT_ROOT / "src" / "main.py"))
-        cls.service = HebrewDataService(DummyMaster(), cls.paths)
+        cls.service = HebrewDataService(cls.paths)
 
     def test_words_json_contains_required_fields(self):
         words_path = Path(self.paths.words_file)

@@ -1,21 +1,19 @@
-import random
 import tkinter as tk
-import unicodedata
-from datetime import datetime
 from tkinter import messagebox, ttk
 
+from application.writing_session import WritingSession
 from ui.theme import AppTheme
 
 
 class WritingWindow:
-    def __init__(self, master, words, data_service):
+    def __init__(self, master, words, progress_service):
         self.words = words
-        self.data_service = data_service
-        self.current_word = None
+        self.progress_service = progress_service
+        self.session = WritingSession(words)
 
         self.window = tk.Toplevel(master)
         AppTheme.apply(self.window)
-        self.window.title("Писання")
+        self.window.title("\u041f\u0438\u0441\u0430\u043d\u043d\u044f")
         self.window.geometry("720x560")
         self.window.minsize(600, 500)
 
@@ -34,7 +32,7 @@ class WritingWindow:
 
         ttk.Label(
             hero_card,
-            text="Тренування письма",
+            text="\u0422\u0440\u0435\u043d\u0443\u0432\u0430\u043d\u043d\u044f \u043f\u0438\u0441\u044c\u043c\u0430",
             style="HeroTitle.TLabel",
         ).grid(row=0, column=0, sticky="w")
         ttk.Label(
@@ -55,7 +53,7 @@ class WritingWindow:
 
         ttk.Label(
             card,
-            text="Слово для перекладу",
+            text="\u0421\u043b\u043e\u0432\u043e \u0434\u043b\u044f \u043f\u0435\u0440\u0435\u043a\u043b\u0430\u0434\u0443",
             style="Muted.TLabel",
             anchor="center",
             justify="center",
@@ -107,7 +105,7 @@ class WritingWindow:
 
         self.check_button = ttk.Button(
             button_frame,
-            text="Перевірити",
+            text="\u041f\u0435\u0440\u0435\u0432\u0456\u0440\u0438\u0442\u0438",
             style="Accent.TButton",
             command=self.submit_answer,
         )
@@ -115,28 +113,23 @@ class WritingWindow:
 
         self.next_button = ttk.Button(
             button_frame,
-            text="Далі",
+            text="\u0414\u0430\u043b\u0456",
             style="Secondary.TButton",
             command=self.next_word,
         )
         self.next_button.grid(row=0, column=1, padx=(8, 0))
 
     def next_word(self):
-        if not self.words:
-            messagebox.showwarning("Немає даних", "Список слів порожній.")
+        prompt = self.session.next_prompt()
+        if not prompt:
+            messagebox.showwarning(
+                "\u041d\u0435\u043c\u0430\u0454 \u0434\u0430\u043d\u0438\u0445",
+                "\u0421\u043f\u0438\u0441\u043e\u043a \u0441\u043b\u0456\u0432 \u043f\u043e\u0440\u043e\u0436\u043d\u0456\u0439.",
+            )
             self.window.destroy()
             return
 
-        candidates = self.words
-        if self.current_word and len(self.words) > 1:
-            candidates = [word for word in self.words if word is not self.current_word]
-
-        self.current_word = random.choice(candidates)
-
-        prompt = self.current_word.get("ukrainian") or self.current_word.get(
-            "english", ""
-        )
-        self.prompt_label.config(text=prompt)
+        self.prompt_label.config(text=prompt["prompt"])
         self.answer_entry.config(state="normal")
         self.answer_entry.delete(0, tk.END)
         self.feedback_label.config(text="", style="CardBody.TLabel")
@@ -145,58 +138,63 @@ class WritingWindow:
         self.answer_entry.focus_set()
 
     def submit_answer(self, _event=None):
-        if not self.current_word or self.answer_entry.cget("state") == "disabled":
+        if self.answer_entry.cget("state") == "disabled":
             return
 
-        user_answer = self._normalize_hebrew(self.answer_entry.get())
-        correct_answer = self._normalize_hebrew(self.current_word.get("hebrew", ""))
+        result = self.session.submit_answer(self.answer_entry.get())
+        if not result:
+            return
 
-        if not user_answer:
+        if result["status"] == "empty":
             self.feedback_label.config(
-                text="Введіть переклад івритом, щоб перевірити відповідь.",
+                text=(
+                    "\u0412\u0432\u0435\u0434\u0456\u0442\u044c \u043f\u0435\u0440\u0435\u043a\u043b\u0430\u0434 "
+                    "\u0456\u0432\u0440\u0438\u0442\u043e\u043c, \u0449\u043e\u0431 \u043f\u0435\u0440\u0435\u0432\u0456\u0440\u0438\u0442\u0438 "
+                    "\u0432\u0456\u0434\u043f\u043e\u0432\u0456\u0434\u044c."
+                ),
                 style="Warning.TLabel",
             )
             return
 
-        if user_answer == correct_answer:
-            self.current_word["writing_correct"] = (
-                self.current_word.get("writing_correct", 0) + 1
+        if result["is_correct"]:
+            self.feedback_label.config(
+                text="\u041f\u0440\u0430\u0432\u0438\u043b\u044c\u043d\u043e!",
+                style="Success.TLabel",
             )
-            self.current_word["writing_last_correct"] = datetime.now().isoformat(
-                timespec="seconds"
-            )
-            self.feedback_label.config(text="Правильно!", style="Success.TLabel")
         else:
-            self.current_word["writing_wrong"] = (
-                self.current_word.get("writing_wrong", 0) + 1
-            )
             self.feedback_label.config(
                 text=(
-                    "Неправильно. Правильний варіант: "
-                    f"{self.current_word.get('hebrew', '')}"
+                    "\u041d\u0435\u043f\u0440\u0430\u0432\u0438\u043b\u044c\u043d\u043e. "
+                    "\u041f\u0440\u0430\u0432\u0438\u043b\u044c\u043d\u0438\u0439 \u0432\u0430\u0440\u0456\u0430\u043d\u0442: "
+                    f"{result['correct_answer']}"
                 ),
                 style="Danger.TLabel",
             )
 
         self._update_stats()
         self._set_answer_state(answered=True)
-        self.data_service.save_words(self.words)
+        self.progress_service.save_words(self.words)
 
     def _update_stats(self):
-        correct = self.current_word.get("writing_correct", 0)
-        wrong = self.current_word.get("writing_wrong", 0)
-        total = correct + wrong
-        last_correct = self.current_word.get("writing_last_correct", False)
+        stats = self.session.current_stats()
+        last_correct = stats["last_correct"]
 
         if last_correct:
-            last_correct_text = f"Остання правильна відповідь: {last_correct}"
+            last_correct_text = (
+                f"\u041e\u0441\u0442\u0430\u043d\u043d\u044f \u043f\u0440\u0430\u0432\u0438\u043b\u044c\u043d\u0430 "
+                f"\u0432\u0456\u0434\u043f\u043e\u0432\u0456\u0434\u044c: {last_correct}"
+            )
         else:
-            last_correct_text = "Останньої правильної відповіді ще не було"
+            last_correct_text = (
+                "\u041e\u0441\u0442\u0430\u043d\u043d\u044c\u043e\u0457 \u043f\u0440\u0430\u0432\u0438\u043b\u044c\u043d\u043e\u0457 "
+                "\u0432\u0456\u0434\u043f\u043e\u0432\u0456\u0434\u0456 \u0449\u0435 \u043d\u0435 \u0431\u0443\u043b\u043e"
+            )
 
         self.stats_label.config(
             text=(
-                f"Правильно: {correct}    Неправильно: {wrong}    Спроб: {total}\n"
-                f"{last_correct_text}"
+                f"\u041f\u0440\u0430\u0432\u0438\u043b\u044c\u043d\u043e: {stats['correct']}    "
+                f"\u041d\u0435\u043f\u0440\u0430\u0432\u0438\u043b\u044c\u043d\u043e: {stats['wrong']}    "
+                f"\u0421\u043f\u0440\u043e\u0431: {stats['total']}\n{last_correct_text}"
             )
         )
 
@@ -210,7 +208,3 @@ class WritingWindow:
         self.answer_entry.config(state="normal")
         self.check_button.config(state="normal")
         self.next_button.config(state="disabled")
-
-    def _normalize_hebrew(self, text):
-        normalized = unicodedata.normalize("NFC", text or "")
-        return " ".join(normalized.strip().split())

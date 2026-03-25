@@ -1,16 +1,16 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
 
-from ui.sprint_session import SprintSession
+from application.sprint_session import SprintSession
 from ui.theme import AppTheme
 
 
 class SprintWindow:
     DURATION_SECONDS = 60
 
-    def __init__(self, master, words, data_service):
+    def __init__(self, master, words, progress_service):
         self.words = words
-        self.data_service = data_service
+        self.progress_service = progress_service
         self.session = SprintSession(words)
         self.remaining_seconds = self.DURATION_SECONDS
         self.timer_job = None
@@ -250,7 +250,7 @@ class SprintWindow:
             )
 
         self._update_result_label()
-        self.data_service.save_words(self.words)
+        self.progress_service.save_words(self.words)
 
         if self.remaining_seconds > 0:
             self._show_next_prompt()

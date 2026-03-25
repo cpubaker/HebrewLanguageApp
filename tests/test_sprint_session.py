@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 import test_support
 
-from ui.sprint_session import SprintSession
+from application.sprint_session import SprintSession
 
 
 class SprintSessionTests(unittest.TestCase):
@@ -34,7 +34,7 @@ class SprintSessionTests(unittest.TestCase):
         self.assertEqual(len(set(prompt["options"])), 2)
         self.assertIn(prompt["word"]["english"], prompt["options"])
 
-    @patch("ui.sprint_session.datetime")
+    @patch("application.sprint_session.datetime")
     def test_submit_answer_updates_correct_counts(self, datetime_mock):
         datetime_mock.now.return_value.isoformat.return_value = "2026-03-25T10:15:00"
         word = {"hebrew": "איש", "english": "man", "transcription": "ish"}

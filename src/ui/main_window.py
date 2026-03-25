@@ -1,12 +1,9 @@
 import os
-import random
 import tkinter as tk
-from datetime import datetime
 from tkinter import messagebox, ttk
 
-from app_paths import AppPaths
+from application.vocabulary_session import VocabularySession
 from app_version import APP_NAME, get_version_label
-from data_service import HebrewDataService
 from ui.flashcards_window import FlashcardsWindow
 from ui.guide_window import GuideWindow
 from ui.reading_window import ReadingWindow
@@ -17,19 +14,18 @@ from ui.writing_window import WritingWindow
 
 
 class HebrewLearningApp:
-    def __init__(self, master):
+    def __init__(self, master, runtime):
         self.master = master
-        self.paths = AppPaths.from_src_file(__file__)
-        self.data_service = HebrewDataService(master, self.paths)
+        self.paths = runtime.paths
+        self.progress_service = runtime.progress_service
 
-        self.words = self.data_service.load_words()
-        self.guide_sections = self.data_service.load_guide_sections()
-        self.verbs = self.data_service.load_verbs()
-        self.reading_sections = self.data_service.load_reading_sections()
-        self.current_word = None
+        self.words = runtime.app_content.words
+        self.guide_sections = runtime.app_content.guide_sections
+        self.verbs = runtime.app_content.verbs
+        self.reading_sections = runtime.app_content.reading_sections
+        self.session = VocabularySession(self.words)
         self.icon_image = None
         self.answer_buttons = {}
-        self.answered = False
 
         self._configure_window()
         self._build_layout()
@@ -139,43 +135,43 @@ class HebrewLearningApp:
 
         ttk.Button(
             navigation_card,
-            text="Далі",
+            text="\u0414\u0430\u043b\u0456",
             style="Accent.TButton",
             command=self.next_word,
         ).grid(row=0, column=0, sticky="ew", padx=(0, 10), pady=(0, 10))
         ttk.Button(
             navigation_card,
-            text="Довідник",
+            text="\u0414\u043e\u0432\u0456\u0434\u043d\u0438\u043a",
             style="Secondary.TButton",
             command=self.open_guide,
         ).grid(row=0, column=1, sticky="ew", padx=5, pady=(0, 10))
         ttk.Button(
             navigation_card,
-            text="Дієслова",
+            text="\u0414\u0456\u0454\u0441\u043b\u043e\u0432\u0430",
             style="Secondary.TButton",
             command=self.open_verbs,
         ).grid(row=0, column=2, sticky="ew", padx=(10, 0), pady=(0, 10))
         ttk.Button(
             navigation_card,
-            text="Читання",
+            text="\u0427\u0438\u0442\u0430\u043d\u043d\u044f",
             style="Secondary.TButton",
             command=self.open_reading,
         ).grid(row=1, column=0, sticky="ew", padx=(0, 10))
         ttk.Button(
             navigation_card,
-            text="Картки",
+            text="\u041a\u0430\u0440\u0442\u043a\u0438",
             style="Secondary.TButton",
             command=self.open_flashcards,
         ).grid(row=1, column=1, sticky="ew", padx=5)
         ttk.Button(
             navigation_card,
-            text="Писання",
+            text="\u041f\u0438\u0441\u0430\u043d\u043d\u044f",
             style="Secondary.TButton",
             command=self.open_writing,
         ).grid(row=1, column=2, sticky="ew", padx=(10, 0))
         ttk.Button(
             navigation_card,
-            text="Спринт",
+            text="\u0421\u043f\u0440\u0438\u043d\u0442",
             style="Accent.TButton",
             command=self.open_sprint,
         ).grid(row=2, column=0, columnspan=3, sticky="ew", pady=(10, 0))
@@ -199,34 +195,22 @@ class HebrewLearningApp:
         print(f"Icon not found: {self.paths.icon_file}")
 
     def next_word(self):
-        if not self.words:
+        prompt = self.session.next_prompt()
+        if not prompt:
             messagebox.showwarning("No data", "The words list is empty.")
             return
 
-        self.current_word = random.choice(self.words)
-        self.display_word()
-
-    def display_word(self):
-        correct_translation = self.current_word["english"]
-        options = [correct_translation]
-
-        other_words = [word for word in self.words if word != self.current_word]
-        if other_words:
-            wrong_translation = random.choice(other_words)["english"]
-            options.append(wrong_translation)
-            random.shuffle(options)
-
-        self.hebrew_word_label.config(text=self.current_word["hebrew"])
-        self.transcription_label.config(text=f"({self.current_word['transcription']})")
+        current_word = prompt["word"]
+        self.hebrew_word_label.config(text=current_word["hebrew"])
+        self.transcription_label.config(text=f"({current_word['transcription']})")
         self.feedback_label.config(text="", style="Muted.TLabel")
         self.update_score()
-        self.answered = False
         self.answer_buttons = {}
 
         for widget in self.button_frame.winfo_children():
             widget.destroy()
 
-        for option in options:
+        for option in prompt["options"]:
             button = tk.Button(
                 self.button_frame,
                 text=option,
@@ -239,32 +223,26 @@ class HebrewLearningApp:
             self.answer_buttons[option] = button
 
     def check_answer(self, translation):
-        if self.answered or not self.current_word:
+        result = self.session.submit_answer(translation)
+        if not result:
             return
 
-        self.answered = True
-        correct_translation = self.current_word["english"]
+        correct_translation = result["correct_translation"]
 
-        if translation == self.current_word["english"]:
-            self.current_word["correct"] += 1
-            self.current_word["last_correct"] = datetime.now().isoformat(
-                timespec="seconds"
-            )
+        if result["is_correct"]:
             self.feedback_label.config(
-                text="Correct! Press 'Далі' for the next word.",
+                text="Correct! Press '\u0414\u0430\u043b\u0456' for the next word.",
                 style="Success.TLabel",
             )
         else:
-            self.current_word["wrong"] += 1
             self.feedback_label.config(
                 text=f"Wrong. Correct answer: {correct_translation}",
                 style="Danger.TLabel",
             )
 
         self._update_answer_button_states(translation, correct_translation)
-
         self.update_score()
-        self.data_service.save_words(self.words)
+        self.progress_service.save_words(self.words)
 
     def _update_answer_button_states(self, selected_translation, correct_translation):
         for option, button in self.answer_buttons.items():
@@ -278,12 +256,12 @@ class HebrewLearningApp:
             button.config(state="disabled", cursor="arrow")
 
     def update_score(self):
-        correct = self.current_word.get("correct", 0)
-        wrong = self.current_word.get("wrong", 0)
-        total = correct + wrong
-
+        score = self.session.current_score()
         self.score_label.config(
-            text=f"Correct: {correct}    Wrong: {wrong}    Total attempts: {total}"
+            text=(
+                f"Correct: {score['correct']}    Wrong: {score['wrong']}    "
+                f"Total attempts: {score['total']}"
+            )
         )
 
     def open_guide(self):
@@ -296,10 +274,10 @@ class HebrewLearningApp:
         ReadingWindow(self.master, self.reading_sections)
 
     def open_flashcards(self):
-        FlashcardsWindow(self.master, self.words, self.data_service)
+        FlashcardsWindow(self.master, self.words, self.progress_service)
 
     def open_writing(self):
-        WritingWindow(self.master, self.words, self.data_service)
+        WritingWindow(self.master, self.words, self.progress_service)
 
     def open_sprint(self):
-        SprintWindow(self.master, self.words, self.data_service)
+        SprintWindow(self.master, self.words, self.progress_service)
