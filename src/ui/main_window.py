@@ -10,6 +10,7 @@ from data_service import HebrewDataService
 from ui.flashcards_window import FlashcardsWindow
 from ui.guide_window import GuideWindow
 from ui.reading_window import ReadingWindow
+from ui.sprint_window import SprintWindow
 from ui.theme import AppTheme
 from ui.verbs_window import VerbsWindow
 from ui.writing_window import WritingWindow
@@ -172,6 +173,12 @@ class HebrewLearningApp:
             style="Secondary.TButton",
             command=self.open_writing,
         ).grid(row=1, column=2, sticky="ew", padx=(10, 0))
+        ttk.Button(
+            navigation_card,
+            text="Спринт",
+            style="Accent.TButton",
+            command=self.open_sprint,
+        ).grid(row=2, column=0, columnspan=3, sticky="ew", pady=(10, 0))
 
         ttk.Label(
             container,
@@ -293,3 +300,6 @@ class HebrewLearningApp:
 
     def open_writing(self):
         WritingWindow(self.master, self.words, self.data_service)
+
+    def open_sprint(self):
+        SprintWindow(self.master, self.words, self.data_service)

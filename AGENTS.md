@@ -14,6 +14,8 @@
 ## Project Layout
 - `src/main.py` - Tkinter bootstrap and main loop.
 - `src/ui/` - UI windows and application screens.
+- `src/ui/sprint_window.py` - timed Sprint exercise UI with the 60-second quiz flow and final score screen.
+- `src/ui/sprint_session.py` - Sprint round selection and correct/wrong score tracking logic.
 - `src/data_service.py` - loading and saving local JSON/TXT content.
 - `src/app_paths.py` - path resolution for project data and assets.
 - `tests/` - automated test suite for path resolution, data loading, and content integrity checks.
@@ -53,6 +55,7 @@
 - For image-related tasks, inspect the matching folder under `data/input/images/` first and only open code files if naming or loading behavior is unclear.
 - For audio-related tasks, inspect the matching folder under `data/input/audio/` first and only open code files if naming or playback behavior is unclear.
 - For flashcard-context tasks, inspect `data/input/contexts/` first and only open code files if context resolution or rendering behavior is unclear.
+- For Sprint exercise tasks, inspect `src/ui/sprint_window.py` and `src/ui/sprint_session.py` first.
 - For startup, file-loading, or missing-path issues, inspect `src/main.py`, `src/app_paths.py`, and `src/data_service.py` first.
 - Preserve UTF-8 encoding for all Hebrew content files.
 - Reading lessons under `data/input/reading/beginner/` must use Hebrew diacritics (nikkud) in the Hebrew body text and in Hebrew vocabulary/verb entries unless the task explicitly says otherwise.
@@ -83,6 +86,7 @@
 - Missing matching images should not break loading; the lesson should still remain available without an illustration.
 - Missing matching audio should not break loading; the lesson should still remain available without pronunciation playback.
 - Missing matching contexts should not break loading; a flashcard should still remain usable even if no linked context is found.
+- Sprint currently uses the same in-memory word list as the main vocabulary drill and persists `correct` / `wrong` counters through `src/data_service.py`.
 - In lesson files, the first Markdown heading is preferred as the displayed title.
 - If no Markdown heading exists, the first non-empty line is used as the displayed title.
 
