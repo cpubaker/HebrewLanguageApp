@@ -232,6 +232,32 @@ class RepositoryTests(unittest.TestCase):
         self.assertEqual(sections[1]["level"], "beginner")
         self.assertEqual(sections[1]["filename"], "02_plain.txt")
 
+    @patch("infrastructure.content_repository.READING_LEVELS", ["beginner"])
+    def test_load_reading_sections_sorts_by_numeric_prefix(self):
+        reading_dir = Path(self.paths.reading_dir)
+        beginner_dir = reading_dir / "beginner"
+        beginner_dir.mkdir(parents=True)
+
+        (beginner_dir / "2_second.md").write_text(
+            "# Second\n\nLesson 2",
+            encoding="utf-8",
+        )
+        (beginner_dir / "10_tenth.md").write_text(
+            "# Tenth\n\nLesson 10",
+            encoding="utf-8",
+        )
+        (beginner_dir / "100_hundredth.md").write_text(
+            "# Hundredth\n\nLesson 100",
+            encoding="utf-8",
+        )
+
+        sections = self.content_repository.load_reading_sections()
+
+        self.assertEqual(
+            [section["filename"] for section in sections],
+            ["2_second.md", "10_tenth.md", "100_hundredth.md"],
+        )
+
     def test_load_verbs_collects_image_and_audio_paths_from_matching_assets(self):
         verbs_dir = Path(self.paths.verbs_dir)
         verbs_images_dir = Path(self.paths.verbs_images_dir)

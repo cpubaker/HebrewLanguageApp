@@ -51,7 +51,7 @@ class ContentRepository:
 
         sections = []
 
-        for filename in sorted(os.listdir(self.paths.verbs_dir)):
+        for filename in self._sorted_directory_filenames(self.paths.verbs_dir):
             if not self._is_text_section_file(filename):
                 continue
 
@@ -146,7 +146,7 @@ class ContentRepository:
 
         sections = []
 
-        for filename in sorted(os.listdir(directory)):
+        for filename in self._sorted_directory_filenames(directory):
             if not self._is_text_section_file(filename):
                 continue
 
@@ -167,7 +167,7 @@ class ContentRepository:
     def _load_reading_sections_from_directory(self, directory, level):
         sections = []
 
-        for filename in sorted(os.listdir(directory)):
+        for filename in self._sorted_directory_filenames(directory):
             if not self._is_text_section_file(filename):
                 continue
 
@@ -245,6 +245,18 @@ class ContentRepository:
 
         lesson_stem = os.path.splitext(os.path.basename(filename))[0]
         return bool(re.match(r"^\d+", lesson_stem))
+
+    def _sorted_directory_filenames(self, directory):
+        return sorted(os.listdir(directory), key=self._lesson_sort_key)
+
+    def _lesson_sort_key(self, filename):
+        lesson_stem = os.path.splitext(os.path.basename(filename))[0]
+        numeric_prefix = re.match(r"^(\d+)", lesson_stem)
+
+        if numeric_prefix:
+            return (0, int(numeric_prefix.group(1)), lesson_stem.lower(), filename.lower())
+
+        return (1, lesson_stem.lower(), filename.lower())
 
     def _split_markdown_section(self, content):
         lines = content.lstrip("\ufeff").splitlines()
