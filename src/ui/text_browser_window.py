@@ -1,8 +1,8 @@
 import math
-import re
 import tkinter as tk
 from tkinter import ttk
 
+from ui.markdown_utils import parse_inline_markdown, render_markdown_content
 from ui.theme import AppTheme
 
 
@@ -250,67 +250,37 @@ class TextBrowserWindow:
         self.text_widget.yview_moveto(0)
 
     def _render_markdown(self, content):
-        lines = content.splitlines()
+        render_markdown_content(
+            self.text_widget,
+            content,
+            render_heading=self._render_heading_block,
+            render_unordered_list_item=self._render_unordered_list_item_block,
+            render_ordered_list_item=self._render_ordered_list_item_block,
+            render_paragraph=self._render_paragraph_block,
+        )
 
-        for line in lines:
-            stripped_line = line.strip()
+    def _render_heading_block(self, block):
+        self._insert_inline_markdown(block.text, block.kind)
 
-            if not stripped_line:
-                self.text_widget.insert(tk.END, "\n")
-                continue
+    def _render_unordered_list_item_block(self, block):
+        self.text_widget.insert(tk.END, "- ", ("list_item",))
+        self._insert_inline_markdown(block.text, "list_item")
 
-            if stripped_line.startswith("### "):
-                self._insert_inline_markdown(stripped_line[4:], "heading_3")
-                self.text_widget.insert(tk.END, "\n")
-                continue
+    def _render_ordered_list_item_block(self, block):
+        self.text_widget.insert(
+            tk.END,
+            f"{block.ordinal}. ",
+            ("list_item",),
+        )
+        self._insert_inline_markdown(block.text, "list_item")
 
-            if stripped_line.startswith("## "):
-                self._insert_inline_markdown(stripped_line[3:], "heading_2")
-                self.text_widget.insert(tk.END, "\n")
-                continue
-
-            if stripped_line.startswith("# "):
-                self._insert_inline_markdown(stripped_line[2:], "heading_1")
-                self.text_widget.insert(tk.END, "\n")
-                continue
-
-            unordered_match = re.match(r"^[-*]\s+(.*)$", stripped_line)
-            if unordered_match:
-                self.text_widget.insert(tk.END, "- ", ("list_item",))
-                self._insert_inline_markdown(unordered_match.group(1), "list_item")
-                self.text_widget.insert(tk.END, "\n")
-                continue
-
-            ordered_match = re.match(r"^(\d+)\.\s+(.*)$", stripped_line)
-            if ordered_match:
-                self.text_widget.insert(
-                    tk.END,
-                    f"{ordered_match.group(1)}. ",
-                    ("list_item",),
-                )
-                self._insert_inline_markdown(ordered_match.group(2), "list_item")
-                self.text_widget.insert(tk.END, "\n")
-                continue
-
-            self._insert_inline_markdown(stripped_line, "paragraph")
-            self.text_widget.insert(tk.END, "\n")
+    def _render_paragraph_block(self, block):
+        self._insert_inline_markdown(block.text, "paragraph")
 
     def _insert_inline_markdown(self, text, block_tag):
-        parts = re.split(r"(\*\*.*?\*\*|\*.*?\*)", text)
-
-        for part in parts:
-            if not part:
-                continue
-
-            tags = [block_tag]
-            if part.startswith("**") and part.endswith("**") and len(part) >= 4:
-                part = part[2:-2]
-                tags.append("bold")
-            elif part.startswith("*") and part.endswith("*") and len(part) >= 2:
-                part = part[1:-1]
-                tags.append("italic")
-
-            self.text_widget.insert(tk.END, part, tuple(tags))
+        for segment in parse_inline_markdown(text):
+            tags = (block_tag, *segment.tags)
+            self.text_widget.insert(tk.END, segment.text, tags)
 
     def _set_section_image(self, image_path):
         if not image_path:

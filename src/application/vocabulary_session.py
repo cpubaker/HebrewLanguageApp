@@ -11,6 +11,8 @@ class VocabularySession:
         self.current_word = None
         self.current_options = []
         self.answered = False
+        self.session_correct = 0
+        self.session_wrong = 0
 
     def next_prompt(self):
         if not self.words:
@@ -46,8 +48,10 @@ class VocabularySession:
         is_correct = selected_translation == correct_translation
 
         if is_correct:
+            self.session_correct += 1
             self.current_word.register_correct(now=datetime.now())
         else:
+            self.session_wrong += 1
             self.current_word.register_wrong()
 
         return {
@@ -57,8 +61,18 @@ class VocabularySession:
             "word": self.current_word,
         }
 
-    def current_score(self):
+    def current_word_score(self):
         if not self.current_word:
             return {"correct": 0, "wrong": 0, "total": 0}
 
         return self.current_word.vocabulary_score()
+
+    def session_score(self):
+        return {
+            "correct": self.session_correct,
+            "wrong": self.session_wrong,
+            "total": self.session_correct + self.session_wrong,
+        }
+
+    def current_score(self):
+        return self.current_word_score()

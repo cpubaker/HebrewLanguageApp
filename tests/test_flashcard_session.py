@@ -57,6 +57,31 @@ class FlashcardSessionTests(unittest.TestCase):
         self.assertEqual(session.words[0]["correct"], 1)
         self.assertEqual(session.words[0]["last_correct"], "2026-03-25T11:15:00")
 
+    def test_current_word_stats_returns_word_progress_snapshot(self):
+        session = FlashcardSession(
+            [
+                {
+                    "hebrew": "ish",
+                    "english": "man",
+                    "transcription": "ish",
+                    "correct": 2,
+                    "wrong": 1,
+                    "last_correct": "2026-03-25T11:15:00",
+                }
+            ]
+        )
+        session.current_word = session.words[0]
+
+        self.assertEqual(
+            session.current_word_stats(),
+            {
+                "correct": 2,
+                "wrong": 1,
+                "total": 3,
+                "last_correct": "2026-03-25T11:15:00",
+            },
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

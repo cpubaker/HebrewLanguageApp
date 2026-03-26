@@ -259,11 +259,14 @@ class HebrewLearningApp:
             button.config(state="disabled", cursor="arrow")
 
     def update_score(self):
-        score = self.session.current_score()
+        session_score = self.session.session_score()
+        word_score = self.session.current_word_score()
         self.score_label.config(
             text=(
-                f"Correct: {score['correct']}    Wrong: {score['wrong']}    "
-                f"Total attempts: {score['total']}"
+                f"Session: {session_score['correct']} correct, "
+                f"{session_score['wrong']} wrong, {session_score['total']} attempts\n"
+                f"This word: {word_score['correct']} correct, "
+                f"{word_score['wrong']} wrong, {word_score['total']} attempts"
             )
         )
 

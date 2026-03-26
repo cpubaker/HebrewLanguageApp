@@ -61,11 +61,14 @@ class WritingSession:
             "correct_answer": self.current_word.get("hebrew", ""),
         }
 
-    def current_stats(self):
+    def current_word_stats(self):
         if not self.current_word:
             return {"correct": 0, "wrong": 0, "total": 0, "last_correct": False}
 
         return self.current_word.writing_score()
+
+    def current_stats(self):
+        return self.current_word_stats()
 
     def _normalize_hebrew(self, text):
         normalized = unicodedata.normalize("NFC", text or "")

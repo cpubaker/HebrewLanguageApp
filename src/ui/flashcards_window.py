@@ -200,7 +200,7 @@ class FlashcardsWindow:
         self.autosave.request_save(self.words)
 
     def _update_stats(self):
-        stats = self.session.current_stats()
+        stats = self.session.current_word_stats()
         last_correct = stats["last_correct"]
 
         if last_correct:

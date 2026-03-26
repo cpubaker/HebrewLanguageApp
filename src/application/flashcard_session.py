@@ -49,7 +49,7 @@ class FlashcardSession:
             "context": self.current_context,
         }
 
-    def current_stats(self):
+    def current_word_stats(self):
         if not self.current_word:
             return {"correct": 0, "wrong": 0, "last_correct": False}
 
@@ -57,24 +57,27 @@ class FlashcardSession:
         score["last_correct"] = self.current_word.get("last_correct", False)
         return score
 
+    def current_stats(self):
+        return self.current_word_stats()
+
     def _select_context(self, word):
-        contexts = word.get("_contexts", [])
+        contexts = word.contexts
         if not contexts:
             return None
 
         if len(contexts) == 1:
             context = contexts[0]
         else:
-            previous_context_id = self.last_context_ids.get(word.get("_word_id"))
+            previous_context_id = self.last_context_ids.get(word.word_id)
             candidates = [
                 context
                 for context in contexts
-                if context.get("id") != previous_context_id
+                if context.context_id != previous_context_id
             ]
             context = self.rng.choice(candidates or contexts)
 
-        context_id = context.get("id")
+        context_id = context.context_id
         if context_id:
-            self.last_context_ids[word.get("_word_id")] = context_id
+            self.last_context_ids[word.word_id] = context_id
 
         return context

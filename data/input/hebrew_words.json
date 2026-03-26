@@ -1,5 +1,6 @@
 [
     {
+        "word_id": "word_man",
         "hebrew": "איש",
         "english": "man",
         "transcription": "ish",
@@ -11,6 +12,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_woman",
         "hebrew": "אישה",
         "english": "woman",
         "transcription": "isha",
@@ -22,6 +24,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_child",
         "hebrew": "ילד",
         "english": "child",
         "transcription": "yeled",
@@ -33,6 +36,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_tree",
         "hebrew": "עץ",
         "english": "tree",
         "transcription": "etz",
@@ -44,6 +48,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_book",
         "hebrew": "ספר",
         "english": "book",
         "transcription": "sefer",
@@ -55,6 +60,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_house",
         "hebrew": "בית",
         "english": "house",
         "transcription": "bayit",
@@ -66,6 +72,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_car",
         "hebrew": "מכונית",
         "english": "car",
         "transcription": "mekhonit",
@@ -77,6 +84,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_city",
         "hebrew": "עיר",
         "english": "city",
         "transcription": "ir",
@@ -88,6 +96,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_country",
         "hebrew": "מדינה",
         "english": "country",
         "transcription": "medina",
@@ -99,6 +108,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_fish",
         "hebrew": "דג",
         "english": "fish",
         "transcription": "dag",
@@ -110,6 +120,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_dog",
         "hebrew": "כלב",
         "english": "dog",
         "transcription": "kelev",
@@ -121,6 +132,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_cat",
         "hebrew": "חתול",
         "english": "cat",
         "transcription": "khatul",
@@ -132,6 +144,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_computer",
         "hebrew": "מחשב",
         "english": "computer",
         "transcription": "makhshav",
@@ -143,6 +156,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_chair",
         "hebrew": "כיסא",
         "english": "chair",
         "transcription": "kise",
@@ -154,6 +168,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_table",
         "hebrew": "שולחן",
         "english": "table",
         "transcription": "shulchan",
@@ -165,6 +180,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_apple",
         "hebrew": "תפוח",
         "english": "apple",
         "transcription": "tapuach",
@@ -176,6 +192,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_water",
         "hebrew": "מים",
         "english": "water",
         "transcription": "mayim",
@@ -187,6 +204,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_flower",
         "hebrew": "פרח",
         "english": "flower",
         "transcription": "perach",
@@ -198,6 +216,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_phone",
         "hebrew": "טלפון",
         "english": "phone",
         "transcription": "telefon",
@@ -209,6 +228,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_door",
         "hebrew": "דלת",
         "english": "door",
         "transcription": "delet",
@@ -220,6 +240,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_window",
         "hebrew": "חלון",
         "english": "window",
         "transcription": "chalon",
@@ -231,6 +252,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_newspaper",
         "hebrew": "עיתון",
         "english": "newspaper",
         "transcription": "iton",
@@ -242,6 +264,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_key",
         "hebrew": "מפתח",
         "english": "key",
         "transcription": "mafteach",
@@ -253,6 +276,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_television",
         "hebrew": "טלוויזיה",
         "english": "television",
         "transcription": "televizia",
@@ -264,6 +288,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_street",
         "hebrew": "רחוב",
         "english": "street",
         "transcription": "rechov",
@@ -275,6 +300,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_weather",
         "hebrew": "מזג אוויר",
         "english": "weather",
         "transcription": "mezeg avir",
@@ -286,6 +312,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_sun",
         "hebrew": "שמש",
         "english": "sun",
         "transcription": "shemesh",
@@ -297,6 +324,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_moon",
         "hebrew": "ירח",
         "english": "moon",
         "transcription": "yareach",
@@ -308,6 +336,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_star",
         "hebrew": "כוכב",
         "english": "star",
         "transcription": "kochav",
@@ -319,6 +348,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_food",
         "hebrew": "אוכל",
         "english": "food",
         "transcription": "ochel",
@@ -330,6 +360,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_drink",
         "hebrew": "שתייה",
         "english": "drink",
         "transcription": "shtiya",
@@ -341,6 +372,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_restaurant",
         "hebrew": "מסעדה",
         "english": "restaurant",
         "transcription": "misada",
@@ -352,6 +384,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_school",
         "hebrew": "בית ספר",
         "english": "school",
         "transcription": "beit sefer",
@@ -363,6 +396,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_university",
         "hebrew": "אוניברסיטה",
         "english": "university",
         "transcription": "universita",
@@ -374,6 +408,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_teacher",
         "hebrew": "מורה",
         "english": "teacher",
         "transcription": "more",
@@ -385,6 +420,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_student",
         "hebrew": "תלמיד",
         "english": "student",
         "transcription": "talmid",
@@ -396,6 +432,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_doctor",
         "hebrew": "רופא",
         "english": "doctor",
         "transcription": "rofe",
@@ -407,6 +444,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_nurse",
         "hebrew": "אחות",
         "english": "nurse",
         "transcription": "achot",
@@ -418,6 +456,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_hospital",
         "hebrew": "בית חולים",
         "english": "hospital",
         "transcription": "beit cholim",
@@ -429,6 +468,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_medicine",
         "hebrew": "תרופה",
         "english": "medicine",
         "transcription": "trufa",
@@ -440,6 +480,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_park",
         "hebrew": "פארק",
         "english": "park",
         "transcription": "park",
@@ -451,6 +492,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_game",
         "hebrew": "משחק",
         "english": "game",
         "transcription": "mis'chak",
@@ -462,6 +504,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_sport",
         "hebrew": "ספורט",
         "english": "sport",
         "transcription": "sport",
@@ -473,6 +516,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_ball",
         "hebrew": "כדור",
         "english": "ball",
         "transcription": "kadur",
@@ -484,6 +528,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_hour",
         "hebrew": "שעה",
         "english": "hour",
         "transcription": "sha'a",
@@ -495,6 +540,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_minute",
         "hebrew": "דקה",
         "english": "minute",
         "transcription": "daka",
@@ -506,6 +552,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_second",
         "hebrew": "שנייה",
         "english": "second",
         "transcription": "shniya",
@@ -517,6 +564,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_year",
         "hebrew": "שנה",
         "english": "year",
         "transcription": "shana",
@@ -528,6 +576,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_about_with_regard_to_concerning",
         "hebrew": "אוֹדוֹת",
         "english": "about, with regard to, concerning",
         "transcription": "odot",
@@ -539,6 +588,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_after",
         "hebrew": "אַחַר",
         "english": "after",
         "transcription": "achar",
@@ -550,6 +600,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_behind",
         "hebrew": "מֵאֲחוֹרֵי",
         "english": "behind",
         "transcription": "me'achorei",
@@ -561,6 +612,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_to_towards_into",
         "hebrew": "אֶל",
         "english": "to, towards, into",
         "transcription": "el",
@@ -572,6 +624,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_at_in_the_possession_of_near",
         "hebrew": "אֵצֶל",
         "english": "at, in the possession of; near",
         "transcription": "etzel",
@@ -583,6 +636,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_used_before_a_definite_direct_object",
         "hebrew": "אֶת",
         "english": "(used before a definite direct object)",
         "transcription": "et",
@@ -594,6 +648,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_in_by",
         "hebrew": "בְּ",
         "english": "in; by",
         "transcription": "be",
@@ -605,6 +660,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_by_means_of_using",
         "hebrew": "בְּאֶמְצָעוּת",
         "english": "by means of, using",
         "transcription": "be'emtza'ut",
@@ -616,6 +672,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_because_of_due_to",
         "hebrew": "בִּגְלַל",
         "english": "because of, due to",
         "transcription": "biglal",
@@ -627,6 +684,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_thanks_to_due_to_in_favour_of",
         "hebrew": "בִּזְכוּת",
         "english": "thanks to, due to; in favour of",
         "transcription": "bizchut",
@@ -638,6 +696,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_between_amongst",
         "hebrew": "בֵּין",
         "english": "between, amongst",
         "transcription": "ben",
@@ -649,6 +708,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_without",
         "hebrew": "בְּלִי",
         "english": "without",
         "transcription": "bli",
@@ -660,6 +720,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_during_over_the_course_of",
         "hebrew": "בְּמַהֲלַךְ",
         "english": "during, over the course of",
         "transcription": "bemahalach",
@@ -671,6 +732,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_in_the_presence_of_somebody",
         "hebrew": "בְּמַעֲמַד",
         "english": "in the presence of (somebody)",
         "transcription": "bema'amad",
@@ -682,6 +744,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_instead_of",
         "hebrew": "בִּמְקוֹם",
         "english": "instead of",
         "transcription": "bimkom",
@@ -693,6 +756,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_for_in_favour_of_in_exchange_for_through_via_lit",
         "hebrew": "בַּעַד",
         "english": "for, in favour of; in exchange for; through, via (lit.)",
         "transcription": "ba'ad",
@@ -704,6 +768,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_following_as_a_result_of",
         "hebrew": "בְּעִקְבוֹת",
         "english": "following; as a result of",
         "transcription": "be'ikvot",
@@ -715,6 +780,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_following_in_the_trail_of_as_a_result_of_because_of",
         "hebrew": "בְּעִקְבוֹת",
         "english": "following, in the trail of; as a result of, because of",
         "transcription": "be'ikvot",
@@ -726,6 +792,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_facing_someone_in_the_face_of",
         "hebrew": "בִּפְנֵי",
         "english": "facing (someone); in the face of",
         "transcription": "bifnei",
@@ -737,6 +804,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_among_amidst_internally_on_the_inside",
         "hebrew": "בְּקֶרֶב",
         "english": "among, amidst; internally, on the inside",
         "transcription": "bekerev",
@@ -748,6 +816,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_for_for_the_sake_of",
         "hebrew": "בִּשְׁבִיל",
         "english": "for, for the sake of",
         "transcription": "bishvil",
@@ -759,6 +828,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_on_behalf_of_in_the_name_of",
         "hebrew": "בְּשֵׁם",
         "english": "on behalf of, in the name of",
         "transcription": "beshem",
@@ -770,6 +840,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_inside",
         "hebrew": "בְּתוֹךְ",
         "english": "inside",
         "transcription": "betoch",
@@ -781,6 +852,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_apart_from_other_than_beside",
         "hebrew": "זוּלַת",
         "english": "apart from, other than, beside",
         "transcription": "zulat",
@@ -792,17 +864,19 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_as_like_in_the_role_of_about_approximately",
         "hebrew": "כְּ",
         "english": "as, like, in the role of; about, approximately",
         "transcription": "ke",
-        "correct": 0,
+        "correct": 1,
         "wrong": 0,
-        "last_correct": false,
+        "last_correct": "2026-03-26T16:24:35",
         "writing_correct": 0,
         "writing_wrong": 0,
         "writing_last_correct": false
     },
     {
+        "word_id": "word_in_relation_to_vis_a_vis_towards",
         "hebrew": "כְּלַפֵּי",
         "english": "in relation to, vis-a-vis; towards",
         "transcription": "klapei",
@@ -814,17 +888,19 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_like_as_similarly_to",
         "hebrew": "כְּמוֹ",
         "english": "like, as, similarly to",
         "transcription": "kmo",
-        "correct": 0,
+        "correct": 1,
         "wrong": 0,
-        "last_correct": false,
+        "last_correct": "2026-03-26T16:24:37",
         "writing_correct": 0,
         "writing_wrong": 0,
         "writing_last_correct": false
     },
     {
+        "word_id": "word_like_as_literary",
         "hebrew": "כְּמוֹת",
         "english": "like, as (literary)",
         "transcription": "kmot",
@@ -836,6 +912,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_against_compared_to_as_opposed_to_in_exchange_for",
         "hebrew": "כְּנֶגֶד",
         "english": "against; compared to, as opposed to; in exchange for",
         "transcription": "keneged",
@@ -847,6 +924,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_to_for_of_indicating_possession_with",
         "hebrew": "לְ",
         "english": "to; for; of (indicating possession, with יש/אין)",
         "transcription": "le",
@@ -858,6 +936,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_along_throughout",
         "hebrew": "לְאוֹרֶךְ",
         "english": "along, throughout",
         "transcription": "le'orech",
@@ -869,6 +948,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_regarding_concerning",
         "hebrew": "לְגַבֵּי",
         "english": "regarding, concerning",
         "transcription": "legabei",
@@ -880,6 +960,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_according_to_also",
         "hebrew": "לְדִבְרֵי",
         "english": "according to (also לדבריו/ה של...)",
         "transcription": "ledivrei",
@@ -891,6 +972,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_near_next_to",
         "hebrew": "לְיַד",
         "english": "near, next to",
         "transcription": "leyad",
@@ -902,6 +984,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_into_the_hands_of_to_over_to_for_to_the_attention_of",
         "hebrew": "לִידֵי",
         "english": "into the hands of; to, over to, for, to the attention of",
         "transcription": "lidei",
@@ -913,6 +996,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_for_the_sake_of_for_the_benefit_of_in_order_to_so_that_lit",
         "hebrew": "לְמַעַן",
         "english": "for the sake of, for the benefit of; in order to, so that (lit.)",
         "transcription": "lema'an",
@@ -924,6 +1008,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_according_to",
         "hebrew": "לְפִי",
         "english": "according to",
         "transcription": "lefi",
@@ -935,6 +1020,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_before_in_front_of",
         "hebrew": "לִפְנֵי",
         "english": "before, in front of",
         "transcription": "lifnei",
@@ -946,6 +1032,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_towards_forward_to_for_in_preparation_to",
         "hebrew": "לִקְרַאת",
         "english": "towards, forward to, for, in preparation to",
         "transcription": "likrat",
@@ -957,6 +1044,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_across",
         "hebrew": "לְרוֹחַב",
         "english": "across",
         "transcription": "lerochav",
@@ -968,6 +1056,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_against_opposite_in_front_of",
         "hebrew": "מוּל",
         "english": "against; opposite, in front of",
         "transcription": "mul",
@@ -979,6 +1068,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_from_of_than_compared_to",
         "hebrew": "מִן",
         "english": "from, of; than, compared to",
         "transcription": "min",
@@ -990,6 +1080,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_above_over_on_top_of",
         "hebrew": "מֵעַל",
         "english": "above, over; on top of",
         "transcription": "me'al",
@@ -1001,6 +1092,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_from_away_from_because_with",
         "hebrew": "מִפְּנֵי",
         "english": "from, away from; because (with ש־)",
         "transcription": "mipnei",
@@ -1012,6 +1104,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_under_below",
         "hebrew": "מִתַּחַת",
         "english": "under, below",
         "transcription": "mitachat",
@@ -1023,6 +1116,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_against",
         "hebrew": "נֶגֶד",
         "english": "against",
         "transcription": "neged",
@@ -1034,6 +1128,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_for",
         "hebrew": "עֲבוּר",
         "english": "for",
         "transcription": "avur",
@@ -1045,6 +1140,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_until_up_to",
         "hebrew": "עַד",
         "english": "until, up to",
         "transcription": "ad",
@@ -1056,6 +1152,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_on_upon_over_about_regarding",
         "hebrew": "עַל",
         "english": "on, upon; over; about, regarding",
         "transcription": "al",
@@ -1067,6 +1164,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_on_upon",
         "hebrew": "עַל גַּב",
         "english": "on, upon",
         "transcription": "al gav",
@@ -1078,6 +1176,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_on_upon_al_gabei",
         "hebrew": "עַל גַּבֵּי",
         "english": "on, upon",
         "transcription": "al gabei",
@@ -1089,6 +1188,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_next_to",
         "hebrew": "עַל יַד",
         "english": "next to",
         "transcription": "al yad",
@@ -1100,6 +1200,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_by_via_in_a_passive_construction_by_means_of",
         "hebrew": "עַל יְדֵי",
         "english": "by, via (in a passive construction); by means of",
         "transcription": "al yedei",
@@ -1111,6 +1212,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_according_to_in_accordance_with",
         "hebrew": "עַל פִּי",
         "english": "according to, in accordance with",
         "transcription": "al pi",
@@ -1122,6 +1224,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_over_on_the_surface_of_above",
         "hebrew": "עַל פְּנֵי",
         "english": "over, on the surface of; above",
         "transcription": "al pnei",
@@ -1133,6 +1236,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_with_forms_etc_are_literary",
         "hebrew": "עִם",
         "english": "with (forms עימי, עימו etc. are literary)",
         "transcription": "im",
@@ -1144,6 +1248,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_compared_with",
         "hebrew": "לְעוּמַּת",
         "english": "compared with",
         "transcription": "le'umat",
@@ -1155,6 +1260,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_of_belonging_to",
         "hebrew": "שֶׁל",
         "english": "of, belonging to",
         "transcription": "shel",
@@ -1166,6 +1272,7 @@
         "writing_last_correct": false
     },
     {
+        "word_id": "word_under_below_beneath_in_exchange_for",
         "hebrew": "תַּחַת",
         "english": "under, below, beneath; in exchange for",
         "transcription": "tachat",

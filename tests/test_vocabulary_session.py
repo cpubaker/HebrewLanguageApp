@@ -51,6 +51,31 @@ class VocabularySessionTests(unittest.TestCase):
         self.assertFalse(result["is_correct"])
         self.assertEqual(session.words[0]["wrong"], 1)
 
+    def test_session_score_tracks_attempts_across_words(self):
+        session = VocabularySession(
+            [
+                {"hebrew": "ish", "english": "man", "transcription": "ish"},
+                {"hebrew": "isha", "english": "woman", "transcription": "isha"},
+            ],
+            rng=random.Random(1),
+        )
+
+        session.current_word = session.words[0]
+        session.submit_answer("man")
+
+        session.current_word = session.words[1]
+        session.answered = False
+        session.submit_answer("man")
+
+        self.assertEqual(
+            session.session_score(),
+            {"correct": 1, "wrong": 1, "total": 2},
+        )
+        self.assertEqual(
+            session.current_word_score(),
+            {"correct": 0, "wrong": 1, "total": 1},
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

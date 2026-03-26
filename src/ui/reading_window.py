@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 
 from reading_levels import READING_LEVEL_LABELS, READING_LEVELS
+from ui.markdown_utils import parse_inline_markdown, render_markdown_content
 from ui.text_browser_window import TextBrowserWindow
 from ui.theme import AppTheme
 
@@ -675,21 +676,9 @@ class ReadingWindow(TextBrowserWindow):
         if wrap_rtl_run:
             self.text_widget.insert(tk.END, "\u202B", (block_tag,))
 
-        parts = re.split(r"(\*\*.*?\*\*|\*.*?\*)", text)
-
-        for part in parts:
-            if not part:
-                continue
-
-            tags = [block_tag]
-            if part.startswith("**") and part.endswith("**") and len(part) >= 4:
-                part = part[2:-2]
-                tags.append("bold")
-            elif part.startswith("*") and part.endswith("*") and len(part) >= 2:
-                part = part[1:-1]
-                tags.append("italic")
-
-            self.text_widget.insert(tk.END, part, tuple(tags))
+        for segment in parse_inline_markdown(text):
+            tags = (block_tag, *segment.tags)
+            self.text_widget.insert(tk.END, segment.text, tags)
 
         if wrap_rtl_run:
             self.text_widget.insert(tk.END, "\u202C", (block_tag,))
@@ -805,70 +794,53 @@ class ReadingWindow(TextBrowserWindow):
         )
 
     def _render_markdown(self, content):
-        for line in content.splitlines():
-            stripped_line = line.strip()
+        render_markdown_content(
+            self.text_widget,
+            content,
+            render_heading=self._render_heading_block,
+            render_unordered_list_item=self._render_unordered_list_item_block,
+            render_ordered_list_item=self._render_ordered_list_item_block,
+            render_paragraph=self._render_paragraph_block,
+        )
 
-            if not stripped_line:
-                self.text_widget.insert(tk.END, "\n")
-                continue
+    def _render_heading_block(self, block):
+        self._insert_inline_markdown(block.text, block.kind)
 
-            if stripped_line.startswith("### "):
-                self._insert_inline_markdown(stripped_line[4:], "heading_3")
-                self.text_widget.insert(tk.END, "\n")
-                continue
-
-            if stripped_line.startswith("## "):
-                self._insert_inline_markdown(stripped_line[3:], "heading_2")
-                self.text_widget.insert(tk.END, "\n")
-                continue
-
-            if stripped_line.startswith("# "):
-                self._insert_inline_markdown(stripped_line[2:], "heading_1")
-                self.text_widget.insert(tk.END, "\n")
-                continue
-
-            unordered_match = re.match(r"^[-*]\s+(.*)$", stripped_line)
-            if unordered_match:
-                item_text = unordered_match.group(1)
-                if self._is_glossary_item(item_text):
-                    self._insert_inline_markdown(
-                        self._format_glossary_item(item_text),
-                        "definition_item",
-                    )
-                    self.text_widget.insert(tk.END, "\n")
-                    continue
-
-                tag_name = (
-                    "list_item_rtl"
-                    if self._contains_hebrew(item_text)
-                    else "list_item"
-                )
-                self.text_widget.insert(tk.END, "- ", (tag_name,))
-                self._insert_inline_markdown(item_text, tag_name)
-                self.text_widget.insert(tk.END, "\n")
-                continue
-
-            ordered_match = re.match(r"^(\d+)\.\s+(.*)$", stripped_line)
-            if ordered_match:
-                tag_name = (
-                    "list_item_rtl"
-                    if self._contains_hebrew(ordered_match.group(2))
-                    else "list_item"
-                )
-                self.text_widget.insert(
-                    tk.END,
-                    f"{ordered_match.group(1)}. ",
-                    (tag_name,),
-                )
-                self._insert_inline_markdown(ordered_match.group(2), tag_name)
-                self.text_widget.insert(tk.END, "\n")
-                continue
-
-            paragraph_tag = (
-                "paragraph_rtl" if self._contains_hebrew(stripped_line) else "paragraph"
+    def _render_unordered_list_item_block(self, block):
+        item_text = block.text
+        if self._is_glossary_item(item_text):
+            self._insert_inline_markdown(
+                self._format_glossary_item(item_text),
+                "definition_item",
             )
-            self._insert_inline_markdown(stripped_line, paragraph_tag)
-            self.text_widget.insert(tk.END, "\n")
+            return
+
+        tag_name = (
+            "list_item_rtl"
+            if self._contains_hebrew(item_text)
+            else "list_item"
+        )
+        self.text_widget.insert(tk.END, "- ", (tag_name,))
+        self._insert_inline_markdown(item_text, tag_name)
+
+    def _render_ordered_list_item_block(self, block):
+        tag_name = (
+            "list_item_rtl"
+            if self._contains_hebrew(block.text)
+            else "list_item"
+        )
+        self.text_widget.insert(
+            tk.END,
+            f"{block.ordinal}. ",
+            (tag_name,),
+        )
+        self._insert_inline_markdown(block.text, tag_name)
+
+    def _render_paragraph_block(self, block):
+        paragraph_tag = (
+            "paragraph_rtl" if self._contains_hebrew(block.text) else "paragraph"
+        )
+        self._insert_inline_markdown(block.text, paragraph_tag)
 
     def _contains_hebrew(self, text):
         return bool(re.search(r"[\u0590-\u05FF]", text))

@@ -52,6 +52,32 @@ class WritingSessionTests(unittest.TestCase):
         self.assertEqual(session.words[0]["writing_correct"], 1)
         self.assertEqual(session.words[0]["writing_last_correct"], "2026-03-25T11:30:00")
 
+    def test_current_word_stats_returns_writing_progress_snapshot(self):
+        session = WritingSession(
+            [
+                {
+                    "hebrew": "\u05e9\u05dc\u05d5\u05dd",
+                    "english": "peace",
+                    "transcription": "shalom",
+                    "writing_correct": 3,
+                    "writing_wrong": 2,
+                    "writing_last_correct": "2026-03-25T11:30:00",
+                }
+            ],
+            rng=random.Random(1),
+        )
+        session.current_word = session.words[0]
+
+        self.assertEqual(
+            session.current_word_stats(),
+            {
+                "correct": 3,
+                "wrong": 2,
+                "total": 5,
+                "last_correct": "2026-03-25T11:30:00",
+            },
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

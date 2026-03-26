@@ -67,6 +67,7 @@ class RepositoryTests(unittest.TestCase):
         self.assertEqual(
             loaded_words[0]["writing_last_correct"], "2026-03-17T10:00:00"
         )
+        self.assertEqual(loaded_words[0]["word_id"], "word_peace")
         self.assertEqual(loaded_words[0]["_word_id"], "word_peace")
         self.assertEqual(loaded_words[0]["_contexts"], [])
         self.assertEqual(loaded_words[1]["correct"], 0)
@@ -75,8 +76,55 @@ class RepositoryTests(unittest.TestCase):
         self.assertEqual(loaded_words[1]["writing_wrong"], 0)
         self.assertFalse(loaded_words[1]["last_correct"])
         self.assertFalse(loaded_words[1]["writing_last_correct"])
+        self.assertEqual(loaded_words[1]["word_id"], "word_house")
         self.assertEqual(loaded_words[1]["_word_id"], "word_house")
         self.assertEqual(loaded_words[1]["_contexts"], [])
+
+    def test_load_words_preserves_explicit_word_id(self):
+        Path(self.paths.words_file).write_text(
+            json.dumps(
+                [
+                    {
+                        "word_id": "word_custom_dog",
+                        "hebrew": "כלב",
+                        "english": "dog",
+                        "transcription": "kelev",
+                    }
+                ],
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
+
+        loaded_words = self.content_repository.load_words()
+
+        self.assertEqual(loaded_words[0]["word_id"], "word_custom_dog")
+        self.assertEqual(loaded_words[0]["_word_id"], "word_custom_dog")
+
+    def test_load_words_generates_unique_word_ids_for_duplicate_english(self):
+        Path(self.paths.words_file).write_text(
+            json.dumps(
+                [
+                    {
+                        "hebrew": "על גב",
+                        "english": "on, upon",
+                        "transcription": "al gav",
+                    },
+                    {
+                        "hebrew": "על גבי",
+                        "english": "on, upon",
+                        "transcription": "al gabei",
+                    },
+                ],
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
+
+        loaded_words = self.content_repository.load_words()
+
+        self.assertEqual(loaded_words[0]["word_id"], "word_on_upon")
+        self.assertEqual(loaded_words[1]["word_id"], "word_on_upon_al_gabei")
 
     def test_load_words_resolves_shared_contexts_without_duplication(self):
         words = [
@@ -131,6 +179,7 @@ class RepositoryTests(unittest.TestCase):
     def test_save_words_omits_transient_context_fields(self):
         words = [
             {
+                "word_id": "word_dog",
                 "hebrew": "כלב",
                 "english": "dog",
                 "transcription": "kelev",
@@ -142,6 +191,7 @@ class RepositoryTests(unittest.TestCase):
         self.progress_repository.save_words(words)
 
         saved_words = json.loads(Path(self.paths.words_file).read_text(encoding="utf-8"))
+        self.assertEqual(saved_words[0]["word_id"], "word_dog")
         self.assertNotIn("_word_id", saved_words[0])
         self.assertNotIn("_contexts", saved_words[0])
 

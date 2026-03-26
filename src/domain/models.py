@@ -61,7 +61,7 @@ class Word(MappingRecord):
 
     @property
     def word_id(self):
-        return self.get("_word_id")
+        return self.get("word_id") or self.get("_word_id")
 
     @property
     def contexts(self):
@@ -81,10 +81,17 @@ class Word(MappingRecord):
 
     def normalize_runtime_fields(self):
         self.normalize_loading_fields()
+        resolved_word_id = self.word_id
+        if resolved_word_id:
+            self.set_word_id(resolved_word_id)
         self.set_contexts(self.get("_contexts", []))
         return self
 
     def set_word_id(self, word_id):
+        if not word_id:
+            return
+
+        self["word_id"] = word_id
         self["_word_id"] = word_id
 
     def set_contexts(self, contexts):

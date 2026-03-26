@@ -1,6 +1,7 @@
 import json
 import os
 import re
+from collections import Counter
 
 from domain.errors import MissingDataPathError
 from domain.models import ContextSentence, GuideSection, ReadingSection, VerbLesson, Word
@@ -21,9 +22,9 @@ class ContentRepository:
         with open(self.paths.words_file, "r", encoding="utf-8") as file:
             words = [Word.from_dict(word) for word in json.load(file)]
 
+        self._assign_word_ids(words)
         for word in words:
             word.normalize_loading_fields()
-            word.set_word_id(self._build_word_id(word))
 
         contexts_by_word_id = self.load_word_contexts(words)
         for word in words:
@@ -119,7 +120,7 @@ class ContentRepository:
 
         resolved_contexts = {}
         for word in words:
-            word_id = word.get("_word_id") or self._build_word_id(word)
+            word_id = word.word_id or self._build_word_id(word)
             context_ids = word_context_links.get(word_id, [])
             resolved_contexts[word_id] = [
                 contexts_by_id[context_id]
@@ -227,17 +228,77 @@ class ContentRepository:
         lesson_stem = os.path.splitext(filename)[0]
         return re.sub(r"^\d+[_-]*", "", lesson_stem).strip() or None
 
-    def _build_word_id(self, word):
-        for field_name in ("id", "english", "transcription", "hebrew"):
-            raw_value = str(word.get(field_name, "")).strip().lower()
-            if not raw_value:
+    def _assign_word_ids(self, words):
+        used_word_ids = Counter()
+
+        for word in words:
+            preferred_word_id = str(word.get("word_id", "")).strip()
+            if preferred_word_id:
+                resolved_word_id = self._ensure_available_word_id(
+                    preferred_word_id,
+                    used_word_ids,
+                )
+                word.set_word_id(resolved_word_id)
                 continue
 
-            normalized = re.sub(r"[^a-z0-9]+", "_", raw_value).strip("_")
-            if normalized:
-                return f"word_{normalized}"
+            resolved_word_id = self._build_word_id(word, used_word_ids)
+            word.set_word_id(resolved_word_id)
 
-        return "word_unknown"
+    def _build_word_id(self, word, used_word_ids=None):
+        if used_word_ids is None:
+            used_word_ids = Counter()
+        fallback_candidates = []
+
+        for candidate in self._iter_word_id_candidates(word):
+            if not candidate:
+                continue
+
+            fallback_candidates.append(candidate)
+            if used_word_ids[candidate] == 0:
+                used_word_ids[candidate] += 1
+                return candidate
+
+        fallback_word_id = fallback_candidates[0] if fallback_candidates else "word_unknown"
+        return self._ensure_available_word_id(fallback_word_id, used_word_ids)
+
+    def _iter_word_id_candidates(self, word):
+        normalized_fields = {
+            field_name: self._normalize_word_id_fragment(word.get(field_name, ""))
+            for field_name in ("id", "english", "transcription", "hebrew")
+        }
+
+        if normalized_fields["id"]:
+            yield f"word_{normalized_fields['id']}"
+
+        if normalized_fields["english"]:
+            yield f"word_{normalized_fields['english']}"
+
+        if normalized_fields["english"] and normalized_fields["transcription"]:
+            yield (
+                f"word_{normalized_fields['english']}_"
+                f"{normalized_fields['transcription']}"
+            )
+
+        if normalized_fields["transcription"]:
+            yield f"word_{normalized_fields['transcription']}"
+
+        if normalized_fields["hebrew"]:
+            yield f"word_{normalized_fields['hebrew']}"
+
+    def _normalize_word_id_fragment(self, raw_value):
+        normalized = re.sub(r"[^a-z0-9]+", "_", str(raw_value).strip().lower()).strip("_")
+        return normalized or None
+
+    def _ensure_available_word_id(self, base_word_id, used_word_ids):
+        if not base_word_id:
+            return None
+
+        count = used_word_ids[base_word_id]
+        used_word_ids[base_word_id] += 1
+        if count == 0:
+            return base_word_id
+
+        return f"{base_word_id}_{count + 1}"
 
     def _is_text_section_file(self, filename):
         if not filename.endswith((".md", ".txt")):
