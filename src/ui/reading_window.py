@@ -638,7 +638,7 @@ class ReadingWindow(TextBrowserWindow):
         preview = " ".join(normalized_lines[:2]).strip()
         if len(preview) > 120:
             preview = f"{preview[:117].rstrip()}..."
-        return preview
+        return self._format_bidi_text(preview)
 
     def _count_content_lines(self, content):
         return sum(1 for line in content.splitlines() if line.strip())
@@ -649,6 +649,50 @@ class ReadingWindow(TextBrowserWindow):
             for line in content.splitlines()
             if line.strip() and not line.lstrip().startswith("#")
         )
+
+    def _format_bidi_text(self, text):
+        if not self._contains_hebrew(text):
+            return text
+        return f"\u202B{text}\u202C"
+
+    def _is_glossary_item(self, text):
+        if " - " not in text or not self._contains_hebrew(text):
+            return False
+        hebrew_part, translation_part = text.split(" - ", 1)
+        return bool(hebrew_part.strip()) and bool(translation_part.strip())
+
+    def _format_glossary_item(self, text):
+        hebrew_part, translation_part = text.split(" - ", 1)
+        return f"{self._format_bidi_text(hebrew_part.strip())} - {translation_part.strip()}"
+
+    def _should_wrap_rtl_run(self, block_tag, text):
+        return block_tag.endswith("_rtl") or (
+            block_tag.startswith("heading_") and self._contains_hebrew(text)
+        )
+
+    def _insert_inline_markdown(self, text, block_tag):
+        wrap_rtl_run = self._should_wrap_rtl_run(block_tag, text)
+        if wrap_rtl_run:
+            self.text_widget.insert(tk.END, "\u202B", (block_tag,))
+
+        parts = re.split(r"(\*\*.*?\*\*|\*.*?\*)", text)
+
+        for part in parts:
+            if not part:
+                continue
+
+            tags = [block_tag]
+            if part.startswith("**") and part.endswith("**") and len(part) >= 4:
+                part = part[2:-2]
+                tags.append("bold")
+            elif part.startswith("*") and part.endswith("*") and len(part) >= 2:
+                part = part[1:-1]
+                tags.append("italic")
+
+            self.text_widget.insert(tk.END, part, tuple(tags))
+
+        if wrap_rtl_run:
+            self.text_widget.insert(tk.END, "\u202C", (block_tag,))
 
     def _change_font_size(self, delta):
         next_size = max(
@@ -742,6 +786,16 @@ class ReadingWindow(TextBrowserWindow):
             justify="right",
         )
         self.text_widget.tag_configure(
+            "definition_item",
+            font=(AppTheme.FONT_FAMILY, max(base_size - 1, 11)),
+            spacing1=2,
+            spacing3=8,
+            lmargin1=18,
+            lmargin2=18,
+            rmargin=18,
+            justify="right",
+        )
+        self.text_widget.tag_configure(
             "bold",
             font=(AppTheme.DISPLAY_FONT_FAMILY, base_size, "bold"),
         )
@@ -775,13 +829,22 @@ class ReadingWindow(TextBrowserWindow):
 
             unordered_match = re.match(r"^[-*]\s+(.*)$", stripped_line)
             if unordered_match:
+                item_text = unordered_match.group(1)
+                if self._is_glossary_item(item_text):
+                    self._insert_inline_markdown(
+                        self._format_glossary_item(item_text),
+                        "definition_item",
+                    )
+                    self.text_widget.insert(tk.END, "\n")
+                    continue
+
                 tag_name = (
                     "list_item_rtl"
-                    if self._contains_hebrew(unordered_match.group(1))
+                    if self._contains_hebrew(item_text)
                     else "list_item"
                 )
                 self.text_widget.insert(tk.END, "- ", (tag_name,))
-                self._insert_inline_markdown(unordered_match.group(1), tag_name)
+                self._insert_inline_markdown(item_text, tag_name)
                 self.text_widget.insert(tk.END, "\n")
                 continue
 
