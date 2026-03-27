@@ -2,6 +2,12 @@
 
 This app was designed by **Yevhen Nedashkivskyi** as a **research project for individual Hebrew learning**.
 
+## **Interface Status**
+
+- **Tkinter desktop app** remains the main working interface and still starts from `python src/main.py`.
+- **Flutter Android client** now lives in `flutter_app/` as the first migration baseline.
+- The Flutter client currently loads synced text-based learning assets from the existing `data/input/` source data.
+
 ---
 
 ## **Work Modes**

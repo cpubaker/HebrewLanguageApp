@@ -1,0 +1,394 @@
+{
+    "word_about_with_regard_to_concerning": [
+        "ctx_odot_weather_01"
+    ],
+    "word_above_over_on_top_of": [
+        "ctx_meal_moon_01"
+    ],
+    "word_across": [
+        "ctx_lerochav_street_01"
+    ],
+    "word_after": [
+        "ctx_time_after_01"
+    ],
+    "word_according_to": [
+        "ctx_lefi_newspaper_01"
+    ],
+    "word_according_to_also": [
+        "ctx_ledivrei_teacher_01"
+    ],
+    "word_according_to_in_accordance_with": [
+        "ctx_al_pi_newspaper_01"
+    ],
+    "word_against": [
+        "ctx_neged_school_01"
+    ],
+    "word_against_compared_to_as_opposed_to_in_exchange_for": [
+        "ctx_keneged_hatsaah_01"
+    ],
+    "word_against_opposite_in_front_of": [
+        "ctx_mul_house_01"
+    ],
+    "word_along_throughout": [
+        "ctx_leorech_street_01"
+    ],
+    "word_among_amidst_internally_on_the_inside": [
+        "ctx_bekerev_students_01"
+    ],
+    "word_apart_from_other_than_beside": [
+        "ctx_zulat_teacher_01"
+    ],
+    "word_apple": [
+        "ctx_apple_water_01"
+    ],
+    "word_as_like_in_the_role_of_about_approximately": [
+        "ctx_ke_teacher_01"
+    ],
+    "word_at_in_the_possession_of_near": [
+        "ctx_etzel_teacher_01"
+    ],
+    "word_ball": [
+        "ctx_sport_ball_01",
+        "ctx_ben_ball_01",
+        "ctx_lerochav_street_01",
+        "ctx_mitachat_table_01",
+        "ctx_al_yad_door_01",
+        "ctx_tachat_chair_01"
+    ],
+    "word_behind": [
+        "ctx_behind_house_01"
+    ],
+    "word_because_of_due_to": [
+        "ctx_biglal_rain_01"
+    ],
+    "word_before_in_front_of": [
+        "ctx_lifnei_house_01"
+    ],
+    "word_between_amongst": [
+        "ctx_ben_ball_01"
+    ],
+    "word_book": [
+        "ctx_book_house_01"
+    ],
+    "word_by_means_of_using": [
+        "ctx_beemtzaut_key_01"
+    ],
+    "word_by_via_in_a_passive_construction_by_means_of": [
+        "ctx_al_yedei_teacher_01"
+    ],
+    "word_car": [
+        "ctx_car_street_01",
+        "ctx_mul_house_01"
+    ],
+    "word_cat": [
+        "ctx_cat_house_01"
+    ],
+    "word_chair": [
+        "ctx_computer_table_chair_01",
+        "ctx_ben_ball_01",
+        "ctx_leyad_window_01",
+        "ctx_al_gabei_chair_01",
+        "ctx_tachat_chair_01"
+    ],
+    "word_child": [
+        "ctx_park_game_01"
+    ],
+    "word_city": [
+        "ctx_star_city_01"
+    ],
+    "word_compared_with": [
+        "ctx_leumat_year_01"
+    ],
+    "word_computer": [
+        "ctx_computer_table_chair_01",
+        "ctx_university_student_computer_01",
+        "ctx_shel_computer_01"
+    ],
+    "word_country": [
+        "ctx_weather_country_01"
+    ],
+    "word_dog": [
+        "ctx_dog_park_01",
+        "ctx_dog_house_01"
+    ],
+    "word_doctor": [
+        "ctx_doctor_nurse_hospital_medicine_01",
+        "ctx_legabei_medicine_01",
+        "ctx_lidei_doctor_01"
+    ],
+    "word_door": [
+        "ctx_phone_key_door_01",
+        "ctx_beemtzaut_key_01",
+        "ctx_al_yad_door_01",
+        "ctx_al_yedei_teacher_01"
+    ],
+    "word_drink": [
+        "ctx_food_drink_restaurant_01"
+    ],
+    "word_during_over_the_course_of": [
+        "ctx_bemahalach_year_01"
+    ],
+    "word_facing_someone_in_the_face_of": [
+        "ctx_bifnei_teacher_01"
+    ],
+    "word_fish": [
+        "ctx_fish_water_01"
+    ],
+    "word_flower": [
+        "ctx_flower_window_01"
+    ],
+    "word_following_as_a_result_of": [
+        "ctx_beikvot_game_01"
+    ],
+    "word_following_in_the_trail_of_as_a_result_of_because_of": [
+        "ctx_beikvot_rain_01"
+    ],
+    "word_food": [
+        "ctx_food_drink_restaurant_01"
+    ],
+    "word_for": [
+        "ctx_avur_teacher_01"
+    ],
+    "word_for_for_the_sake_of": [
+        "ctx_bishvil_child_01"
+    ],
+    "word_for_in_favour_of_in_exchange_for_through_via_lit": [
+        "ctx_baad_game_01"
+    ],
+    "word_for_the_sake_of_for_the_benefit_of_in_order_to_so_that_lit": [
+        "ctx_lemaan_city_01"
+    ],
+    "word_from_away_from_because_with": [
+        "ctx_mipnei_game_01"
+    ],
+    "word_from_of_than_compared_to": [
+        "ctx_min_city_01"
+    ],
+    "word_game": [
+        "ctx_park_game_01"
+    ],
+    "word_hour": [
+        "ctx_time_after_01",
+        "ctx_ad_hour_01"
+    ],
+    "word_hospital": [
+        "ctx_doctor_nurse_hospital_medicine_01"
+    ],
+    "word_house": [
+        "ctx_dog_house_01",
+        "ctx_television_house_01"
+    ],
+    "word_in_by": [
+        "ctx_be_city_01"
+    ],
+    "word_in_relation_to_vis_a_vis_towards": [
+        "ctx_klapei_student_01"
+    ],
+    "word_in_the_presence_of_somebody": [
+        "ctx_bemaamad_teacher_01"
+    ],
+    "word_inside": [
+        "ctx_betoch_key_01"
+    ],
+    "word_instead_of": [
+        "ctx_bimkom_water_01"
+    ],
+    "word_into_the_hands_of_to_over_to_for_to_the_attention_of": [
+        "ctx_lidei_doctor_01"
+    ],
+    "word_key": [
+        "ctx_phone_key_door_01",
+        "ctx_etzel_teacher_01",
+        "ctx_beemtzaut_key_01",
+        "ctx_betoch_key_01"
+    ],
+    "word_like_as_literary": [
+        "ctx_kmot_newspaper_01"
+    ],
+    "word_like_as_similarly_to": [
+        "ctx_kmo_cat_01"
+    ],
+    "word_man": [
+        "ctx_people_street_01"
+    ],
+    "word_medicine": [
+        "ctx_doctor_nurse_hospital_medicine_01",
+        "ctx_bishvil_child_01",
+        "ctx_legabei_medicine_01"
+    ],
+    "word_minute": [
+        "ctx_time_after_01"
+    ],
+    "word_moon": [
+        "ctx_sun_moon_year_01",
+        "ctx_meal_moon_01",
+        "ctx_al_pnei_moon_01"
+    ],
+    "word_near_next_to": [
+        "ctx_tree_street_01",
+        "ctx_phone_key_door_01",
+        "ctx_leyad_window_01"
+    ],
+    "word_next_to": [
+        "ctx_al_yad_door_01"
+    ],
+    "word_newspaper": [
+        "ctx_newspaper_table_01",
+        "ctx_et_newspaper_01",
+        "ctx_kmot_newspaper_01",
+        "ctx_lefi_newspaper_01",
+        "ctx_al_pi_newspaper_01"
+    ],
+    "word_nurse": [
+        "ctx_doctor_nurse_hospital_medicine_01"
+    ],
+    "word_of_belonging_to": [
+        "ctx_shel_computer_01"
+    ],
+    "word_on_behalf_of_in_the_name_of": [
+        "ctx_beshem_university_01"
+    ],
+    "word_on_upon": [
+        "ctx_al_gav_table_01"
+    ],
+    "word_on_upon_al_gabei": [
+        "ctx_al_gabei_chair_01"
+    ],
+    "word_on_upon_over_about_regarding": [
+        "ctx_al_city_01"
+    ],
+    "word_over_on_the_surface_of_above": [
+        "ctx_al_pnei_moon_01"
+    ],
+    "word_park": [
+        "ctx_dog_park_01",
+        "ctx_park_game_01"
+    ],
+    "word_phone": [
+        "ctx_phone_key_door_01"
+    ],
+    "word_regarding_concerning": [
+        "ctx_legabei_medicine_01"
+    ],
+    "word_restaurant": [
+        "ctx_food_drink_restaurant_01"
+    ],
+    "word_school": [
+        "ctx_school_teacher_student_01",
+        "ctx_el_school_01",
+        "ctx_neged_school_01"
+    ],
+    "word_second": [
+        "ctx_time_after_01"
+    ],
+    "word_sport": [
+        "ctx_sport_ball_01"
+    ],
+    "word_star": [
+        "ctx_star_city_01"
+    ],
+    "word_street": [
+        "ctx_people_street_01",
+        "ctx_tree_street_01",
+        "ctx_car_street_01",
+        "ctx_beikvot_rain_01",
+        "ctx_leorech_street_01",
+        "ctx_lerochav_street_01"
+    ],
+    "word_student": [
+        "ctx_school_teacher_student_01",
+        "ctx_university_student_computer_01",
+        "ctx_bizchut_teacher_01",
+        "ctx_bemaamad_teacher_01",
+        "ctx_bifnei_teacher_01",
+        "ctx_bekerev_students_01",
+        "ctx_klapei_student_01",
+        "ctx_le_student_01"
+    ],
+    "word_sun": [
+        "ctx_sun_moon_year_01"
+    ],
+    "word_table": [
+        "ctx_computer_table_chair_01",
+        "ctx_newspaper_table_01",
+        "ctx_ben_ball_01",
+        "ctx_mitachat_table_01",
+        "ctx_al_gav_table_01"
+    ],
+    "word_teacher": [
+        "ctx_school_teacher_student_01",
+        "ctx_etzel_teacher_01",
+        "ctx_bizchut_teacher_01",
+        "ctx_bemaamad_teacher_01",
+        "ctx_bifnei_teacher_01",
+        "ctx_zulat_teacher_01",
+        "ctx_ke_teacher_01",
+        "ctx_ledivrei_teacher_01",
+        "ctx_im_teacher_01",
+        "ctx_shel_computer_01",
+        "ctx_al_yedei_teacher_01",
+        "ctx_avur_teacher_01"
+    ],
+    "word_television": [
+        "ctx_television_house_01"
+    ],
+    "word_thanks_to_due_to_in_favour_of": [
+        "ctx_bizchut_teacher_01"
+    ],
+    "word_to_for_of_indicating_possession_with": [
+        "ctx_le_student_01"
+    ],
+    "word_to_towards_into": [
+        "ctx_el_school_01"
+    ],
+    "word_towards_forward_to_for_in_preparation_to": [
+        "ctx_likrat_year_01"
+    ],
+    "word_tree": [
+        "ctx_tree_street_01",
+        "ctx_lifnei_house_01"
+    ],
+    "word_under_below": [
+        "ctx_mitachat_table_01"
+    ],
+    "word_under_below_beneath_in_exchange_for": [
+        "ctx_tachat_chair_01"
+    ],
+    "word_university": [
+        "ctx_university_student_computer_01",
+        "ctx_bemahalach_year_01",
+        "ctx_beshem_university_01"
+    ],
+    "word_until_up_to": [
+        "ctx_ad_hour_01"
+    ],
+    "word_used_before_a_definite_direct_object": [
+        "ctx_et_newspaper_01",
+        "ctx_beemtzaut_key_01"
+    ],
+    "word_water": [
+        "ctx_apple_water_01"
+    ],
+    "word_weather": [
+        "ctx_weather_country_01"
+    ],
+    "word_window": [
+        "ctx_flower_window_01",
+        "ctx_leyad_window_01"
+    ],
+    "word_woman": [
+        "ctx_people_street_01"
+    ],
+    "word_with_forms_etc_are_literary": [
+        "ctx_im_teacher_01"
+    ],
+    "word_without": [
+        "ctx_bli_water_01"
+    ],
+    "word_year": [
+        "ctx_sun_moon_year_01",
+        "ctx_bemahalach_year_01",
+        "ctx_likrat_year_01",
+        "ctx_leumat_year_01"
+    ]
+}
