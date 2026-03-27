@@ -77,6 +77,12 @@ class AppTheme:
             font=(cls.DISPLAY_FONT_FAMILY, 14, "bold"),
         )
         style.configure(
+            "MutedSectionTitle.TLabel",
+            background=cls.SURFACE_ALT,
+            foreground=cls.TEXT,
+            font=(cls.DISPLAY_FONT_FAMILY, 12, "bold"),
+        )
+        style.configure(
             "Display.TLabel",
             background=cls.SURFACE,
             foreground=cls.PRIMARY_DARK,
@@ -85,6 +91,12 @@ class AppTheme:
         style.configure(
             "CardBody.TLabel",
             background=cls.SURFACE,
+            foreground=cls.TEXT,
+            font=(cls.FONT_FAMILY, 11),
+        )
+        style.configure(
+            "MutedBody.TLabel",
+            background=cls.SURFACE_ALT,
             foreground=cls.TEXT,
             font=(cls.FONT_FAMILY, 11),
         )

@@ -1,10 +1,10 @@
 import os
+import re
 import tkinter as tk
-from tkinter import messagebox, ttk
+from tkinter import ttk
 
-from application.vocabulary_session import VocabularySession
+from application.word_of_day_service import WordOfDayService
 from app_version import APP_NAME, get_version_label
-from ui.debounced_save import DebouncedSaveController
 from ui.flashcards_window import FlashcardsWindow
 from ui.guide_window import GuideWindow
 from ui.reading_window import ReadingWindow
@@ -24,14 +24,11 @@ class HebrewLearningApp:
         self.guide_sections = runtime.app_content.guide_sections
         self.verbs = runtime.app_content.verbs
         self.reading_sections = runtime.app_content.reading_sections
-        self.session = VocabularySession(self.words)
+        self.word_of_day = WordOfDayService(self.words).get_word_of_day()
         self.icon_image = None
-        self.answer_buttons = {}
-        self.autosave = DebouncedSaveController(self.master, self.progress_service)
 
         self._configure_window()
         self._build_layout()
-        self.next_word()
 
     def _configure_window(self):
         AppTheme.apply(self.master)
@@ -53,14 +50,14 @@ class HebrewLearningApp:
 
         ttk.Label(
             hero_card,
-            text="Hebrew Vocabulary Trainer",
+            text="\u0422\u0440\u0435\u043d\u0430\u0436\u0435\u0440 \u0456\u0432\u0440\u0438\u0442\u0443",
             style="HeroTitle.TLabel",
         ).grid(row=0, column=0, sticky="w")
         ttk.Label(
             hero_card,
             text=(
-                "Practice vocabulary, reading, and writing in a calmer, more focused "
-                "workspace."
+                "\u0412\u0447\u0438 \u0441\u043b\u043e\u0432\u0430, \u0447\u0438\u0442\u0430\u043d\u043d\u044f \u0442\u0430 \u043f\u0438\u0441\u044c\u043c\u043e \u0432 \u043e\u0434\u043d\u043e\u043c\u0443 "
+                "\u0441\u043f\u043e\u043a\u0456\u0439\u043d\u043e\u043c\u0443 \u0440\u043e\u0431\u043e\u0447\u043e\u043c\u0443 \u043f\u0440\u043e\u0441\u0442\u043e\u0440\u0456."
             ),
             style="HeroBody.TLabel",
             wraplength=640,
@@ -70,66 +67,72 @@ class HebrewLearningApp:
         practice_card = ttk.Frame(container, style="Card.TFrame", padding=(28, 24))
         practice_card.grid(row=1, column=0, sticky="nsew", pady=(18, 0))
         practice_card.columnconfigure(0, weight=1)
-        practice_card.grid_anchor("n")
+        practice_card.columnconfigure(1, weight=1)
 
         ttk.Label(
             practice_card,
-            text="Vocabulary Drill",
+            text="\u0421\u043b\u043e\u0432\u043e \u0434\u043d\u044f",
             style="Pill.TLabel",
         ).grid(row=0, column=0, sticky="w")
 
-        self.hebrew_word_label = ttk.Label(
-            practice_card,
-            text="",
-            style="Display.TLabel",
-            anchor="center",
-            justify="center",
-        )
-        self.hebrew_word_label.grid(row=1, column=0, sticky="ew", pady=(18, 6))
-
-        self.transcription_label = ttk.Label(
-            practice_card,
-            text="",
-            style="Muted.TLabel",
-            anchor="center",
-            justify="center",
-        )
-        self.transcription_label.grid(row=2, column=0, sticky="ew")
+        word_of_day = self.word_of_day
+        word = word_of_day["word"] if word_of_day else None
+        context = word_of_day["context"] if word_of_day else None
+        has_hebrew_context = bool(context and self._contains_hebrew(context.get("hebrew", "")))
 
         ttk.Label(
             practice_card,
-            text="Choose the correct translation",
-            style="CardBody.TLabel",
+            text=self._format_bidi_text(word["hebrew"]) if word else "\u2014",
+            style="Display.TLabel",
             anchor="center",
             justify="center",
-        ).grid(row=3, column=0, sticky="ew", pady=(22, 12))
+        ).grid(row=1, column=0, columnspan=2, sticky="ew", pady=(18, 6))
 
-        self.button_frame = ttk.Frame(practice_card, style="Card.TFrame")
-        self.button_frame.grid(row=4, column=0, sticky="ew", pady=(0, 8))
-
-        ttk.Separator(practice_card).grid(row=5, column=0, sticky="ew", pady=(18, 0))
-
-        status_card = ttk.Frame(practice_card, style="Card.TFrame", padding=(4, 12))
-        status_card.grid(row=6, column=0, sticky="ew", pady=(6, 8))
-        status_card.columnconfigure(0, weight=1)
-
-        self.feedback_label = ttk.Label(
-            status_card,
-            text="",
+        ttk.Label(
+            practice_card,
+            text=f"({word.get('transcription', '')})" if word else "",
             style="Muted.TLabel",
             anchor="center",
             justify="center",
-        )
-        self.feedback_label.grid(row=0, column=0, sticky="ew")
+        ).grid(row=2, column=0, columnspan=2, sticky="ew")
 
-        self.score_label = ttk.Label(
-            status_card,
-            text="",
-            style="Muted.TLabel",
+        ttk.Label(
+            practice_card,
+            text=self._word_translation_text(word),
+            style="SectionTitle.TLabel",
             anchor="center",
             justify="center",
-        )
-        self.score_label.grid(row=1, column=0, sticky="ew", pady=(6, 0))
+        ).grid(row=3, column=0, columnspan=2, sticky="ew", pady=(18, 0))
+
+        context_card = ttk.Frame(practice_card, style="Muted.TFrame", padding=(18, 14))
+        context_card.grid(row=4, column=0, columnspan=2, sticky="ew", pady=(18, 0))
+        context_card.columnconfigure(0, weight=1)
+
+        ttk.Label(
+            context_card,
+            text="\u041f\u0440\u0438\u043a\u043b\u0430\u0434",
+            style="MutedSectionTitle.TLabel",
+            anchor="center",
+            justify="center",
+        ).grid(row=0, column=0, sticky="ew")
+
+        ttk.Label(
+            context_card,
+            text=self._format_bidi_text(context.get("hebrew", "")) if context else "\u0414\u043b\u044f \u0446\u044c\u043e\u0433\u043e \u0441\u043b\u043e\u0432\u0430 \u0449\u0435 \u043d\u0435\u043c\u0430\u0454 \u043f\u0440\u0438\u043a\u043b\u0430\u0434\u0443.",
+            style="MutedBody.TLabel",
+            wraplength=620,
+            justify="right" if has_hebrew_context else "center",
+            anchor="e" if has_hebrew_context else "center",
+        ).grid(row=1, column=0, sticky="ew", pady=(8, 0))
+
+        ttk.Label(
+            context_card,
+            text=context.get("translation", "") if context else "",
+            style="SurfaceMuted.TLabel",
+            wraplength=620,
+            justify="right",
+            anchor="e",
+        ).grid(row=2, column=0, sticky="ew", pady=(8, 0))
 
         navigation_card = ttk.Frame(container, style="Card.TFrame", padding=(20, 18))
         navigation_card.grid(row=2, column=0, sticky="ew", pady=(18, 0))
@@ -138,9 +141,9 @@ class HebrewLearningApp:
 
         ttk.Button(
             navigation_card,
-            text="\u0414\u0430\u043b\u0456",
+            text="\u0424\u043b\u0435\u0448-\u043a\u0430\u0440\u0442\u043a\u0438",
             style="Accent.TButton",
-            command=self.next_word,
+            command=self.open_flashcards,
         ).grid(row=0, column=0, sticky="ew", padx=(0, 10), pady=(0, 10))
         ttk.Button(
             navigation_card,
@@ -162,22 +165,16 @@ class HebrewLearningApp:
         ).grid(row=1, column=0, sticky="ew", padx=(0, 10))
         ttk.Button(
             navigation_card,
-            text="\u041a\u0430\u0440\u0442\u043a\u0438",
-            style="Secondary.TButton",
-            command=self.open_flashcards,
-        ).grid(row=1, column=1, sticky="ew", padx=5)
-        ttk.Button(
-            navigation_card,
             text="\u041f\u0438\u0441\u0430\u043d\u043d\u044f",
             style="Secondary.TButton",
             command=self.open_writing,
-        ).grid(row=1, column=2, sticky="ew", padx=(10, 0))
+        ).grid(row=1, column=1, sticky="ew", padx=5)
         ttk.Button(
             navigation_card,
             text="\u0421\u043f\u0440\u0438\u043d\u0442",
             style="Accent.TButton",
             command=self.open_sprint,
-        ).grid(row=2, column=0, columnspan=3, sticky="ew", pady=(10, 0))
+        ).grid(row=1, column=2, sticky="ew", padx=(10, 0))
 
         ttk.Label(
             container,
@@ -185,6 +182,19 @@ class HebrewLearningApp:
             style="Footer.TLabel",
             anchor="e",
         ).grid(row=3, column=0, sticky="ew", pady=(14, 0))
+
+    def _format_bidi_text(self, text):
+        if not self._contains_hebrew(text):
+            return text
+        return f"\u202B{text}\u202C"
+
+    def _word_translation_text(self, word):
+        if not word:
+            return "\u0421\u043b\u043e\u0432\u043d\u0438\u043a \u043f\u043e\u043a\u0438 \u043f\u043e\u0440\u043e\u0436\u043d\u0456\u0439."
+        return word.get("ukrainian") or word.get("english", "")
+
+    def _contains_hebrew(self, text):
+        return bool(re.search(r"[\u0590-\u05FF]", text or ""))
 
     def set_app_icon(self):
         if os.path.exists(self.paths.icon_file):
@@ -196,79 +206,6 @@ class HebrewLearningApp:
             return
 
         print(f"Icon not found: {self.paths.icon_file}")
-
-    def next_word(self):
-        prompt = self.session.next_prompt()
-        if not prompt:
-            messagebox.showwarning("No data", "The words list is empty.")
-            return
-
-        current_word = prompt["word"]
-        self.hebrew_word_label.config(text=current_word["hebrew"])
-        self.transcription_label.config(text=f"({current_word['transcription']})")
-        self.feedback_label.config(text="", style="Muted.TLabel")
-        self.update_score()
-        self.answer_buttons = {}
-
-        for widget in self.button_frame.winfo_children():
-            widget.destroy()
-
-        for option in prompt["options"]:
-            button = tk.Button(
-                self.button_frame,
-                text=option,
-                wraplength=460,
-                justify="center",
-                command=lambda selected=option: self.check_answer(selected),
-            )
-            AppTheme.style_classic_button(button, variant="choice")
-            button.pack(fill="x", pady=6)
-            self.answer_buttons[option] = button
-
-    def check_answer(self, translation):
-        result = self.session.submit_answer(translation)
-        if not result:
-            return
-
-        correct_translation = result["correct_translation"]
-
-        if result["is_correct"]:
-            self.feedback_label.config(
-                text="Correct! Press '\u0414\u0430\u043b\u0456' for the next word.",
-                style="Success.TLabel",
-            )
-        else:
-            self.feedback_label.config(
-                text=f"Wrong. Correct answer: {correct_translation}",
-                style="Danger.TLabel",
-            )
-
-        self._update_answer_button_states(translation, correct_translation)
-        self.update_score()
-        self.autosave.request_save(self.words)
-
-    def _update_answer_button_states(self, selected_translation, correct_translation):
-        for option, button in self.answer_buttons.items():
-            if option == correct_translation:
-                AppTheme.style_choice_button_state(button, "correct")
-            elif option == selected_translation:
-                AppTheme.style_choice_button_state(button, "wrong")
-            else:
-                AppTheme.style_choice_button_state(button, "disabled")
-
-            button.config(state="disabled", cursor="arrow")
-
-    def update_score(self):
-        session_score = self.session.session_score()
-        word_score = self.session.current_word_score()
-        self.score_label.config(
-            text=(
-                f"Session: {session_score['correct']} correct, "
-                f"{session_score['wrong']} wrong, {session_score['total']} attempts\n"
-                f"This word: {word_score['correct']} correct, "
-                f"{word_score['wrong']} wrong, {word_score['total']} attempts"
-            )
-        )
 
     def open_guide(self):
         GuideWindow(self.master, self.guide_sections)
@@ -289,6 +226,5 @@ class HebrewLearningApp:
         SprintWindow(self.master, self.words, self.progress_service)
 
     def close(self):
-        self.autosave.cancel()
         self.progress_service.flush()
         self.master.destroy()
