@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'screens/home_screen.dart';
+import 'screens/app_shell_screen.dart';
 import 'services/learning_bundle_loader.dart';
 import 'theme/app_theme.dart';
 
@@ -18,7 +18,7 @@ class HebrewFlutterApp extends StatelessWidget {
       title: 'Hebrew Language App',
       debugShowCheckedModeBanner: false,
       theme: buildAppTheme(),
-      home: HomeScreen(
+      home: AppShellScreen(
         loader: _loader ?? AssetLearningBundleLoader(),
       ),
     );
