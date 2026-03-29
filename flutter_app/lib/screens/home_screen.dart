@@ -8,12 +8,12 @@ class HomeScreen extends StatelessWidget {
     super.key,
     required this.bundle,
     required this.onOpenWords,
-    required this.onOpenLibrary,
+    required this.onOpenGuide,
   });
 
   final LearningBundle bundle;
   final VoidCallback onOpenWords;
-  final VoidCallback onOpenLibrary;
+  final VoidCallback onOpenGuide;
 
   @override
   Widget build(BuildContext context) {
@@ -36,26 +36,26 @@ class HomeScreen extends StatelessWidget {
               label: 'Guide',
               value: bundle.guideLessons.length,
               accent: const Color(0xFFB45309),
-              onTap: onOpenLibrary,
+              onTap: onOpenGuide,
             ),
             _SummaryCard(
               label: 'Verbs',
               value: bundle.verbLessons.length,
               accent: const Color(0xFF7C3AED),
-              onTap: onOpenLibrary,
+              onTap: null,
             ),
             _SummaryCard(
               label: 'Reading',
               value: bundle.readingLessons.length,
               accent: const Color(0xFF1D4ED8),
-              onTap: onOpenLibrary,
+              onTap: null,
             ),
           ],
         ),
         const SizedBox(height: 20),
         _ActionStrip(
           onOpenWords: onOpenWords,
-          onOpenLibrary: onOpenLibrary,
+          onOpenGuide: onOpenGuide,
         ),
         const SizedBox(height: 20),
         _SectionCard(
@@ -73,7 +73,7 @@ class HomeScreen extends StatelessWidget {
         _SectionCard(
           title: 'Library Preview',
           subtitle:
-              'Guide, verb, and reading collections are already discovered and ready for the next screens.',
+              'Guide is the current next slice, while verbs and reading stay visible as upcoming work.',
           child: Column(
             children: [
               ...bundle.guideLessons
@@ -180,53 +180,57 @@ class _SummaryCard extends StatelessWidget {
   final String label;
   final int value;
   final Color accent;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
+    final card = Ink(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: accent.withValues(alpha: 0.16)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 12,
+            height: 12,
+            decoration: BoxDecoration(
+              color: accent,
+              borderRadius: BorderRadius.circular(999),
+            ),
+          ),
+          const SizedBox(height: 18),
+          Text(
+            '$value',
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.w800,
+                ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: const Color(0xFF5F5A52),
+                ),
+          ),
+        ],
+      ),
+    );
+
     return SizedBox(
       width: 156,
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(20),
-          onTap: onTap,
-          child: Ink(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: accent.withValues(alpha: 0.16)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: 12,
-                  height: 12,
-                  decoration: BoxDecoration(
-                    color: accent,
-                    borderRadius: BorderRadius.circular(999),
-                  ),
-                ),
-                const SizedBox(height: 18),
-                Text(
-                  '$value',
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  label,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: const Color(0xFF5F5A52),
-                      ),
-                ),
-              ],
-            ),
-          ),
-        ),
+        child: onTap == null
+            ? card
+            : InkWell(
+                borderRadius: BorderRadius.circular(20),
+                onTap: onTap,
+                child: card,
+              ),
       ),
     );
   }
@@ -235,11 +239,11 @@ class _SummaryCard extends StatelessWidget {
 class _ActionStrip extends StatelessWidget {
   const _ActionStrip({
     required this.onOpenWords,
-    required this.onOpenLibrary,
+    required this.onOpenGuide,
   });
 
   final VoidCallback onOpenWords;
-  final VoidCallback onOpenLibrary;
+  final VoidCallback onOpenGuide;
 
   @override
   Widget build(BuildContext context) {
@@ -255,9 +259,9 @@ class _ActionStrip extends StatelessWidget {
         const SizedBox(width: 12),
         Expanded(
           child: OutlinedButton.icon(
-            onPressed: onOpenLibrary,
-            icon: const Icon(Icons.library_books_rounded),
-            label: const Text('Open Library'),
+            onPressed: onOpenGuide,
+            icon: const Icon(Icons.menu_book_rounded),
+            label: const Text('Open Guide'),
           ),
         ),
       ],

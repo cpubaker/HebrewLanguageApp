@@ -4,6 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hebrew_language_flutter/app.dart';
 import 'package:hebrew_language_flutter/models/learning_bundle.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
+import 'package:hebrew_language_flutter/models/lesson_document.dart';
+import 'package:hebrew_language_flutter/services/lesson_document_loader.dart';
 import 'package:hebrew_language_flutter/services/learning_bundle_loader.dart';
 
 class FakeLearningBundleLoader implements LearningBundleLoader {
@@ -13,7 +15,7 @@ class FakeLearningBundleLoader implements LearningBundleLoader {
       words: const [
         LearningWord(
           wordId: 'word_man',
-          hebrew: 'איש',
+          hebrew: 'ish_he',
           english: 'man',
           transcription: 'ish',
           correct: 1,
@@ -21,7 +23,7 @@ class FakeLearningBundleLoader implements LearningBundleLoader {
         ),
         LearningWord(
           wordId: 'word_woman',
-          hebrew: 'אישה',
+          hebrew: 'isha_he',
           english: 'woman',
           transcription: 'isha',
           correct: 3,
@@ -40,12 +42,25 @@ class FakeLearningBundleLoader implements LearningBundleLoader {
   }
 }
 
+class FakeLessonDocumentLoader implements LessonDocumentLoader {
+  @override
+  Future<LessonDocument> load(String assetPath) async {
+    return const LessonDocument(
+      title: 'Alphabet Basics',
+      body: '## First concept\n\n- Hebrew is read from right to left.',
+    );
+  }
+}
+
 void main() {
   testWidgets('supports bottom navigation and word search', (
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(
-      HebrewFlutterApp(loader: FakeLearningBundleLoader()),
+      HebrewFlutterApp(
+        loader: FakeLearningBundleLoader(),
+        documentLoader: FakeLessonDocumentLoader(),
+      ),
     );
     await tester.pumpAndSettle();
 
@@ -71,5 +86,27 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Word id: word_woman'), findsOneWidget);
+  });
+
+  testWidgets('opens guide lesson details', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      HebrewFlutterApp(
+        loader: FakeLearningBundleLoader(),
+        documentLoader: FakeLessonDocumentLoader(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.menu_book_outlined));
+    await tester.pumpAndSettle();
+
+    expect(find.text('01 Intro Alphabet'), findsOneWidget);
+
+    await tester.tap(find.text('01 Intro Alphabet'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Alphabet Basics'), findsOneWidget);
+    expect(find.text('First concept'), findsOneWidget);
+    expect(find.text('Hebrew is read from right to left.'), findsOneWidget);
   });
 }

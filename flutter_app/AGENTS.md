@@ -38,6 +38,33 @@
 - Keep mobile-specific presentation in `lib/screens/` and `lib/theme/`; keep parsing/loading concerns in `lib/services/`.
 - Prefer Android-safe, touch-friendly UI patterns over desktop-style layouts.
 
+## Migration Roadmap
+- Current completed slices:
+  - shared app shell
+  - bottom navigation
+  - home/dashboard
+  - searchable `Words` screen
+  - `Guide` list + detail flow
+- Recommended next feature order:
+  - `Verbs` list + detail screen
+  - `Reading` list + detail screen
+  - `Flashcards` as the first full interactive exercise
+  - progress persistence for mobile
+  - `Sprint` migration
+  - audio and image polish
+- Prefer finishing one slice end-to-end before starting the next one.
+- Use the Tkinter app as the behavior reference when product details are unclear.
+
+## Slice Definition Of Done
+- A migrated Flutter feature should usually include:
+  - navigation entry point
+  - list or overview screen if relevant
+  - detail or interaction screen if relevant
+  - loading from synced assets or the agreed mobile persistence layer
+  - at least one widget test for the new user flow
+  - `flutter analyze` and `flutter test` passing
+- Do not call a feature "migrated" if it only has mock UI without real app data.
+
 ## Validation
 - Preferred validation after Flutter code changes:
   - `flutter analyze`

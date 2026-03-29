@@ -12,8 +12,9 @@ The current migration goal is simple:
 
 The Flutter app currently provides:
 
-- a migration dashboard with counts for vocabulary, guide lessons, verbs, and reading lessons
-- a vocabulary preview loaded from the existing `data/input/hebrew_words.json`
+- a shared mobile shell with bottom navigation
+- a searchable Words screen loaded from the existing `data/input/hebrew_words.json`
+- a Guide list/detail flow loaded from synced markdown assets
 - lesson discovery based on synced guide, verb, and reading markdown files
 
 The Flutter client is intentionally read-only for now. Progress persistence and feature parity will come in later steps.
