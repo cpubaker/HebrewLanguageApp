@@ -15,6 +15,7 @@ The Flutter app currently provides:
 - a shared mobile shell with bottom navigation
 - a searchable Words screen loaded from the existing `data/input/hebrew_words.json`
 - a Guide list/detail flow loaded from synced markdown assets
+- a Verbs list/detail flow with synced verb images when available
 - lesson discovery based on synced guide, verb, and reading markdown files
 
 The Flutter client is intentionally read-only for now. Progress persistence and feature parity will come in later steps.

@@ -45,6 +45,13 @@ class FakeLearningBundleLoader implements LearningBundleLoader {
 class FakeLessonDocumentLoader implements LessonDocumentLoader {
   @override
   Future<LessonDocument> load(String assetPath) async {
+    if (assetPath.contains('/verbs/')) {
+      return const LessonDocument(
+        title: 'Walk',
+        body: '## Present\n\n- holekh\n- holekhet',
+      );
+    }
+
     return const LessonDocument(
       title: 'Alphabet Basics',
       body: '## First concept\n\n- Hebrew is read from right to left.',
@@ -109,4 +116,47 @@ void main() {
     expect(find.text('First concept'), findsOneWidget);
     expect(find.text('Hebrew is read from right to left.'), findsOneWidget);
   });
+
+  testWidgets('opens verb lesson details', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      HebrewFlutterApp(
+        loader: _FakeBundleWithVerbLoader(),
+        documentLoader: FakeLessonDocumentLoader(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.play_lesson_outlined));
+    await tester.pumpAndSettle();
+
+    expect(find.text('01 Walk'), findsOneWidget);
+
+    await tester.tap(find.text('01 Walk'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Walk'), findsOneWidget);
+    await tester.scrollUntilVisible(
+      find.text('Audio wiring is the next media step.'),
+      300,
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Audio wiring is the next media step.'), findsOneWidget);
+  });
+}
+
+class _FakeBundleWithVerbLoader implements LearningBundleLoader {
+  @override
+  Future<LearningBundle> load() async {
+    return LearningBundle(
+      words: const [],
+      guideLessons: const [],
+      verbLessons: const [
+        LessonEntry(
+          assetPath: 'assets/learning/input/verbs/01_walk.md',
+          displayName: '01 Walk',
+        ),
+      ],
+      readingLessons: const [],
+    );
+  }
 }

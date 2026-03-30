@@ -9,7 +9,9 @@ $pathsToMirror = @(
     "contexts",
     "guide",
     "verbs",
-    "reading"
+    "reading",
+    "audio\verbs",
+    "images\verbs"
 )
 
 New-Item -ItemType Directory -Force -Path $targetRoot | Out-Null
@@ -21,12 +23,14 @@ Copy-Item `
 
 foreach ($relativePath in $pathsToMirror) {
     $sourcePath = Join-Path $sourceRoot $relativePath
+    $destinationPath = Join-Path $targetRoot $relativePath
 
     if (-not (Test-Path $sourcePath)) {
         continue
     }
 
-    Copy-Item -LiteralPath $sourcePath -Destination $targetRoot -Recurse -Force
+    New-Item -ItemType Directory -Force -Path $destinationPath | Out-Null
+    Get-ChildItem -LiteralPath $sourcePath -Force | Copy-Item -Destination $destinationPath -Recurse -Force
 }
 
 Write-Host "Flutter assets synced from $sourceRoot"

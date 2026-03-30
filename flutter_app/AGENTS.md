@@ -45,13 +45,14 @@
   - home/dashboard
   - searchable `Words` screen
   - `Guide` list + detail flow
+  - `Verbs` list + detail flow
 - Recommended next feature order:
-  - `Verbs` list + detail screen
   - `Reading` list + detail screen
   - `Flashcards` as the first full interactive exercise
   - progress persistence for mobile
   - `Sprint` migration
-  - audio and image polish
+  - verb audio playback
+  - broader media polish
 - Prefer finishing one slice end-to-end before starting the next one.
 - Use the Tkinter app as the behavior reference when product details are unclear.
 

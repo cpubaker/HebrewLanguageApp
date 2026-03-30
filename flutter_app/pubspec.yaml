@@ -50,3 +50,5 @@ flutter:
     - assets/learning/input/guide/
     - assets/learning/input/verbs/
     - assets/learning/input/reading/
+    - assets/learning/input/audio/verbs/
+    - assets/learning/input/images/verbs/

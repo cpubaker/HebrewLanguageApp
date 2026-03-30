@@ -5,6 +5,7 @@ import '../services/lesson_document_loader.dart';
 import '../services/learning_bundle_loader.dart';
 import 'guide_screen.dart';
 import 'home_screen.dart';
+import 'verbs_screen.dart';
 import 'words_screen.dart';
 
 class AppShellScreen extends StatefulWidget {
@@ -67,10 +68,15 @@ class _AppShellScreenState extends State<AppShellScreen> {
                   bundle: bundle,
                   onOpenWords: () => _selectTab(1),
                   onOpenGuide: () => _selectTab(2),
+                  onOpenVerbs: () => _selectTab(3),
                 ),
                 WordsScreen(words: bundle.words),
                 GuideScreen(
                   lessons: bundle.guideLessons,
+                  documentLoader: widget.documentLoader,
+                ),
+                VerbsScreen(
+                  lessons: bundle.verbLessons,
                   documentLoader: widget.documentLoader,
                 ),
               ],
@@ -94,6 +100,11 @@ class _AppShellScreenState extends State<AppShellScreen> {
                 icon: Icon(Icons.menu_book_outlined),
                 selectedIcon: Icon(Icons.menu_book_rounded),
                 label: 'Guide',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.play_lesson_outlined),
+                selectedIcon: Icon(Icons.play_lesson_rounded),
+                label: 'Verbs',
               ),
             ],
           ),
