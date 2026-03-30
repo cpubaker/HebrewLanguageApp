@@ -5,8 +5,8 @@ import '../models/lesson_document.dart';
 import '../services/lesson_document_loader.dart';
 import 'widgets/markdown_lesson_body.dart';
 
-class VerbsScreen extends StatelessWidget {
-  const VerbsScreen({
+class ReadingScreen extends StatelessWidget {
+  const ReadingScreen({
     super.key,
     required this.lessons,
     required this.documentLoader,
@@ -21,14 +21,14 @@ class VerbsScreen extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
       children: [
         Text(
-          'Verbs',
+          'Reading',
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                 fontWeight: FontWeight.w800,
               ),
         ),
         const SizedBox(height: 8),
         Text(
-          'Core verb lessons synced from the desktop content, ready for list/detail study on mobile.',
+          'Reading lessons grouped by difficulty and synced from the desktop reading folders.',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: const Color(0xFF5F5A52),
                 height: 1.4,
@@ -41,18 +41,18 @@ class VerbsScreen extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.circular(22),
             border: Border.all(
-              color: const Color(0xFF7C3AED).withValues(alpha: 0.16),
+              color: const Color(0xFF1D4ED8).withValues(alpha: 0.16),
             ),
           ),
           child: Row(
             children: [
               const Icon(
-                Icons.play_lesson_rounded,
-                color: Color(0xFF7C3AED),
+                Icons.auto_stories_rounded,
+                color: Color(0xFF1D4ED8),
               ),
               const SizedBox(width: 12),
               Text(
-                '${lessons.length} verb lessons available',
+                '${lessons.length} reading lessons available',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
@@ -64,12 +64,12 @@ class VerbsScreen extends StatelessWidget {
         ...lessons.map(
           (lesson) => Padding(
             padding: const EdgeInsets.only(bottom: 12),
-            child: _VerbLessonCard(
+            child: _ReadingLessonCard(
               lesson: lesson,
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute<void>(
-                    builder: (_) => VerbDetailScreen(
+                    builder: (_) => ReadingDetailScreen(
                       lesson: lesson,
                       documentLoader: documentLoader,
                     ),
@@ -84,8 +84,8 @@ class VerbsScreen extends StatelessWidget {
   }
 }
 
-class VerbDetailScreen extends StatelessWidget {
-  const VerbDetailScreen({
+class ReadingDetailScreen extends StatelessWidget {
+  const ReadingDetailScreen({
     super.key,
     required this.lesson,
     required this.documentLoader,
@@ -96,7 +96,7 @@ class VerbDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final media = _VerbMediaPaths.fromLesson(lesson);
+    final level = _readingLevelFromAssetPath(lesson.assetPath);
 
     return Scaffold(
       appBar: AppBar(),
@@ -114,7 +114,7 @@ class VerbDetailScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(24),
                 child: Text(
-                  'Could not load this verb lesson.',
+                  'Could not load this reading lesson.',
                   style: Theme.of(context).textTheme.titleMedium,
                   textAlign: TextAlign.center,
                 ),
@@ -132,29 +132,48 @@ class VerbDetailScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(28),
                   gradient: const LinearGradient(
                     colors: [
-                      Color(0xFF5B21B6),
-                      Color(0xFF7C3AED),
+                      Color(0xFF1E40AF),
+                      Color(0xFF1D4ED8),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
                 ),
-                child: Text(
-                  document.title,
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 6,
                       ),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.18),
+                        borderRadius: BorderRadius.circular(999),
+                      ),
+                      child: Text(
+                        level,
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    Text(
+                      document.title,
+                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w800,
+                          ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 18),
-              _VerbImageCard(imageAssetPath: media.imageAssetPath),
-              const SizedBox(height: 18),
-              _VerbSupportCard(audioAssetPath: media.audioAssetPath),
-              const SizedBox(height: 18),
+              const SizedBox(height: 20),
               MarkdownLessonBody(
                 body: document.body,
-                accentColor: const Color(0xFF7C3AED),
+                accentColor: const Color(0xFF1D4ED8),
               ),
             ],
           );
@@ -164,8 +183,8 @@ class VerbDetailScreen extends StatelessWidget {
   }
 }
 
-class _VerbLessonCard extends StatelessWidget {
-  const _VerbLessonCard({
+class _ReadingLessonCard extends StatelessWidget {
+  const _ReadingLessonCard({
     required this.lesson,
     required this.onTap,
   });
@@ -175,6 +194,7 @@ class _VerbLessonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final level = _readingLevelFromAssetPath(lesson.assetPath);
     final orderMatch = RegExp(r'^(\d+)').firstMatch(lesson.displayName);
     final orderLabel = orderMatch?.group(1) ?? '*';
 
@@ -203,30 +223,42 @@ class _VerbLessonCard extends StatelessWidget {
                 height: 44,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF7C3AED).withValues(alpha: 0.12),
+                  color: const Color(0xFF1D4ED8).withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: Text(
                   orderLabel,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w800,
-                        color: const Color(0xFF7C3AED),
+                        color: const Color(0xFF1D4ED8),
                       ),
                 ),
               ),
               const SizedBox(width: 14),
               Expanded(
-                child: Text(
-                  lesson.displayName,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      lesson.displayName,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      level,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: const Color(0xFF5F5A52),
+                          ),
+                    ),
+                  ],
                 ),
               ),
               const Icon(
                 Icons.arrow_forward_ios_rounded,
                 size: 18,
-                color: Color(0xFF7C3AED),
+                color: Color(0xFF1D4ED8),
               ),
             ],
           ),
@@ -236,121 +268,17 @@ class _VerbLessonCard extends StatelessWidget {
   }
 }
 
-class _VerbImageCard extends StatelessWidget {
-  const _VerbImageCard({
-    required this.imageAssetPath,
-  });
-
-  final String imageAssetPath;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: AspectRatio(
-        aspectRatio: 16 / 10,
-        child: Image.asset(
-          imageAssetPath,
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) {
-            return Container(
-              color: const Color(0xFFF2EBDD),
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.image_not_supported_outlined,
-                    size: 36,
-                    color: Color(0xFF7C3AED),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    'No synced illustration for this verb yet.',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
-      ),
-    );
+String _readingLevelFromAssetPath(String assetPath) {
+  final parts = assetPath.split('/');
+  final readingIndex = parts.indexOf('reading');
+  if (readingIndex == -1 || readingIndex + 1 >= parts.length) {
+    return 'Reading';
   }
-}
 
-class _VerbSupportCard extends StatelessWidget {
-  const _VerbSupportCard({
-    required this.audioAssetPath,
-  });
-
-  final String audioAssetPath;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: Row(
-        children: [
-          const Icon(
-            Icons.volume_up_rounded,
-            color: Color(0xFF7C3AED),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Audio wiring is the next media step.',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Prepared asset path: $audioAssetPath',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: const Color(0xFF5F5A52),
-                      ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _VerbMediaPaths {
-  const _VerbMediaPaths({
-    required this.imageAssetPath,
-    required this.audioAssetPath,
-  });
-
-  final String imageAssetPath;
-  final String audioAssetPath;
-
-  factory _VerbMediaPaths.fromLesson(LessonEntry lesson) {
-    final filename = lesson.assetPath.split('/').last;
-    final lessonStem = filename.replaceFirst(RegExp(r'\.md$'), '');
-    final assetStem = lessonStem.replaceFirst(RegExp(r'^\d+[_-]*'), '');
-
-    return _VerbMediaPaths(
-      imageAssetPath: 'assets/learning/input/images/verbs/$assetStem.png',
-      audioAssetPath: 'assets/learning/input/audio/verbs/$assetStem.mp3',
-    );
-  }
+  final rawLevel = parts[readingIndex + 1];
+  return rawLevel
+      .split('-')
+      .where((part) => part.isNotEmpty)
+      .map((part) => '${part[0].toUpperCase()}${part.substring(1)}')
+      .join(' ');
 }

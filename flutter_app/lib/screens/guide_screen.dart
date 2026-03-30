@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/learning_bundle.dart';
 import '../models/lesson_document.dart';
 import '../services/lesson_document_loader.dart';
+import 'widgets/markdown_lesson_body.dart';
 
 class GuideScreen extends StatelessWidget {
   const GuideScreen({
@@ -143,7 +144,10 @@ class GuideDetailScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              _MarkdownLessonBody(body: document.body),
+              MarkdownLessonBody(
+                body: document.body,
+                accentColor: const Color(0xFF8C6A2A),
+              ),
             ],
           );
         },
@@ -221,110 +225,5 @@ class _GuideLessonCard extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class _MarkdownLessonBody extends StatelessWidget {
-  const _MarkdownLessonBody({
-    required this.body,
-  });
-
-  final String body;
-
-  @override
-  Widget build(BuildContext context) {
-    final lines = body.split('\n');
-    final children = <Widget>[];
-
-    for (final rawLine in lines) {
-      final line = rawLine.trimRight();
-      if (line.trim().isEmpty) {
-        children.add(const SizedBox(height: 12));
-        continue;
-      }
-
-      final headingMatch = RegExp(r'^(#{1,6})\s+(.*)$').firstMatch(line.trim());
-      if (headingMatch != null) {
-        final level = headingMatch.group(1)!.length;
-        final title = headingMatch.group(2)!.trim();
-        children.add(
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: Text(
-              title,
-              style: _headingStyleForLevel(context, level),
-            ),
-          ),
-        );
-        continue;
-      }
-
-      if (line.trimLeft().startsWith('- ')) {
-        children.add(
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(top: 8),
-                  child: Icon(
-                    Icons.circle,
-                    size: 8,
-                    color: Color(0xFF8C6A2A),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: SelectableText(
-                    line.trimLeft().substring(2).trim(),
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          height: 1.55,
-                        ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-        continue;
-      }
-
-      children.add(
-        Padding(
-          padding: const EdgeInsets.only(bottom: 10),
-          child: SelectableText(
-            line.trim(),
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  height: 1.6,
-                ),
-          ),
-        ),
-      );
-    }
-
-    return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: children,
-      ),
-    );
-  }
-
-  TextStyle? _headingStyleForLevel(BuildContext context, int level) {
-    if (level <= 2) {
-      return Theme.of(context).textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.w800,
-          );
-    }
-
-    return Theme.of(context).textTheme.titleMedium?.copyWith(
-          fontWeight: FontWeight.w700,
-        );
   }
 }

@@ -5,6 +5,7 @@ import '../services/lesson_document_loader.dart';
 import '../services/learning_bundle_loader.dart';
 import 'guide_screen.dart';
 import 'home_screen.dart';
+import 'reading_screen.dart';
 import 'verbs_screen.dart';
 import 'words_screen.dart';
 
@@ -69,6 +70,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
                   onOpenWords: () => _selectTab(1),
                   onOpenGuide: () => _selectTab(2),
                   onOpenVerbs: () => _selectTab(3),
+                  onOpenReading: () => _selectTab(4),
                 ),
                 WordsScreen(words: bundle.words),
                 GuideScreen(
@@ -77,6 +79,10 @@ class _AppShellScreenState extends State<AppShellScreen> {
                 ),
                 VerbsScreen(
                   lessons: bundle.verbLessons,
+                  documentLoader: widget.documentLoader,
+                ),
+                ReadingScreen(
+                  lessons: bundle.readingLessons,
                   documentLoader: widget.documentLoader,
                 ),
               ],
@@ -105,6 +111,11 @@ class _AppShellScreenState extends State<AppShellScreen> {
                 icon: Icon(Icons.play_lesson_outlined),
                 selectedIcon: Icon(Icons.play_lesson_rounded),
                 label: 'Verbs',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.auto_stories_outlined),
+                selectedIcon: Icon(Icons.auto_stories_rounded),
+                label: 'Reading',
               ),
             ],
           ),

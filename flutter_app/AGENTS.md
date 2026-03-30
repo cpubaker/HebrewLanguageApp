@@ -46,8 +46,8 @@
   - searchable `Words` screen
   - `Guide` list + detail flow
   - `Verbs` list + detail flow
+  - `Reading` list + detail flow
 - Recommended next feature order:
-  - `Reading` list + detail screen
   - `Flashcards` as the first full interactive exercise
   - progress persistence for mobile
   - `Sprint` migration

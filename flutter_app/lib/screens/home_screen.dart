@@ -10,12 +10,14 @@ class HomeScreen extends StatelessWidget {
     required this.onOpenWords,
     required this.onOpenGuide,
     required this.onOpenVerbs,
+    required this.onOpenReading,
   });
 
   final LearningBundle bundle;
   final VoidCallback onOpenWords;
   final VoidCallback onOpenGuide;
   final VoidCallback onOpenVerbs;
+  final VoidCallback onOpenReading;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +52,7 @@ class HomeScreen extends StatelessWidget {
               label: 'Reading',
               value: bundle.readingLessons.length,
               accent: const Color(0xFF1D4ED8),
-              onTap: null,
+              onTap: onOpenReading,
             ),
           ],
         ),
@@ -75,13 +77,16 @@ class HomeScreen extends StatelessWidget {
         _SectionCard(
           title: 'Library Preview',
           subtitle:
-              'Guide and verbs are now real mobile slices, while reading stays visible as the next content flow.',
+              'Guide, verbs, and reading are now all available as real mobile content slices.',
           child: Column(
             children: [
               ...bundle.guideLessons
                   .take(3)
                   .map((lesson) => _LessonTile(lesson: lesson)),
               ...bundle.verbLessons
+                  .take(2)
+                  .map((lesson) => _LessonTile(lesson: lesson)),
+              ...bundle.readingLessons
                   .take(2)
                   .map((lesson) => _LessonTile(lesson: lesson)),
             ],

@@ -37,7 +37,12 @@ class FakeLearningBundleLoader implements LearningBundleLoader {
         ),
       ],
       verbLessons: const [],
-      readingLessons: const [],
+      readingLessons: const [
+        LessonEntry(
+          assetPath: 'assets/learning/input/reading/beginner/01_yosi_goes_to_school.md',
+          displayName: '01 Yosi Goes To School',
+        ),
+      ],
     );
   }
 }
@@ -49,6 +54,13 @@ class FakeLessonDocumentLoader implements LessonDocumentLoader {
       return const LessonDocument(
         title: 'Walk',
         body: '## Present\n\n- holekh\n- holekhet',
+      );
+    }
+
+    if (assetPath.contains('/reading/')) {
+      return const LessonDocument(
+        title: 'Yosi Goes To School',
+        body: '## Key words\n\n- yosi\n- school',
       );
     }
 
@@ -141,6 +153,29 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('Audio wiring is the next media step.'), findsOneWidget);
+  });
+
+  testWidgets('opens reading lesson details', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      HebrewFlutterApp(
+        loader: FakeLearningBundleLoader(),
+        documentLoader: FakeLessonDocumentLoader(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.auto_stories_outlined));
+    await tester.pumpAndSettle();
+
+    expect(find.text('01 Yosi Goes To School'), findsOneWidget);
+    expect(find.text('Beginner'), findsOneWidget);
+
+    await tester.tap(find.text('01 Yosi Goes To School'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Yosi Goes To School'), findsOneWidget);
+    expect(find.text('Key words'), findsOneWidget);
+    expect(find.text('school'), findsOneWidget);
   });
 }
 
