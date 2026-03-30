@@ -56,7 +56,10 @@ class _AppShellScreenState extends State<AppShellScreen> {
         }
 
         if (snapshot.hasError) {
-          return _ErrorState(onRetry: _reload);
+          return _ErrorState(
+            onRetry: _reload,
+            details: snapshot.error?.toString(),
+          );
         }
 
         final bundle = snapshot.requireData;
@@ -148,9 +151,11 @@ class _LoadingState extends StatelessWidget {
 class _ErrorState extends StatelessWidget {
   const _ErrorState({
     required this.onRetry,
+    this.details,
   });
 
   final Future<void> Function() onRetry;
+  final String? details;
 
   @override
   Widget build(BuildContext context) {
@@ -166,6 +171,14 @@ class _ErrorState extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
+              if (details != null && details!.trim().isNotEmpty) ...[
+                const SizedBox(height: 12),
+                Text(
+                  details!,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ],
               const SizedBox(height: 12),
               FilledButton(
                 onPressed: () {

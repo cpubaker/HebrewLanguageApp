@@ -25,15 +25,14 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
   @override
   Future<LearningBundle> load() async {
     final wordsJson = await assetBundle.loadString(_wordsAsset);
-    final manifestJson = await assetBundle.loadString('AssetManifest.json');
 
     final words = (jsonDecode(wordsJson) as List<dynamic>)
         .cast<Map<String, dynamic>>()
         .map(LearningWord.fromJson)
         .toList(growable: false);
 
-    final manifest = jsonDecode(manifestJson) as Map<String, dynamic>;
-    final assetPaths = manifest.keys.toList(growable: false);
+    final manifest = await AssetManifest.loadFromAssetBundle(assetBundle);
+    final assetPaths = manifest.listAssets();
 
     return LearningBundle(
       words: words,
