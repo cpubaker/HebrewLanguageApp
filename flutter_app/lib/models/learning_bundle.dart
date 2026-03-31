@@ -22,4 +22,18 @@ class LearningBundle {
   final List<LessonEntry> guideLessons;
   final List<LessonEntry> verbLessons;
   final List<LessonEntry> readingLessons;
+
+  LearningBundle copyWith({
+    List<LearningWord>? words,
+    List<LessonEntry>? guideLessons,
+    List<LessonEntry>? verbLessons,
+    List<LessonEntry>? readingLessons,
+  }) {
+    return LearningBundle(
+      words: words ?? this.words,
+      guideLessons: guideLessons ?? this.guideLessons,
+      verbLessons: verbLessons ?? this.verbLessons,
+      readingLessons: readingLessons ?? this.readingLessons,
+    );
+  }
 }

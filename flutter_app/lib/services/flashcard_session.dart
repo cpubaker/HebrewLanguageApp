@@ -31,6 +31,8 @@ class FlashcardAnswerResult {
   final LearningContext? context;
 }
 
+typedef WordProgressCallback = void Function(LearningWord word);
+
 class FlashcardStats {
   const FlashcardStats({
     required this.correct,

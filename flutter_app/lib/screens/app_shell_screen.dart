@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../models/learning_bundle.dart';
+import '../models/learning_word.dart';
 import '../services/lesson_document_loader.dart';
 import '../services/learning_bundle_loader.dart';
+import '../services/word_progress_store.dart';
 import 'flashcards_screen.dart';
 import 'guide_screen.dart';
 import 'home_screen.dart';
@@ -15,10 +19,12 @@ class AppShellScreen extends StatefulWidget {
     super.key,
     required this.loader,
     required this.documentLoader,
+    required this.progressStore,
   });
 
   final LearningBundleLoader loader;
   final LessonDocumentLoader documentLoader;
+  final WordProgressStore progressStore;
 
   @override
   State<AppShellScreen> createState() => _AppShellScreenState();
@@ -26,19 +32,63 @@ class AppShellScreen extends StatefulWidget {
 
 class _AppShellScreenState extends State<AppShellScreen> {
   late Future<LearningBundle> _bundleFuture;
+  LearningBundle? _bundle;
   int _selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _bundleFuture = widget.loader.load();
+    _bundleFuture = _loadBundle();
   }
 
   Future<void> _reload() async {
     setState(() {
-      _bundleFuture = widget.loader.load();
+      _bundle = null;
+      _bundleFuture = _loadBundle();
     });
     await _bundleFuture;
+  }
+
+  Future<LearningBundle> _loadBundle() async {
+    final bundle = await widget.loader.load();
+    final storedProgress = await widget.progressStore.load();
+
+    final hydratedBundle = bundle.copyWith(
+      words: bundle.words
+          .map((word) {
+            final progress = storedProgress[word.wordId];
+            if (progress == null) {
+              return word;
+            }
+
+            return word.copyWith(
+              correct: progress.correct,
+              wrong: progress.wrong,
+              lastCorrect: progress.lastCorrect,
+            );
+          })
+          .toList(growable: false),
+    );
+
+    _bundle = hydratedBundle;
+    return hydratedBundle;
+  }
+
+  void _handleWordProgressChanged(LearningWord updatedWord) {
+    final activeBundle = _bundle;
+    if (activeBundle != null) {
+      setState(() {
+        _bundle = activeBundle.copyWith(
+          words: activeBundle.words
+              .map(
+                (word) => word.wordId == updatedWord.wordId ? updatedWord : word,
+              )
+              .toList(growable: false),
+        );
+      });
+    }
+
+    unawaited(widget.progressStore.saveWord(updatedWord));
   }
 
   void _selectTab(int index) {
@@ -63,7 +113,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
           );
         }
 
-        final bundle = snapshot.requireData;
+        final bundle = _bundle ?? snapshot.requireData;
         return Scaffold(
           body: SafeArea(
             child: IndexedStack(
@@ -78,7 +128,10 @@ class _AppShellScreenState extends State<AppShellScreen> {
                   onOpenReading: () => _selectTab(5),
                 ),
                 WordsScreen(words: bundle.words),
-                FlashcardsScreen(words: bundle.words),
+                FlashcardsScreen(
+                  words: bundle.words,
+                  onWordProgressChanged: _handleWordProgressChanged,
+                ),
                 GuideScreen(
                   lessons: bundle.guideLessons,
                   documentLoader: widget.documentLoader,

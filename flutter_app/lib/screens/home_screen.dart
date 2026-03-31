@@ -23,6 +23,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final progress = _StudyProgressSnapshot.fromWords(bundle.words);
+
     return ListView(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
       children: [
@@ -71,6 +73,8 @@ class HomeScreen extends StatelessWidget {
           onOpenGuide: onOpenGuide,
         ),
         const SizedBox(height: 20),
+        _StudyProgressCard(progress: progress),
+        const SizedBox(height: 16),
         _SectionCard(
           title: 'Vocabulary Preview',
           subtitle:
@@ -104,6 +108,51 @@ class HomeScreen extends StatelessWidget {
       ],
     );
   }
+}
+
+class _StudyProgressSnapshot {
+  const _StudyProgressSnapshot({
+    required this.total,
+    required this.seen,
+    required this.known,
+    required this.needsReview,
+    required this.unseen,
+  });
+
+  factory _StudyProgressSnapshot.fromWords(List<LearningWord> words) {
+    var seen = 0;
+    var known = 0;
+    var needsReview = 0;
+
+    for (final word in words) {
+      final attempts = word.correct + word.wrong;
+      if (attempts > 0) {
+        seen += 1;
+      }
+
+      if (word.wrong > 0 || word.wrong > word.correct) {
+        needsReview += 1;
+      } else if (word.correct > 0) {
+        known += 1;
+      }
+    }
+
+    return _StudyProgressSnapshot(
+      total: words.length,
+      seen: seen,
+      known: known,
+      needsReview: needsReview,
+      unseen: words.length - seen,
+    );
+  }
+
+  final int total;
+  final int seen;
+  final int known;
+  final int needsReview;
+  final int unseen;
+
+  double get completionRatio => total == 0 ? 0 : seen / total;
 }
 
 class _HeroPanel extends StatelessWidget {
@@ -289,6 +338,95 @@ class _ActionStrip extends StatelessWidget {
   }
 }
 
+class _StudyProgressCard extends StatelessWidget {
+  const _StudyProgressCard({
+    required this.progress,
+  });
+
+  final _StudyProgressSnapshot progress;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x14000000),
+            blurRadius: 20,
+            offset: Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Study Progress',
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w800,
+                ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            'This device now remembers your flashcard progress between launches.',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: const Color(0xFF5F5A52),
+                  height: 1.45,
+                ),
+          ),
+          const SizedBox(height: 16),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(999),
+            child: LinearProgressIndicator(
+              minHeight: 10,
+              value: progress.completionRatio,
+              backgroundColor: const Color(0xFFEAE2D2),
+              valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF0F766E)),
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            '${progress.seen} of ${progress.total} words have progress on this device',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: const Color(0xFF6C665D),
+                ),
+          ),
+          const SizedBox(height: 16),
+          Wrap(
+            spacing: 12,
+            runSpacing: 12,
+            children: [
+              _ProgressMetric(
+                label: 'Seen',
+                value: progress.seen,
+                accent: const Color(0xFF1D4ED8),
+              ),
+              _ProgressMetric(
+                label: 'Known',
+                value: progress.known,
+                accent: const Color(0xFF0F766E),
+              ),
+              _ProgressMetric(
+                label: 'Needs Review',
+                value: progress.needsReview,
+                accent: const Color(0xFFB45309),
+              ),
+              _ProgressMetric(
+                label: 'Unseen',
+                value: progress.unseen,
+                accent: const Color(0xFF7C3AED),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _SectionCard extends StatelessWidget {
   const _SectionCard({
     required this.title,
@@ -334,6 +472,57 @@ class _SectionCard extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           child,
+        ],
+      ),
+    );
+  }
+}
+
+class _ProgressMetric extends StatelessWidget {
+  const _ProgressMetric({
+    required this.label,
+    required this.value,
+    required this.accent,
+  });
+
+  final String label;
+  final int value;
+  final Color accent;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 148,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF7F3E8),
+        borderRadius: BorderRadius.circular(18),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 10,
+            height: 10,
+            decoration: BoxDecoration(
+              color: accent,
+              borderRadius: BorderRadius.circular(999),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            '$value',
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.w800,
+                ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: const Color(0xFF5F5A52),
+                ),
+          ),
         ],
       ),
     );

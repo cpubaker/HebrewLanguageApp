@@ -8,9 +8,11 @@ class FlashcardsScreen extends StatefulWidget {
   const FlashcardsScreen({
     super.key,
     required this.words,
+    required this.onWordProgressChanged,
   });
 
   final List<LearningWord> words;
+  final WordProgressCallback onWordProgressChanged;
 
   @override
   State<FlashcardsScreen> createState() => _FlashcardsScreenState();
@@ -40,6 +42,11 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
     setState(() {
       _currentAnswer = _session.answerCard(known);
     });
+
+    final answer = _currentAnswer;
+    if (answer != null) {
+      widget.onWordProgressChanged(answer.word);
+    }
   }
 
   void _changeDeckMode(FlashcardDeckMode mode) {

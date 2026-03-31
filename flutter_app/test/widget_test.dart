@@ -8,6 +8,7 @@ import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/models/lesson_document.dart';
 import 'package:hebrew_language_flutter/services/lesson_document_loader.dart';
 import 'package:hebrew_language_flutter/services/learning_bundle_loader.dart';
+import 'package:hebrew_language_flutter/services/word_progress_store.dart';
 
 class FakeLearningBundleLoader implements LearningBundleLoader {
   @override
@@ -87,6 +88,7 @@ void main() {
       HebrewFlutterApp(
         loader: FakeLearningBundleLoader(),
         documentLoader: FakeLessonDocumentLoader(),
+        progressStore: FakeWordProgressStore(),
       ),
     );
     await tester.pumpAndSettle();
@@ -119,6 +121,7 @@ void main() {
       HebrewFlutterApp(
         loader: FakeLearningBundleLoader(),
         documentLoader: FakeLessonDocumentLoader(),
+        progressStore: FakeWordProgressStore(),
       ),
     );
     await tester.pumpAndSettle();
@@ -141,6 +144,7 @@ void main() {
       HebrewFlutterApp(
         loader: _FakeBundleWithVerbLoader(),
         documentLoader: FakeLessonDocumentLoader(),
+        progressStore: FakeWordProgressStore(),
       ),
     );
     await tester.pumpAndSettle();
@@ -167,6 +171,7 @@ void main() {
       HebrewFlutterApp(
         loader: FakeLearningBundleLoader(),
         documentLoader: FakeLessonDocumentLoader(),
+        progressStore: FakeWordProgressStore(),
       ),
     );
     await tester.pumpAndSettle();
@@ -188,10 +193,13 @@ void main() {
   testWidgets('reveals flashcard answer and advances to the next card', (
     WidgetTester tester,
   ) async {
+    final store = FakeWordProgressStore();
+
     await tester.pumpWidget(
       HebrewFlutterApp(
         loader: _FlashcardOnlyBundleLoader(),
         documentLoader: FakeLessonDocumentLoader(),
+        progressStore: store,
       ),
     );
     await tester.pumpAndSettle();
@@ -212,6 +220,79 @@ void main() {
     expect(find.text('man'), findsOneWidget);
     expect(find.text('The man is walking in the street.'), findsOneWidget);
     expect(find.text('Next Card'), findsOneWidget);
+    expect(store.savedWordIds, contains('word_man'));
+    expect(store.savedByWordId['word_man']?.correct, 2);
+  });
+
+  testWidgets('hydrates persisted word progress into the shared bundle', (
+    WidgetTester tester,
+  ) async {
+    final store = FakeWordProgressStore(
+      initialProgress: const {
+        'word_man': StoredWordProgress(
+          wordId: 'word_man',
+          correct: 9,
+          wrong: 2,
+          lastCorrect: '2026-03-31T09:30:00',
+        ),
+      },
+    );
+
+    await tester.pumpWidget(
+      HebrewFlutterApp(
+        loader: FakeLearningBundleLoader(),
+        documentLoader: FakeLessonDocumentLoader(),
+        progressStore: store,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.translate_outlined));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('man').last);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Correct: 9'), findsOneWidget);
+    expect(find.text('Wrong: 2'), findsOneWidget);
+  });
+
+  testWidgets('shows persisted study progress on the home screen', (
+    WidgetTester tester,
+  ) async {
+    final store = FakeWordProgressStore(
+      initialProgress: const {
+        'word_man': StoredWordProgress(
+          wordId: 'word_man',
+          correct: 5,
+          wrong: 0,
+          lastCorrect: '2026-03-31T09:30:00',
+        ),
+        'word_woman': StoredWordProgress(
+          wordId: 'word_woman',
+          correct: 1,
+          wrong: 2,
+          lastCorrect: '2026-03-31T09:40:00',
+        ),
+      },
+    );
+
+    await tester.pumpWidget(
+      HebrewFlutterApp(
+        loader: FakeLearningBundleLoader(),
+        documentLoader: FakeLessonDocumentLoader(),
+        progressStore: store,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.scrollUntilVisible(find.text('Study Progress'), 300);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Study Progress'), findsOneWidget);
+    expect(find.text('2 of 2 words have progress on this device'), findsOneWidget);
+    expect(find.text('Needs Review'), findsOneWidget);
+    expect(find.text('Unseen'), findsOneWidget);
   });
 }
 
@@ -256,6 +337,33 @@ class _FlashcardOnlyBundleLoader implements LearningBundleLoader {
       guideLessons: const [],
       verbLessons: const [],
       readingLessons: const [],
+    );
+  }
+}
+
+class FakeWordProgressStore implements WordProgressStore {
+  FakeWordProgressStore({
+    Map<String, StoredWordProgress>? initialProgress,
+  }) : savedByWordId = <String, StoredWordProgress>{
+          ...?initialProgress,
+        };
+
+  final Map<String, StoredWordProgress> savedByWordId;
+  final List<String> savedWordIds = <String>[];
+
+  @override
+  Future<Map<String, StoredWordProgress>> load() async {
+    return Map<String, StoredWordProgress>.from(savedByWordId);
+  }
+
+  @override
+  Future<void> saveWord(LearningWord word) async {
+    savedWordIds.add(word.wordId);
+    savedByWordId[word.wordId] = StoredWordProgress(
+      wordId: word.wordId,
+      correct: word.correct,
+      wrong: word.wrong,
+      lastCorrect: word.lastCorrect,
     );
   }
 }
