@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/learning_bundle.dart';
 import '../services/lesson_document_loader.dart';
 import '../services/learning_bundle_loader.dart';
+import 'flashcards_screen.dart';
 import 'guide_screen.dart';
 import 'home_screen.dart';
 import 'reading_screen.dart';
@@ -71,11 +72,13 @@ class _AppShellScreenState extends State<AppShellScreen> {
                 HomeScreen(
                   bundle: bundle,
                   onOpenWords: () => _selectTab(1),
-                  onOpenGuide: () => _selectTab(2),
-                  onOpenVerbs: () => _selectTab(3),
-                  onOpenReading: () => _selectTab(4),
+                  onOpenFlashcards: () => _selectTab(2),
+                  onOpenGuide: () => _selectTab(3),
+                  onOpenVerbs: () => _selectTab(4),
+                  onOpenReading: () => _selectTab(5),
                 ),
                 WordsScreen(words: bundle.words),
+                FlashcardsScreen(words: bundle.words),
                 GuideScreen(
                   lessons: bundle.guideLessons,
                   documentLoader: widget.documentLoader,
@@ -104,6 +107,11 @@ class _AppShellScreenState extends State<AppShellScreen> {
                 icon: Icon(Icons.translate_outlined),
                 selectedIcon: Icon(Icons.translate_rounded),
                 label: 'Words',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.style_outlined),
+                selectedIcon: Icon(Icons.style_rounded),
+                label: 'Cards',
               ),
               NavigationDestination(
                 icon: Icon(Icons.menu_book_outlined),

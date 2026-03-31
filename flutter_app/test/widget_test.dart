@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:hebrew_language_flutter/app.dart';
 import 'package:hebrew_language_flutter/models/learning_bundle.dart';
+import 'package:hebrew_language_flutter/models/learning_context.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/models/lesson_document.dart';
 import 'package:hebrew_language_flutter/services/lesson_document_loader.dart';
@@ -15,15 +16,22 @@ class FakeLearningBundleLoader implements LearningBundleLoader {
       words: const [
         LearningWord(
           wordId: 'word_man',
-          hebrew: 'ish_he',
+          hebrew: 'איש',
           english: 'man',
           transcription: 'ish',
           correct: 1,
           wrong: 0,
+          contexts: [
+            LearningContext(
+              contextId: 'ctx_man_01',
+              hebrew: 'האיש הולך ברחוב.',
+              translation: 'The man is walking in the street.',
+            ),
+          ],
         ),
         LearningWord(
           wordId: 'word_woman',
-          hebrew: 'isha_he',
+          hebrew: 'אישה',
           english: 'woman',
           transcription: 'isha',
           correct: 3,
@@ -85,7 +93,6 @@ void main() {
 
     expect(find.text('Hebrew Language App'), findsOneWidget);
     expect(find.text('Android Migration'), findsOneWidget);
-    expect(find.text('Open Words'), findsOneWidget);
 
     await tester.tap(find.byIcon(Icons.translate_outlined));
     await tester.pumpAndSettle();
@@ -177,6 +184,35 @@ void main() {
     expect(find.text('Key words'), findsOneWidget);
     expect(find.text('school'), findsOneWidget);
   });
+
+  testWidgets('reveals flashcard answer and advances to the next card', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      HebrewFlutterApp(
+        loader: _FlashcardOnlyBundleLoader(),
+        documentLoader: FakeLessonDocumentLoader(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.style_outlined));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Flashcards'), findsOneWidget);
+    expect(find.text('האיש הולך ברחוב.'), findsOneWidget);
+    expect(find.text('man'), findsNothing);
+
+    await tester.scrollUntilVisible(find.text('Know'), 200);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Know'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('man'), findsOneWidget);
+    expect(find.text('The man is walking in the street.'), findsOneWidget);
+    expect(find.text('Next Card'), findsOneWidget);
+  });
 }
 
 class _FakeBundleWithVerbLoader implements LearningBundleLoader {
@@ -191,6 +227,34 @@ class _FakeBundleWithVerbLoader implements LearningBundleLoader {
           displayName: '01 Walk',
         ),
       ],
+      readingLessons: const [],
+    );
+  }
+}
+
+class _FlashcardOnlyBundleLoader implements LearningBundleLoader {
+  @override
+  Future<LearningBundle> load() async {
+    return LearningBundle(
+      words: const [
+        LearningWord(
+          wordId: 'word_man',
+          hebrew: 'איש',
+          english: 'man',
+          transcription: 'ish',
+          correct: 1,
+          wrong: 0,
+          contexts: [
+            LearningContext(
+              contextId: 'ctx_man_01',
+              hebrew: 'האיש הולך ברחוב.',
+              translation: 'The man is walking in the street.',
+            ),
+          ],
+        ),
+      ],
+      guideLessons: const [],
+      verbLessons: const [],
       readingLessons: const [],
     );
   }

@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import '../models/learning_bundle.dart';
+import '../models/learning_context.dart';
 import '../models/learning_word.dart';
 
 abstract class LearningBundleLoader {
@@ -16,6 +18,10 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
 
   static const String _wordsAsset =
       'assets/learning/input/hebrew_words.json';
+  static const String _contextSentencesAsset =
+      'assets/learning/input/contexts/sentences.json';
+  static const String _wordContextLinksAsset =
+      'assets/learning/input/contexts/word_context_links.json';
   static const String _guidePrefix = 'assets/learning/input/guide/';
   static const String _verbsPrefix = 'assets/learning/input/verbs/';
   static const String _readingPrefix = 'assets/learning/input/reading/';
@@ -25,10 +31,17 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
   @override
   Future<LearningBundle> load() async {
     final wordsJson = await assetBundle.loadString(_wordsAsset);
-
-    final words = (jsonDecode(wordsJson) as List<dynamic>)
+    final baseWords = (jsonDecode(wordsJson) as List<dynamic>)
         .cast<Map<String, dynamic>>()
         .map(LearningWord.fromJson)
+        .toList(growable: false);
+    final contextsByWordId = await _loadContextsByWordId();
+    final words = baseWords
+        .map(
+          (word) => word.copyWith(
+            contexts: contextsByWordId[word.wordId] ?? const <LearningContext>[],
+          ),
+        )
         .toList(growable: false);
 
     final manifest = await AssetManifest.loadFromAssetBundle(assetBundle);
@@ -40,6 +53,45 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
       verbLessons: _buildLessonEntries(assetPaths, _verbsPrefix),
       readingLessons: _buildLessonEntries(assetPaths, _readingPrefix),
     );
+  }
+
+  Future<Map<String, List<LearningContext>>> _loadContextsByWordId() async {
+    try {
+      final contextSentencesJson =
+          await assetBundle.loadString(_contextSentencesAsset);
+      final wordContextLinksJson =
+          await assetBundle.loadString(_wordContextLinksAsset);
+
+      final contextSentences = (jsonDecode(contextSentencesJson) as List<dynamic>)
+          .cast<Map<String, dynamic>>()
+          .map(LearningContext.fromJson)
+          .toList(growable: false);
+      final contextsById = <String, LearningContext>{
+        for (final context in contextSentences)
+          if (context.contextId.isNotEmpty) context.contextId: context,
+      };
+
+      final wordContextLinks =
+          (jsonDecode(wordContextLinksJson) as Map<String, dynamic>)
+              .map(
+                (key, value) => MapEntry(
+                  key,
+                  (value as List<dynamic>).whereType<String>().toList(growable: false),
+                ),
+              );
+
+      return wordContextLinks.map(
+        (wordId, contextIds) => MapEntry(
+          wordId,
+          contextIds
+              .where((contextId) => contextsById.containsKey(contextId))
+              .map((contextId) => contextsById[contextId]!)
+              .toList(growable: false),
+        ),
+      );
+    } on FlutterError {
+      return const <String, List<LearningContext>>{};
+    }
   }
 
   List<LessonEntry> _buildLessonEntries(

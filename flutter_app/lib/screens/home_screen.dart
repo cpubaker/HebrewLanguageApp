@@ -8,6 +8,7 @@ class HomeScreen extends StatelessWidget {
     super.key,
     required this.bundle,
     required this.onOpenWords,
+    required this.onOpenFlashcards,
     required this.onOpenGuide,
     required this.onOpenVerbs,
     required this.onOpenReading,
@@ -15,6 +16,7 @@ class HomeScreen extends StatelessWidget {
 
   final LearningBundle bundle;
   final VoidCallback onOpenWords;
+  final VoidCallback onOpenFlashcards;
   final VoidCallback onOpenGuide;
   final VoidCallback onOpenVerbs;
   final VoidCallback onOpenReading;
@@ -35,6 +37,12 @@ class HomeScreen extends StatelessWidget {
               value: bundle.words.length,
               accent: const Color(0xFF0F766E),
               onTap: onOpenWords,
+            ),
+            _SummaryCard(
+              label: 'Flashcards',
+              value: bundle.words.where((word) => word.contexts.isNotEmpty).length,
+              accent: const Color(0xFFBE5B00),
+              onTap: onOpenFlashcards,
             ),
             _SummaryCard(
               label: 'Guide',
@@ -59,6 +67,7 @@ class HomeScreen extends StatelessWidget {
         const SizedBox(height: 20),
         _ActionStrip(
           onOpenWords: onOpenWords,
+          onOpenFlashcards: onOpenFlashcards,
           onOpenGuide: onOpenGuide,
         ),
         const SizedBox(height: 20),
@@ -156,7 +165,7 @@ class _HeroPanel extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            'The app now has a shared mobile shell, bottom navigation, and a dedicated Words tab. Tkinter still remains the desktop reference while Flutter grows feature by feature.',
+            'The app now has a shared mobile shell, bottom navigation, and a first interactive Flashcards flow. Tkinter still remains the desktop reference while Flutter grows feature by feature.',
             style: theme.textTheme.bodyLarge?.copyWith(
               color: const Color(0xFFF7F3E8),
               height: 1.45,
@@ -246,30 +255,34 @@ class _SummaryCard extends StatelessWidget {
 class _ActionStrip extends StatelessWidget {
   const _ActionStrip({
     required this.onOpenWords,
+    required this.onOpenFlashcards,
     required this.onOpenGuide,
   });
 
   final VoidCallback onOpenWords;
+  final VoidCallback onOpenFlashcards;
   final VoidCallback onOpenGuide;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Wrap(
+      spacing: 12,
+      runSpacing: 12,
       children: [
-        Expanded(
-          child: FilledButton.icon(
-            onPressed: onOpenWords,
-            icon: const Icon(Icons.translate_rounded),
-            label: const Text('Open Words'),
-          ),
+        FilledButton.icon(
+          onPressed: onOpenFlashcards,
+          icon: const Icon(Icons.style_rounded),
+          label: const Text('Start Flashcards'),
         ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: OutlinedButton.icon(
-            onPressed: onOpenGuide,
-            icon: const Icon(Icons.menu_book_rounded),
-            label: const Text('Open Guide'),
-          ),
+        OutlinedButton.icon(
+          onPressed: onOpenWords,
+          icon: const Icon(Icons.translate_rounded),
+          label: const Text('Open Words'),
+        ),
+        OutlinedButton.icon(
+          onPressed: onOpenGuide,
+          icon: const Icon(Icons.menu_book_rounded),
+          label: const Text('Open Guide'),
         ),
       ],
     );
