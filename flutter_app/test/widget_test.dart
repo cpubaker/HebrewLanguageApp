@@ -294,6 +294,27 @@ void main() {
     expect(find.text('Needs Review'), findsOneWidget);
     expect(find.text('Unseen'), findsOneWidget);
   });
+
+  testWidgets('shows the dedicated reading preview block on the home screen', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      HebrewFlutterApp(
+        loader: FakeLearningBundleLoader(),
+        documentLoader: FakeLessonDocumentLoader(),
+        progressStore: FakeWordProgressStore(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.scrollUntilVisible(find.text('Reading Preview'), 300);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Reading Preview'), findsOneWidget);
+    expect(find.text('Yosi Goes To School'), findsWidgets);
+    expect(find.text('Beginner'), findsOneWidget);
+    expect(find.text('Open Reading'), findsOneWidget);
+  });
 }
 
 class _FakeBundleWithVerbLoader implements LearningBundleLoader {

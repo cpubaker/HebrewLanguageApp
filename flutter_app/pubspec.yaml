@@ -51,5 +51,11 @@ flutter:
     - assets/learning/input/guide/
     - assets/learning/input/verbs/
     - assets/learning/input/reading/
+    - assets/learning/input/reading/advanced/
+    - assets/learning/input/reading/beginner/
+    - assets/learning/input/reading/intermediate/
+    - assets/learning/input/reading/pre-intermediate/
+    - assets/learning/input/reading/proficient/
+    - assets/learning/input/reading/upper-intermediate/
     - assets/learning/input/audio/verbs/
     - assets/learning/input/images/verbs/

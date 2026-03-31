@@ -88,21 +88,24 @@ class HomeScreen extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         _SectionCard(
-          title: 'Library Preview',
+          title: 'Reading Preview',
           subtitle:
-              'Guide, verbs, and reading are now all available as real mobile content slices.',
+              'Continue with the synced mobile reading lessons right from the home screen.',
           child: Column(
             children: [
-              ...bundle.guideLessons
-                  .take(3)
-                  .map((lesson) => _LessonTile(lesson: lesson)),
-              ...bundle.verbLessons
-                  .take(2)
-                  .map((lesson) => _LessonTile(lesson: lesson)),
               ...bundle.readingLessons
-                  .take(2)
-                  .map((lesson) => _LessonTile(lesson: lesson)),
+                  .take(3)
+                  .map((lesson) => _ReadingLessonTile(lesson: lesson)),
             ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: OutlinedButton.icon(
+            onPressed: onOpenReading,
+            icon: const Icon(Icons.auto_stories_rounded),
+            label: const Text('Open Reading'),
           ),
         ),
       ],
@@ -584,8 +587,8 @@ class _WordTile extends StatelessWidget {
   }
 }
 
-class _LessonTile extends StatelessWidget {
-  const _LessonTile({
+class _ReadingLessonTile extends StatelessWidget {
+  const _ReadingLessonTile({
     required this.lesson,
   });
 
@@ -593,27 +596,50 @@ class _LessonTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final level = _readingLevelFromAssetPath(lesson.assetPath);
+    final title = lesson.displayName.replaceFirst(RegExp(r'^\d+\s+'), '');
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: const Color(0xFFF3EEE2),
+          color: const Color(0xFFF1F5FF),
           borderRadius: BorderRadius.circular(18),
         ),
         child: Row(
           children: [
-            const Icon(
-              Icons.menu_book_rounded,
-              color: Color(0xFF8C6A2A),
+            Container(
+              width: 38,
+              height: 38,
+              decoration: BoxDecoration(
+                color: const Color(0xFF1D4ED8).withValues(alpha: 0.10),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Icon(
+                Icons.auto_stories_rounded,
+                color: Color(0xFF1D4ED8),
+              ),
             ),
             const SizedBox(width: 12),
             Expanded(
-              child: Text(
-                lesson.displayName,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    level,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: const Color(0xFF5F5A52),
+                        ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -621,4 +647,19 @@ class _LessonTile extends StatelessWidget {
       ),
     );
   }
+}
+
+String _readingLevelFromAssetPath(String assetPath) {
+  final parts = assetPath.split('/');
+  final readingIndex = parts.indexOf('reading');
+  if (readingIndex == -1 || readingIndex + 1 >= parts.length) {
+    return 'Reading';
+  }
+
+  final rawLevel = parts[readingIndex + 1];
+  return rawLevel
+      .split('-')
+      .where((part) => part.isNotEmpty)
+      .map((part) => '${part[0].toUpperCase()}${part.substring(1)}')
+      .join(' ');
 }
