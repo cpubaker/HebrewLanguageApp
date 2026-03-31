@@ -6,6 +6,7 @@ import '../models/learning_bundle.dart';
 import '../models/learning_word.dart';
 import '../services/lesson_document_loader.dart';
 import '../services/learning_bundle_loader.dart';
+import '../services/verb_audio_player.dart';
 import '../services/word_progress_store.dart';
 import 'flashcards_screen.dart';
 import 'guide_screen.dart';
@@ -20,11 +21,13 @@ class AppShellScreen extends StatefulWidget {
     required this.loader,
     required this.documentLoader,
     required this.progressStore,
+    required this.audioPlayerFactory,
   });
 
   final LearningBundleLoader loader;
   final LessonDocumentLoader documentLoader;
   final WordProgressStore progressStore;
+  final CreateVerbAudioPlayer audioPlayerFactory;
 
   @override
   State<AppShellScreen> createState() => _AppShellScreenState();
@@ -139,6 +142,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
                 VerbsScreen(
                   lessons: bundle.verbLessons,
                   documentLoader: widget.documentLoader,
+                  audioPlayerFactory: widget.audioPlayerFactory,
                 ),
                 ReadingScreen(
                   lessons: bundle.readingLessons,

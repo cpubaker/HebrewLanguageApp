@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -8,6 +10,7 @@ import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/models/lesson_document.dart';
 import 'package:hebrew_language_flutter/services/lesson_document_loader.dart';
 import 'package:hebrew_language_flutter/services/learning_bundle_loader.dart';
+import 'package:hebrew_language_flutter/services/verb_audio_player.dart';
 import 'package:hebrew_language_flutter/services/word_progress_store.dart';
 
 class FakeLearningBundleLoader implements LearningBundleLoader {
@@ -140,11 +143,14 @@ void main() {
   });
 
   testWidgets('opens verb lesson details', (WidgetTester tester) async {
+    final audioPlayer = FakeVerbAudioPlayer();
+
     await tester.pumpWidget(
       HebrewFlutterApp(
         loader: _FakeBundleWithVerbLoader(),
         documentLoader: FakeLessonDocumentLoader(),
         progressStore: FakeWordProgressStore(),
+        audioPlayerFactory: () => audioPlayer,
       ),
     );
     await tester.pumpAndSettle();
@@ -158,12 +164,13 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Walk'), findsOneWidget);
-    await tester.scrollUntilVisible(
-      find.text('Audio wiring is the next media step.'),
-      300,
-    );
+    expect(find.byTooltip('Play audio'), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Play audio'));
     await tester.pumpAndSettle();
-    expect(find.text('Audio wiring is the next media step.'), findsOneWidget);
+
+    expect(audioPlayer.playedAssets, ['assets/learning/input/audio/verbs/walk.mp3']);
+    expect(find.byTooltip('Stop audio'), findsOneWidget);
   });
 
   testWidgets('opens reading lesson details', (WidgetTester tester) async {
@@ -386,5 +393,44 @@ class FakeWordProgressStore implements WordProgressStore {
       wrong: word.wrong,
       lastCorrect: word.lastCorrect,
     );
+  }
+}
+
+class FakeVerbAudioPlayer implements VerbAudioPlayer {
+  FakeVerbAudioPlayer({
+    this.availableAssets = const {'assets/learning/input/audio/verbs/walk.mp3'},
+  });
+
+  final Set<String> availableAssets;
+  final List<String> playedAssets = <String>[];
+  final StreamController<bool> _isPlayingController =
+      StreamController<bool>.broadcast();
+  bool stopped = false;
+  bool disposed = false;
+
+  @override
+  Stream<bool> get isPlayingStream => _isPlayingController.stream;
+
+  @override
+  Future<bool> assetExists(String assetPath) async {
+    return availableAssets.contains(assetPath);
+  }
+
+  @override
+  Future<void> dispose() async {
+    disposed = true;
+    await _isPlayingController.close();
+  }
+
+  @override
+  Future<void> playAsset(String assetPath) async {
+    playedAssets.add(assetPath);
+    _isPlayingController.add(true);
+  }
+
+  @override
+  Future<void> stop() async {
+    stopped = true;
+    _isPlayingController.add(false);
   }
 }
