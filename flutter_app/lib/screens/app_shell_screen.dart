@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../models/learning_bundle.dart';
 import '../models/learning_word.dart';
+import '../services/guide_progress_store.dart';
 import '../services/lesson_document_loader.dart';
 import '../services/learning_bundle_loader.dart';
 import '../services/verb_audio_player.dart';
@@ -21,12 +22,14 @@ class AppShellScreen extends StatefulWidget {
     required this.loader,
     required this.documentLoader,
     required this.progressStore,
+    required this.guideProgressStore,
     required this.audioPlayerFactory,
   });
 
   final LearningBundleLoader loader;
   final LessonDocumentLoader documentLoader;
   final WordProgressStore progressStore;
+  final GuideProgressStore guideProgressStore;
   final CreateVerbAudioPlayer audioPlayerFactory;
 
   @override
@@ -36,6 +39,7 @@ class AppShellScreen extends StatefulWidget {
 class _AppShellScreenState extends State<AppShellScreen> {
   late Future<LearningBundle> _bundleFuture;
   LearningBundle? _bundle;
+  Set<String> _readGuideLessonPaths = <String>{};
   int _selectedIndex = 0;
 
   @override
@@ -55,6 +59,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
   Future<LearningBundle> _loadBundle() async {
     final bundle = await widget.loader.load();
     final storedProgress = await widget.progressStore.load();
+    final readGuideLessonPaths = await widget.guideProgressStore.loadReadLessons();
 
     final hydratedBundle = bundle.copyWith(
       words: bundle.words
@@ -73,6 +78,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
           .toList(growable: false),
     );
 
+    _readGuideLessonPaths = readGuideLessonPaths;
     _bundle = hydratedBundle;
     return hydratedBundle;
   }
@@ -92,6 +98,24 @@ class _AppShellScreenState extends State<AppShellScreen> {
     }
 
     unawaited(widget.progressStore.saveWord(updatedWord));
+  }
+
+  void _handleGuideReadChanged(String assetPath, bool isRead) {
+    setState(() {
+      if (isRead) {
+        _readGuideLessonPaths = {
+          ..._readGuideLessonPaths,
+          assetPath,
+        };
+      } else {
+        _readGuideLessonPaths = {
+          for (final existingPath in _readGuideLessonPaths)
+            if (existingPath != assetPath) existingPath,
+        };
+      }
+    });
+
+    unawaited(widget.guideProgressStore.setLessonRead(assetPath, isRead));
   }
 
   void _selectTab(int index) {
@@ -138,6 +162,8 @@ class _AppShellScreenState extends State<AppShellScreen> {
                 GuideScreen(
                   lessons: bundle.guideLessons,
                   documentLoader: widget.documentLoader,
+                  readLessonPaths: _readGuideLessonPaths,
+                  onReadChanged: _handleGuideReadChanged,
                 ),
                 VerbsScreen(
                   lessons: bundle.verbLessons,

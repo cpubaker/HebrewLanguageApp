@@ -8,6 +8,7 @@ import 'package:hebrew_language_flutter/models/learning_bundle.dart';
 import 'package:hebrew_language_flutter/models/learning_context.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/models/lesson_document.dart';
+import 'package:hebrew_language_flutter/services/guide_progress_store.dart';
 import 'package:hebrew_language_flutter/services/lesson_document_loader.dart';
 import 'package:hebrew_language_flutter/services/learning_bundle_loader.dart';
 import 'package:hebrew_language_flutter/services/verb_audio_player.dart';
@@ -92,6 +93,7 @@ void main() {
         loader: FakeLearningBundleLoader(),
         documentLoader: FakeLessonDocumentLoader(),
         progressStore: FakeWordProgressStore(),
+        guideProgressStore: FakeGuideProgressStore(),
       ),
     );
     await tester.pumpAndSettle();
@@ -125,6 +127,7 @@ void main() {
         loader: FakeLearningBundleLoader(),
         documentLoader: FakeLessonDocumentLoader(),
         progressStore: FakeWordProgressStore(),
+        guideProgressStore: FakeGuideProgressStore(),
       ),
     );
     await tester.pumpAndSettle();
@@ -150,6 +153,7 @@ void main() {
         loader: _FakeBundleWithVerbLoader(),
         documentLoader: FakeLessonDocumentLoader(),
         progressStore: FakeWordProgressStore(),
+        guideProgressStore: FakeGuideProgressStore(),
         audioPlayerFactory: () => audioPlayer,
       ),
     );
@@ -179,6 +183,7 @@ void main() {
         loader: FakeLearningBundleLoader(),
         documentLoader: FakeLessonDocumentLoader(),
         progressStore: FakeWordProgressStore(),
+        guideProgressStore: FakeGuideProgressStore(),
       ),
     );
     await tester.pumpAndSettle();
@@ -207,6 +212,7 @@ void main() {
         loader: _FlashcardOnlyBundleLoader(),
         documentLoader: FakeLessonDocumentLoader(),
         progressStore: store,
+        guideProgressStore: FakeGuideProgressStore(),
       ),
     );
     await tester.pumpAndSettle();
@@ -250,6 +256,7 @@ void main() {
         loader: FakeLearningBundleLoader(),
         documentLoader: FakeLessonDocumentLoader(),
         progressStore: store,
+        guideProgressStore: FakeGuideProgressStore(),
       ),
     );
     await tester.pumpAndSettle();
@@ -289,6 +296,7 @@ void main() {
         loader: FakeLearningBundleLoader(),
         documentLoader: FakeLessonDocumentLoader(),
         progressStore: store,
+        guideProgressStore: FakeGuideProgressStore(),
       ),
     );
     await tester.pumpAndSettle();
@@ -310,6 +318,7 @@ void main() {
         loader: FakeLearningBundleLoader(),
         documentLoader: FakeLessonDocumentLoader(),
         progressStore: FakeWordProgressStore(),
+        guideProgressStore: FakeGuideProgressStore(),
       ),
     );
     await tester.pumpAndSettle();
@@ -393,6 +402,28 @@ class FakeWordProgressStore implements WordProgressStore {
       wrong: word.wrong,
       lastCorrect: word.lastCorrect,
     );
+  }
+}
+
+class FakeGuideProgressStore implements GuideProgressStore {
+  FakeGuideProgressStore({
+    Set<String>? initialReadLessons,
+  }) : readLessons = {...?initialReadLessons};
+
+  final Set<String> readLessons;
+
+  @override
+  Future<Set<String>> loadReadLessons() async {
+    return {...readLessons};
+  }
+
+  @override
+  Future<void> setLessonRead(String assetPath, bool isRead) async {
+    if (isRead) {
+      readLessons.add(assetPath);
+    } else {
+      readLessons.remove(assetPath);
+    }
   }
 }
 
