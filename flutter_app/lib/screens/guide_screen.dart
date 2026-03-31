@@ -169,6 +169,7 @@ class _GuideLessonCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final orderMatch = RegExp(r'^(\d+)').firstMatch(lesson.displayName);
     final orderLabel = orderMatch?.group(1) ?? '*';
+    final titleLabel = lesson.displayName.replaceFirst(RegExp(r'^\d+\s+'), '');
 
     return Material(
       color: Colors.transparent,
@@ -209,7 +210,7 @@ class _GuideLessonCard extends StatelessWidget {
               const SizedBox(width: 14),
               Expanded(
                 child: Text(
-                  lesson.displayName,
+                  titleLabel,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),

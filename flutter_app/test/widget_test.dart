@@ -129,9 +129,9 @@ void main() {
     await tester.tap(find.byIcon(Icons.menu_book_outlined));
     await tester.pumpAndSettle();
 
-    expect(find.text('01 Intro Alphabet'), findsOneWidget);
+    expect(find.text('Intro Alphabet'), findsOneWidget);
 
-    await tester.tap(find.text('01 Intro Alphabet'));
+    await tester.tap(find.text('Intro Alphabet'));
     await tester.pumpAndSettle();
 
     expect(find.text('Alphabet Basics'), findsOneWidget);
@@ -152,9 +152,9 @@ void main() {
     await tester.tap(find.byIcon(Icons.play_lesson_outlined));
     await tester.pumpAndSettle();
 
-    expect(find.text('01 Walk'), findsOneWidget);
+    expect(find.text('Walk'), findsOneWidget);
 
-    await tester.tap(find.text('01 Walk'));
+    await tester.tap(find.text('Walk'));
     await tester.pumpAndSettle();
 
     expect(find.text('Walk'), findsOneWidget);
@@ -179,10 +179,10 @@ void main() {
     await tester.tap(find.byIcon(Icons.auto_stories_outlined));
     await tester.pumpAndSettle();
 
-    expect(find.text('01 Yosi Goes To School'), findsOneWidget);
+    expect(find.text('Yosi Goes To School'), findsOneWidget);
     expect(find.text('Beginner'), findsOneWidget);
 
-    await tester.tap(find.text('01 Yosi Goes To School'));
+    await tester.tap(find.text('Yosi Goes To School').first);
     await tester.pumpAndSettle();
 
     expect(find.text('Yosi Goes To School'), findsOneWidget);
