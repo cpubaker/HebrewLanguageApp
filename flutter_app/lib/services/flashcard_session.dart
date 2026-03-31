@@ -3,6 +3,12 @@ import 'dart:math';
 import '../models/learning_context.dart';
 import '../models/learning_word.dart';
 
+enum FlashcardDeckMode {
+  allWords,
+  withContexts,
+  needsReview,
+}
+
 class FlashcardCard {
   const FlashcardCard({
     required this.word,
@@ -43,12 +49,19 @@ class FlashcardSession {
   FlashcardSession(
     List<LearningWord> words, {
     Random? rng,
-  })  : _words = List<LearningWord>.from(words),
-        _rng = rng ?? Random();
+    this.deckMode = FlashcardDeckMode.allWords,
+  })  : _sourceWords = List<LearningWord>.from(words),
+        _rng = rng ?? Random() {
+    _rebuildDeck();
+  }
 
   final Random _rng;
   final Map<String, String> _lastContextIds = <String, String>{};
-  final List<LearningWord> _words;
+  final List<LearningWord> _sourceWords;
+  final Set<String> _seenWordIds = <String>{};
+  List<LearningWord> _words = <LearningWord>[];
+
+  FlashcardDeckMode deckMode;
 
   LearningWord? currentWord;
   LearningContext? currentContext;
@@ -56,9 +69,20 @@ class FlashcardSession {
   int answeredCount = 0;
 
   int get wordCount => _words.length;
+  int get seenCount => _seenWordIds.length;
+  double get sessionProgress => wordCount == 0 ? 0 : seenCount / wordCount;
 
   int get wordsWithContextsCount {
     return _words.where((word) => word.contexts.isNotEmpty).length;
+  }
+
+  void setDeckMode(FlashcardDeckMode mode) {
+    if (deckMode == mode) {
+      return;
+    }
+
+    deckMode = mode;
+    _rebuildDeck();
   }
 
   FlashcardCard? nextCard() {
@@ -79,6 +103,7 @@ class FlashcardSession {
     currentWord = candidates[_rng.nextInt(candidates.length)];
     currentContext = _selectContext(currentWord!);
     lastAnswerKnown = null;
+    _seenWordIds.add(currentWord!.wordId);
 
     return FlashcardCard(
       word: currentWord!,
@@ -156,5 +181,34 @@ class FlashcardSession {
     }
 
     return context;
+  }
+
+  void _rebuildDeck() {
+    _words = _buildDeck(_sourceWords, deckMode);
+    currentWord = null;
+    currentContext = null;
+    lastAnswerKnown = null;
+    answeredCount = 0;
+    _lastContextIds.clear();
+    _seenWordIds.clear();
+  }
+
+  List<LearningWord> _buildDeck(
+    List<LearningWord> words,
+    FlashcardDeckMode mode,
+  ) {
+    switch (mode) {
+      case FlashcardDeckMode.allWords:
+        return List<LearningWord>.from(words);
+      case FlashcardDeckMode.withContexts:
+        return words
+            .where((word) => word.contexts.isNotEmpty)
+            .toList(growable: false);
+      case FlashcardDeckMode.needsReview:
+        final reviewWords = words
+            .where((word) => word.wrong > 0 || word.wrong > word.correct)
+            .toList(growable: false);
+        return reviewWords;
+    }
   }
 }
