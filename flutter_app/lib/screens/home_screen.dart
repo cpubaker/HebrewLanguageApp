@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/learning_bundle.dart';
 import '../models/learning_word.dart';
+import 'reading_lesson_catalog.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
@@ -24,6 +25,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final progress = _StudyProgressSnapshot.fromWords(bundle.words);
+    final readingPreviewLessons = sortReadingLessons(bundle.readingLessons).take(3);
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
@@ -93,8 +95,7 @@ class HomeScreen extends StatelessWidget {
               'Continue with the synced mobile reading lessons right from the home screen.',
           child: Column(
             children: [
-              ...bundle.readingLessons
-                  .take(3)
+              ...readingPreviewLessons
                   .map((lesson) => _ReadingLessonTile(lesson: lesson)),
             ],
           ),
@@ -596,8 +597,8 @@ class _ReadingLessonTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final level = _readingLevelFromAssetPath(lesson.assetPath);
-    final title = lesson.displayName.replaceFirst(RegExp(r'^\d+\s+'), '');
+    final level = readingLevelLabelFromAssetPath(lesson.assetPath);
+    final title = readingLessonTitle(lesson);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
@@ -647,19 +648,4 @@ class _ReadingLessonTile extends StatelessWidget {
       ),
     );
   }
-}
-
-String _readingLevelFromAssetPath(String assetPath) {
-  final parts = assetPath.split('/');
-  final readingIndex = parts.indexOf('reading');
-  if (readingIndex == -1 || readingIndex + 1 >= parts.length) {
-    return 'Reading';
-  }
-
-  final rawLevel = parts[readingIndex + 1];
-  return rawLevel
-      .split('-')
-      .where((part) => part.isNotEmpty)
-      .map((part) => '${part[0].toUpperCase()}${part.substring(1)}')
-      .join(' ');
 }

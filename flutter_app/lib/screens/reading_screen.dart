@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import '../models/learning_bundle.dart';
 import '../models/lesson_document.dart';
 import '../services/lesson_document_loader.dart';
+import 'reading_lesson_catalog.dart';
 import 'widgets/markdown_lesson_body.dart';
 
-class ReadingScreen extends StatelessWidget {
+class ReadingScreen extends StatefulWidget {
   const ReadingScreen({
     super.key,
     required this.lessons,
@@ -16,7 +17,34 @@ class ReadingScreen extends StatelessWidget {
   final LessonDocumentLoader documentLoader;
 
   @override
+  State<ReadingScreen> createState() => _ReadingScreenState();
+}
+
+class _ReadingScreenState extends State<ReadingScreen> {
+  String? _selectedLevelKey;
+
+  @override
   Widget build(BuildContext context) {
+    final lessonGroups = buildReadingLessonGroups(widget.lessons);
+    final visibleGroups = _selectedLevelKey == null
+        ? lessonGroups
+        : lessonGroups
+            .where((group) => group.levelKey == _selectedLevelKey)
+            .toList(growable: false);
+    final visibleLessonCount = visibleGroups.fold<int>(
+      0,
+      (count, group) => count + group.lessons.length,
+    );
+    ReadingLessonGroup? selectedGroup;
+    if (_selectedLevelKey != null) {
+      for (final group in lessonGroups) {
+        if (group.levelKey == _selectedLevelKey) {
+          selectedGroup = group;
+          break;
+        }
+      }
+    }
+
     return ListView(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
       children: [
@@ -52,7 +80,9 @@ class ReadingScreen extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               Text(
-                '${lessons.length} reading lessons available',
+                _selectedLevelKey == null
+                    ? '${widget.lessons.length} reading lessons available'
+                    : '$visibleLessonCount reading lessons shown',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
@@ -61,26 +91,91 @@ class ReadingScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 18),
-        ...lessons.map(
-          (lesson) => Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: _ReadingLessonCard(
-              lesson: lesson,
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => ReadingDetailScreen(
-                      lesson: lesson,
-                      documentLoader: documentLoader,
-                    ),
-                  ),
-                );
-              },
+        _ReadingLevelSelector(
+          selectedLabel: selectedGroup?.levelLabel ?? 'All levels',
+          selectedCount: selectedGroup?.lessons.length ?? widget.lessons.length,
+          onTap: () => _showLevelPicker(context, lessonGroups),
+        ),
+        const SizedBox(height: 18),
+        ...visibleGroups.map(
+          (group) => Padding(
+            padding: const EdgeInsets.only(bottom: 18),
+            child: _ReadingLevelSection(
+              group: group,
+              documentLoader: widget.documentLoader,
             ),
           ),
         ),
       ],
     );
+  }
+
+  Future<void> _showLevelPicker(
+    BuildContext context,
+    List<ReadingLessonGroup> lessonGroups,
+  ) async {
+    final selectedLevelKey = await showModalBottomSheet<String?>(
+      context: context,
+      showDragHandle: true,
+      builder: (context) {
+        return SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Choose reading level',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w800,
+                      ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  'Focus on one difficulty level or keep the full catalog visible.',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: const Color(0xFF5F5A52),
+                        height: 1.45,
+                      ),
+                ),
+                const SizedBox(height: 16),
+                _ReadingLevelOption(
+                  label: 'All levels',
+                  count: widget.lessons.length,
+                  selected: _selectedLevelKey == null,
+                  onTap: () {
+                    Navigator.of(context).pop(null);
+                  },
+                ),
+                const SizedBox(height: 10),
+                ...lessonGroups.expand(
+                  (group) => [
+                    _ReadingLevelOption(
+                      label: group.levelLabel,
+                      count: group.lessons.length,
+                      selected: _selectedLevelKey == group.levelKey,
+                      onTap: () {
+                        Navigator.of(context).pop(group.levelKey);
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _selectedLevelKey = selectedLevelKey;
+    });
   }
 }
 
@@ -96,7 +191,7 @@ class ReadingDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final level = _readingLevelFromAssetPath(lesson.assetPath);
+    final level = readingLevelLabelFromAssetPath(lesson.assetPath);
 
     return Scaffold(
       appBar: AppBar(),
@@ -194,10 +289,9 @@ class _ReadingLessonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final level = _readingLevelFromAssetPath(lesson.assetPath);
-    final orderMatch = RegExp(r'^(\d+)').firstMatch(lesson.displayName);
-    final orderLabel = orderMatch?.group(1) ?? '*';
-    final titleLabel = lesson.displayName.replaceFirst(RegExp(r'^\d+\s+'), '');
+    final level = readingLevelLabelFromAssetPath(lesson.assetPath);
+    final orderLabel = readingLessonOrderLabel(lesson);
+    final titleLabel = readingLessonTitle(lesson);
 
     return Material(
       color: Colors.transparent,
@@ -269,17 +363,203 @@ class _ReadingLessonCard extends StatelessWidget {
   }
 }
 
-String _readingLevelFromAssetPath(String assetPath) {
-  final parts = assetPath.split('/');
-  final readingIndex = parts.indexOf('reading');
-  if (readingIndex == -1 || readingIndex + 1 >= parts.length) {
-    return 'Reading';
-  }
+class _ReadingLevelSection extends StatelessWidget {
+  const _ReadingLevelSection({
+    required this.group,
+    required this.documentLoader,
+  });
 
-  final rawLevel = parts[readingIndex + 1];
-  return rawLevel
-      .split('-')
-      .where((part) => part.isNotEmpty)
-      .map((part) => '${part[0].toUpperCase()}${part.substring(1)}')
-      .join(' ');
+  final ReadingLessonGroup group;
+  final LessonDocumentLoader documentLoader;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: Row(
+            children: [
+              Text(
+                group.levelLabel,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
+              ),
+              const SizedBox(width: 10),
+              Text(
+                '${group.lessons.length}',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: const Color(0xFF6C665D),
+                    ),
+              ),
+            ],
+          ),
+        ),
+        ...group.lessons.map(
+          (lesson) => Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: _ReadingLessonCard(
+              lesson: lesson,
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => ReadingDetailScreen(
+                      lesson: lesson,
+                      documentLoader: documentLoader,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ReadingLevelSelector extends StatelessWidget {
+  const _ReadingLevelSelector({
+    required this.selectedLabel,
+    required this.selectedCount,
+    required this.onTap,
+  });
+
+  final String selectedLabel;
+  final int selectedCount;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(22),
+        onTap: onTap,
+        child: Ink(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(22),
+            border: Border.all(
+              color: const Color(0xFF1D4ED8).withValues(alpha: 0.12),
+            ),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1D4ED8).withValues(alpha: 0.10),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: const Icon(
+                  Icons.tune_rounded,
+                  color: Color(0xFF1D4ED8),
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Level',
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            color: const Color(0xFF6C665D),
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '$selectedLabel ($selectedCount)',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w800,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(
+                Icons.keyboard_arrow_down_rounded,
+                color: Color(0xFF1D4ED8),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ReadingLevelOption extends StatelessWidget {
+  const _ReadingLevelOption({
+    required this.label,
+    required this.count,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final String label;
+  final int count;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(18),
+        onTap: onTap,
+        child: Ink(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: selected
+                ? const Color(0xFF1D4ED8).withValues(alpha: 0.08)
+                : const Color(0xFFF9FAFB),
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(
+              color: selected
+                  ? const Color(0xFF1D4ED8).withValues(alpha: 0.30)
+                  : const Color(0xFFE5E7EB),
+            ),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      label,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '$count lessons',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: const Color(0xFF5F5A52),
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(
+                selected ? Icons.check_circle_rounded : Icons.chevron_right_rounded,
+                color: selected
+                    ? const Color(0xFF1D4ED8)
+                    : const Color(0xFF9CA3AF),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

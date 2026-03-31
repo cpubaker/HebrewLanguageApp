@@ -180,7 +180,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Yosi Goes To School'), findsOneWidget);
-    expect(find.text('Beginner'), findsOneWidget);
+    expect(find.text('Beginner'), findsWidgets);
 
     await tester.tap(find.text('Yosi Goes To School').first);
     await tester.pumpAndSettle();
