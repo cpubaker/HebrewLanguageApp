@@ -23,10 +23,13 @@ class FlashcardsScreen extends StatefulWidget {
 }
 
 class _FlashcardsScreenState extends State<FlashcardsScreen> {
+  static const double _swipeVelocityThreshold = 325;
+
   late final FlashcardSession _session;
 
   FlashcardCard? _currentCard;
   FlashcardAnswerResult? _currentAnswer;
+  bool _showSessionDetails = false;
 
   @override
   void initState() {
@@ -51,6 +54,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
     setState(() {
       _currentCard = _session.nextCard();
       _currentAnswer = null;
+      _showSessionDetails = false;
     });
   }
 
@@ -70,7 +74,36 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
       _session.setDeckMode(mode);
       _currentCard = _session.nextCard();
       _currentAnswer = null;
+      _showSessionDetails = false;
     });
+  }
+
+  void _toggleReviewDeck() {
+    final reviewWordCount = widget.words
+        .where((word) => word.wrong > 0 || word.wrong > word.correct)
+        .length;
+
+    if (_session.deckMode == FlashcardDeckMode.needsReview) {
+      _changeDeckMode(FlashcardDeckMode.allWords);
+      return;
+    }
+
+    if (reviewWordCount > 0) {
+      _changeDeckMode(FlashcardDeckMode.needsReview);
+    }
+  }
+
+  void _handleCardSwipe(DragEndDetails details) {
+    if (_currentCard == null || _currentAnswer != null) {
+      return;
+    }
+
+    final velocity = details.primaryVelocity ?? 0;
+    if (velocity.abs() < _swipeVelocityThreshold) {
+      return;
+    }
+
+    _answerCard(velocity > 0);
   }
 
   void _restartDeck([FlashcardDeckMode? mode]) {
@@ -78,6 +111,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
       _session.resetDeck(mode: mode ?? _session.deckMode);
       _currentCard = _session.nextCard();
       _currentAnswer = null;
+      _showSessionDetails = false;
     });
   }
 
@@ -124,122 +158,110 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
           totalWordCount: totalWordCount,
           contextWordCount: contextWordCount,
           reviewWordCount: reviewWordCount,
-          onChanged: _changeDeckMode,
+          onToggleReview: _toggleReviewDeck,
         ),
         const SizedBox(height: 16),
-        Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(28),
-            boxShadow: const [
-              BoxShadow(
-                color: Color(0x14000000),
-                blurRadius: 22,
-                offset: Offset(0, 12),
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _DeckStatusHeader(
-                deckLabel: _deckLabel(_session.deckMode),
-                currentCardNumber: _session.currentCardNumber,
-                wordCount: _session.wordCount,
-              ),
-              const SizedBox(height: 16),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(999),
-                child: LinearProgressIndicator(
-                  minHeight: 10,
-                  value: _session.sessionProgress == 0 ? 0.02 : _session.sessionProgress,
-                  backgroundColor: const Color(0xFFE9E2D3),
-                  valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF0F766E)),
+        GestureDetector(
+          onHorizontalDragEnd: hasAnswered ? null : _handleCardSwipe,
+          behavior: HitTestBehavior.opaque,
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(28),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color(0x14000000),
+                  blurRadius: 22,
+                  offset: Offset(0, 12),
                 ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                _session.remainingCount > 0
-                    ? '${_session.remainingCount} cards left after this one'
-                    : 'This is the last card in the deck',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: const Color(0xFF6C665D),
-                    ),
-              ),
-              const SizedBox(height: 20),
-              _PromptPanel(
-                hebrew: word.hebrew,
-                transcription: word.transcription,
-              ),
-              const SizedBox(height: 20),
-              _FlashcardContextPanel(
-                context: currentContext,
-                isAnswerRevealed: hasAnswered,
-              ),
-              const SizedBox(height: 18),
-              _AnswerStatusCard(
-                hasAnswered: hasAnswered,
-                isKnownAnswer: isKnownAnswer,
-                translation: word.english,
-                lastCorrect: stats.lastCorrect == null
-                    ? null
-                    : _formatLastCorrect(stats.lastCorrect!),
-              ),
-              const SizedBox(height: 18),
-              Row(
-                children: [
-                  Expanded(
-                    child: _FlashcardPill(
-                      label: 'Correct',
-                      value: stats.correct,
-                      accent: const Color(0xFF0F766E),
-                    ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _PromptPanel(
+                  hebrew: word.hebrew,
+                  transcription: word.transcription,
+                ),
+                const SizedBox(height: 20),
+                _FlashcardContextPanel(
+                  context: currentContext,
+                  isAnswerRevealed: hasAnswered,
+                ),
+                const SizedBox(height: 18),
+                if (hasAnswered)
+                  _AnswerRevealCard(
+                    isKnownAnswer: isKnownAnswer,
+                    translation: word.english,
+                    lastCorrect: stats.lastCorrect == null
+                        ? null
+                        : _formatLastCorrect(stats.lastCorrect!),
+                  )
+                else
+                  _SwipeHintStrip(
+                    onRepeatTap: () => _answerCard(false),
+                    onKnowTap: () => _answerCard(true),
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: _FlashcardPill(
-                      label: 'Wrong',
-                      value: stats.wrong,
-                      accent: const Color(0xFFB91C1C),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 18),
-              if (hasAnswered)
-                FilledButton.icon(
-                  onPressed: _moveToNextCard,
-                  icon: const Icon(Icons.arrow_forward_rounded),
-                  label: Text(
-                    _session.seenCount == _session.wordCount
-                        ? 'See Summary'
-                        : 'Next Card',
-                  ),
-                )
-              else
-                Column(
+                const SizedBox(height: 18),
+                Row(
                   children: [
-                    _AnswerActionButton(
-                      label: 'Know',
-                      subtitle: 'Mark it as known and continue',
-                      icon: Icons.check_rounded,
-                      accent: const Color(0xFF0F766E),
-                      filled: true,
-                      onPressed: () => _answerCard(true),
+                    Expanded(
+                      child: _FlashcardPill(
+                        label: 'Correct',
+                        value: stats.correct,
+                        icon: Icons.check_rounded,
+                        accent: const Color(0xFF0F766E),
+                      ),
                     ),
-                    const SizedBox(height: 12),
-                    _AnswerActionButton(
-                      label: 'Repeat',
-                      subtitle: 'Keep it in your review deck',
-                      icon: Icons.refresh_rounded,
-                      accent: const Color(0xFFB45309),
-                      filled: false,
-                      onPressed: () => _answerCard(false),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _FlashcardPill(
+                        label: 'Wrong',
+                        value: stats.wrong,
+                        icon: Icons.close_rounded,
+                        accent: const Color(0xFFB91C1C),
+                      ),
                     ),
                   ],
                 ),
-            ],
+                const SizedBox(height: 18),
+                if (hasAnswered)
+                  FilledButton.icon(
+                    onPressed: _moveToNextCard,
+                    icon: const Icon(Icons.arrow_forward_rounded),
+                    label: Text(
+                      _session.seenCount == _session.wordCount
+                          ? 'See Summary'
+                          : 'Next Card',
+                    ),
+                  )
+                else
+                  Text(
+                    'Swipe or tap a side to answer.',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: const Color(0xFF6C665D),
+                        ),
+                  ),
+                const SizedBox(height: 14),
+                _SessionDetailsSection(
+                  isExpanded: _showSessionDetails,
+                  deckLabel: _deckLabel(_session.deckMode),
+                  currentCardNumber: _session.currentCardNumber,
+                  wordCount: _session.wordCount,
+                  remainingCount: _session.remainingCount,
+                  sessionProgress: _session.sessionProgress,
+                  correctCount: stats.correct,
+                  wrongCount: stats.wrong,
+                  onToggle: () {
+                    setState(() {
+                      _showSessionDetails = !_showSessionDetails;
+                    });
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ],
@@ -272,44 +294,138 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
   }
 }
 
-class _DeckStatusHeader extends StatelessWidget {
-  const _DeckStatusHeader({
+class _SessionDetailsSection extends StatelessWidget {
+  const _SessionDetailsSection({
+    required this.isExpanded,
     required this.deckLabel,
     required this.currentCardNumber,
     required this.wordCount,
+    required this.remainingCount,
+    required this.sessionProgress,
+    required this.correctCount,
+    required this.wrongCount,
+    required this.onToggle,
   });
 
+  final bool isExpanded;
   final String deckLabel;
   final int currentCardNumber;
   final int wordCount;
+  final int remainingCount;
+  final double sessionProgress;
+  final int correctCount;
+  final int wrongCount;
+  final VoidCallback onToggle;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          decoration: BoxDecoration(
-            color: const Color(0xFF163832).withValues(alpha: 0.10),
-            borderRadius: BorderRadius.circular(999),
-          ),
-          child: Text(
-            deckLabel,
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: const Color(0xFF163832),
-                  fontWeight: FontWeight.w700,
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFFF7F3E8),
+        borderRadius: BorderRadius.circular(22),
+      ),
+      child: Column(
+        children: [
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onToggle,
+              borderRadius: BorderRadius.circular(22),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Session details',
+                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: const Color(0xFF163832),
+                                ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Card $currentCardNumber of $wordCount',
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  color: const Color(0xFF6C665D),
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Icon(
+                      isExpanded
+                          ? Icons.keyboard_arrow_up_rounded
+                          : Icons.keyboard_arrow_down_rounded,
+                      color: const Color(0xFF6C665D),
+                    ),
+                  ],
                 ),
-          ),
-        ),
-        const Spacer(),
-        Text(
-          'Card $currentCardNumber of $wordCount',
-          style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: const Color(0xFF6C665D),
-                fontWeight: FontWeight.w700,
               ),
-        ),
-      ],
+            ),
+          ),
+          if (isExpanded)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    deckLabel,
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: const Color(0xFF6C665D),
+                          fontWeight: FontWeight.w700,
+                        ),
+                  ),
+                  const SizedBox(height: 12),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(999),
+                    child: LinearProgressIndicator(
+                      minHeight: 8,
+                      value: sessionProgress == 0 ? 0.02 : sessionProgress,
+                      backgroundColor: const Color(0xFFE9E2D3),
+                      valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF0F766E)),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    remainingCount > 0
+                        ? '$remainingCount cards left after this one'
+                        : 'This is the last card in the deck',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: const Color(0xFF6C665D),
+                        ),
+                  ),
+                  const SizedBox(height: 14),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _FlashcardPill(
+                          label: 'Correct',
+                          value: correctCount,
+                          icon: Icons.check_rounded,
+                          accent: const Color(0xFF0F766E),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: _FlashcardPill(
+                          label: 'Wrong',
+                          value: wrongCount,
+                          icon: Icons.close_rounded,
+                          accent: const Color(0xFFB91C1C),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -320,22 +436,43 @@ class _CompactFlashcardsHeader extends StatelessWidget {
     required this.totalWordCount,
     required this.contextWordCount,
     required this.reviewWordCount,
-    required this.onChanged,
+    required this.onToggleReview,
   });
 
   final FlashcardDeckMode selectedMode;
   final int totalWordCount;
   final int contextWordCount;
   final int reviewWordCount;
-  final ValueChanged<FlashcardDeckMode> onChanged;
+  final VoidCallback onToggleReview;
 
   @override
   Widget build(BuildContext context) {
-    final deckCount = switch (selectedMode) {
-      FlashcardDeckMode.allWords => totalWordCount,
-      FlashcardDeckMode.withContexts => contextWordCount,
-      FlashcardDeckMode.needsReview => reviewWordCount,
+    final deckLabel = switch (selectedMode) {
+      FlashcardDeckMode.allWords => 'All cards',
+      FlashcardDeckMode.withContexts => 'Context cards',
+      FlashcardDeckMode.needsReview => 'Review deck',
     };
+    final countLabel = switch (selectedMode) {
+      FlashcardDeckMode.allWords => '$totalWordCount cards',
+      FlashcardDeckMode.withContexts => '$contextWordCount with context',
+      FlashcardDeckMode.needsReview => '$reviewWordCount to review',
+    };
+    final canToggleReview =
+        reviewWordCount > 0 || selectedMode == FlashcardDeckMode.needsReview;
+    final helperLabel = switch (selectedMode) {
+      FlashcardDeckMode.needsReview => 'Tap the count to go back to all cards.',
+      FlashcardDeckMode.withContexts when reviewWordCount > 0 =>
+        'Tap the count to jump into review cards.',
+      FlashcardDeckMode.allWords when reviewWordCount > 0 =>
+        'Tap the count to focus on review cards.',
+      _ => null,
+    };
+    final pillColor = selectedMode == FlashcardDeckMode.needsReview
+        ? const Color(0xFFB45309).withValues(alpha: 0.12)
+        : const Color(0xFF163832).withValues(alpha: 0.08);
+    final pillTextColor = selectedMode == FlashcardDeckMode.needsReview
+        ? const Color(0xFF8A460C)
+        : const Color(0xFF163832);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -347,50 +484,65 @@ class _CompactFlashcardsHeader extends StatelessWidget {
                 'Flashcards',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.w800,
-                    ),
+                ),
               ),
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              decoration: BoxDecoration(
-                color: const Color(0xFF163832).withValues(alpha: 0.08),
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: canToggleReview ? onToggleReview : null,
                 borderRadius: BorderRadius.circular(999),
-              ),
-              child: Text(
-                '$deckCount cards',
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: const Color(0xFF163832),
-                      fontWeight: FontWeight.w700,
-                    ),
+                child: Ink(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: pillColor,
+                    borderRadius: BorderRadius.circular(999),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        countLabel,
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                              color: pillTextColor,
+                              fontWeight: FontWeight.w700,
+                            ),
+                      ),
+                      if (canToggleReview) ...[
+                        const SizedBox(width: 6),
+                        Icon(
+                          selectedMode == FlashcardDeckMode.needsReview
+                              ? Icons.undo_rounded
+                              : Icons.rule_folder_rounded,
+                          size: 18,
+                          color: pillTextColor,
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
               ),
             ),
           ],
         ),
-        const SizedBox(height: 12),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              _DeckChoiceChip(
-                label: 'All $totalWordCount',
-                isSelected: selectedMode == FlashcardDeckMode.allWords,
-                onTap: () => onChanged(FlashcardDeckMode.allWords),
+        const SizedBox(height: 8),
+        Text(
+          deckLabel,
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                color: const Color(0xFF6C665D),
+                fontWeight: FontWeight.w700,
               ),
-              const SizedBox(width: 10),
-              _DeckChoiceChip(
-                label: 'Context $contextWordCount',
-                isSelected: selectedMode == FlashcardDeckMode.withContexts,
-                onTap: () => onChanged(FlashcardDeckMode.withContexts),
-              ),
-              const SizedBox(width: 10),
-              _DeckChoiceChip(
-                label: 'Review $reviewWordCount',
-                isSelected: selectedMode == FlashcardDeckMode.needsReview,
-                onTap: () => onChanged(FlashcardDeckMode.needsReview),
-              ),
-            ],
-          ),
         ),
+        if (helperLabel != null) ...[
+          const SizedBox(height: 4),
+          Text(
+            helperLabel,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: const Color(0xFF6C665D),
+                ),
+          ),
+        ],
       ],
     );
   }
@@ -454,69 +606,71 @@ class _PromptPanel extends StatelessWidget {
   }
 }
 
-class _AnswerStatusCard extends StatelessWidget {
-  const _AnswerStatusCard({
-    required this.hasAnswered,
+class _AnswerRevealCard extends StatelessWidget {
+  const _AnswerRevealCard({
     required this.isKnownAnswer,
     required this.translation,
     required this.lastCorrect,
   });
 
-  final bool hasAnswered;
   final bool isKnownAnswer;
   final String translation;
   final String? lastCorrect;
 
   @override
   Widget build(BuildContext context) {
-    final accent = hasAnswered
-        ? (isKnownAnswer ? const Color(0xFF0F766E) : const Color(0xFFB45309))
-        : const Color(0xFF6C665D);
-    final background = hasAnswered
-        ? (isKnownAnswer ? const Color(0xFFEAF5EE) : const Color(0xFFF7EEE8))
-        : const Color(0xFFEDF3EF);
-    final icon = hasAnswered
-        ? (isKnownAnswer ? Icons.check_circle_rounded : Icons.refresh_rounded)
-        : Icons.lightbulb_outline_rounded;
+    final accent =
+        isKnownAnswer ? const Color(0xFF0F766E) : const Color(0xFFB45309);
+    final background =
+        isKnownAnswer ? const Color(0xFFEAF5EE) : const Color(0xFFF7EEE8);
+    final icon =
+        isKnownAnswer ? Icons.check_circle_rounded : Icons.refresh_rounded;
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 180),
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: background,
         borderRadius: BorderRadius.circular(24),
       ),
       child: Column(
         children: [
-          Icon(icon, color: accent, size: 26),
-          const SizedBox(height: 10),
-          Text(
-            _headline(),
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xFF5F5A52),
-                ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: accent, size: 22),
+              const SizedBox(width: 8),
+              Text(
+                isKnownAnswer ? 'Marked as known' : 'Marked for review',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF5F5A52),
+                    ),
+              ),
+            ],
           ),
           const SizedBox(height: 10),
           Text(
-            hasAnswered ? translation : 'Tap Know or Repeat to reveal the translation.',
+            translation,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w800,
-                  color: hasAnswered ? const Color(0xFF163832) : const Color(0xFF7A746A),
+                  color: const Color(0xFF163832),
                 ),
           ),
           const SizedBox(height: 8),
           Text(
-            _supportingCopy(),
+            isKnownAnswer
+                ? 'Nice. This card now counts toward your known progress.'
+                : 'This one stays in your review deck so you can revisit it later.',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: const Color(0xFF6C665D),
                   height: 1.45,
                 ),
           ),
-          if (hasAnswered && lastCorrect != null) ...[
+          if (lastCorrect != null) ...[
             const SizedBox(height: 10),
             Text(
               'Last known: $lastCorrect',
@@ -531,96 +685,96 @@ class _AnswerStatusCard extends StatelessWidget {
     );
   }
 
-  String _headline() {
-    if (!hasAnswered) {
-      return 'Hold the answer in your head first';
-    }
-
-    return isKnownAnswer ? 'Marked as known' : 'Marked for review';
-  }
-
-  String _supportingCopy() {
-    if (!hasAnswered) {
-      return 'Use the Hebrew prompt and the context sentence to guess before revealing.';
-    }
-
-    return isKnownAnswer
-        ? 'Nice. This card will count toward your known progress.'
-        : 'This one stays in your review deck so you can revisit it later.';
-  }
 }
 
-class _AnswerActionButton extends StatelessWidget {
-  const _AnswerActionButton({
-    required this.label,
-    required this.subtitle,
-    required this.icon,
-    required this.accent,
-    required this.filled,
-    required this.onPressed,
+class _SwipeHintStrip extends StatelessWidget {
+  const _SwipeHintStrip({
+    required this.onRepeatTap,
+    required this.onKnowTap,
   });
 
-  final String label;
-  final String subtitle;
-  final IconData icon;
-  final Color accent;
-  final bool filled;
-  final VoidCallback onPressed;
+  final VoidCallback onRepeatTap;
+  final VoidCallback onKnowTap;
 
   @override
   Widget build(BuildContext context) {
-    final background = filled ? accent : Colors.white;
-    final foreground = filled ? Colors.white : accent;
+    return Row(
+      children: [
+        Expanded(
+          child: _SwipeHintCard(
+            alignment: CrossAxisAlignment.start,
+            icon: Icons.arrow_back_rounded,
+            title: 'Swipe left',
+            subtitle: 'Repeat',
+            accent: Color(0xFFB45309),
+            onTap: onRepeatTap,
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: _SwipeHintCard(
+            alignment: CrossAxisAlignment.end,
+            icon: Icons.arrow_forward_rounded,
+            title: 'Swipe right',
+            subtitle: 'Know',
+            accent: Color(0xFF0F766E),
+            onTap: onKnowTap,
+          ),
+        ),
+      ],
+    );
+  }
+}
 
+class _SwipeHintCard extends StatelessWidget {
+  const _SwipeHintCard({
+    required this.alignment,
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.accent,
+    required this.onTap,
+  });
+
+  final CrossAxisAlignment alignment;
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final Color accent;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: onPressed,
+        onTap: onTap,
         borderRadius: BorderRadius.circular(20),
         child: Ink(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           decoration: BoxDecoration(
-            color: background,
+            color: accent.withValues(alpha: 0.08),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: accent.withValues(alpha: filled ? 0 : 0.20)),
           ),
-          child: Row(
+          child: Column(
+            crossAxisAlignment: alignment,
             children: [
-              Container(
-                width: 42,
-                height: 42,
-                decoration: BoxDecoration(
-                  color: filled
-                      ? Colors.white.withValues(alpha: 0.16)
-                      : accent.withValues(alpha: 0.10),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Icon(icon, color: foreground),
+              Icon(icon, color: accent, size: 20),
+              const SizedBox(height: 6),
+              Text(
+                title,
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      color: const Color(0xFF5F5A52),
+                      fontWeight: FontWeight.w700,
+                    ),
               ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      label,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: foreground,
-                            fontWeight: FontWeight.w800,
-                          ),
+              const SizedBox(height: 2),
+              Text(
+                subtitle,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      color: accent,
+                      fontWeight: FontWeight.w800,
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      subtitle,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: filled
-                                ? Colors.white.withValues(alpha: 0.88)
-                                : const Color(0xFF6C665D),
-                            height: 1.35,
-                          ),
-                    ),
-                  ],
-                ),
               ),
             ],
           ),
@@ -804,11 +958,13 @@ class _FlashcardPill extends StatelessWidget {
     required this.label,
     required this.value,
     required this.accent,
+    this.icon,
   });
 
   final String label;
   final int value;
   final Color accent;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -822,14 +978,7 @@ class _FlashcardPill extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            width: 10,
-            height: 10,
-            decoration: BoxDecoration(
-              color: accent,
-              borderRadius: BorderRadius.circular(999),
-            ),
-          ),
+          Icon(icon ?? Icons.circle, size: icon == null ? 10 : 16, color: accent),
           const SizedBox(width: 10),
           Flexible(
             child: Text(
@@ -1031,11 +1180,13 @@ class _CompletedFlashcardsState extends StatelessWidget {
                   _FlashcardPill(
                     label: 'Known',
                     value: correctAnswers,
+                    icon: Icons.check_rounded,
                     accent: const Color(0xFF0F766E),
                   ),
                   _FlashcardPill(
                     label: 'Repeat',
                     value: repeatAnswers,
+                    icon: Icons.refresh_rounded,
                     accent: const Color(0xFFB45309),
                   ),
                 ],

@@ -364,7 +364,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Flashcards'), findsOneWidget);
-    expect(find.text('Needs review deck'), findsOneWidget);
+    expect(find.text('Card 1 of 1'), findsOneWidget);
     expect(find.text('woman'), findsNothing);
   });
 
