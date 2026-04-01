@@ -26,7 +26,7 @@ class MarkdownLessonBody extends StatelessWidget {
       if (headingMatch != null) {
         final level = headingMatch.group(1)!.length;
         final title = headingMatch.group(2)!.trim();
-        final isRtl = _containsHebrew(title);
+        final textDirection = _resolveTextDirection(title);
         children.add(
           Padding(
             padding: const EdgeInsets.only(bottom: 10),
@@ -35,8 +35,10 @@ class MarkdownLessonBody extends StatelessWidget {
               child: Text(
                 title,
                 style: _headingStyleForLevel(context, level),
-                textAlign: isRtl ? TextAlign.right : TextAlign.left,
-                textDirection: isRtl ? TextDirection.rtl : TextDirection.ltr,
+                textAlign: textDirection == TextDirection.rtl
+                    ? TextAlign.right
+                    : TextAlign.left,
+                textDirection: textDirection,
               ),
             ),
           ),
@@ -46,31 +48,29 @@ class MarkdownLessonBody extends StatelessWidget {
 
       if (line.trimLeft().startsWith('- ')) {
         final bulletText = line.trimLeft().substring(2).trim();
-        final isRtl = _containsHebrew(bulletText);
+        final textDirection = _resolveTextDirection(bulletText);
         children.add(
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
-              textDirection: isRtl ? TextDirection.rtl : TextDirection.ltr,
+              textDirection: textDirection,
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
-                  child: Icon(
-                    Icons.circle,
-                    size: 8,
-                    color: accentColor,
-                  ),
+                  child: Icon(Icons.circle, size: 8, color: accentColor),
                 ),
                 const SizedBox(width: 10),
                 Expanded(
                   child: SelectableText(
                     bulletText,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          height: 1.55,
-                        ),
-                    textAlign: isRtl ? TextAlign.right : TextAlign.left,
-                    textDirection: isRtl ? TextDirection.rtl : TextDirection.ltr,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyLarge?.copyWith(height: 1.55),
+                    textAlign: textDirection == TextDirection.rtl
+                        ? TextAlign.right
+                        : TextAlign.left,
+                    textDirection: textDirection,
                   ),
                 ),
               ],
@@ -81,7 +81,7 @@ class MarkdownLessonBody extends StatelessWidget {
       }
 
       final text = line.trim();
-      final isRtl = _containsHebrew(text);
+      final textDirection = _resolveTextDirection(text);
       children.add(
         Padding(
           padding: const EdgeInsets.only(bottom: 10),
@@ -89,11 +89,13 @@ class MarkdownLessonBody extends StatelessWidget {
             width: double.infinity,
             child: SelectableText(
               text,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    height: 1.6,
-                  ),
-              textAlign: isRtl ? TextAlign.right : TextAlign.left,
-              textDirection: isRtl ? TextDirection.rtl : TextDirection.ltr,
+              style: Theme.of(
+                context,
+              ).textTheme.bodyLarge?.copyWith(height: 1.6),
+              textAlign: textDirection == TextDirection.rtl
+                  ? TextAlign.right
+                  : TextAlign.left,
+              textDirection: textDirection,
             ),
           ),
         ),
@@ -115,17 +117,28 @@ class MarkdownLessonBody extends StatelessWidget {
 
   TextStyle? _headingStyleForLevel(BuildContext context, int level) {
     if (level <= 2) {
-      return Theme.of(context).textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.w800,
-          );
+      return Theme.of(
+        context,
+      ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800);
     }
 
-    return Theme.of(context).textTheme.titleMedium?.copyWith(
-          fontWeight: FontWeight.w700,
-        );
+    return Theme.of(
+      context,
+    ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700);
   }
 
-  bool _containsHebrew(String text) {
-    return RegExp(r'[\u0590-\u05FF]').hasMatch(text);
+  TextDirection _resolveTextDirection(String text) {
+    for (final rune in text.runes) {
+      final character = String.fromCharCode(rune);
+      if (RegExp(r'[\u0590-\u05FF]').hasMatch(character)) {
+        return TextDirection.rtl;
+      }
+
+      if (RegExp(r'[A-Za-z\u0400-\u04FF]').hasMatch(character)) {
+        return TextDirection.ltr;
+      }
+    }
+
+    return TextDirection.ltr;
   }
 }
