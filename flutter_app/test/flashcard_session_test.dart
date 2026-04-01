@@ -116,7 +116,7 @@ void main() {
     expect(session.wordCount, 1);
   });
 
-  test('context rotation avoids repeating the same context when possible', () {
+  test('single-word deck completes after one context-backed card', () {
     final session = FlashcardSession(
       [
         const LearningWord(
@@ -147,9 +147,44 @@ void main() {
     final secondCard = session.nextCard();
 
     expect(firstCard, isNotNull);
-    expect(secondCard, isNotNull);
+    expect(secondCard, isNull);
     expect(firstCard!.context, isNotNull);
-    expect(secondCard!.context, isNotNull);
-    expect(firstCard.context!.contextId, isNot(secondCard.context!.contextId));
+    expect(session.seenCount, 1);
+    expect(session.sessionProgress, 1);
+  });
+
+  test('deck ends after each card has been seen once', () {
+    final session = FlashcardSession(
+      [
+        const LearningWord(
+          wordId: 'word_sun',
+          hebrew: 'שמש',
+          english: 'sun',
+          transcription: 'shemesh',
+          correct: 0,
+          wrong: 0,
+        ),
+        const LearningWord(
+          wordId: 'word_moon',
+          hebrew: 'ירח',
+          english: 'moon',
+          transcription: 'yareakh',
+          correct: 0,
+          wrong: 0,
+        ),
+      ],
+      rng: Random(5),
+    );
+
+    final firstCard = session.nextCard();
+    final secondCard = session.nextCard();
+    final thirdCard = session.nextCard();
+
+    expect(firstCard, isNotNull);
+    expect(secondCard, isNotNull);
+    expect(firstCard!.word.wordId, isNot(secondCard!.word.wordId));
+    expect(thirdCard, isNull);
+    expect(session.seenCount, 2);
+    expect(session.sessionProgress, 1);
   });
 }

@@ -224,7 +224,7 @@ void main() {
     expect(find.text('האיש הולך ברחוב.'), findsOneWidget);
     expect(find.text('man'), findsNothing);
 
-    await tester.scrollUntilVisible(find.text('Know'), 200);
+    await tester.ensureVisible(find.text('Know'));
     await tester.pumpAndSettle();
 
     await tester.tap(find.text('Know'));
@@ -232,9 +232,41 @@ void main() {
 
     expect(find.text('man'), findsOneWidget);
     expect(find.text('The man is walking in the street.'), findsOneWidget);
-    expect(find.text('Next Card'), findsOneWidget);
+    expect(find.text('See Summary'), findsOneWidget);
     expect(store.savedWordIds, contains('word_man'));
     expect(store.savedByWordId['word_man']?.correct, 2);
+  });
+
+  testWidgets('shows a completion state after the last flashcard in the deck', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      HebrewFlutterApp(
+        loader: _FlashcardOnlyBundleLoader(),
+        documentLoader: FakeLessonDocumentLoader(),
+        progressStore: FakeWordProgressStore(),
+        guideProgressStore: FakeGuideProgressStore(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.style_outlined));
+    await tester.pumpAndSettle();
+
+    await tester.ensureVisible(find.text('Know'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Know'));
+    await tester.pumpAndSettle();
+
+    await tester.ensureVisible(find.text('See Summary'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('See Summary'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Deck complete'), findsOneWidget);
+    expect(find.text('Restart Deck'), findsOneWidget);
   });
 
   testWidgets('hydrates persisted word progress into the shared bundle', (
@@ -308,6 +340,32 @@ void main() {
     expect(find.text('2 of 2 words have progress on this device'), findsOneWidget);
     expect(find.text('Needs Review'), findsOneWidget);
     expect(find.text('Unseen'), findsOneWidget);
+  });
+
+  testWidgets('opens flashcards in review mode from the home screen', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      HebrewFlutterApp(
+        loader: FakeLearningBundleLoader(),
+        documentLoader: FakeLessonDocumentLoader(),
+        progressStore: FakeWordProgressStore(),
+        guideProgressStore: FakeGuideProgressStore(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.scrollUntilVisible(find.text('Flashcard Focus'), 300);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Resume Review'), findsOneWidget);
+
+    await tester.tap(find.text('Resume Review'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Flashcards'), findsOneWidget);
+    expect(find.text('Needs review deck'), findsOneWidget);
+    expect(find.text('woman'), findsNothing);
   });
 
   testWidgets('shows the dedicated reading preview block on the home screen', (

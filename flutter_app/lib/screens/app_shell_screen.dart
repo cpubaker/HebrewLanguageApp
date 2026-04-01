@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../models/learning_bundle.dart';
 import '../models/learning_word.dart';
 import '../services/guide_progress_store.dart';
+import '../services/flashcard_session.dart';
 import '../services/lesson_document_loader.dart';
 import '../services/learning_bundle_loader.dart';
 import '../services/verb_audio_player.dart';
@@ -40,6 +41,8 @@ class _AppShellScreenState extends State<AppShellScreen> {
   late Future<LearningBundle> _bundleFuture;
   LearningBundle? _bundle;
   Set<String> _readGuideLessonPaths = <String>{};
+  FlashcardDeckMode _flashcardDeckMode = FlashcardDeckMode.allWords;
+  int _flashcardDeckRequestToken = 0;
   int _selectedIndex = 0;
 
   @override
@@ -124,6 +127,14 @@ class _AppShellScreenState extends State<AppShellScreen> {
     });
   }
 
+  void _openFlashcards([FlashcardDeckMode mode = FlashcardDeckMode.allWords]) {
+    setState(() {
+      _flashcardDeckMode = mode;
+      _flashcardDeckRequestToken += 1;
+      _selectedIndex = 2;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<LearningBundle>(
@@ -149,7 +160,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
                 HomeScreen(
                   bundle: bundle,
                   onOpenWords: () => _selectTab(1),
-                  onOpenFlashcards: () => _selectTab(2),
+                  onOpenFlashcards: _openFlashcards,
                   onOpenGuide: () => _selectTab(3),
                   onOpenVerbs: () => _selectTab(4),
                   onOpenReading: () => _selectTab(5),
@@ -158,6 +169,8 @@ class _AppShellScreenState extends State<AppShellScreen> {
                 FlashcardsScreen(
                   words: bundle.words,
                   onWordProgressChanged: _handleWordProgressChanged,
+                  initialDeckMode: _flashcardDeckMode,
+                  deckRequestToken: _flashcardDeckRequestToken,
                 ),
                 GuideScreen(
                   lessons: bundle.guideLessons,

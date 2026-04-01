@@ -73,9 +73,19 @@ class FlashcardSession {
   int get wordCount => _words.length;
   int get seenCount => _seenWordIds.length;
   double get sessionProgress => wordCount == 0 ? 0 : seenCount / wordCount;
+  int correctAnswers = 0;
+  int repeatAnswers = 0;
+  int get currentCardNumber => seenCount == 0 ? 1 : seenCount;
+  int get remainingCount => max(0, wordCount - seenCount);
 
   int get wordsWithContextsCount {
     return _words.where((word) => word.contexts.isNotEmpty).length;
+  }
+
+  int get reviewWordCount {
+    return _sourceWords
+        .where((word) => word.wrong > 0 || word.wrong > word.correct)
+        .length;
   }
 
   void setDeckMode(FlashcardDeckMode mode) {
@@ -87,22 +97,28 @@ class FlashcardSession {
     _rebuildDeck();
   }
 
+  void resetDeck({
+    FlashcardDeckMode? mode,
+  }) {
+    if (mode != null) {
+      deckMode = mode;
+    }
+    _rebuildDeck();
+  }
+
   FlashcardCard? nextCard() {
-    if (_words.isEmpty) {
+    final unseenWords = _words
+        .where((word) => !_seenWordIds.contains(word.wordId))
+        .toList(growable: false);
+
+    if (unseenWords.isEmpty) {
       currentWord = null;
       currentContext = null;
       lastAnswerKnown = null;
       return null;
     }
 
-    var candidates = _words;
-    if (currentWord != null && _words.length > 1) {
-      candidates = _words
-          .where((word) => word.wordId != currentWord!.wordId)
-          .toList(growable: false);
-    }
-
-    currentWord = candidates[_rng.nextInt(candidates.length)];
+    currentWord = unseenWords[_rng.nextInt(unseenWords.length)];
     currentContext = _selectContext(currentWord!);
     lastAnswerKnown = null;
     _seenWordIds.add(currentWord!.wordId);
@@ -133,6 +149,11 @@ class FlashcardSession {
     currentWord = updatedWord;
     lastAnswerKnown = known;
     answeredCount += 1;
+    if (known) {
+      correctAnswers += 1;
+    } else {
+      repeatAnswers += 1;
+    }
 
     return FlashcardAnswerResult(
       known: known,
@@ -191,6 +212,8 @@ class FlashcardSession {
     currentContext = null;
     lastAnswerKnown = null;
     answeredCount = 0;
+    correctAnswers = 0;
+    repeatAnswers = 0;
     _lastContextIds.clear();
     _seenWordIds.clear();
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/learning_bundle.dart';
 import '../models/learning_word.dart';
+import '../services/flashcard_session.dart';
 import 'reading_lesson_catalog.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -17,7 +18,7 @@ class HomeScreen extends StatelessWidget {
 
   final LearningBundle bundle;
   final VoidCallback onOpenWords;
-  final VoidCallback onOpenFlashcards;
+  final ValueChanged<FlashcardDeckMode> onOpenFlashcards;
   final VoidCallback onOpenGuide;
   final VoidCallback onOpenVerbs;
   final VoidCallback onOpenReading;
@@ -25,6 +26,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final progress = _StudyProgressSnapshot.fromWords(bundle.words);
+    final flashcards = _FlashcardFocusSnapshot.fromWords(bundle.words);
     final readingPreviewLessons = sortReadingLessons(bundle.readingLessons).take(3);
 
     return ListView(
@@ -46,7 +48,7 @@ class HomeScreen extends StatelessWidget {
               label: 'Flashcards',
               value: bundle.words.where((word) => word.contexts.isNotEmpty).length,
               accent: const Color(0xFFBE5B00),
-              onTap: onOpenFlashcards,
+              onTap: () => onOpenFlashcards(FlashcardDeckMode.allWords),
             ),
             _SummaryCard(
               label: 'Guide',
@@ -76,6 +78,17 @@ class HomeScreen extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         _StudyProgressCard(progress: progress),
+        const SizedBox(height: 16),
+        _FlashcardFocusCard(
+          snapshot: flashcards,
+          onOpenAll: () => onOpenFlashcards(FlashcardDeckMode.allWords),
+          onOpenContext: flashcards.withContexts > 0
+              ? () => onOpenFlashcards(FlashcardDeckMode.withContexts)
+              : null,
+          onOpenReview: flashcards.needsReview > 0
+              ? () => onOpenFlashcards(FlashcardDeckMode.needsReview)
+              : null,
+        ),
         const SizedBox(height: 16),
         _SectionCard(
           title: 'Vocabulary Preview',
@@ -112,6 +125,45 @@ class HomeScreen extends StatelessWidget {
       ],
     );
   }
+}
+
+class _FlashcardFocusSnapshot {
+  const _FlashcardFocusSnapshot({
+    required this.total,
+    required this.withContexts,
+    required this.needsReview,
+    required this.known,
+  });
+
+  factory _FlashcardFocusSnapshot.fromWords(List<LearningWord> words) {
+    var withContexts = 0;
+    var needsReview = 0;
+    var known = 0;
+
+    for (final word in words) {
+      if (word.contexts.isNotEmpty) {
+        withContexts += 1;
+      }
+
+      if (word.wrong > 0 || word.wrong > word.correct) {
+        needsReview += 1;
+      } else if (word.correct > 0) {
+        known += 1;
+      }
+    }
+
+    return _FlashcardFocusSnapshot(
+      total: words.length,
+      withContexts: withContexts,
+      needsReview: needsReview,
+      known: known,
+    );
+  }
+
+  final int total;
+  final int withContexts;
+  final int needsReview;
+  final int known;
 }
 
 class _StudyProgressSnapshot {
@@ -313,7 +365,7 @@ class _ActionStrip extends StatelessWidget {
   });
 
   final VoidCallback onOpenWords;
-  final VoidCallback onOpenFlashcards;
+  final ValueChanged<FlashcardDeckMode> onOpenFlashcards;
   final VoidCallback onOpenGuide;
 
   @override
@@ -323,7 +375,7 @@ class _ActionStrip extends StatelessWidget {
       runSpacing: 12,
       children: [
         FilledButton.icon(
-          onPressed: onOpenFlashcards,
+          onPressed: () => onOpenFlashcards(FlashcardDeckMode.allWords),
           icon: const Icon(Icons.style_rounded),
           label: const Text('Start Flashcards'),
         ),
@@ -338,6 +390,109 @@ class _ActionStrip extends StatelessWidget {
           label: const Text('Open Guide'),
         ),
       ],
+    );
+  }
+}
+
+class _FlashcardFocusCard extends StatelessWidget {
+  const _FlashcardFocusCard({
+    required this.snapshot,
+    required this.onOpenAll,
+    required this.onOpenContext,
+    required this.onOpenReview,
+  });
+
+  final _FlashcardFocusSnapshot snapshot;
+  final VoidCallback onOpenAll;
+  final VoidCallback? onOpenContext;
+  final VoidCallback? onOpenReview;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x14000000),
+            blurRadius: 20,
+            offset: Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Flashcard Focus',
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w800,
+                ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            snapshot.needsReview > 0
+                ? 'Resume your review deck or jump into context-rich cards.'
+                : 'Pick the deck that fits today: all words or context-backed practice.',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: const Color(0xFF5F5A52),
+                  height: 1.45,
+                ),
+          ),
+          const SizedBox(height: 16),
+          Wrap(
+            spacing: 12,
+            runSpacing: 12,
+            children: [
+              _ProgressMetric(
+                label: 'All Cards',
+                value: snapshot.total,
+                accent: const Color(0xFF163832),
+              ),
+              _ProgressMetric(
+                label: 'Context Deck',
+                value: snapshot.withContexts,
+                accent: const Color(0xFF1D4ED8),
+              ),
+              _ProgressMetric(
+                label: 'Review Deck',
+                value: snapshot.needsReview,
+                accent: const Color(0xFFB45309),
+              ),
+              _ProgressMetric(
+                label: 'Known',
+                value: snapshot.known,
+                accent: const Color(0xFF0F766E),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Wrap(
+            spacing: 12,
+            runSpacing: 12,
+            children: [
+              if (onOpenReview != null)
+                FilledButton.icon(
+                  onPressed: onOpenReview,
+                  icon: const Icon(Icons.refresh_rounded),
+                  label: const Text('Resume Review'),
+                ),
+              OutlinedButton.icon(
+                onPressed: onOpenContext,
+                icon: const Icon(Icons.chat_bubble_outline_rounded),
+                label: const Text('Context Deck'),
+              ),
+              OutlinedButton.icon(
+                onPressed: onOpenAll,
+                icon: const Icon(Icons.style_outlined),
+                label: const Text('All Cards'),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
