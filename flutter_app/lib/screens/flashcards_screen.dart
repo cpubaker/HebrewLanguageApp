@@ -34,10 +34,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
   @override
   void initState() {
     super.initState();
-    _session = FlashcardSession(
-      widget.words,
-      deckMode: widget.initialDeckMode,
-    );
+    _session = FlashcardSession(widget.words, deckMode: widget.initialDeckMode);
     _moveToNextCard();
   }
 
@@ -208,7 +205,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                   children: [
                     Expanded(
                       child: _FlashcardPill(
-                        label: 'Correct',
+                        label: 'Правильно',
                         value: stats.correct,
                         icon: Icons.check_rounded,
                         accent: const Color(0xFF0F766E),
@@ -217,7 +214,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                     const SizedBox(width: 12),
                     Expanded(
                       child: _FlashcardPill(
-                        label: 'Wrong',
+                        label: 'Помилки',
                         value: stats.wrong,
                         icon: Icons.close_rounded,
                         accent: const Color(0xFFB91C1C),
@@ -232,17 +229,17 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                     icon: const Icon(Icons.arrow_forward_rounded),
                     label: Text(
                       _session.seenCount == _session.wordCount
-                          ? 'See Summary'
-                          : 'Next Card',
+                          ? 'До підсумку'
+                          : 'Далі',
                     ),
                   )
                 else
                   Text(
-                    'Swipe or tap a side to answer.',
+                    'Змахніть картку або натисніть потрібний варіант.',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: const Color(0xFF6C665D),
-                        ),
+                      color: const Color(0xFF6C665D),
+                    ),
                   ),
                 const SizedBox(height: 14),
                 _SessionDetailsSection(
@@ -271,11 +268,11 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
   String _deckLabel(FlashcardDeckMode mode) {
     switch (mode) {
       case FlashcardDeckMode.allWords:
-        return 'All words deck';
+        return 'Усі слова';
       case FlashcardDeckMode.withContexts:
-        return 'Context-rich deck';
+        return 'З прикладами';
       case FlashcardDeckMode.needsReview:
-        return 'Needs review deck';
+        return 'На повторення';
     }
   }
 
@@ -332,7 +329,10 @@ class _SessionDetailsSection extends StatelessWidget {
               onTap: onToggle,
               borderRadius: BorderRadius.circular(22),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 14,
+                ),
                 child: Row(
                   children: [
                     Expanded(
@@ -340,18 +340,18 @@ class _SessionDetailsSection extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Session details',
-                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            'Поточна сесія',
+                            style: Theme.of(context).textTheme.titleSmall
+                                ?.copyWith(
                                   fontWeight: FontWeight.w700,
                                   color: const Color(0xFF163832),
                                 ),
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            'Card $currentCardNumber of $wordCount',
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  color: const Color(0xFF6C665D),
-                                ),
+                            '$currentCardNumber із $wordCount',
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(color: const Color(0xFF6C665D)),
                           ),
                         ],
                       ),
@@ -376,9 +376,9 @@ class _SessionDetailsSection extends StatelessWidget {
                   Text(
                     deckLabel,
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: const Color(0xFF6C665D),
-                          fontWeight: FontWeight.w700,
-                        ),
+                      color: const Color(0xFF6C665D),
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                   const SizedBox(height: 12),
                   ClipRRect(
@@ -387,24 +387,26 @@ class _SessionDetailsSection extends StatelessWidget {
                       minHeight: 8,
                       value: sessionProgress == 0 ? 0.02 : sessionProgress,
                       backgroundColor: const Color(0xFFE9E2D3),
-                      valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF0F766E)),
+                      valueColor: const AlwaysStoppedAnimation<Color>(
+                        Color(0xFF0F766E),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 10),
                   Text(
                     remainingCount > 0
-                        ? '$remainingCount cards left after this one'
-                        : 'This is the last card in the deck',
+                        ? 'Після неї лишиться ще $remainingCount карток'
+                        : 'Це остання картка',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: const Color(0xFF6C665D),
-                        ),
+                      color: const Color(0xFF6C665D),
+                    ),
                   ),
                   const SizedBox(height: 14),
                   Row(
                     children: [
                       Expanded(
                         child: _FlashcardPill(
-                          label: 'Correct',
+                          label: 'Правильно',
                           value: correctCount,
                           icon: Icons.check_rounded,
                           accent: const Color(0xFF0F766E),
@@ -413,7 +415,7 @@ class _SessionDetailsSection extends StatelessWidget {
                       const SizedBox(width: 12),
                       Expanded(
                         child: _FlashcardPill(
-                          label: 'Wrong',
+                          label: 'Помилки',
                           value: wrongCount,
                           icon: Icons.close_rounded,
                           accent: const Color(0xFFB91C1C),
@@ -423,7 +425,7 @@ class _SessionDetailsSection extends StatelessWidget {
                   ),
                 ],
               ),
-          ),
+            ),
         ],
       ),
     );
@@ -448,23 +450,24 @@ class _CompactFlashcardsHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final deckLabel = switch (selectedMode) {
-      FlashcardDeckMode.allWords => 'All cards',
-      FlashcardDeckMode.withContexts => 'Context cards',
-      FlashcardDeckMode.needsReview => 'Review deck',
+      FlashcardDeckMode.allWords => 'Усі слова',
+      FlashcardDeckMode.withContexts => 'З прикладами',
+      FlashcardDeckMode.needsReview => 'На повторення',
     };
     final countLabel = switch (selectedMode) {
-      FlashcardDeckMode.allWords => '$totalWordCount cards',
-      FlashcardDeckMode.withContexts => '$contextWordCount with context',
-      FlashcardDeckMode.needsReview => '$reviewWordCount to review',
+      FlashcardDeckMode.allWords => '$totalWordCount у наборі',
+      FlashcardDeckMode.withContexts => '$contextWordCount з прикладами',
+      FlashcardDeckMode.needsReview => '$reviewWordCount на повторенні',
     };
     final canToggleReview =
         reviewWordCount > 0 || selectedMode == FlashcardDeckMode.needsReview;
     final helperLabel = switch (selectedMode) {
-      FlashcardDeckMode.needsReview => 'Tap the count to go back to all cards.',
+      FlashcardDeckMode.needsReview =>
+        'Натисніть на лічильник, щоб повернутися до всіх карток.',
       FlashcardDeckMode.withContexts when reviewWordCount > 0 =>
-        'Tap the count to jump into review cards.',
+        'Натисніть на лічильник, щоб перейти до повторення.',
       FlashcardDeckMode.allWords when reviewWordCount > 0 =>
-        'Tap the count to focus on review cards.',
+        'Натисніть на лічильник, щоб відкрити повторення.',
       _ => null,
     };
     final pillColor = selectedMode == FlashcardDeckMode.needsReview
@@ -481,9 +484,9 @@ class _CompactFlashcardsHeader extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                'Flashcards',
+                'Картки',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
             ),
@@ -493,8 +496,10 @@ class _CompactFlashcardsHeader extends StatelessWidget {
                 onTap: canToggleReview ? onToggleReview : null,
                 borderRadius: BorderRadius.circular(999),
                 child: Ink(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
                   decoration: BoxDecoration(
                     color: pillColor,
                     borderRadius: BorderRadius.circular(999),
@@ -505,9 +510,9 @@ class _CompactFlashcardsHeader extends StatelessWidget {
                       Text(
                         countLabel,
                         style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                              color: pillTextColor,
-                              fontWeight: FontWeight.w700,
-                            ),
+                          color: pillTextColor,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                       if (canToggleReview) ...[
                         const SizedBox(width: 6),
@@ -530,17 +535,17 @@ class _CompactFlashcardsHeader extends StatelessWidget {
         Text(
           deckLabel,
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                color: const Color(0xFF6C665D),
-                fontWeight: FontWeight.w700,
-              ),
+            color: const Color(0xFF6C665D),
+            fontWeight: FontWeight.w700,
+          ),
         ),
         if (helperLabel != null) ...[
           const SizedBox(height: 4),
           Text(
             helperLabel,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: const Color(0xFF6C665D),
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: const Color(0xFF6C665D)),
           ),
         ],
       ],
@@ -549,10 +554,7 @@ class _CompactFlashcardsHeader extends StatelessWidget {
 }
 
 class _PromptPanel extends StatelessWidget {
-  const _PromptPanel({
-    required this.hebrew,
-    required this.transcription,
-  });
+  const _PromptPanel({required this.hebrew, required this.transcription});
 
   final String hebrew;
   final String transcription;
@@ -563,10 +565,7 @@ class _PromptPanel extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [
-            Color(0xFFF1F6F2),
-            Color(0xFFF7F3E8),
-          ],
+          colors: [Color(0xFFF1F6F2), Color(0xFFF7F3E8)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -575,12 +574,12 @@ class _PromptPanel extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            'Recall the meaning before you reveal it',
+            'Спробуйте згадати переклад',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xFF5F5A52),
-                ),
+              fontWeight: FontWeight.w700,
+              color: const Color(0xFF5F5A52),
+            ),
           ),
           const SizedBox(height: 14),
           Text(
@@ -588,17 +587,17 @@ class _PromptPanel extends StatelessWidget {
             textDirection: TextDirection.rtl,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.w800,
-                  color: const Color(0xFF163832),
-                ),
+              fontWeight: FontWeight.w800,
+              color: const Color(0xFF163832),
+            ),
           ),
           const SizedBox(height: 8),
           Text(
             transcription,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: const Color(0xFF6C665D),
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(color: const Color(0xFF6C665D)),
           ),
         ],
       ),
@@ -619,12 +618,15 @@ class _AnswerRevealCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final accent =
-        isKnownAnswer ? const Color(0xFF0F766E) : const Color(0xFFB45309);
-    final background =
-        isKnownAnswer ? const Color(0xFFEAF5EE) : const Color(0xFFF7EEE8);
-    final icon =
-        isKnownAnswer ? Icons.check_circle_rounded : Icons.refresh_rounded;
+    final accent = isKnownAnswer
+        ? const Color(0xFF0F766E)
+        : const Color(0xFFB45309);
+    final background = isKnownAnswer
+        ? const Color(0xFFEAF5EE)
+        : const Color(0xFFF7EEE8);
+    final icon = isKnownAnswer
+        ? Icons.check_circle_rounded
+        : Icons.refresh_rounded;
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 180),
@@ -641,12 +643,12 @@ class _AnswerRevealCard extends StatelessWidget {
               Icon(icon, color: accent, size: 22),
               const SizedBox(width: 8),
               Text(
-                isKnownAnswer ? 'Marked as known' : 'Marked for review',
+                isKnownAnswer ? 'Зараховано' : 'На повторення',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: const Color(0xFF5F5A52),
-                    ),
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xFF5F5A52),
+                ),
               ),
             ],
           ),
@@ -655,43 +657,39 @@ class _AnswerRevealCard extends StatelessWidget {
             translation,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w800,
-                  color: const Color(0xFF163832),
-                ),
+              fontWeight: FontWeight.w800,
+              color: const Color(0xFF163832),
+            ),
           ),
           const SizedBox(height: 8),
           Text(
             isKnownAnswer
-                ? 'Nice. This card now counts toward your known progress.'
-                : 'This one stays in your review deck so you can revisit it later.',
+                ? 'Добре. Це слово зараховано як знайоме.'
+                : 'Нічого, повернемося до нього ще раз трохи пізніше.',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: const Color(0xFF6C665D),
-                  height: 1.45,
-                ),
+              color: const Color(0xFF6C665D),
+              height: 1.45,
+            ),
           ),
           if (lastCorrect != null) ...[
             const SizedBox(height: 10),
             Text(
-              'Last known: $lastCorrect',
+              'Востаннє правильно: $lastCorrect',
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: const Color(0xFF6C665D),
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: const Color(0xFF6C665D)),
             ),
           ],
         ],
       ),
     );
   }
-
 }
 
 class _SwipeHintStrip extends StatelessWidget {
-  const _SwipeHintStrip({
-    required this.onRepeatTap,
-    required this.onKnowTap,
-  });
+  const _SwipeHintStrip({required this.onRepeatTap, required this.onKnowTap});
 
   final VoidCallback onRepeatTap;
   final VoidCallback onKnowTap;
@@ -704,8 +702,8 @@ class _SwipeHintStrip extends StatelessWidget {
           child: _SwipeHintCard(
             alignment: CrossAxisAlignment.start,
             icon: Icons.arrow_back_rounded,
-            title: 'Swipe left',
-            subtitle: 'Repeat',
+            title: 'Ліворуч',
+            subtitle: 'Ще раз',
             accent: Color(0xFFB45309),
             onTap: onRepeatTap,
           ),
@@ -715,8 +713,8 @@ class _SwipeHintStrip extends StatelessWidget {
           child: _SwipeHintCard(
             alignment: CrossAxisAlignment.end,
             icon: Icons.arrow_forward_rounded,
-            title: 'Swipe right',
-            subtitle: 'Know',
+            title: 'Праворуч',
+            subtitle: 'Знаю',
             accent: Color(0xFF0F766E),
             onTap: onKnowTap,
           ),
@@ -764,17 +762,17 @@ class _SwipeHintCard extends StatelessWidget {
               Text(
                 title,
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: const Color(0xFF5F5A52),
-                      fontWeight: FontWeight.w700,
-                    ),
+                  color: const Color(0xFF5F5A52),
+                  fontWeight: FontWeight.w700,
+                ),
               ),
               const SizedBox(height: 2),
               Text(
                 subtitle,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: accent,
-                      fontWeight: FontWeight.w800,
-                    ),
+                  color: accent,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
             ],
           ),
@@ -785,10 +783,7 @@ class _SwipeHintCard extends StatelessWidget {
 }
 
 class _DeckModeSection extends StatelessWidget {
-  const _DeckModeSection({
-    required this.selectedMode,
-    required this.onChanged,
-  });
+  const _DeckModeSection({required this.selectedMode, required this.onChanged});
 
   final FlashcardDeckMode selectedMode;
   final ValueChanged<FlashcardDeckMode> onChanged;
@@ -799,10 +794,10 @@ class _DeckModeSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Study deck',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w800,
-              ),
+          'Режим',
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
         ),
         const SizedBox(height: 10),
         Wrap(
@@ -810,17 +805,17 @@ class _DeckModeSection extends StatelessWidget {
           runSpacing: 10,
           children: [
             _DeckChoiceChip(
-              label: 'All',
+              label: 'Усі',
               isSelected: selectedMode == FlashcardDeckMode.allWords,
               onTap: () => onChanged(FlashcardDeckMode.allWords),
             ),
             _DeckChoiceChip(
-              label: 'Context',
+              label: 'Контекст',
               isSelected: selectedMode == FlashcardDeckMode.withContexts,
               onTap: () => onChanged(FlashcardDeckMode.withContexts),
             ),
             _DeckChoiceChip(
-              label: 'Review',
+              label: 'Повторення',
               isSelected: selectedMode == FlashcardDeckMode.needsReview,
               onTap: () => onChanged(FlashcardDeckMode.needsReview),
             ),
@@ -863,9 +858,9 @@ class _DeckChoiceChip extends StatelessWidget {
           child: Text(
             label,
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: isSelected ? Colors.white : const Color(0xFF163832),
-                  fontWeight: FontWeight.w700,
-                ),
+              color: isSelected ? Colors.white : const Color(0xFF163832),
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
       ),
@@ -892,12 +887,12 @@ class _FlashcardContextPanel extends StatelessWidget {
           borderRadius: BorderRadius.circular(24),
         ),
         child: Text(
-          'This word does not have a shared context sentence yet.',
+          'Для цього слова ще немає прикладу в реченні.',
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: const Color(0xFF6C665D),
-                height: 1.45,
-              ),
+            color: const Color(0xFF6C665D),
+            height: 1.45,
+          ),
         ),
       );
     }
@@ -915,11 +910,11 @@ class _FlashcardContextPanel extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'Context',
+            'Контекст',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xFF5F5A52),
-                ),
+              fontWeight: FontWeight.w700,
+              color: const Color(0xFF5F5A52),
+            ),
           ),
           const SizedBox(height: 10),
           Text(
@@ -927,20 +922,21 @@ class _FlashcardContextPanel extends StatelessWidget {
             textDirection: hasHebrew ? TextDirection.rtl : TextDirection.ltr,
             textAlign: hasHebrew ? TextAlign.right : TextAlign.left,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xFF163832),
-                  height: 1.4,
-                ),
+              fontWeight: FontWeight.w700,
+              color: const Color(0xFF163832),
+              height: 1.4,
+            ),
           ),
-          if (isAnswerRevealed && this.context!.translation.trim().isNotEmpty) ...[
+          if (isAnswerRevealed &&
+              this.context!.translation.trim().isNotEmpty) ...[
             const SizedBox(height: 10),
             Text(
               this.context!.translation,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: const Color(0xFF6C665D),
-                    height: 1.45,
-                  ),
+                color: const Color(0xFF6C665D),
+                height: 1.45,
+              ),
             ),
           ],
         ],
@@ -949,7 +945,9 @@ class _FlashcardContextPanel extends StatelessWidget {
   }
 
   bool _containsHebrew(String text) {
-    return text.runes.any((codePoint) => codePoint >= 0x0590 && codePoint <= 0x05FF);
+    return text.runes.any(
+      (codePoint) => codePoint >= 0x0590 && codePoint <= 0x05FF,
+    );
   }
 }
 
@@ -978,14 +976,18 @@ class _FlashcardPill extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon ?? Icons.circle, size: icon == null ? 10 : 16, color: accent),
+          Icon(
+            icon ?? Icons.circle,
+            size: icon == null ? 10 : 16,
+            color: accent,
+          ),
           const SizedBox(width: 10),
           Flexible(
             child: Text(
               '$label: $value',
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w700),
             ),
           ),
         ],
@@ -995,10 +997,7 @@ class _FlashcardPill extends StatelessWidget {
 }
 
 class _EmptyFlashcardsState extends StatelessWidget {
-  const _EmptyFlashcardsState({
-    required this.mode,
-    required this.onChanged,
-  });
+  const _EmptyFlashcardsState({required this.mode, required this.onChanged});
 
   final FlashcardDeckMode mode;
   final ValueChanged<FlashcardDeckMode> onChanged;
@@ -1009,24 +1008,21 @@ class _EmptyFlashcardsState extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
       children: [
         Text(
-          'Flashcards',
-          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.w800,
-              ),
+          'Картки',
+          style: Theme.of(
+            context,
+          ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
         ),
         const SizedBox(height: 8),
         Text(
-          'Choose another study deck or come back after you have more review data.',
+          'Зараз тут порожньо. Оберіть інший режим або поверніться трохи пізніше.',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: const Color(0xFF5F5A52),
-                height: 1.45,
-              ),
+            color: const Color(0xFF5F5A52),
+            height: 1.45,
+          ),
         ),
         const SizedBox(height: 18),
-        _DeckModeSection(
-          selectedMode: mode,
-          onChanged: onChanged,
-        ),
+        _DeckModeSection(selectedMode: mode, onChanged: onChanged),
         const SizedBox(height: 18),
         Container(
           padding: const EdgeInsets.all(22),
@@ -1039,18 +1035,18 @@ class _EmptyFlashcardsState extends StatelessWidget {
               Text(
                 _emptyTitle(mode),
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
               ),
               const SizedBox(height: 8),
               Text(
                 _emptyBody(mode),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: const Color(0xFF6C665D),
-                      height: 1.45,
-                    ),
+                  color: const Color(0xFF6C665D),
+                  height: 1.45,
+                ),
               ),
             ],
           ),
@@ -1062,22 +1058,22 @@ class _EmptyFlashcardsState extends StatelessWidget {
   String _emptyTitle(FlashcardDeckMode mode) {
     switch (mode) {
       case FlashcardDeckMode.allWords:
-        return 'No vocabulary cards are available yet.';
+        return 'Слова ще не завантажені.';
       case FlashcardDeckMode.withContexts:
-        return 'No context-backed flashcards are available yet.';
+        return 'Карток із прикладами поки немає.';
       case FlashcardDeckMode.needsReview:
-        return 'Nothing needs review right now.';
+        return 'На повторенні поки порожньо.';
     }
   }
 
   String _emptyBody(FlashcardDeckMode mode) {
     switch (mode) {
       case FlashcardDeckMode.allWords:
-        return 'Add vocabulary data to the shared dataset and sync it into Flutter assets.';
+        return 'Щойно слова з’являться, тут можна буде почати тренування.';
       case FlashcardDeckMode.withContexts:
-        return 'Add shared context sentences for more words to unlock this deck.';
+        return 'Коли для слів з’являться приклади, цей режим стане доступним.';
       case FlashcardDeckMode.needsReview:
-        return 'Once you mark cards with Repeat, they will appear here as a focused review deck.';
+        return 'Позначайте слова як «Ще раз», і вони з’являться тут окремо.';
     }
   }
 }
@@ -1107,24 +1103,21 @@ class _CompletedFlashcardsState extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
       children: [
         Text(
-          'Flashcards',
-          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.w800,
-              ),
+          'Картки',
+          style: Theme.of(
+            context,
+          ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
         ),
         const SizedBox(height: 8),
         Text(
-          'You finished this flashcard deck. Restart it or switch to the next best study mode.',
+          'Цю колоду вже пройдено. Можна почати ще раз або перейти далі.',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: const Color(0xFF5F5A52),
-                height: 1.45,
-              ),
+            color: const Color(0xFF5F5A52),
+            height: 1.45,
+          ),
         ),
         const SizedBox(height: 18),
-        _DeckModeSection(
-          selectedMode: mode,
-          onChanged: onChanged,
-        ),
+        _DeckModeSection(selectedMode: mode, onChanged: onChanged),
         const SizedBox(height: 18),
         Container(
           padding: const EdgeInsets.all(22),
@@ -1142,34 +1135,37 @@ class _CompletedFlashcardsState extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFF0F766E).withValues(alpha: 0.10),
                   borderRadius: BorderRadius.circular(999),
                 ),
                 child: Text(
-                  'Deck complete',
+                  'Готово',
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: const Color(0xFF0F766E),
-                        fontWeight: FontWeight.w800,
-                      ),
+                    color: const Color(0xFF0F766E),
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
               Text(
-                '$wordCount cards finished',
+                '$wordCount карток пройдено',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
-                    ),
+                  fontWeight: FontWeight.w800,
+                ),
               ),
               const SizedBox(height: 8),
               Text(
                 _completionBody(mode, reviewWordCount),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: const Color(0xFF6C665D),
-                      height: 1.45,
-                    ),
+                  color: const Color(0xFF6C665D),
+                  height: 1.45,
+                ),
               ),
               const SizedBox(height: 18),
               Wrap(
@@ -1178,13 +1174,13 @@ class _CompletedFlashcardsState extends StatelessWidget {
                 alignment: WrapAlignment.center,
                 children: [
                   _FlashcardPill(
-                    label: 'Known',
+                    label: 'Знаю',
                     value: correctAnswers,
                     icon: Icons.check_rounded,
                     accent: const Color(0xFF0F766E),
                   ),
                   _FlashcardPill(
-                    label: 'Repeat',
+                    label: 'Повторити',
                     value: repeatAnswers,
                     icon: Icons.refresh_rounded,
                     accent: const Color(0xFFB45309),
@@ -1195,14 +1191,15 @@ class _CompletedFlashcardsState extends StatelessWidget {
               FilledButton.icon(
                 onPressed: () => onRestartDeck(),
                 icon: const Icon(Icons.refresh_rounded),
-                label: const Text('Restart Deck'),
+                label: const Text('Почати ще раз'),
               ),
-              if (mode != FlashcardDeckMode.needsReview && reviewWordCount > 0) ...[
+              if (mode != FlashcardDeckMode.needsReview &&
+                  reviewWordCount > 0) ...[
                 const SizedBox(height: 12),
                 OutlinedButton.icon(
                   onPressed: () => onRestartDeck(FlashcardDeckMode.needsReview),
                   icon: const Icon(Icons.rule_rounded),
-                  label: const Text('Open Review Deck'),
+                  label: const Text('До повторення'),
                 ),
               ],
             ],
@@ -1216,16 +1213,16 @@ class _CompletedFlashcardsState extends StatelessWidget {
     switch (mode) {
       case FlashcardDeckMode.allWords:
         if (reviewWordCount > 0) {
-          return '$reviewWordCount cards are ready for focused review.';
+          return 'На повторення чекають $reviewWordCount карток.';
         }
-        return 'You cleared the all-words deck for this session.';
+        return 'Усі слова з цієї колоди вже переглянуті.';
       case FlashcardDeckMode.withContexts:
         if (reviewWordCount > 0) {
-          return '$reviewWordCount cards now need extra review after this pass.';
+          return 'Після цього проходу $reviewWordCount карток перейшли на повторення.';
         }
-        return 'You finished every context-backed card in this deck.';
+        return 'Усі картки з прикладами вже пройдені.';
       case FlashcardDeckMode.needsReview:
-        return 'You worked through every review card in the deck.';
+        return 'У колоді повторення більше не лишилося карток.';
     }
   }
 }

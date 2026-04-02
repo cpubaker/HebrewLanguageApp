@@ -29,8 +29,8 @@ class _ReadingScreenState extends State<ReadingScreen> {
     final visibleGroups = _selectedLevelKey == null
         ? lessonGroups
         : lessonGroups
-            .where((group) => group.levelKey == _selectedLevelKey)
-            .toList(growable: false);
+              .where((group) => group.levelKey == _selectedLevelKey)
+              .toList(growable: false);
     final visibleLessonCount = visibleGroups.fold<int>(
       0,
       (count, group) => count + group.lessons.length,
@@ -49,18 +49,18 @@ class _ReadingScreenState extends State<ReadingScreen> {
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
       children: [
         Text(
-          'Reading',
-          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.w800,
-              ),
+          'Читання',
+          style: Theme.of(
+            context,
+          ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
         ),
         const SizedBox(height: 8),
         Text(
-          'Reading lessons grouped by difficulty and synced from the desktop reading folders.',
+          'Тексти для читання, розкладені за рівнями.',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: const Color(0xFF5F5A52),
-                height: 1.4,
-              ),
+            color: const Color(0xFF5F5A52),
+            height: 1.4,
+          ),
         ),
         const SizedBox(height: 18),
         Container(
@@ -74,25 +74,22 @@ class _ReadingScreenState extends State<ReadingScreen> {
           ),
           child: Row(
             children: [
-              const Icon(
-                Icons.auto_stories_rounded,
-                color: Color(0xFF1D4ED8),
-              ),
+              const Icon(Icons.auto_stories_rounded, color: Color(0xFF1D4ED8)),
               const SizedBox(width: 12),
               Text(
                 _selectedLevelKey == null
-                    ? '${widget.lessons.length} reading lessons available'
-                    : '$visibleLessonCount reading lessons shown',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
+                    ? 'Уроків: ${widget.lessons.length}'
+                    : 'Показано: $visibleLessonCount',
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
               ),
             ],
           ),
         ),
         const SizedBox(height: 18),
         _ReadingLevelSelector(
-          selectedLabel: selectedGroup?.levelLabel ?? 'All levels',
+          selectedLabel: selectedGroup?.levelLabel ?? 'Усі рівні',
           selectedCount: selectedGroup?.lessons.length ?? widget.lessons.length,
           onTap: () => _showLevelPicker(context, lessonGroups),
         ),
@@ -126,22 +123,22 @@ class _ReadingScreenState extends State<ReadingScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Choose reading level',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
+                  'Рівень читання',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'Focus on one difficulty level or keep the full catalog visible.',
+                  'Можна лишити весь каталог або вибрати один рівень.',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: const Color(0xFF5F5A52),
-                        height: 1.45,
-                      ),
+                    color: const Color(0xFF5F5A52),
+                    height: 1.45,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 _ReadingLevelOption(
-                  label: 'All levels',
+                  label: 'Усі рівні',
                   count: widget.lessons.length,
                   selected: _selectedLevelKey == null,
                   onTap: () {
@@ -199,9 +196,7 @@ class ReadingDetailScreen extends StatelessWidget {
         future: documentLoader.load(lesson.assetPath),
         builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (snapshot.hasError) {
@@ -209,7 +204,7 @@ class ReadingDetailScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(24),
                 child: Text(
-                  'Could not load this reading lesson.',
+                  'Не вдалося відкрити цей урок.',
                   style: Theme.of(context).textTheme.titleMedium,
                   textAlign: TextAlign.center,
                 ),
@@ -226,10 +221,7 @@ class ReadingDetailScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(28),
                   gradient: const LinearGradient(
-                    colors: [
-                      Color(0xFF1E40AF),
-                      Color(0xFF1D4ED8),
-                    ],
+                    colors: [Color(0xFF1E40AF), Color(0xFF1D4ED8)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -249,15 +241,16 @@ class ReadingDetailScreen extends StatelessWidget {
                       child: Text(
                         level,
                         style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                            ),
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 14),
                     Text(
                       document.title,
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      style: Theme.of(context).textTheme.headlineMedium
+                          ?.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.w800,
                           ),
@@ -281,17 +274,19 @@ class ReadingDetailScreen extends StatelessWidget {
 class _ReadingLessonCard extends StatelessWidget {
   const _ReadingLessonCard({
     required this.lesson,
+    required this.documentLoader,
     required this.onTap,
   });
 
   final LessonEntry lesson;
+  final LessonDocumentLoader documentLoader;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final level = readingLevelLabelFromAssetPath(lesson.assetPath);
     final orderLabel = readingLessonOrderLabel(lesson);
-    final titleLabel = readingLessonTitle(lesson);
+    final fallbackTitle = readingLessonTitle(lesson);
 
     return Material(
       color: Colors.transparent,
@@ -324,9 +319,9 @@ class _ReadingLessonCard extends StatelessWidget {
                 child: Text(
                   orderLabel,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        color: const Color(0xFF1D4ED8),
-                      ),
+                    fontWeight: FontWeight.w800,
+                    color: const Color(0xFF1D4ED8),
+                  ),
                 ),
               ),
               const SizedBox(width: 14),
@@ -334,18 +329,27 @@ class _ReadingLessonCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      titleLabel,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
+                    FutureBuilder<LessonDocument>(
+                      future: documentLoader.load(lesson.assetPath),
+                      builder: (context, snapshot) {
+                        final resolvedTitle =
+                            snapshot.data?.title.trim().isNotEmpty == true
+                            ? snapshot.data!.title.trim()
+                            : fallbackTitle;
+
+                        return Text(
+                          resolvedTitle,
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.w700),
+                        );
+                      },
                     ),
                     const SizedBox(height: 4),
                     Text(
                       level,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: const Color(0xFF5F5A52),
-                          ),
+                        color: const Color(0xFF5F5A52),
+                      ),
                     ),
                   ],
                 ),
@@ -383,16 +387,16 @@ class _ReadingLevelSection extends StatelessWidget {
             children: [
               Text(
                 group.levelLabel,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w800,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
               ),
               const SizedBox(width: 10),
               Text(
                 '${group.lessons.length}',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: const Color(0xFF6C665D),
-                    ),
+                  color: const Color(0xFF6C665D),
+                ),
               ),
             ],
           ),
@@ -402,6 +406,7 @@ class _ReadingLevelSection extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 12),
             child: _ReadingLessonCard(
               lesson: lesson,
+              documentLoader: documentLoader,
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute<void>(
@@ -456,10 +461,7 @@ class _ReadingLevelSelector extends StatelessWidget {
                   color: const Color(0xFF1D4ED8).withValues(alpha: 0.10),
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: const Icon(
-                  Icons.tune_rounded,
-                  color: Color(0xFF1D4ED8),
-                ),
+                child: const Icon(Icons.tune_rounded, color: Color(0xFF1D4ED8)),
               ),
               const SizedBox(width: 14),
               Expanded(
@@ -467,18 +469,18 @@ class _ReadingLevelSelector extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Level',
+                      'Рівень',
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            color: const Color(0xFF6C665D),
-                            fontWeight: FontWeight.w700,
-                          ),
+                        color: const Color(0xFF6C665D),
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       '$selectedLabel ($selectedCount)',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w800,
-                          ),
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                   ],
                 ),
@@ -537,21 +539,23 @@ class _ReadingLevelOption extends StatelessWidget {
                     Text(
                       label,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '$count lessons',
+                      '$count уроків',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: const Color(0xFF5F5A52),
-                          ),
+                        color: const Color(0xFF5F5A52),
+                      ),
                     ),
                   ],
                 ),
               ),
               Icon(
-                selected ? Icons.check_circle_rounded : Icons.chevron_right_rounded,
+                selected
+                    ? Icons.check_circle_rounded
+                    : Icons.chevron_right_rounded,
                 color: selected
                     ? const Color(0xFF1D4ED8)
                     : const Color(0xFF9CA3AF),

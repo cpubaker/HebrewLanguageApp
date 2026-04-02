@@ -62,7 +62,8 @@ class _AppShellScreenState extends State<AppShellScreen> {
   Future<LearningBundle> _loadBundle() async {
     final bundle = await widget.loader.load();
     final storedProgress = await widget.progressStore.load();
-    final readGuideLessonPaths = await widget.guideProgressStore.loadReadLessons();
+    final readGuideLessonPaths = await widget.guideProgressStore
+        .loadReadLessons();
 
     final hydratedBundle = bundle.copyWith(
       words: bundle.words
@@ -93,7 +94,8 @@ class _AppShellScreenState extends State<AppShellScreen> {
         _bundle = activeBundle.copyWith(
           words: activeBundle.words
               .map(
-                (word) => word.wordId == updatedWord.wordId ? updatedWord : word,
+                (word) =>
+                    word.wordId == updatedWord.wordId ? updatedWord : word,
               )
               .toList(growable: false),
         );
@@ -106,10 +108,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
   void _handleGuideReadChanged(String assetPath, bool isRead) {
     setState(() {
       if (isRead) {
-        _readGuideLessonPaths = {
-          ..._readGuideLessonPaths,
-          assetPath,
-        };
+        _readGuideLessonPaths = {..._readGuideLessonPaths, assetPath};
       } else {
         _readGuideLessonPaths = {
           for (final existingPath in _readGuideLessonPaths)
@@ -159,6 +158,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
               children: [
                 HomeScreen(
                   bundle: bundle,
+                  documentLoader: widget.documentLoader,
                   onOpenWords: () => _selectTab(1),
                   onOpenFlashcards: _openFlashcards,
                   onOpenGuide: () => _selectTab(3),
@@ -197,32 +197,32 @@ class _AppShellScreenState extends State<AppShellScreen> {
               NavigationDestination(
                 icon: Icon(Icons.home_outlined),
                 selectedIcon: Icon(Icons.home_rounded),
-                label: 'Home',
+                label: 'Головна',
               ),
               NavigationDestination(
                 icon: Icon(Icons.translate_outlined),
                 selectedIcon: Icon(Icons.translate_rounded),
-                label: 'Words',
+                label: 'Слова',
               ),
               NavigationDestination(
                 icon: Icon(Icons.style_outlined),
                 selectedIcon: Icon(Icons.style_rounded),
-                label: 'Cards',
+                label: 'Картки',
               ),
               NavigationDestination(
                 icon: Icon(Icons.menu_book_outlined),
                 selectedIcon: Icon(Icons.menu_book_rounded),
-                label: 'Guide',
+                label: 'Довідник',
               ),
               NavigationDestination(
                 icon: Icon(Icons.play_lesson_outlined),
                 selectedIcon: Icon(Icons.play_lesson_rounded),
-                label: 'Verbs',
+                label: 'Дієслова',
               ),
               NavigationDestination(
                 icon: Icon(Icons.auto_stories_outlined),
                 selectedIcon: Icon(Icons.auto_stories_rounded),
-                label: 'Reading',
+                label: 'Читання',
               ),
             ],
           ),
@@ -244,7 +244,7 @@ class _LoadingState extends StatelessWidget {
           children: [
             CircularProgressIndicator(),
             SizedBox(height: 14),
-            Text('Loading shared learning content...'),
+            Text('Завантажуємо навчальні матеріали...'),
           ],
         ),
       ),
@@ -253,10 +253,7 @@ class _LoadingState extends StatelessWidget {
 }
 
 class _ErrorState extends StatelessWidget {
-  const _ErrorState({
-    required this.onRetry,
-    this.details,
-  });
+  const _ErrorState({required this.onRetry, this.details});
 
   final Future<void> Function() onRetry;
   final String? details;
@@ -271,7 +268,7 @@ class _ErrorState extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'The Flutter client could not load the synced learning assets.',
+                'Не вдалося завантажити навчальні матеріали.',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
@@ -288,7 +285,7 @@ class _ErrorState extends StatelessWidget {
                 onPressed: () {
                   onRetry();
                 },
-                child: const Text('Try Again'),
+                child: const Text('Спробувати ще раз'),
               ),
             ],
           ),

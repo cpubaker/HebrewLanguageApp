@@ -26,18 +26,18 @@ class VerbsScreen extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
       children: [
         Text(
-          'Verbs',
-          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.w800,
-              ),
+          'Дієслова',
+          style: Theme.of(
+            context,
+          ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
         ),
         const SizedBox(height: 8),
         Text(
-          'Core verb lessons synced from the desktop content, ready for list/detail study on mobile.',
+          'Основні дієслова з поясненнями, вимовою та ілюстраціями.',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: const Color(0xFF5F5A52),
-                height: 1.4,
-              ),
+            color: const Color(0xFF5F5A52),
+            height: 1.4,
+          ),
         ),
         const SizedBox(height: 18),
         Container(
@@ -51,16 +51,13 @@ class VerbsScreen extends StatelessWidget {
           ),
           child: Row(
             children: [
-              const Icon(
-                Icons.play_lesson_rounded,
-                color: Color(0xFF7C3AED),
-              ),
+              const Icon(Icons.play_lesson_rounded, color: Color(0xFF7C3AED)),
               const SizedBox(width: 12),
               Text(
-                '${lessons.length} verb lessons available',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
+                'Уроків: ${lessons.length}',
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
               ),
             ],
           ),
@@ -112,9 +109,7 @@ class VerbDetailScreen extends StatelessWidget {
         future: documentLoader.load(lesson.assetPath),
         builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (snapshot.hasError) {
@@ -122,7 +117,7 @@ class VerbDetailScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(24),
                 child: Text(
-                  'Could not load this verb lesson.',
+                  'Не вдалося відкрити цей урок.',
                   style: Theme.of(context).textTheme.titleMedium,
                   textAlign: TextAlign.center,
                 ),
@@ -155,10 +150,7 @@ class VerbDetailScreen extends StatelessWidget {
 }
 
 class _VerbLessonCard extends StatelessWidget {
-  const _VerbLessonCard({
-    required this.lesson,
-    required this.onTap,
-  });
+  const _VerbLessonCard({required this.lesson, required this.onTap});
 
   final LessonEntry lesson;
   final VoidCallback onTap;
@@ -200,9 +192,9 @@ class _VerbLessonCard extends StatelessWidget {
                 child: Text(
                   orderLabel,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        color: const Color(0xFF7C3AED),
-                      ),
+                    fontWeight: FontWeight.w800,
+                    color: const Color(0xFF7C3AED),
+                  ),
                 ),
               ),
               const SizedBox(width: 14),
@@ -210,8 +202,8 @@ class _VerbLessonCard extends StatelessWidget {
                 child: Text(
                   titleLabel,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
               const Icon(
@@ -306,9 +298,7 @@ class _VerbHeroCardState extends State<_VerbHeroCard> {
         _isPlaying = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Could not play this pronunciation right now.'),
-        ),
+        const SnackBar(content: Text('Не вдалося відтворити вимову.')),
       );
     } finally {
       if (mounted) {
@@ -334,10 +324,7 @@ class _VerbHeroCardState extends State<_VerbHeroCard> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(28),
         gradient: const LinearGradient(
-          colors: [
-            Color(0xFF5B21B6),
-            Color(0xFF7C3AED),
-          ],
+          colors: [Color(0xFF5B21B6), Color(0xFF7C3AED)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -356,9 +343,9 @@ class _VerbHeroCardState extends State<_VerbHeroCard> {
             child: Text(
               widget.title,
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w800,
-                  ),
+                color: Colors.white,
+                fontWeight: FontWeight.w800,
+              ),
             ),
           ),
           const SizedBox(width: 12),
@@ -369,10 +356,10 @@ class _VerbHeroCardState extends State<_VerbHeroCard> {
             ),
             child: IconButton(
               tooltip: _isCheckingAvailability
-                  ? 'Checking pronunciation'
+                  ? 'Перевіряємо аудіо'
                   : _hasAudio
-                      ? (_isPlaying ? 'Stop audio' : 'Play audio')
-                      : 'No audio available',
+                  ? (_isPlaying ? 'Зупинити вимову' : 'Увімкнути вимову')
+                  : 'Аудіо поки недоступне',
               onPressed: _hasAudio && !_isBusy ? _togglePlayback : null,
               icon: _isBusy
                   ? const SizedBox(
@@ -398,9 +385,7 @@ class _VerbHeroCardState extends State<_VerbHeroCard> {
 }
 
 class _VerbImageCard extends StatelessWidget {
-  const _VerbImageCard({
-    required this.imageAssetPath,
-  });
+  const _VerbImageCard({required this.imageAssetPath});
 
   final String imageAssetPath;
 
@@ -455,10 +440,9 @@ class _VerbImageCard extends StatelessWidget {
                           ),
                           const SizedBox(height: 12),
                           Text(
-                            'No synced illustration for this verb yet.',
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                ),
+                            'Ілюстрацію для цього дієслова ще не додано.',
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.w700),
                             textAlign: TextAlign.center,
                           ),
                         ],

@@ -33,6 +33,23 @@ String readingLevelKeyFromAssetPath(String assetPath) {
 
 String readingLevelLabelFromAssetPath(String assetPath) {
   final rawLevel = readingLevelKeyFromAssetPath(assetPath);
+  switch (rawLevel) {
+    case 'beginner':
+      return 'Початковий';
+    case 'pre-intermediate':
+      return 'Нижче середнього';
+    case 'intermediate':
+      return 'Середній';
+    case 'upper-intermediate':
+      return 'Вище середнього';
+    case 'advanced':
+      return 'Просунутий';
+    case 'proficient':
+      return 'Вільний';
+    case 'reading':
+      return 'Читання';
+  }
+
   return rawLevel
       .split('-')
       .where((part) => part.isNotEmpty)
@@ -55,7 +72,9 @@ List<LessonEntry> sortReadingLessons(Iterable<LessonEntry> lessons) {
   return sortedLessons;
 }
 
-List<ReadingLessonGroup> buildReadingLessonGroups(Iterable<LessonEntry> lessons) {
+List<ReadingLessonGroup> buildReadingLessonGroups(
+  Iterable<LessonEntry> lessons,
+) {
   final groupedLessons = <String, List<LessonEntry>>{};
 
   for (final lesson in sortReadingLessons(lessons)) {
@@ -97,8 +116,9 @@ int _compareReadingLessons(LessonEntry left, LessonEntry right) {
     }
   }
 
-  final titleComparison =
-      readingLessonTitle(left).compareTo(readingLessonTitle(right));
+  final titleComparison = readingLessonTitle(
+    left,
+  ).compareTo(readingLessonTitle(right));
   if (titleComparison != 0) {
     return titleComparison;
   }

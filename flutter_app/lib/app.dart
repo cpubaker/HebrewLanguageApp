@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'screens/app_shell_screen.dart';
 import 'services/guide_progress_store.dart';
@@ -16,11 +17,11 @@ class HebrewFlutterApp extends StatelessWidget {
     WordProgressStore? progressStore,
     GuideProgressStore? guideProgressStore,
     CreateVerbAudioPlayer? audioPlayerFactory,
-  })  : _loader = loader,
-        _documentLoader = documentLoader,
-        _progressStore = progressStore,
-        _guideProgressStore = guideProgressStore,
-        _audioPlayerFactory = audioPlayerFactory;
+  }) : _loader = loader,
+       _documentLoader = documentLoader,
+       _progressStore = progressStore,
+       _guideProgressStore = guideProgressStore,
+       _audioPlayerFactory = audioPlayerFactory;
 
   final LearningBundleLoader? _loader;
   final LessonDocumentLoader? _documentLoader;
@@ -31,8 +32,11 @@ class HebrewFlutterApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Hebrew Language App',
+      title: 'Вчимо іврит',
       debugShowCheckedModeBanner: false,
+      locale: const Locale('uk'),
+      supportedLocales: const [Locale('uk')],
+      localizationsDelegates: GlobalMaterialLocalizations.delegates,
       theme: buildAppTheme(),
       home: AppShellScreen(
         loader: _loader ?? AssetLearningBundleLoader(),

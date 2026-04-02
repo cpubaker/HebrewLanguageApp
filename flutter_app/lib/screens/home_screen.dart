@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 
 import '../models/learning_bundle.dart';
+import '../models/lesson_document.dart';
 import '../models/learning_word.dart';
 import '../services/flashcard_session.dart';
+import '../services/lesson_document_loader.dart';
 import 'reading_lesson_catalog.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
     super.key,
     required this.bundle,
+    required this.documentLoader,
     required this.onOpenWords,
     required this.onOpenFlashcards,
     required this.onOpenGuide,
@@ -17,6 +20,7 @@ class HomeScreen extends StatelessWidget {
   });
 
   final LearningBundle bundle;
+  final LessonDocumentLoader documentLoader;
   final VoidCallback onOpenWords;
   final ValueChanged<FlashcardDeckMode> onOpenFlashcards;
   final VoidCallback onOpenGuide;
@@ -27,7 +31,9 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final progress = _StudyProgressSnapshot.fromWords(bundle.words);
     final flashcards = _FlashcardFocusSnapshot.fromWords(bundle.words);
-    final readingPreviewLessons = sortReadingLessons(bundle.readingLessons).take(3);
+    final readingPreviewLessons = sortReadingLessons(
+      bundle.readingLessons,
+    ).take(3);
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
@@ -39,31 +45,33 @@ class HomeScreen extends StatelessWidget {
           runSpacing: 12,
           children: [
             _SummaryCard(
-              label: 'Words',
+              label: 'Слова',
               value: bundle.words.length,
               accent: const Color(0xFF0F766E),
               onTap: onOpenWords,
             ),
             _SummaryCard(
-              label: 'Flashcards',
-              value: bundle.words.where((word) => word.contexts.isNotEmpty).length,
+              label: 'Картки',
+              value: bundle.words
+                  .where((word) => word.contexts.isNotEmpty)
+                  .length,
               accent: const Color(0xFFBE5B00),
               onTap: () => onOpenFlashcards(FlashcardDeckMode.allWords),
             ),
             _SummaryCard(
-              label: 'Guide',
+              label: 'Довідник',
               value: bundle.guideLessons.length,
               accent: const Color(0xFFB45309),
               onTap: onOpenGuide,
             ),
             _SummaryCard(
-              label: 'Verbs',
+              label: 'Дієслова',
               value: bundle.verbLessons.length,
               accent: const Color(0xFF7C3AED),
               onTap: onOpenVerbs,
             ),
             _SummaryCard(
-              label: 'Reading',
+              label: 'Читання',
               value: bundle.readingLessons.length,
               accent: const Color(0xFF1D4ED8),
               onTap: onOpenReading,
@@ -91,9 +99,8 @@ class HomeScreen extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         _SectionCard(
-          title: 'Vocabulary Preview',
-          subtitle:
-              'The first real mobile screen is now the searchable Words tab.',
+          title: 'Слова під рукою',
+          subtitle: 'Швидкий перехід до словника з пошуком і прогресом.',
           child: Column(
             children: bundle.words
                 .take(6)
@@ -103,13 +110,16 @@ class HomeScreen extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         _SectionCard(
-          title: 'Reading Preview',
-          subtitle:
-              'Continue with the synced mobile reading lessons right from the home screen.',
+          title: 'Що почитати',
+          subtitle: 'Кілька уроків, з яких зручно продовжити просто зараз.',
           child: Column(
             children: [
-              ...readingPreviewLessons
-                  .map((lesson) => _ReadingLessonTile(lesson: lesson)),
+              ...readingPreviewLessons.map(
+                (lesson) => _ReadingLessonTile(
+                  lesson: lesson,
+                  documentLoader: documentLoader,
+                ),
+              ),
             ],
           ),
         ),
@@ -119,7 +129,7 @@ class HomeScreen extends StatelessWidget {
           child: OutlinedButton.icon(
             onPressed: onOpenReading,
             icon: const Icon(Icons.auto_stories_rounded),
-            label: const Text('Open Reading'),
+            label: const Text('До читання'),
           ),
         ),
       ],
@@ -212,9 +222,7 @@ class _StudyProgressSnapshot {
 }
 
 class _HeroPanel extends StatelessWidget {
-  const _HeroPanel({
-    required this.bundle,
-  });
+  const _HeroPanel({required this.bundle});
 
   final LearningBundle bundle;
 
@@ -226,11 +234,7 @@ class _HeroPanel extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(28),
         gradient: const LinearGradient(
-          colors: [
-            Color(0xFF163832),
-            Color(0xFF2B5D4F),
-            Color(0xFF8C6A2A),
-          ],
+          colors: [Color(0xFF163832), Color(0xFF2B5D4F), Color(0xFF8C6A2A)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -252,7 +256,7 @@ class _HeroPanel extends StatelessWidget {
               borderRadius: BorderRadius.circular(999),
             ),
             child: Text(
-              'Android Migration',
+              'Мобільна версія',
               style: theme.textTheme.labelLarge?.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.w700,
@@ -262,7 +266,7 @@ class _HeroPanel extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           Text(
-            'Hebrew Language App',
+            'Вчимо іврит',
             style: theme.textTheme.headlineMedium?.copyWith(
               color: Colors.white,
               fontWeight: FontWeight.w800,
@@ -270,7 +274,7 @@ class _HeroPanel extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            'The app now has a shared mobile shell, bottom navigation, and a first interactive Flashcards flow. Tkinter still remains the desktop reference while Flutter grows feature by feature.',
+            'У мобільній версії вже є слова, картки, довідник, дієслова й читання. Усе працює з тією самою навчальною базою, що й десктопний застосунок.',
             style: theme.textTheme.bodyLarge?.copyWith(
               color: const Color(0xFFF7F3E8),
               height: 1.45,
@@ -278,7 +282,7 @@ class _HeroPanel extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            '${bundle.words.length} words synced from the desktop dataset',
+            '${bundle.words.length} слів уже доступні на цьому пристрої',
             style: theme.textTheme.titleMedium?.copyWith(
               color: Colors.white,
               fontWeight: FontWeight.w700,
@@ -326,16 +330,16 @@ class _SummaryCard extends StatelessWidget {
           const SizedBox(height: 18),
           Text(
             '$value',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w800),
           ),
           const SizedBox(height: 4),
           Text(
             label,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: const Color(0xFF5F5A52),
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: const Color(0xFF5F5A52)),
           ),
         ],
       ),
@@ -377,17 +381,17 @@ class _ActionStrip extends StatelessWidget {
         FilledButton.icon(
           onPressed: () => onOpenFlashcards(FlashcardDeckMode.allWords),
           icon: const Icon(Icons.style_rounded),
-          label: const Text('Start Flashcards'),
+          label: const Text('До карток'),
         ),
         OutlinedButton.icon(
           onPressed: onOpenWords,
           icon: const Icon(Icons.translate_rounded),
-          label: const Text('Open Words'),
+          label: const Text('До слів'),
         ),
         OutlinedButton.icon(
           onPressed: onOpenGuide,
           icon: const Icon(Icons.menu_book_rounded),
-          label: const Text('Open Guide'),
+          label: const Text('До довідника'),
         ),
       ],
     );
@@ -426,20 +430,20 @@ class _FlashcardFocusCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Flashcard Focus',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
+            'Картки на сьогодні',
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
           ),
           const SizedBox(height: 6),
           Text(
             snapshot.needsReview > 0
-                ? 'Resume your review deck or jump into context-rich cards.'
-                : 'Pick the deck that fits today: all words or context-backed practice.',
+                ? 'У вас є слова на повторення. Можна продовжити або перейти до карток із прикладами.'
+                : 'Оберіть режим: усі слова або картки з прикладами.',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: const Color(0xFF5F5A52),
-                  height: 1.45,
-                ),
+              color: const Color(0xFF5F5A52),
+              height: 1.45,
+            ),
           ),
           const SizedBox(height: 16),
           Wrap(
@@ -447,22 +451,22 @@ class _FlashcardFocusCard extends StatelessWidget {
             runSpacing: 12,
             children: [
               _ProgressMetric(
-                label: 'All Cards',
+                label: 'Усі',
                 value: snapshot.total,
                 accent: const Color(0xFF163832),
               ),
               _ProgressMetric(
-                label: 'Context Deck',
+                label: 'З прикладами',
                 value: snapshot.withContexts,
                 accent: const Color(0xFF1D4ED8),
               ),
               _ProgressMetric(
-                label: 'Review Deck',
+                label: 'На повторенні',
                 value: snapshot.needsReview,
                 accent: const Color(0xFFB45309),
               ),
               _ProgressMetric(
-                label: 'Known',
+                label: 'Вивчені',
                 value: snapshot.known,
                 accent: const Color(0xFF0F766E),
               ),
@@ -477,17 +481,17 @@ class _FlashcardFocusCard extends StatelessWidget {
                 FilledButton.icon(
                   onPressed: onOpenReview,
                   icon: const Icon(Icons.refresh_rounded),
-                  label: const Text('Resume Review'),
+                  label: const Text('Продовжити'),
                 ),
               OutlinedButton.icon(
                 onPressed: onOpenContext,
                 icon: const Icon(Icons.chat_bubble_outline_rounded),
-                label: const Text('Context Deck'),
+                label: const Text('З прикладами'),
               ),
               OutlinedButton.icon(
                 onPressed: onOpenAll,
                 icon: const Icon(Icons.style_outlined),
-                label: const Text('All Cards'),
+                label: const Text('Усі'),
               ),
             ],
           ),
@@ -498,9 +502,7 @@ class _FlashcardFocusCard extends StatelessWidget {
 }
 
 class _StudyProgressCard extends StatelessWidget {
-  const _StudyProgressCard({
-    required this.progress,
-  });
+  const _StudyProgressCard({required this.progress});
 
   final _StudyProgressSnapshot progress;
 
@@ -523,18 +525,18 @@ class _StudyProgressCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Study Progress',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
+            'Ваш поступ',
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
           ),
           const SizedBox(height: 6),
           Text(
-            'This device now remembers your flashcard progress between launches.',
+            'Прогрес зберігається на цьому пристрої, тож можна спокійно продовжити пізніше.',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: const Color(0xFF5F5A52),
-                  height: 1.45,
-                ),
+              color: const Color(0xFF5F5A52),
+              height: 1.45,
+            ),
           ),
           const SizedBox(height: 16),
           ClipRRect(
@@ -543,15 +545,17 @@ class _StudyProgressCard extends StatelessWidget {
               minHeight: 10,
               value: progress.completionRatio,
               backgroundColor: const Color(0xFFEAE2D2),
-              valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF0F766E)),
+              valueColor: const AlwaysStoppedAnimation<Color>(
+                Color(0xFF0F766E),
+              ),
             ),
           ),
           const SizedBox(height: 10),
           Text(
-            '${progress.seen} of ${progress.total} words have progress on this device',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: const Color(0xFF6C665D),
-                ),
+            'Опрацьовано ${progress.seen} із ${progress.total} слів',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: const Color(0xFF6C665D)),
           ),
           const SizedBox(height: 16),
           Wrap(
@@ -559,22 +563,22 @@ class _StudyProgressCard extends StatelessWidget {
             runSpacing: 12,
             children: [
               _ProgressMetric(
-                label: 'Seen',
+                label: 'Опрацьовані',
                 value: progress.seen,
                 accent: const Color(0xFF1D4ED8),
               ),
               _ProgressMetric(
-                label: 'Known',
+                label: 'Вивчені',
                 value: progress.known,
                 accent: const Color(0xFF0F766E),
               ),
               _ProgressMetric(
-                label: 'Needs Review',
+                label: 'Повторити',
                 value: progress.needsReview,
                 accent: const Color(0xFFB45309),
               ),
               _ProgressMetric(
-                label: 'Unseen',
+                label: 'Нові',
                 value: progress.unseen,
                 accent: const Color(0xFF7C3AED),
               ),
@@ -617,17 +621,17 @@ class _SectionCard extends StatelessWidget {
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
           ),
           const SizedBox(height: 6),
           Text(
             subtitle,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: const Color(0xFF5F5A52),
-                  height: 1.45,
-                ),
+              color: const Color(0xFF5F5A52),
+              height: 1.45,
+            ),
           ),
           const SizedBox(height: 14),
           child,
@@ -671,16 +675,16 @@ class _ProgressMetric extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             '$value',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w800),
           ),
           const SizedBox(height: 4),
           Text(
             label,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: const Color(0xFF5F5A52),
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: const Color(0xFF5F5A52)),
           ),
         ],
       ),
@@ -689,9 +693,7 @@ class _ProgressMetric extends StatelessWidget {
 }
 
 class _WordTile extends StatelessWidget {
-  const _WordTile({
-    required this.word,
-  });
+  const _WordTile({required this.word});
 
   final LearningWord word;
 
@@ -746,14 +748,16 @@ class _WordTile extends StatelessWidget {
 class _ReadingLessonTile extends StatelessWidget {
   const _ReadingLessonTile({
     required this.lesson,
+    required this.documentLoader,
   });
 
   final LessonEntry lesson;
+  final LessonDocumentLoader documentLoader;
 
   @override
   Widget build(BuildContext context) {
     final level = readingLevelLabelFromAssetPath(lesson.assetPath);
-    final title = readingLessonTitle(lesson);
+    final fallbackTitle = readingLessonTitle(lesson);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
@@ -782,18 +786,28 @@ class _ReadingLessonTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
+                  FutureBuilder<LessonDocument>(
+                    future: documentLoader.load(lesson.assetPath),
+                    builder: (context, snapshot) {
+                      final document = snapshot.data;
+                      final resolvedTitle =
+                          document != null && document.title.trim().isNotEmpty
+                          ? document.title.trim()
+                          : fallbackTitle;
+
+                      return Text(
+                        resolvedTitle,
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.w700),
+                      );
+                    },
                   ),
                   const SizedBox(height: 4),
                   Text(
                     level,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: const Color(0xFF5F5A52),
-                        ),
+                      color: const Color(0xFF5F5A52),
+                    ),
                   ),
                 ],
               ),

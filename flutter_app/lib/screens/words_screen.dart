@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/learning_word.dart';
 
 class WordsScreen extends StatefulWidget {
-  const WordsScreen({
-    super.key,
-    required this.words,
-  });
+  const WordsScreen({super.key, required this.words});
 
   final List<LearningWord> words;
 
@@ -39,12 +36,14 @@ class _WordsScreenState extends State<WordsScreen> {
       return sortedWords;
     }
 
-    return sortedWords.where((word) {
-      return word.english.toLowerCase().contains(normalizedQuery) ||
-          word.transcription.toLowerCase().contains(normalizedQuery) ||
-          word.hebrew.toLowerCase().contains(normalizedQuery) ||
-          word.wordId.toLowerCase().contains(normalizedQuery);
-    }).toList(growable: false);
+    return sortedWords
+        .where((word) {
+          return word.english.toLowerCase().contains(normalizedQuery) ||
+              word.transcription.toLowerCase().contains(normalizedQuery) ||
+              word.hebrew.toLowerCase().contains(normalizedQuery) ||
+              word.wordId.toLowerCase().contains(normalizedQuery);
+        })
+        .toList(growable: false);
   }
 
   void _showWordDetails(LearningWord word) {
@@ -87,7 +86,7 @@ class _WordsScreenState extends State<WordsScreen> {
                 children: [
                   Expanded(
                     child: _StatPill(
-                      label: 'Correct',
+                      label: 'Правильно',
                       value: word.correct,
                       accent: const Color(0xFF0F766E),
                     ),
@@ -95,7 +94,7 @@ class _WordsScreenState extends State<WordsScreen> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: _StatPill(
-                      label: 'Wrong',
+                      label: 'Помилки',
                       value: word.wrong,
                       accent: const Color(0xFFB91C1C),
                     ),
@@ -104,7 +103,7 @@ class _WordsScreenState extends State<WordsScreen> {
               ),
               const SizedBox(height: 14),
               Text(
-                'Word id: ${word.wordId}',
+                'ID: ${word.wordId}',
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: const Color(0xFF6C665D),
                 ),
@@ -123,23 +122,23 @@ class _WordsScreenState extends State<WordsScreen> {
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
       children: [
         Text(
-          'Words',
-          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.w800,
-              ),
+          'Слова',
+          style: Theme.of(
+            context,
+          ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
         ),
         const SizedBox(height: 8),
         Text(
-          'Search by English, transcription, Hebrew, or internal word id.',
+          'Пошук за англійською, транскрипцією, івритом або ID.',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: const Color(0xFF5F5A52),
-                height: 1.4,
-              ),
+            color: const Color(0xFF5F5A52),
+            height: 1.4,
+          ),
         ),
         const SizedBox(height: 18),
         SearchBar(
           controller: _searchController,
-          hintText: 'Search words',
+          hintText: 'Шукати слова',
           leading: const Icon(Icons.search_rounded),
           trailing: _query.isEmpty
               ? null
@@ -166,12 +165,12 @@ class _WordsScreenState extends State<WordsScreen> {
           runSpacing: 12,
           children: [
             _StatPill(
-              label: 'Visible',
+              label: 'Видимі',
               value: filteredWords.length,
               accent: const Color(0xFF1D4ED8),
             ),
             _StatPill(
-              label: 'Total',
+              label: 'Усього',
               value: widget.words.length,
               accent: const Color(0xFF8C6A2A),
             ),
@@ -184,10 +183,7 @@ class _WordsScreenState extends State<WordsScreen> {
           ...filteredWords.map(
             (word) => Padding(
               padding: const EdgeInsets.only(bottom: 12),
-              child: _WordCard(
-                word: word,
-                onTap: () => _showWordDetails(word),
-              ),
+              child: _WordCard(word: word, onTap: () => _showWordDetails(word)),
             ),
           ),
       ],
@@ -196,10 +192,7 @@ class _WordsScreenState extends State<WordsScreen> {
 }
 
 class _WordCard extends StatelessWidget {
-  const _WordCard({
-    required this.word,
-    required this.onTap,
-  });
+  const _WordCard({required this.word, required this.onTap});
 
   final LearningWord word;
   final VoidCallback onTap;
@@ -248,13 +241,13 @@ class _WordCard extends StatelessWidget {
                     Row(
                       children: [
                         _MiniProgress(
-                          label: 'C',
+                          label: 'П',
                           value: word.correct,
                           accent: const Color(0xFF0F766E),
                         ),
                         const SizedBox(width: 8),
                         _MiniProgress(
-                          label: 'W',
+                          label: 'Н',
                           value: word.wrong,
                           accent: const Color(0xFFB91C1C),
                         ),
@@ -313,9 +306,9 @@ class _MiniProgress extends StatelessWidget {
       child: Text(
         '$label $value',
         style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: accent,
-              fontWeight: FontWeight.w700,
-            ),
+          color: accent,
+          fontWeight: FontWeight.w700,
+        ),
       ),
     );
   }
@@ -355,9 +348,9 @@ class _StatPill extends StatelessWidget {
           const SizedBox(width: 10),
           Text(
             '$label: $value',
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w700),
           ),
         ],
       ),
@@ -385,18 +378,18 @@ class _EmptySearchState extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'No words match this search yet.',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
+            'Нічого не знайдено.',
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 6),
           Text(
-            'Try another English word, transcription, Hebrew form, or word id.',
+            'Спробуйте інший запит: слово англійською, форму івритом або ID.',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: const Color(0xFF5F5A52),
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: const Color(0xFF5F5A52)),
           ),
         ],
       ),
