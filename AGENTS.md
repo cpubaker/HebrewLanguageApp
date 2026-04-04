@@ -28,6 +28,7 @@
 - `data/input/` - source-of-truth learning content shared across app variants.
 - `data/input/guide/AGENTS.md` - local instructions for guide lesson structure and writing style.
 - `data/input/reading/AGENTS.md` - local instructions for reading lesson content.
+- `data/input/verbs/AGENTS.md` - local instructions for verb lesson structure and canonical form order.
 - `src/` - legacy Tkinter app and related Python application layers.
 - `tests/` - legacy Python tests for path resolution, data loading, and content integrity.
 - `src/models/` - model-specific experiments and integrations.
@@ -40,6 +41,7 @@
 - For lesson, vocabulary, verb, reading, context, image, or audio content tasks, inspect `data/input/` first and only edit synced Flutter assets when the task is specifically about asset packaging or temporary debugging.
 - When editing files under `data/input/guide/`, follow `data/input/guide/AGENTS.md`.
 - When editing files under `data/input/reading/`, follow `data/input/reading/AGENTS.md`.
+- When editing files under `data/input/verbs/`, follow `data/input/verbs/AGENTS.md`.
 - Do not hand-edit `flutter_app/assets/learning/input/` for durable product changes; the sync script may overwrite those files.
 - Preserve UTF-8 encoding for all Hebrew content files.
 - Keep numbered lesson filenames stable unless the task explicitly requires renaming.
