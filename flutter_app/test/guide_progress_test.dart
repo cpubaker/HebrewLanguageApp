@@ -31,14 +31,17 @@ void main() {
     await tester.tap(find.byIcon(Icons.menu_book_outlined));
     await tester.pumpAndSettle();
 
-    expect(find.text('Unread'), findsOneWidget);
+    expect(find.text('Ще не читали'), findsOneWidget);
 
-    await tester.tap(find.byTooltip('Mark as read'));
+    await tester.tap(find.byTooltip('Позначити як прочитаний'));
     await tester.pumpAndSettle();
 
-    expect(guideStore.readLessons, contains('assets/learning/input/guide/01_intro_alphabet.md'));
-    expect(find.text('Read'), findsOneWidget);
-    expect(find.byTooltip('Mark as unread'), findsOneWidget);
+    expect(
+      guideStore.readLessons,
+      contains('assets/learning/input/guide/01_intro_alphabet.md'),
+    );
+    expect(find.text('Прочитано'), findsOneWidget);
+    expect(find.byTooltip('Позначити як непрочитаний'), findsOneWidget);
   });
 
   testWidgets('guide lesson is marked as read after scrolling to the end', (
@@ -71,7 +74,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(markedRead, isTrue);
-    expect(find.text('Read'), findsOneWidget);
+    expect(find.text('Прочитано'), findsOneWidget);
   });
 }
 

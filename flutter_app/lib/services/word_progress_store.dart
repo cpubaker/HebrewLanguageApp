@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/learning_word.dart';
@@ -12,12 +13,15 @@ class StoredWordProgress {
     required this.lastCorrect,
   });
 
-  factory StoredWordProgress.fromJson(String wordId, Map<String, dynamic> json) {
+  factory StoredWordProgress.fromJson(
+    String wordId,
+    Map<String, dynamic> json,
+  ) {
     return StoredWordProgress(
       wordId: wordId,
-      correct: (json['correct'] as num?)?.toInt() ?? 0,
-      wrong: (json['wrong'] as num?)?.toInt() ?? 0,
-      lastCorrect: json['last_correct'] as String?,
+      correct: _readNonNegativeInt(json['correct']),
+      wrong: _readNonNegativeInt(json['wrong']),
+      lastCorrect: _readOptionalString(json['last_correct']),
     );
   }
 
@@ -34,6 +38,29 @@ class StoredWordProgress {
         'last_correct': lastCorrect,
     };
   }
+
+  static int _readNonNegativeInt(Object? value) {
+    final parsedValue = switch (value) {
+      final num numericValue => numericValue.toInt(),
+      final String textValue => int.tryParse(textValue.trim()),
+      _ => null,
+    };
+
+    if (parsedValue == null || parsedValue < 0) {
+      return 0;
+    }
+
+    return parsedValue;
+  }
+
+  static String? _readOptionalString(Object? value) {
+    if (value is! String) {
+      return null;
+    }
+
+    final trimmedValue = value.trim();
+    return trimmedValue.isEmpty ? null : trimmedValue;
+  }
 }
 
 abstract class WordProgressStore {
@@ -49,8 +76,15 @@ class SharedPreferencesWordProgressStore implements WordProgressStore {
 
   @override
   Future<Map<String, StoredWordProgress>> load() async {
-    final prefs = await SharedPreferences.getInstance();
-    return _loadFromPrefs(prefs);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return _loadFromPrefs(prefs);
+    } catch (error) {
+      debugPrint(
+        'Ignoring word progress for $_storageKey because it could not be loaded: $error',
+      );
+      return <String, StoredWordProgress>{};
+    }
   }
 
   @override
@@ -59,7 +93,9 @@ class SharedPreferencesWordProgressStore implements WordProgressStore {
     final currentMap = await _loadRawMap(prefs);
 
     final hasProgress =
-        word.correct > 0 || word.wrong > 0 || (word.lastCorrect?.trim().isNotEmpty ?? false);
+        word.correct > 0 ||
+        word.wrong > 0 ||
+        (word.lastCorrect?.trim().isNotEmpty ?? false);
 
     if (hasProgress) {
       currentMap[word.wordId] = StoredWordProgress(
@@ -81,24 +117,43 @@ class SharedPreferencesWordProgressStore implements WordProgressStore {
       return <String, dynamic>{};
     }
 
-    final decoded = jsonDecode(rawValue);
-    if (decoded is! Map<String, dynamic>) {
+    try {
+      final decoded = jsonDecode(rawValue);
+      if (decoded is! Map) {
+        return <String, dynamic>{};
+      }
+
+      return decoded.map(
+        (key, value) => MapEntry(key.toString(), value),
+      );
+    } on FormatException catch (error) {
+      debugPrint(
+        'Ignoring corrupted word progress payload for $_storageKey: $error',
+      );
       return <String, dynamic>{};
     }
-
-    return decoded;
   }
 
-  Future<Map<String, StoredWordProgress>> _loadFromPrefs(SharedPreferences prefs) async {
+  Future<Map<String, StoredWordProgress>> _loadFromPrefs(
+    SharedPreferences prefs,
+  ) async {
     final rawMap = await _loadRawMap(prefs);
-    return rawMap.map(
-      (wordId, value) => MapEntry(
-        wordId,
-        StoredWordProgress.fromJson(
-          wordId,
-          (value as Map).cast<String, dynamic>(),
+    final progressByWordId = <String, StoredWordProgress>{};
+
+    rawMap.forEach((wordId, value) {
+      final trimmedWordId = wordId.trim();
+      if (trimmedWordId.isEmpty || value is! Map) {
+        return;
+      }
+
+      progressByWordId[trimmedWordId] = StoredWordProgress.fromJson(
+        trimmedWordId,
+        value.map(
+          (key, entryValue) => MapEntry(key.toString(), entryValue),
         ),
-      ),
-    );
+      );
+    });
+
+    return progressByWordId;
   }
 }

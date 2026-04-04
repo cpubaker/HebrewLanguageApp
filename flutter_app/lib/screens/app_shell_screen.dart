@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../models/learning_bundle.dart';
@@ -41,6 +42,8 @@ class _AppShellScreenState extends State<AppShellScreen> {
   late Future<LearningBundle> _bundleFuture;
   LearningBundle? _bundle;
   Set<String> _readGuideLessonPaths = <String>{};
+  final Map<String, int> _guidePersistenceTokens = <String, int>{};
+  final Map<String, int> _wordPersistenceTokens = <String, int>{};
   FlashcardDeckMode _flashcardDeckMode = FlashcardDeckMode.allWords;
   int _flashcardDeckRequestToken = 0;
   int _selectedIndex = 0;
@@ -89,7 +92,15 @@ class _AppShellScreenState extends State<AppShellScreen> {
 
   void _handleWordProgressChanged(LearningWord updatedWord) {
     final activeBundle = _bundle;
+    LearningWord? previousWord;
+
     if (activeBundle != null) {
+      for (final word in activeBundle.words) {
+        if (word.wordId == updatedWord.wordId) {
+          previousWord = word;
+          break;
+        }
+      }
       setState(() {
         _bundle = activeBundle.copyWith(
           words: activeBundle.words
@@ -102,10 +113,21 @@ class _AppShellScreenState extends State<AppShellScreen> {
       });
     }
 
-    unawaited(widget.progressStore.saveWord(updatedWord));
+    final requestToken = _nextPersistenceToken(
+      _wordPersistenceTokens,
+      updatedWord.wordId,
+    );
+    unawaited(
+      _persistWordProgress(
+        updatedWord: updatedWord,
+        previousWord: previousWord,
+        requestToken: requestToken,
+      ),
+    );
   }
 
   void _handleGuideReadChanged(String assetPath, bool isRead) {
+    final previousPaths = _readGuideLessonPaths;
     setState(() {
       if (isRead) {
         _readGuideLessonPaths = {..._readGuideLessonPaths, assetPath};
@@ -117,7 +139,18 @@ class _AppShellScreenState extends State<AppShellScreen> {
       }
     });
 
-    unawaited(widget.guideProgressStore.setLessonRead(assetPath, isRead));
+    final requestToken = _nextPersistenceToken(
+      _guidePersistenceTokens,
+      assetPath,
+    );
+    unawaited(
+      _persistGuideReadChange(
+        assetPath: assetPath,
+        isRead: isRead,
+        previousPaths: previousPaths,
+        requestToken: requestToken,
+      ),
+    );
   }
 
   void _selectTab(int index) {
@@ -134,6 +167,83 @@ class _AppShellScreenState extends State<AppShellScreen> {
     });
   }
 
+  int _nextPersistenceToken(Map<String, int> tokenMap, String key) {
+    final nextToken = (tokenMap[key] ?? 0) + 1;
+    tokenMap[key] = nextToken;
+    return nextToken;
+  }
+
+  Future<void> _persistWordProgress({
+    required LearningWord updatedWord,
+    required LearningWord? previousWord,
+    required int requestToken,
+  }) async {
+    try {
+      await widget.progressStore.saveWord(updatedWord);
+    } catch (error) {
+      debugPrint(
+        'Failed to save word progress for ${updatedWord.wordId}: $error',
+      );
+
+      if (!mounted ||
+          _wordPersistenceTokens[updatedWord.wordId] != requestToken) {
+        return;
+      }
+
+      final activeBundle = _bundle;
+      if (activeBundle != null && previousWord != null) {
+        final wordToRestore = previousWord;
+        setState(() {
+          _bundle = activeBundle.copyWith(
+            words: activeBundle.words
+                .map(
+                  (word) => word.wordId == wordToRestore.wordId
+                      ? wordToRestore
+                      : word,
+                )
+                .toList(growable: false),
+          );
+        });
+      }
+
+      _showPersistenceError(
+        'Не вдалося зберегти прогрес слова. Спробуйте ще раз.',
+      );
+    }
+  }
+
+  Future<void> _persistGuideReadChange({
+    required String assetPath,
+    required bool isRead,
+    required Set<String> previousPaths,
+    required int requestToken,
+  }) async {
+    try {
+      await widget.guideProgressStore.setLessonRead(assetPath, isRead);
+    } catch (error) {
+      debugPrint('Failed to save guide progress for $assetPath: $error');
+
+      if (!mounted || _guidePersistenceTokens[assetPath] != requestToken) {
+        return;
+      }
+
+      setState(() {
+        _readGuideLessonPaths = previousPaths;
+      });
+
+      _showPersistenceError(
+        'Не вдалося зберегти прогрес довідника. Спробуйте ще раз.',
+      );
+    }
+  }
+
+  void _showPersistenceError(String message) {
+    final messenger = ScaffoldMessenger.maybeOf(context);
+    messenger
+      ?..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(message)));
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<LearningBundle>(
@@ -146,7 +256,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
         if (snapshot.hasError) {
           return _ErrorState(
             onRetry: _reload,
-            details: snapshot.error?.toString(),
+            details: kDebugMode ? snapshot.error?.toString() : null,
           );
         }
 

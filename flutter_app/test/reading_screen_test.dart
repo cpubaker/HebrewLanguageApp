@@ -32,7 +32,7 @@ void main() {
 
     expect(
       groups.map((group) => group.levelLabel).toList(growable: false),
-      ['Beginner', 'Intermediate', 'Advanced'],
+      ['Початковий', 'Середній', 'Просунутий'],
     );
     expect(
       groups.first.lessons.map(readingLessonTitle).toList(growable: false),
@@ -71,16 +71,16 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Level'));
+    await tester.tap(find.text('Рівень'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Choose reading level'), findsOneWidget);
+    expect(find.text('Рівень читання'), findsOneWidget);
 
-    await tester.tap(find.text('Beginner').last);
+    await tester.tap(find.text('Початковий').last);
     await tester.pumpAndSettle();
 
-    expect(find.text('2 reading lessons shown'), findsOneWidget);
-    expect(find.text('Beginner (2)'), findsOneWidget);
+    expect(find.text('Показано: 2'), findsOneWidget);
+    expect(find.text('Початковий (2)'), findsOneWidget);
     expect(find.text('Yosi Goes To School'), findsOneWidget);
     expect(find.text('My Room'), findsOneWidget);
     expect(find.text('Neighborhood Library'), findsNothing);
@@ -90,6 +90,27 @@ void main() {
 class _FakeLessonDocumentLoader implements LessonDocumentLoader {
   @override
   Future<LessonDocument> load(String assetPath) async {
+    if (assetPath.contains('yosi_goes_to_school')) {
+      return const LessonDocument(
+        title: 'Yosi Goes To School',
+        body: 'Stub',
+      );
+    }
+
+    if (assetPath.contains('my_room')) {
+      return const LessonDocument(
+        title: 'My Room',
+        body: 'Stub',
+      );
+    }
+
+    if (assetPath.contains('neighborhood_library')) {
+      return const LessonDocument(
+        title: 'Neighborhood Library',
+        body: 'Stub',
+      );
+    }
+
     return const LessonDocument(title: 'Stub', body: 'Stub');
   }
 }

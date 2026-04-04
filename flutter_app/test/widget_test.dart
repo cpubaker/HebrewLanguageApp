@@ -98,14 +98,14 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('Hebrew Language App'), findsOneWidget);
-    expect(find.text('Android Migration'), findsOneWidget);
+    expect(find.text('Вчимо іврит'), findsOneWidget);
+    expect(find.text('Мобільна версія'), findsOneWidget);
 
     await tester.tap(find.byIcon(Icons.translate_outlined));
     await tester.pumpAndSettle();
 
     expect(
-      find.text('Search by English, transcription, Hebrew, or internal word id.'),
+      find.text('Пошук за англійською, транскрипцією, івритом або ID.'),
       findsOneWidget,
     );
 
@@ -118,7 +118,7 @@ void main() {
     await tester.tap(find.text('woman').last);
     await tester.pumpAndSettle();
 
-    expect(find.text('Word id: word_woman'), findsOneWidget);
+    expect(find.text('ID: word_woman'), findsOneWidget);
   });
 
   testWidgets('opens guide lesson details', (WidgetTester tester) async {
@@ -135,9 +135,9 @@ void main() {
     await tester.tap(find.byIcon(Icons.menu_book_outlined));
     await tester.pumpAndSettle();
 
-    expect(find.text('Intro Alphabet'), findsOneWidget);
+    expect(find.text('Alphabet Basics'), findsOneWidget);
 
-    await tester.tap(find.text('Intro Alphabet'));
+    await tester.tap(find.text('Alphabet Basics'));
     await tester.pumpAndSettle();
 
     expect(find.text('Alphabet Basics'), findsOneWidget);
@@ -168,13 +168,16 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Walk'), findsOneWidget);
-    expect(find.byTooltip('Play audio'), findsOneWidget);
+    expect(find.byTooltip('Увімкнути вимову'), findsOneWidget);
 
-    await tester.tap(find.byTooltip('Play audio'));
+    await tester.tap(find.byTooltip('Увімкнути вимову'));
     await tester.pumpAndSettle();
 
-    expect(audioPlayer.playedAssets, ['assets/learning/input/audio/verbs/walk.mp3']);
-    expect(find.byTooltip('Stop audio'), findsOneWidget);
+    expect(
+      audioPlayer.playedAssets,
+      ['assets/learning/input/audio/verbs/walk.mp3'],
+    );
+    expect(find.byTooltip('Зупинити вимову'), findsOneWidget);
   });
 
   testWidgets('opens reading lesson details', (WidgetTester tester) async {
@@ -192,7 +195,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Yosi Goes To School'), findsOneWidget);
-    expect(find.text('Beginner'), findsWidgets);
+    expect(find.text('Початковий'), findsWidgets);
 
     await tester.tap(find.text('Yosi Goes To School').first);
     await tester.pumpAndSettle();
@@ -220,19 +223,19 @@ void main() {
     await tester.tap(find.byIcon(Icons.style_outlined));
     await tester.pumpAndSettle();
 
-    expect(find.text('Flashcards'), findsOneWidget);
+    expect(find.text('Картки'), findsWidgets);
     expect(find.text('האיש הולך ברחוב.'), findsOneWidget);
     expect(find.text('man'), findsNothing);
 
-    await tester.ensureVisible(find.text('Know'));
+    await tester.ensureVisible(find.text('Знаю'));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Know'));
+    await tester.tap(find.text('Знаю'));
     await tester.pumpAndSettle();
 
     expect(find.text('man'), findsOneWidget);
     expect(find.text('The man is walking in the street.'), findsOneWidget);
-    expect(find.text('See Summary'), findsOneWidget);
+    expect(find.text('До підсумку'), findsOneWidget);
     expect(store.savedWordIds, contains('word_man'));
     expect(store.savedByWordId['word_man']?.correct, 2);
   });
@@ -253,20 +256,20 @@ void main() {
     await tester.tap(find.byIcon(Icons.style_outlined));
     await tester.pumpAndSettle();
 
-    await tester.ensureVisible(find.text('Know'));
+    await tester.ensureVisible(find.text('Знаю'));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Know'));
+    await tester.tap(find.text('Знаю'));
     await tester.pumpAndSettle();
 
-    await tester.ensureVisible(find.text('See Summary'));
+    await tester.ensureVisible(find.text('До підсумку'));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('See Summary'));
+    await tester.tap(find.text('До підсумку'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Deck complete'), findsOneWidget);
-    expect(find.text('Restart Deck'), findsOneWidget);
+    expect(find.text('Готово'), findsOneWidget);
+    expect(find.text('Почати ще раз'), findsOneWidget);
   });
 
   testWidgets('hydrates persisted word progress into the shared bundle', (
@@ -299,8 +302,8 @@ void main() {
     await tester.tap(find.text('man').last);
     await tester.pumpAndSettle();
 
-    expect(find.text('Correct: 9'), findsOneWidget);
-    expect(find.text('Wrong: 2'), findsOneWidget);
+    expect(find.text('Правильно: 9'), findsOneWidget);
+    expect(find.text('Помилки: 2'), findsOneWidget);
   });
 
   testWidgets('shows persisted study progress on the home screen', (
@@ -333,13 +336,13 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.scrollUntilVisible(find.text('Study Progress'), 300);
+    await tester.scrollUntilVisible(find.text('Ваш поступ'), 300);
     await tester.pumpAndSettle();
 
-    expect(find.text('Study Progress'), findsOneWidget);
-    expect(find.text('2 of 2 words have progress on this device'), findsOneWidget);
-    expect(find.text('Needs Review'), findsOneWidget);
-    expect(find.text('Unseen'), findsOneWidget);
+    expect(find.text('Ваш поступ'), findsOneWidget);
+    expect(find.text('Опрацьовано 2 із 2 слів'), findsOneWidget);
+    expect(find.text('Повторити'), findsOneWidget);
+    expect(find.text('Нові'), findsOneWidget);
   });
 
   testWidgets('opens flashcards in review mode from the home screen', (
@@ -355,16 +358,16 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.scrollUntilVisible(find.text('Flashcard Focus'), 300);
+    await tester.scrollUntilVisible(find.text('Картки на сьогодні'), 300);
     await tester.pumpAndSettle();
 
-    expect(find.text('Resume Review'), findsOneWidget);
+    expect(find.text('Продовжити'), findsOneWidget);
 
-    await tester.tap(find.text('Resume Review'));
+    await tester.tap(find.text('Продовжити'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Flashcards'), findsOneWidget);
-    expect(find.text('Card 1 of 1'), findsOneWidget);
+    expect(find.text('Картки'), findsWidgets);
+    expect(find.text('1 на повторенні'), findsOneWidget);
     expect(find.text('woman'), findsNothing);
   });
 
@@ -381,13 +384,13 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.scrollUntilVisible(find.text('Reading Preview'), 300);
+    await tester.scrollUntilVisible(find.text('Що почитати'), 300);
     await tester.pumpAndSettle();
 
-    expect(find.text('Reading Preview'), findsOneWidget);
+    expect(find.text('Що почитати'), findsOneWidget);
     expect(find.text('Yosi Goes To School'), findsWidgets);
-    expect(find.text('Beginner'), findsOneWidget);
-    expect(find.text('Open Reading'), findsOneWidget);
+    expect(find.text('Початковий'), findsOneWidget);
+    expect(find.text('До читання'), findsOneWidget);
   });
 }
 
