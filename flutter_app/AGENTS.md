@@ -1,9 +1,9 @@
 # AGENTS.md
 
 ## Purpose
-- This folder contains the Flutter Android client for the Hebrew learning app.
-- The Flutter app currently coexists with the Tkinter desktop app in `src/`.
-- Treat this folder as the mobile migration workspace: add new Android/mobile UI here without breaking the desktop app.
+- This folder contains the primary Flutter client for the Hebrew learning app.
+- The Flutter app currently coexists with the legacy Tkinter desktop app in `src/`.
+- Treat this folder as the default place for new app UI and feature work unless the task explicitly targets the desktop app.
 
 ## Source Of Truth
 - Flutter learning assets under `flutter_app/assets/learning/` are generated copies for runtime use.
@@ -36,9 +36,11 @@
 - Do not hand-edit synced files under `assets/learning/input/` for durable product changes; they may be overwritten by the sync script.
 - When adding new asset folders or files that Flutter must load, update `pubspec.yaml` as needed.
 - Keep mobile-specific presentation in `lib/screens/` and `lib/theme/`; keep parsing/loading concerns in `lib/services/`.
+- When adding a new feature screen, wire it through the existing shell and navigation structure instead of creating a parallel app entry flow.
+- Prefer extending the existing models and services before introducing a new architectural layer or state-management package.
 - Prefer Android-safe, touch-friendly UI patterns over desktop-style layouts.
 
-## Migration Roadmap
+## Product Roadmap
 - Current completed slices:
   - shared app shell
   - bottom navigation
