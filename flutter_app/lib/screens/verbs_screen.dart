@@ -68,6 +68,7 @@ class VerbsScreen extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 12),
             child: _VerbLessonCard(
               lesson: lesson,
+              documentLoader: documentLoader,
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute<void>(
@@ -150,9 +151,14 @@ class VerbDetailScreen extends StatelessWidget {
 }
 
 class _VerbLessonCard extends StatelessWidget {
-  const _VerbLessonCard({required this.lesson, required this.onTap});
+  const _VerbLessonCard({
+    required this.lesson,
+    required this.documentLoader,
+    required this.onTap,
+  });
 
   final LessonEntry lesson;
+  final LessonDocumentLoader documentLoader;
   final VoidCallback onTap;
 
   @override
@@ -199,11 +205,21 @@ class _VerbLessonCard extends StatelessWidget {
               ),
               const SizedBox(width: 14),
               Expanded(
-                child: Text(
-                  titleLabel,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+                child: FutureBuilder<LessonDocument>(
+                  future: documentLoader.load(lesson.assetPath),
+                  builder: (context, snapshot) {
+                    final resolvedTitle =
+                        snapshot.data?.title.trim().isNotEmpty == true
+                        ? snapshot.data!.title.trim()
+                        : titleLabel;
+
+                    return Text(
+                      resolvedTitle,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    );
+                  },
                 ),
               ),
               const Icon(

@@ -65,7 +65,7 @@ class FakeLessonDocumentLoader implements LessonDocumentLoader {
   Future<LessonDocument> load(String assetPath) async {
     if (assetPath.contains('/verbs/')) {
       return const LessonDocument(
-        title: 'Walk',
+        title: '\u0425\u043e\u0434\u0438\u0442\u0438',
         body: '## Present\n\n- holekh\n- holekhet',
       );
     }
@@ -162,12 +162,13 @@ void main() {
     await tester.tap(find.byIcon(Icons.play_lesson_outlined));
     await tester.pumpAndSettle();
 
-    expect(find.text('Walk'), findsOneWidget);
+    expect(find.text('\u0425\u043e\u0434\u0438\u0442\u0438'), findsOneWidget);
+    expect(find.text('Walk'), findsNothing);
 
-    await tester.tap(find.text('Walk'));
+    await tester.tap(find.text('\u0425\u043e\u0434\u0438\u0442\u0438'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Walk'), findsOneWidget);
+    expect(find.text('\u0425\u043e\u0434\u0438\u0442\u0438'), findsOneWidget);
     expect(find.byTooltip('Увімкнути вимову'), findsOneWidget);
 
     await tester.tap(find.byTooltip('Увімкнути вимову'));
