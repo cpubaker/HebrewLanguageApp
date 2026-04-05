@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:hebrew_language_flutter/app.dart';
+import 'package:hebrew_language_flutter/models/guide_lesson_status.dart';
 import 'package:hebrew_language_flutter/models/learning_bundle.dart';
 import 'package:hebrew_language_flutter/models/learning_context.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
@@ -469,22 +470,25 @@ class FakeWordProgressStore implements WordProgressStore {
 
 class FakeGuideProgressStore implements GuideProgressStore {
   FakeGuideProgressStore({
-    Set<String>? initialReadLessons,
-  }) : readLessons = {...?initialReadLessons};
+    Map<String, GuideLessonStatus>? initialStatuses,
+  }) : lessonStatuses = <String, GuideLessonStatus>{...?initialStatuses};
 
-  final Set<String> readLessons;
+  final Map<String, GuideLessonStatus> lessonStatuses;
 
   @override
-  Future<Set<String>> loadReadLessons() async {
-    return {...readLessons};
+  Future<Map<String, GuideLessonStatus>> loadLessonStatuses() async {
+    return Map<String, GuideLessonStatus>.from(lessonStatuses);
   }
 
   @override
-  Future<void> setLessonRead(String assetPath, bool isRead) async {
-    if (isRead) {
-      readLessons.add(assetPath);
+  Future<void> setLessonStatus(
+    String assetPath,
+    GuideLessonStatus status,
+  ) async {
+    if (status == GuideLessonStatus.unread) {
+      lessonStatuses.remove(assetPath);
     } else {
-      readLessons.remove(assetPath);
+      lessonStatuses[assetPath] = status;
     }
   }
 }

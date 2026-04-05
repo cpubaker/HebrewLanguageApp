@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../models/guide_lesson_status.dart';
 import '../models/learning_bundle.dart';
 import '../models/learning_word.dart';
 import '../services/guide_progress_store.dart';
@@ -41,7 +42,8 @@ class AppShellScreen extends StatefulWidget {
 class _AppShellScreenState extends State<AppShellScreen> {
   late Future<LearningBundle> _bundleFuture;
   LearningBundle? _bundle;
-  Set<String> _readGuideLessonPaths = <String>{};
+  Map<String, GuideLessonStatus> _guideLessonStatuses =
+      <String, GuideLessonStatus>{};
   final Map<String, int> _guidePersistenceTokens = <String, int>{};
   final Map<String, int> _wordPersistenceTokens = <String, int>{};
   FlashcardDeckMode _flashcardDeckMode = FlashcardDeckMode.allWords;
@@ -65,8 +67,8 @@ class _AppShellScreenState extends State<AppShellScreen> {
   Future<LearningBundle> _loadBundle() async {
     final bundle = await widget.loader.load();
     final storedProgress = await widget.progressStore.load();
-    final readGuideLessonPaths = await widget.guideProgressStore
-        .loadReadLessons();
+    final guideLessonStatuses = await widget.guideProgressStore
+        .loadLessonStatuses();
 
     final hydratedBundle = bundle.copyWith(
       words: bundle.words
@@ -85,7 +87,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
           .toList(growable: false),
     );
 
-    _readGuideLessonPaths = readGuideLessonPaths;
+    _guideLessonStatuses = guideLessonStatuses;
     _bundle = hydratedBundle;
     return hydratedBundle;
   }
@@ -126,15 +128,20 @@ class _AppShellScreenState extends State<AppShellScreen> {
     );
   }
 
-  void _handleGuideReadChanged(String assetPath, bool isRead) {
-    final previousPaths = _readGuideLessonPaths;
+  void _handleGuideStatusChanged(String assetPath, GuideLessonStatus status) {
+    final previousStatuses = Map<String, GuideLessonStatus>.from(
+      _guideLessonStatuses,
+    );
     setState(() {
-      if (isRead) {
-        _readGuideLessonPaths = {..._readGuideLessonPaths, assetPath};
+      if (status == GuideLessonStatus.unread) {
+        _guideLessonStatuses = <String, GuideLessonStatus>{
+          for (final entry in _guideLessonStatuses.entries)
+            if (entry.key != assetPath) entry.key: entry.value,
+        };
       } else {
-        _readGuideLessonPaths = {
-          for (final existingPath in _readGuideLessonPaths)
-            if (existingPath != assetPath) existingPath,
+        _guideLessonStatuses = <String, GuideLessonStatus>{
+          ..._guideLessonStatuses,
+          assetPath: status,
         };
       }
     });
@@ -146,8 +153,8 @@ class _AppShellScreenState extends State<AppShellScreen> {
     unawaited(
       _persistGuideReadChange(
         assetPath: assetPath,
-        isRead: isRead,
-        previousPaths: previousPaths,
+        status: status,
+        previousStatuses: previousStatuses,
         requestToken: requestToken,
       ),
     );
@@ -214,12 +221,12 @@ class _AppShellScreenState extends State<AppShellScreen> {
 
   Future<void> _persistGuideReadChange({
     required String assetPath,
-    required bool isRead,
-    required Set<String> previousPaths,
+    required GuideLessonStatus status,
+    required Map<String, GuideLessonStatus> previousStatuses,
     required int requestToken,
   }) async {
     try {
-      await widget.guideProgressStore.setLessonRead(assetPath, isRead);
+      await widget.guideProgressStore.setLessonStatus(assetPath, status);
     } catch (error) {
       debugPrint('Failed to save guide progress for $assetPath: $error');
 
@@ -228,7 +235,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
       }
 
       setState(() {
-        _readGuideLessonPaths = previousPaths;
+        _guideLessonStatuses = previousStatuses;
       });
 
       _showPersistenceError(
@@ -285,8 +292,8 @@ class _AppShellScreenState extends State<AppShellScreen> {
                 GuideScreen(
                   lessons: bundle.guideLessons,
                   documentLoader: widget.documentLoader,
-                  readLessonPaths: _readGuideLessonPaths,
-                  onReadChanged: _handleGuideReadChanged,
+                  lessonStatuses: _guideLessonStatuses,
+                  onStatusChanged: _handleGuideStatusChanged,
                 ),
                 VerbsScreen(
                   lessons: bundle.verbLessons,

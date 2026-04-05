@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:hebrew_language_flutter/app.dart';
+import 'package:hebrew_language_flutter/models/guide_lesson_status.dart';
 import 'package:hebrew_language_flutter/models/learning_bundle.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/models/lesson_document.dart';
@@ -62,7 +63,7 @@ void main() {
     );
   });
 
-  test('guide progress store trims empty lesson paths', () async {
+  test('guide progress store migrates legacy read lessons', () async {
     SharedPreferences.setMockInitialValues(<String, Object>{
       'guide_read_lessons_v1': <String>[
         ' assets/learning/input/guide/01_intro_alphabet.md ',
@@ -73,11 +74,39 @@ void main() {
 
     final store = SharedPreferencesGuideProgressStore();
 
-    final loadedLessons = await store.loadReadLessons();
+    final loadedStatuses = await store.loadLessonStatuses();
 
     expect(
-      loadedLessons,
-      <String>{'assets/learning/input/guide/01_intro_alphabet.md'},
+      loadedStatuses,
+      <String, GuideLessonStatus>{
+        'assets/learning/input/guide/01_intro_alphabet.md':
+            GuideLessonStatus.read,
+      },
+    );
+  });
+
+  test('guide progress store sanitizes malformed status payloads', () async {
+    SharedPreferences.setMockInitialValues(<String, Object>{
+      'guide_lesson_statuses_v2': jsonEncode(<String, Object?>{
+        ' assets/learning/input/guide/01_intro_alphabet.md ': 'studying',
+        'assets/learning/input/guide/02_numbers.md': 'read',
+        'assets/learning/input/guide/03_colors.md': 'unknown',
+        'assets/learning/input/guide/04_animals.md': 'unread',
+        '': 'read',
+      }),
+    });
+
+    final store = SharedPreferencesGuideProgressStore();
+
+    final loadedStatuses = await store.loadLessonStatuses();
+
+    expect(
+      loadedStatuses,
+      <String, GuideLessonStatus>{
+        'assets/learning/input/guide/01_intro_alphabet.md':
+            GuideLessonStatus.studying,
+        'assets/learning/input/guide/02_numbers.md': GuideLessonStatus.read,
+      },
     );
   });
 
@@ -100,14 +129,14 @@ void main() {
     await tester.tap(find.byIcon(Icons.menu_book_outlined));
     await tester.pumpAndSettle();
 
-    expect(find.byIcon(Icons.radio_button_unchecked_rounded), findsOneWidget);
+    expect(find.text('Не прочитано'), findsOneWidget);
 
-    await tester.tap(find.byIcon(Icons.radio_button_unchecked_rounded));
+    await tester.tap(find.byTooltip('Змінити статус уроку'));
     await tester.pump();
     await tester.pumpAndSettle();
 
     expect(guideStore.attemptedWrites, 1);
-    expect(find.byIcon(Icons.radio_button_unchecked_rounded), findsOneWidget);
+    expect(find.text('Не прочитано'), findsOneWidget);
     expect(find.byType(SnackBar), findsOneWidget);
   });
 }
@@ -153,12 +182,15 @@ class _ThrowingGuideProgressStore implements GuideProgressStore {
   int attemptedWrites = 0;
 
   @override
-  Future<Set<String>> loadReadLessons() async {
-    return <String>{};
+  Future<Map<String, GuideLessonStatus>> loadLessonStatuses() async {
+    return <String, GuideLessonStatus>{};
   }
 
   @override
-  Future<void> setLessonRead(String assetPath, bool isRead) async {
+  Future<void> setLessonStatus(
+    String assetPath,
+    GuideLessonStatus status,
+  ) async {
     attemptedWrites += 1;
     throw StateError('Simulated persistence failure');
   }

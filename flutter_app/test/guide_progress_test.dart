@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hebrew_language_flutter/app.dart';
+import 'package:hebrew_language_flutter/models/guide_lesson_status.dart';
 import 'package:hebrew_language_flutter/models/learning_bundle.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/models/lesson_document.dart';
@@ -12,7 +13,7 @@ import 'package:hebrew_language_flutter/services/verb_audio_player.dart';
 import 'package:hebrew_language_flutter/services/word_progress_store.dart';
 
 void main() {
-  testWidgets('guide list allows marking a lesson as read', (
+  testWidgets('guide list allows cycling lesson status manually', (
     WidgetTester tester,
   ) async {
     final guideStore = FakeGuideProgressStore();
@@ -31,23 +32,53 @@ void main() {
     await tester.tap(find.byIcon(Icons.menu_book_outlined));
     await tester.pumpAndSettle();
 
-    expect(find.text('Ще не читали'), findsOneWidget);
+    expect(find.text('Не прочитано'), findsOneWidget);
 
-    await tester.tap(find.byTooltip('Позначити як прочитаний'));
+    await tester.tap(find.byTooltip('Змінити статус уроку'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Вивчається'), findsWidgets);
+
+    await tester.tap(find.byTooltip('Змінити статус уроку'));
     await tester.pumpAndSettle();
 
     expect(
-      guideStore.readLessons,
-      contains('assets/learning/input/guide/01_intro_alphabet.md'),
+      guideStore.lessonStatuses['assets/learning/input/guide/01_intro_alphabet.md'],
+      GuideLessonStatus.read,
     );
-    expect(find.text('Прочитано'), findsOneWidget);
-    expect(find.byTooltip('Позначити як непрочитаний'), findsOneWidget);
+    expect(find.text('Прочитано'), findsWidgets);
+  });
+
+  testWidgets('guide lesson becomes studying when opened', (
+    WidgetTester tester,
+  ) async {
+    GuideLessonStatus? latestStatus;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: GuideDetailScreen(
+          lesson: const LessonEntry(
+            assetPath: 'assets/learning/input/guide/01_intro_alphabet.md',
+            displayName: '01 Intro Alphabet',
+          ),
+          documentLoader: _GuideDocumentLoader(),
+          initialStatus: GuideLessonStatus.unread,
+          onStatusChanged: (status) {
+            latestStatus = status;
+          },
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(latestStatus, GuideLessonStatus.studying);
+    expect(find.text('Вивчається'), findsWidgets);
   });
 
   testWidgets('guide lesson is marked as read after scrolling to the end', (
     WidgetTester tester,
   ) async {
-    var markedRead = false;
+    GuideLessonStatus? latestStatus;
 
     await tester.pumpWidget(
       MaterialApp(
@@ -57,9 +88,9 @@ void main() {
             displayName: '01 Intro Alphabet',
           ),
           documentLoader: _LongGuideDocumentLoader(),
-          isRead: false,
-          onReadChanged: (isRead) {
-            markedRead = isRead;
+          initialStatus: GuideLessonStatus.studying,
+          onStatusChanged: (status) {
+            latestStatus = status;
           },
         ),
       ),
@@ -73,8 +104,8 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(markedRead, isTrue);
-    expect(find.text('Прочитано'), findsOneWidget);
+    expect(latestStatus, GuideLessonStatus.read);
+    expect(find.text('Прочитано'), findsWidgets);
   });
 }
 
@@ -122,22 +153,25 @@ class _LongGuideDocumentLoader implements LessonDocumentLoader {
 
 class FakeGuideProgressStore implements GuideProgressStore {
   FakeGuideProgressStore({
-    Set<String>? initialReadLessons,
-  }) : readLessons = {...?initialReadLessons};
+    Map<String, GuideLessonStatus>? initialStatuses,
+  }) : lessonStatuses = <String, GuideLessonStatus>{...?initialStatuses};
 
-  final Set<String> readLessons;
+  final Map<String, GuideLessonStatus> lessonStatuses;
 
   @override
-  Future<Set<String>> loadReadLessons() async {
-    return {...readLessons};
+  Future<Map<String, GuideLessonStatus>> loadLessonStatuses() async {
+    return Map<String, GuideLessonStatus>.from(lessonStatuses);
   }
 
   @override
-  Future<void> setLessonRead(String assetPath, bool isRead) async {
-    if (isRead) {
-      readLessons.add(assetPath);
+  Future<void> setLessonStatus(
+    String assetPath,
+    GuideLessonStatus status,
+  ) async {
+    if (status == GuideLessonStatus.unread) {
+      lessonStatuses.remove(assetPath);
     } else {
-      readLessons.remove(assetPath);
+      lessonStatuses[assetPath] = status;
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../models/guide_lesson_status.dart';
 import '../models/learning_bundle.dart';
 import '../models/lesson_document.dart';
 import '../services/lesson_document_loader.dart';
@@ -10,19 +11,26 @@ class GuideScreen extends StatelessWidget {
     super.key,
     required this.lessons,
     required this.documentLoader,
-    required this.readLessonPaths,
-    required this.onReadChanged,
+    required this.lessonStatuses,
+    required this.onStatusChanged,
   });
 
   final List<LessonEntry> lessons;
   final LessonDocumentLoader documentLoader;
-  final Set<String> readLessonPaths;
-  final void Function(String assetPath, bool isRead) onReadChanged;
+  final Map<String, GuideLessonStatus> lessonStatuses;
+  final void Function(String assetPath, GuideLessonStatus status)
+  onStatusChanged;
+
+  GuideLessonStatus _statusFor(String assetPath) {
+    return lessonStatuses[assetPath] ?? GuideLessonStatus.unread;
+  }
 
   @override
   Widget build(BuildContext context) {
     final readCount = lessons
-        .where((lesson) => readLessonPaths.contains(lesson.assetPath))
+        .where(
+          (lesson) => _statusFor(lesson.assetPath) == GuideLessonStatus.read,
+        )
         .length;
 
     return ListView(
@@ -68,16 +76,16 @@ class GuideScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 18),
-        ...lessons.map(
-          (lesson) => Padding(
+        ...lessons.map((lesson) {
+          final lessonStatus = _statusFor(lesson.assetPath);
+          return Padding(
             padding: const EdgeInsets.only(bottom: 12),
             child: _GuideLessonCard(
               lesson: lesson,
               documentLoader: documentLoader,
-              isRead: readLessonPaths.contains(lesson.assetPath),
-              onToggleRead: () {
-                final isRead = readLessonPaths.contains(lesson.assetPath);
-                onReadChanged(lesson.assetPath, !isRead);
+              status: lessonStatus,
+              onStatusSelected: (status) {
+                onStatusChanged(lesson.assetPath, status);
               },
               onTap: () {
                 Navigator.of(context).push(
@@ -85,19 +93,30 @@ class GuideScreen extends StatelessWidget {
                     builder: (_) => GuideDetailScreen(
                       lesson: lesson,
                       documentLoader: documentLoader,
-                      isRead: readLessonPaths.contains(lesson.assetPath),
-                      onReadChanged: (isRead) {
-                        onReadChanged(lesson.assetPath, isRead);
+                      initialStatus: lessonStatus,
+                      onStatusChanged: (status) {
+                        onStatusChanged(lesson.assetPath, status);
                       },
                     ),
                   ),
                 );
               },
             ),
-          ),
-        ),
+          );
+        }),
       ],
     );
+  }
+}
+
+GuideLessonStatus _nextGuideLessonStatus(GuideLessonStatus status) {
+  switch (status) {
+    case GuideLessonStatus.unread:
+      return GuideLessonStatus.studying;
+    case GuideLessonStatus.studying:
+      return GuideLessonStatus.read;
+    case GuideLessonStatus.read:
+      return GuideLessonStatus.unread;
   }
 }
 
@@ -106,33 +125,58 @@ class GuideDetailScreen extends StatefulWidget {
     super.key,
     required this.lesson,
     required this.documentLoader,
-    required this.isRead,
-    required this.onReadChanged,
+    required this.initialStatus,
+    required this.onStatusChanged,
   });
 
   final LessonEntry lesson;
   final LessonDocumentLoader documentLoader;
-  final bool isRead;
-  final ValueChanged<bool> onReadChanged;
+  final GuideLessonStatus initialStatus;
+  final ValueChanged<GuideLessonStatus> onStatusChanged;
 
   @override
   State<GuideDetailScreen> createState() => _GuideDetailScreenState();
 }
 
 class _GuideDetailScreenState extends State<GuideDetailScreen> {
-  bool _hasMarkedReadFromScroll = false;
+  late GuideLessonStatus _status;
 
-  bool get _isRead => widget.isRead || _hasMarkedReadFromScroll;
+  @override
+  void initState() {
+    super.initState();
+    _status = widget.initialStatus == GuideLessonStatus.unread
+        ? GuideLessonStatus.studying
+        : widget.initialStatus;
 
-  bool _handleScrollNotification(ScrollNotification notification) {
-    if (_hasMarkedReadFromScroll || !_isAtBottom(notification.metrics)) {
-      return false;
+    if (widget.initialStatus == GuideLessonStatus.unread) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) {
+          return;
+        }
+
+        widget.onStatusChanged(_status);
+      });
+    }
+  }
+
+  void _updateStatus(GuideLessonStatus status) {
+    if (_status == status) {
+      return;
     }
 
     setState(() {
-      _hasMarkedReadFromScroll = true;
+      _status = status;
     });
-    widget.onReadChanged(true);
+    widget.onStatusChanged(status);
+  }
+
+  bool _handleScrollNotification(ScrollNotification notification) {
+    if (_status == GuideLessonStatus.read ||
+        !_isAtBottom(notification.metrics)) {
+      return false;
+    }
+
+    _updateStatus(GuideLessonStatus.read);
     return false;
   }
 
@@ -146,6 +190,8 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final statusTheme = _GuideLessonStatusTheme.fromStatus(_status);
+
     return Scaffold(
       appBar: AppBar(),
       body: FutureBuilder<LessonDocument>(
@@ -198,26 +244,34 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
                         ),
                       ),
                       const SizedBox(width: 12),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.18),
-                          borderRadius: BorderRadius.circular(999),
-                        ),
-                        child: Text(
-                          _isRead ? 'Прочитано' : 'У процесі',
-                          style: Theme.of(context).textTheme.labelLarge
-                              ?.copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w800,
-                              ),
-                        ),
+                      _GuideStatusToggleButton(
+                        status: _status,
+                        onPressed: () {
+                          _updateStatus(_nextGuideLessonStatus(_status));
+                        },
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.white.withValues(alpha: 0.18),
                       ),
                     ],
                   ),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Icon(
+                      statusTheme.icon,
+                      size: 18,
+                      color: statusTheme.color,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      statusTheme.label,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: statusTheme.color,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 20),
                 MarkdownLessonBody(
@@ -237,19 +291,20 @@ class _GuideLessonCard extends StatelessWidget {
   const _GuideLessonCard({
     required this.lesson,
     required this.documentLoader,
-    required this.isRead,
+    required this.status,
     required this.onTap,
-    required this.onToggleRead,
+    required this.onStatusSelected,
   });
 
   final LessonEntry lesson;
   final LessonDocumentLoader documentLoader;
-  final bool isRead;
+  final GuideLessonStatus status;
   final VoidCallback onTap;
-  final VoidCallback onToggleRead;
+  final ValueChanged<GuideLessonStatus> onStatusSelected;
 
   @override
   Widget build(BuildContext context) {
+    final statusTheme = _GuideLessonStatusTheme.fromStatus(status);
     final orderMatch = RegExp(r'^(\d+)').firstMatch(lesson.displayName);
     final orderLabel = orderMatch?.group(1) ?? '*';
     final titleLabel = lesson.displayName.replaceFirst(RegExp(r'^\d+\s+'), '');
@@ -279,18 +334,14 @@ class _GuideLessonCard extends StatelessWidget {
                 height: 44,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: isRead
-                      ? const Color(0xFF0F766E).withValues(alpha: 0.14)
-                      : const Color(0xFFB45309).withValues(alpha: 0.12),
+                  color: statusTheme.color.withValues(alpha: 0.14),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: Text(
                   orderLabel,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w800,
-                    color: isRead
-                        ? const Color(0xFF0F766E)
-                        : const Color(0xFF8C6A2A),
+                    color: statusTheme.color,
                   ),
                 ),
               ),
@@ -315,32 +366,35 @@ class _GuideLessonCard extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      isRead ? 'Прочитано' : 'Ще не читали',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: isRead
-                            ? const Color(0xFF0F766E)
-                            : const Color(0xFF6C665D),
-                        fontWeight: FontWeight.w600,
-                      ),
+                    Row(
+                      children: [
+                        Icon(
+                          statusTheme.icon,
+                          size: 18,
+                          color: statusTheme.color,
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          statusTheme.label,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: statusTheme.color,
+                                fontWeight: FontWeight.w600,
+                              ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-              IconButton(
-                tooltip: isRead
-                    ? 'Позначити як непрочитаний'
-                    : 'Позначити як прочитаний',
-                onPressed: onToggleRead,
-                icon: Icon(
-                  isRead
-                      ? Icons.check_circle_rounded
-                      : Icons.radio_button_unchecked_rounded,
-                  color: isRead
-                      ? const Color(0xFF0F766E)
-                      : const Color(0xFF8C6A2A),
-                ),
+              _GuideStatusToggleButton(
+                status: status,
+                compact: true,
+                onPressed: () {
+                  onStatusSelected(_nextGuideLessonStatus(status));
+                },
               ),
+              const SizedBox(width: 4),
               const Icon(
                 Icons.arrow_forward_ios_rounded,
                 size: 18,
@@ -351,5 +405,104 @@ class _GuideLessonCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _GuideStatusToggleButton extends StatelessWidget {
+  const _GuideStatusToggleButton({
+    required this.status,
+    required this.onPressed,
+    this.foregroundColor,
+    this.backgroundColor,
+    this.compact = false,
+  });
+
+  final GuideLessonStatus status;
+  final VoidCallback onPressed;
+  final Color? foregroundColor;
+  final Color? backgroundColor;
+  final bool compact;
+
+  @override
+  Widget build(BuildContext context) {
+    final statusTheme = _GuideLessonStatusTheme.fromStatus(status);
+    final resolvedForegroundColor = foregroundColor ?? statusTheme.color;
+
+    return Tooltip(
+      message: 'Змінити статус уроку',
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(999),
+          onTap: onPressed,
+          child: Container(
+            padding: compact
+                ? const EdgeInsets.all(6)
+                : const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            decoration: BoxDecoration(
+              color: backgroundColor ?? Colors.transparent,
+              borderRadius: BorderRadius.circular(999),
+            ),
+            child: compact
+                ? Icon(
+                    statusTheme.icon,
+                    color: resolvedForegroundColor,
+                  )
+                : Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        statusTheme.icon,
+                        color: resolvedForegroundColor,
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        statusTheme.label,
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: resolvedForegroundColor,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ],
+                  ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _GuideLessonStatusTheme {
+  const _GuideLessonStatusTheme({
+    required this.label,
+    required this.icon,
+    required this.color,
+  });
+
+  final String label;
+  final IconData icon;
+  final Color color;
+
+  static _GuideLessonStatusTheme fromStatus(GuideLessonStatus status) {
+    switch (status) {
+      case GuideLessonStatus.unread:
+        return const _GuideLessonStatusTheme(
+          label: 'Не прочитано',
+          icon: Icons.radio_button_unchecked_rounded,
+          color: Color(0xFF8C6A2A),
+        );
+      case GuideLessonStatus.studying:
+        return const _GuideLessonStatusTheme(
+          label: 'Вивчається',
+          icon: Icons.timelapse_rounded,
+          color: Color(0xFF2563EB),
+        );
+      case GuideLessonStatus.read:
+        return const _GuideLessonStatusTheme(
+          label: 'Прочитано',
+          icon: Icons.check_circle_rounded,
+          color: Color(0xFF0F766E),
+        );
+    }
   }
 }

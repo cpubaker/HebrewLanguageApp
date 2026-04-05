@@ -1,47 +1,99 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-abstract class GuideProgressStore {
-  Future<Set<String>> loadReadLessons();
+import '../models/guide_lesson_status.dart';
 
-  Future<void> setLessonRead(String assetPath, bool isRead);
+abstract class GuideProgressStore {
+  Future<Map<String, GuideLessonStatus>> loadLessonStatuses();
+
+  Future<void> setLessonStatus(
+    String assetPath,
+    GuideLessonStatus status,
+  );
 }
 
 class SharedPreferencesGuideProgressStore implements GuideProgressStore {
-  static const String _storageKey = 'guide_read_lessons_v1';
+  static const String _legacyReadLessonsKey = 'guide_read_lessons_v1';
+  static const String _storageKey = 'guide_lesson_statuses_v2';
 
   @override
-  Future<Set<String>> loadReadLessons() async {
+  Future<Map<String, GuideLessonStatus>> loadLessonStatuses() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final storedLessons =
-          prefs.getStringList(_storageKey) ?? const <String>[];
-      return storedLessons
-          .map((path) => path.trim())
-          .where((path) => path.isNotEmpty)
-          .toSet();
+      final storedStatuses = prefs.getString(_storageKey);
+      if (storedStatuses != null && storedStatuses.trim().isNotEmpty) {
+        return _decodeStatuses(storedStatuses);
+      }
+
+      return _loadLegacyReadLessons(prefs);
     } catch (error) {
       debugPrint(
         'Ignoring guide progress for $_storageKey because it could not be loaded: $error',
       );
-      return <String>{};
+      return <String, GuideLessonStatus>{};
     }
   }
 
   @override
-  Future<void> setLessonRead(String assetPath, bool isRead) async {
+  Future<void> setLessonStatus(
+    String assetPath,
+    GuideLessonStatus status,
+  ) async {
     final prefs = await SharedPreferences.getInstance();
-    final storedLessons =
-        (prefs.getStringList(_storageKey) ?? const <String>[])
-            .where((path) => path.trim().isNotEmpty)
-            .toSet();
-
-    if (isRead) {
-      storedLessons.add(assetPath);
-    } else {
-      storedLessons.remove(assetPath);
+    final storedStatuses = await loadLessonStatuses();
+    final sanitizedAssetPath = assetPath.trim();
+    if (sanitizedAssetPath.isEmpty) {
+      return;
     }
 
-    await prefs.setStringList(_storageKey, storedLessons.toList()..sort());
+    if (status == GuideLessonStatus.unread) {
+      storedStatuses.remove(sanitizedAssetPath);
+    } else {
+      storedStatuses[sanitizedAssetPath] = status;
+    }
+
+    final encodedStatuses = <String, String>{
+      for (final entry in storedStatuses.entries)
+        entry.key: entry.value.storageValue,
+    };
+
+    await prefs.setString(_storageKey, jsonEncode(encodedStatuses));
+  }
+
+  Map<String, GuideLessonStatus> _decodeStatuses(String rawPayload) {
+    final decodedPayload = jsonDecode(rawPayload);
+    if (decodedPayload is! Map) {
+      return <String, GuideLessonStatus>{};
+    }
+
+    final statuses = <String, GuideLessonStatus>{};
+    for (final entry in decodedPayload.entries) {
+      final rawPath = entry.key?.toString().trim() ?? '';
+      final rawStatus = entry.value?.toString() ?? '';
+      final status = GuideLessonStatus.fromStorageValue(rawStatus);
+      if (rawPath.isEmpty ||
+          status == null ||
+          status == GuideLessonStatus.unread) {
+        continue;
+      }
+
+      statuses[rawPath] = status;
+    }
+
+    return statuses;
+  }
+
+  Map<String, GuideLessonStatus> _loadLegacyReadLessons(
+    SharedPreferences prefs,
+  ) {
+    final storedLessons =
+        prefs.getStringList(_legacyReadLessonsKey) ?? const <String>[];
+    return <String, GuideLessonStatus>{
+      for (final lessonPath in storedLessons)
+        if (lessonPath.trim().isNotEmpty)
+          lessonPath.trim(): GuideLessonStatus.read,
+    };
   }
 }
