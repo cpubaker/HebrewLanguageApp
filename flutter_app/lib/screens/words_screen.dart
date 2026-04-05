@@ -136,28 +136,22 @@ class _WordsScreenState extends State<WordsScreen> {
           ),
         ),
         const SizedBox(height: 18),
-        SearchBar(
+        _SearchField(
           controller: _searchController,
           hintText: 'Шукати слова',
-          leading: const Icon(Icons.search_rounded),
-          trailing: _query.isEmpty
-              ? null
-              : [
-                  IconButton(
-                    onPressed: () {
-                      _searchController.clear();
-                      setState(() {
-                        _query = '';
-                      });
-                    },
-                    icon: const Icon(Icons.close_rounded),
-                  ),
-                ],
           onChanged: (value) {
             setState(() {
               _query = value;
             });
           },
+          onClear: _query.isEmpty
+              ? null
+              : () {
+                  _searchController.clear();
+                  setState(() {
+                    _query = '';
+                  });
+                },
         ),
         const SizedBox(height: 16),
         Wrap(
@@ -187,6 +181,58 @@ class _WordsScreenState extends State<WordsScreen> {
             ),
           ),
       ],
+    );
+  }
+}
+
+class _SearchField extends StatelessWidget {
+  const _SearchField({
+    required this.controller,
+    required this.hintText,
+    required this.onChanged,
+    this.onClear,
+  });
+
+  final TextEditingController controller;
+  final String hintText;
+  final ValueChanged<String> onChanged;
+  final VoidCallback? onClear;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller,
+      keyboardType: TextInputType.text,
+      textInputAction: TextInputAction.search,
+      onChanged: onChanged,
+      decoration: InputDecoration(
+        hintText: hintText,
+        prefixIcon: const Icon(Icons.search_rounded),
+        suffixIcon: onClear == null
+            ? null
+            : IconButton(
+                onPressed: onClear,
+                icon: const Icon(Icons.close_rounded),
+              ),
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 18,
+          vertical: 16,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: const BorderSide(color: Color(0x1F8C6A2A)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: const BorderSide(color: Color(0xFF8C6A2A), width: 1.5),
+        ),
+      ),
     );
   }
 }

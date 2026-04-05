@@ -8,7 +8,7 @@ import '../services/lesson_document_loader.dart';
 import '../services/verb_audio_player.dart';
 import 'widgets/markdown_lesson_body.dart';
 
-class VerbsScreen extends StatelessWidget {
+class VerbsScreen extends StatefulWidget {
   const VerbsScreen({
     super.key,
     required this.lessons,
@@ -21,66 +21,295 @@ class VerbsScreen extends StatelessWidget {
   final CreateVerbAudioPlayer audioPlayerFactory;
 
   @override
+  State<VerbsScreen> createState() => _VerbsScreenState();
+}
+
+class _VerbsScreenState extends State<VerbsScreen> {
+  late final TextEditingController _searchController;
+  late final ScrollController _scrollController;
+  late final FocusNode _searchFocusNode;
+
+  final Map<String, String> _lessonTitles = <String, String>{};
+
+  String _query = '';
+  bool _searchVisible = false;
+  bool _showScrollToTop = false;
+  bool _isLoadingLessonTitles = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController = TextEditingController();
+    _scrollController = ScrollController()..addListener(_handleScroll);
+    _searchFocusNode = FocusNode();
+    unawaited(_primeLessonTitles());
+  }
+
+  @override
+  void didUpdateWidget(covariant VerbsScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.lessons != widget.lessons) {
+      unawaited(_primeLessonTitles());
+    }
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _scrollController
+      ..removeListener(_handleScroll)
+      ..dispose();
+    _searchFocusNode.dispose();
+    super.dispose();
+  }
+
+  Future<void> _primeLessonTitles() async {
+    final missingLessons = widget.lessons
+        .where((lesson) => !_lessonTitles.containsKey(lesson.assetPath))
+        .toList(growable: false);
+    if (missingLessons.isEmpty) {
+      return;
+    }
+
+    setState(() {
+      _isLoadingLessonTitles = true;
+    });
+
+    final resolvedTitles = await Future.wait(
+      missingLessons.map((lesson) async {
+        try {
+          final document = await widget.documentLoader.load(lesson.assetPath);
+          final title = document.title.trim();
+          return MapEntry<String, String?>(lesson.assetPath, title);
+        } catch (_) {
+          return MapEntry<String, String?>(lesson.assetPath, null);
+        }
+      }),
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      for (final entry in resolvedTitles) {
+        final title = entry.value;
+        if (title != null && title.isNotEmpty) {
+          _lessonTitles[entry.key] = title;
+        }
+      }
+      _isLoadingLessonTitles = false;
+    });
+  }
+
+  Future<void> _ensureLessonTitlesLoaded() async {
+    if (_isLoadingLessonTitles) {
+      while (mounted && _isLoadingLessonTitles) {
+        await Future<void>.delayed(const Duration(milliseconds: 16));
+      }
+      return;
+    }
+
+    if (_lessonTitles.length < widget.lessons.length) {
+      await _primeLessonTitles();
+    }
+  }
+
+  void _handleScroll() {
+    if (!_scrollController.hasClients) {
+      return;
+    }
+
+    final shouldShow = _scrollController.offset > 240;
+    if (shouldShow == _showScrollToTop) {
+      return;
+    }
+
+    setState(() {
+      _showScrollToTop = shouldShow;
+    });
+  }
+
+  Future<void> _scrollToTop() async {
+    if (!_scrollController.hasClients) {
+      return;
+    }
+
+    await _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 320),
+      curve: Curves.easeOutCubic,
+    );
+  }
+
+  Future<void> _openSearch() async {
+    if (!_searchVisible) {
+      setState(() {
+        _searchVisible = true;
+      });
+    }
+
+    await _scrollToTop();
+    if (!mounted) {
+      return;
+    }
+
+    _searchFocusNode.requestFocus();
+    unawaited(_ensureLessonTitlesLoaded());
+  }
+
+  void _toggleSearchVisibility() {
+    if (!_searchVisible) {
+      unawaited(_openSearch());
+      return;
+    }
+
+    if (_query.isNotEmpty) {
+      _searchController.clear();
+      setState(() {
+        _query = '';
+      });
+      return;
+    }
+
+    _searchFocusNode.unfocus();
+    setState(() {
+      _searchVisible = false;
+    });
+  }
+
+  String _resolvedLessonTitle(LessonEntry lesson) {
+    final cachedTitle = _lessonTitles[lesson.assetPath];
+    if (cachedTitle != null && cachedTitle.trim().isNotEmpty) {
+      return cachedTitle.trim();
+    }
+
+    return lesson.displayName.replaceFirst(RegExp(r'^\d+\s+'), '');
+  }
+
+  List<LessonEntry> get _filteredLessons {
+    final normalizedQuery = _query.trim().toLowerCase();
+    if (normalizedQuery.isEmpty) {
+      return widget.lessons;
+    }
+
+    return widget.lessons.where((lesson) {
+      final title = _resolvedLessonTitle(lesson).toLowerCase();
+      final displayName = lesson.displayName.toLowerCase();
+      final assetName = lesson.assetPath.split('/').last.toLowerCase();
+
+      return title.contains(normalizedQuery) ||
+          displayName.contains(normalizedQuery) ||
+          assetName.contains(normalizedQuery);
+    }).toList(growable: false);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
+    final filteredLessons = _filteredLessons;
+
+    return Stack(
       children: [
-        Text(
-          'Дієслова',
-          style: Theme.of(
-            context,
-          ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          'Основні дієслова з поясненнями, вимовою та ілюстраціями.',
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: const Color(0xFF5F5A52),
-            height: 1.4,
-          ),
-        ),
-        const SizedBox(height: 18),
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(22),
-            border: Border.all(
-              color: const Color(0xFF7C3AED).withValues(alpha: 0.16),
+        ListView(
+          controller: _scrollController,
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 108),
+          children: [
+            Text(
+              'Дієслова',
+              style: Theme.of(
+                context,
+              ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
             ),
-          ),
-          child: Row(
-            children: [
-              const Icon(Icons.play_lesson_rounded, color: Color(0xFF7C3AED)),
-              const SizedBox(width: 12),
-              Text(
-                'Уроків: ${lessons.length}',
-                style: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+            const SizedBox(height: 8),
+            Text(
+              'Основні дієслова з поясненнями, вимовою та ілюстраціями.',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: const Color(0xFF5F5A52),
+                height: 1.4,
               ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 18),
-        ...lessons.map(
-          (lesson) => Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: _VerbLessonCard(
-              lesson: lesson,
-              documentLoader: documentLoader,
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => VerbDetailScreen(
-                      lesson: lesson,
-                      documentLoader: documentLoader,
-                      audioPlayerFactory: audioPlayerFactory,
-                    ),
-                  ),
-                );
+            ),
+            const SizedBox(height: 18),
+            _VerbSearchCard(
+              totalCount: widget.lessons.length,
+              visibleCount: filteredLessons.length,
+              query: _query,
+              isSearchVisible: _searchVisible,
+              isLoadingLessonTitles: _isLoadingLessonTitles,
+              searchController: _searchController,
+              searchFocusNode: _searchFocusNode,
+              onToggleSearch: _toggleSearchVisibility,
+              onQueryChanged: (value) {
+                setState(() {
+                  _query = value;
+                  if (value.trim().isNotEmpty) {
+                    _searchVisible = true;
+                  }
+                });
               },
             ),
+            const SizedBox(height: 18),
+            if (filteredLessons.isEmpty)
+              const _EmptyVerbSearchState()
+            else
+              ...filteredLessons.map(
+                (lesson) => Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: _VerbLessonCard(
+                    lesson: lesson,
+                    documentLoader: widget.documentLoader,
+                    resolvedTitle: _resolvedLessonTitle(lesson),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => VerbDetailScreen(
+                            lesson: lesson,
+                            documentLoader: widget.documentLoader,
+                            audioPlayerFactory: widget.audioPlayerFactory,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+          ],
+        ),
+        Positioned(
+          right: 20,
+          bottom: 20,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              AnimatedSlide(
+                duration: const Duration(milliseconds: 220),
+                offset: _showScrollToTop ? Offset.zero : const Offset(0, 0.25),
+                child: AnimatedOpacity(
+                  duration: const Duration(milliseconds: 220),
+                  opacity: _showScrollToTop ? 1 : 0,
+                  child: IgnorePointer(
+                    ignoring: !_showScrollToTop,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: FloatingActionButton.small(
+                        heroTag: 'verbsScrollToTop',
+                        onPressed: _scrollToTop,
+                        backgroundColor: Colors.white,
+                        foregroundColor: const Color(0xFF7C3AED),
+                        child: const Icon(Icons.vertical_align_top_rounded),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              FloatingActionButton.small(
+                heroTag: 'verbsSearch',
+                onPressed: _openSearch,
+                backgroundColor: const Color(0xFF7C3AED),
+                foregroundColor: Colors.white,
+                child: const Icon(Icons.search_rounded),
+              ),
+            ],
           ),
         ),
       ],
@@ -150,22 +379,200 @@ class VerbDetailScreen extends StatelessWidget {
   }
 }
 
+class _VerbSearchCard extends StatelessWidget {
+  const _VerbSearchCard({
+    required this.totalCount,
+    required this.visibleCount,
+    required this.query,
+    required this.isSearchVisible,
+    required this.isLoadingLessonTitles,
+    required this.searchController,
+    required this.searchFocusNode,
+    required this.onToggleSearch,
+    required this.onQueryChanged,
+  });
+
+  final int totalCount;
+  final int visibleCount;
+  final String query;
+  final bool isSearchVisible;
+  final bool isLoadingLessonTitles;
+  final TextEditingController searchController;
+  final FocusNode searchFocusNode;
+  final VoidCallback onToggleSearch;
+  final ValueChanged<String> onQueryChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final hasQuery = query.trim().isNotEmpty;
+
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 220),
+      curve: Curves.easeOutCubic,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(
+          color: const Color(0xFF7C3AED).withValues(alpha: 0.16),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.play_lesson_rounded, color: Color(0xFF7C3AED)),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  hasQuery
+                      ? 'Знайдено: $visibleCount із $totalCount'
+                      : 'Уроків: $totalCount',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+                ),
+              ),
+              IconButton(
+                tooltip: isSearchVisible ? 'Сховати пошук' : 'Показати пошук',
+                onPressed: onToggleSearch,
+                icon: Icon(
+                  isSearchVisible ? Icons.close_rounded : Icons.search_rounded,
+                  color: const Color(0xFF7C3AED),
+                ),
+              ),
+            ],
+          ),
+          AnimatedCrossFade(
+            duration: const Duration(milliseconds: 220),
+            crossFadeState: isSearchVisible || hasQuery
+                ? CrossFadeState.showSecond
+                : CrossFadeState.showFirst,
+            firstChild: Text(
+              'Швидкий пошук по назві уроку або імені файла.',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: const Color(0xFF5F5A52),
+              ),
+            ),
+            secondChild: Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: _SearchField(
+                controller: searchController,
+                focusNode: searchFocusNode,
+                hintText: 'Шукати дієслово',
+                onChanged: onQueryChanged,
+                onClear: hasQuery
+                    ? () {
+                        searchController.clear();
+                        onQueryChanged('');
+                      }
+                    : null,
+              ),
+            ),
+          ),
+          if (isLoadingLessonTitles && (isSearchVisible || hasQuery)) ...[
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                const SizedBox(
+                  width: 14,
+                  height: 14,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: Color(0xFF7C3AED),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    'Підтягуємо українські назви для точнішого пошуку.',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: const Color(0xFF5F5A52),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _SearchField extends StatelessWidget {
+  const _SearchField({
+    required this.controller,
+    required this.hintText,
+    required this.onChanged,
+    this.focusNode,
+    this.onClear,
+  });
+
+  final TextEditingController controller;
+  final String hintText;
+  final FocusNode? focusNode;
+  final ValueChanged<String> onChanged;
+  final VoidCallback? onClear;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller,
+      focusNode: focusNode,
+      keyboardType: TextInputType.text,
+      textInputAction: TextInputAction.search,
+      onChanged: onChanged,
+      decoration: InputDecoration(
+        hintText: hintText,
+        prefixIcon: const Icon(Icons.search_rounded),
+        suffixIcon: onClear == null
+            ? null
+            : IconButton(
+                onPressed: onClear,
+                icon: const Icon(Icons.close_rounded),
+              ),
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 18,
+          vertical: 16,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: const BorderSide(color: Color(0x1F7C3AED)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: const BorderSide(color: Color(0xFF7C3AED), width: 1.5),
+        ),
+      ),
+    );
+  }
+}
+
 class _VerbLessonCard extends StatelessWidget {
   const _VerbLessonCard({
     required this.lesson,
     required this.documentLoader,
+    required this.resolvedTitle,
     required this.onTap,
   });
 
   final LessonEntry lesson;
   final LessonDocumentLoader documentLoader;
+  final String resolvedTitle;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final orderMatch = RegExp(r'^(\d+)').firstMatch(lesson.displayName);
     final orderLabel = orderMatch?.group(1) ?? '*';
-    final titleLabel = lesson.displayName.replaceFirst(RegExp(r'^\d+\s+'), '');
 
     return Material(
       color: Colors.transparent,
@@ -208,13 +615,13 @@ class _VerbLessonCard extends StatelessWidget {
                 child: FutureBuilder<LessonDocument>(
                   future: documentLoader.load(lesson.assetPath),
                   builder: (context, snapshot) {
-                    final resolvedTitle =
+                    final title =
                         snapshot.data?.title.trim().isNotEmpty == true
                         ? snapshot.data!.title.trim()
-                        : titleLabel;
+                        : resolvedTitle;
 
                     return Text(
-                      resolvedTitle,
+                      title,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
@@ -230,6 +637,45 @@ class _VerbLessonCard extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _EmptyVerbSearchState extends StatelessWidget {
+  const _EmptyVerbSearchState();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Column(
+        children: [
+          const Icon(
+            Icons.search_off_rounded,
+            size: 32,
+            color: Color(0xFF7C3AED),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            'Нічого не знайдено.',
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            'Спробуйте інший запит: назву дієслова українською або частину імені файла.',
+            textAlign: TextAlign.center,
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: const Color(0xFF5F5A52)),
+          ),
+        ],
       ),
     );
   }
