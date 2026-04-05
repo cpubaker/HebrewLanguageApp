@@ -8,7 +8,7 @@
 ## What Counts As A Verb Lesson
 - Verb files should use stable numbered names such as `31_work.md` or `101_believe.md`.
 - Keep existing lesson numbers and filenames stable unless a rename is explicitly required.
-- Use UTF-8 encoding.
+- Use UTF-8 encoding without BOM.
 
 ## Source Of Truth
 - Edit files in `data/input/verbs/` for durable content changes.
@@ -63,6 +63,7 @@
 - Use simple Markdown only: headings and bullet lists.
 - Keep one blank line between headings and lists for readability.
 - Keep Hebrew spelling, transliteration, and Ukrainian gloss style consistent inside each file.
+- Use the stress mark consistently and avoid mechanical apostrophes when the vowel sequence is already clear in Ukrainian transliteration.
 - Do not add extra narrative sections unless the task explicitly asks for them.
 - If a form is rare, irregular, or has multiple acceptable variants, prefer one canonical form and stay consistent.
 

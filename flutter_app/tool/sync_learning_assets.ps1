@@ -30,7 +30,9 @@ foreach ($relativePath in $pathsToMirror) {
     }
 
     New-Item -ItemType Directory -Force -Path $destinationPath | Out-Null
-    Get-ChildItem -LiteralPath $sourcePath -Force | Copy-Item -Destination $destinationPath -Recurse -Force
+    Get-ChildItem -LiteralPath $sourcePath -Force |
+        Where-Object { $_.Name -ne "AGENTS.md" } |
+        Copy-Item -Destination $destinationPath -Recurse -Force
 }
 
 Write-Host "Flutter assets synced from $sourceRoot"

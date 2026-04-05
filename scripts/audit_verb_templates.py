@@ -37,6 +37,9 @@ def audit_templates(verbs_dir: Path) -> dict[str, list[str]]:
     files_by_template: dict[str, list[str]] = defaultdict(list)
 
     for lesson_file in sorted(verbs_dir.glob("*.md")):
+        if not lesson_file.stem[:1].isdigit():
+            continue
+
         content = lesson_file.read_text(encoding="utf-8").strip()
         if not content:
             files_by_template["empty"].append(lesson_file.name)
