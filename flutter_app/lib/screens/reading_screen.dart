@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../models/learning_bundle.dart';
@@ -21,7 +23,133 @@ class ReadingScreen extends StatefulWidget {
 }
 
 class _ReadingScreenState extends State<ReadingScreen> {
+  late final ScrollController _scrollController;
+
+  final Map<String, String> _lessonTitles = <String, String>{};
+
   String? _selectedLevelKey;
+  bool _isLoadingLessonTitles = false;
+  bool _showScrollToTop = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController()..addListener(_handleScroll);
+    unawaited(_primeLessonTitles());
+  }
+
+  @override
+  void didUpdateWidget(covariant ReadingScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.lessons != widget.lessons) {
+      unawaited(_primeLessonTitles());
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController
+      ..removeListener(_handleScroll)
+      ..dispose();
+    super.dispose();
+  }
+
+  Future<void> _primeLessonTitles() async {
+    if (_isLoadingLessonTitles) {
+      return;
+    }
+
+    final missingLessons = widget.lessons
+        .where((lesson) => !_lessonTitles.containsKey(lesson.assetPath))
+        .toList(growable: false);
+    if (missingLessons.isEmpty) {
+      return;
+    }
+
+    setState(() {
+      _isLoadingLessonTitles = true;
+    });
+
+    const batchSize = 24;
+
+    try {
+      for (
+        var startIndex = 0;
+        startIndex < missingLessons.length;
+        startIndex += batchSize
+      ) {
+        final batch = missingLessons.skip(startIndex).take(batchSize);
+        final resolvedTitles = await Future.wait(
+          batch.map((lesson) async {
+            try {
+              final document = await widget.documentLoader.load(lesson.assetPath);
+              final title = document.title.trim();
+              return MapEntry<String, String?>(lesson.assetPath, title);
+            } catch (_) {
+              return MapEntry<String, String?>(lesson.assetPath, null);
+            }
+          }),
+        );
+
+        if (!mounted) {
+          return;
+        }
+
+        setState(() {
+          for (final entry in resolvedTitles) {
+            final title = entry.value;
+            if (title != null && title.isNotEmpty) {
+              _lessonTitles[entry.key] = title;
+            }
+          }
+        });
+
+        await Future<void>.delayed(Duration.zero);
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoadingLessonTitles = false;
+        });
+      }
+    }
+  }
+
+  void _handleScroll() {
+    if (!_scrollController.hasClients) {
+      return;
+    }
+
+    final shouldShow = _scrollController.offset > 240;
+    if (shouldShow == _showScrollToTop) {
+      return;
+    }
+
+    setState(() {
+      _showScrollToTop = shouldShow;
+    });
+  }
+
+  Future<void> _scrollToTop() async {
+    if (!_scrollController.hasClients) {
+      return;
+    }
+
+    await _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 320),
+      curve: Curves.easeOutCubic,
+    );
+  }
+
+  String _resolvedLessonTitle(LessonEntry lesson) {
+    final cachedTitle = _lessonTitles[lesson.assetPath];
+    if (cachedTitle != null && cachedTitle.trim().isNotEmpty) {
+      return cachedTitle.trim();
+    }
+
+    return readingLessonTitle(lesson);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,61 +173,114 @@ class _ReadingScreenState extends State<ReadingScreen> {
       }
     }
 
-    return ListView(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
+    final itemCount = visibleGroups.length + 7;
+
+    return Stack(
       children: [
-        Text(
-          'Читання',
-          style: Theme.of(
-            context,
-          ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          'Тексти для читання, розкладені за рівнями.',
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: const Color(0xFF5F5A52),
-            height: 1.4,
-          ),
-        ),
-        const SizedBox(height: 18),
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(22),
-            border: Border.all(
-              color: const Color(0xFF1D4ED8).withValues(alpha: 0.16),
-            ),
-          ),
-          child: Row(
-            children: [
-              const Icon(Icons.auto_stories_rounded, color: Color(0xFF1D4ED8)),
-              const SizedBox(width: 12),
-              Text(
-                _selectedLevelKey == null
-                    ? 'Уроків: ${widget.lessons.length}'
-                    : 'Показано: $visibleLessonCount',
+        ListView.builder(
+          controller: _scrollController,
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 108),
+          itemCount: itemCount,
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return Text(
+                '\u0427\u0438\u0442\u0430\u043d\u043d\u044f',
                 style: Theme.of(
                   context,
-                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+                ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
+              );
+            }
+
+            if (index == 1) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(
+                  '\u0422\u0435\u043a\u0441\u0442\u0438 \u0434\u043b\u044f \u0447\u0438\u0442\u0430\u043d\u043d\u044f, \u0440\u043e\u0437\u043a\u043b\u0430\u0434\u0435\u043d\u0456 \u0437\u0430 \u0440\u0456\u0432\u043d\u044f\u043c\u0438.',
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: const Color(0xFF5F5A52),
+                    height: 1.4,
+                  ),
+                ),
+              );
+            }
+
+            if (index == 2) {
+              return const SizedBox(height: 18);
+            }
+
+            if (index == 3) {
+              return Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(22),
+                  border: Border.all(
+                    color: const Color(0xFF1D4ED8).withValues(alpha: 0.16),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.auto_stories_rounded, color: Color(0xFF1D4ED8)),
+                    const SizedBox(width: 12),
+                    Text(
+                      _selectedLevelKey == null
+                          ? '\u0423\u0440\u043e\u043a\u0456\u0432: ${widget.lessons.length}'
+                          : '\u041f\u043e\u043a\u0430\u0437\u0430\u043d\u043e: $visibleLessonCount',
+                      style: Theme.of(
+                        context,
+                      ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            if (index == 4) {
+              return const SizedBox(height: 18);
+            }
+
+            if (index == 5) {
+              return _ReadingLevelSelector(
+                selectedLabel: selectedGroup?.levelLabel ?? '\u0423\u0441\u0456 \u0440\u0456\u0432\u043d\u0456',
+                selectedCount: selectedGroup?.lessons.length ?? widget.lessons.length,
+                onTap: () => _showLevelPicker(context, lessonGroups),
+              );
+            }
+
+            if (index == 6) {
+              return const SizedBox(height: 18);
+            }
+
+            final group = visibleGroups[index - 7];
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 18),
+              child: _ReadingLevelSection(
+                group: group,
+                documentLoader: widget.documentLoader,
+                titleResolver: _resolvedLessonTitle,
               ),
-            ],
-          ),
+            );
+          },
         ),
-        const SizedBox(height: 18),
-        _ReadingLevelSelector(
-          selectedLabel: selectedGroup?.levelLabel ?? 'Усі рівні',
-          selectedCount: selectedGroup?.lessons.length ?? widget.lessons.length,
-          onTap: () => _showLevelPicker(context, lessonGroups),
-        ),
-        const SizedBox(height: 18),
-        ...visibleGroups.map(
-          (group) => Padding(
-            padding: const EdgeInsets.only(bottom: 18),
-            child: _ReadingLevelSection(
-              group: group,
-              documentLoader: widget.documentLoader,
+        Positioned(
+          right: 20,
+          bottom: 20,
+          child: AnimatedSlide(
+            duration: const Duration(milliseconds: 220),
+            offset: _showScrollToTop ? Offset.zero : const Offset(0, 0.25),
+            child: AnimatedOpacity(
+              duration: const Duration(milliseconds: 220),
+              opacity: _showScrollToTop ? 1 : 0,
+              child: IgnorePointer(
+                ignoring: !_showScrollToTop,
+                child: FloatingActionButton.small(
+                  heroTag: 'readingScrollToTop',
+                  onPressed: _scrollToTop,
+                  backgroundColor: Colors.white,
+                  foregroundColor: const Color(0xFF1D4ED8),
+                  child: const Icon(Icons.vertical_align_top_rounded),
+                ),
+              ),
             ),
           ),
         ),
@@ -274,19 +455,18 @@ class ReadingDetailScreen extends StatelessWidget {
 class _ReadingLessonCard extends StatelessWidget {
   const _ReadingLessonCard({
     required this.lesson,
-    required this.documentLoader,
+    required this.resolvedTitle,
     required this.onTap,
   });
 
   final LessonEntry lesson;
-  final LessonDocumentLoader documentLoader;
+  final String resolvedTitle;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final level = readingLevelLabelFromAssetPath(lesson.assetPath);
     final orderLabel = readingLessonOrderLabel(lesson);
-    final fallbackTitle = readingLessonTitle(lesson);
 
     return Material(
       color: Colors.transparent,
@@ -329,20 +509,10 @@ class _ReadingLessonCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    FutureBuilder<LessonDocument>(
-                      future: documentLoader.load(lesson.assetPath),
-                      builder: (context, snapshot) {
-                        final resolvedTitle =
-                            snapshot.data?.title.trim().isNotEmpty == true
-                            ? snapshot.data!.title.trim()
-                            : fallbackTitle;
-
-                        return Text(
-                          resolvedTitle,
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(fontWeight: FontWeight.w700),
-                        );
-                      },
+                    Text(
+                      resolvedTitle,
+                      style: Theme.of(context).textTheme.titleMedium
+                          ?.copyWith(fontWeight: FontWeight.w700),
                     ),
                     const SizedBox(height: 4),
                     Text(
@@ -371,10 +541,12 @@ class _ReadingLevelSection extends StatelessWidget {
   const _ReadingLevelSection({
     required this.group,
     required this.documentLoader,
+    required this.titleResolver,
   });
 
   final ReadingLessonGroup group;
   final LessonDocumentLoader documentLoader;
+  final String Function(LessonEntry lesson) titleResolver;
 
   @override
   Widget build(BuildContext context) {
@@ -406,7 +578,7 @@ class _ReadingLevelSection extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 12),
             child: _ReadingLessonCard(
               lesson: lesson,
-              documentLoader: documentLoader,
+              resolvedTitle: titleResolver(lesson),
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute<void>(

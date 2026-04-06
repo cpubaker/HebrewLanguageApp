@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../models/guide_lesson_status.dart';
@@ -6,7 +8,7 @@ import '../models/lesson_document.dart';
 import '../services/lesson_document_loader.dart';
 import 'widgets/markdown_lesson_body.dart';
 
-class GuideScreen extends StatelessWidget {
+class GuideScreen extends StatefulWidget {
   const GuideScreen({
     super.key,
     required this.lessons,
@@ -21,89 +23,266 @@ class GuideScreen extends StatelessWidget {
   final void Function(String assetPath, GuideLessonStatus status)
   onStatusChanged;
 
+  @override
+  State<GuideScreen> createState() => _GuideScreenState();
+}
+
+class _GuideScreenState extends State<GuideScreen> {
+  late final ScrollController _scrollController;
+
+  final Map<String, String> _lessonTitles = <String, String>{};
+
+  bool _isLoadingLessonTitles = false;
+  bool _showScrollToTop = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController()..addListener(_handleScroll);
+    unawaited(_primeLessonTitles());
+  }
+
+  @override
+  void didUpdateWidget(covariant GuideScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.lessons != widget.lessons) {
+      unawaited(_primeLessonTitles());
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController
+      ..removeListener(_handleScroll)
+      ..dispose();
+    super.dispose();
+  }
+
   GuideLessonStatus _statusFor(String assetPath) {
-    return lessonStatuses[assetPath] ?? GuideLessonStatus.unread;
+    return widget.lessonStatuses[assetPath] ?? GuideLessonStatus.unread;
+  }
+
+  Future<void> _primeLessonTitles() async {
+    if (_isLoadingLessonTitles) {
+      return;
+    }
+
+    final missingLessons = widget.lessons
+        .where((lesson) => !_lessonTitles.containsKey(lesson.assetPath))
+        .toList(growable: false);
+    if (missingLessons.isEmpty) {
+      return;
+    }
+
+    setState(() {
+      _isLoadingLessonTitles = true;
+    });
+
+    const batchSize = 24;
+
+    try {
+      for (
+        var startIndex = 0;
+        startIndex < missingLessons.length;
+        startIndex += batchSize
+      ) {
+        final batch = missingLessons.skip(startIndex).take(batchSize);
+        final resolvedTitles = await Future.wait(
+          batch.map((lesson) async {
+            try {
+              final document = await widget.documentLoader.load(lesson.assetPath);
+              final title = document.title.trim();
+              return MapEntry<String, String?>(lesson.assetPath, title);
+            } catch (_) {
+              return MapEntry<String, String?>(lesson.assetPath, null);
+            }
+          }),
+        );
+
+        if (!mounted) {
+          return;
+        }
+
+        setState(() {
+          for (final entry in resolvedTitles) {
+            final title = entry.value;
+            if (title != null && title.isNotEmpty) {
+              _lessonTitles[entry.key] = title;
+            }
+          }
+        });
+
+        await Future<void>.delayed(Duration.zero);
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoadingLessonTitles = false;
+        });
+      }
+    }
+  }
+
+  void _handleScroll() {
+    if (!_scrollController.hasClients) {
+      return;
+    }
+
+    final shouldShow = _scrollController.offset > 240;
+    if (shouldShow == _showScrollToTop) {
+      return;
+    }
+
+    setState(() {
+      _showScrollToTop = shouldShow;
+    });
+  }
+
+  Future<void> _scrollToTop() async {
+    if (!_scrollController.hasClients) {
+      return;
+    }
+
+    await _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 320),
+      curve: Curves.easeOutCubic,
+    );
+  }
+
+  String _resolvedLessonTitle(LessonEntry lesson) {
+    final cachedTitle = _lessonTitles[lesson.assetPath];
+    if (cachedTitle != null && cachedTitle.trim().isNotEmpty) {
+      return cachedTitle.trim();
+    }
+
+    return lesson.displayName.replaceFirst(RegExp(r'^\d+\s+'), '');
   }
 
   @override
   Widget build(BuildContext context) {
-    final readCount = lessons
+    final readCount = widget.lessons
         .where(
           (lesson) => _statusFor(lesson.assetPath) == GuideLessonStatus.read,
         )
         .length;
+    final itemCount = widget.lessons.length + 5;
 
-    return ListView(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
+    return Stack(
       children: [
-        Text(
-          'Довідник',
-          style: Theme.of(
-            context,
-          ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          'Короткі уроки з граматики та побудови фраз.',
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: const Color(0xFF5F5A52),
-            height: 1.4,
-          ),
-        ),
-        const SizedBox(height: 18),
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(22),
-            border: Border.all(
-              color: const Color(0xFFB45309).withValues(alpha: 0.16),
-            ),
-          ),
-          child: Row(
-            children: [
-              const Icon(Icons.menu_book_rounded, color: Color(0xFFB45309)),
-              const SizedBox(width: 12),
-              Expanded(
+        ListView.builder(
+          controller: _scrollController,
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 108),
+          itemCount: itemCount,
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return Text(
+                '\u0414\u043e\u0432\u0456\u0434\u043d\u0438\u043a',
+                style: Theme.of(
+                  context,
+                ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
+              );
+            }
+
+            if (index == 1) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 8),
                 child: Text(
-                  'Прочитано $readCount із ${lessons.length} уроків',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
+                  '\u041a\u043e\u0440\u043e\u0442\u043a\u0456 \u0443\u0440\u043e\u043a\u0438 \u0437 \u0433\u0440\u0430\u043c\u0430\u0442\u0438\u043a\u0438 \u0442\u0430 \u043f\u043e\u0431\u0443\u0434\u043e\u0432\u0438 \u0444\u0440\u0430\u0437.',
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: const Color(0xFF5F5A52),
+                    height: 1.4,
                   ),
                 ),
+              );
+            }
+
+            if (index == 2) {
+              return const SizedBox(height: 18);
+            }
+
+            if (index == 3) {
+              return Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(22),
+                  border: Border.all(
+                    color: const Color(0xFFB45309).withValues(alpha: 0.16),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.menu_book_rounded, color: Color(0xFFB45309)),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        '\u041f\u0440\u043e\u0447\u0438\u0442\u0430\u043d\u043e $readCount \u0456\u0437 ${widget.lessons.length} \u0443\u0440\u043e\u043a\u0456\u0432',
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            if (index == 4) {
+              return const SizedBox(height: 18);
+            }
+
+            final lesson = widget.lessons[index - 5];
+            final lessonStatus = _statusFor(lesson.assetPath);
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: _GuideLessonCard(
+                lesson: lesson,
+                status: lessonStatus,
+                resolvedTitle: _resolvedLessonTitle(lesson),
+                onStatusSelected: (status) {
+                  widget.onStatusChanged(lesson.assetPath, status);
+                },
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => GuideDetailScreen(
+                        lesson: lesson,
+                        documentLoader: widget.documentLoader,
+                        initialStatus: lessonStatus,
+                        onStatusChanged: (status) {
+                          widget.onStatusChanged(lesson.assetPath, status);
+                        },
+                      ),
+                    ),
+                  );
+                },
               ),
-            ],
+            );
+          },
+        ),
+        Positioned(
+          right: 20,
+          bottom: 20,
+          child: AnimatedSlide(
+            duration: const Duration(milliseconds: 220),
+            offset: _showScrollToTop ? Offset.zero : const Offset(0, 0.25),
+            child: AnimatedOpacity(
+              duration: const Duration(milliseconds: 220),
+              opacity: _showScrollToTop ? 1 : 0,
+              child: IgnorePointer(
+                ignoring: !_showScrollToTop,
+                child: FloatingActionButton.small(
+                  heroTag: 'guideScrollToTop',
+                  onPressed: _scrollToTop,
+                  backgroundColor: Colors.white,
+                  foregroundColor: const Color(0xFFB45309),
+                  child: const Icon(Icons.vertical_align_top_rounded),
+                ),
+              ),
+            ),
           ),
         ),
-        const SizedBox(height: 18),
-        ...lessons.map((lesson) {
-          final lessonStatus = _statusFor(lesson.assetPath);
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: _GuideLessonCard(
-              lesson: lesson,
-              documentLoader: documentLoader,
-              status: lessonStatus,
-              onStatusSelected: (status) {
-                onStatusChanged(lesson.assetPath, status);
-              },
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => GuideDetailScreen(
-                      lesson: lesson,
-                      documentLoader: documentLoader,
-                      initialStatus: lessonStatus,
-                      onStatusChanged: (status) {
-                        onStatusChanged(lesson.assetPath, status);
-                      },
-                    ),
-                  ),
-                );
-              },
-            ),
-          );
-        }),
       ],
     );
   }
@@ -290,15 +469,15 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
 class _GuideLessonCard extends StatelessWidget {
   const _GuideLessonCard({
     required this.lesson,
-    required this.documentLoader,
     required this.status,
+    required this.resolvedTitle,
     required this.onTap,
     required this.onStatusSelected,
   });
 
   final LessonEntry lesson;
-  final LessonDocumentLoader documentLoader;
   final GuideLessonStatus status;
+  final String resolvedTitle;
   final VoidCallback onTap;
   final ValueChanged<GuideLessonStatus> onStatusSelected;
 
@@ -307,7 +486,6 @@ class _GuideLessonCard extends StatelessWidget {
     final statusTheme = _GuideLessonStatusTheme.fromStatus(status);
     final orderMatch = RegExp(r'^(\d+)').firstMatch(lesson.displayName);
     final orderLabel = orderMatch?.group(1) ?? '*';
-    final titleLabel = lesson.displayName.replaceFirst(RegExp(r'^\d+\s+'), '');
 
     return Material(
       color: Colors.transparent,
@@ -350,20 +528,11 @@ class _GuideLessonCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    FutureBuilder<LessonDocument>(
-                      future: documentLoader.load(lesson.assetPath),
-                      builder: (context, snapshot) {
-                        final resolvedTitle =
-                            snapshot.data?.title.trim().isNotEmpty == true
-                            ? snapshot.data!.title.trim()
-                            : titleLabel;
-
-                        return Text(
-                          resolvedTitle,
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(fontWeight: FontWeight.w700),
-                        );
-                      },
+                    Text(
+                      resolvedTitle,
+                      style: Theme.of(
+                        context,
+                      ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
                     ),
                     const SizedBox(height: 4),
                     Row(
