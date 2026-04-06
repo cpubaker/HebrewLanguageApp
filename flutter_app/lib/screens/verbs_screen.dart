@@ -64,6 +64,10 @@ class _VerbsScreenState extends State<VerbsScreen> {
   }
 
   Future<void> _primeLessonTitles() async {
+    if (_isLoadingLessonTitles) {
+      return;
+    }
+
     final missingLessons = widget.lessons
         .where((lesson) => !_lessonTitles.containsKey(lesson.assetPath))
         .toList(growable: false);
@@ -75,31 +79,49 @@ class _VerbsScreenState extends State<VerbsScreen> {
       _isLoadingLessonTitles = true;
     });
 
-    final resolvedTitles = await Future.wait(
-      missingLessons.map((lesson) async {
-        try {
-          final document = await widget.documentLoader.load(lesson.assetPath);
-          final title = document.title.trim();
-          return MapEntry<String, String?>(lesson.assetPath, title);
-        } catch (_) {
-          return MapEntry<String, String?>(lesson.assetPath, null);
-        }
-      }),
-    );
+    const batchSize = 24;
 
-    if (!mounted) {
-      return;
-    }
+    try {
+      for (
+        var startIndex = 0;
+        startIndex < missingLessons.length;
+        startIndex += batchSize
+      ) {
+        final batch = missingLessons.skip(startIndex).take(batchSize);
+        final resolvedTitles = await Future.wait(
+          batch.map((lesson) async {
+            try {
+              final document = await widget.documentLoader.load(lesson.assetPath);
+              final title = document.title.trim();
+              return MapEntry<String, String?>(lesson.assetPath, title);
+            } catch (_) {
+              return MapEntry<String, String?>(lesson.assetPath, null);
+            }
+          }),
+        );
 
-    setState(() {
-      for (final entry in resolvedTitles) {
-        final title = entry.value;
-        if (title != null && title.isNotEmpty) {
-          _lessonTitles[entry.key] = title;
+        if (!mounted) {
+          return;
         }
+
+        setState(() {
+          for (final entry in resolvedTitles) {
+            final title = entry.value;
+            if (title != null && title.isNotEmpty) {
+              _lessonTitles[entry.key] = title;
+            }
+          }
+        });
+
+        await Future<void>.delayed(Duration.zero);
       }
-      _isLoadingLessonTitles = false;
-    });
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoadingLessonTitles = false;
+        });
+      }
+    }
   }
 
   Future<void> _ensureLessonTitlesLoaded() async {
@@ -207,72 +229,91 @@ class _VerbsScreenState extends State<VerbsScreen> {
   @override
   Widget build(BuildContext context) {
     final filteredLessons = _filteredLessons;
+    final hasResults = filteredLessons.isNotEmpty;
+    final itemCount = hasResults ? filteredLessons.length + 5 : 6;
 
     return Stack(
       children: [
-        ListView(
+        ListView.builder(
           controller: _scrollController,
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 108),
-          children: [
-            Text(
-              'Дієслова',
-              style: Theme.of(
-                context,
-              ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Основні дієслова з поясненнями, вимовою та ілюстраціями.',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: const Color(0xFF5F5A52),
-                height: 1.4,
-              ),
-            ),
-            const SizedBox(height: 18),
-            _VerbSearchCard(
-              totalCount: widget.lessons.length,
-              visibleCount: filteredLessons.length,
-              query: _query,
-              isSearchVisible: _searchVisible,
-              isLoadingLessonTitles: _isLoadingLessonTitles,
-              searchController: _searchController,
-              searchFocusNode: _searchFocusNode,
-              onToggleSearch: _toggleSearchVisibility,
-              onQueryChanged: (value) {
-                setState(() {
-                  _query = value;
-                  if (value.trim().isNotEmpty) {
-                    _searchVisible = true;
-                  }
-                });
-              },
-            ),
-            const SizedBox(height: 18),
-            if (filteredLessons.isEmpty)
-              const _EmptyVerbSearchState()
-            else
-              ...filteredLessons.map(
-                (lesson) => Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: _VerbLessonCard(
-                    lesson: lesson,
-                    documentLoader: widget.documentLoader,
-                    resolvedTitle: _resolvedLessonTitle(lesson),
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => VerbDetailScreen(
-                            lesson: lesson,
-                            documentLoader: widget.documentLoader,
-                            audioPlayerFactory: widget.audioPlayerFactory,
-                          ),
-                        ),
-                      );
-                    },
+          itemCount: itemCount,
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return Text(
+                'Дієслова',
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.w800,
+                ),
+              );
+            }
+
+            if (index == 1) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(
+                  'Основні дієслова з поясненнями, вимовою та ілюстраціями.',
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: const Color(0xFF5F5A52),
+                    height: 1.4,
                   ),
                 ),
+              );
+            }
+
+            if (index == 2) {
+              return const SizedBox(height: 18);
+            }
+
+            if (index == 3) {
+              return _VerbSearchCard(
+                totalCount: widget.lessons.length,
+                visibleCount: filteredLessons.length,
+                query: _query,
+                isSearchVisible: _searchVisible,
+                isLoadingLessonTitles: _isLoadingLessonTitles,
+                searchController: _searchController,
+                searchFocusNode: _searchFocusNode,
+                onToggleSearch: _toggleSearchVisibility,
+                onQueryChanged: (value) {
+                  setState(() {
+                    _query = value;
+                    if (value.trim().isNotEmpty) {
+                      _searchVisible = true;
+                    }
+                  });
+                },
+              );
+            }
+
+            if (index == 4) {
+              return const SizedBox(height: 18);
+            }
+
+            if (!hasResults) {
+              return const _EmptyVerbSearchState();
+            }
+
+            final lesson = filteredLessons[index - 5];
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: _VerbLessonCard(
+                lesson: lesson,
+                resolvedTitle: _resolvedLessonTitle(lesson),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => VerbDetailScreen(
+                        lesson: lesson,
+                        documentLoader: widget.documentLoader,
+                        audioPlayerFactory: widget.audioPlayerFactory,
+                      ),
+                    ),
+                  );
+                },
               ),
-          ],
+            );
+          },
         ),
         Positioned(
           right: 20,
@@ -559,13 +600,11 @@ class _SearchField extends StatelessWidget {
 class _VerbLessonCard extends StatelessWidget {
   const _VerbLessonCard({
     required this.lesson,
-    required this.documentLoader,
     required this.resolvedTitle,
     required this.onTap,
   });
 
   final LessonEntry lesson;
-  final LessonDocumentLoader documentLoader;
   final String resolvedTitle;
   final VoidCallback onTap;
 
@@ -612,21 +651,11 @@ class _VerbLessonCard extends StatelessWidget {
               ),
               const SizedBox(width: 14),
               Expanded(
-                child: FutureBuilder<LessonDocument>(
-                  future: documentLoader.load(lesson.assetPath),
-                  builder: (context, snapshot) {
-                    final title =
-                        snapshot.data?.title.trim().isNotEmpty == true
-                        ? snapshot.data!.title.trim()
-                        : resolvedTitle;
-
-                    return Text(
-                      title,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
-                    );
-                  },
+                child: Text(
+                  resolvedTitle,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
               const Icon(

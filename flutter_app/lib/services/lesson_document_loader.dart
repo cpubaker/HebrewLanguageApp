@@ -12,15 +12,19 @@ class AssetLessonDocumentLoader implements LessonDocumentLoader {
   }) : assetBundle = assetBundle ?? rootBundle;
 
   final AssetBundle assetBundle;
+  final Map<String, Future<LessonDocument>> _cache =
+      <String, Future<LessonDocument>>{};
 
   @override
   Future<LessonDocument> load(String assetPath) async {
-    final content = await assetBundle.loadString(assetPath);
-    final (title, body) = _splitMarkdownSection(content);
-    return LessonDocument(
-      title: title,
-      body: body,
-    );
+    return _cache.putIfAbsent(assetPath, () async {
+      final content = await assetBundle.loadString(assetPath);
+      final (title, body) = _splitMarkdownSection(content);
+      return LessonDocument(
+        title: title,
+        body: body,
+      );
+    });
   }
 
   (String, String) _splitMarkdownSection(String content) {
