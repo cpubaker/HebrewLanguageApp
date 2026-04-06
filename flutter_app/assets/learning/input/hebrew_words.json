@@ -473,7 +473,7 @@
         "english": "medicine",
         "transcription": "trufa",
         "correct": 1,
-        "wrong": 0,
+        "wrong": 1,
         "last_correct": false,
         "writing_correct": 0,
         "writing_wrong": 0,
