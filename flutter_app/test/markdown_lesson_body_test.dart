@@ -55,4 +55,34 @@ void main() {
     expect(selectableText.textAlign, TextAlign.left);
     expect(selectableText.textDirection, TextDirection.ltr);
   });
+
+  testWidgets('opens glossary translation sheet for tappable lesson phrase', (
+    WidgetTester tester,
+  ) async {
+    const phrase = 'בֹּקֶר טוֹב!';
+
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(
+          body: MarkdownLessonBody(
+            body: phrase,
+            accentColor: Color(0xFF1D4ED8),
+            inlineGlossary: <String, String>{
+              'בֹּקֶר טוֹב': 'доброго ранку',
+            },
+          ),
+        ),
+      ),
+    );
+
+    final richTextFinder = find.byWidgetPredicate(
+      (widget) => widget is RichText && widget.text.toPlainText() == phrase,
+    );
+
+    await tester.tapAt(tester.getTopRight(richTextFinder) + const Offset(-24, 12));
+    await tester.pumpAndSettle();
+
+    expect(find.text('доброго ранку'), findsOneWidget);
+    expect(find.text('בֹּקֶר טוֹב'), findsOneWidget);
+  });
 }

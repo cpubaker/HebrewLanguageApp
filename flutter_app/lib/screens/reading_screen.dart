@@ -598,6 +598,7 @@ class _ReadingDetailScreenState extends State<ReadingDetailScreen> {
                 MarkdownLessonBody(
                   body: document.body,
                   accentColor: const Color(0xFF1D4ED8),
+                  inlineGlossary: document.glossary,
                 ),
               ],
             ),
@@ -861,6 +862,7 @@ class _ReadingStatusToggleButton extends StatelessWidget {
 
 class ReadingLevelSelector extends StatelessWidget {
   const ReadingLevelSelector({
+    super.key,
     required this.selectedLabel,
     required this.selectedCount,
     required this.onTap,
