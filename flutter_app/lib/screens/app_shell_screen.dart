@@ -10,6 +10,7 @@ import '../services/guide_progress_store.dart';
 import '../services/flashcard_session.dart';
 import '../services/lesson_document_loader.dart';
 import '../services/learning_bundle_loader.dart';
+import '../services/reading_progress_store.dart';
 import '../services/verb_audio_player.dart';
 import '../services/word_progress_store.dart';
 import 'flashcards_screen.dart';
@@ -26,6 +27,7 @@ class AppShellScreen extends StatefulWidget {
     required this.documentLoader,
     required this.progressStore,
     required this.guideProgressStore,
+    required this.readingProgressStore,
     required this.audioPlayerFactory,
   });
 
@@ -33,6 +35,7 @@ class AppShellScreen extends StatefulWidget {
   final LessonDocumentLoader documentLoader;
   final WordProgressStore progressStore;
   final GuideProgressStore guideProgressStore;
+  final ReadingProgressStore readingProgressStore;
   final CreateVerbAudioPlayer audioPlayerFactory;
 
   @override
@@ -44,7 +47,10 @@ class _AppShellScreenState extends State<AppShellScreen> {
   LearningBundle? _bundle;
   Map<String, GuideLessonStatus> _guideLessonStatuses =
       <String, GuideLessonStatus>{};
+  Map<String, GuideLessonStatus> _readingLessonStatuses =
+      <String, GuideLessonStatus>{};
   final Map<String, int> _guidePersistenceTokens = <String, int>{};
+  final Map<String, int> _readingPersistenceTokens = <String, int>{};
   final Map<String, int> _wordPersistenceTokens = <String, int>{};
   FlashcardDeckMode _flashcardDeckMode = FlashcardDeckMode.allWords;
   int _flashcardDeckRequestToken = 0;
@@ -69,6 +75,8 @@ class _AppShellScreenState extends State<AppShellScreen> {
     final storedProgress = await widget.progressStore.load();
     final guideLessonStatuses = await widget.guideProgressStore
         .loadLessonStatuses();
+    final readingLessonStatuses = await widget.readingProgressStore
+        .loadLessonStatuses();
 
     final hydratedBundle = bundle.copyWith(
       words: bundle.words
@@ -88,6 +96,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
     );
 
     _guideLessonStatuses = guideLessonStatuses;
+    _readingLessonStatuses = readingLessonStatuses;
     _bundle = hydratedBundle;
     return hydratedBundle;
   }
@@ -152,6 +161,38 @@ class _AppShellScreenState extends State<AppShellScreen> {
     );
     unawaited(
       _persistGuideReadChange(
+        assetPath: assetPath,
+        status: status,
+        previousStatuses: previousStatuses,
+        requestToken: requestToken,
+      ),
+    );
+  }
+
+  void _handleReadingStatusChanged(String assetPath, GuideLessonStatus status) {
+    final previousStatuses = Map<String, GuideLessonStatus>.from(
+      _readingLessonStatuses,
+    );
+    setState(() {
+      if (status == GuideLessonStatus.unread) {
+        _readingLessonStatuses = <String, GuideLessonStatus>{
+          for (final entry in _readingLessonStatuses.entries)
+            if (entry.key != assetPath) entry.key: entry.value,
+        };
+      } else {
+        _readingLessonStatuses = <String, GuideLessonStatus>{
+          ..._readingLessonStatuses,
+          assetPath: status,
+        };
+      }
+    });
+
+    final requestToken = _nextPersistenceToken(
+      _readingPersistenceTokens,
+      assetPath,
+    );
+    unawaited(
+      _persistReadingStatusChange(
         assetPath: assetPath,
         status: status,
         previousStatuses: previousStatuses,
@@ -244,6 +285,31 @@ class _AppShellScreenState extends State<AppShellScreen> {
     }
   }
 
+  Future<void> _persistReadingStatusChange({
+    required String assetPath,
+    required GuideLessonStatus status,
+    required Map<String, GuideLessonStatus> previousStatuses,
+    required int requestToken,
+  }) async {
+    try {
+      await widget.readingProgressStore.setLessonStatus(assetPath, status);
+    } catch (error) {
+      debugPrint('Failed to save reading progress for $assetPath: $error');
+
+      if (!mounted || _readingPersistenceTokens[assetPath] != requestToken) {
+        return;
+      }
+
+      setState(() {
+        _readingLessonStatuses = previousStatuses;
+      });
+
+      _showPersistenceError(
+        'РќРµ РІРґР°Р»РѕСЃСЏ Р·Р±РµСЂРµРіС‚Рё РїСЂРѕРіСЂРµСЃ С‡РёС‚Р°РЅРЅСЏ. РЎРїСЂРѕР±СѓР№С‚Рµ С‰Рµ СЂР°Р·.',
+      );
+    }
+  }
+
   void _showPersistenceError(String message) {
     final messenger = ScaffoldMessenger.maybeOf(context);
     messenger
@@ -303,6 +369,8 @@ class _AppShellScreenState extends State<AppShellScreen> {
                 ReadingScreen(
                   lessons: bundle.readingLessons,
                   documentLoader: widget.documentLoader,
+                  lessonStatuses: _readingLessonStatuses,
+                  onStatusChanged: _handleReadingStatusChanged,
                 ),
               ],
             ),

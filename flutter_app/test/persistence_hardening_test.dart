@@ -12,6 +12,7 @@ import 'package:hebrew_language_flutter/models/lesson_document.dart';
 import 'package:hebrew_language_flutter/services/guide_progress_store.dart';
 import 'package:hebrew_language_flutter/services/lesson_document_loader.dart';
 import 'package:hebrew_language_flutter/services/learning_bundle_loader.dart';
+import 'package:hebrew_language_flutter/services/reading_progress_store.dart';
 import 'package:hebrew_language_flutter/services/verb_audio_player.dart';
 import 'package:hebrew_language_flutter/services/word_progress_store.dart';
 
@@ -110,6 +111,34 @@ void main() {
     );
   });
 
+  test('reading progress store sanitizes malformed status payloads', () async {
+    SharedPreferences.setMockInitialValues(<String, Object>{
+      'reading_lesson_statuses_v1': jsonEncode(<String, Object?>{
+        ' assets/learning/input/reading/beginner/01_yosi_goes_to_school.md ':
+            'studying',
+        'assets/learning/input/reading/intermediate/02_city_trip.md': 'read',
+        'assets/learning/input/reading/advanced/03_market_day.md': 'unknown',
+        'assets/learning/input/reading/proficient/04_news_digest.md':
+            'unread',
+        '': 'read',
+      }),
+    });
+
+    final store = SharedPreferencesReadingProgressStore();
+
+    final loadedStatuses = await store.loadLessonStatuses();
+
+    expect(
+      loadedStatuses,
+      <String, GuideLessonStatus>{
+        'assets/learning/input/reading/beginner/01_yosi_goes_to_school.md':
+            GuideLessonStatus.studying,
+        'assets/learning/input/reading/intermediate/02_city_trip.md':
+            GuideLessonStatus.read,
+      },
+    );
+  });
+
   testWidgets('guide progress rolls back when persistence fails', (
     WidgetTester tester,
   ) async {
@@ -121,6 +150,7 @@ void main() {
         documentLoader: _GuideDocumentLoader(),
         progressStore: _FakeWordProgressStore(),
         guideProgressStore: guideStore,
+        readingProgressStore: _FakeReadingProgressStore(),
         audioPlayerFactory: () => _FakeVerbAudioPlayer(),
       ),
     );
@@ -136,6 +166,37 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(guideStore.attemptedWrites, 1);
+    expect(find.text('Не прочитано'), findsOneWidget);
+    expect(find.byType(SnackBar), findsOneWidget);
+  });
+
+  testWidgets('reading progress rolls back when persistence fails', (
+    WidgetTester tester,
+  ) async {
+    final readingStore = _ThrowingReadingProgressStore();
+
+    await tester.pumpWidget(
+      HebrewFlutterApp(
+        loader: _ReadingOnlyBundleLoader(),
+        documentLoader: _ReadingDocumentLoader(),
+        progressStore: _FakeWordProgressStore(),
+        guideProgressStore: _FakeGuideProgressStore(),
+        readingProgressStore: readingStore,
+        audioPlayerFactory: () => _FakeVerbAudioPlayer(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.auto_stories_outlined));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Не прочитано'), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Змінити статус уроку'));
+    await tester.pump();
+    await tester.pumpAndSettle();
+
+    expect(readingStore.attemptedWrites, 1);
     expect(find.text('Не прочитано'), findsOneWidget);
     expect(find.byType(SnackBar), findsOneWidget);
   });
@@ -168,6 +229,34 @@ class _GuideDocumentLoader implements LessonDocumentLoader {
   }
 }
 
+class _ReadingOnlyBundleLoader implements LearningBundleLoader {
+  @override
+  Future<LearningBundle> load() async {
+    return const LearningBundle(
+      words: <LearningWord>[],
+      guideLessons: <LessonEntry>[],
+      verbLessons: <LessonEntry>[],
+      readingLessons: <LessonEntry>[
+        LessonEntry(
+          assetPath:
+              'assets/learning/input/reading/beginner/01_yosi_goes_to_school.md',
+          displayName: '01 Yosi Goes To School',
+        ),
+      ],
+    );
+  }
+}
+
+class _ReadingDocumentLoader implements LessonDocumentLoader {
+  @override
+  Future<LessonDocument> load(String assetPath) async {
+    return const LessonDocument(
+      title: 'Yosi Goes To School',
+      body: '## Key words\n\n- yosi\n- school',
+    );
+  }
+}
+
 class _FakeWordProgressStore implements WordProgressStore {
   @override
   Future<Map<String, StoredWordProgress>> load() async {
@@ -194,6 +283,50 @@ class _ThrowingGuideProgressStore implements GuideProgressStore {
     attemptedWrites += 1;
     throw StateError('Simulated persistence failure');
   }
+}
+
+class _FakeGuideProgressStore implements GuideProgressStore {
+  @override
+  Future<Map<String, GuideLessonStatus>> loadLessonStatuses() async {
+    return <String, GuideLessonStatus>{};
+  }
+
+  @override
+  Future<void> setLessonStatus(
+    String assetPath,
+    GuideLessonStatus status,
+  ) async {}
+}
+
+class _ThrowingReadingProgressStore implements ReadingProgressStore {
+  int attemptedWrites = 0;
+
+  @override
+  Future<Map<String, GuideLessonStatus>> loadLessonStatuses() async {
+    return <String, GuideLessonStatus>{};
+  }
+
+  @override
+  Future<void> setLessonStatus(
+    String assetPath,
+    GuideLessonStatus status,
+  ) async {
+    attemptedWrites += 1;
+    throw StateError('Simulated persistence failure');
+  }
+}
+
+class _FakeReadingProgressStore implements ReadingProgressStore {
+  @override
+  Future<Map<String, GuideLessonStatus>> loadLessonStatuses() async {
+    return <String, GuideLessonStatus>{};
+  }
+
+  @override
+  Future<void> setLessonStatus(
+    String assetPath,
+    GuideLessonStatus status,
+  ) async {}
 }
 
 class _FakeVerbAudioPlayer implements VerbAudioPlayer {

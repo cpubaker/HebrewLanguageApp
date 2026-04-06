@@ -12,6 +12,7 @@ import 'package:hebrew_language_flutter/models/lesson_document.dart';
 import 'package:hebrew_language_flutter/services/guide_progress_store.dart';
 import 'package:hebrew_language_flutter/services/lesson_document_loader.dart';
 import 'package:hebrew_language_flutter/services/learning_bundle_loader.dart';
+import 'package:hebrew_language_flutter/services/reading_progress_store.dart';
 import 'package:hebrew_language_flutter/services/verb_audio_player.dart';
 import 'package:hebrew_language_flutter/services/word_progress_store.dart';
 
@@ -95,6 +96,7 @@ void main() {
         documentLoader: FakeLessonDocumentLoader(),
         progressStore: FakeWordProgressStore(),
         guideProgressStore: FakeGuideProgressStore(),
+        readingProgressStore: FakeReadingProgressStore(),
       ),
     );
     await tester.pumpAndSettle();
@@ -129,6 +131,7 @@ void main() {
         documentLoader: FakeLessonDocumentLoader(),
         progressStore: FakeWordProgressStore(),
         guideProgressStore: FakeGuideProgressStore(),
+        readingProgressStore: FakeReadingProgressStore(),
       ),
     );
     await tester.pumpAndSettle();
@@ -155,6 +158,7 @@ void main() {
         documentLoader: FakeLessonDocumentLoader(),
         progressStore: FakeWordProgressStore(),
         guideProgressStore: FakeGuideProgressStore(),
+        readingProgressStore: FakeReadingProgressStore(),
         audioPlayerFactory: () => audioPlayer,
       ),
     );
@@ -189,6 +193,7 @@ void main() {
         documentLoader: FakeLessonDocumentLoader(),
         progressStore: FakeWordProgressStore(),
         guideProgressStore: FakeGuideProgressStore(),
+        readingProgressStore: FakeReadingProgressStore(),
       ),
     );
     await tester.pumpAndSettle();
@@ -218,6 +223,7 @@ void main() {
         documentLoader: FakeLessonDocumentLoader(),
         progressStore: store,
         guideProgressStore: FakeGuideProgressStore(),
+        readingProgressStore: FakeReadingProgressStore(),
       ),
     );
     await tester.pumpAndSettle();
@@ -251,6 +257,7 @@ void main() {
         documentLoader: FakeLessonDocumentLoader(),
         progressStore: FakeWordProgressStore(),
         guideProgressStore: FakeGuideProgressStore(),
+        readingProgressStore: FakeReadingProgressStore(),
       ),
     );
     await tester.pumpAndSettle();
@@ -294,6 +301,7 @@ void main() {
         documentLoader: FakeLessonDocumentLoader(),
         progressStore: store,
         guideProgressStore: FakeGuideProgressStore(),
+        readingProgressStore: FakeReadingProgressStore(),
       ),
     );
     await tester.pumpAndSettle();
@@ -334,6 +342,7 @@ void main() {
         documentLoader: FakeLessonDocumentLoader(),
         progressStore: store,
         guideProgressStore: FakeGuideProgressStore(),
+        readingProgressStore: FakeReadingProgressStore(),
       ),
     );
     await tester.pumpAndSettle();
@@ -356,6 +365,7 @@ void main() {
         documentLoader: FakeLessonDocumentLoader(),
         progressStore: FakeWordProgressStore(),
         guideProgressStore: FakeGuideProgressStore(),
+        readingProgressStore: FakeReadingProgressStore(),
       ),
     );
     await tester.pumpAndSettle();
@@ -382,6 +392,7 @@ void main() {
         documentLoader: FakeLessonDocumentLoader(),
         progressStore: FakeWordProgressStore(),
         guideProgressStore: FakeGuideProgressStore(),
+        readingProgressStore: FakeReadingProgressStore(),
       ),
     );
     await tester.pumpAndSettle();
@@ -470,6 +481,31 @@ class FakeWordProgressStore implements WordProgressStore {
 
 class FakeGuideProgressStore implements GuideProgressStore {
   FakeGuideProgressStore({
+    Map<String, GuideLessonStatus>? initialStatuses,
+  }) : lessonStatuses = <String, GuideLessonStatus>{...?initialStatuses};
+
+  final Map<String, GuideLessonStatus> lessonStatuses;
+
+  @override
+  Future<Map<String, GuideLessonStatus>> loadLessonStatuses() async {
+    return Map<String, GuideLessonStatus>.from(lessonStatuses);
+  }
+
+  @override
+  Future<void> setLessonStatus(
+    String assetPath,
+    GuideLessonStatus status,
+  ) async {
+    if (status == GuideLessonStatus.unread) {
+      lessonStatuses.remove(assetPath);
+    } else {
+      lessonStatuses[assetPath] = status;
+    }
+  }
+}
+
+class FakeReadingProgressStore implements ReadingProgressStore {
+  FakeReadingProgressStore({
     Map<String, GuideLessonStatus>? initialStatuses,
   }) : lessonStatuses = <String, GuideLessonStatus>{...?initialStatuses};
 

@@ -9,6 +9,7 @@ import 'package:hebrew_language_flutter/screens/guide_screen.dart';
 import 'package:hebrew_language_flutter/services/guide_progress_store.dart';
 import 'package:hebrew_language_flutter/services/lesson_document_loader.dart';
 import 'package:hebrew_language_flutter/services/learning_bundle_loader.dart';
+import 'package:hebrew_language_flutter/services/reading_progress_store.dart';
 import 'package:hebrew_language_flutter/services/verb_audio_player.dart';
 import 'package:hebrew_language_flutter/services/word_progress_store.dart';
 
@@ -24,6 +25,7 @@ void main() {
         documentLoader: _GuideDocumentLoader(),
         progressStore: FakeWordProgressStore(),
         guideProgressStore: guideStore,
+        readingProgressStore: FakeReadingProgressStore(),
         audioPlayerFactory: () => FakeVerbAudioPlayer(),
       ),
     );
@@ -174,6 +176,19 @@ class FakeGuideProgressStore implements GuideProgressStore {
       lessonStatuses[assetPath] = status;
     }
   }
+}
+
+class FakeReadingProgressStore implements ReadingProgressStore {
+  @override
+  Future<Map<String, GuideLessonStatus>> loadLessonStatuses() async {
+    return <String, GuideLessonStatus>{};
+  }
+
+  @override
+  Future<void> setLessonStatus(
+    String assetPath,
+    GuideLessonStatus status,
+  ) async {}
 }
 
 class FakeWordProgressStore implements WordProgressStore {
