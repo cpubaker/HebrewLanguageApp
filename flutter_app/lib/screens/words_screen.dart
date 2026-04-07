@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../models/learning_word.dart';
@@ -12,39 +14,81 @@ class WordsScreen extends StatefulWidget {
 }
 
 class _WordsScreenState extends State<WordsScreen> {
+  static const Duration _searchDebounceDelay = Duration(milliseconds: 180);
+
   late final TextEditingController _searchController;
+  Timer? _searchDebounce;
   String _query = '';
+  late List<_IndexedWord> _indexedWords;
+  late List<_IndexedWord> _visibleWords;
 
   @override
   void initState() {
     super.initState();
     _searchController = TextEditingController();
+    _rebuildIndex();
+  }
+
+  @override
+  void didUpdateWidget(covariant WordsScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!identical(oldWidget.words, widget.words)) {
+      _rebuildIndex();
+    }
   }
 
   @override
   void dispose() {
+    _searchDebounce?.cancel();
     _searchController.dispose();
     super.dispose();
   }
 
-  List<LearningWord> get _filteredWords {
-    final normalizedQuery = _query.trim().toLowerCase();
-    final sortedWords = [...widget.words]
-      ..sort((left, right) => left.translation.compareTo(right.translation));
+  void _rebuildIndex() {
+    final indexedWords = widget.words
+        .map(_IndexedWord.fromWord)
+        .toList(growable: false)
+      ..sort((left, right) => left.sortKey.compareTo(right.sortKey));
 
+    _indexedWords = indexedWords;
+    _visibleWords = _filterIndexedWords(indexedWords, _query);
+  }
+
+  List<_IndexedWord> _filterIndexedWords(
+    List<_IndexedWord> indexedWords,
+    String query,
+  ) {
+    final normalizedQuery = query.trim().toLowerCase();
     if (normalizedQuery.isEmpty) {
-      return sortedWords;
+      return indexedWords;
     }
 
-    return sortedWords
-        .where((word) {
-          return word.translation.toLowerCase().contains(normalizedQuery) ||
-              word.english.toLowerCase().contains(normalizedQuery) ||
-              word.transcription.toLowerCase().contains(normalizedQuery) ||
-              word.hebrew.toLowerCase().contains(normalizedQuery) ||
-              word.wordId.toLowerCase().contains(normalizedQuery);
-        })
+    return indexedWords
+        .where((word) => word.searchText.contains(normalizedQuery))
         .toList(growable: false);
+  }
+
+  void _handleSearchChanged(String value) {
+    _searchDebounce?.cancel();
+    _searchDebounce = Timer(_searchDebounceDelay, () {
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _query = value;
+        _visibleWords = _filterIndexedWords(_indexedWords, _query);
+      });
+    });
+  }
+
+  void _clearSearch() {
+    _searchDebounce?.cancel();
+    _searchController.clear();
+    setState(() {
+      _query = '';
+      _visibleWords = _indexedWords;
+    });
   }
 
   void _showWordDetails(LearningWord word) {
@@ -118,71 +162,125 @@ class _WordsScreenState extends State<WordsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final filteredWords = _filteredWords;
-    return ListView(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
-      children: [
-        Text(
-          'Слова',
-          style: Theme.of(
-            context,
-          ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          'Пошук за українською, англійською, транскрипцією, івритом або ID.',
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: const Color(0xFF5F5A52),
-            height: 1.4,
+    return CustomScrollView(
+      slivers: [
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+          sliver: SliverToBoxAdapter(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Слова',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Пошук за українською, англійською, транскрипцією, івритом або ID.',
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: const Color(0xFF5F5A52),
+                    height: 1.4,
+                  ),
+                ),
+                const SizedBox(height: 18),
+                _SearchField(
+                  controller: _searchController,
+                  hintText: 'Шукати слова',
+                  onChanged: _handleSearchChanged,
+                  onClear: _query.isEmpty && _searchController.text.isEmpty
+                      ? null
+                      : _clearSearch,
+                ),
+                const SizedBox(height: 16),
+                Wrap(
+                  spacing: 12,
+                  runSpacing: 12,
+                  children: [
+                    _StatPill(
+                      label: 'Видимі',
+                      value: _visibleWords.length,
+                      accent: const Color(0xFF1D4ED8),
+                    ),
+                    _StatPill(
+                      label: 'Усього',
+                      value: widget.words.length,
+                      accent: const Color(0xFF8C6A2A),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 18),
+              ],
+            ),
           ),
         ),
-        const SizedBox(height: 18),
-        _SearchField(
-          controller: _searchController,
-          hintText: 'Шукати слова',
-          onChanged: (value) {
-            setState(() {
-              _query = value;
-            });
-          },
-          onClear: _query.isEmpty
-              ? null
-              : () {
-                  _searchController.clear();
-                  setState(() {
-                    _query = '';
-                  });
-                },
-        ),
-        const SizedBox(height: 16),
-        Wrap(
-          spacing: 12,
-          runSpacing: 12,
-          children: [
-            _StatPill(
-              label: 'Видимі',
-              value: filteredWords.length,
-              accent: const Color(0xFF1D4ED8),
-            ),
-            _StatPill(
-              label: 'Усього',
-              value: widget.words.length,
-              accent: const Color(0xFF8C6A2A),
-            ),
-          ],
-        ),
-        const SizedBox(height: 18),
-        if (filteredWords.isEmpty)
-          const _EmptySearchState()
+        if (_visibleWords.isEmpty)
+          const SliverPadding(
+            padding: EdgeInsets.fromLTRB(20, 0, 20, 32),
+            sliver: SliverToBoxAdapter(child: _EmptySearchState()),
+          )
         else
-          ...filteredWords.map(
-            (word) => Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: _WordCard(word: word, onTap: () => _showWordDetails(word)),
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
+            sliver: SliverList.builder(
+              itemCount: _visibleWords.length,
+              itemBuilder: (context, index) {
+                final word = _visibleWords[index].word;
+                return Padding(
+                  padding: EdgeInsets.only(
+                    bottom: index == _visibleWords.length - 1 ? 0 : 12,
+                  ),
+                  child: _WordCard(
+                    word: word,
+                    onTap: () => _showWordDetails(word),
+                  ),
+                );
+              },
             ),
           ),
       ],
     );
+  }
+}
+
+class _IndexedWord {
+  const _IndexedWord({
+    required this.word,
+    required this.sortKey,
+    required this.searchText,
+  });
+
+  factory _IndexedWord.fromWord(LearningWord word) {
+    final normalizedTranslation = word.translation.trim().toLowerCase();
+    final normalizedEnglish = word.english.trim().toLowerCase();
+    final normalizedTranscription = word.transcription.trim().toLowerCase();
+    final normalizedHebrew = word.hebrew.trim();
+    final normalizedWordId = word.wordId.trim().toLowerCase();
+    final strippedHebrew = _stripHebrewDiacritics(normalizedHebrew);
+
+    return _IndexedWord(
+      word: word,
+      sortKey: normalizedTranslation,
+      searchText: [
+        normalizedTranslation,
+        normalizedEnglish,
+        normalizedTranscription,
+        normalizedHebrew,
+        strippedHebrew,
+        normalizedWordId,
+      ].where((part) => part.isNotEmpty).join('\n'),
+    );
+  }
+
+  static final RegExp _hebrewDiacritics = RegExp(r'[\u0591-\u05C7]');
+
+  final LearningWord word;
+  final String sortKey;
+  final String searchText;
+
+  static String _stripHebrewDiacritics(String value) {
+    return value.replaceAll(_hebrewDiacritics, '');
   }
 }
 

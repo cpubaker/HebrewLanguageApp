@@ -108,24 +108,22 @@ class _AppShellScreenState extends State<AppShellScreen> {
   void _handleWordProgressChanged(LearningWord updatedWord) {
     final activeBundle = _bundle;
     LearningWord? previousWord;
+    int wordIndex = -1;
 
     if (activeBundle != null) {
-      for (final word in activeBundle.words) {
-        if (word.wordId == updatedWord.wordId) {
-          previousWord = word;
-          break;
-        }
+      wordIndex = activeBundle.words.indexWhere(
+        (word) => word.wordId == updatedWord.wordId,
+      );
+      if (wordIndex >= 0) {
+        previousWord = activeBundle.words[wordIndex];
       }
-      setState(() {
-        _bundle = activeBundle.copyWith(
-          words: activeBundle.words
-              .map(
-                (word) =>
-                    word.wordId == updatedWord.wordId ? updatedWord : word,
-              )
-              .toList(growable: false),
-        );
-      });
+      if (wordIndex >= 0) {
+        final updatedWords = List<LearningWord>.from(activeBundle.words);
+        updatedWords[wordIndex] = updatedWord;
+        setState(() {
+          _bundle = activeBundle.copyWith(words: updatedWords);
+        });
+      }
     }
 
     final requestToken = _nextPersistenceToken(
@@ -245,16 +243,17 @@ class _AppShellScreenState extends State<AppShellScreen> {
       final activeBundle = _bundle;
       if (activeBundle != null && previousWord != null) {
         final wordToRestore = previousWord;
+        final restoreIndex = activeBundle.words.indexWhere(
+          (word) => word.wordId == wordToRestore.wordId,
+        );
+        if (restoreIndex < 0) {
+          return;
+        }
+
+        final restoredWords = List<LearningWord>.from(activeBundle.words);
+        restoredWords[restoreIndex] = wordToRestore;
         setState(() {
-          _bundle = activeBundle.copyWith(
-            words: activeBundle.words
-                .map(
-                  (word) => word.wordId == wordToRestore.wordId
-                      ? wordToRestore
-                      : word,
-                )
-                .toList(growable: false),
-          );
+          _bundle = activeBundle.copyWith(words: restoredWords);
         });
       }
 

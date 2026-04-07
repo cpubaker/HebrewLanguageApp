@@ -129,6 +129,31 @@ void main() {
     expect(find.text('ID: word_woman'), findsOneWidget);
   });
 
+  testWidgets('matches Hebrew search without requiring niqqud', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      HebrewFlutterApp(
+        loader: _WordsSearchBundleLoader(),
+        documentLoader: FakeLessonDocumentLoader(),
+        progressStore: FakeWordProgressStore(),
+        guideProgressStore: FakeGuideProgressStore(),
+        readingProgressStore: FakeReadingProgressStore(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.translate_outlined));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(EditableText), '\u05d1\u05d9\u05ea');
+    await tester.pump(const Duration(milliseconds: 250));
+    await tester.pumpAndSettle();
+
+    expect(find.text('\u0431\u0443\u0434\u0438\u043d\u043e\u043a'), findsWidgets);
+    expect(find.text('\u043c\u0438\u0440'), findsNothing);
+  });
+
   testWidgets('opens guide lesson details', (WidgetTester tester) async {
     await tester.pumpWidget(
       HebrewFlutterApp(
@@ -496,6 +521,37 @@ class _FlashcardOnlyBundleLoader implements LearningBundleLoader {
               translation: 'Чоловік іде вулицею.',
             ),
           ],
+        ),
+      ],
+      guideLessons: const [],
+      verbLessons: const [],
+      readingLessons: const [],
+    );
+  }
+}
+
+class _WordsSearchBundleLoader implements LearningBundleLoader {
+  @override
+  Future<LearningBundle> load() async {
+    return LearningBundle(
+      words: const [
+        LearningWord(
+          wordId: 'word_house',
+          hebrew: '\u05d1\u05b7\u05bc\u05d9\u05b4\u05ea',
+          english: 'house',
+          ukrainian: '\u0431\u0443\u0434\u0438\u043d\u043e\u043a',
+          transcription: 'bayit',
+          correct: 0,
+          wrong: 0,
+        ),
+        LearningWord(
+          wordId: 'word_peace',
+          hebrew: '\u05e9\u05b8\u05c1\u05dc\u05d5\u05b9\u05dd',
+          english: 'peace',
+          ukrainian: '\u043c\u0438\u0440',
+          transcription: 'shalom',
+          correct: 0,
+          wrong: 0,
         ),
       ],
       guideLessons: const [],

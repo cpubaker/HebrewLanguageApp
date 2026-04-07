@@ -34,6 +34,7 @@
 - Prefer vertical slices: navigation + one real feature screen at a time.
 - Keep `LearningBundleLoader` and the mobile shell simple until there is a stronger need for a larger state-management solution.
 - Avoid introducing a second source of truth for progress or lesson content unless the task explicitly defines the sync strategy.
+- For large searchable collections such as `Words`, prefer cached runtime indexes, debounced search, and `ListView.builder`/sliver-based lazy rendering over per-build sorting, normalization, or eager child lists.
 - Do not hand-edit synced files under `assets/learning/input/` for durable product changes; they may be overwritten by the sync script.
 - When adding new asset folders or files that Flutter must load, update `pubspec.yaml` as needed.
 - Keep mobile-specific presentation in `lib/screens/` and `lib/theme/`; keep parsing/loading concerns in `lib/services/`.
@@ -82,6 +83,7 @@
 - Assume Android is the current Flutter target unless the task explicitly mentions another platform.
 - Assume content should continue to come from synced local assets, not from live services.
 - Prefer implementing read-only content flows before interactive progress-saving flows unless the user asks otherwise.
+- For vocabulary performance work, first optimize list rendering and search preparation before introducing a local database or new state-management layer.
 - For content-screen migration tasks, prefer this sequence:
   - add list screen
   - add detail screen
