@@ -14,6 +14,12 @@ $pathsToMirror = @(
     "images\verbs"
 )
 
+$lessonCatalogRelativePaths = @(
+    "guide",
+    "verbs",
+    "reading"
+)
+
 New-Item -ItemType Directory -Force -Path $targetRoot | Out-Null
 
 Copy-Item `
@@ -40,5 +46,31 @@ foreach ($relativePath in $pathsToMirror) {
         Where-Object { $_.Name -ne "AGENTS.md" } |
         Copy-Item -Destination $destinationPath -Recurse -Force
 }
+
+$lessonCatalog = @{}
+
+foreach ($relativePath in $lessonCatalogRelativePaths) {
+    $sourcePath = Join-Path $sourceRoot $relativePath
+    if (-not (Test-Path $sourcePath)) {
+        continue
+    }
+
+    $resolvedSourcePath = (Resolve-Path $sourcePath).Path.TrimEnd("\")
+
+    $lessonCatalog[$relativePath] = @(
+        Get-ChildItem -LiteralPath $sourcePath -Recurse -File |
+            Where-Object { $_.Extension -eq ".md" } |
+            Where-Object { $_.Name -ne "AGENTS.md" } |
+            ForEach-Object {
+                $_.FullName.Substring($resolvedSourcePath.Length).TrimStart("\").Replace("\", "/")
+            } |
+            Sort-Object
+    )
+}
+
+$lessonCatalogPath = Join-Path $targetRoot "lesson_catalog.json"
+$lessonCatalog |
+    ConvertTo-Json -Depth 4 |
+    Set-Content -LiteralPath $lessonCatalogPath -Encoding UTF8
 
 Write-Host "Flutter assets synced from $sourceRoot"

@@ -12,12 +12,12 @@ abstract class LearningBundleLoader {
 }
 
 class AssetLearningBundleLoader implements LearningBundleLoader {
-  AssetLearningBundleLoader({
-    AssetBundle? assetBundle,
-  }) : assetBundle = assetBundle ?? rootBundle;
+  AssetLearningBundleLoader({AssetBundle? assetBundle})
+    : assetBundle = assetBundle ?? rootBundle;
 
-  static const String _wordsAsset =
-      'assets/learning/input/hebrew_words.json';
+  static const String _wordsAsset = 'assets/learning/input/hebrew_words.json';
+  static const String _lessonCatalogAsset =
+      'assets/learning/input/lesson_catalog.json';
   static const String _contextSentencesAsset =
       'assets/learning/input/contexts/sentences.json';
   static const String _wordContextLinksAsset =
@@ -39,46 +39,64 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
     final words = baseWords
         .map(
           (word) => word.copyWith(
-            contexts: contextsByWordId[word.wordId] ?? const <LearningContext>[],
+            contexts:
+                contextsByWordId[word.wordId] ?? const <LearningContext>[],
           ),
         )
         .toList(growable: false);
 
     final manifest = await AssetManifest.loadFromAssetBundle(assetBundle);
     final assetPaths = manifest.listAssets();
+    final lessonCatalog = await _loadLessonCatalog();
 
     return LearningBundle(
       words: words,
-      guideLessons: _buildLessonEntries(assetPaths, _guidePrefix),
-      verbLessons: _buildLessonEntries(assetPaths, _verbsPrefix),
-      readingLessons: _buildLessonEntries(assetPaths, _readingPrefix),
+      guideLessons: _buildLessonEntries(
+        assetPaths,
+        _guidePrefix,
+        lessonCatalog['guide'],
+      ),
+      verbLessons: _buildLessonEntries(
+        assetPaths,
+        _verbsPrefix,
+        lessonCatalog['verbs'],
+      ),
+      readingLessons: _buildLessonEntries(
+        assetPaths,
+        _readingPrefix,
+        lessonCatalog['reading'],
+      ),
     );
   }
 
   Future<Map<String, List<LearningContext>>> _loadContextsByWordId() async {
     try {
-      final contextSentencesJson =
-          await assetBundle.loadString(_contextSentencesAsset);
-      final wordContextLinksJson =
-          await assetBundle.loadString(_wordContextLinksAsset);
+      final contextSentencesJson = await assetBundle.loadString(
+        _contextSentencesAsset,
+      );
+      final wordContextLinksJson = await assetBundle.loadString(
+        _wordContextLinksAsset,
+      );
 
-      final contextSentences = (jsonDecode(contextSentencesJson) as List<dynamic>)
-          .cast<Map<String, dynamic>>()
-          .map(LearningContext.fromJson)
-          .toList(growable: false);
+      final contextSentences =
+          (jsonDecode(contextSentencesJson) as List<dynamic>)
+              .cast<Map<String, dynamic>>()
+              .map(LearningContext.fromJson)
+              .toList(growable: false);
       final contextsById = <String, LearningContext>{
         for (final context in contextSentences)
           if (context.contextId.isNotEmpty) context.contextId: context,
       };
 
       final wordContextLinks =
-          (jsonDecode(wordContextLinksJson) as Map<String, dynamic>)
-              .map(
-                (key, value) => MapEntry(
-                  key,
-                  (value as List<dynamic>).whereType<String>().toList(growable: false),
-                ),
-              );
+          (jsonDecode(wordContextLinksJson) as Map<String, dynamic>).map(
+            (key, value) => MapEntry(
+              key,
+              (value as List<dynamic>).whereType<String>().toList(
+                growable: false,
+              ),
+            ),
+          );
 
       return wordContextLinks.map(
         (wordId, contextIds) => MapEntry(
@@ -97,16 +115,27 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
   List<LessonEntry> _buildLessonEntries(
     List<String> assetPaths,
     String prefix,
+    List<String>? catalogRelativePaths,
   ) {
-    final filteredPaths = assetPaths
-        .where(
-          (path) =>
-              path.startsWith(prefix) &&
-              path.endsWith('.md') &&
-              !_isInstructionFile(path),
-        )
-        .toList()
-      ..sort(_compareLessonPaths);
+    final filteredPaths = <String>{
+      ...assetPaths.where(
+        (path) =>
+            path.startsWith(prefix) &&
+            path.endsWith('.md') &&
+            !_isInstructionFile(path),
+      ),
+      ...?catalogRelativePaths
+          ?.map(
+            (relativePath) =>
+                '$prefix${relativePath.replaceAll('\\', '/').replaceFirst(RegExp(r'^/+'), '')}',
+          )
+          .where(
+            (path) =>
+                path.startsWith(prefix) &&
+                path.endsWith('.md') &&
+                !_isInstructionFile(path),
+          ),
+    }.toList()..sort(_compareLessonPaths);
 
     return filteredPaths
         .map(
@@ -116,6 +145,29 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
           ),
         )
         .toList(growable: false);
+  }
+
+  Future<Map<String, List<String>>> _loadLessonCatalog() async {
+    try {
+      final rawCatalog = await assetBundle.loadString(_lessonCatalogAsset);
+      final decodedCatalog = jsonDecode(rawCatalog);
+      if (decodedCatalog is! Map<String, dynamic>) {
+        return const <String, List<String>>{};
+      }
+
+      return decodedCatalog.map(
+        (section, entries) => MapEntry(
+          section,
+          (entries as List<dynamic>).whereType<String>().toList(
+            growable: false,
+          ),
+        ),
+      );
+    } on FlutterError {
+      return const <String, List<String>>{};
+    } on FormatException {
+      return const <String, List<String>>{};
+    }
   }
 
   bool _isInstructionFile(String path) {
@@ -146,8 +198,10 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
   String _displayNameForPath(String path) {
     final filename = path.split('/').last;
     final withoutExtension = filename.replaceFirst(RegExp(r'\.md$'), '');
-    final withoutPrefix =
-        withoutExtension.replaceFirst(RegExp(r'^\d+[_-]*'), '');
+    final withoutPrefix = withoutExtension.replaceFirst(
+      RegExp(r'^\d+[_-]*'),
+      '',
+    );
     final words = withoutPrefix
         .split(RegExp(r'[_-]+'))
         .where((part) => part.isNotEmpty)
