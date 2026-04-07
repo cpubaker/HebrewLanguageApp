@@ -30,7 +30,7 @@ class _WordsScreenState extends State<WordsScreen> {
   List<LearningWord> get _filteredWords {
     final normalizedQuery = _query.trim().toLowerCase();
     final sortedWords = [...widget.words]
-      ..sort((left, right) => left.english.compareTo(right.english));
+      ..sort((left, right) => left.translation.compareTo(right.translation));
 
     if (normalizedQuery.isEmpty) {
       return sortedWords;
@@ -38,7 +38,8 @@ class _WordsScreenState extends State<WordsScreen> {
 
     return sortedWords
         .where((word) {
-          return word.english.toLowerCase().contains(normalizedQuery) ||
+          return word.translation.toLowerCase().contains(normalizedQuery) ||
+              word.english.toLowerCase().contains(normalizedQuery) ||
               word.transcription.toLowerCase().contains(normalizedQuery) ||
               word.hebrew.toLowerCase().contains(normalizedQuery) ||
               word.wordId.toLowerCase().contains(normalizedQuery);
@@ -69,7 +70,7 @@ class _WordsScreenState extends State<WordsScreen> {
               ),
               const SizedBox(height: 8),
               Text(
-                word.english,
+                word.translation,
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w800,
                 ),
@@ -129,7 +130,7 @@ class _WordsScreenState extends State<WordsScreen> {
         ),
         const SizedBox(height: 8),
         Text(
-          'Пошук за англійською, транскрипцією, івритом або ID.',
+          'Пошук за українською, англійською, транскрипцією, івритом або ID.',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
             color: const Color(0xFF5F5A52),
             height: 1.4,
@@ -271,7 +272,7 @@ class _WordCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      word.english,
+                      word.translation,
                       style: theme.textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.w800,
                       ),
@@ -431,7 +432,7 @@ class _EmptySearchState extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            'Спробуйте інший запит: слово англійською, форму івритом або ID.',
+            'Спробуйте інший запит: слово українською чи англійською, форму івритом або ID.',
             textAlign: TextAlign.center,
             style: Theme.of(
               context,

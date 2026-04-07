@@ -6,6 +6,7 @@ import os
 class AppPaths:
     project_root: str
     words_file: str
+    word_progress_file: str
     guide_dir: str
     verbs_dir: str
     reading_dir: str
@@ -31,6 +32,9 @@ class AppPaths:
         return cls(
             project_root=project_root,
             words_file=os.path.join(project_root, "data", "input", "hebrew_words.json"),
+            word_progress_file=os.path.join(
+                project_root, "data", "runtime", "word_progress.json"
+            ),
             guide_dir=os.path.join(project_root, "data", "input", "guide"),
             verbs_dir=os.path.join(project_root, "data", "input", "verbs"),
             reading_dir=os.path.join(project_root, "data", "input", "reading"),

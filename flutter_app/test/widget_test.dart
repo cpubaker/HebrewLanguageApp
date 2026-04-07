@@ -25,6 +25,7 @@ class FakeLearningBundleLoader implements LearningBundleLoader {
           wordId: 'word_man',
           hebrew: 'איש',
           english: 'man',
+          ukrainian: 'чоловік',
           transcription: 'ish',
           correct: 1,
           wrong: 0,
@@ -32,7 +33,7 @@ class FakeLearningBundleLoader implements LearningBundleLoader {
             LearningContext(
               contextId: 'ctx_man_01',
               hebrew: 'האיש הולך ברחוב.',
-              translation: 'The man is walking in the street.',
+              translation: 'Чоловік іде вулицею.',
             ),
           ],
         ),
@@ -40,6 +41,7 @@ class FakeLearningBundleLoader implements LearningBundleLoader {
           wordId: 'word_woman',
           hebrew: 'אישה',
           english: 'woman',
+          ukrainian: 'жінка',
           transcription: 'isha',
           correct: 3,
           wrong: 1,
@@ -54,7 +56,8 @@ class FakeLearningBundleLoader implements LearningBundleLoader {
       verbLessons: const [],
       readingLessons: const [
         LessonEntry(
-          assetPath: 'assets/learning/input/reading/beginner/01_yosi_goes_to_school.md',
+          assetPath:
+              'assets/learning/input/reading/beginner/01_yosi_goes_to_school.md',
           displayName: '01 Yosi Goes To School',
         ),
       ],
@@ -108,17 +111,19 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(
-      find.text('Пошук за англійською, транскрипцією, івритом або ID.'),
+      find.text(
+        'Пошук за українською, англійською, транскрипцією, івритом або ID.',
+      ),
       findsOneWidget,
     );
 
     await tester.enterText(find.byType(EditableText), 'woman');
     await tester.pumpAndSettle();
 
-    expect(find.text('woman'), findsWidgets);
-    expect(find.text('man'), findsNothing);
+    expect(find.text('жінка'), findsWidgets);
+    expect(find.text('чоловік'), findsNothing);
 
-    await tester.tap(find.text('woman').last);
+    await tester.tap(find.text('жінка').last);
     await tester.pumpAndSettle();
 
     expect(find.text('ID: word_woman'), findsOneWidget);
@@ -179,10 +184,9 @@ void main() {
     await tester.tap(find.byTooltip('Увімкнути вимову'));
     await tester.pumpAndSettle();
 
-    expect(
-      audioPlayer.playedAssets,
-      ['assets/learning/input/audio/verbs/walk.mp3'],
-    );
+    expect(audioPlayer.playedAssets, [
+      'assets/learning/input/audio/verbs/walk.mp3',
+    ]);
     expect(find.byTooltip('Зупинити вимову'), findsOneWidget);
   });
 
@@ -233,7 +237,7 @@ void main() {
 
     expect(find.text('Картки'), findsWidgets);
     expect(find.text('האיש הולך ברחוב.'), findsOneWidget);
-    expect(find.text('man'), findsNothing);
+    expect(find.text('чоловік'), findsNothing);
 
     await tester.ensureVisible(find.text('Знаю'));
     await tester.pumpAndSettle();
@@ -241,11 +245,59 @@ void main() {
     await tester.tap(find.text('Знаю'));
     await tester.pumpAndSettle();
 
-    expect(find.text('man'), findsOneWidget);
-    expect(find.text('The man is walking in the street.'), findsOneWidget);
+    expect(find.text('чоловік'), findsOneWidget);
+    expect(find.text('Чоловік іде вулицею.'), findsOneWidget);
     expect(find.text('До підсумку'), findsOneWidget);
     expect(store.savedWordIds, contains('word_man'));
     expect(store.savedByWordId['word_man']?.correct, 2);
+  });
+
+  testWidgets('checks writing answers and persists writing progress', (
+    WidgetTester tester,
+  ) async {
+    final store = FakeWordProgressStore();
+
+    await tester.pumpWidget(
+      HebrewFlutterApp(
+        loader: _WritingOnlyBundleLoader(),
+        documentLoader: FakeLessonDocumentLoader(),
+        progressStore: store,
+        guideProgressStore: FakeGuideProgressStore(),
+        readingProgressStore: FakeReadingProgressStore(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.edit_outlined));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Письмо'), findsWidgets);
+    expect(find.text('мир'), findsOneWidget);
+
+    await tester.enterText(find.byType(EditableText), 'בית');
+    await tester.ensureVisible(find.text('Перевірити'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Перевірити'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Потрібно ще раз'), findsOneWidget);
+    expect(find.text('שלום'), findsOneWidget);
+    expect(store.savedWordIds, contains('word_peace'));
+    expect(store.savedByWordId['word_peace']?.writingWrong, 1);
+
+    await tester.ensureVisible(find.text('Далі'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Далі'));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(EditableText), 'שלום');
+    await tester.ensureVisible(find.text('Перевірити'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Перевірити'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Правильно'), findsWidgets);
+    expect(store.savedByWordId['word_peace']?.writingCorrect, 1);
   });
 
   testWidgets('shows a completion state after the last flashcard in the deck', (
@@ -309,7 +361,7 @@ void main() {
     await tester.tap(find.byIcon(Icons.translate_outlined));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('man').last);
+    await tester.tap(find.text('чоловік').last);
     await tester.pumpAndSettle();
 
     expect(find.text('Правильно: 9'), findsOneWidget);
@@ -380,7 +432,7 @@ void main() {
 
     expect(find.text('Картки'), findsWidgets);
     expect(find.text('1 на повторенні'), findsOneWidget);
-    expect(find.text('woman'), findsNothing);
+    expect(find.text('жінка'), findsNothing);
   });
 
   testWidgets('shows the dedicated reading preview block on the home screen', (
@@ -433,6 +485,7 @@ class _FlashcardOnlyBundleLoader implements LearningBundleLoader {
           wordId: 'word_man',
           hebrew: 'איש',
           english: 'man',
+          ukrainian: 'чоловік',
           transcription: 'ish',
           correct: 1,
           wrong: 0,
@@ -440,7 +493,7 @@ class _FlashcardOnlyBundleLoader implements LearningBundleLoader {
             LearningContext(
               contextId: 'ctx_man_01',
               hebrew: 'האיש הולך ברחוב.',
-              translation: 'The man is walking in the street.',
+              translation: 'Чоловік іде вулицею.',
             ),
           ],
         ),
@@ -452,12 +505,31 @@ class _FlashcardOnlyBundleLoader implements LearningBundleLoader {
   }
 }
 
+class _WritingOnlyBundleLoader implements LearningBundleLoader {
+  @override
+  Future<LearningBundle> load() async {
+    return LearningBundle(
+      words: const [
+        LearningWord(
+          wordId: 'word_peace',
+          hebrew: 'שלום',
+          english: 'peace',
+          ukrainian: 'мир',
+          transcription: 'shalom',
+          correct: 0,
+          wrong: 0,
+        ),
+      ],
+      guideLessons: const [],
+      verbLessons: const [],
+      readingLessons: const [],
+    );
+  }
+}
+
 class FakeWordProgressStore implements WordProgressStore {
-  FakeWordProgressStore({
-    Map<String, StoredWordProgress>? initialProgress,
-  }) : savedByWordId = <String, StoredWordProgress>{
-          ...?initialProgress,
-        };
+  FakeWordProgressStore({Map<String, StoredWordProgress>? initialProgress})
+    : savedByWordId = <String, StoredWordProgress>{...?initialProgress};
 
   final Map<String, StoredWordProgress> savedByWordId;
   final List<String> savedWordIds = <String>[];
@@ -475,14 +547,16 @@ class FakeWordProgressStore implements WordProgressStore {
       correct: word.correct,
       wrong: word.wrong,
       lastCorrect: word.lastCorrect,
+      writingCorrect: word.writingCorrect,
+      writingWrong: word.writingWrong,
+      writingLastCorrect: word.writingLastCorrect,
     );
   }
 }
 
 class FakeGuideProgressStore implements GuideProgressStore {
-  FakeGuideProgressStore({
-    Map<String, GuideLessonStatus>? initialStatuses,
-  }) : lessonStatuses = <String, GuideLessonStatus>{...?initialStatuses};
+  FakeGuideProgressStore({Map<String, GuideLessonStatus>? initialStatuses})
+    : lessonStatuses = <String, GuideLessonStatus>{...?initialStatuses};
 
   final Map<String, GuideLessonStatus> lessonStatuses;
 
@@ -505,9 +579,8 @@ class FakeGuideProgressStore implements GuideProgressStore {
 }
 
 class FakeReadingProgressStore implements ReadingProgressStore {
-  FakeReadingProgressStore({
-    Map<String, GuideLessonStatus>? initialStatuses,
-  }) : lessonStatuses = <String, GuideLessonStatus>{...?initialStatuses};
+  FakeReadingProgressStore({Map<String, GuideLessonStatus>? initialStatuses})
+    : lessonStatuses = <String, GuideLessonStatus>{...?initialStatuses};
 
   final Map<String, GuideLessonStatus> lessonStatuses;
 

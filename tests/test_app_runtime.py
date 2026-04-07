@@ -16,6 +16,7 @@ class AppRuntimeTests(unittest.TestCase):
         self.root = Path(self.temp_dir.name)
         self.paths = SimpleNamespace(
             words_file=str(self.root / "hebrew_words.json"),
+            word_progress_file=str(self.root / "word_progress.json"),
             guide_dir=str(self.root / "guide"),
             verbs_dir=str(self.root / "verbs"),
             reading_dir=str(self.root / "reading"),

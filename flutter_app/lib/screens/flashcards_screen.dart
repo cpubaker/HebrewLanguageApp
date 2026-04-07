@@ -190,7 +190,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                 if (hasAnswered)
                   _AnswerRevealCard(
                     isKnownAnswer: isKnownAnswer,
-                    translation: word.english,
+                    translation: word.translation,
                     lastCorrect: stats.lastCorrect == null
                         ? null
                         : _formatLastCorrect(stats.lastCorrect!),

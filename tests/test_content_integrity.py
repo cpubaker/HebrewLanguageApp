@@ -30,10 +30,14 @@ class ContentIntegrityTests(unittest.TestCase):
         for index, word in enumerate(words):
             self.assertIn("hebrew", word, f"Missing hebrew in item {index}")
             self.assertIn("english", word, f"Missing english in item {index}")
+            self.assertIn("ukrainian", word, f"Missing ukrainian in item {index}")
             self.assertIn("transcription", word, f"Missing transcription in item {index}")
             self.assertTrue(str(word["hebrew"]).strip(), f"Empty hebrew in item {index}")
             self.assertTrue(
                 str(word["english"]).strip(), f"Empty english in item {index}"
+            )
+            self.assertTrue(
+                str(word["ukrainian"]).strip(), f"Empty ukrainian in item {index}"
             )
             self.assertTrue(
                 str(word["transcription"]).strip(),

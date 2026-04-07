@@ -194,7 +194,9 @@ class FlashcardsWindow:
                 text=current_context.get("translation", "")
             )
 
-        self.translation_label.config(text=current_word["english"])
+        self.translation_label.config(
+            text=current_word.get("ukrainian") or current_word["english"]
+        )
         self._update_stats()
         self._set_answer_state(answered=True, known=known)
         self.autosave.request_save(self.words)

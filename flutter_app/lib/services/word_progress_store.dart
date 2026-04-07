@@ -11,6 +11,9 @@ class StoredWordProgress {
     required this.correct,
     required this.wrong,
     required this.lastCorrect,
+    this.writingCorrect = 0,
+    this.writingWrong = 0,
+    this.writingLastCorrect,
   });
 
   factory StoredWordProgress.fromJson(
@@ -22,6 +25,9 @@ class StoredWordProgress {
       correct: _readNonNegativeInt(json['correct']),
       wrong: _readNonNegativeInt(json['wrong']),
       lastCorrect: _readOptionalString(json['last_correct']),
+      writingCorrect: _readNonNegativeInt(json['writing_correct']),
+      writingWrong: _readNonNegativeInt(json['writing_wrong']),
+      writingLastCorrect: _readOptionalString(json['writing_last_correct']),
     );
   }
 
@@ -29,6 +35,9 @@ class StoredWordProgress {
   final int correct;
   final int wrong;
   final String? lastCorrect;
+  final int writingCorrect;
+  final int writingWrong;
+  final String? writingLastCorrect;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
@@ -36,6 +45,10 @@ class StoredWordProgress {
       'wrong': wrong,
       if (lastCorrect != null && lastCorrect!.trim().isNotEmpty)
         'last_correct': lastCorrect,
+      'writing_correct': writingCorrect,
+      'writing_wrong': writingWrong,
+      if (writingLastCorrect != null && writingLastCorrect!.trim().isNotEmpty)
+        'writing_last_correct': writingLastCorrect,
     };
   }
 
@@ -95,7 +108,10 @@ class SharedPreferencesWordProgressStore implements WordProgressStore {
     final hasProgress =
         word.correct > 0 ||
         word.wrong > 0 ||
-        (word.lastCorrect?.trim().isNotEmpty ?? false);
+        (word.lastCorrect?.trim().isNotEmpty ?? false) ||
+        word.writingCorrect > 0 ||
+        word.writingWrong > 0 ||
+        (word.writingLastCorrect?.trim().isNotEmpty ?? false);
 
     if (hasProgress) {
       currentMap[word.wordId] = StoredWordProgress(
@@ -103,6 +119,9 @@ class SharedPreferencesWordProgressStore implements WordProgressStore {
         correct: word.correct,
         wrong: word.wrong,
         lastCorrect: word.lastCorrect,
+        writingCorrect: word.writingCorrect,
+        writingWrong: word.writingWrong,
+        writingLastCorrect: word.writingLastCorrect,
       ).toJson();
     } else {
       currentMap.remove(word.wordId);
@@ -123,9 +142,7 @@ class SharedPreferencesWordProgressStore implements WordProgressStore {
         return <String, dynamic>{};
       }
 
-      return decoded.map(
-        (key, value) => MapEntry(key.toString(), value),
-      );
+      return decoded.map((key, value) => MapEntry(key.toString(), value));
     } on FormatException catch (error) {
       debugPrint(
         'Ignoring corrupted word progress payload for $_storageKey: $error',
@@ -148,9 +165,7 @@ class SharedPreferencesWordProgressStore implements WordProgressStore {
 
       progressByWordId[trimmedWordId] = StoredWordProgress.fromJson(
         trimmedWordId,
-        value.map(
-          (key, entryValue) => MapEntry(key.toString(), entryValue),
-        ),
+        value.map((key, entryValue) => MapEntry(key.toString(), entryValue)),
       );
     });
 

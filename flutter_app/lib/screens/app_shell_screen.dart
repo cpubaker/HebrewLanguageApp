@@ -18,6 +18,7 @@ import 'guide_screen.dart';
 import 'home_screen.dart';
 import 'reading_screen.dart';
 import 'verbs_screen.dart';
+import 'writing_screen.dart';
 import 'words_screen.dart';
 
 class AppShellScreen extends StatefulWidget {
@@ -90,6 +91,9 @@ class _AppShellScreenState extends State<AppShellScreen> {
               correct: progress.correct,
               wrong: progress.wrong,
               lastCorrect: progress.lastCorrect,
+              writingCorrect: progress.writingCorrect,
+              writingWrong: progress.writingWrong,
+              writingLastCorrect: progress.writingLastCorrect,
             );
           })
           .toList(growable: false),
@@ -344,9 +348,10 @@ class _AppShellScreenState extends State<AppShellScreen> {
                   documentLoader: widget.documentLoader,
                   onOpenWords: () => _selectTab(1),
                   onOpenFlashcards: _openFlashcards,
-                  onOpenGuide: () => _selectTab(3),
-                  onOpenVerbs: () => _selectTab(4),
-                  onOpenReading: () => _selectTab(5),
+                  onOpenWriting: () => _selectTab(3),
+                  onOpenGuide: () => _selectTab(4),
+                  onOpenVerbs: () => _selectTab(5),
+                  onOpenReading: () => _selectTab(6),
                 ),
                 WordsScreen(words: bundle.words),
                 FlashcardsScreen(
@@ -354,6 +359,10 @@ class _AppShellScreenState extends State<AppShellScreen> {
                   onWordProgressChanged: _handleWordProgressChanged,
                   initialDeckMode: _flashcardDeckMode,
                   deckRequestToken: _flashcardDeckRequestToken,
+                ),
+                WritingScreen(
+                  words: bundle.words,
+                  onWordProgressChanged: _handleWordProgressChanged,
                 ),
                 GuideScreen(
                   lessons: bundle.guideLessons,
@@ -393,6 +402,11 @@ class _AppShellScreenState extends State<AppShellScreen> {
                 icon: Icon(Icons.style_outlined),
                 selectedIcon: Icon(Icons.style_rounded),
                 label: 'Картки',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.edit_outlined),
+                selectedIcon: Icon(Icons.edit_rounded),
+                label: 'Письмо',
               ),
               NavigationDestination(
                 icon: Icon(Icons.menu_book_outlined),

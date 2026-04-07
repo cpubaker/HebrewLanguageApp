@@ -20,6 +20,10 @@ class AppPathsTests(unittest.TestCase):
             paths.words_file,
             str(PROJECT_ROOT / "data" / "input" / "hebrew_words.json"),
         )
+        self.assertEqual(
+            paths.word_progress_file,
+            str(PROJECT_ROOT / "data" / "runtime" / "word_progress.json"),
+        )
         self.assertEqual(paths.guide_dir, str(PROJECT_ROOT / "data" / "input" / "guide"))
         self.assertEqual(paths.verbs_dir, str(PROJECT_ROOT / "data" / "input" / "verbs"))
         self.assertEqual(

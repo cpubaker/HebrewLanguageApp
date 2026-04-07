@@ -42,11 +42,12 @@ void main() {
           'correct': '3',
           'wrong': -7,
           'last_correct': ' 2026-04-04T10:00:00Z ',
+          'writing_correct': '5',
+          'writing_wrong': -2,
+          'writing_last_correct': ' 2026-04-04T12:00:00Z ',
         },
         'broken_value': 'not-a-map',
-        '': <String, Object?>{
-          'correct': 1,
-        },
+        '': <String, Object?>{'correct': 1},
       }),
     });
 
@@ -58,11 +59,51 @@ void main() {
     expect(loadedProgress.keys.single, 'word_walk');
     expect(loadedProgress['word_walk']?.correct, 3);
     expect(loadedProgress['word_walk']?.wrong, 0);
+    expect(loadedProgress['word_walk']?.lastCorrect, '2026-04-04T10:00:00Z');
+    expect(loadedProgress['word_walk']?.writingCorrect, 5);
+    expect(loadedProgress['word_walk']?.writingWrong, 0);
     expect(
-      loadedProgress['word_walk']?.lastCorrect,
-      '2026-04-04T10:00:00Z',
+      loadedProgress['word_walk']?.writingLastCorrect,
+      '2026-04-04T12:00:00Z',
     );
   });
+
+  test(
+    'word progress store persists writing stats alongside review stats',
+    () async {
+      final store = SharedPreferencesWordProgressStore();
+
+      await store.saveWord(
+        const LearningWord(
+          wordId: 'word_shalom',
+          hebrew: 'שלום',
+          english: 'peace',
+          transcription: 'shalom',
+          correct: 2,
+          wrong: 1,
+          lastCorrect: '2026-04-04T10:00:00Z',
+          writingCorrect: 4,
+          writingWrong: 3,
+          writingLastCorrect: '2026-04-04T12:30:00Z',
+        ),
+      );
+
+      final prefs = await SharedPreferences.getInstance();
+      final rawPayload = prefs.getString('learning_word_progress_v1');
+
+      expect(rawPayload, isNotNull);
+      expect(jsonDecode(rawPayload!), <String, Object?>{
+        'word_shalom': <String, Object?>{
+          'correct': 2,
+          'wrong': 1,
+          'last_correct': '2026-04-04T10:00:00Z',
+          'writing_correct': 4,
+          'writing_wrong': 3,
+          'writing_last_correct': '2026-04-04T12:30:00Z',
+        },
+      });
+    },
+  );
 
   test('guide progress store migrates legacy read lessons', () async {
     SharedPreferences.setMockInitialValues(<String, Object>{
@@ -77,13 +118,10 @@ void main() {
 
     final loadedStatuses = await store.loadLessonStatuses();
 
-    expect(
-      loadedStatuses,
-      <String, GuideLessonStatus>{
-        'assets/learning/input/guide/01_intro_alphabet.md':
-            GuideLessonStatus.read,
-      },
-    );
+    expect(loadedStatuses, <String, GuideLessonStatus>{
+      'assets/learning/input/guide/01_intro_alphabet.md':
+          GuideLessonStatus.read,
+    });
   });
 
   test('guide progress store sanitizes malformed status payloads', () async {
@@ -101,14 +139,11 @@ void main() {
 
     final loadedStatuses = await store.loadLessonStatuses();
 
-    expect(
-      loadedStatuses,
-      <String, GuideLessonStatus>{
-        'assets/learning/input/guide/01_intro_alphabet.md':
-            GuideLessonStatus.studying,
-        'assets/learning/input/guide/02_numbers.md': GuideLessonStatus.read,
-      },
-    );
+    expect(loadedStatuses, <String, GuideLessonStatus>{
+      'assets/learning/input/guide/01_intro_alphabet.md':
+          GuideLessonStatus.studying,
+      'assets/learning/input/guide/02_numbers.md': GuideLessonStatus.read,
+    });
   });
 
   test('reading progress store sanitizes malformed status payloads', () async {
@@ -118,8 +153,7 @@ void main() {
             'studying',
         'assets/learning/input/reading/intermediate/02_city_trip.md': 'read',
         'assets/learning/input/reading/advanced/03_market_day.md': 'unknown',
-        'assets/learning/input/reading/proficient/04_news_digest.md':
-            'unread',
+        'assets/learning/input/reading/proficient/04_news_digest.md': 'unread',
         '': 'read',
       }),
     });
@@ -128,15 +162,12 @@ void main() {
 
     final loadedStatuses = await store.loadLessonStatuses();
 
-    expect(
-      loadedStatuses,
-      <String, GuideLessonStatus>{
-        'assets/learning/input/reading/beginner/01_yosi_goes_to_school.md':
-            GuideLessonStatus.studying,
-        'assets/learning/input/reading/intermediate/02_city_trip.md':
-            GuideLessonStatus.read,
-      },
-    );
+    expect(loadedStatuses, <String, GuideLessonStatus>{
+      'assets/learning/input/reading/beginner/01_yosi_goes_to_school.md':
+          GuideLessonStatus.studying,
+      'assets/learning/input/reading/intermediate/02_city_trip.md':
+          GuideLessonStatus.read,
+    });
   });
 
   testWidgets('guide progress rolls back when persistence fails', (

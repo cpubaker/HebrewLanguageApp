@@ -14,6 +14,7 @@ class HomeScreen extends StatelessWidget {
     required this.documentLoader,
     required this.onOpenWords,
     required this.onOpenFlashcards,
+    required this.onOpenWriting,
     required this.onOpenGuide,
     required this.onOpenVerbs,
     required this.onOpenReading,
@@ -23,6 +24,7 @@ class HomeScreen extends StatelessWidget {
   final LessonDocumentLoader documentLoader;
   final VoidCallback onOpenWords;
   final ValueChanged<FlashcardDeckMode> onOpenFlashcards;
+  final VoidCallback onOpenWriting;
   final VoidCallback onOpenGuide;
   final VoidCallback onOpenVerbs;
   final VoidCallback onOpenReading;
@@ -59,6 +61,16 @@ class HomeScreen extends StatelessWidget {
               onTap: () => onOpenFlashcards(FlashcardDeckMode.allWords),
             ),
             _SummaryCard(
+              label: 'Письмо',
+              value: bundle.words
+                  .where(
+                    (word) => word.writingCorrect > 0 || word.writingWrong > 0,
+                  )
+                  .length,
+              accent: const Color(0xFF8C3E9F),
+              onTap: onOpenWriting,
+            ),
+            _SummaryCard(
               label: 'Довідник',
               value: bundle.guideLessons.length,
               accent: const Color(0xFFB45309),
@@ -82,6 +94,7 @@ class HomeScreen extends StatelessWidget {
         _ActionStrip(
           onOpenWords: onOpenWords,
           onOpenFlashcards: onOpenFlashcards,
+          onOpenWriting: onOpenWriting,
           onOpenGuide: onOpenGuide,
         ),
         const SizedBox(height: 20),
@@ -365,11 +378,13 @@ class _ActionStrip extends StatelessWidget {
   const _ActionStrip({
     required this.onOpenWords,
     required this.onOpenFlashcards,
+    required this.onOpenWriting,
     required this.onOpenGuide,
   });
 
   final VoidCallback onOpenWords;
   final ValueChanged<FlashcardDeckMode> onOpenFlashcards;
+  final VoidCallback onOpenWriting;
   final VoidCallback onOpenGuide;
 
   @override
@@ -382,6 +397,11 @@ class _ActionStrip extends StatelessWidget {
           onPressed: () => onOpenFlashcards(FlashcardDeckMode.allWords),
           icon: const Icon(Icons.style_rounded),
           label: const Text('До карток'),
+        ),
+        OutlinedButton.icon(
+          onPressed: onOpenWriting,
+          icon: const Icon(Icons.edit_rounded),
+          label: const Text('До письма'),
         ),
         OutlinedButton.icon(
           onPressed: onOpenWords,
@@ -715,7 +735,7 @@ class _WordTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    word.english,
+                    word.translation,
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w700,
                     ),

@@ -19,6 +19,7 @@ class RepositoryTests(unittest.TestCase):
         self.root = Path(self.temp_dir.name)
         self.paths = SimpleNamespace(
             words_file=str(self.root / "hebrew_words.json"),
+            word_progress_file=str(self.root / "word_progress.json"),
             guide_dir=str(self.root / "guide"),
             verbs_dir=str(self.root / "verbs"),
             reading_dir=str(self.root / "reading"),
@@ -79,6 +80,50 @@ class RepositoryTests(unittest.TestCase):
         self.assertEqual(loaded_words[1]["word_id"], "word_house")
         self.assertEqual(loaded_words[1]["_word_id"], "word_house")
         self.assertEqual(loaded_words[1]["_contexts"], [])
+
+    def test_load_words_overlays_progress_from_separate_progress_file(self):
+        Path(self.paths.words_file).write_text(
+            json.dumps(
+                [
+                    {
+                        "word_id": "word_peace",
+                        "hebrew": "שלום",
+                        "english": "peace",
+                        "transcription": "shalom",
+                        "correct": 1,
+                    }
+                ],
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
+        Path(self.paths.word_progress_file).write_text(
+            json.dumps(
+                {
+                    "word_peace": {
+                        "correct": 4,
+                        "wrong": 2,
+                        "last_correct": "2026-03-18T09:15:00",
+                        "writing_correct": 3,
+                        "writing_wrong": 1,
+                        "writing_last_correct": "2026-03-18T09:20:00",
+                    }
+                },
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
+
+        loaded_words = self.content_repository.load_words()
+
+        self.assertEqual(loaded_words[0]["correct"], 4)
+        self.assertEqual(loaded_words[0]["wrong"], 2)
+        self.assertEqual(loaded_words[0]["last_correct"], "2026-03-18T09:15:00")
+        self.assertEqual(loaded_words[0]["writing_correct"], 3)
+        self.assertEqual(loaded_words[0]["writing_wrong"], 1)
+        self.assertEqual(
+            loaded_words[0]["writing_last_correct"], "2026-03-18T09:20:00"
+        )
 
     def test_load_words_preserves_explicit_word_id(self):
         Path(self.paths.words_file).write_text(
@@ -183,6 +228,8 @@ class RepositoryTests(unittest.TestCase):
                 "hebrew": "כלב",
                 "english": "dog",
                 "transcription": "kelev",
+                "correct": 2,
+                "writing_wrong": 1,
                 "_word_id": "word_dog",
                 "_contexts": [{"id": "ctx_dog_park_01"}],
             }
@@ -190,10 +237,13 @@ class RepositoryTests(unittest.TestCase):
 
         self.progress_repository.save_words(words)
 
-        saved_words = json.loads(Path(self.paths.words_file).read_text(encoding="utf-8"))
-        self.assertEqual(saved_words[0]["word_id"], "word_dog")
-        self.assertNotIn("_word_id", saved_words[0])
-        self.assertNotIn("_contexts", saved_words[0])
+        saved_progress = json.loads(
+            Path(self.paths.word_progress_file).read_text(encoding="utf-8")
+        )
+        self.assertEqual(saved_progress["word_dog"]["correct"], 2)
+        self.assertEqual(saved_progress["word_dog"]["writing_wrong"], 1)
+        self.assertNotIn("_word_id", saved_progress["word_dog"])
+        self.assertNotIn("_contexts", saved_progress["word_dog"])
 
     def test_load_text_sections_uses_title_and_skips_empty_or_non_lesson_files(self):
         guide_dir = Path(self.paths.guide_dir)

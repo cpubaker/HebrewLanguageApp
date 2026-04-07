@@ -26,11 +26,62 @@ class ContentRepository:
         for word in words:
             word.normalize_loading_fields()
 
+        progress_by_word_id = self._load_word_progress()
+        for word in words:
+            self._apply_progress_snapshot(word, progress_by_word_id.get(word.word_id))
+
         contexts_by_word_id = self.load_word_contexts(words)
         for word in words:
             word.set_contexts(contexts_by_word_id.get(word.word_id, []))
 
         return words
+
+    def _load_word_progress(self):
+        progress_file = self._word_progress_file()
+        if not progress_file or not os.path.exists(progress_file):
+            return {}
+
+        with open(progress_file, "r", encoding="utf-8") as file:
+            loaded_progress = json.load(file)
+
+        if not isinstance(loaded_progress, dict):
+            return {}
+
+        progress_by_word_id = {}
+        for raw_word_id, raw_payload in loaded_progress.items():
+            word_id = str(raw_word_id).strip()
+            if not word_id or not isinstance(raw_payload, dict):
+                continue
+
+            progress_by_word_id[word_id] = raw_payload
+
+        return progress_by_word_id
+
+    def _apply_progress_snapshot(self, word, snapshot):
+        if not snapshot:
+            return
+
+        for field_name in (
+            "correct",
+            "wrong",
+            "last_correct",
+            "writing_correct",
+            "writing_wrong",
+            "writing_last_correct",
+        ):
+            if field_name in snapshot:
+                word[field_name] = snapshot[field_name]
+
+        word.normalize_loading_fields()
+
+    def _word_progress_file(self):
+        configured_path = getattr(self.paths, "word_progress_file", "")
+        if configured_path:
+            return configured_path
+
+        words_file = getattr(self.paths, "words_file", "")
+        base_dir = os.path.dirname(words_file) or "."
+        return os.path.join(base_dir, "word_progress.json")
 
     def load_guide_sections(self):
         return self._load_structured_text_sections(

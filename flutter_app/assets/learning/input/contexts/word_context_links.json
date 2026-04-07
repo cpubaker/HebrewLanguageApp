@@ -87,6 +87,7 @@
         "ctx_computer_table_chair_01",
         "ctx_ben_ball_01",
         "ctx_leyad_window_01",
+        "ctx_al_gav_chair_01",
         "ctx_al_gabei_chair_01",
         "ctx_tachat_chair_01"
     ],
@@ -138,9 +139,7 @@
         "ctx_flower_window_01"
     ],
     "word_following_as_a_result_of": [
-        "ctx_beikvot_game_01"
-    ],
-    "word_following_in_the_trail_of_as_a_result_of_because_of": [
+        "ctx_beikvot_game_01",
         "ctx_beikvot_rain_01"
     ],
     "word_food": [
@@ -237,6 +236,7 @@
         "ctx_et_newspaper_01",
         "ctx_kmot_newspaper_01",
         "ctx_lefi_newspaper_01",
+        "ctx_al_gav_chair_01",
         "ctx_al_pi_newspaper_01"
     ],
     "word_nurse": [
@@ -249,7 +249,7 @@
         "ctx_beshem_university_01"
     ],
     "word_on_upon": [
-        "ctx_al_gav_table_01"
+        "ctx_al_gav_chair_01"
     ],
     "word_on_upon_al_gabei": [
         "ctx_al_gabei_chair_01"
@@ -312,8 +312,7 @@
         "ctx_computer_table_chair_01",
         "ctx_newspaper_table_01",
         "ctx_ben_ball_01",
-        "ctx_mitachat_table_01",
-        "ctx_al_gav_table_01"
+        "ctx_mitachat_table_01"
     ],
     "word_teacher": [
         "ctx_school_teacher_student_01",
