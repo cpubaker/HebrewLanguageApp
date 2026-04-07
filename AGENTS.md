@@ -26,6 +26,7 @@
 - `flutter_app/test/` - Flutter widget and behavior tests.
 - `flutter_app/assets/learning/` - bundled learning assets copied from the root content folders for runtime use.
 - `data/input/` - source-of-truth learning content shared across app variants.
+- `data/input/AGENTS.md` - local instructions for shared vocabulary, contexts, and source-of-truth content conventions.
 - `data/input/guide/AGENTS.md` - local instructions for guide lesson structure and writing style.
 - `data/input/reading/AGENTS.md` - local instructions for reading lesson content.
 - `data/input/verbs/AGENTS.md` - local instructions for verb lesson structure and canonical form order.
@@ -39,6 +40,7 @@
 - For Flutter UI or app-flow tasks, inspect `flutter_app/AGENTS.md` and the relevant files under `flutter_app/lib/` first.
 - For Flutter loading or persistence tasks, inspect the matching files under `flutter_app/lib/services/` and `flutter_app/lib/models/` first.
 - For lesson, vocabulary, verb, reading, context, image, or audio content tasks, inspect `data/input/` first and only edit synced Flutter assets when the task is specifically about asset packaging or temporary debugging.
+- When editing shared vocabulary or context data under `data/input/`, follow `data/input/AGENTS.md`.
 - When editing files under `data/input/guide/`, follow `data/input/guide/AGENTS.md`.
 - When editing files under `data/input/reading/`, follow `data/input/reading/AGENTS.md`.
 - When editing files under `data/input/verbs/`, follow `data/input/verbs/AGENTS.md`.
@@ -56,6 +58,8 @@
 - Empty lesson files are ignored by the loaders.
 - Non-lesson files in guide, reading, and verbs directories are ignored by the loaders.
 - Shared flashcard contexts are normalized through `contexts/sentences.json` plus `contexts/word_context_links.json`.
+- The vocabulary deck currently lives in `hebrew_words.json` and may include both plain lexical entries and grammar-facing function-word entries.
+- Preserve stable `word_id` references across `hebrew_words.json` and `contexts/word_context_links.json` unless the change explicitly includes a coordinated migration.
 - Missing matching images, audio, or contexts should not break content loading unless the task explicitly changes that behavior.
 - In lesson files, the first Markdown heading is preferred as the displayed title.
 - If no Markdown heading exists, the first non-empty line is used as the displayed title.

@@ -8,6 +8,7 @@
 ## Source Of Truth
 - Flutter learning assets under `flutter_app/assets/learning/` are generated copies for runtime use.
 - The source-of-truth learning content still lives in the repository root under `data/input/`.
+- For shared vocabulary and context work, also follow `data/input/AGENTS.md`.
 - If a task is about lessons, vocabulary, verbs, reading, contexts, images, or audio content, prefer editing the root `data/input/` files first unless the task explicitly targets Flutter asset packaging.
 - After source content changes, refresh Flutter assets with:
   - `powershell -ExecutionPolicy Bypass -File .\tool\sync_learning_assets.ps1`
