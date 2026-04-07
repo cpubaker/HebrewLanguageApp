@@ -27,11 +27,13 @@
 
 ## Reference-First Writing Style
 - Write in clear Ukrainian for a learner who may rely heavily on this app as a reference.
+- Assume the learner may have forgotten school grammar terminology and may have no other reference materials nearby.
 - Optimize for clarity, consistency, and quick lookup rather than for motivational teaching flow.
 - Prefer short sections with `##` and `###` headings, short paragraphs, and simple bullet lists.
 - Lead with the rule, model, or contrast first; then show short examples.
 - When useful, introduce Hebrew examples together with transliteration and Ukrainian meaning.
 - Keep examples concrete and compact. Prefer examples that demonstrate one pattern at a time.
+- If a grammar term such as `інфінітив`, `сміхут`, `біньян`, or `підрядна частина` is needed, explain it immediately in everyday language.
 
 ## Recommended Article Template
 - A guide article should usually follow this shape:
@@ -73,6 +75,7 @@
 
 ## Editorial Priorities
 - Favor correctness over stylistic flourish.
+- Favor friendly, non-academic phrasing over textbook or university-style prose.
 - Favor short, retrievable explanations over repeated paraphrasing.
 - Favor comparison and contrast where learners commonly confuse forms.
 - Explicitly point out common Ukrainian-to-Hebrew interference when it helps prevent mistakes.
