@@ -16,6 +16,8 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
     : assetBundle = assetBundle ?? rootBundle;
 
   static const String _wordsAsset = 'assets/learning/input/hebrew_words.json';
+  static const String _guideMetadataAsset =
+      'assets/learning/input/guide_metadata.json';
   static const String _lessonCatalogAsset =
       'assets/learning/input/lesson_catalog.json';
   static const String _contextSentencesAsset =
@@ -36,6 +38,7 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
         .map(LearningWord.fromJson)
         .toList(growable: false);
     final contextsByWordId = await _loadContextsByWordId();
+    final guideMetadata = await _loadGuideMetadata();
     final words = baseWords
         .map(
           (word) => word.copyWith(
@@ -55,6 +58,7 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
         assetPaths,
         _guidePrefix,
         lessonCatalog['guide'],
+        guideMetadata: guideMetadata,
       ),
       verbLessons: _buildLessonEntries(
         assetPaths,
@@ -115,8 +119,9 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
   List<LessonEntry> _buildLessonEntries(
     List<String> assetPaths,
     String prefix,
-    List<String>? catalogRelativePaths,
-  ) {
+    List<String>? catalogRelativePaths, {
+    _GuideMetadata? guideMetadata,
+  }) {
     final filteredPaths = <String>{
       ...assetPaths.where(
         (path) =>
@@ -138,13 +143,59 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
     }.toList()..sort(_compareLessonPaths);
 
     return filteredPaths
-        .map(
-          (path) => LessonEntry(
+        .map((path) {
+          final metadataEntry = guideMetadata?.lessonForPath(path);
+          final lessonId =
+              metadataEntry?.lessonId ?? _lessonIdForPath(path);
+          final sectionId = metadataEntry?.sectionId;
+          final sectionLabel = sectionId == null
+              ? null
+              : guideMetadata?.sectionLabelFor(sectionId);
+
+          return LessonEntry(
             assetPath: path,
             displayName: _displayNameForPath(path),
-          ),
-        )
+            lessonId: lessonId,
+            sectionId: sectionId,
+            sectionLabel: sectionLabel,
+            aliases: metadataEntry?.aliases ?? const <String>[],
+            relatedIds: metadataEntry?.relatedIds ?? const <String>[],
+          );
+        })
         .toList(growable: false);
+  }
+
+  Future<_GuideMetadata> _loadGuideMetadata() async {
+    try {
+      final rawMetadata = await assetBundle.loadString(_guideMetadataAsset);
+      final decodedMetadata = jsonDecode(rawMetadata);
+      if (decodedMetadata is! Map<String, dynamic>) {
+        return const _GuideMetadata.empty();
+      }
+
+      final sections = ((decodedMetadata['sections'] as Map<String, dynamic>?) ??
+              const <String, dynamic>{})
+          .map(
+            (key, value) => MapEntry(key, value.toString()),
+          );
+      final lessons = ((decodedMetadata['lessons'] as Map<String, dynamic>?) ??
+              const <String, dynamic>{})
+          .map(
+            (filename, value) => MapEntry(
+              filename,
+              _GuideMetadataEntry.fromJson(value),
+            ),
+          );
+
+      return _GuideMetadata(
+        sections: sections,
+        lessons: lessons,
+      );
+    } on FlutterError {
+      return const _GuideMetadata.empty();
+    } on FormatException {
+      return const _GuideMetadata.empty();
+    }
   }
 
   Future<Map<String, List<String>>> _loadLessonCatalog() async {
@@ -215,5 +266,67 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
 
     final paddedPrefix = numericPrefix.toString().padLeft(2, '0');
     return '$paddedPrefix $words';
+  }
+
+  String _lessonIdForPath(String path) {
+    final filename = path.split('/').last;
+    final withoutExtension = filename.replaceFirst(RegExp(r'\.md$'), '');
+    return withoutExtension.replaceFirst(RegExp(r'^\d+[_-]*'), '');
+  }
+}
+
+class _GuideMetadata {
+  const _GuideMetadata({
+    required this.sections,
+    required this.lessons,
+  });
+
+  const _GuideMetadata.empty()
+    : sections = const <String, String>{},
+      lessons = const <String, _GuideMetadataEntry>{};
+
+  final Map<String, String> sections;
+  final Map<String, _GuideMetadataEntry> lessons;
+
+  _GuideMetadataEntry? lessonForPath(String assetPath) {
+    final filename = assetPath.split('/').last;
+    return lessons[filename];
+  }
+
+  String? sectionLabelFor(String sectionId) {
+    return sections[sectionId];
+  }
+}
+
+class _GuideMetadataEntry {
+  const _GuideMetadataEntry({
+    this.lessonId,
+    this.sectionId,
+    this.aliases = const <String>[],
+    this.relatedIds = const <String>[],
+  });
+
+  final String? lessonId;
+  final String? sectionId;
+  final List<String> aliases;
+  final List<String> relatedIds;
+
+  factory _GuideMetadataEntry.fromJson(dynamic value) {
+    if (value is! Map<String, dynamic>) {
+      return const _GuideMetadataEntry();
+    }
+
+    return _GuideMetadataEntry(
+      lessonId: value['id']?.toString(),
+      sectionId: value['section']?.toString(),
+      aliases: (value['aliases'] as List<dynamic>? ?? const <dynamic>[])
+          .map((item) => item.toString())
+          .where((item) => item.trim().isNotEmpty)
+          .toList(growable: false),
+      relatedIds: (value['related_ids'] as List<dynamic>? ?? const <dynamic>[])
+          .map((item) => item.toString())
+          .where((item) => item.trim().isNotEmpty)
+          .toList(growable: false),
+    );
   }
 }

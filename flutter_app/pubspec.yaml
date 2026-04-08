@@ -50,6 +50,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/learning/input/hebrew_words.json
+    - assets/learning/input/guide_metadata.json
     - assets/learning/input/lesson_catalog.json
     - assets/learning/input/contexts/
     - assets/learning/input/guide/

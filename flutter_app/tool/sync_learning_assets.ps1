@@ -27,6 +27,11 @@ Copy-Item `
     -Destination (Join-Path $targetRoot "hebrew_words.json") `
     -Force
 
+Copy-Item `
+    -LiteralPath (Join-Path $sourceRoot "guide_metadata.json") `
+    -Destination (Join-Path $targetRoot "guide_metadata.json") `
+    -Force
+
 foreach ($relativePath in $pathsToMirror) {
     $sourcePath = Join-Path $sourceRoot $relativePath
     $destinationPath = Join-Path $targetRoot $relativePath

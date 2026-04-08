@@ -24,6 +24,9 @@ class AssetLessonDocumentLoader implements LessonDocumentLoader {
         title: title,
         body: body,
         glossary: _extractGlossary(body),
+        summary: _extractSummary(body),
+        headings: _extractHeadings(body),
+        relatedTopics: _extractRelatedTopics(body),
       );
     });
   }
@@ -81,6 +84,97 @@ class AssetLessonDocumentLoader implements LessonDocumentLoader {
     }
 
     return glossary;
+  }
+
+  String _extractSummary(String body) {
+    final lines = body.replaceFirst('\ufeff', '').split('\n');
+
+    for (var index = 0; index < lines.length; index++) {
+      final line = lines[index].trim();
+      if (!line.startsWith('Коротко:')) {
+        continue;
+      }
+
+      final summaryLines = <String>[];
+      final inlineSummary = line.substring('Коротко:'.length).trim();
+      if (inlineSummary.isNotEmpty) {
+        summaryLines.add(inlineSummary);
+      }
+
+      for (var nextIndex = index + 1; nextIndex < lines.length; nextIndex++) {
+        final nextLine = lines[nextIndex].trim();
+        if (nextLine.isEmpty) {
+          if (summaryLines.isNotEmpty) {
+            break;
+          }
+          continue;
+        }
+
+        if (nextLine.startsWith('#')) {
+          break;
+        }
+
+        summaryLines.add(nextLine);
+      }
+
+      return summaryLines.join(' ').trim();
+    }
+
+    return '';
+  }
+
+  List<String> _extractHeadings(String body) {
+    return body
+        .split('\n')
+        .map((line) => RegExp(r'^##\s+(.*)$').firstMatch(line.trim()))
+        .whereType<RegExpMatch>()
+        .map((match) => match.group(1)!.trim())
+        .where(
+          (heading) =>
+              heading.isNotEmpty &&
+              heading != 'Пов’язані теми' &&
+              heading != "Пов'язані теми",
+        )
+        .toList(growable: false);
+  }
+
+  List<String> _extractRelatedTopics(String body) {
+    final lines = body.replaceFirst('\ufeff', '').split('\n');
+    final relatedTopics = <String>[];
+    var inRelatedTopics = false;
+
+    for (final rawLine in lines) {
+      final line = rawLine.trim();
+      if (line.isEmpty) {
+        continue;
+      }
+
+      final headingMatch = RegExp(r'^##\s+(.*)$').firstMatch(line);
+      if (headingMatch != null) {
+        final heading = headingMatch.group(1)!.trim();
+        final isRelatedHeading =
+            heading == 'Пов’язані теми' || heading == "Пов'язані теми";
+        if (isRelatedHeading) {
+          inRelatedTopics = true;
+          continue;
+        }
+
+        if (inRelatedTopics) {
+          break;
+        }
+      }
+
+      if (!inRelatedTopics || !line.startsWith('- ')) {
+        continue;
+      }
+
+      final topic = line.substring(2).trim();
+      if (topic.isNotEmpty) {
+        relatedTopics.add(topic);
+      }
+    }
+
+    return relatedTopics;
   }
 
   bool _containsHebrew(String text) {

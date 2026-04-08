@@ -4,10 +4,20 @@ class LessonEntry {
   const LessonEntry({
     required this.assetPath,
     required this.displayName,
+    this.lessonId,
+    this.sectionId,
+    this.sectionLabel,
+    this.aliases = const <String>[],
+    this.relatedIds = const <String>[],
   });
 
   final String assetPath;
   final String displayName;
+  final String? lessonId;
+  final String? sectionId;
+  final String? sectionLabel;
+  final List<String> aliases;
+  final List<String> relatedIds;
 }
 
 class LearningBundle {

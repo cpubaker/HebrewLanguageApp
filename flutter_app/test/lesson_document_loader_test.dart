@@ -3,27 +3,38 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hebrew_language_flutter/services/lesson_document_loader.dart';
 
 void main() {
-  test('extracts glossary entries from lesson markdown bullets', () async {
+  test('extracts summary, headings, and glossary from lesson markdown', () async {
     final loader = AssetLessonDocumentLoader(
       assetBundle: _FakeAssetBundle('''
 # Lesson Title
 
-יוֹסִי קָם בַּבֹּקֶר.
+Коротко: Short summary for quick lookup.
+
+## Main model
+
+יוסי קם בבוקר.
 
 ## Основні слова
 
-- יוֹסִי - Йосі
-- קָם - встає
+- יוסי - Йосі
+- קם - встає
 - not-a-glossary item
+
+## Пов’язані теми
+
+- Інша тема
 '''),
     );
 
     final document = await loader.load('assets/lesson.md');
 
     expect(document.title, 'Lesson Title');
+    expect(document.summary, 'Short summary for quick lookup.');
+    expect(document.headings, ['Main model', 'Основні слова']);
+    expect(document.relatedTopics, ['Інша тема']);
     expect(document.glossary, <String, String>{
-      'יוֹסִי': 'Йосі',
-      'קָם': 'встає',
+      'יוסי': 'Йосі',
+      'קם': 'встає',
     });
   });
 }

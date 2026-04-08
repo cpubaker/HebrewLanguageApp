@@ -19,6 +19,7 @@ void main() {
       pubspec,
       contains('- assets/learning/input/reading/upper-intermediate/'),
     );
+    expect(pubspec, contains('- assets/learning/input/guide_metadata.json'));
     expect(pubspec, contains('- assets/learning/input/lesson_catalog.json'));
   });
 
@@ -54,6 +55,15 @@ void main() {
       );
     },
   );
+
+  test('guide metadata asset mirrors source metadata', () async {
+    final sourceFile = File('../data/input/guide_metadata.json');
+    final assetFile = File('assets/learning/input/guide_metadata.json');
+
+    expect(await sourceFile.exists(), isTrue);
+    expect(await assetFile.exists(), isTrue);
+    expect(await assetFile.readAsString(), await sourceFile.readAsString());
+  });
 }
 
 void _expectCatalogSectionMatches({

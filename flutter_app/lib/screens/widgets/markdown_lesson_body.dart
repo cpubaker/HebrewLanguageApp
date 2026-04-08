@@ -64,13 +64,13 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
 
       if (line.trimLeft().startsWith('- ')) {
         final bulletText = line.trimLeft().substring(2).trim();
-        final textDirection = _resolveTextDirection(bulletText);
+        final displayText = _prepareBidirectionalText(bulletText);
+        final textDirection = _preferredTextDirectionForDisplay(bulletText);
         children.add(
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
-              textDirection: textDirection,
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
@@ -79,7 +79,7 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
                 const SizedBox(width: 10),
                 Expanded(
                   child: SelectableText(
-                    bulletText,
+                    displayText,
                     style: Theme.of(
                       context,
                     ).textTheme.bodyLarge?.copyWith(height: 1.55),
@@ -95,13 +95,17 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
       }
 
       final text = line.trim();
-      final textDirection = _resolveTextDirection(text);
+      final textDirection = _preferredTextDirectionForDisplay(text);
       children.add(
         Padding(
           padding: const EdgeInsets.only(bottom: 10),
           child: SizedBox(
             width: double.infinity,
-            child: _buildParagraph(context, text, textDirection),
+            child: _buildParagraph(
+              context,
+              _prepareBidirectionalText(text),
+              textDirection,
+            ),
           ),
         ),
       );
@@ -145,6 +149,14 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
     }
 
     return TextDirection.ltr;
+  }
+
+  TextDirection _preferredTextDirectionForDisplay(String text) {
+    if (_hasMixedScriptContent(text)) {
+      return TextDirection.ltr;
+    }
+
+    return _resolveTextDirection(text);
   }
 
   Widget _buildParagraph(
@@ -383,6 +395,34 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
 
   bool _containsHebrew(String text) {
     return RegExp(r'[\u0590-\u05FF]').hasMatch(text);
+  }
+
+  bool _containsLatinOrCyrillic(String text) {
+    return RegExp(r'[A-Za-z\u0400-\u04FF]').hasMatch(text);
+  }
+
+  bool _hasMixedScriptContent(String text) {
+    return _containsHebrew(text) && _containsLatinOrCyrillic(text);
+  }
+
+  String _prepareBidirectionalText(String text) {
+    if (!_hasMixedScriptContent(text)) {
+      return text;
+    }
+
+    final separatorPattern = RegExp(r'\s+—\s+');
+    final segments = text.split(separatorPattern);
+    if (segments.length <= 1) {
+      return text;
+    }
+
+    return segments.map(_wrapWithDirectionalIsolate).join(' — ');
+  }
+
+  String _wrapWithDirectionalIsolate(String text) {
+    final direction = _resolveTextDirection(text);
+    final isolateStart = direction == TextDirection.rtl ? '\u2067' : '\u2066';
+    return '$isolateStart$text\u2069';
   }
 
   String _normalizeForLookup(String text) {

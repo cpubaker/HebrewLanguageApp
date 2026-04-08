@@ -1,0 +1,328 @@
+{
+  "sections": {
+    "basics": "База",
+    "verbs": "Дієслова",
+    "sentences": "Речення",
+    "spoken": "Жива мова",
+    "mistakes": "Помилки"
+  },
+  "lessons": {
+    "01_intro_alphabet.md": {
+      "id": "intro_alphabet",
+      "section": "basics",
+      "aliases": ["алфавіт", "букви", "алеф-бет"],
+      "related_ids": ["reading_rules", "whole_alphabet", "gender_number"]
+    },
+    "02_reading_rules.md": {
+      "id": "reading_rules",
+      "section": "basics",
+      "aliases": ["читання", "правила читання"],
+      "related_ids": ["intro_alphabet", "whole_alphabet", "verbs_intro"]
+    },
+    "03_whole_alphabet.md": {
+      "id": "whole_alphabet",
+      "section": "basics",
+      "aliases": ["весь алфавіт", "літери"],
+      "related_ids": ["intro_alphabet", "reading_rules", "gender_number"]
+    },
+    "04_definiteness_demonstratives.md": {
+      "id": "definiteness_demonstratives",
+      "section": "basics",
+      "aliases": ["означеність", "цей", "ця", "це", "ці"],
+      "related_ids": ["gender_number", "agreement", "nominal_sentences"]
+    },
+    "05_gender_number.md": {
+      "id": "gender_number",
+      "section": "basics",
+      "aliases": ["рід", "число", "однина", "множина"],
+      "related_ids": ["agreement", "numbers", "definiteness_demonstratives"]
+    },
+    "06_agreement.md": {
+      "id": "agreement",
+      "section": "basics",
+      "aliases": ["узгодження"],
+      "related_ids": ["gender_number", "definiteness_demonstratives", "present_tense_patterns"]
+    },
+    "07_smixut.md": {
+      "id": "smixut",
+      "section": "basics",
+      "aliases": ["сміхут", "construct state"],
+      "related_ids": ["construct_state_advanced", "shel_possession", "definiteness_demonstratives"]
+    },
+    "08_verbs_intro.md": {
+      "id": "verbs_intro",
+      "section": "verbs",
+      "aliases": ["дієслова", "вступ до дієслів"],
+      "related_ids": ["more_on_verbs", "verb_system_root_binyanim", "present_tense_patterns"]
+    },
+    "09_more_on_verbs.md": {
+      "id": "more_on_verbs",
+      "section": "verbs",
+      "related_ids": ["verbs_intro", "three_tenses_compared", "verb_system_root_binyanim"]
+    },
+    "10_negation_and_questions.md": {
+      "id": "negation_and_questions",
+      "section": "basics",
+      "aliases": ["заперечення", "питання"],
+      "related_ids": ["more_on_questions", "negation_advanced", "question_particles_intonation"]
+    },
+    "11_more_on_questions.md": {
+      "id": "more_on_questions",
+      "section": "basics",
+      "aliases": ["питальні слова", "уточнення"],
+      "related_ids": ["negation_and_questions", "question_particles_intonation", "conversation_fillers"]
+    },
+    "12_personal_pronouns.md": {
+      "id": "personal_pronouns",
+      "section": "basics",
+      "aliases": ["особові займенники", "займенники"],
+      "related_ids": ["nominal_sentences", "et_with_pronoun_objects", "prepositions_with_suffixes"]
+    },
+    "13_nominal_sentences.md": {
+      "id": "nominal_sentences",
+      "section": "basics",
+      "aliases": ["іменні речення", "без дієслова бути"],
+      "related_ids": ["personal_pronouns", "word_order", "definiteness_demonstratives"]
+    },
+    "14_possession.md": {
+      "id": "possession",
+      "section": "basics",
+      "aliases": ["володіння", "мати", "є у мене"],
+      "related_ids": ["shel_possession", "prepositions_with_suffixes", "nominal_sentences"]
+    },
+    "15_shel_possession.md": {
+      "id": "shel_possession",
+      "section": "basics",
+      "aliases": ["של", "належність"],
+      "related_ids": ["possession", "smixut", "construct_state_advanced"]
+    },
+    "16_et_direct_object.md": {
+      "id": "et_direct_object",
+      "section": "basics",
+      "aliases": ["את", "прямий додаток"],
+      "related_ids": ["et_with_pronoun_objects", "word_order", "personal_pronouns"]
+    },
+    "17_word_order.md": {
+      "id": "word_order",
+      "section": "sentences",
+      "aliases": ["порядок слів"],
+      "related_ids": ["nominal_sentences", "connectors_story_flow"]
+    },
+    "18_numbers.md": {
+      "id": "numbers",
+      "section": "basics",
+      "aliases": ["числівники", "цифри", "рахунок"],
+      "related_ids": ["time_dates", "extended_numbers_ordinals", "gender_number"]
+    },
+    "19_time_dates.md": {
+      "id": "time_dates",
+      "section": "basics",
+      "aliases": ["час", "дати", "календар", "місяці"],
+      "related_ids": ["numbers", "extended_numbers_ordinals", "adverbs_particles"]
+    },
+    "20_past_tense_intro.md": {
+      "id": "past_tense_intro",
+      "section": "verbs",
+      "aliases": ["минулий час"],
+      "related_ids": ["past_tense_patterns", "three_tenses_compared", "irregular_common_verbs"]
+    },
+    "21_future_tense_intro.md": {
+      "id": "future_tense_intro",
+      "section": "verbs",
+      "aliases": ["майбутній час"],
+      "related_ids": ["future_tense_patterns", "three_tenses_compared", "irregular_common_verbs"]
+    },
+    "22_modal_verbs.md": {
+      "id": "modal_verbs",
+      "section": "verbs",
+      "aliases": ["модальні", "хочу", "можу", "треба"],
+      "related_ids": ["infinitive_constructions", "imperative_requests", "common_verb_preposition_pairs"]
+    },
+    "23_basic_prepositions.md": {
+      "id": "basic_prepositions",
+      "section": "basics",
+      "aliases": ["прийменники"],
+      "related_ids": ["prepositions_with_suffixes", "extended_prepositions_space_time", "common_verb_preposition_pairs"]
+    },
+    "24_prepositions_with_suffixes.md": {
+      "id": "prepositions_with_suffixes",
+      "section": "basics",
+      "aliases": ["прийменники з суфіксами"],
+      "related_ids": ["basic_prepositions", "et_with_pronoun_objects", "possession"]
+    },
+    "25_imperative_requests.md": {
+      "id": "imperative_requests",
+      "section": "verbs",
+      "aliases": ["наказовий", "прохання"],
+      "related_ids": ["modal_verbs", "infinitive_constructions", "register_formal_spoken"]
+    },
+    "26_connectors_and_story_flow.md": {
+      "id": "connectors_story_flow",
+      "section": "sentences",
+      "aliases": ["зв'язки", "зв'язки в тексті", "розповідь"],
+      "related_ids": ["cause_result_concession", "subordinate_clauses_basics", "word_order"]
+    },
+    "27_three_tenses_compared.md": {
+      "id": "three_tenses_compared",
+      "section": "verbs",
+      "aliases": ["три часи", "порівняння часів"],
+      "related_ids": ["present_tense_patterns", "past_tense_intro", "future_tense_intro"]
+    },
+    "28_irregular_common_verbs.md": {
+      "id": "irregular_common_verbs",
+      "section": "verbs",
+      "aliases": ["неправильні дієслова"],
+      "related_ids": ["past_tense_patterns", "future_tense_patterns", "common_verb_preposition_pairs"]
+    },
+    "29_gender_sound_changes.md": {
+      "id": "gender_sound_changes",
+      "section": "basics",
+      "aliases": ["звукові зміни", "рід у формах"],
+      "related_ids": ["gender_number", "agreement", "present_tense_patterns"]
+    },
+    "30_typical_mistakes_ukrainians.md": {
+      "id": "typical_mistakes_ukrainians",
+      "section": "mistakes",
+      "aliases": ["типові помилки", "кальки", "пастки"],
+      "related_ids": ["register_formal_spoken", "bookish_vs_natural_syntax", "common_verb_preposition_pairs"]
+    },
+    "31_verb_system_root_binyanim.md": {
+      "id": "verb_system_root_binyanim",
+      "section": "verbs",
+      "aliases": ["біньяни", "корені", "система дієслова"],
+      "related_ids": ["verbs_intro", "infinitive_constructions", "past_tense_patterns"]
+    },
+    "32_past_tense_patterns.md": {
+      "id": "past_tense_patterns",
+      "section": "verbs",
+      "aliases": ["шаблони минулого часу"],
+      "related_ids": ["past_tense_intro", "irregular_common_verbs", "three_tenses_compared"]
+    },
+    "33_future_tense_patterns.md": {
+      "id": "future_tense_patterns",
+      "section": "verbs",
+      "aliases": ["шаблони майбутнього часу"],
+      "related_ids": ["future_tense_intro", "irregular_common_verbs", "three_tenses_compared"]
+    },
+    "34_subordinate_clauses_basics.md": {
+      "id": "subordinate_clauses_basics",
+      "section": "sentences",
+      "aliases": ["підрядні", "що", "коли", "якщо"],
+      "related_ids": ["relative_and_she", "conditions_beyond_basic_im", "perception_thought_speech"]
+    },
+    "35_relative_and_she.md": {
+      "id": "relative_and_she",
+      "section": "sentences",
+      "aliases": ["відносні речення", "שה", "який", "яка"],
+      "related_ids": ["subordinate_clauses_basics", "relative_clause_expansion", "bookish_vs_natural_syntax"]
+    },
+    "36_comparison_and_degrees.md": {
+      "id": "comparison_and_degrees",
+      "section": "basics",
+      "aliases": ["порівняння", "ступені"],
+      "related_ids": ["adverbs_particles", "extended_numbers_ordinals", "cause_result_concession"]
+    },
+    "37_extended_numbers_and_ordinals.md": {
+      "id": "extended_numbers_ordinals",
+      "section": "basics",
+      "aliases": ["порядкові числівники", "дати", "роки"],
+      "related_ids": ["numbers", "time_dates", "comparison_and_degrees"]
+    },
+    "38_extended_prepositions_space_time.md": {
+      "id": "extended_prepositions_space_time",
+      "section": "basics",
+      "aliases": ["простір", "час", "складні прийменники"],
+      "related_ids": ["basic_prepositions", "time_dates", "common_verb_preposition_pairs"]
+    },
+    "39_adverbs_and_particles.md": {
+      "id": "adverbs_particles",
+      "section": "basics",
+      "aliases": ["прислівники", "частки"],
+      "related_ids": ["question_particles_intonation", "conversation_fillers", "cause_result_concession"]
+    },
+    "40_present_tense_patterns.md": {
+      "id": "present_tense_patterns",
+      "section": "verbs",
+      "aliases": ["теперішній час", "шаблони теперішнього"],
+      "related_ids": ["verbs_intro", "three_tenses_compared", "gender_sound_changes"]
+    },
+    "41_et_with_pronoun_objects.md": {
+      "id": "et_with_pronoun_objects",
+      "section": "basics",
+      "aliases": ["את з займенниками", "мене", "тебе", "його"],
+      "related_ids": ["et_direct_object", "personal_pronouns", "prepositions_with_suffixes"]
+    },
+    "42_infinitive_constructions.md": {
+      "id": "infinitive_constructions",
+      "section": "verbs",
+      "aliases": ["інфінітив", "щоб зробити", "почати робити"],
+      "related_ids": ["modal_verbs", "subordinate_clauses_basics", "verb_system_root_binyanim"]
+    },
+    "43_construct_state_advanced.md": {
+      "id": "construct_state_advanced",
+      "section": "basics",
+      "aliases": ["сміхут далі", "construct state advanced"],
+      "related_ids": ["smixut", "shel_possession", "definiteness_demonstratives"]
+    },
+    "44_question_particles_and_intonation.md": {
+      "id": "question_particles_intonation",
+      "section": "spoken",
+      "aliases": ["питальні частки", "інтонація"],
+      "related_ids": ["conversation_fillers", "register_formal_spoken", "adverbs_particles"]
+    },
+    "45_conversation_fillers_and_discourse_markers.md": {
+      "id": "conversation_fillers",
+      "section": "spoken",
+      "aliases": ["розмовні маркери", "вставні слова", "філери"],
+      "related_ids": ["question_particles_intonation", "register_formal_spoken", "adverbs_particles"]
+    },
+    "46_common_verb_preposition_pairs.md": {
+      "id": "common_verb_preposition_pairs",
+      "section": "verbs",
+      "aliases": ["дієслово плюс прийменник", "керування"],
+      "related_ids": ["basic_prepositions", "prepositions_with_suffixes", "typical_mistakes_ukrainians"]
+    },
+    "47_relative_clause_expansion.md": {
+      "id": "relative_clause_expansion",
+      "section": "sentences",
+      "aliases": ["розширені підрядні", "додаткові відносні"],
+      "related_ids": ["relative_and_she", "subordinate_clauses_basics", "perception_thought_speech"]
+    },
+    "48_negation_advanced.md": {
+      "id": "negation_advanced",
+      "section": "sentences",
+      "aliases": ["складне заперечення", "ще не", "вже не"],
+      "related_ids": ["adverbs_particles", "cause_result_concession", "bookish_vs_natural_syntax"]
+    },
+    "49_register_formal_vs_spoken.md": {
+      "id": "register_formal_spoken",
+      "section": "spoken",
+      "aliases": ["формально", "розмовно", "регістр"],
+      "related_ids": ["conversation_fillers", "question_particles_intonation", "bookish_vs_natural_syntax"]
+    },
+    "50_perception_thought_speech_patterns.md": {
+      "id": "perception_thought_speech",
+      "section": "sentences",
+      "aliases": ["я думаю", "мені здається", "бачу що", "кажу що"],
+      "related_ids": ["subordinate_clauses_basics", "cause_result_concession", "relative_clause_expansion"]
+    },
+    "51_cause_result_concession.md": {
+      "id": "cause_result_concession",
+      "section": "sentences",
+      "aliases": ["тому", "через це", "хоча", "незважаючи на"],
+      "related_ids": ["connectors_story_flow", "conditions_beyond_basic_im", "perception_thought_speech"]
+    },
+    "52_conditions_beyond_basic_im.md": {
+      "id": "conditions_beyond_basic_im",
+      "section": "sentences",
+      "aliases": ["умова", "якщо", "אם"],
+      "related_ids": ["subordinate_clauses_basics", "cause_result_concession", "bookish_vs_natural_syntax"]
+    },
+    "53_bookish_vs_natural_syntax.md": {
+      "id": "bookish_vs_natural_syntax",
+      "section": "spoken",
+      "aliases": ["книжково", "живо", "природно", "по-людськи"],
+      "related_ids": ["register_formal_spoken", "typical_mistakes_ukrainians", "conditions_beyond_basic_im"]
+    }
+  }
+}
