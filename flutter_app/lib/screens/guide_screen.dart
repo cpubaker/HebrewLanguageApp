@@ -595,39 +595,47 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
     }
 
     final resolvedTopics = <_GuideResolvedTopic>[];
-    final unresolvedTopics = <String>[];
     final usedAssetPaths = <String>{};
+    final usedTopicKeys = <String>{};
     final currentLessonTitle =
         titlesByAssetPath[widget.lesson.assetPath] ?? _fallbackLessonTitle(widget.lesson);
+    final normalizedCurrentLessonTitle = _normalizeForMatching(currentLessonTitle);
 
-    for (final relatedId in widget.lesson.relatedIds) {
-      final matchingLesson = lessonsById[relatedId];
-      if (matchingLesson == null ||
-          matchingLesson.assetPath == widget.lesson.assetPath ||
-          !usedAssetPaths.add(matchingLesson.assetPath)) {
-        continue;
+    void addResolvedTopic(LessonEntry lesson) {
+      final resolvedLabel =
+          titlesByAssetPath[lesson.assetPath] ?? _fallbackLessonTitle(lesson);
+      final normalizedResolvedLabel = _normalizeForMatching(resolvedLabel);
+      if (lesson.assetPath == widget.lesson.assetPath ||
+          !usedAssetPaths.add(lesson.assetPath) ||
+          normalizedResolvedLabel.isEmpty ||
+          !usedTopicKeys.add(normalizedResolvedLabel)) {
+        return;
       }
 
       resolvedTopics.add(
         _GuideResolvedTopic(
-          label:
-              titlesByAssetPath[matchingLesson.assetPath] ??
-              _fallbackLessonTitle(matchingLesson),
-          lesson: matchingLesson,
-          isExact: true,
+          label: resolvedLabel,
+          lesson: lesson,
         ),
       );
+    }
+
+    for (final relatedId in widget.lesson.relatedIds) {
+      final matchingLesson = lessonsById[relatedId];
+      if (matchingLesson == null) {
+        continue;
+      }
+      addResolvedTopic(matchingLesson);
     }
 
     if (currentDocument.relatedTopics.isEmpty) {
       return _GuideRelatedTopicsResolution(
         resolvedTopics: resolvedTopics,
-        unresolvedTopics: unresolvedTopics,
       );
     }
 
     for (final topic in currentDocument.relatedTopics) {
-      if (_normalizeForMatching(topic) == _normalizeForMatching(currentLessonTitle)) {
+      if (_normalizeForMatching(topic) == normalizedCurrentLessonTitle) {
         continue;
       }
 
@@ -635,25 +643,14 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
         topic,
         titlesByAssetPath: titlesByAssetPath,
       );
-      if (matchingLesson == null ||
-          matchingLesson.assetPath == widget.lesson.assetPath ||
-          !usedAssetPaths.add(matchingLesson.assetPath)) {
-        unresolvedTopics.add(topic);
+      if (matchingLesson == null) {
         continue;
       }
-
-      resolvedTopics.add(
-        _GuideResolvedTopic(
-          label: topic,
-          lesson: matchingLesson,
-          isExact: false,
-        ),
-      );
+      addResolvedTopic(matchingLesson);
     }
 
     return _GuideRelatedTopicsResolution(
       resolvedTopics: resolvedTopics,
-      unresolvedTopics: unresolvedTopics,
     );
   }
 
@@ -753,7 +750,7 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
   }
 
   void _openLesson(LessonEntry lesson) {
-    Navigator.of(context).push(
+    Navigator.of(context).pushReplacement(
       MaterialPageRoute<void>(
         builder: (_) => GuideDetailScreen(
           lesson: lesson,
@@ -928,7 +925,8 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
                     },
                   ),
                 ],
-                if (document.relatedTopics.isNotEmpty) ...[
+                if (document.relatedTopics.isNotEmpty ||
+                    widget.lesson.relatedIds.isNotEmpty) ...[
                   const SizedBox(height: 18),
                   FutureBuilder<_GuideRelatedTopicsResolution>(
                     future: _relatedTopicsFuture,
@@ -1552,8 +1550,7 @@ class _GuideRelatedTopicsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (resolution.resolvedTopics.isEmpty &&
-        resolution.unresolvedTopics.isEmpty) {
+    if (resolution.resolvedTopics.isEmpty) {
       return const SizedBox.shrink();
     }
 
@@ -1580,12 +1577,10 @@ class _GuideRelatedTopicsCard extends StatelessWidget {
             children: [
               ...resolution.resolvedTopics.map(
                 (topic) => ActionChip(
-                  avatar: Icon(
-                    topic.isExact
-                        ? Icons.link_rounded
-                        : Icons.open_in_new_rounded,
+                  avatar: const Icon(
+                    Icons.link_rounded,
                     size: 18,
-                    color: const Color(0xFFB45309),
+                    color: Color(0xFFB45309),
                   ),
                   label: Text(topic.label),
                   labelStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
@@ -1594,17 +1589,6 @@ class _GuideRelatedTopicsCard extends StatelessWidget {
                   ),
                   backgroundColor: const Color(0xFFFDE7D4),
                   onPressed: () => onOpenLesson(topic.lesson),
-                ),
-              ),
-              ...resolution.unresolvedTopics.map(
-                (topic) => Chip(
-                  label: Text(topic),
-                  labelStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: const Color(0xFF5F5A52),
-                    fontWeight: FontWeight.w600,
-                  ),
-                  backgroundColor: const Color(0xFFF4EFE8),
-                  side: BorderSide.none,
                 ),
               ),
             ],
@@ -1796,25 +1780,20 @@ class _GuideSectionOption {
 class _GuideRelatedTopicsResolution {
   const _GuideRelatedTopicsResolution({
     required this.resolvedTopics,
-    required this.unresolvedTopics,
   });
 
   const _GuideRelatedTopicsResolution.empty()
-    : resolvedTopics = const <_GuideResolvedTopic>[],
-      unresolvedTopics = const <String>[];
+    : resolvedTopics = const <_GuideResolvedTopic>[];
 
   final List<_GuideResolvedTopic> resolvedTopics;
-  final List<String> unresolvedTopics;
 }
 
 class _GuideResolvedTopic {
   const _GuideResolvedTopic({
     required this.label,
     required this.lesson,
-    required this.isExact,
   });
 
   final String label;
   final LessonEntry lesson;
-  final bool isExact;
 }

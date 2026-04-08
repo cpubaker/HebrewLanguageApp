@@ -237,6 +237,105 @@ void main() {
     expect(find.text('01 Intro Alphabet'), findsNothing);
     expect(find.text('03 Smixut'), findsNothing);
   });
+
+  testWidgets('guide related topics deduplicate metadata and markdown matches', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: GuideDetailScreen(
+          lesson: const LessonEntry(
+            assetPath: 'assets/learning/input/guide/01_intro_alphabet.md',
+            displayName: '01 Intro Alphabet',
+            lessonId: 'intro_alphabet',
+            sectionId: 'basics',
+            sectionLabel: 'База',
+            relatedIds: ['reading_rules'],
+          ),
+          allLessons: const [
+            LessonEntry(
+              assetPath: 'assets/learning/input/guide/01_intro_alphabet.md',
+              displayName: '01 Intro Alphabet',
+              lessonId: 'intro_alphabet',
+              sectionId: 'basics',
+              sectionLabel: 'База',
+              relatedIds: ['reading_rules'],
+            ),
+            LessonEntry(
+              assetPath: 'assets/learning/input/guide/02_reading_rules.md',
+              displayName: '02 Reading Rules',
+              lessonId: 'reading_rules',
+              sectionId: 'basics',
+              sectionLabel: 'База',
+            ),
+          ],
+          documentLoader: _GuideRelatedTopicsCleanupLoader(),
+          initialStatus: GuideLessonStatus.studying,
+          onStatusChanged: (_) {},
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Пов’язані теми'), findsOneWidget);
+    expect(find.text('Правила читання'), findsOneWidget);
+    expect(find.text('Неіснуюча тема'), findsNothing);
+  });
+
+  testWidgets('guide back button returns to guide list after opening adjacent lesson', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: GuideScreen(
+            lessons: const [
+              LessonEntry(
+                assetPath: 'assets/learning/input/guide/01_intro_alphabet.md',
+                displayName: '01 Intro Alphabet',
+                lessonId: 'intro_alphabet',
+                sectionId: 'basics',
+                sectionLabel: 'База',
+              ),
+              LessonEntry(
+                assetPath: 'assets/learning/input/guide/02_reading_rules.md',
+                displayName: '02 Reading Rules',
+                lessonId: 'reading_rules',
+                sectionId: 'basics',
+                sectionLabel: 'База',
+              ),
+              LessonEntry(
+                assetPath: 'assets/learning/input/guide/03_whole_alphabet.md',
+                displayName: '03 Whole Alphabet',
+                lessonId: 'whole_alphabet',
+                sectionId: 'basics',
+                sectionLabel: 'База',
+              ),
+            ],
+            documentLoader: _GuideNavigationFlowDocumentLoader(),
+            lessonStatuses: const <String, GuideLessonStatus>{},
+            onStatusChanged: (_, _) {},
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Правила читання'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Увесь алфавіт'), findsOneWidget);
+    await tester.tap(find.text('Увесь алфавіт'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Увесь алфавіт'), findsWidgets);
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+
+    expect(find.text('Довідник'), findsOneWidget);
+    expect(find.text('Правила читання'), findsOneWidget);
+    expect(find.text('Абетка'), findsOneWidget);
+  });
 }
 
 class _GuideOnlyBundleLoader implements LearningBundleLoader {
@@ -336,6 +435,55 @@ class _GuideAdjacentTitlesDocumentLoader implements LessonDocumentLoader {
     return const LessonDocument(
       title: 'Правила читання',
       body: '## Основна ідея\n\n- Дивимось на шаблон слова.',
+    );
+  }
+}
+
+class _GuideRelatedTopicsCleanupLoader implements LessonDocumentLoader {
+  @override
+  Future<LessonDocument> load(String assetPath) async {
+    if (assetPath.contains('02_reading_rules')) {
+      return const LessonDocument(
+        title: 'Правила читання',
+        body: '## Основна ідея\n\n- Дивимось на нікуд і шаблони.',
+      );
+    }
+
+    return const LessonDocument(
+      title: 'Абетка',
+      headings: ['Основна ідея'],
+      relatedTopics: ['Правила читання', 'Неіснуюча тема'],
+      body: '## Основна ідея\n\n- Вчимо базові літери.',
+    );
+  }
+}
+
+class _GuideNavigationFlowDocumentLoader implements LessonDocumentLoader {
+  @override
+  Future<LessonDocument> load(String assetPath) async {
+    if (assetPath.contains('01_intro_alphabet')) {
+      return const LessonDocument(
+        title: 'Абетка',
+        summary: 'Перший вхід у букви.',
+        headings: ['Основна ідея'],
+        body: '## Основна ідея\n\n- Бачимо базові літери.',
+      );
+    }
+
+    if (assetPath.contains('03_whole_alphabet')) {
+      return const LessonDocument(
+        title: 'Увесь алфавіт',
+        summary: 'Усі літери в одному місці.',
+        headings: ['Основна ідея'],
+        body: '## Основна ідея\n\n- Збираємо всю абетку.',
+      );
+    }
+
+    return const LessonDocument(
+      title: 'Правила читання',
+      summary: 'Як читати нікуд і базові шаблони.',
+      headings: ['Основна ідея'],
+      body: '## Основна ідея\n\n- Дивимось на нікуд.',
     );
   }
 }
