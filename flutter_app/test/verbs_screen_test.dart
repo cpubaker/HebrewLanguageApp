@@ -74,6 +74,9 @@ class _FakeVerbAudioPlayer implements VerbAudioPlayer {
   Future<bool> assetExists(String assetPath) async => false;
 
   @override
+  Future<bool> prepareAsset(String assetPath) async => false;
+
+  @override
   Future<void> dispose() async {}
 
   @override

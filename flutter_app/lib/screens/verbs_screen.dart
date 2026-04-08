@@ -749,7 +749,14 @@ class _VerbHeroCardState extends State<_VerbHeroCard> {
   }
 
   Future<void> _checkAudioAvailability() async {
-    final hasAudio = await _audioPlayer.assetExists(widget.audioAssetPath);
+    var hasAudio = await _audioPlayer.assetExists(widget.audioAssetPath);
+    if (hasAudio) {
+      try {
+        hasAudio = await _audioPlayer.prepareAsset(widget.audioAssetPath);
+      } catch (_) {
+        hasAudio = false;
+      }
+    }
     if (!mounted) {
       return;
     }

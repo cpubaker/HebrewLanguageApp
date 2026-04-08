@@ -665,6 +665,7 @@ class FakeVerbAudioPlayer implements VerbAudioPlayer {
 
   final Set<String> availableAssets;
   final List<String> playedAssets = <String>[];
+  final List<String> preparedAssets = <String>[];
   final StreamController<bool> _isPlayingController =
       StreamController<bool>.broadcast();
   bool stopped = false;
@@ -676,6 +677,15 @@ class FakeVerbAudioPlayer implements VerbAudioPlayer {
   @override
   Future<bool> assetExists(String assetPath) async {
     return availableAssets.contains(assetPath);
+  }
+
+  @override
+  Future<bool> prepareAsset(String assetPath) async {
+    if (!availableAssets.contains(assetPath)) {
+      return false;
+    }
+    preparedAssets.add(assetPath);
+    return true;
   }
 
   @override

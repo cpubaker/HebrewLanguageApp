@@ -6,6 +6,7 @@ import 'package:just_audio/just_audio.dart';
 abstract class VerbAudioPlayer {
   Stream<bool> get isPlayingStream;
   Future<bool> assetExists(String assetPath);
+  Future<bool> prepareAsset(String assetPath);
   Future<void> playAsset(String assetPath);
   Future<void> stop();
   Future<void> dispose();
@@ -24,6 +25,8 @@ class AssetVerbAudioPlayer implements VerbAudioPlayer {
 
   final AssetBundle _assetBundle;
   final AudioPlayer _player;
+  Future<Set<String>>? _assetPathsFuture;
+  String? _preparedAssetPath;
 
   @override
   Stream<bool> get isPlayingStream => _player.playerStateStream
@@ -35,27 +38,51 @@ class AssetVerbAudioPlayer implements VerbAudioPlayer {
 
   @override
   Future<bool> assetExists(String assetPath) async {
-    try {
-      await _assetBundle.load(assetPath);
-      return true;
-    } catch (_) {
+    final assetPaths = await _loadAssetPaths();
+    return assetPaths.contains(assetPath);
+  }
+
+  @override
+  Future<bool> prepareAsset(String assetPath) async {
+    if (!await assetExists(assetPath)) {
       return false;
     }
+
+    if (_preparedAssetPath == assetPath) {
+      return true;
+    }
+
+    await _player.setAsset(assetPath);
+    _preparedAssetPath = assetPath;
+    return true;
   }
 
   @override
   Future<void> playAsset(String assetPath) async {
-    await _player.setAsset(assetPath);
+    final prepared = await prepareAsset(assetPath);
+    if (!prepared) {
+      throw StateError('Audio asset not found: $assetPath');
+    }
+
+    await _player.seek(Duration.zero);
     unawaited(_player.play());
   }
 
   @override
   Future<void> stop() async {
-    await _player.stop();
+    await _player.pause();
+    await _player.seek(Duration.zero);
   }
 
   @override
   Future<void> dispose() async {
     await _player.dispose();
+  }
+
+  Future<Set<String>> _loadAssetPaths() {
+    return _assetPathsFuture ??=
+        AssetManifest.loadFromAssetBundle(_assetBundle).then(
+          (manifest) => manifest.listAssets().toSet(),
+        );
   }
 }
