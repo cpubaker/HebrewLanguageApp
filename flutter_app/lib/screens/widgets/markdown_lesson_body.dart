@@ -66,28 +66,35 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
         final bulletText = line.trimLeft().substring(2).trim();
         final displayText = _prepareBidirectionalText(bulletText);
         final textDirection = _preferredTextDirectionForDisplay(bulletText);
+        final bulletRowDirection =
+            textDirection == TextDirection.rtl && !_hasMixedScriptContent(bulletText)
+            ? TextDirection.rtl
+            : TextDirection.ltr;
         children.add(
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: Icon(Icons.circle, size: 8, color: widget.accentColor),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: SelectableText(
-                    displayText,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodyLarge?.copyWith(height: 1.55),
-                    textAlign: _textAlignForDirection(textDirection),
-                    textDirection: textDirection,
+            child: Directionality(
+              textDirection: bulletRowDirection,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Icon(Icons.circle, size: 8, color: widget.accentColor),
                   ),
-                ),
-              ],
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: SelectableText(
+                      displayText,
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyLarge?.copyWith(height: 1.55),
+                      textAlign: _textAlignForDirection(textDirection),
+                      textDirection: textDirection,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );

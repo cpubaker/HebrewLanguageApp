@@ -19,14 +19,15 @@ class AssetLessonDocumentLoader implements LessonDocumentLoader {
   Future<LessonDocument> load(String assetPath) async {
     return _cache.putIfAbsent(assetPath, () async {
       final content = await assetBundle.loadString(assetPath);
-      final (title, body) = _splitMarkdownSection(content);
+      final (title, rawBody) = _splitMarkdownSection(content);
+      final cleanedBody = _stripRelatedTopicsSection(rawBody);
       return LessonDocument(
         title: title,
-        body: body,
-        glossary: _extractGlossary(body),
-        summary: _extractSummary(body),
-        headings: _extractHeadings(body),
-        relatedTopics: _extractRelatedTopics(body),
+        body: cleanedBody,
+        glossary: _extractGlossary(cleanedBody),
+        summary: _extractSummary(rawBody),
+        headings: _extractHeadings(rawBody),
+        relatedTopics: _extractRelatedTopics(rawBody),
       );
     });
   }
@@ -175,6 +176,38 @@ class AssetLessonDocumentLoader implements LessonDocumentLoader {
     }
 
     return relatedTopics;
+  }
+
+  String _stripRelatedTopicsSection(String body) {
+    final lines = body.replaceFirst('\ufeff', '').split('\n');
+    final keptLines = <String>[];
+    var inRelatedTopics = false;
+
+    for (final rawLine in lines) {
+      final line = rawLine.trim();
+      final headingMatch = RegExp(r'^##\s+(.*)$').firstMatch(line);
+      if (headingMatch != null) {
+        final heading = headingMatch.group(1)!.trim();
+        final isRelatedHeading =
+            heading == 'Пов’язані теми' || heading == "Пов'язані теми";
+        if (isRelatedHeading) {
+          inRelatedTopics = true;
+          continue;
+        }
+
+        if (inRelatedTopics) {
+          inRelatedTopics = false;
+        }
+      }
+
+      if (inRelatedTopics) {
+        continue;
+      }
+
+      keptLines.add(rawLine);
+    }
+
+    return keptLines.join('\n').trim();
   }
 
   bool _containsHebrew(String text) {

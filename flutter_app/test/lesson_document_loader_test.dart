@@ -32,6 +32,8 @@ void main() {
     expect(document.summary, 'Short summary for quick lookup.');
     expect(document.headings, ['Main model', 'Основні слова']);
     expect(document.relatedTopics, ['Інша тема']);
+    expect(document.body.contains('## Пов’язані теми'), isFalse);
+    expect(document.body.contains('- Інша тема'), isFalse);
     expect(document.glossary, <String, String>{
       'יוסי': 'Йосі',
       'קם': 'встає',
