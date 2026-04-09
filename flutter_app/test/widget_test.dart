@@ -9,6 +9,7 @@ import 'package:hebrew_language_flutter/models/learning_bundle.dart';
 import 'package:hebrew_language_flutter/models/learning_context.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/models/lesson_document.dart';
+import 'package:hebrew_language_flutter/screens/home_screen.dart';
 import 'package:hebrew_language_flutter/services/guide_progress_store.dart';
 import 'package:hebrew_language_flutter/services/lesson_document_loader.dart';
 import 'package:hebrew_language_flutter/services/learning_bundle_loader.dart';
@@ -127,6 +128,42 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('ID: word_woman'), findsOneWidget);
+  });
+
+  testWidgets('collapses bottom navigation on scroll and restores it from handle', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      HebrewFlutterApp(
+        loader: FakeLearningBundleLoader(),
+        documentLoader: FakeLessonDocumentLoader(),
+        progressStore: FakeWordProgressStore(),
+        guideProgressStore: FakeGuideProgressStore(),
+        readingProgressStore: FakeReadingProgressStore(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const ValueKey('app-shell-bottom-nav')), findsOneWidget);
+    expect(find.byKey(const ValueKey('app-shell-nav-handle')), findsNothing);
+
+    await tester.drag(
+      find.descendant(
+        of: find.byType(HomeScreen),
+        matching: find.byType(ListView),
+      ).first,
+      const Offset(0, -500),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const ValueKey('app-shell-nav-handle')), findsOneWidget);
+    expect(find.byKey(const ValueKey('app-shell-bottom-nav')), findsNothing);
+
+    await tester.tap(find.byKey(const ValueKey('app-shell-nav-handle')));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const ValueKey('app-shell-bottom-nav')), findsOneWidget);
+    expect(find.byKey(const ValueKey('app-shell-nav-handle')), findsNothing);
   });
 
   testWidgets('matches Hebrew search without requiring niqqud', (
