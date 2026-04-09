@@ -2,13 +2,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
 
 void main() {
-  test('fromJson reads writing progress fields when present', () {
+  test('fromJson reads writing progress and optional audio fields', () {
     final word = LearningWord.fromJson(<String, Object?>{
       'word_id': 'word_shalom',
       'hebrew': 'שלום',
       'english': 'peace',
       'ukrainian': 'мир',
       'transcription': 'shalom',
+      'audio_file': 'words/word_shalom.mp3',
       'correct': 2,
       'wrong': 1,
       'last_correct': '2026-04-04T10:00:00Z',
@@ -19,6 +20,11 @@ void main() {
 
     expect(word.wordId, 'word_shalom');
     expect(word.translation, 'мир');
+    expect(
+      word.audioAssetPath,
+      'assets/learning/input/audio/words/word_shalom.mp3',
+    );
+    expect(word.hasPlannedAudio, isTrue);
     expect(word.writingCorrect, 5);
     expect(word.writingWrong, 2);
     expect(word.writingLastCorrect, '2026-04-04T12:30:00Z');
@@ -31,6 +37,7 @@ void main() {
       english: 'peace',
       ukrainian: 'мир',
       transcription: 'shalom',
+      audioAssetPath: 'assets/learning/input/audio/words/word_shalom.mp3',
       correct: 2,
       wrong: 1,
       writingCorrect: 3,
@@ -42,6 +49,10 @@ void main() {
 
     expect(updatedWord.correct, 2);
     expect(updatedWord.wrong, 1);
+    expect(
+      updatedWord.audioAssetPath,
+      'assets/learning/input/audio/words/word_shalom.mp3',
+    );
     expect(updatedWord.writingCorrect, 4);
     expect(updatedWord.writingWrong, 1);
     expect(updatedWord.writingLastCorrect, '2026-04-04T12:30:00Z');
@@ -58,5 +69,6 @@ void main() {
     );
 
     expect(word.translation, 'peace');
+    expect(word.hasPlannedAudio, isFalse);
   });
 }

@@ -1,0 +1,121 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:hebrew_language_flutter/models/learning_word.dart';
+import 'package:hebrew_language_flutter/screens/words_screen.dart';
+import 'package:hebrew_language_flutter/services/learning_audio_player.dart';
+
+void main() {
+  testWidgets('plays test word audio when asset is available', (
+    WidgetTester tester,
+  ) async {
+    final audioPlayer = _FakeLearningAudioPlayer(assetExistsResult: true);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: WordsScreen(
+            words: const [
+              LearningWord(
+                wordId: 'word_man',
+                hebrew: 'איש',
+                english: 'man',
+                transcription: 'ish',
+                audioAssetPath:
+                    'assets/learning/input/audio/words/word_man.mp3',
+                correct: 0,
+                wrong: 0,
+              ),
+            ],
+            audioPlayerFactory: () => audioPlayer,
+          ),
+        ),
+      ),
+    );
+
+    await tester.tap(find.text('man'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Тестова вимова'), findsOneWidget);
+    expect(find.byTooltip('Увімкнути вимову слова'), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Увімкнути вимову слова'));
+    await tester.pumpAndSettle();
+
+    expect(audioPlayer.playedAssets, [
+      'assets/learning/input/audio/words/word_man.mp3',
+    ]);
+  });
+
+  testWidgets('keeps test word audio disabled until mp3 exists', (
+    WidgetTester tester,
+  ) async {
+    final audioPlayer = _FakeLearningAudioPlayer(assetExistsResult: false);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: WordsScreen(
+            words: const [
+              LearningWord(
+                wordId: 'word_man',
+                hebrew: 'איש',
+                english: 'man',
+                transcription: 'ish',
+                audioAssetPath:
+                    'assets/learning/input/audio/words/word_man.mp3',
+                correct: 0,
+                wrong: 0,
+              ),
+            ],
+            audioPlayerFactory: () => audioPlayer,
+          ),
+        ),
+      ),
+    );
+
+    await tester.tap(find.text('man'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Тестова вимова'), findsOneWidget);
+    expect(find.textContaining('mp3 ще не згенеровано'), findsOneWidget);
+
+    final disabledButton = tester.widget<IconButton>(
+      find.byWidgetPredicate(
+        (widget) =>
+            widget is IconButton &&
+            widget.tooltip == 'Тестове аудіо ще не згенеровано',
+      ),
+    );
+    expect(disabledButton.onPressed, isNull);
+    expect(audioPlayer.playedAssets, isEmpty);
+  });
+}
+
+class _FakeLearningAudioPlayer implements LearningAudioPlayer {
+  _FakeLearningAudioPlayer({required this.assetExistsResult});
+
+  final bool assetExistsResult;
+  final List<String> playedAssets = <String>[];
+
+  @override
+  Stream<bool> get isPlayingStream => const Stream<bool>.empty();
+
+  @override
+  Future<bool> assetExists(String assetPath) async => assetExistsResult;
+
+  @override
+  Future<bool> prepareAsset(String assetPath) async => assetExistsResult;
+
+  @override
+  Future<void> dispose() async {}
+
+  @override
+  Future<void> playAsset(String assetPath) async {
+    playedAssets.add(assetPath);
+  }
+
+  @override
+  Future<void> stop() async {}
+}

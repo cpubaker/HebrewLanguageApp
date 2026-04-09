@@ -7,6 +7,7 @@ class LearningWord {
     required this.english,
     this.ukrainian = '',
     required this.transcription,
+    this.audioAssetPath,
     required this.correct,
     required this.wrong,
     this.writingCorrect = 0,
@@ -23,6 +24,7 @@ class LearningWord {
       english: json['english'] as String? ?? '',
       ukrainian: json['ukrainian'] as String? ?? '',
       transcription: json['transcription'] as String? ?? '',
+      audioAssetPath: _parseAudioAssetPath(json['audio_file']),
       correct: (json['correct'] as num?)?.toInt() ?? 0,
       wrong: (json['wrong'] as num?)?.toInt() ?? 0,
       lastCorrect: _parseLastCorrect(json['last_correct']),
@@ -41,6 +43,7 @@ class LearningWord {
   final String english;
   final String ukrainian;
   final String transcription;
+  final String? audioAssetPath;
   final int correct;
   final int wrong;
   final String? lastCorrect;
@@ -55,6 +58,7 @@ class LearningWord {
     String? english,
     String? ukrainian,
     String? transcription,
+    String? audioAssetPath,
     int? correct,
     int? wrong,
     String? lastCorrect,
@@ -69,6 +73,7 @@ class LearningWord {
       english: english ?? this.english,
       ukrainian: ukrainian ?? this.ukrainian,
       transcription: transcription ?? this.transcription,
+      audioAssetPath: audioAssetPath ?? this.audioAssetPath,
       correct: correct ?? this.correct,
       wrong: wrong ?? this.wrong,
       lastCorrect: lastCorrect ?? this.lastCorrect,
@@ -88,11 +93,29 @@ class LearningWord {
     return english;
   }
 
+  bool get hasPlannedAudio {
+    final audioPath = audioAssetPath;
+    return audioPath != null && audioPath.trim().isNotEmpty;
+  }
+
   static String? _parseLastCorrect(Object? value) {
     if (value is String && value.trim().isNotEmpty) {
       return value;
     }
 
     return null;
+  }
+
+  static String? _parseAudioAssetPath(Object? value) {
+    if (value is! String) {
+      return null;
+    }
+
+    final normalizedPath = value.trim().replaceAll('\\', '/');
+    if (normalizedPath.isEmpty) {
+      return null;
+    }
+
+    return 'assets/learning/input/audio/$normalizedPath';
   }
 }

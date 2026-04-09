@@ -11,6 +11,7 @@ $pathsToMirror = @(
     "verbs",
     "reading",
     "audio\verbs",
+    "audio\words",
     "images\verbs"
 )
 

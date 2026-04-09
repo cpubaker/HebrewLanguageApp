@@ -3,11 +3,17 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../models/learning_word.dart';
+import '../services/learning_audio_player.dart';
 
 class WordsScreen extends StatefulWidget {
-  const WordsScreen({super.key, required this.words});
+  const WordsScreen({
+    super.key,
+    required this.words,
+    required this.audioPlayerFactory,
+  });
 
   final List<LearningWord> words;
+  final CreateLearningAudioPlayer audioPlayerFactory;
 
   @override
   State<WordsScreen> createState() => _WordsScreenState();
@@ -45,10 +51,9 @@ class _WordsScreenState extends State<WordsScreen> {
   }
 
   void _rebuildIndex() {
-    final indexedWords = widget.words
-        .map(_IndexedWord.fromWord)
-        .toList(growable: false)
-      ..sort((left, right) => left.sortKey.compareTo(right.sortKey));
+    final indexedWords =
+        widget.words.map(_IndexedWord.fromWord).toList(growable: false)
+          ..sort((left, right) => left.sortKey.compareTo(right.sortKey));
 
     _indexedWords = indexedWords;
     _visibleWords = _filterIndexedWords(indexedWords, _query);
@@ -100,60 +105,69 @@ class _WordsScreenState extends State<WordsScreen> {
         final theme = Theme.of(context);
         return Padding(
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                word.hebrew,
-                textDirection: TextDirection.rtl,
-                style: theme.textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.w800,
-                  color: const Color(0xFF163832),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                word.translation,
-                style: theme.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                word.transcription,
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  color: const Color(0xFF5F5A52),
-                ),
-              ),
-              const SizedBox(height: 18),
-              Row(
-                children: [
-                  Expanded(
-                    child: _StatPill(
-                      label: 'Правильно',
-                      value: word.correct,
-                      accent: const Color(0xFF0F766E),
-                    ),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  word.hebrew,
+                  textDirection: TextDirection.rtl,
+                  style: theme.textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: const Color(0xFF163832),
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: _StatPill(
-                      label: 'Помилки',
-                      value: word.wrong,
-                      accent: const Color(0xFFB91C1C),
-                    ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  word.translation,
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w800,
                   ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  word.transcription,
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    color: const Color(0xFF5F5A52),
+                  ),
+                ),
+                const SizedBox(height: 18),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _StatPill(
+                        label: 'Правильно',
+                        value: word.correct,
+                        accent: const Color(0xFF0F766E),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _StatPill(
+                        label: 'Помилки',
+                        value: word.wrong,
+                        accent: const Color(0xFFB91C1C),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 14),
+                if (word.hasPlannedAudio) ...[
+                  _WordAudioPanel(
+                    word: word,
+                    audioPlayerFactory: widget.audioPlayerFactory,
+                  ),
+                  const SizedBox(height: 14),
                 ],
-              ),
-              const SizedBox(height: 14),
-              Text(
-                'ID: ${word.wordId}',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: const Color(0xFF6C665D),
+                Text(
+                  'ID: ${word.wordId}',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: const Color(0xFF6C665D),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
@@ -172,9 +186,9 @@ class _WordsScreenState extends State<WordsScreen> {
               children: [
                 Text(
                   'Слова',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Text(
@@ -383,19 +397,21 @@ class _WordCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    Row(
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
                       children: [
                         _MiniProgress(
                           label: 'П',
                           value: word.correct,
                           accent: const Color(0xFF0F766E),
                         ),
-                        const SizedBox(width: 8),
                         _MiniProgress(
                           label: 'Н',
                           value: word.wrong,
                           accent: const Color(0xFFB91C1C),
                         ),
+                        if (word.hasPlannedAudio) const _AudioPilotBadge(),
                       ],
                     ),
                   ],
@@ -424,6 +440,240 @@ class _WordCard extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _WordAudioPanel extends StatefulWidget {
+  const _WordAudioPanel({required this.word, required this.audioPlayerFactory});
+
+  final LearningWord word;
+  final CreateLearningAudioPlayer audioPlayerFactory;
+
+  @override
+  State<_WordAudioPanel> createState() => _WordAudioPanelState();
+}
+
+class _WordAudioPanelState extends State<_WordAudioPanel> {
+  late final LearningAudioPlayer _audioPlayer = widget.audioPlayerFactory();
+  StreamSubscription<bool>? _playbackSubscription;
+  bool _isCheckingAvailability = true;
+  bool _hasAudio = false;
+  bool _isPlaying = false;
+  bool _isBusy = false;
+
+  String get _audioAssetPath => widget.word.audioAssetPath ?? '';
+
+  @override
+  void initState() {
+    super.initState();
+    _playbackSubscription = _audioPlayer.isPlayingStream.listen((isPlaying) {
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _isPlaying = isPlaying;
+      });
+    });
+    unawaited(_checkAudioAvailability());
+  }
+
+  Future<void> _checkAudioAvailability() async {
+    final audioAssetPath = widget.word.audioAssetPath;
+    if (audioAssetPath == null || audioAssetPath.trim().isEmpty) {
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _hasAudio = false;
+        _isCheckingAvailability = false;
+      });
+      return;
+    }
+
+    var hasAudio = await _audioPlayer.assetExists(audioAssetPath);
+    if (hasAudio) {
+      try {
+        hasAudio = await _audioPlayer.prepareAsset(audioAssetPath);
+      } catch (_) {
+        hasAudio = false;
+      }
+    }
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _hasAudio = hasAudio;
+      _isCheckingAvailability = false;
+    });
+  }
+
+  Future<void> _togglePlayback() async {
+    final wasPlaying = _isPlaying;
+
+    setState(() {
+      _isBusy = true;
+    });
+
+    try {
+      if (wasPlaying) {
+        await _audioPlayer.stop();
+      } else {
+        await _audioPlayer.playAsset(_audioAssetPath);
+      }
+
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        if (wasPlaying) {
+          _isPlaying = false;
+        }
+      });
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _isPlaying = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Не вдалося відтворити вимову слова.')),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isBusy = false;
+        });
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    unawaited(_playbackSubscription?.cancel());
+    unawaited(_audioPlayer.stop());
+    unawaited(_audioPlayer.dispose());
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final helperText = _isCheckingAvailability
+        ? 'Перевіряємо, чи тестовий mp3 вже доступний.'
+        : _hasAudio
+        ? 'Тестове аудіо готове. Можна прослухати слово.'
+        : 'Слово вже входить у тестовий набір, але mp3 ще не згенеровано.';
+
+    final tooltip = _isCheckingAvailability
+        ? 'Перевіряємо аудіо слова'
+        : _hasAudio
+        ? (_isPlaying ? 'Зупинити вимову слова' : 'Увімкнути вимову слова')
+        : 'Тестове аудіо ще не згенеровано';
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: const Color(0x1F8C6A2A)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Тестова вимова',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: const Color(0xFF163832),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  helperText,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: const Color(0xFF5F5A52),
+                    height: 1.35,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          Container(
+            decoration: BoxDecoration(
+              color: const Color(0xFF8C6A2A).withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(18),
+            ),
+            child: IconButton(
+              tooltip: tooltip,
+              onPressed: _hasAudio && !_isBusy ? _togglePlayback : null,
+              icon: _isBusy
+                  ? const SizedBox(
+                      width: 18,
+                      height: 18,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Color(0xFF8C6A2A),
+                      ),
+                    )
+                  : Icon(
+                      _isPlaying
+                          ? Icons.stop_circle_outlined
+                          : Icons.volume_up_rounded,
+                      color: _hasAudio
+                          ? const Color(0xFF8C6A2A)
+                          : const Color(0xFFB8AA93),
+                    ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AudioPilotBadge extends StatelessWidget {
+  const _AudioPilotBadge();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: const Color(0xFF8C6A2A).withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(
+            Icons.volume_up_rounded,
+            size: 14,
+            color: Color(0xFF8C6A2A),
+          ),
+          const SizedBox(width: 6),
+          Text(
+            'Аудіо-тест',
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(
+              color: const Color(0xFF8C6A2A),
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
       ),
     );
   }

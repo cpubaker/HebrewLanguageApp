@@ -352,7 +352,10 @@ class _AppShellScreenState extends State<AppShellScreen> {
                   onOpenVerbs: () => _selectTab(5),
                   onOpenReading: () => _selectTab(6),
                 ),
-                WordsScreen(words: bundle.words),
+                WordsScreen(
+                  words: bundle.words,
+                  audioPlayerFactory: widget.audioPlayerFactory,
+                ),
                 FlashcardsScreen(
                   words: bundle.words,
                   onWordProgressChanged: _handleWordProgressChanged,

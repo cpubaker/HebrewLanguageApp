@@ -63,4 +63,5 @@ flutter:
     - assets/learning/input/reading/proficient/
     - assets/learning/input/reading/upper-intermediate/
     - assets/learning/input/audio/verbs/
+    - assets/learning/input/audio/words/
     - assets/learning/input/images/verbs/

@@ -30,6 +30,7 @@
   - `english`
   - `ukrainian`
   - `transcription`
+  - optional `audio_file` relative to `data/input/audio/`
   - legacy progress-style fields such as `correct`, `wrong`, `last_correct`, `writing_correct`, `writing_wrong`, and `writing_last_correct`
 - Flutter currently relies on the lexical fields plus `correct`, `wrong`, and string `last_correct`.
 - Flutter does not currently use the writing-progress fields, so treat them as legacy unless a task explicitly revives writing-mode behavior.
