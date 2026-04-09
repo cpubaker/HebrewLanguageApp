@@ -23,15 +23,20 @@ class _WordsScreenState extends State<WordsScreen> {
   static const Duration _searchDebounceDelay = Duration(milliseconds: 180);
 
   late final TextEditingController _searchController;
+  late final ScrollController _scrollController;
+  late final FocusNode _searchFocusNode;
   Timer? _searchDebounce;
   String _query = '';
   late List<_IndexedWord> _indexedWords;
   late List<_IndexedWord> _visibleWords;
+  bool _showScrollToTop = false;
 
   @override
   void initState() {
     super.initState();
     _searchController = TextEditingController();
+    _scrollController = ScrollController()..addListener(_handleScroll);
+    _searchFocusNode = FocusNode();
     _rebuildIndex();
   }
 
@@ -47,6 +52,10 @@ class _WordsScreenState extends State<WordsScreen> {
   void dispose() {
     _searchDebounce?.cancel();
     _searchController.dispose();
+    _scrollController
+      ..removeListener(_handleScroll)
+      ..dispose();
+    _searchFocusNode.dispose();
     super.dispose();
   }
 
@@ -94,6 +103,42 @@ class _WordsScreenState extends State<WordsScreen> {
       _query = '';
       _visibleWords = _indexedWords;
     });
+  }
+
+  void _handleScroll() {
+    if (!_scrollController.hasClients) {
+      return;
+    }
+
+    final shouldShow = _scrollController.offset > 240;
+    if (shouldShow == _showScrollToTop) {
+      return;
+    }
+
+    setState(() {
+      _showScrollToTop = shouldShow;
+    });
+  }
+
+  Future<void> _scrollToTop() async {
+    if (!_scrollController.hasClients) {
+      return;
+    }
+
+    await _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 320),
+      curve: Curves.easeOutCubic,
+    );
+  }
+
+  Future<void> _openSearch() async {
+    await _scrollToTop();
+    if (!mounted) {
+      return;
+    }
+
+    _searchFocusNode.requestFocus();
   }
 
   void _showWordDetails(LearningWord word) {
@@ -176,83 +221,127 @@ class _WordsScreenState extends State<WordsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverPadding(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-          sliver: SliverToBoxAdapter(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Слова',
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Пошук за українською, англійською, транскрипцією, івритом або ID.',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: const Color(0xFF5F5A52),
-                    height: 1.4,
-                  ),
-                ),
-                const SizedBox(height: 18),
-                _SearchField(
-                  controller: _searchController,
-                  hintText: 'Шукати слова',
-                  onChanged: _handleSearchChanged,
-                  onClear: _query.isEmpty && _searchController.text.isEmpty
-                      ? null
-                      : _clearSearch,
-                ),
-                const SizedBox(height: 16),
-                Wrap(
-                  spacing: 12,
-                  runSpacing: 12,
+    return Stack(
+      children: [
+        CustomScrollView(
+          controller: _scrollController,
+          slivers: [
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+              sliver: SliverToBoxAdapter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _StatPill(
-                      label: 'Видимі',
-                      value: _visibleWords.length,
-                      accent: const Color(0xFF1D4ED8),
+                    Text(
+                      'Слова',
+                      style: Theme.of(context).textTheme.headlineMedium
+                          ?.copyWith(fontWeight: FontWeight.w800),
                     ),
-                    _StatPill(
-                      label: 'Усього',
-                      value: widget.words.length,
-                      accent: const Color(0xFF8C6A2A),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Пошук за українською, англійською, транскрипцією, івритом або ID.',
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: const Color(0xFF5F5A52),
+                        height: 1.4,
+                      ),
                     ),
+                    const SizedBox(height: 18),
+                    _SearchField(
+                      controller: _searchController,
+                      focusNode: _searchFocusNode,
+                      hintText: 'Шукати слова',
+                      onChanged: _handleSearchChanged,
+                      onClear: _query.isEmpty && _searchController.text.isEmpty
+                          ? null
+                          : _clearSearch,
+                    ),
+                    const SizedBox(height: 16),
+                    Wrap(
+                      spacing: 12,
+                      runSpacing: 12,
+                      children: [
+                        _StatPill(
+                          label: 'Видимі',
+                          value: _visibleWords.length,
+                          accent: const Color(0xFF1D4ED8),
+                        ),
+                        _StatPill(
+                          label: 'Усього',
+                          value: widget.words.length,
+                          accent: const Color(0xFF8C6A2A),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 18),
                   ],
                 ),
-                const SizedBox(height: 18),
-              ],
+              ),
             ),
+            if (_visibleWords.isEmpty)
+              const SliverPadding(
+                padding: EdgeInsets.fromLTRB(20, 0, 20, 32),
+                sliver: SliverToBoxAdapter(child: _EmptySearchState()),
+              )
+            else
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
+                sliver: SliverList.builder(
+                  itemCount: _visibleWords.length,
+                  itemBuilder: (context, index) {
+                    final word = _visibleWords[index].word;
+                    return Padding(
+                      padding: EdgeInsets.only(
+                        bottom: index == _visibleWords.length - 1 ? 0 : 12,
+                      ),
+                      child: _WordCard(
+                        word: word,
+                        onTap: () => _showWordDetails(word),
+                      ),
+                    );
+                  },
+                ),
+              ),
+          ],
+        ),
+        Positioned(
+          right: 20,
+          bottom: 20,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              AnimatedSlide(
+                duration: const Duration(milliseconds: 220),
+                offset: _showScrollToTop ? Offset.zero : const Offset(0, 0.25),
+                child: AnimatedOpacity(
+                  duration: const Duration(milliseconds: 220),
+                  opacity: _showScrollToTop ? 1 : 0,
+                  child: IgnorePointer(
+                    ignoring: !_showScrollToTop,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: FloatingActionButton.small(
+                        heroTag: 'wordsScrollToTop',
+                        onPressed: _scrollToTop,
+                        backgroundColor: Colors.white,
+                        foregroundColor: const Color(0xFF8C6A2A),
+                        child: const Icon(Icons.vertical_align_top_rounded),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              FloatingActionButton.small(
+                heroTag: 'wordsSearch',
+                tooltip: 'Пошук по словнику',
+                onPressed: _openSearch,
+                backgroundColor: const Color(0xFF8C6A2A),
+                foregroundColor: Colors.white,
+                child: const Icon(Icons.search_rounded),
+              ),
+            ],
           ),
         ),
-        if (_visibleWords.isEmpty)
-          const SliverPadding(
-            padding: EdgeInsets.fromLTRB(20, 0, 20, 32),
-            sliver: SliverToBoxAdapter(child: _EmptySearchState()),
-          )
-        else
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
-            sliver: SliverList.builder(
-              itemCount: _visibleWords.length,
-              itemBuilder: (context, index) {
-                final word = _visibleWords[index].word;
-                return Padding(
-                  padding: EdgeInsets.only(
-                    bottom: index == _visibleWords.length - 1 ? 0 : 12,
-                  ),
-                  child: _WordCard(
-                    word: word,
-                    onTap: () => _showWordDetails(word),
-                  ),
-                );
-              },
-            ),
-          ),
       ],
     );
   }
@@ -301,12 +390,14 @@ class _IndexedWord {
 class _SearchField extends StatelessWidget {
   const _SearchField({
     required this.controller,
+    required this.focusNode,
     required this.hintText,
     required this.onChanged,
     this.onClear,
   });
 
   final TextEditingController controller;
+  final FocusNode focusNode;
   final String hintText;
   final ValueChanged<String> onChanged;
   final VoidCallback? onClear;
@@ -315,6 +406,7 @@ class _SearchField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
+      focusNode: focusNode,
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.search,
       onChanged: onChanged,

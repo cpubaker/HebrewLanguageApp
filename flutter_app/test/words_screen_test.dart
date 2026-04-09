@@ -91,6 +91,64 @@ void main() {
     expect(disabledButton.onPressed, isNull);
     expect(audioPlayer.playedAssets, isEmpty);
   });
+
+  testWidgets(
+    'shows scroll-to-top action after scrolling the vocabulary list',
+    (WidgetTester tester) async {
+      final words = List<LearningWord>.generate(
+        30,
+        (index) => LearningWord(
+          wordId: 'word_$index',
+          hebrew: 'מילה $index',
+          english: 'Word $index',
+          ukrainian: 'Слово $index',
+          transcription: 'word $index',
+          correct: 0,
+          wrong: 0,
+        ),
+      );
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: WordsScreen(
+              words: words,
+              audioPlayerFactory: () =>
+                  _FakeLearningAudioPlayer(assetExistsResult: false),
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      Finder scrollToTopOpacity() => find.ancestor(
+        of: find.byIcon(Icons.vertical_align_top_rounded),
+        matching: find.byType(AnimatedOpacity),
+      );
+
+      expect(
+        tester.widget<AnimatedOpacity>(scrollToTopOpacity()).opacity,
+        equals(0),
+      );
+
+      await tester.drag(find.byType(CustomScrollView), const Offset(0, -900));
+      await tester.pumpAndSettle();
+
+      expect(
+        tester.widget<AnimatedOpacity>(scrollToTopOpacity()).opacity,
+        equals(1),
+      );
+
+      await tester.tap(find.byIcon(Icons.vertical_align_top_rounded));
+      await tester.pumpAndSettle();
+
+      expect(
+        tester.widget<AnimatedOpacity>(scrollToTopOpacity()).opacity,
+        equals(0),
+      );
+    },
+  );
 }
 
 class _FakeLearningAudioPlayer implements LearningAudioPlayer {
