@@ -36,7 +36,7 @@ class _GuideScreenState extends State<GuideScreen> {
       <String, LessonDocument>{};
 
   String _query = '';
-  String? _selectedSectionId;
+  final Set<String> _selectedSectionIds = <String>{};
   bool _searchVisible = false;
   bool _showScrollToTop = false;
   bool _isLoadingLessonDocuments = false;
@@ -54,9 +54,14 @@ class _GuideScreenState extends State<GuideScreen> {
   void didUpdateWidget(covariant GuideScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.lessons != widget.lessons) {
-      if (_selectedSectionId != null &&
-          !_availableSections.any((section) => section.id == _selectedSectionId)) {
-        _selectedSectionId = null;
+      final availableSectionIds = _availableSections
+          .map((section) => section.id)
+          .toSet();
+      final invalidSectionIds = _selectedSectionIds
+          .where((sectionId) => !availableSectionIds.contains(sectionId))
+          .toList(growable: false);
+      if (invalidSectionIds.isNotEmpty) {
+        _selectedSectionIds.removeAll(invalidSectionIds);
       }
       unawaited(_primeLessonDocuments());
     }
@@ -104,7 +109,9 @@ class _GuideScreenState extends State<GuideScreen> {
         final resolvedDocuments = await Future.wait(
           batch.map((lesson) async {
             try {
-              final document = await widget.documentLoader.load(lesson.assetPath);
+              final document = await widget.documentLoader.load(
+                lesson.assetPath,
+              );
               return MapEntry<String, LessonDocument?>(
                 lesson.assetPath,
                 document,
@@ -195,6 +202,78 @@ class _GuideScreenState extends State<GuideScreen> {
     unawaited(_ensureLessonDocumentsLoaded());
   }
 
+  Future<void> _showSectionPicker(
+    BuildContext context,
+    List<_GuideSectionOption> sections,
+  ) async {
+    await showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, bottomSheetSetState) => SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Секція довідника',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'Можна лишити весь каталог або вибрати кілька секцій.',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: const Color(0xFF5F5A52),
+                      height: 1.45,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  _GuideSectionOptionTile(
+                    label: 'Усі теми',
+                    count: widget.lessons.length,
+                    selected: _selectedSectionIds.isEmpty,
+                    onTap: () {
+                      setState(() {
+                        _selectedSectionIds.clear();
+                      });
+                      bottomSheetSetState(() {});
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  ...sections.expand(
+                    (section) => [
+                      _GuideSectionOptionTile(
+                        label: section.label,
+                        count: section.count,
+                        selected: _selectedSectionIds.contains(section.id),
+                        onTap: () {
+                          setState(() {
+                            if (_selectedSectionIds.contains(section.id)) {
+                              _selectedSectionIds.remove(section.id);
+                            } else {
+                              _selectedSectionIds.add(section.id);
+                            }
+                          });
+                          bottomSheetSetState(() {});
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   void _toggleSearchVisibility() {
     if (!_searchVisible) {
       unawaited(_openSearch());
@@ -243,7 +322,10 @@ class _GuideScreenState extends State<GuideScreen> {
 
       sections.putIfAbsent(
         sectionId,
-        () => _GuideSectionOption(id: sectionId, label: sectionLabel),
+        () => _GuideSectionOption(id: sectionId, label: sectionLabel, count: 0),
+      );
+      sections[sectionId] = sections[sectionId]!.copyWith(
+        count: sections[sectionId]!.count + 1,
       );
     }
 
@@ -253,29 +335,32 @@ class _GuideScreenState extends State<GuideScreen> {
   List<LessonEntry> get _filteredLessons {
     final normalizedQuery = _query.trim().toLowerCase();
 
-    return widget.lessons.where((lesson) {
-      if (_selectedSectionId != null && lesson.sectionId != _selectedSectionId) {
-        return false;
-      }
+    return widget.lessons
+        .where((lesson) {
+          if (_selectedSectionIds.isNotEmpty &&
+              !_selectedSectionIds.contains(lesson.sectionId)) {
+            return false;
+          }
 
-      if (normalizedQuery.isEmpty) {
-        return true;
-      }
+          if (normalizedQuery.isEmpty) {
+            return true;
+          }
 
-      final document = _lessonDocuments[lesson.assetPath];
-      final haystack = <String>[
-        _resolvedLessonTitle(lesson),
-        lesson.displayName,
-        lesson.assetPath.split('/').last,
-        lesson.sectionLabel ?? '',
-        ...lesson.aliases,
-        document?.summary ?? '',
-        ...?document?.headings,
-        document?.body ?? '',
-      ].join('\n').toLowerCase();
+          final document = _lessonDocuments[lesson.assetPath];
+          final haystack = <String>[
+            _resolvedLessonTitle(lesson),
+            lesson.displayName,
+            lesson.assetPath.split('/').last,
+            lesson.sectionLabel ?? '',
+            ...lesson.aliases,
+            document?.summary ?? '',
+            ...?document?.headings,
+            document?.body ?? '',
+          ].join('\n').toLowerCase();
 
-      return haystack.contains(normalizedQuery);
-    }).toList(growable: false);
+          return haystack.contains(normalizedQuery);
+        })
+        .toList(growable: false);
   }
 
   @override
@@ -288,8 +373,8 @@ class _GuideScreenState extends State<GuideScreen> {
     final filteredLessons = _filteredLessons;
     final hasResults = filteredLessons.isNotEmpty;
     final availableSections = _availableSections;
-    final selectedSectionLabel = availableSections
-        .where((section) => section.id == _selectedSectionId)
+    final selectedSectionLabels = availableSections
+        .where((section) => _selectedSectionIds.contains(section.id))
         .map((section) => section.label)
         .toList(growable: false);
 
@@ -305,29 +390,21 @@ class _GuideScreenState extends State<GuideScreen> {
                 context,
               ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Text(
-                'Короткі статті з граматики, синтаксису та живої мови. Їх можна читати підряд або швидко знаходити за темою.',
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: const Color(0xFF5F5A52),
-                  height: 1.4,
-                ),
-              ),
-            ),
-            const SizedBox(height: 18),
+            const SizedBox(height: 14),
             _GuideSearchCard(
               totalCount: widget.lessons.length,
+              readCount: readCount,
               visibleCount: filteredLessons.length,
               query: _query,
-              selectedSectionLabel: selectedSectionLabel.isEmpty
-                  ? null
-                  : selectedSectionLabel.first,
+              selectedSectionLabels: selectedSectionLabels,
               isSearchVisible: _searchVisible,
               isLoadingLessonDocuments: _isLoadingLessonDocuments,
               searchController: _searchController,
               searchFocusNode: _searchFocusNode,
               onToggleSearch: _toggleSearchVisibility,
+              onOpenSectionPicker: availableSections.isEmpty
+                  ? null
+                  : () => _showSectionPicker(context, availableSections),
               onQueryChanged: (value) {
                 setState(() {
                   _query = value;
@@ -336,43 +413,6 @@ class _GuideScreenState extends State<GuideScreen> {
                   }
                 });
               },
-            ),
-            if (availableSections.isNotEmpty) ...[
-              const SizedBox(height: 14),
-              _GuideSectionFilters(
-                sections: availableSections,
-                selectedSectionId: _selectedSectionId,
-                onSelected: (sectionId) {
-                  setState(() {
-                    _selectedSectionId = sectionId;
-                  });
-                },
-              ),
-            ],
-            const SizedBox(height: 18),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(22),
-                border: Border.all(
-                  color: const Color(0xFFB45309).withValues(alpha: 0.16),
-                ),
-              ),
-              child: Row(
-                children: [
-                  const Icon(Icons.menu_book_rounded, color: Color(0xFFB45309)),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      'Прочитано $readCount із ${widget.lessons.length} тем',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
             ),
             const SizedBox(height: 18),
             if (!hasResults)
@@ -437,14 +477,6 @@ class _GuideScreenState extends State<GuideScreen> {
                     ),
                   ),
                 ),
-              ),
-              FloatingActionButton.small(
-                heroTag: 'guideSearch',
-                tooltip: 'Пошук по довіднику',
-                onPressed: _openSearch,
-                backgroundColor: const Color(0xFFB45309),
-                foregroundColor: Colors.white,
-                child: const Icon(Icons.search_rounded),
               ),
             ],
           ),
@@ -598,8 +630,11 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
     final usedAssetPaths = <String>{};
     final usedTopicKeys = <String>{};
     final currentLessonTitle =
-        titlesByAssetPath[widget.lesson.assetPath] ?? _fallbackLessonTitle(widget.lesson);
-    final normalizedCurrentLessonTitle = _normalizeForMatching(currentLessonTitle);
+        titlesByAssetPath[widget.lesson.assetPath] ??
+        _fallbackLessonTitle(widget.lesson);
+    final normalizedCurrentLessonTitle = _normalizeForMatching(
+      currentLessonTitle,
+    );
 
     void addResolvedTopic(LessonEntry lesson) {
       final resolvedLabel =
@@ -613,10 +648,7 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
       }
 
       resolvedTopics.add(
-        _GuideResolvedTopic(
-          label: resolvedLabel,
-          lesson: lesson,
-        ),
+        _GuideResolvedTopic(label: resolvedLabel, lesson: lesson),
       );
     }
 
@@ -629,9 +661,7 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
     }
 
     if (currentDocument.relatedTopics.isEmpty) {
-      return _GuideRelatedTopicsResolution(
-        resolvedTopics: resolvedTopics,
-      );
+      return _GuideRelatedTopicsResolution(resolvedTopics: resolvedTopics);
     }
 
     for (final topic in currentDocument.relatedTopics) {
@@ -649,9 +679,7 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
       addResolvedTopic(matchingLesson);
     }
 
-    return _GuideRelatedTopicsResolution(
-      resolvedTopics: resolvedTopics,
-    );
+    return _GuideRelatedTopicsResolution(resolvedTopics: resolvedTopics);
   }
 
   LessonEntry? _matchRelatedTopic(
@@ -758,7 +786,8 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
           lessonStatuses: widget.lessonStatuses,
           documentLoader: widget.documentLoader,
           initialStatus:
-              widget.lessonStatuses[lesson.assetPath] ?? GuideLessonStatus.unread,
+              widget.lessonStatuses[lesson.assetPath] ??
+              GuideLessonStatus.unread,
           onStatusChanged: widget.onStatusChanged,
         ),
       ),
@@ -846,7 +875,9 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
                               _updateStatus(_nextGuideLessonStatus(_status));
                             },
                             foregroundColor: Colors.white,
-                            backgroundColor: Colors.white.withValues(alpha: 0.18),
+                            backgroundColor: Colors.white.withValues(
+                              alpha: 0.18,
+                            ),
                           ),
                         ],
                       ),
@@ -863,10 +894,11 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
                         const SizedBox(height: 14),
                         Text(
                           document.summary.trim(),
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: Colors.white.withValues(alpha: 0.92),
-                            height: 1.45,
-                          ),
+                          style: Theme.of(context).textTheme.bodyLarge
+                              ?.copyWith(
+                                color: Colors.white.withValues(alpha: 0.92),
+                                height: 1.45,
+                              ),
                         ),
                       ],
                     ],
@@ -875,11 +907,7 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
                 const SizedBox(height: 16),
                 Row(
                   children: [
-                    Icon(
-                      statusTheme.icon,
-                      size: 18,
-                      color: statusTheme.color,
-                    ),
+                    Icon(statusTheme.icon, size: 18, color: statusTheme.color),
                     const SizedBox(width: 8),
                     Text(
                       statusTheme.label,
@@ -936,7 +964,8 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
                         return const _GuideRelatedTopicsLoadingCard();
                       }
 
-                      final resolution = relatedSnapshot.data ??
+                      final resolution =
+                          relatedSnapshot.data ??
                           _GuideRelatedTopicsResolution.empty();
                       return _GuideRelatedTopicsCard(
                         resolution: resolution,
@@ -957,34 +986,44 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
 class _GuideSearchCard extends StatelessWidget {
   const _GuideSearchCard({
     required this.totalCount,
+    required this.readCount,
     required this.visibleCount,
     required this.query,
-    required this.selectedSectionLabel,
+    required this.selectedSectionLabels,
     required this.isSearchVisible,
     required this.isLoadingLessonDocuments,
     required this.searchController,
     required this.searchFocusNode,
     required this.onToggleSearch,
+    required this.onOpenSectionPicker,
     required this.onQueryChanged,
   });
 
   final int totalCount;
+  final int readCount;
   final int visibleCount;
   final String query;
-  final String? selectedSectionLabel;
+  final List<String> selectedSectionLabels;
   final bool isSearchVisible;
   final bool isLoadingLessonDocuments;
   final TextEditingController searchController;
   final FocusNode searchFocusNode;
   final VoidCallback onToggleSearch;
+  final VoidCallback? onOpenSectionPicker;
   final ValueChanged<String> onQueryChanged;
 
   @override
   Widget build(BuildContext context) {
     final hasQuery = query.trim().isNotEmpty;
-    final subtitle = hasQuery || selectedSectionLabel != null
+    final hasSectionFilter = selectedSectionLabels.isNotEmpty;
+    final title = hasQuery || hasSectionFilter
         ? 'Знайдено: $visibleCount із $totalCount'
         : 'Тем: $totalCount';
+    final subtitle = !hasSectionFilter
+        ? 'Прочитано $readCount із $totalCount тем'
+        : selectedSectionLabels.length == 1
+        ? 'Секція: ${selectedSectionLabels.first} · Прочитано $readCount із $totalCount'
+        : 'Секції: ${selectedSectionLabels.length} · Прочитано $readCount із $totalCount';
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 220),
@@ -1001,42 +1040,109 @@ class _GuideSearchCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(Icons.travel_explore_rounded, color: Color(0xFFB45309)),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  subtitle,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFB45309).withValues(alpha: 0.10),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: const Icon(
+                  Icons.menu_book_rounded,
+                  color: Color(0xFFB45309),
                 ),
               ),
-              IconButton(
-                tooltip: isSearchVisible ? 'Сховати пошук' : 'Показати пошук',
-                onPressed: onToggleSearch,
-                icon: Icon(
-                  isSearchVisible ? Icons.close_rounded : Icons.search_rounded,
-                  color: const Color(0xFFB45309),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      subtitle,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: const Color(0xFF5F5A52),
+                      ),
+                    ),
+                  ],
                 ),
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (onOpenSectionPicker != null)
+                    IconButton(
+                      tooltip: !hasSectionFilter
+                          ? 'Відкрити фільтр секцій'
+                          : 'Змінити фільтр секцій',
+                      onPressed: onOpenSectionPicker,
+                      icon: Icon(
+                        !hasSectionFilter
+                            ? Icons.tune_rounded
+                            : Icons.filter_alt_rounded,
+                        color: const Color(0xFFB45309),
+                      ),
+                    ),
+                  IconButton(
+                    tooltip: isSearchVisible
+                        ? 'Сховати пошук'
+                        : 'Показати пошук',
+                    onPressed: onToggleSearch,
+                    icon: Icon(
+                      isSearchVisible
+                          ? Icons.close_rounded
+                          : Icons.search_rounded,
+                      color: const Color(0xFFB45309),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
+          if (hasSectionFilter) ...[
+            const SizedBox(height: 10),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: selectedSectionLabels
+                  .map(
+                    (label) => Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFDE7D4),
+                        borderRadius: BorderRadius.circular(999),
+                      ),
+                      child: Text(
+                        label,
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: const Color(0xFF8C6A2A),
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(growable: false),
+            ),
+          ],
           AnimatedCrossFade(
             duration: const Duration(milliseconds: 220),
             crossFadeState: isSearchVisible || hasQuery
                 ? CrossFadeState.showSecond
                 : CrossFadeState.showFirst,
-            firstChild: Text(
-              selectedSectionLabel == null
-                  ? 'Шукайте по назві теми, ключових словах, короткому опису або тексту статті.'
-                  : 'Активна секція: $selectedSectionLabel. Можна ще звузити пошук словами.',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: const Color(0xFF5F5A52),
-              ),
-            ),
+            firstChild: const SizedBox.shrink(),
             secondChild: Padding(
-              padding: const EdgeInsets.only(top: 8),
+              padding: const EdgeInsets.only(top: 12),
               child: _GuideSearchField(
                 controller: searchController,
                 focusNode: searchFocusNode,
@@ -1136,52 +1242,73 @@ class _GuideSearchField extends StatelessWidget {
   }
 }
 
-class _GuideSectionFilters extends StatelessWidget {
-  const _GuideSectionFilters({
-    required this.sections,
-    required this.selectedSectionId,
-    required this.onSelected,
+class _GuideSectionOptionTile extends StatelessWidget {
+  const _GuideSectionOptionTile({
+    required this.label,
+    required this.count,
+    required this.selected,
+    required this.onTap,
   });
 
-  final List<_GuideSectionOption> sections;
-  final String? selectedSectionId;
-  final ValueChanged<String?> onSelected;
+  final String label;
+  final int count;
+  final bool selected;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: [
-        ChoiceChip(
-          label: const Text('Усі'),
-          selected: selectedSectionId == null,
-          onSelected: (_) => onSelected(null),
-          selectedColor: const Color(0xFFFDE7D4),
-          labelStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
-            fontWeight: FontWeight.w700,
-            color: selectedSectionId == null
-                ? const Color(0xFF8C6A2A)
-                : const Color(0xFF5F5A52),
-          ),
-          side: BorderSide.none,
-        ),
-        ...sections.map(
-          (section) => ChoiceChip(
-            label: Text(section.label),
-            selected: selectedSectionId == section.id,
-            onSelected: (_) => onSelected(section.id),
-            selectedColor: const Color(0xFFFDE7D4),
-            labelStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
-              fontWeight: FontWeight.w700,
-              color: selectedSectionId == section.id
-                  ? const Color(0xFF8C6A2A)
-                  : const Color(0xFF5F5A52),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(18),
+        onTap: onTap,
+        child: Ink(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: selected
+                ? const Color(0xFFB45309).withValues(alpha: 0.08)
+                : const Color(0xFFF9FAFB),
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(
+              color: selected
+                  ? const Color(0xFFB45309).withValues(alpha: 0.30)
+                  : const Color(0xFFE5E7EB),
             ),
-            side: BorderSide.none,
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      label,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '$count тем',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: const Color(0xFF5F5A52),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(
+                selected
+                    ? Icons.check_circle_rounded
+                    : Icons.chevron_right_rounded,
+                color: selected
+                    ? const Color(0xFFB45309)
+                    : const Color(0xFF9CA3AF),
+              ),
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
 }
@@ -1257,9 +1384,9 @@ class _GuideLessonCard extends StatelessWidget {
                     ],
                     Text(
                       resolvedTitle,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                     if (resolvedSummary.isNotEmpty) ...[
                       const SizedBox(height: 6),
@@ -1528,9 +1655,9 @@ class _GuideRelatedTopicsLoadingCard extends StatelessWidget {
           Expanded(
             child: Text(
               'Підбираємо пов’язані теми для швидких переходів.',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: const Color(0xFF5F5A52),
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: const Color(0xFF5F5A52)),
             ),
           ),
         ],
@@ -1704,17 +1831,11 @@ class _GuideStatusToggleButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(999),
             ),
             child: compact
-                ? Icon(
-                    statusTheme.icon,
-                    color: resolvedForegroundColor,
-                  )
+                ? Icon(statusTheme.icon, color: resolvedForegroundColor)
                 : Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(
-                        statusTheme.icon,
-                        color: resolvedForegroundColor,
-                      ),
+                      Icon(statusTheme.icon, color: resolvedForegroundColor),
                       const SizedBox(width: 6),
                       Text(
                         statusTheme.label,
@@ -1771,16 +1892,24 @@ class _GuideSectionOption {
   const _GuideSectionOption({
     required this.id,
     required this.label,
+    required this.count,
   });
 
   final String id;
   final String label;
+  final int count;
+
+  _GuideSectionOption copyWith({String? id, String? label, int? count}) {
+    return _GuideSectionOption(
+      id: id ?? this.id,
+      label: label ?? this.label,
+      count: count ?? this.count,
+    );
+  }
 }
 
 class _GuideRelatedTopicsResolution {
-  const _GuideRelatedTopicsResolution({
-    required this.resolvedTopics,
-  });
+  const _GuideRelatedTopicsResolution({required this.resolvedTopics});
 
   const _GuideRelatedTopicsResolution.empty()
     : resolvedTopics = const <_GuideResolvedTopic>[];
@@ -1789,10 +1918,7 @@ class _GuideRelatedTopicsResolution {
 }
 
 class _GuideResolvedTopic {
-  const _GuideResolvedTopic({
-    required this.label,
-    required this.lesson,
-  });
+  const _GuideResolvedTopic({required this.label, required this.lesson});
 
   final String label;
   final LessonEntry lesson;

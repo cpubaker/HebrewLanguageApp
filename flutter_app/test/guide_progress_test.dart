@@ -47,7 +47,8 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(
-      guideStore.lessonStatuses['assets/learning/input/guide/01_intro_alphabet.md'],
+      guideStore
+          .lessonStatuses['assets/learning/input/guide/01_intro_alphabet.md'],
       GuideLessonStatus.read,
     );
     expect(find.text('Прочитано'), findsWidgets);
@@ -62,18 +63,27 @@ void main() {
           body: GuideScreen(
             lessons: const [
               LessonEntry(
-                assetPath: 'assets/learning/input/guide/42_infinitive_constructions.md',
+                assetPath:
+                    'assets/learning/input/guide/42_infinitive_constructions.md',
                 displayName: '42 Infinitive Constructions',
                 lessonId: 'infinitive_constructions',
                 sectionId: 'verbs',
                 sectionLabel: 'Дієслова',
               ),
               LessonEntry(
-                assetPath: 'assets/learning/input/guide/49_register_formal_vs_spoken.md',
+                assetPath:
+                    'assets/learning/input/guide/49_register_formal_vs_spoken.md',
                 displayName: '49 Register Formal Vs Spoken',
                 lessonId: 'register_formal_spoken',
                 sectionId: 'spoken',
                 sectionLabel: 'Жива мова',
+              ),
+              LessonEntry(
+                assetPath: 'assets/learning/input/guide/01_intro_alphabet.md',
+                displayName: '01 Intro Alphabet',
+                lessonId: 'intro_alphabet',
+                sectionId: 'basics',
+                sectionLabel: 'База',
               ),
             ],
             documentLoader: _GuideSearchDocumentLoader(),
@@ -87,20 +97,36 @@ void main() {
 
     expect(find.text('Інфінітив у конструкціях'), findsOneWidget);
     expect(find.text('Формально і по-живому'), findsOneWidget);
+    expect(find.text('Алфавіт'), findsOneWidget);
 
-    await tester.tap(find.widgetWithText(ChoiceChip, 'Жива мова'));
+    await tester.tap(find.byTooltip('Відкрити фільтр секцій'));
+    await tester.pumpAndSettle();
+
+    final verbsSectionOption = find.text('Дієслова').last;
+    await tester.ensureVisible(verbsSectionOption);
+    await tester.tap(verbsSectionOption);
+    await tester.pumpAndSettle();
+
+    final spokenSectionOption = find.text('Жива мова').last;
+    await tester.ensureVisible(spokenSectionOption);
+    await tester.tap(spokenSectionOption);
+    await tester.pumpAndSettle();
+    await tester.tapAt(const Offset(20, 20));
     await tester.pumpAndSettle();
 
     expect(find.text('Формально і по-живому'), findsOneWidget);
-    expect(find.text('Інфінітив у конструкціях'), findsNothing);
+    expect(find.text('Інфінітив у конструкціях'), findsOneWidget);
+    expect(find.text('Алфавіт'), findsNothing);
 
-    await tester.tap(find.byTooltip('Показати пошук'));
+    final openSearchButton = find.byTooltip('Показати пошук');
+    await tester.ensureVisible(openSearchButton);
+    await tester.tap(openSearchButton);
     await tester.pumpAndSettle();
 
     await tester.enterText(find.byType(EditableText).last, 'природно');
     await tester.pumpAndSettle();
 
-    expect(find.text('Знайдено: 1 із 2'), findsOneWidget);
+    expect(find.text('Знайдено: 1 із 3'), findsOneWidget);
     expect(find.text('Формально і по-живому'), findsOneWidget);
   });
 
@@ -188,108 +214,20 @@ void main() {
     expect(find.text('Прочитано'), findsWidgets);
   });
 
-  testWidgets('guide adjacent navigation uses lesson titles instead of file labels', (
-    WidgetTester tester,
-  ) async {
-    await tester.pumpWidget(
-      MaterialApp(
-        home: GuideDetailScreen(
-          lesson: const LessonEntry(
-            assetPath: 'assets/learning/input/guide/02_reading_rules.md',
-            displayName: '02 Reading Rules',
-            lessonId: 'reading_rules',
-            sectionId: 'basics',
-            sectionLabel: 'База',
-          ),
-          allLessons: const [
-            LessonEntry(
-              assetPath: 'assets/learning/input/guide/01_intro_alphabet.md',
-              displayName: '01 Intro Alphabet',
-              lessonId: 'intro_alphabet',
-              sectionId: 'basics',
-              sectionLabel: 'База',
-            ),
-            LessonEntry(
+  testWidgets(
+    'guide adjacent navigation uses lesson titles instead of file labels',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: GuideDetailScreen(
+            lesson: const LessonEntry(
               assetPath: 'assets/learning/input/guide/02_reading_rules.md',
               displayName: '02 Reading Rules',
               lessonId: 'reading_rules',
               sectionId: 'basics',
               sectionLabel: 'База',
             ),
-            LessonEntry(
-              assetPath: 'assets/learning/input/guide/03_smixut.md',
-              displayName: '03 Smixut',
-              lessonId: 'smixut',
-              sectionId: 'basics',
-              sectionLabel: 'База',
-            ),
-          ],
-          documentLoader: _GuideAdjacentTitlesDocumentLoader(),
-          initialStatus: GuideLessonStatus.studying,
-          onStatusChanged: (_) {},
-        ),
-      ),
-    );
-    await tester.pumpAndSettle();
-
-    expect(find.text('Абетка'), findsOneWidget);
-    expect(find.text('Сміхут'), findsOneWidget);
-    expect(find.text('01 Intro Alphabet'), findsNothing);
-    expect(find.text('03 Smixut'), findsNothing);
-  });
-
-  testWidgets('guide related topics deduplicate metadata and markdown matches', (
-    WidgetTester tester,
-  ) async {
-    await tester.pumpWidget(
-      MaterialApp(
-        home: GuideDetailScreen(
-          lesson: const LessonEntry(
-            assetPath: 'assets/learning/input/guide/01_intro_alphabet.md',
-            displayName: '01 Intro Alphabet',
-            lessonId: 'intro_alphabet',
-            sectionId: 'basics',
-            sectionLabel: 'База',
-            relatedIds: ['reading_rules'],
-          ),
-          allLessons: const [
-            LessonEntry(
-              assetPath: 'assets/learning/input/guide/01_intro_alphabet.md',
-              displayName: '01 Intro Alphabet',
-              lessonId: 'intro_alphabet',
-              sectionId: 'basics',
-              sectionLabel: 'База',
-              relatedIds: ['reading_rules'],
-            ),
-            LessonEntry(
-              assetPath: 'assets/learning/input/guide/02_reading_rules.md',
-              displayName: '02 Reading Rules',
-              lessonId: 'reading_rules',
-              sectionId: 'basics',
-              sectionLabel: 'База',
-            ),
-          ],
-          documentLoader: _GuideRelatedTopicsCleanupLoader(),
-          initialStatus: GuideLessonStatus.studying,
-          onStatusChanged: (_) {},
-        ),
-      ),
-    );
-    await tester.pumpAndSettle();
-
-    expect(find.text('Пов’язані теми'), findsOneWidget);
-    expect(find.text('Правила читання'), findsOneWidget);
-    expect(find.text('Неіснуюча тема'), findsNothing);
-  });
-
-  testWidgets('guide back button returns to guide list after opening adjacent lesson', (
-    WidgetTester tester,
-  ) async {
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: GuideScreen(
-            lessons: const [
+            allLessons: const [
               LessonEntry(
                 assetPath: 'assets/learning/input/guide/01_intro_alphabet.md',
                 displayName: '01 Intro Alphabet',
@@ -305,37 +243,128 @@ void main() {
                 sectionLabel: 'База',
               ),
               LessonEntry(
-                assetPath: 'assets/learning/input/guide/03_whole_alphabet.md',
-                displayName: '03 Whole Alphabet',
-                lessonId: 'whole_alphabet',
+                assetPath: 'assets/learning/input/guide/03_smixut.md',
+                displayName: '03 Smixut',
+                lessonId: 'smixut',
                 sectionId: 'basics',
                 sectionLabel: 'База',
               ),
             ],
-            documentLoader: _GuideNavigationFlowDocumentLoader(),
-            lessonStatuses: const <String, GuideLessonStatus>{},
-            onStatusChanged: (_, _) {},
+            documentLoader: _GuideAdjacentTitlesDocumentLoader(),
+            initialStatus: GuideLessonStatus.studying,
+            onStatusChanged: (_) {},
           ),
         ),
-      ),
-    );
-    await tester.pumpAndSettle();
+      );
+      await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Правила читання'));
-    await tester.pumpAndSettle();
+      expect(find.text('Абетка'), findsOneWidget);
+      expect(find.text('Сміхут'), findsOneWidget);
+      expect(find.text('01 Intro Alphabet'), findsNothing);
+      expect(find.text('03 Smixut'), findsNothing);
+    },
+  );
 
-    expect(find.text('Увесь алфавіт'), findsOneWidget);
-    await tester.tap(find.text('Увесь алфавіт'));
-    await tester.pumpAndSettle();
+  testWidgets(
+    'guide related topics deduplicate metadata and markdown matches',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: GuideDetailScreen(
+            lesson: const LessonEntry(
+              assetPath: 'assets/learning/input/guide/01_intro_alphabet.md',
+              displayName: '01 Intro Alphabet',
+              lessonId: 'intro_alphabet',
+              sectionId: 'basics',
+              sectionLabel: 'База',
+              relatedIds: ['reading_rules'],
+            ),
+            allLessons: const [
+              LessonEntry(
+                assetPath: 'assets/learning/input/guide/01_intro_alphabet.md',
+                displayName: '01 Intro Alphabet',
+                lessonId: 'intro_alphabet',
+                sectionId: 'basics',
+                sectionLabel: 'База',
+                relatedIds: ['reading_rules'],
+              ),
+              LessonEntry(
+                assetPath: 'assets/learning/input/guide/02_reading_rules.md',
+                displayName: '02 Reading Rules',
+                lessonId: 'reading_rules',
+                sectionId: 'basics',
+                sectionLabel: 'База',
+              ),
+            ],
+            documentLoader: _GuideRelatedTopicsCleanupLoader(),
+            initialStatus: GuideLessonStatus.studying,
+            onStatusChanged: (_) {},
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
 
-    expect(find.text('Увесь алфавіт'), findsWidgets);
-    await tester.pageBack();
-    await tester.pumpAndSettle();
+      expect(find.text('Пов’язані теми'), findsOneWidget);
+      expect(find.text('Правила читання'), findsOneWidget);
+      expect(find.text('Неіснуюча тема'), findsNothing);
+    },
+  );
 
-    expect(find.text('Довідник'), findsOneWidget);
-    expect(find.text('Правила читання'), findsOneWidget);
-    expect(find.text('Абетка'), findsOneWidget);
-  });
+  testWidgets(
+    'guide back button returns to guide list after opening adjacent lesson',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: GuideScreen(
+              lessons: const [
+                LessonEntry(
+                  assetPath: 'assets/learning/input/guide/01_intro_alphabet.md',
+                  displayName: '01 Intro Alphabet',
+                  lessonId: 'intro_alphabet',
+                  sectionId: 'basics',
+                  sectionLabel: 'База',
+                ),
+                LessonEntry(
+                  assetPath: 'assets/learning/input/guide/02_reading_rules.md',
+                  displayName: '02 Reading Rules',
+                  lessonId: 'reading_rules',
+                  sectionId: 'basics',
+                  sectionLabel: 'База',
+                ),
+                LessonEntry(
+                  assetPath: 'assets/learning/input/guide/03_whole_alphabet.md',
+                  displayName: '03 Whole Alphabet',
+                  lessonId: 'whole_alphabet',
+                  sectionId: 'basics',
+                  sectionLabel: 'База',
+                ),
+              ],
+              documentLoader: _GuideNavigationFlowDocumentLoader(),
+              lessonStatuses: const <String, GuideLessonStatus>{},
+              onStatusChanged: (_, _) {},
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Правила читання'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Увесь алфавіт'), findsOneWidget);
+      await tester.tap(find.text('Увесь алфавіт'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Увесь алфавіт'), findsWidgets);
+      await tester.pageBack();
+      await tester.pumpAndSettle();
+
+      expect(find.text('Довідник'), findsOneWidget);
+      expect(find.text('Правила читання'), findsOneWidget);
+      expect(find.text('Абетка'), findsOneWidget);
+    },
+  );
 }
 
 class _GuideOnlyBundleLoader implements LearningBundleLoader {
@@ -391,6 +420,15 @@ class _GuideSearchDocumentLoader implements LessonDocumentLoader {
       );
     }
 
+    if (assetPath.contains('01_intro_alphabet')) {
+      return const LessonDocument(
+        title: 'Алфавіт',
+        summary: 'Базовий вхід у літери та звуки.',
+        headings: ['Перші літери'],
+        body: '## Перші літери\n\nПочинаємо з алфавіту.',
+      );
+    }
+
     return const LessonDocument(
       title: 'Формально і по-живому',
       summary: 'Як сказати природно, а не книжково.',
@@ -408,10 +446,7 @@ class _LongGuideDocumentLoader implements LessonDocumentLoader {
       (index) => 'Paragraph ${index + 1} about Hebrew grammar.',
     ).join('\n\n');
 
-    return LessonDocument(
-      title: 'Long Lesson',
-      body: body,
-    );
+    return LessonDocument(title: 'Long Lesson', body: body);
   }
 }
 
@@ -489,9 +524,8 @@ class _GuideNavigationFlowDocumentLoader implements LessonDocumentLoader {
 }
 
 class FakeGuideProgressStore implements GuideProgressStore {
-  FakeGuideProgressStore({
-    Map<String, GuideLessonStatus>? initialStatuses,
-  }) : lessonStatuses = <String, GuideLessonStatus>{...?initialStatuses};
+  FakeGuideProgressStore({Map<String, GuideLessonStatus>? initialStatuses})
+    : lessonStatuses = <String, GuideLessonStatus>{...?initialStatuses};
 
   final Map<String, GuideLessonStatus> lessonStatuses;
 
