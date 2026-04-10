@@ -1,95 +1,42 @@
 # AGENTS.md
 
-## Purpose
-- This folder contains the primary Flutter client for the Hebrew learning app.
-- The Flutter app currently coexists with the legacy Tkinter desktop app in `src/`.
-- Treat this folder as the default place for new app UI and feature work unless the task explicitly targets the desktop app.
+## Scope
+- This folder contains the active Flutter client.
+- Root `AGENTS.md` still applies.
+- Use Flutter as the default implementation target unless the user explicitly asks for the legacy desktop app.
 
 ## Source Of Truth
-- Flutter learning assets under `flutter_app/assets/learning/` are generated copies for runtime use.
-- The source-of-truth learning content still lives in the repository root under `data/input/`.
-- For shared vocabulary and context work, also follow `data/input/AGENTS.md`.
-- If a task is about lessons, vocabulary, verbs, reading, contexts, images, or audio content, prefer editing the root `data/input/` files first unless the task explicitly targets Flutter asset packaging.
-- After source content changes, refresh Flutter assets with:
-  - `powershell -ExecutionPolicy Bypass -File .\tool\sync_learning_assets.ps1`
+- Runtime assets under `assets/learning/` are generated copies.
+- Durable shared content still lives in the repo root under `data/input/`.
+- For lesson, vocabulary, verbs, reading, contexts, images, or audio, edit `data/input/` first unless the task is specifically about Flutter asset packaging.
+- After source content changes, run:
+  - `powershell -ExecutionPolicy Bypass -File .\\tool\\sync_learning_assets.ps1`
 
-## Primary Entry Points
-- Flutter bootstrap: `lib/main.dart`
+## Entry Points
+- App bootstrap: `lib/main.dart`
 - App root: `lib/app.dart`
-- Current shared shell: `lib/screens/app_shell_screen.dart`
-- Current home/dashboard screen: `lib/screens/home_screen.dart`
-- Current searchable vocabulary screen: `lib/screens/words_screen.dart`
-- Asset loading service: `lib/services/learning_bundle_loader.dart`
-
-## Current Architecture
-- `lib/models/` - simple Flutter-side view/data models.
-- `lib/services/` - asset-backed loading and app-facing data services.
-- `lib/screens/` - top-level mobile screens and flow composition.
-- `lib/theme/` - shared Flutter theming.
-- `tool/sync_learning_assets.ps1` - copies root learning content into Flutter assets.
-- `test/` - Flutter widget tests.
+- Shared shell: `lib/screens/app_shell_screen.dart`
+- Home screen: `lib/screens/home_screen.dart`
+- Learning bundle loader: `lib/services/learning_bundle_loader.dart`
 
 ## Working Rules
-- Preserve coexistence with the Tkinter app; do not move or replace desktop entry points from within Flutter work.
-- Prefer vertical slices: navigation + one real feature screen at a time.
-- Keep `LearningBundleLoader` and the mobile shell simple until there is a stronger need for a larger state-management solution.
-- Avoid introducing a second source of truth for progress or lesson content unless the task explicitly defines the sync strategy.
-- For large searchable collections such as `Words`, prefer cached runtime indexes, debounced search, and `ListView.builder`/sliver-based lazy rendering over per-build sorting, normalization, or eager child lists.
-- Do not hand-edit synced files under `assets/learning/input/` for durable product changes; they may be overwritten by the sync script.
-- When adding new asset folders or files that Flutter must load, update `pubspec.yaml` as needed.
-- Keep mobile-specific presentation in `lib/screens/` and `lib/theme/`; keep parsing/loading concerns in `lib/services/`.
-- When adding a new feature screen, wire it through the existing shell and navigation structure instead of creating a parallel app entry flow.
-- Prefer extending the existing models and services before introducing a new architectural layer or state-management package.
-- Prefer Android-safe, touch-friendly UI patterns over desktop-style layouts.
-
-## Product Roadmap
-- Current completed slices:
-  - shared app shell
-  - bottom navigation
-  - home/dashboard
-  - searchable `Words` screen
-  - `Guide` list + detail flow
-  - `Verbs` list + detail flow
-  - `Reading` list + detail flow
-- Recommended next feature order:
-  - `Flashcards` as the first full interactive exercise
-  - progress persistence for mobile
-  - `Sprint` migration
-  - verb audio playback
-  - broader media polish
-- Prefer finishing one slice end-to-end before starting the next one.
-- Use the Tkinter app as the behavior reference when product details are unclear.
-
-## Slice Definition Of Done
-- A migrated Flutter feature should usually include:
-  - navigation entry point
-  - list or overview screen if relevant
-  - detail or interaction screen if relevant
-  - loading from synced assets or the agreed mobile persistence layer
-  - at least one widget test for the new user flow
-  - `flutter analyze` and `flutter test` passing
-- Do not call a feature "migrated" if it only has mock UI without real app data.
+- Preserve coexistence with the Tkinter app.
+- Prefer narrow vertical slices over broad refactors.
+- Keep UI concerns in `lib/screens/` and `lib/theme/`; keep loading/parsing in `lib/services/`.
+- Do not hand-edit synced files under `assets/learning/input/` for permanent changes.
+- When adding loadable assets, update `pubspec.yaml` if needed.
+- Prefer extending existing models/services before adding a new architectural layer or state-management package.
+- Favor touch-friendly mobile patterns over desktop-style UI.
 
 ## Validation
-- Preferred validation after Flutter code changes:
+- After Flutter code changes:
   - `flutter analyze`
   - `flutter test`
 - If asset loading behavior changed, also run:
-  - `powershell -ExecutionPolicy Bypass -File .\tool\sync_learning_assets.ps1`
-- If the task affects real-device or emulator behavior, also run:
+  - `powershell -ExecutionPolicy Bypass -File .\\tool\\sync_learning_assets.ps1`
+- If device/emulator behavior matters, also run:
   - `flutter run`
 
-## Safe Defaults For AI Agents
-- Assume Android is the current Flutter target unless the task explicitly mentions another platform.
-- Assume content should continue to come from synced local assets, not from live services.
-- Prefer implementing read-only content flows before interactive progress-saving flows unless the user asks otherwise.
-- For vocabulary performance work, first optimize list rendering and search preparation before introducing a local database or new state-management layer.
-- For content-screen migration tasks, prefer this sequence:
-  - add list screen
-  - add detail screen
-  - add media wiring
-  - add persistence or progress only after the UI flow is stable
-
 ## Notes
-- The root repository `AGENTS.md` still applies to the project as a whole.
-- This local file exists to speed up Flutter/mobile decisions and reduce accidental edits to generated asset copies.
+- Use the Tkinter app as a behavior reference when product details are unclear.
+- Prefer read-only content flows before persistence-heavy features unless the user asks otherwise.
