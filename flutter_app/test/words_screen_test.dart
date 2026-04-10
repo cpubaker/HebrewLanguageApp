@@ -7,7 +7,7 @@ import 'package:hebrew_language_flutter/screens/words_screen.dart';
 import 'package:hebrew_language_flutter/services/learning_audio_player.dart';
 
 void main() {
-  testWidgets('plays test word audio when asset is available', (
+  testWidgets('plays word audio from the list without opening details', (
     WidgetTester tester,
   ) async {
     final audioPlayer = _FakeLearningAudioPlayer(assetExistsResult: true);
@@ -34,21 +34,20 @@ void main() {
       ),
     );
 
-    await tester.tap(find.text('man'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Тестова вимова'), findsOneWidget);
     expect(find.byTooltip('Увімкнути вимову слова'), findsOneWidget);
 
-    await tester.tap(find.byTooltip('Увімкнути вимову слова'));
+    await tester.tap(find.text('Аудіо'));
     await tester.pumpAndSettle();
 
     expect(audioPlayer.playedAssets, [
       'assets/learning/input/audio/words/word_man.mp3',
     ]);
+    expect(find.text('Вимова'), findsNothing);
   });
 
-  testWidgets('keeps test word audio disabled until mp3 exists', (
+  testWidgets('keeps word audio disabled until mp3 exists', (
     WidgetTester tester,
   ) async {
     final audioPlayer = _FakeLearningAudioPlayer(assetExistsResult: false);
@@ -75,21 +74,57 @@ void main() {
       ),
     );
 
-    await tester.tap(find.text('man'));
+    await tester.tap(find.byTooltip('Відкрити слово'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Тестова вимова'), findsOneWidget);
-    expect(find.textContaining('mp3 ще не згенеровано'), findsOneWidget);
+    expect(find.text('Вимова'), findsNothing);
 
     final disabledButton = tester.widget<IconButton>(
       find.byWidgetPredicate(
         (widget) =>
             widget is IconButton &&
-            widget.tooltip == 'Тестове аудіо ще не згенеровано',
+            widget.tooltip == 'Аудіо для слова ще недоступне',
       ),
     );
     expect(disabledButton.onPressed, isNull);
     expect(audioPlayer.playedAssets, isEmpty);
+  });
+
+  testWidgets('opens word details from the trailing arrow', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: WordsScreen(
+            words: const [
+              LearningWord(
+                wordId: 'word_man',
+                hebrew: 'איש',
+                english: 'man',
+                ukrainian: 'чоловік',
+                transcription: 'ish',
+                correct: 0,
+                wrong: 0,
+              ),
+            ],
+            audioPlayerFactory: () =>
+                _FakeLearningAudioPlayer(assetExistsResult: false),
+          ),
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    expect(find.text('Вимова'), findsNothing);
+
+    await tester.tap(find.byTooltip('Відкрити слово'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Вимова'), findsNothing);
+    expect(find.text('чоловік'), findsWidgets);
+    expect(find.text('ID: word_man'), findsOneWidget);
   });
 
   testWidgets(

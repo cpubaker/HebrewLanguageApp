@@ -155,27 +155,46 @@ class _WordsScreenState extends State<WordsScreen> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  word.hebrew,
-                  textDirection: TextDirection.rtl,
-                  style: theme.textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    color: const Color(0xFF163832),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  word.translation,
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  word.transcription,
-                  style: theme.textTheme.bodyLarge?.copyWith(
-                    color: const Color(0xFF5F5A52),
-                  ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            word.hebrew,
+                            textDirection: TextDirection.rtl,
+                            style: theme.textTheme.headlineMedium?.copyWith(
+                              fontWeight: FontWeight.w800,
+                              color: const Color(0xFF163832),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            word.translation,
+                            style: theme.textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            word.transcription,
+                            style: theme.textTheme.bodyLarge?.copyWith(
+                              color: const Color(0xFF5F5A52),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (word.hasPlannedAudio) ...[
+                      const SizedBox(width: 16),
+                      _WordDetailsAudioButton(
+                        word: word,
+                        audioPlayerFactory: widget.audioPlayerFactory,
+                      ),
+                    ],
+                  ],
                 ),
                 const SizedBox(height: 18),
                 Row(
@@ -198,13 +217,6 @@ class _WordsScreenState extends State<WordsScreen> {
                   ],
                 ),
                 const SizedBox(height: 14),
-                if (word.hasPlannedAudio) ...[
-                  _WordAudioPanel(
-                    word: word,
-                    audioPlayerFactory: widget.audioPlayerFactory,
-                  ),
-                  const SizedBox(height: 14),
-                ],
                 Text(
                   'ID: ${word.wordId}',
                   style: theme.textTheme.bodyMedium?.copyWith(
@@ -295,7 +307,8 @@ class _WordsScreenState extends State<WordsScreen> {
                       ),
                       child: _WordCard(
                         word: word,
-                        onTap: () => _showWordDetails(word),
+                        audioPlayerFactory: widget.audioPlayerFactory,
+                        onOpenDetails: () => _showWordDetails(word),
                       ),
                     );
                   },
@@ -443,93 +456,271 @@ class _SearchField extends StatelessWidget {
 }
 
 class _WordCard extends StatelessWidget {
-  const _WordCard({required this.word, required this.onTap});
+  const _WordCard({
+    required this.word,
+    required this.audioPlayerFactory,
+    required this.onOpenDetails,
+  });
 
   final LearningWord word;
-  final VoidCallback onTap;
+  final CreateLearningAudioPlayer audioPlayerFactory;
+  final VoidCallback onOpenDetails;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Material(
       color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(22),
-        child: Ink(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(22),
-            boxShadow: const [
-              BoxShadow(
-                color: Color(0x12000000),
-                blurRadius: 16,
-                offset: Offset(0, 8),
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      word.translation,
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      word.transcription,
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        color: const Color(0xFF5F5A52),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: [
-                        _MiniProgress(
-                          label: 'П',
-                          value: word.correct,
-                          accent: const Color(0xFF0F766E),
-                        ),
-                        _MiniProgress(
-                          label: 'Н',
-                          value: word.wrong,
-                          accent: const Color(0xFFB91C1C),
-                        ),
-                        if (word.hasPlannedAudio) const _AudioPilotBadge(),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 16),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+      child: Ink(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(22),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x12000000),
+              blurRadius: 16,
+              offset: Offset(0, 8),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    word.hebrew,
-                    textDirection: TextDirection.rtl,
-                    style: theme.textTheme.headlineSmall?.copyWith(
-                      color: const Color(0xFF163832),
+                    word.translation,
+                    style: theme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w800,
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  const Icon(
+                  const SizedBox(height: 4),
+                  Text(
+                    word.transcription,
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      color: const Color(0xFF5F5A52),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      _MiniProgress(
+                        label: 'П',
+                        value: word.correct,
+                        accent: const Color(0xFF0F766E),
+                      ),
+                      _MiniProgress(
+                        label: 'Н',
+                        value: word.wrong,
+                        accent: const Color(0xFFB91C1C),
+                      ),
+                      if (word.hasPlannedAudio)
+                        _InlineWordAudioButton(
+                          word: word,
+                          audioPlayerFactory: audioPlayerFactory,
+                        ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 16),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  word.hebrew,
+                  textDirection: TextDirection.rtl,
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    color: const Color(0xFF163832),
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                IconButton(
+                  tooltip: 'Відкрити слово',
+                  onPressed: onOpenDetails,
+                  visualDensity: VisualDensity.compact,
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints.tightFor(
+                    width: 28,
+                    height: 28,
+                  ),
+                  icon: const Icon(
                     Icons.arrow_forward_ios_rounded,
                     size: 18,
                     color: Color(0xFF8C6A2A),
                   ),
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _InlineWordAudioButton extends StatefulWidget {
+  const _InlineWordAudioButton({
+    required this.word,
+    required this.audioPlayerFactory,
+  });
+
+  final LearningWord word;
+  final CreateLearningAudioPlayer audioPlayerFactory;
+
+  @override
+  State<_InlineWordAudioButton> createState() => _InlineWordAudioButtonState();
+}
+
+class _InlineWordAudioButtonState extends State<_InlineWordAudioButton> {
+  late final LearningAudioPlayer _audioPlayer = widget.audioPlayerFactory();
+  StreamSubscription<bool>? _playbackSubscription;
+  bool _isCheckingAvailability = true;
+  bool _hasAudio = false;
+  bool _isPlaying = false;
+  bool _isBusy = false;
+
+  String get _audioAssetPath => widget.word.audioAssetPath ?? '';
+
+  @override
+  void initState() {
+    super.initState();
+    _playbackSubscription = _audioPlayer.isPlayingStream.listen((isPlaying) {
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _isPlaying = isPlaying;
+      });
+    });
+    unawaited(_checkAudioAvailability());
+  }
+
+  Future<void> _checkAudioAvailability() async {
+    final audioAssetPath = widget.word.audioAssetPath;
+    if (audioAssetPath == null || audioAssetPath.trim().isEmpty) {
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _hasAudio = false;
+        _isCheckingAvailability = false;
+      });
+      return;
+    }
+
+    final hasAudio = await _audioPlayer.assetExists(audioAssetPath);
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _hasAudio = hasAudio;
+      _isCheckingAvailability = false;
+    });
+  }
+
+  Future<void> _togglePlayback() async {
+    final wasPlaying = _isPlaying;
+
+    setState(() {
+      _isBusy = true;
+    });
+
+    try {
+      if (wasPlaying) {
+        await _audioPlayer.stop();
+      } else {
+        await _audioPlayer.playAsset(_audioAssetPath);
+      }
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _hasAudio = false;
+      });
+    } finally {
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _isBusy = false;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    unawaited(_playbackSubscription?.cancel());
+    unawaited(_audioPlayer.stop());
+    unawaited(_audioPlayer.dispose());
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isEnabled = _hasAudio && !_isBusy;
+    final tooltip = _isCheckingAvailability
+        ? 'Перевіряємо аудіо слова'
+        : _hasAudio
+        ? (_isPlaying ? 'Зупинити вимову слова' : 'Увімкнути вимову слова')
+        : 'Аудіо для слова ще недоступне';
+
+    return Material(
+      color: const Color(0xFF8C6A2A).withValues(alpha: 0.12),
+      borderRadius: BorderRadius.circular(999),
+      child: InkWell(
+        onTap: isEnabled ? _togglePlayback : null,
+        borderRadius: BorderRadius.circular(999),
+        child: Tooltip(
+          message: tooltip,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (_isBusy)
+                  const SizedBox(
+                    width: 14,
+                    height: 14,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Color(0xFF8C6A2A),
+                    ),
+                  )
+                else
+                  Icon(
+                    _isPlaying
+                        ? Icons.stop_circle_outlined
+                        : Icons.volume_up_rounded,
+                    size: 14,
+                    color: _hasAudio
+                        ? const Color(0xFF8C6A2A)
+                        : const Color(0xFFB8AA93),
+                  ),
+                const SizedBox(width: 6),
+                Text(
+                  'Аудіо',
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: _hasAudio
+                        ? const Color(0xFF8C6A2A)
+                        : const Color(0xFF9A907D),
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -537,17 +728,21 @@ class _WordCard extends StatelessWidget {
   }
 }
 
-class _WordAudioPanel extends StatefulWidget {
-  const _WordAudioPanel({required this.word, required this.audioPlayerFactory});
+class _WordDetailsAudioButton extends StatefulWidget {
+  const _WordDetailsAudioButton({
+    required this.word,
+    required this.audioPlayerFactory,
+  });
 
   final LearningWord word;
   final CreateLearningAudioPlayer audioPlayerFactory;
 
   @override
-  State<_WordAudioPanel> createState() => _WordAudioPanelState();
+  State<_WordDetailsAudioButton> createState() =>
+      _WordDetailsAudioButtonState();
 }
 
-class _WordAudioPanelState extends State<_WordAudioPanel> {
+class _WordDetailsAudioButtonState extends State<_WordDetailsAudioButton> {
   late final LearningAudioPlayer _audioPlayer = widget.audioPlayerFactory();
   StreamSubscription<bool>? _playbackSubscription;
   bool _isCheckingAvailability = true;
@@ -658,114 +853,37 @@ class _WordAudioPanelState extends State<_WordAudioPanel> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final helperText = _isCheckingAvailability
-        ? 'Перевіряємо, чи тестовий mp3 вже доступний.'
-        : _hasAudio
-        ? 'Тестове аудіо готове. Можна прослухати слово.'
-        : 'Слово вже входить у тестовий набір, але mp3 ще не згенеровано.';
-
     final tooltip = _isCheckingAvailability
         ? 'Перевіряємо аудіо слова'
         : _hasAudio
         ? (_isPlaying ? 'Зупинити вимову слова' : 'Увімкнути вимову слова')
-        : 'Тестове аудіо ще не згенеровано';
+        : 'Аудіо для слова ще недоступне';
 
     return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: const Color(0x1F8C6A2A)),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Тестова вимова',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    color: const Color(0xFF163832),
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  helperText,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: const Color(0xFF5F5A52),
-                    height: 1.35,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 12),
-          Container(
-            decoration: BoxDecoration(
-              color: const Color(0xFF8C6A2A).withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(18),
-            ),
-            child: IconButton(
-              tooltip: tooltip,
-              onPressed: _hasAudio && !_isBusy ? _togglePlayback : null,
-              icon: _isBusy
-                  ? const SizedBox(
-                      width: 18,
-                      height: 18,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Color(0xFF8C6A2A),
-                      ),
-                    )
-                  : Icon(
-                      _isPlaying
-                          ? Icons.stop_circle_outlined
-                          : Icons.volume_up_rounded,
-                      color: _hasAudio
-                          ? const Color(0xFF8C6A2A)
-                          : const Color(0xFFB8AA93),
-                    ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _AudioPilotBadge extends StatelessWidget {
-  const _AudioPilotBadge();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
         color: const Color(0xFF8C6A2A).withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(999),
+        borderRadius: BorderRadius.circular(18),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(
-            Icons.volume_up_rounded,
-            size: 14,
-            color: Color(0xFF8C6A2A),
-          ),
-          const SizedBox(width: 6),
-          Text(
-            'Аудіо-тест',
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: const Color(0xFF8C6A2A),
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ],
+      child: IconButton(
+        tooltip: tooltip,
+        onPressed: _hasAudio && !_isBusy ? _togglePlayback : null,
+        icon: _isBusy
+            ? const SizedBox(
+                width: 18,
+                height: 18,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Color(0xFF8C6A2A),
+                ),
+              )
+            : Icon(
+                _isPlaying
+                    ? Icons.stop_circle_outlined
+                    : Icons.volume_up_rounded,
+                color: _hasAudio
+                    ? const Color(0xFF8C6A2A)
+                    : const Color(0xFFB8AA93),
+              ),
       ),
     );
   }
