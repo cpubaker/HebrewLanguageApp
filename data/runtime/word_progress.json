@@ -1,0 +1,136 @@
+{
+    "word_child": {
+        "correct": 1
+    },
+    "word_house": {
+        "correct": 1
+    },
+    "word_city": {
+        "correct": 1
+    },
+    "word_country": {
+        "correct": 1
+    },
+    "word_fish": {
+        "correct": 2
+    },
+    "word_cat": {
+        "correct": 1
+    },
+    "word_computer": {
+        "correct": 2
+    },
+    "word_chair": {
+        "correct": 1
+    },
+    "word_table": {
+        "correct": 1
+    },
+    "word_apple": {
+        "correct": 1
+    },
+    "word_flower": {
+        "correct": 3
+    },
+    "word_phone": {
+        "correct": 1
+    },
+    "word_door": {
+        "correct": 2
+    },
+    "word_window": {
+        "correct": 2
+    },
+    "word_newspaper": {
+        "correct": 1
+    },
+    "word_television": {
+        "correct": 1
+    },
+    "word_weather": {
+        "correct": 1
+    },
+    "word_sun": {
+        "correct": 2
+    },
+    "word_moon": {
+        "correct": 1
+    },
+    "word_restaurant": {
+        "correct": 2
+    },
+    "word_school": {
+        "correct": 2
+    },
+    "word_teacher": {
+        "correct": 2,
+        "wrong": 1,
+        "writing_wrong": 1
+    },
+    "word_doctor": {
+        "correct": 3
+    },
+    "word_nurse": {
+        "correct": 1
+    },
+    "word_medicine": {
+        "correct": 1,
+        "wrong": 1
+    },
+    "word_game": {
+        "correct": 1
+    },
+    "word_sport": {
+        "correct": 1
+    },
+    "word_ball": {
+        "correct": 2
+    },
+    "word_minute": {
+        "correct": 1
+    },
+    "word_year": {
+        "correct": 1
+    },
+    "word_peach": {
+        "writing_wrong": 1
+    },
+    "word_to_towards_into": {
+        "correct": 1
+    },
+    "word_used_before_a_definite_direct_object": {
+        "correct": 1
+    },
+    "word_in_by": {
+        "correct": 1,
+        "last_correct": "2026-03-11T12:17:10"
+    },
+    "word_among_amidst_internally_on_the_inside": {
+        "correct": 1,
+        "last_correct": "2026-03-11T12:17:03"
+    },
+    "word_as_like_in_the_role_of_about_approximately": {
+        "correct": 1,
+        "last_correct": "2026-03-26T16:24:35"
+    },
+    "word_like_as_similarly_to": {
+        "correct": 1,
+        "last_correct": "2026-03-26T16:24:37"
+    },
+    "word_against_compared_to_as_opposed_to_in_exchange_for": {
+        "correct": 1,
+        "wrong": 1
+    },
+    "word_into_the_hands_of_to_over_to_for_to_the_attention_of": {
+        "correct": 1
+    },
+    "word_from_of_than_compared_to": {
+        "correct": 1
+    },
+    "word_above_over_on_top_of": {
+        "correct": 1
+    },
+    "word_with_forms_etc_are_literary": {
+        "wrong": 1
+    }
+}

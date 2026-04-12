@@ -140,29 +140,33 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
                 path.endsWith('.md') &&
                 !_isInstructionFile(path),
           ),
-    }.toList()..sort(_compareLessonPaths);
+    }.toList();
 
-    return filteredPaths
-        .map((path) {
-          final metadataEntry = guideMetadata?.lessonForPath(path);
-          final lessonId =
-              metadataEntry?.lessonId ?? _lessonIdForPath(path);
-          final sectionId = metadataEntry?.sectionId;
-          final sectionLabel = sectionId == null
-              ? null
-              : guideMetadata?.sectionLabelFor(sectionId);
+    final lessons = filteredPaths.map((path) {
+      final metadataEntry = guideMetadata?.lessonForPath(path);
+      final lessonId = metadataEntry?.lessonId ?? _lessonIdForPath(path);
+      final sectionId = metadataEntry?.sectionId;
+      final sectionLabel = sectionId == null
+          ? null
+          : guideMetadata?.sectionLabelFor(sectionId);
 
-          return LessonEntry(
-            assetPath: path,
-            displayName: _displayNameForPath(path),
-            lessonId: lessonId,
-            sectionId: sectionId,
-            sectionLabel: sectionLabel,
-            aliases: metadataEntry?.aliases ?? const <String>[],
-            relatedIds: metadataEntry?.relatedIds ?? const <String>[],
-          );
-        })
-        .toList(growable: false);
+      return LessonEntry(
+        assetPath: path,
+        displayName: _displayNameForPath(
+          path,
+          orderOverride: metadataEntry?.sortOrder,
+        ),
+        sortOrder: metadataEntry?.sortOrder,
+        lessonId: lessonId,
+        sectionId: sectionId,
+        sectionLabel: sectionLabel,
+        aliases: metadataEntry?.aliases ?? const <String>[],
+        relatedIds: metadataEntry?.relatedIds ?? const <String>[],
+      );
+    }).toList(growable: false);
+
+    lessons.sort(_compareLessonEntries);
+    return lessons;
   }
 
   Future<_GuideMetadata> _loadGuideMetadata() async {
@@ -241,12 +245,30 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
     return left.compareTo(right);
   }
 
+  int _compareLessonEntries(LessonEntry left, LessonEntry right) {
+    final leftOrder = left.sortOrder;
+    final rightOrder = right.sortOrder;
+
+    if (leftOrder != null && rightOrder != null) {
+      final orderComparison = leftOrder.compareTo(rightOrder);
+      if (orderComparison != 0) {
+        return orderComparison;
+      }
+    } else if (leftOrder != null) {
+      return -1;
+    } else if (rightOrder != null) {
+      return 1;
+    }
+
+    return _compareLessonPaths(left.assetPath, right.assetPath);
+  }
+
   int? _numericPrefix(String filename) {
     final match = RegExp(r'^(\d+)').firstMatch(filename);
     return match == null ? null : int.tryParse(match.group(1)!);
   }
 
-  String _displayNameForPath(String path) {
+  String _displayNameForPath(String path, {int? orderOverride}) {
     final filename = path.split('/').last;
     final withoutExtension = filename.replaceFirst(RegExp(r'\.md$'), '');
     final withoutPrefix = withoutExtension.replaceFirst(
@@ -258,7 +280,7 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
         .where((part) => part.isNotEmpty)
         .map((part) => '${part[0].toUpperCase()}${part.substring(1)}')
         .join(' ');
-    final numericPrefix = _numericPrefix(filename);
+    final numericPrefix = orderOverride ?? _numericPrefix(filename);
 
     if (numericPrefix == null) {
       return words;
@@ -300,12 +322,14 @@ class _GuideMetadata {
 
 class _GuideMetadataEntry {
   const _GuideMetadataEntry({
+    this.sortOrder,
     this.lessonId,
     this.sectionId,
     this.aliases = const <String>[],
     this.relatedIds = const <String>[],
   });
 
+  final int? sortOrder;
   final String? lessonId;
   final String? sectionId;
   final List<String> aliases;
@@ -317,6 +341,7 @@ class _GuideMetadataEntry {
     }
 
     return _GuideMetadataEntry(
+      sortOrder: _parseSortOrder(value['order']),
       lessonId: value['id']?.toString(),
       sectionId: value['section']?.toString(),
       aliases: (value['aliases'] as List<dynamic>? ?? const <dynamic>[])
@@ -328,5 +353,18 @@ class _GuideMetadataEntry {
           .where((item) => item.trim().isNotEmpty)
           .toList(growable: false),
     );
+  }
+
+  static int? _parseSortOrder(dynamic value) {
+    if (value is int) {
+      return value;
+    }
+    if (value is num) {
+      return value.toInt();
+    }
+    if (value is String) {
+      return int.tryParse(value.trim());
+    }
+    return null;
   }
 }

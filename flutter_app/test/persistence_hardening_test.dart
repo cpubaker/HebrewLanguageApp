@@ -109,6 +109,7 @@ void main() {
     SharedPreferences.setMockInitialValues(<String, Object>{
       'guide_read_lessons_v1': <String>[
         ' assets/learning/input/guide/01_intro_alphabet.md ',
+        ' assets/learning/input/guide/42_infinitive_constructions.md ',
         '',
         '   ',
       ],
@@ -120,6 +121,32 @@ void main() {
 
     expect(loadedStatuses, <String, GuideLessonStatus>{
       'assets/learning/input/guide/01_intro_alphabet.md':
+          GuideLessonStatus.read,
+      'assets/learning/input/guide/34_infinitive_constructions.md':
+          GuideLessonStatus.read,
+    });
+  });
+
+  test('guide progress store remaps renamed lesson paths in status payloads', () async {
+    SharedPreferences.setMockInitialValues(<String, Object>{
+      'guide_lesson_statuses_v2': jsonEncode(<String, Object?>{
+        'assets/learning/input/guide/42_infinitive_constructions.md':
+            'studying',
+        'assets/learning/input/guide/49_register_formal_vs_spoken.md': 'read',
+        'assets/learning/input/guide/47_relative_clause_expansion.md': 'read',
+      }),
+    });
+
+    final store = SharedPreferencesGuideProgressStore();
+
+    final loadedStatuses = await store.loadLessonStatuses();
+
+    expect(loadedStatuses, <String, GuideLessonStatus>{
+      'assets/learning/input/guide/34_infinitive_constructions.md':
+          GuideLessonStatus.studying,
+      'assets/learning/input/guide/39_relative_and_she.md':
+          GuideLessonStatus.read,
+      'assets/learning/input/guide/59_register_formal_vs_spoken.md':
           GuideLessonStatus.read,
     });
   });

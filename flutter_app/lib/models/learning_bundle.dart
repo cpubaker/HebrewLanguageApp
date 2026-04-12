@@ -4,6 +4,7 @@ class LessonEntry {
   const LessonEntry({
     required this.assetPath,
     required this.displayName,
+    this.sortOrder,
     this.lessonId,
     this.sectionId,
     this.sectionLabel,
@@ -13,6 +14,7 @@ class LessonEntry {
 
   final String assetPath;
   final String displayName;
+  final int? sortOrder;
   final String? lessonId;
   final String? sectionId;
   final String? sectionLabel;

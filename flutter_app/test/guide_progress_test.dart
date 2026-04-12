@@ -64,16 +64,16 @@ void main() {
             lessons: const [
               LessonEntry(
                 assetPath:
-                    'assets/learning/input/guide/42_infinitive_constructions.md',
-                displayName: '42 Infinitive Constructions',
+                    'assets/learning/input/guide/34_infinitive_constructions.md',
+                displayName: '34 Infinitive Constructions',
                 lessonId: 'infinitive_constructions',
                 sectionId: 'verbs',
                 sectionLabel: 'Дієслова',
               ),
               LessonEntry(
                 assetPath:
-                    'assets/learning/input/guide/49_register_formal_vs_spoken.md',
-                displayName: '49 Register Formal Vs Spoken',
+                    'assets/learning/input/guide/59_register_formal_vs_spoken.md',
+                displayName: '59 Register Formal Vs Spoken',
                 lessonId: 'register_formal_spoken',
                 sectionId: 'spoken',
                 sectionLabel: 'Жива мова',
@@ -243,8 +243,8 @@ void main() {
                 sectionLabel: 'База',
               ),
               LessonEntry(
-                assetPath: 'assets/learning/input/guide/03_smixut.md',
-                displayName: '03 Smixut',
+                assetPath: 'assets/learning/input/guide/07_smixut.md',
+                displayName: '07 Smixut',
                 lessonId: 'smixut',
                 sectionId: 'basics',
                 sectionLabel: 'База',
@@ -261,7 +261,7 @@ void main() {
       expect(find.text('Абетка'), findsOneWidget);
       expect(find.text('Сміхут'), findsOneWidget);
       expect(find.text('01 Intro Alphabet'), findsNothing);
-      expect(find.text('03 Smixut'), findsNothing);
+      expect(find.text('07 Smixut'), findsNothing);
     },
   );
 
@@ -411,7 +411,7 @@ class _GuideDocumentLoader implements LessonDocumentLoader {
 class _GuideSearchDocumentLoader implements LessonDocumentLoader {
   @override
   Future<LessonDocument> load(String assetPath) async {
-    if (assetPath.contains('42_infinitive')) {
+    if (assetPath.contains('34_infinitive')) {
       return const LessonDocument(
         title: 'Інфінітив у конструкціях',
         summary: 'Як будувати моделі на кшталт хочу зробити і почав говорити.',
@@ -460,7 +460,7 @@ class _GuideAdjacentTitlesDocumentLoader implements LessonDocumentLoader {
       );
     }
 
-    if (assetPath.contains('03_smixut')) {
+    if (assetPath.contains('07_smixut')) {
       return const LessonDocument(
         title: 'Сміхут',
         body: '## Основна ідея\n\n- Дивимось на зв’язку двох іменників.',
