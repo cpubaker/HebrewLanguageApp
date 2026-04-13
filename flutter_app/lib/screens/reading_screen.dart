@@ -677,22 +677,35 @@ class _ReadingLessonCard extends StatelessWidget {
                           ?.copyWith(fontWeight: FontWeight.w700),
                     ),
                     const SizedBox(height: 4),
-                    Row(
+                    Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 8,
+                      runSpacing: 6,
                       children: [
-                        Icon(
-                          statusTheme.icon,
-                          size: 18,
-                          color: statusTheme.color,
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              statusTheme.icon,
+                              size: 18,
+                              color: statusTheme.color,
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              statusTheme.label,
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(
+                                    color: statusTheme.color,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 6),
-                        Expanded(
-                          child: Text(
-                            '${statusTheme.label} • $level',
-                            style: Theme.of(context).textTheme.bodyMedium
-                                ?.copyWith(
-                                  color: statusTheme.color,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                        Text(
+                          level,
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: const Color(0xFF6C665D),
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ],

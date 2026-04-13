@@ -471,20 +471,23 @@ class _WordCard extends StatelessWidget {
     final theme = Theme.of(context);
     return Material(
       color: Colors.transparent,
-      child: Ink(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(22),
-          boxShadow: const [
-            BoxShadow(
-              color: Color(0x12000000),
-              blurRadius: 16,
-              offset: Offset(0, 8),
-            ),
-          ],
-        ),
-        child: Row(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(22),
+        onTap: onOpenDetails,
+        child: Ink(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(22),
+            boxShadow: const [
+              BoxShadow(
+                color: Color(0x12000000),
+                blurRadius: 16,
+                offset: Offset(0, 8),
+              ),
+            ],
+          ),
+          child: Row(
           children: [
             Expanded(
               child: Column(
@@ -559,6 +562,7 @@ class _WordCard extends StatelessWidget {
               ],
             ),
           ],
+          ),
         ),
       ),
     );
@@ -650,13 +654,11 @@ class _InlineWordAudioButtonState extends State<_InlineWordAudioButton> {
         _hasAudio = false;
       });
     } finally {
-      if (!mounted) {
-        return;
+      if (mounted) {
+        setState(() {
+          _isBusy = false;
+        });
       }
-
-      setState(() {
-        _isBusy = false;
-      });
     }
   }
 

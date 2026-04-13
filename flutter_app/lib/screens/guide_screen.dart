@@ -582,10 +582,8 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
 
   Future<Map<String, String>> _resolveAdjacentLessonTitles() async {
     final titlesByAssetPath = <String, String>{};
-    final adjacentLessons = <LessonEntry>[
-      if (_previousLesson != null) _previousLesson!,
-      if (_nextLesson != null) _nextLesson!,
-    ];
+    final adjacentLessons = [_previousLesson, _nextLesson]
+        .whereType<LessonEntry>();
 
     for (final lesson in adjacentLessons) {
       try {
@@ -640,7 +638,11 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
       final resolvedLabel =
           titlesByAssetPath[lesson.assetPath] ?? _fallbackLessonTitle(lesson);
       final normalizedResolvedLabel = _normalizeForMatching(resolvedLabel);
+      final isAdjacentLesson =
+          lesson.assetPath == _previousLesson?.assetPath ||
+          lesson.assetPath == _nextLesson?.assetPath;
       if (lesson.assetPath == widget.lesson.assetPath ||
+          isAdjacentLesson ||
           !usedAssetPaths.add(lesson.assetPath) ||
           normalizedResolvedLabel.isEmpty ||
           !usedTopicKeys.add(normalizedResolvedLabel)) {
@@ -1677,10 +1679,6 @@ class _GuideRelatedTopicsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (resolution.resolvedTopics.isEmpty) {
-      return const SizedBox.shrink();
-    }
-
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -1698,28 +1696,36 @@ class _GuideRelatedTopicsCard extends StatelessWidget {
             ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 10),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              ...resolution.resolvedTopics.map(
-                (topic) => ActionChip(
-                  avatar: const Icon(
-                    Icons.link_rounded,
-                    size: 18,
-                    color: Color(0xFFB45309),
+          if (resolution.resolvedTopics.isEmpty)
+            Text(
+              'Усі найближчі пов\'язані теми вже є в навігації вище.',
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: const Color(0xFF5F5A52)),
+            )
+          else
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                ...resolution.resolvedTopics.map(
+                  (topic) => ActionChip(
+                    avatar: const Icon(
+                      Icons.link_rounded,
+                      size: 18,
+                      color: Color(0xFFB45309),
+                    ),
+                    label: Text(topic.label),
+                    labelStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      color: const Color(0xFF8C6A2A),
+                      fontWeight: FontWeight.w700,
+                    ),
+                    backgroundColor: const Color(0xFFFDE7D4),
+                    onPressed: () => onOpenLesson(topic.lesson),
                   ),
-                  label: Text(topic.label),
-                  labelStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: const Color(0xFF8C6A2A),
-                    fontWeight: FontWeight.w700,
-                  ),
-                  backgroundColor: const Color(0xFFFDE7D4),
-                  onPressed: () => onOpenLesson(topic.lesson),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
         ],
       ),
     );

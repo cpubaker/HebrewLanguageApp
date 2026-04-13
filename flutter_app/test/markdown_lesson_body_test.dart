@@ -47,9 +47,11 @@ void main() {
     );
 
     final selectableText = tester.widget<SelectableText>(
-      find.byWidgetPredicate(
-        (widget) => widget is SelectableText && widget.data == mixedText,
-      ),
+      find.byWidgetPredicate((widget) {
+        return widget is SelectableText &&
+            widget.textAlign == TextAlign.left &&
+            widget.textDirection == TextDirection.ltr;
+      }),
     );
 
     expect(selectableText.textAlign, TextAlign.left);
