@@ -6,7 +6,9 @@ import '../models/guide_lesson_status.dart';
 import '../models/learning_bundle.dart';
 import '../models/lesson_document.dart';
 import '../services/lesson_document_loader.dart';
+import '../theme/app_theme.dart';
 import 'reading_lesson_catalog.dart';
+import 'widgets/app_section_card.dart';
 import 'widgets/markdown_lesson_body.dart';
 
 class ReadingScreen extends StatefulWidget {
@@ -185,6 +187,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
     final lessonGroups = buildReadingLessonGroups(widget.lessons);
     final visibleGroups = _selectedLevelKeys.isEmpty
         ? lessonGroups
@@ -202,7 +205,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
       children: [
         ListView.builder(
           controller: _scrollController,
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 108),
+          padding: tokens.pagePadding.copyWith(bottom: 108),
           itemCount: itemCount,
           itemBuilder: (context, index) {
             if (index == 0) {
@@ -232,15 +235,9 @@ class _ReadingScreenState extends State<ReadingScreen> {
             }
 
             if (index == 3) {
-              return Container(
+              return AppSectionCard(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(22),
-                  border: Border.all(
-                    color: const Color(0xFF1D4ED8).withValues(alpha: 0.16),
-                  ),
-                ),
+                borderColor: const Color(0xFF1D4ED8).withValues(alpha: 0.16),
                 child: Row(
                   children: [
                     const Icon(Icons.auto_stories_rounded, color: Color(0xFF1D4ED8)),

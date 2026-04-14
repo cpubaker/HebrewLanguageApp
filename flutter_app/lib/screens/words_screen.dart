@@ -4,6 +4,13 @@ import 'package:flutter/material.dart';
 
 import '../models/learning_word.dart';
 import '../services/learning_audio_player.dart';
+import '../services/progress_snapshot.dart';
+import '../theme/app_theme.dart';
+import 'widgets/app_action_wrap.dart';
+import 'widgets/app_page_header.dart';
+import 'widgets/app_search_field.dart';
+import 'widgets/app_section_card.dart';
+import 'widgets/app_stat_chip.dart';
 
 class WordsScreen extends StatefulWidget {
   const WordsScreen({
@@ -29,6 +36,7 @@ class _WordsScreenState extends State<WordsScreen> {
   String _query = '';
   late List<_IndexedWord> _indexedWords;
   late List<_IndexedWord> _visibleWords;
+  _WordsFilter _selectedFilter = _WordsFilter.all;
   bool _showScrollToTop = false;
 
   @override
@@ -65,21 +73,38 @@ class _WordsScreenState extends State<WordsScreen> {
           ..sort((left, right) => left.sortKey.compareTo(right.sortKey));
 
     _indexedWords = indexedWords;
-    _visibleWords = _filterIndexedWords(indexedWords, _query);
+    _visibleWords = _filterIndexedWords(indexedWords, _query, _selectedFilter);
   }
 
   List<_IndexedWord> _filterIndexedWords(
     List<_IndexedWord> indexedWords,
     String query,
+    _WordsFilter filter,
   ) {
     final normalizedQuery = query.trim().toLowerCase();
-    if (normalizedQuery.isEmpty) {
-      return indexedWords;
-    }
-
     return indexedWords
-        .where((word) => word.searchText.contains(normalizedQuery))
+        .where((word) => _matchesFilter(word.word, filter))
+        .where(
+          (word) =>
+              normalizedQuery.isEmpty ||
+              word.searchText.contains(normalizedQuery),
+        )
         .toList(growable: false);
+  }
+
+  bool _matchesFilter(LearningWord word, _WordsFilter filter) {
+    final learningState = classifyWordLearningState(word);
+
+    switch (filter) {
+      case _WordsFilter.all:
+        return true;
+      case _WordsFilter.newWords:
+        return learningState == WordLearningState.unseen;
+      case _WordsFilter.learned:
+        return learningState == WordLearningState.known;
+      case _WordsFilter.review:
+        return learningState == WordLearningState.needsReview;
+    }
   }
 
   void _handleSearchChanged(String value) {
@@ -91,7 +116,11 @@ class _WordsScreenState extends State<WordsScreen> {
 
       setState(() {
         _query = value;
-        _visibleWords = _filterIndexedWords(_indexedWords, _query);
+        _visibleWords = _filterIndexedWords(
+          _indexedWords,
+          _query,
+          _selectedFilter,
+        );
       });
     });
   }
@@ -101,7 +130,26 @@ class _WordsScreenState extends State<WordsScreen> {
     _searchController.clear();
     setState(() {
       _query = '';
-      _visibleWords = _indexedWords;
+      _visibleWords = _filterIndexedWords(
+        _indexedWords,
+        _query,
+        _selectedFilter,
+      );
+    });
+  }
+
+  void _selectFilter(_WordsFilter filter) {
+    if (_selectedFilter == filter) {
+      return;
+    }
+
+    setState(() {
+      _selectedFilter = filter;
+      _visibleWords = _filterIndexedWords(
+        _indexedWords,
+        _query,
+        _selectedFilter,
+      );
     });
   }
 
@@ -233,70 +281,107 @@ class _WordsScreenState extends State<WordsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+    final filterSummaries = <_WordsFilter, int>{
+      _WordsFilter.all: _indexedWords.length,
+      _WordsFilter.newWords: _indexedWords
+          .where((word) => _matchesFilter(word.word, _WordsFilter.newWords))
+          .length,
+      _WordsFilter.learned: _indexedWords
+          .where((word) => _matchesFilter(word.word, _WordsFilter.learned))
+          .length,
+      _WordsFilter.review: _indexedWords
+          .where((word) => _matchesFilter(word.word, _WordsFilter.review))
+          .length,
+    };
+
     return Stack(
       children: [
         CustomScrollView(
           controller: _scrollController,
           slivers: [
             SliverPadding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+              padding: EdgeInsets.fromLTRB(
+                tokens.pagePadding.left,
+                tokens.pagePadding.top,
+                tokens.pagePadding.right,
+                0,
+              ),
               sliver: SliverToBoxAdapter(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Слова',
-                      style: Theme.of(context).textTheme.headlineMedium
-                          ?.copyWith(fontWeight: FontWeight.w800),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Пошук за українською, англійською, транскрипцією, івритом або ID.',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: const Color(0xFF5F5A52),
-                        height: 1.4,
+                child: AppSectionCard(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const AppPageHeader(
+                        title: 'Слова',
+                        subtitle:
+                            'Пошук за українською, англійською, транскрипцією, івритом або ID.',
                       ),
-                    ),
-                    const SizedBox(height: 18),
-                    _SearchField(
-                      controller: _searchController,
-                      focusNode: _searchFocusNode,
-                      hintText: 'Шукати слова',
-                      onChanged: _handleSearchChanged,
-                      onClear: _query.isEmpty && _searchController.text.isEmpty
-                          ? null
-                          : _clearSearch,
-                    ),
-                    const SizedBox(height: 16),
-                    Wrap(
-                      spacing: 12,
-                      runSpacing: 12,
-                      children: [
-                        _StatPill(
-                          label: 'Видимі',
-                          value: _visibleWords.length,
-                          accent: const Color(0xFF1D4ED8),
-                        ),
-                        _StatPill(
-                          label: 'Усього',
-                          value: widget.words.length,
-                          accent: const Color(0xFF8C6A2A),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 18),
-                  ],
+                      const SizedBox(height: 18),
+                      AppSearchField(
+                        controller: _searchController,
+                        focusNode: _searchFocusNode,
+                        hintText: 'Шукати слова',
+                        onChanged: _handleSearchChanged,
+                        onClear:
+                            _query.isEmpty && _searchController.text.isEmpty
+                            ? null
+                            : _clearSearch,
+                      ),
+                      const SizedBox(height: 16),
+                      AppActionWrap(
+                        children: [
+                          for (final filter in _WordsFilter.values)
+                            _WordsFilterChip(
+                              label: filter.label,
+                              value: filterSummaries[filter] ?? 0,
+                              isSelected: _selectedFilter == filter,
+                              onTap: () => _selectFilter(filter),
+                            ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      AppActionWrap(
+                        children: [
+                          AppStatChip(
+                            label: 'Видимі',
+                            value: _visibleWords.length,
+                            accent: const Color(0xFF1D4ED8),
+                          ),
+                          AppStatChip(
+                            label: 'Усього',
+                            value: widget.words.length,
+                            accent: const Color(0xFF8C6A2A),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
             if (_visibleWords.isEmpty)
-              const SliverPadding(
-                padding: EdgeInsets.fromLTRB(20, 0, 20, 32),
-                sliver: SliverToBoxAdapter(child: _EmptySearchState()),
+              SliverPadding(
+                padding: EdgeInsets.fromLTRB(
+                  tokens.pagePadding.left,
+                  16,
+                  tokens.pagePadding.right,
+                  32,
+                ),
+                sliver: SliverToBoxAdapter(
+                  child: _EmptySearchState(
+                    filter: _selectedFilter,
+                  ),
+                ),
               )
             else
               SliverPadding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
+                padding: EdgeInsets.fromLTRB(
+                  tokens.pagePadding.left,
+                  16,
+                  tokens.pagePadding.right,
+                  32,
+                ),
                 sliver: SliverList.builder(
                   itemCount: _visibleWords.length,
                   itemBuilder: (context, index) {
@@ -400,61 +485,6 @@ class _IndexedWord {
   }
 }
 
-class _SearchField extends StatelessWidget {
-  const _SearchField({
-    required this.controller,
-    required this.focusNode,
-    required this.hintText,
-    required this.onChanged,
-    this.onClear,
-  });
-
-  final TextEditingController controller;
-  final FocusNode focusNode;
-  final String hintText;
-  final ValueChanged<String> onChanged;
-  final VoidCallback? onClear;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      focusNode: focusNode,
-      keyboardType: TextInputType.text,
-      textInputAction: TextInputAction.search,
-      onChanged: onChanged,
-      decoration: InputDecoration(
-        hintText: hintText,
-        prefixIcon: const Icon(Icons.search_rounded),
-        suffixIcon: onClear == null
-            ? null
-            : IconButton(
-                onPressed: onClear,
-                icon: const Icon(Icons.close_rounded),
-              ),
-        filled: true,
-        fillColor: Colors.white,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 18,
-          vertical: 16,
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide.none,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: const BorderSide(color: Color(0x1F8C6A2A)),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: const BorderSide(color: Color(0xFF8C6A2A), width: 1.5),
-        ),
-      ),
-    );
-  }
-}
-
 class _WordCard extends StatelessWidget {
   const _WordCard({
     required this.word,
@@ -475,7 +505,7 @@ class _WordCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(22),
         onTap: onOpenDetails,
         child: Ink(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(22),
@@ -488,80 +518,80 @@ class _WordCard extends StatelessWidget {
             ],
           ),
           child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      word.translation,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      word.transcription,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: const Color(0xFF5F5A52),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        _MiniProgress(
+                          label: 'П',
+                          value: word.correct,
+                          accent: const Color(0xFF0F766E),
+                        ),
+                        _MiniProgress(
+                          label: 'Н',
+                          value: word.wrong,
+                          accent: const Color(0xFFB91C1C),
+                        ),
+                        if (word.hasPlannedAudio)
+                          _InlineWordAudioButton(
+                            word: word,
+                            audioPlayerFactory: audioPlayerFactory,
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 14),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    word.translation,
+                    word.hebrew,
+                    textDirection: TextDirection.rtl,
                     style: theme.textTheme.titleLarge?.copyWith(
+                      color: const Color(0xFF163832),
                       fontWeight: FontWeight.w800,
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    word.transcription,
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      color: const Color(0xFF5F5A52),
+                  const SizedBox(height: 8),
+                  IconButton(
+                    tooltip: 'Відкрити слово',
+                    onPressed: onOpenDetails,
+                    visualDensity: VisualDensity.compact,
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints.tightFor(
+                      width: 28,
+                      height: 28,
                     ),
-                  ),
-                  const SizedBox(height: 12),
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: [
-                      _MiniProgress(
-                        label: 'П',
-                        value: word.correct,
-                        accent: const Color(0xFF0F766E),
-                      ),
-                      _MiniProgress(
-                        label: 'Н',
-                        value: word.wrong,
-                        accent: const Color(0xFFB91C1C),
-                      ),
-                      if (word.hasPlannedAudio)
-                        _InlineWordAudioButton(
-                          word: word,
-                          audioPlayerFactory: audioPlayerFactory,
-                        ),
-                    ],
+                    icon: const Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      size: 18,
+                      color: Color(0xFF8C6A2A),
+                    ),
                   ),
                 ],
               ),
-            ),
-            const SizedBox(width: 16),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  word.hebrew,
-                  textDirection: TextDirection.rtl,
-                  style: theme.textTheme.headlineSmall?.copyWith(
-                    color: const Color(0xFF163832),
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                IconButton(
-                  tooltip: 'Відкрити слово',
-                  onPressed: onOpenDetails,
-                  visualDensity: VisualDensity.compact,
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints.tightFor(
-                    width: 28,
-                    height: 28,
-                  ),
-                  icon: const Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    size: 18,
-                    color: Color(0xFF8C6A2A),
-                  ),
-                ),
-              ],
-            ),
-          ],
+            ],
           ),
         ),
       ),
@@ -941,41 +971,97 @@ class _StatPill extends StatelessWidget {
         borderRadius: BorderRadius.circular(999),
         border: Border.all(color: accent.withValues(alpha: 0.18)),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 10,
-            height: 10,
-            decoration: BoxDecoration(
-              color: accent,
-              borderRadius: BorderRadius.circular(999),
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        alignment: Alignment.centerLeft,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 10,
+              height: 10,
+              decoration: BoxDecoration(
+                color: accent,
+                borderRadius: BorderRadius.circular(999),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Text(
+              '$label: $value',
+              style: Theme.of(
+                context,
+              ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w700),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+enum _WordsFilter {
+  all('Усі'),
+  newWords('Нові'),
+  learned('Вивчені'),
+  review('Повторити');
+
+  const _WordsFilter(this.label);
+
+  final String label;
+}
+
+class _WordsFilterChip extends StatelessWidget {
+  const _WordsFilterChip({
+    required this.label,
+    required this.value,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final String label;
+  final int value;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(999),
+        child: Ink(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          decoration: BoxDecoration(
+            color: isSelected ? const Color(0xFF163832) : const Color(0xFFF7F3E8),
+            borderRadius: BorderRadius.circular(999),
+            border: Border.all(
+              color: isSelected
+                  ? const Color(0xFF163832)
+                  : const Color(0xFF163832).withValues(alpha: 0.12),
             ),
           ),
-          const SizedBox(width: 10),
-          Text(
-            '$label: $value',
-            style: Theme.of(
-              context,
-            ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w700),
+          child: Text(
+            '$label · $value',
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(
+              color: isSelected ? Colors.white : const Color(0xFF163832),
+              fontWeight: FontWeight.w700,
+            ),
           ),
-        ],
+        ),
       ),
     );
   }
 }
 
 class _EmptySearchState extends StatelessWidget {
-  const _EmptySearchState();
+  const _EmptySearchState({required this.filter});
+
+  final _WordsFilter filter;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-      ),
+    return AppSectionCard(
       child: Column(
         children: [
           const Icon(
@@ -985,14 +1071,16 @@ class _EmptySearchState extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'Нічого не знайдено.',
+            'Нічого не знайдено',
             style: Theme.of(
               context,
             ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 6),
           Text(
-            'Спробуйте інший запит: слово українською чи англійською, форму івритом або ID.',
+            filter == _WordsFilter.all
+                ? 'Спробуйте інший запит: слово українською чи англійською, форму івритом або ID.'
+                : 'У поточному зрізі «${filter.label.toLowerCase()}» поки немає результатів. Спробуйте інший фільтр або запит.',
             textAlign: TextAlign.center,
             style: Theme.of(
               context,

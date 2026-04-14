@@ -45,7 +45,8 @@ void main() {
     await tester.enterText(find.byType(EditableText).last, 'ход');
     await tester.pumpAndSettle();
 
-    expect(find.text('Знайдено: 1 із 2'), findsOneWidget);
+    expect(find.text('Знайдено: 1'), findsOneWidget);
+    expect(find.text('Усього: 2'), findsOneWidget);
     expect(find.text('Ходити'), findsOneWidget);
     expect(find.text('Бачити'), findsNothing);
   });

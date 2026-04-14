@@ -1,8 +1,12 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
 import '../models/learning_word.dart';
 import '../services/flashcard_session.dart';
 import '../services/writing_session.dart';
+import '../theme/app_theme.dart';
+import 'widgets/practice_header.dart';
+import 'widgets/practice_session_summary.dart';
+import 'widgets/practice_stat_pill.dart';
 
 class WritingScreen extends StatefulWidget {
   const WritingScreen({
@@ -57,7 +61,7 @@ class _WritingScreenState extends State<WritingScreen> {
 
     if (result.status == WritingAnswerStatus.empty) {
       setState(() {
-        _inlineMessage = 'Введіть слово івритом, щоб перевірити відповідь.';
+        _inlineMessage = 'Р’РІРµРґС–С‚СЊ СЃР»РѕРІРѕ С–РІСЂРёС‚РѕРј, С‰РѕР± РїРµСЂРµРІС–СЂРёС‚Рё РІС–РґРїРѕРІС–РґСЊ.';
       });
       return;
     }
@@ -72,6 +76,7 @@ class _WritingScreenState extends State<WritingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
     final currentPrompt = _currentPrompt;
     if (currentPrompt == null) {
       return const _EmptyWritingState();
@@ -83,21 +88,12 @@ class _WritingScreenState extends State<WritingScreen> {
     final stats = _session.currentWordStats();
 
     return ListView(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
+      padding: tokens.pagePadding.copyWith(bottom: 32),
       children: [
-        Text(
-          'Письмо',
-          style: Theme.of(
-            context,
-          ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          'Бачите переклад українською, а далі вводите слово івритом з пам’яті.',
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: const Color(0xFF5F5A52),
-            height: 1.45,
-          ),
+        const PracticeHeader(
+          title: 'Письмо',
+          subtitle:
+              'Бачите переклад українською, а потім вводите слово івритом з пам’яті.',
         ),
         const SizedBox(height: 18),
         Container(
@@ -129,7 +125,7 @@ class _WritingScreenState extends State<WritingScreen> {
                 child: Column(
                   children: [
                     Text(
-                      'Слово для перекладу',
+                      'РЎР»РѕРІРѕ РґР»СЏ РїРµСЂРµРєР»Р°РґСѓ',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         color: const Color(0xFF5F5A52),
@@ -148,7 +144,7 @@ class _WritingScreenState extends State<WritingScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Підказку не показуємо: тут працюємо саме на пригадування.',
+                      'РџС–РґРєР°Р·РєСѓ РЅРµ РїРѕРєР°Р·СѓС”РјРѕ: С‚СѓС‚ РїСЂР°С†СЋС”РјРѕ СЃР°РјРµ РЅР° РїСЂРёРіР°РґСѓРІР°РЅРЅСЏ.',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: const Color(0xFF6C665D),
@@ -167,7 +163,7 @@ class _WritingScreenState extends State<WritingScreen> {
                 textInputAction: TextInputAction.done,
                 onSubmitted: (_) => _submitAnswer(),
                 decoration: InputDecoration(
-                  hintText: 'Введіть слово івритом',
+                  hintText: 'Р’РІРµРґС–С‚СЊ СЃР»РѕРІРѕ С–РІСЂРёС‚РѕРј',
                   prefixIcon: const Icon(Icons.edit_rounded),
                   filled: true,
                   fillColor: const Color(0xFFF9F5EC),
@@ -215,7 +211,7 @@ class _WritingScreenState extends State<WritingScreen> {
                 )
               else
                 Text(
-                  'Натисніть «Перевірити», коли будете готові.',
+                  'РќР°С‚РёСЃРЅС–С‚СЊ В«РџРµСЂРµРІС–СЂРёС‚РёВ», РєРѕР»Рё Р±СѓРґРµС‚Рµ РіРѕС‚РѕРІС–.',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: const Color(0xFF6C665D),
@@ -225,16 +221,16 @@ class _WritingScreenState extends State<WritingScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: _WritingPill(
-                      label: 'Правильно',
+                    child: PracticeStatPill(
+                      label: 'РџСЂР°РІРёР»СЊРЅРѕ',
                       value: stats.correct,
                       accent: const Color(0xFF0F766E),
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: _WritingPill(
-                      label: 'Помилки',
+                    child: PracticeStatPill(
+                      label: 'РџРѕРјРёР»РєРё',
                       value: stats.wrong,
                       accent: const Color(0xFFB91C1C),
                     ),
@@ -250,49 +246,22 @@ class _WritingScreenState extends State<WritingScreen> {
                   FilledButton.icon(
                     onPressed: hasAnswered ? null : _submitAnswer,
                     icon: const Icon(Icons.check_rounded),
-                    label: const Text('Перевірити'),
+                    label: const Text('РџРµСЂРµРІС–СЂРёС‚Рё'),
                   ),
                   OutlinedButton.icon(
                     onPressed: hasAnswered ? _moveToNextPrompt : null,
                     icon: const Icon(Icons.arrow_forward_rounded),
-                    label: const Text('Далі'),
+                    label: const Text('Р”Р°Р»С–'),
                   ),
                 ],
               ),
               const SizedBox(height: 16),
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF7F3E8),
-                  borderRadius: BorderRadius.circular(22),
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      'Поточна сесія',
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: const Color(0xFF163832),
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      'Перевірено відповідей: ${_session.answeredCount}',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: const Color(0xFF6C665D),
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '${widget.words.length} слів доступні для письма на цьому пристрої',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: const Color(0xFF6C665D),
-                      ),
-                    ),
-                  ],
-                ),
+              PracticeSessionSummary(
+                title: 'Поточна сесія',
+                lines: [
+                  'Перевірено відповідей: ${_session.answeredCount}',
+                  '${widget.words.length} слів доступні для письма на цьому пристрої',
+                ],
               ),
             ],
           ),
@@ -344,17 +313,20 @@ class _WritingResultCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          Wrap(
+            alignment: WrapAlignment.center,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 8,
+            runSpacing: 6,
             children: [
               Icon(
                 isCorrect ? Icons.check_circle_rounded : Icons.cancel_rounded,
                 color: accent,
                 size: 22,
               ),
-              const SizedBox(width: 8),
               Text(
-                isCorrect ? 'Правильно' : 'Потрібно ще раз',
+                isCorrect ? 'РџСЂР°РІРёР»СЊРЅРѕ' : 'РџРѕС‚СЂС–Р±РЅРѕ С‰Рµ СЂР°Р·',
+                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w800,
                   color: const Color(0xFF5F5A52),
@@ -375,8 +347,8 @@ class _WritingResultCard extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             isCorrect
-                ? 'Слово записано правильно. Можна переходити далі.'
-                : 'Звірте форму і напишіть наступне слово з пам’яті.',
+                ? 'РЎР»РѕРІРѕ Р·Р°РїРёСЃР°РЅРѕ РїСЂР°РІРёР»СЊРЅРѕ. РњРѕР¶РЅР° РїРµСЂРµС…РѕРґРёС‚Рё РґР°Р»С–.'
+                : 'Р—РІС–СЂС‚Рµ С„РѕСЂРјСѓ С– РЅР°РїРёС€С–С‚СЊ РЅР°СЃС‚СѓРїРЅРµ СЃР»РѕРІРѕ Р· РїР°РјвЂ™СЏС‚С–.',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: const Color(0xFF6C665D),
@@ -386,7 +358,7 @@ class _WritingResultCard extends StatelessWidget {
           if (lastCorrect != null) ...[
             const SizedBox(height: 10),
             Text(
-              'Востаннє правильно: $lastCorrect',
+              'Р’РѕСЃС‚Р°РЅРЅС” РїСЂР°РІРёР»СЊРЅРѕ: $lastCorrect',
               textAlign: TextAlign.center,
               style: Theme.of(
                 context,
@@ -399,72 +371,34 @@ class _WritingResultCard extends StatelessWidget {
   }
 }
 
-class _WritingPill extends StatelessWidget {
-  const _WritingPill({
-    required this.label,
-    required this.value,
-    required this.accent,
-  });
-
-  final String label;
-  final int value;
-  final Color accent;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: accent.withValues(alpha: 0.18)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 10,
-            height: 10,
-            decoration: BoxDecoration(
-              color: accent,
-              borderRadius: BorderRadius.circular(999),
-            ),
-          ),
-          const SizedBox(width: 10),
-          Flexible(
-            child: Text(
-              '$label: $value',
-              style: Theme.of(
-                context,
-              ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w700),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _EmptyWritingState extends StatelessWidget {
   const _EmptyWritingState();
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
     return ListView(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
+      padding: tokens.pagePadding.copyWith(bottom: 32),
       children: [
-        Text(
-          'Письмо',
-          style: Theme.of(
-            context,
-          ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
+        const PracticeHeader(
+          title: 'Письмо',
+          subtitle:
+              'Коли слова завантажаться, тут можна буде тренувати написання івритом.',
         ),
-        const SizedBox(height: 8),
-        Text(
-          'Коли слова завантажаться, тут можна буде тренувати написання івритом.',
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: const Color(0xFF5F5A52),
-            height: 1.45,
+        const SizedBox(height: 18),
+        Container(
+          padding: const EdgeInsets.all(22),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(28),
+          ),
+          child: Text(
+            'Щойно у наборі з’являться доступні слова, тут можна буде тренувати письмо окремою сесією.',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              color: const Color(0xFF5F5A52),
+              height: 1.45,
+            ),
           ),
         ),
       ],

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import '../models/learning_context.dart';
 import '../models/learning_word.dart';
+import 'progress_snapshot.dart';
 
 enum FlashcardDeckMode {
   allWords,
@@ -84,7 +85,10 @@ class FlashcardSession {
 
   int get reviewWordCount {
     return _sourceWords
-        .where((word) => word.wrong > 0 || word.wrong > word.correct)
+        .where(
+          (word) => classifyWordLearningState(word) ==
+              WordLearningState.needsReview,
+        )
         .length;
   }
 
@@ -231,7 +235,10 @@ class FlashcardSession {
             .toList(growable: false);
       case FlashcardDeckMode.needsReview:
         final reviewWords = words
-            .where((word) => word.wrong > 0 || word.wrong > word.correct)
+            .where(
+              (word) => classifyWordLearningState(word) ==
+                  WordLearningState.needsReview,
+            )
             .toList(growable: false);
         return reviewWords;
     }

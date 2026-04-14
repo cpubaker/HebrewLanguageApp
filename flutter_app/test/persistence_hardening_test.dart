@@ -214,7 +214,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byIcon(Icons.menu_book_outlined));
+    await tester.tap(find.byIcon(Icons.library_books_outlined));
     await tester.pumpAndSettle();
 
     expect(find.text('Не прочитано'), findsOneWidget);
@@ -245,7 +245,10 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byIcon(Icons.auto_stories_outlined));
+    await tester.tap(find.byIcon(Icons.library_books_outlined));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Читання').last);
     await tester.pumpAndSettle();
 
     expect(find.text('Не прочитано'), findsOneWidget);

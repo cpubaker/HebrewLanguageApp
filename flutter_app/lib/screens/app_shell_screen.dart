@@ -7,20 +7,32 @@ import 'package:flutter/rendering.dart';
 import '../models/guide_lesson_status.dart';
 import '../models/learning_bundle.dart';
 import '../models/learning_word.dart';
-import '../services/guide_progress_store.dart';
 import '../services/flashcard_session.dart';
-import '../services/lesson_document_loader.dart';
+import '../services/guide_progress_store.dart';
 import '../services/learning_bundle_loader.dart';
+import '../services/lesson_document_loader.dart';
 import '../services/reading_progress_store.dart';
 import '../services/verb_audio_player.dart';
 import '../services/word_progress_store.dart';
 import 'flashcards_screen.dart';
 import 'guide_screen.dart';
 import 'home_screen.dart';
+import 'more_screen.dart';
 import 'reading_screen.dart';
 import 'verbs_screen.dart';
-import 'writing_screen.dart';
+import 'workspace_screen.dart';
 import 'words_screen.dart';
+import 'writing_screen.dart';
+
+enum _RootArea { home, learn, practice, materials, more }
+
+enum _LearnSection { words, verbs }
+
+enum _PracticeSection { flashcards, writing }
+
+enum _MaterialsSection { guide, reading }
+
+enum _MoreSection { overview, progress, settings }
 
 class AppShellScreen extends StatefulWidget {
   const AppShellScreen({
@@ -62,7 +74,14 @@ class _AppShellScreenState extends State<AppShellScreen> {
   final Map<String, int> _wordPersistenceTokens = <String, int>{};
   FlashcardDeckMode _flashcardDeckMode = FlashcardDeckMode.allWords;
   int _flashcardDeckRequestToken = 0;
-  int _selectedIndex = 0;
+  _RootArea _selectedArea = _RootArea.home;
+  _LearnSection _learnSection = _LearnSection.words;
+  _PracticeSection _practiceSection = _PracticeSection.flashcards;
+  _MaterialsSection _materialsSection = _MaterialsSection.guide;
+  _MoreSection _moreSection = _MoreSection.overview;
+  bool _autoHideBottomNavOnScroll = true;
+  bool _preferWritingPractice = false;
+  FlashcardDeckMode _preferredFlashcardDeckMode = FlashcardDeckMode.allWords;
   bool _isBottomNavVisible = true;
 
   @override
@@ -211,9 +230,25 @@ class _AppShellScreenState extends State<AppShellScreen> {
     );
   }
 
-  void _selectTab(int index) {
+  void _selectArea(int index) {
     setState(() {
-      _selectedIndex = index;
+      _selectedArea = _RootArea.values[index];
+      _isBottomNavVisible = true;
+    });
+  }
+
+  void _openLearnSection(_LearnSection section) {
+    setState(() {
+      _learnSection = section;
+      _selectedArea = _RootArea.learn;
+      _isBottomNavVisible = true;
+    });
+  }
+
+  void _openPracticeSection(_PracticeSection section) {
+    setState(() {
+      _practiceSection = section;
+      _selectedArea = _RootArea.practice;
       _isBottomNavVisible = true;
     });
   }
@@ -222,7 +257,24 @@ class _AppShellScreenState extends State<AppShellScreen> {
     setState(() {
       _flashcardDeckMode = mode;
       _flashcardDeckRequestToken += 1;
-      _selectedIndex = 2;
+      _practiceSection = _PracticeSection.flashcards;
+      _selectedArea = _RootArea.practice;
+      _isBottomNavVisible = true;
+    });
+  }
+
+  void _openMaterialsSection(_MaterialsSection section) {
+    setState(() {
+      _materialsSection = section;
+      _selectedArea = _RootArea.materials;
+      _isBottomNavVisible = true;
+    });
+  }
+
+  void _openMoreSection(_MoreSection section) {
+    setState(() {
+      _moreSection = section;
+      _selectedArea = _RootArea.more;
       _isBottomNavVisible = true;
     });
   }
@@ -238,6 +290,11 @@ class _AppShellScreenState extends State<AppShellScreen> {
   }
 
   bool _handleShellScrollNotification(ScrollNotification notification) {
+    if (!_autoHideBottomNavOnScroll) {
+      _setBottomNavVisibility(true);
+      return false;
+    }
+
     final metrics = notification.metrics;
     if (metrics.axis != Axis.vertical) {
       return false;
@@ -252,8 +309,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
       final direction = notification.direction;
       if (direction == ScrollDirection.forward) {
         _setBottomNavVisibility(true);
-      } else if (direction == ScrollDirection.reverse &&
-          metrics.pixels > 72) {
+      } else if (direction == ScrollDirection.reverse && metrics.pixels > 72) {
         _setBottomNavVisibility(false);
       }
       return false;
@@ -269,6 +325,27 @@ class _AppShellScreenState extends State<AppShellScreen> {
     }
 
     return false;
+  }
+
+  void _setAutoHideBottomNavOnScroll(bool value) {
+    setState(() {
+      _autoHideBottomNavOnScroll = value;
+      if (!value) {
+        _isBottomNavVisible = true;
+      }
+    });
+  }
+
+  void _setPreferWritingPractice(bool value) {
+    setState(() {
+      _preferWritingPractice = value;
+    });
+  }
+
+  void _setPreferredFlashcardDeckMode(FlashcardDeckMode mode) {
+    setState(() {
+      _preferredFlashcardDeckMode = mode;
+    });
   }
 
   int _nextPersistenceToken(Map<String, int> tokenMap, String key) {
@@ -362,7 +439,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
       });
 
       _showPersistenceError(
-        'РќРµ РІРґР°Р»РѕСЃСЏ Р·Р±РµСЂРµРіС‚Рё РїСЂРѕРіСЂРµСЃ С‡РёС‚Р°РЅРЅСЏ. РЎРїСЂРѕР±СѓР№С‚Рµ С‰Рµ СЂР°Р·.',
+        'Не вдалося зберегти прогрес читання. Спробуйте ще раз.',
       );
     }
   }
@@ -372,6 +449,235 @@ class _AppShellScreenState extends State<AppShellScreen> {
     messenger
       ?..hideCurrentSnackBar()
       ..showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  Widget _buildLearnWorkspace(LearningBundle bundle) {
+    return WorkspaceScreen(
+      title: 'Вчити',
+      subtitle: 'Основні навчальні модулі: слова та дієслова.',
+      sections: const [
+        WorkspaceSection(label: 'Слова', icon: Icons.translate_rounded),
+        WorkspaceSection(label: 'Дієслова', icon: Icons.play_lesson_rounded),
+      ],
+      selectedIndex: _learnSection.index,
+      onSectionSelected: (index) {
+        _openLearnSection(_LearnSection.values[index]);
+      },
+      child: IndexedStack(
+        index: _learnSection.index,
+        children: [
+          WordsScreen(
+            words: bundle.words,
+            audioPlayerFactory: widget.audioPlayerFactory,
+          ),
+          VerbsScreen(
+            lessons: bundle.verbLessons,
+            documentLoader: widget.documentLoader,
+            audioPlayerFactory: widget.audioPlayerFactory,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPracticeWorkspace(LearningBundle bundle) {
+    return WorkspaceScreen(
+      title: 'Практика',
+      subtitle: 'Картки та письмо для повторення й активного пригадування.',
+      sections: const [
+        WorkspaceSection(label: 'Картки', icon: Icons.style_rounded),
+        WorkspaceSection(label: 'Письмо', icon: Icons.edit_rounded),
+      ],
+      selectedIndex: _practiceSection.index,
+      onSectionSelected: (index) {
+        _openPracticeSection(_PracticeSection.values[index]);
+      },
+      child: IndexedStack(
+        index: _practiceSection.index,
+        children: [
+          FlashcardsScreen(
+            words: bundle.words,
+            onWordProgressChanged: _handleWordProgressChanged,
+            initialDeckMode: _flashcardDeckMode,
+            deckRequestToken: _flashcardDeckRequestToken,
+          ),
+          WritingScreen(
+            words: bundle.words,
+            onWordProgressChanged: _handleWordProgressChanged,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMaterialsWorkspace(LearningBundle bundle) {
+    return WorkspaceScreen(
+      title: 'Матеріали',
+      subtitle: 'Довідник і тексти для читання в одному робочому просторі.',
+      sections: const [
+        WorkspaceSection(label: 'Довідник', icon: Icons.menu_book_rounded),
+        WorkspaceSection(label: 'Читання', icon: Icons.auto_stories_rounded),
+      ],
+      selectedIndex: _materialsSection.index,
+      onSectionSelected: (index) {
+        _openMaterialsSection(_MaterialsSection.values[index]);
+      },
+      child: IndexedStack(
+        index: _materialsSection.index,
+        children: [
+          GuideScreen(
+            lessons: bundle.guideLessons,
+            documentLoader: widget.documentLoader,
+            lessonStatuses: _guideLessonStatuses,
+            onStatusChanged: _handleGuideStatusChanged,
+          ),
+          ReadingScreen(
+            lessons: bundle.readingLessons,
+            documentLoader: widget.documentLoader,
+            lessonStatuses: _readingLessonStatuses,
+            onStatusChanged: _handleReadingStatusChanged,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMoreWorkspace(LearningBundle bundle) {
+    final shortcuts = [
+      WorkspaceShortcut(
+        title: 'Р“РѕР»РѕРІРЅР°',
+        subtitle:
+            'РџРѕРІРµСЂРЅСѓС‚РёСЃСЏ РґРѕ dashboard Р· СЂРµРєРѕРјРµРЅРґР°С†С–СЏРјРё С– РїСЂРѕРіСЂРµСЃРѕРј.',
+        icon: Icons.home_rounded,
+        accent: const Color(0xFF2B5D4F),
+        onTap: () => _selectArea(_RootArea.home.index),
+      ),
+      WorkspaceShortcut(
+        title: 'Р’С‡РёС‚Рё',
+        subtitle:
+            'РЎР»РѕРІР° Р№ РґС–С”СЃР»РѕРІР° РІ РѕРґРЅРѕРјСѓ СЂРѕР±РѕС‡РѕРјСѓ РїСЂРѕСЃС‚РѕСЂС–.',
+        icon: Icons.translate_rounded,
+        accent: const Color(0xFF0F766E),
+        onTap: () => _selectArea(_RootArea.learn.index),
+      ),
+      WorkspaceShortcut(
+        title: 'РџСЂР°РєС‚РёРєР°',
+        subtitle:
+            'РљР°СЂС‚РєРё Р№ РїРёСЃСЊРјРѕ РґР»СЏ Р°РєС‚РёРІРЅРѕРіРѕ С‚СЂРµРЅСѓРІР°РЅРЅСЏ.',
+        icon: Icons.style_rounded,
+        accent: const Color(0xFF8C3E9F),
+        onTap: () {
+          if (_preferWritingPractice) {
+            _openPracticeSection(_PracticeSection.writing);
+          } else {
+            _openFlashcards(_preferredFlashcardDeckMode);
+          }
+        },
+      ),
+      WorkspaceShortcut(
+        title: 'РњР°С‚РµСЂС–Р°Р»Рё',
+        subtitle:
+            'Р”РѕРІС–РґРЅРёРє С– С‡РёС‚Р°РЅРЅСЏ РґР»СЏ С‚РµРѕСЂС–С— С‚Р° РєРѕРЅС‚РµРєСЃС‚Сѓ.',
+        icon: Icons.menu_book_rounded,
+        accent: const Color(0xFFB45309),
+        onTap: () => _selectArea(_RootArea.materials.index),
+      ),
+    ];
+
+    return WorkspaceScreen(
+      title: 'Р©Рµ',
+      subtitle:
+          'РўСѓС‚ Р·С–Р±СЂР°РЅС– РґРѕРґР°С‚РєРѕРІС– С‚РѕС‡РєРё РІС…РѕРґСѓ С‚Р° РѕРіР»СЏРґРѕРІС– РµРєСЂР°РЅРё, СЏРєС– РЅРµ РІР°СЂС‚Рѕ С‚СЂРёРјР°С‚Рё РІ root navigation.',
+      sections: const [
+        WorkspaceSection(
+          label: 'РћРіР»СЏРґ',
+          icon: Icons.dashboard_customize_rounded,
+        ),
+        WorkspaceSection(label: 'РџСЂРѕРіСЂРµСЃ', icon: Icons.insights_rounded),
+        WorkspaceSection(
+          label: 'РќР°Р»Р°С€С‚СѓРІР°РЅРЅСЏ',
+          icon: Icons.tune_rounded,
+        ),
+      ],
+      selectedIndex: _moreSection.index,
+      onSectionSelected: (index) {
+        _openMoreSection(_MoreSection.values[index]);
+      },
+      child: IndexedStack(
+        index: _moreSection.index,
+        children: [
+          MoreOverviewScreen(shortcuts: shortcuts),
+          MoreProgressScreen(
+            bundle: bundle,
+            guideLessonStatuses: _guideLessonStatuses,
+            readingLessonStatuses: _readingLessonStatuses,
+            onOpenWords: () => _openLearnSection(_LearnSection.words),
+            onOpenFlashcards: _openFlashcards,
+            onOpenWriting: () => _openPracticeSection(_PracticeSection.writing),
+            onOpenGuide: () => _openMaterialsSection(_MaterialsSection.guide),
+            onOpenReading: () =>
+                _openMaterialsSection(_MaterialsSection.reading),
+          ),
+          MoreSettingsScreen(
+            autoHideBottomNavOnScroll: _autoHideBottomNavOnScroll,
+            onAutoHideBottomNavOnScrollChanged: _setAutoHideBottomNavOnScroll,
+            preferWritingPractice: _preferWritingPractice,
+            onPreferWritingPracticeChanged: _setPreferWritingPractice,
+            preferredFlashcardDeckMode: _preferredFlashcardDeckMode,
+            onPreferredFlashcardDeckModeChanged: _setPreferredFlashcardDeckMode,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ignore: unused_element
+  Widget _buildLegacyMoreWorkspaceUnused() {
+    return WorkspaceHubScreen(
+      title: 'Ще',
+      subtitle:
+          'Тут зібрані додаткові точки входу в застосунок, поки окремі налаштування й статистика ще не винесені в самостійні модулі.',
+      shortcuts: [
+        WorkspaceShortcut(
+          title: 'Головна',
+          subtitle: 'Повернутися до dashboard з рекомендаціями і прогресом.',
+          icon: Icons.home_rounded,
+          accent: const Color(0xFF2B5D4F),
+          onTap: () => _selectArea(_RootArea.home.index),
+        ),
+        WorkspaceShortcut(
+          title: 'Вчити',
+          subtitle: 'Слова й дієслова в одному робочому просторі.',
+          icon: Icons.translate_rounded,
+          accent: const Color(0xFF0F766E),
+          onTap: () => _selectArea(_RootArea.learn.index),
+        ),
+        WorkspaceShortcut(
+          title: 'Практика',
+          subtitle: 'Картки й письмо для активного тренування.',
+          icon: Icons.style_rounded,
+          accent: const Color(0xFF8C3E9F),
+          onTap: () => _selectArea(_RootArea.practice.index),
+        ),
+        WorkspaceShortcut(
+          title: 'Матеріали',
+          subtitle: 'Довідник і читання для теорії та контексту.',
+          icon: Icons.menu_book_rounded,
+          accent: const Color(0xFFB45309),
+          onTap: () => _selectArea(_RootArea.materials.index),
+        ),
+      ],
+    );
+    // ignore: dead_code
+    return PlaceholderWorkspaceScreen(
+      title: 'Ще',
+      subtitle:
+          'Тут з’являться налаштування, статистика та додаткові інструменти. Поки що це точка входу до головних зон застосунку.',
+      primaryAction: () => _selectArea(_RootArea.home.index),
+      primaryLabel: 'На головну',
+      secondaryAction: () => _selectArea(_RootArea.materials.index),
+      secondaryLabel: 'До матеріалів',
+    );
   }
 
   @override
@@ -406,49 +712,27 @@ class _AppShellScreenState extends State<AppShellScreen> {
                           : _collapsedBodyBottomInset,
                     ),
                     child: IndexedStack(
-                      index: _selectedIndex,
+                      index: _selectedArea.index,
                       children: [
                         HomeScreen(
                           bundle: bundle,
                           documentLoader: widget.documentLoader,
-                          onOpenWords: () => _selectTab(1),
+                          onOpenWords: () =>
+                              _openLearnSection(_LearnSection.words),
                           onOpenFlashcards: _openFlashcards,
-                          onOpenWriting: () => _selectTab(3),
-                          onOpenGuide: () => _selectTab(4),
-                          onOpenVerbs: () => _selectTab(5),
-                          onOpenReading: () => _selectTab(6),
+                          onOpenWriting: () =>
+                              _openPracticeSection(_PracticeSection.writing),
+                          onOpenGuide: () =>
+                              _openMaterialsSection(_MaterialsSection.guide),
+                          onOpenVerbs: () =>
+                              _openLearnSection(_LearnSection.verbs),
+                          onOpenReading: () =>
+                              _openMaterialsSection(_MaterialsSection.reading),
                         ),
-                        WordsScreen(
-                          words: bundle.words,
-                          audioPlayerFactory: widget.audioPlayerFactory,
-                        ),
-                        FlashcardsScreen(
-                          words: bundle.words,
-                          onWordProgressChanged: _handleWordProgressChanged,
-                          initialDeckMode: _flashcardDeckMode,
-                          deckRequestToken: _flashcardDeckRequestToken,
-                        ),
-                        WritingScreen(
-                          words: bundle.words,
-                          onWordProgressChanged: _handleWordProgressChanged,
-                        ),
-                        GuideScreen(
-                          lessons: bundle.guideLessons,
-                          documentLoader: widget.documentLoader,
-                          lessonStatuses: _guideLessonStatuses,
-                          onStatusChanged: _handleGuideStatusChanged,
-                        ),
-                        VerbsScreen(
-                          lessons: bundle.verbLessons,
-                          documentLoader: widget.documentLoader,
-                          audioPlayerFactory: widget.audioPlayerFactory,
-                        ),
-                        ReadingScreen(
-                          lessons: bundle.readingLessons,
-                          documentLoader: widget.documentLoader,
-                          lessonStatuses: _readingLessonStatuses,
-                          onStatusChanged: _handleReadingStatusChanged,
-                        ),
+                        _buildLearnWorkspace(bundle),
+                        _buildPracticeWorkspace(bundle),
+                        _buildMaterialsWorkspace(bundle),
+                        _buildMoreWorkspace(bundle),
                       ],
                     ),
                   ),
@@ -460,8 +744,8 @@ class _AppShellScreenState extends State<AppShellScreen> {
                     child: _AppShellBottomNavigation(
                       isVisible: _isBottomNavVisible,
                       duration: _bottomNavAnimationDuration,
-                      selectedIndex: _selectedIndex,
-                      onDestinationSelected: _selectTab,
+                      selectedIndex: _selectedArea.index,
+                      onDestinationSelected: _selectArea,
                       onRevealRequested: () => _setBottomNavVisibility(true),
                     ),
                   ),
@@ -469,49 +753,6 @@ class _AppShellScreenState extends State<AppShellScreen> {
               ],
             ),
           ),
-          /*
-          bottomNavigationBar: NavigationBar(
-            selectedIndex: _selectedIndex,
-            onDestinationSelected: _selectTab,
-            destinations: const [
-              NavigationDestination(
-                icon: Icon(Icons.home_outlined),
-                selectedIcon: Icon(Icons.home_rounded),
-                label: 'Головна',
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.translate_outlined),
-                selectedIcon: Icon(Icons.translate_rounded),
-                label: 'Слова',
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.style_outlined),
-                selectedIcon: Icon(Icons.style_rounded),
-                label: 'Картки',
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.edit_outlined),
-                selectedIcon: Icon(Icons.edit_rounded),
-                label: 'Письмо',
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.menu_book_outlined),
-                selectedIcon: Icon(Icons.menu_book_rounded),
-                label: 'Довідник',
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.play_lesson_outlined),
-                selectedIcon: Icon(Icons.play_lesson_rounded),
-                label: 'Дієслова',
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.auto_stories_outlined),
-                selectedIcon: Icon(Icons.auto_stories_rounded),
-                label: 'Читання',
-              ),
-            ],
-          ),
-          */
         );
       },
     );
@@ -543,11 +784,10 @@ class _AppShellBottomNavigation extends StatelessWidget {
         return FadeTransition(
           opacity: animation,
           child: SlideTransition(
-            position:
-                Tween<Offset>(
-                  begin: const Offset(0, 0.18),
-                  end: Offset.zero,
-                ).animate(animation),
+            position: Tween<Offset>(
+              begin: const Offset(0, 0.18),
+              end: Offset.zero,
+            ).animate(animation),
             child: child,
           ),
         );
@@ -588,34 +828,24 @@ class _ExpandedBottomNavigationBar extends StatelessWidget {
           label: 'Головна',
         ),
         NavigationDestination(
-          icon: Icon(Icons.translate_outlined),
-          selectedIcon: Icon(Icons.translate_rounded),
-          label: 'Слова',
+          icon: Icon(Icons.school_outlined),
+          selectedIcon: Icon(Icons.school_rounded),
+          label: 'Вчити',
         ),
         NavigationDestination(
-          icon: Icon(Icons.style_outlined),
-          selectedIcon: Icon(Icons.style_rounded),
-          label: 'Картки',
+          icon: Icon(Icons.bolt_outlined),
+          selectedIcon: Icon(Icons.bolt_rounded),
+          label: 'Практика',
         ),
         NavigationDestination(
-          icon: Icon(Icons.edit_outlined),
-          selectedIcon: Icon(Icons.edit_rounded),
-          label: 'Письмо',
+          icon: Icon(Icons.library_books_outlined),
+          selectedIcon: Icon(Icons.library_books_rounded),
+          label: 'Матеріали',
         ),
         NavigationDestination(
-          icon: Icon(Icons.menu_book_outlined),
-          selectedIcon: Icon(Icons.menu_book_rounded),
-          label: 'Довідник',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.play_lesson_outlined),
-          selectedIcon: Icon(Icons.play_lesson_rounded),
-          label: 'Дієслова',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.auto_stories_outlined),
-          selectedIcon: Icon(Icons.auto_stories_rounded),
-          label: 'Читання',
+          icon: Icon(Icons.more_horiz_rounded),
+          selectedIcon: Icon(Icons.more_horiz_rounded),
+          label: 'Ще',
         ),
       ],
     );
@@ -623,10 +853,7 @@ class _ExpandedBottomNavigationBar extends StatelessWidget {
 }
 
 class _CollapsedBottomNavigationHandle extends StatelessWidget {
-  const _CollapsedBottomNavigationHandle({
-    super.key,
-    required this.onTap,
-  });
+  const _CollapsedBottomNavigationHandle({super.key, required this.onTap});
 
   final VoidCallback onTap;
 

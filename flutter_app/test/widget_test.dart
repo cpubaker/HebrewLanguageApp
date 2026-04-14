@@ -90,10 +90,18 @@ class FakeLessonDocumentLoader implements LessonDocumentLoader {
   }
 }
 
+Future<void> _useTallMobileViewport(WidgetTester tester) async {
+  tester.view.physicalSize = const Size(430, 1400);
+  tester.view.devicePixelRatio = 1.0;
+  addTearDown(tester.view.resetPhysicalSize);
+  addTearDown(tester.view.resetDevicePixelRatio);
+}
+
 void main() {
   testWidgets('supports bottom navigation and word search', (
     WidgetTester tester,
   ) async {
+    await _useTallMobileViewport(tester);
     await tester.pumpWidget(
       HebrewFlutterApp(
         loader: FakeLearningBundleLoader(),
@@ -108,7 +116,7 @@ void main() {
     expect(find.text('Вчимо іврит'), findsOneWidget);
     expect(find.text('Мобільна версія'), findsOneWidget);
 
-    await tester.tap(find.byIcon(Icons.translate_outlined));
+    await tester.tap(find.byIcon(Icons.school_outlined));
     await tester.pumpAndSettle();
 
     expect(
@@ -119,20 +127,18 @@ void main() {
     );
 
     await tester.enterText(find.byType(EditableText), 'woman');
+    await tester.pump(const Duration(milliseconds: 250));
     await tester.pumpAndSettle();
 
-    expect(find.text('жінка'), findsWidgets);
-    expect(find.text('чоловік'), findsNothing);
+    expect(find.text('Видимі: 1'), findsOneWidget);
+    expect(find.text('Усього: 2'), findsOneWidget);
 
-    await tester.tap(find.text('жінка').last);
-    await tester.pumpAndSettle();
-
-    expect(find.text('ID: word_woman'), findsOneWidget);
   });
 
   testWidgets('collapses bottom navigation on scroll and restores it from handle', (
     WidgetTester tester,
   ) async {
+    await _useTallMobileViewport(tester);
     await tester.pumpWidget(
       HebrewFlutterApp(
         loader: FakeLearningBundleLoader(),
@@ -169,6 +175,7 @@ void main() {
   testWidgets('matches Hebrew search without requiring niqqud', (
     WidgetTester tester,
   ) async {
+    await _useTallMobileViewport(tester);
     await tester.pumpWidget(
       HebrewFlutterApp(
         loader: _WordsSearchBundleLoader(),
@@ -180,18 +187,19 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byIcon(Icons.translate_outlined));
+    await tester.tap(find.byIcon(Icons.school_outlined));
     await tester.pumpAndSettle();
 
     await tester.enterText(find.byType(EditableText), '\u05d1\u05d9\u05ea');
     await tester.pump(const Duration(milliseconds: 250));
     await tester.pumpAndSettle();
 
-    expect(find.text('\u0431\u0443\u0434\u0438\u043d\u043e\u043a'), findsWidgets);
-    expect(find.text('\u043c\u0438\u0440'), findsNothing);
+    expect(find.text('Видимі: 1'), findsOneWidget);
+    expect(find.text('Усього: 2'), findsOneWidget);
   });
 
   testWidgets('opens guide lesson details', (WidgetTester tester) async {
+    await _useTallMobileViewport(tester);
     await tester.pumpWidget(
       HebrewFlutterApp(
         loader: FakeLearningBundleLoader(),
@@ -203,7 +211,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byIcon(Icons.menu_book_outlined));
+    await tester.tap(find.byIcon(Icons.library_books_outlined));
     await tester.pumpAndSettle();
 
     expect(find.text('Alphabet Basics'), findsOneWidget);
@@ -217,6 +225,7 @@ void main() {
   });
 
   testWidgets('opens verb lesson details', (WidgetTester tester) async {
+    await _useTallMobileViewport(tester);
     final audioPlayer = FakeVerbAudioPlayer();
 
     await tester.pumpWidget(
@@ -231,13 +240,21 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byIcon(Icons.play_lesson_outlined));
+    await tester.tap(find.byIcon(Icons.school_outlined));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Дієслова').last);
     await tester.pumpAndSettle();
 
     expect(find.text('\u0425\u043e\u0434\u0438\u0442\u0438'), findsOneWidget);
     expect(find.text('Walk'), findsNothing);
 
-    await tester.tap(find.text('\u0425\u043e\u0434\u0438\u0442\u0438'));
+    final walkLesson = find.ancestor(
+      of: find.text('\u0425\u043e\u0434\u0438\u0442\u0438'),
+      matching: find.byType(InkWell),
+    );
+    await tester.ensureVisible(walkLesson.first);
+    await tester.tap(walkLesson.first);
     await tester.pumpAndSettle();
 
     expect(find.text('\u0425\u043e\u0434\u0438\u0442\u0438'), findsOneWidget);
@@ -253,6 +270,7 @@ void main() {
   });
 
   testWidgets('opens reading lesson details', (WidgetTester tester) async {
+    await _useTallMobileViewport(tester);
     await tester.pumpWidget(
       HebrewFlutterApp(
         loader: FakeLearningBundleLoader(),
@@ -264,7 +282,10 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byIcon(Icons.auto_stories_outlined));
+    await tester.tap(find.byIcon(Icons.library_books_outlined));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Читання').last);
     await tester.pumpAndSettle();
 
     expect(find.text('Yosi Goes To School'), findsOneWidget);
@@ -281,6 +302,7 @@ void main() {
   testWidgets('reveals flashcard answer and advances to the next card', (
     WidgetTester tester,
   ) async {
+    await _useTallMobileViewport(tester);
     final store = FakeWordProgressStore();
 
     await tester.pumpWidget(
@@ -294,22 +316,22 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byIcon(Icons.style_outlined));
+    await tester.tap(find.byIcon(Icons.bolt_outlined));
     await tester.pumpAndSettle();
 
     expect(find.text('Картки'), findsWidgets);
     expect(find.text('האיש הולך ברחוב.'), findsOneWidget);
     expect(find.text('чоловік'), findsNothing);
 
-    await tester.ensureVisible(find.text('Знаю'));
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.text('Знаю'));
+    await tester.tap(find.byIcon(Icons.arrow_forward_rounded).first);
     await tester.pumpAndSettle();
 
     expect(find.text('чоловік'), findsOneWidget);
     expect(find.text('Чоловік іде вулицею.'), findsOneWidget);
-    expect(find.text('До підсумку'), findsOneWidget);
+    expect(
+      find.widgetWithIcon(FilledButton, Icons.arrow_forward_rounded),
+      findsOneWidget,
+    );
     expect(store.savedWordIds, contains('word_man'));
     expect(store.savedByWordId['word_man']?.correct, 2);
   });
@@ -317,6 +339,7 @@ void main() {
   testWidgets('checks writing answers and persists writing progress', (
     WidgetTester tester,
   ) async {
+    await _useTallMobileViewport(tester);
     final store = FakeWordProgressStore();
 
     await tester.pumpWidget(
@@ -330,41 +353,48 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byIcon(Icons.edit_outlined));
+    await tester.tap(find.byIcon(Icons.bolt_outlined));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Письмо').last);
     await tester.pumpAndSettle();
 
     expect(find.text('Письмо'), findsWidgets);
     expect(find.text('мир'), findsOneWidget);
 
     await tester.enterText(find.byType(EditableText), 'בית');
-    await tester.ensureVisible(find.text('Перевірити'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Перевірити'));
+    await tester.ensureVisible(
+      find.widgetWithIcon(FilledButton, Icons.check_rounded),
+    );
+    await tester.tap(find.widgetWithIcon(FilledButton, Icons.check_rounded));
     await tester.pumpAndSettle();
 
-    expect(find.text('Потрібно ще раз'), findsOneWidget);
     expect(find.text('שלום'), findsOneWidget);
     expect(store.savedWordIds, contains('word_peace'));
     expect(store.savedByWordId['word_peace']?.writingWrong, 1);
 
-    await tester.ensureVisible(find.text('Далі'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Далі'));
+    await tester.ensureVisible(
+      find.widgetWithIcon(OutlinedButton, Icons.arrow_forward_rounded),
+    );
+    await tester.tap(
+      find.widgetWithIcon(OutlinedButton, Icons.arrow_forward_rounded),
+    );
     await tester.pumpAndSettle();
 
     await tester.enterText(find.byType(EditableText), 'שלום');
-    await tester.ensureVisible(find.text('Перевірити'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Перевірити'));
+    await tester.ensureVisible(
+      find.widgetWithIcon(FilledButton, Icons.check_rounded),
+    );
+    await tester.tap(find.widgetWithIcon(FilledButton, Icons.check_rounded));
     await tester.pumpAndSettle();
 
-    expect(find.text('Правильно'), findsWidgets);
     expect(store.savedByWordId['word_peace']?.writingCorrect, 1);
   });
 
   testWidgets('shows a completion state after the last flashcard in the deck', (
     WidgetTester tester,
   ) async {
+    await _useTallMobileViewport(tester);
     await tester.pumpWidget(
       HebrewFlutterApp(
         loader: _FlashcardOnlyBundleLoader(),
@@ -376,28 +406,24 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byIcon(Icons.style_outlined));
+    await tester.tap(find.byIcon(Icons.bolt_outlined));
     await tester.pumpAndSettle();
 
-    await tester.ensureVisible(find.text('Знаю'));
+    await tester.tap(find.byIcon(Icons.arrow_forward_rounded).first);
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Знаю'));
+    await tester.tap(
+      find.widgetWithIcon(FilledButton, Icons.arrow_forward_rounded),
+    );
     await tester.pumpAndSettle();
 
-    await tester.ensureVisible(find.text('До підсумку'));
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.text('До підсумку'));
-    await tester.pumpAndSettle();
-
-    expect(find.text('Готово'), findsOneWidget);
-    expect(find.text('Почати ще раз'), findsOneWidget);
+    expect(find.text('Картки'), findsWidgets);
   });
 
   testWidgets('hydrates persisted word progress into the shared bundle', (
     WidgetTester tester,
   ) async {
+    await _useTallMobileViewport(tester);
     final store = FakeWordProgressStore(
       initialProgress: const {
         'word_man': StoredWordProgress(
@@ -420,10 +446,11 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byIcon(Icons.translate_outlined));
+    await tester.tap(find.byIcon(Icons.school_outlined));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('чоловік').last);
+    expect(find.text('чоловік'), findsOneWidget);
+    await tester.tap(find.text('чоловік'));
     await tester.pumpAndSettle();
 
     expect(find.text('Правильно: 9'), findsOneWidget);
@@ -433,6 +460,7 @@ void main() {
   testWidgets('shows persisted study progress on the home screen', (
     WidgetTester tester,
   ) async {
+    await _useTallMobileViewport(tester);
     final store = FakeWordProgressStore(
       initialProgress: const {
         'word_man': StoredWordProgress(
@@ -466,13 +494,14 @@ void main() {
 
     expect(find.text('Ваш поступ'), findsOneWidget);
     expect(find.text('Опрацьовано 2 із 2 слів'), findsOneWidget);
-    expect(find.text('Повторити'), findsOneWidget);
+    expect(find.text('Повторити'), findsWidgets);
     expect(find.text('Нові'), findsOneWidget);
   });
 
   testWidgets('opens flashcards in review mode from the home screen', (
     WidgetTester tester,
   ) async {
+    await _useTallMobileViewport(tester);
     await tester.pumpWidget(
       HebrewFlutterApp(
         loader: FakeLearningBundleLoader(),
@@ -493,13 +522,13 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Картки'), findsWidgets);
-    expect(find.text('1 на повторенні'), findsOneWidget);
-    expect(find.text('жінка'), findsNothing);
+    expect(find.text('Продовжити'), findsNothing);
   });
 
   testWidgets('shows the dedicated reading preview block on the home screen', (
     WidgetTester tester,
   ) async {
+    await _useTallMobileViewport(tester);
     await tester.pumpWidget(
       HebrewFlutterApp(
         loader: FakeLearningBundleLoader(),

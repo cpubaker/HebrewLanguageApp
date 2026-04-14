@@ -6,6 +6,8 @@ import '../models/guide_lesson_status.dart';
 import '../models/learning_bundle.dart';
 import '../models/lesson_document.dart';
 import '../services/lesson_document_loader.dart';
+import '../theme/app_theme.dart';
+import 'widgets/app_section_card.dart';
 import 'widgets/markdown_lesson_body.dart';
 
 class GuideScreen extends StatefulWidget {
@@ -365,6 +367,7 @@ class _GuideScreenState extends State<GuideScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
     final readCount = widget.lessons
         .where(
           (lesson) => _statusFor(lesson.assetPath) == GuideLessonStatus.read,
@@ -382,7 +385,7 @@ class _GuideScreenState extends State<GuideScreen> {
       children: [
         ListView(
           controller: _scrollController,
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 108),
+          padding: tokens.pagePadding.copyWith(bottom: 108),
           children: [
             Text(
               'Довідник',
@@ -391,28 +394,30 @@ class _GuideScreenState extends State<GuideScreen> {
               ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
             ),
             const SizedBox(height: 14),
-            _GuideSearchCard(
-              totalCount: widget.lessons.length,
-              readCount: readCount,
-              visibleCount: filteredLessons.length,
-              query: _query,
-              selectedSectionLabels: selectedSectionLabels,
-              isSearchVisible: _searchVisible,
-              isLoadingLessonDocuments: _isLoadingLessonDocuments,
-              searchController: _searchController,
-              searchFocusNode: _searchFocusNode,
-              onToggleSearch: _toggleSearchVisibility,
-              onOpenSectionPicker: availableSections.isEmpty
-                  ? null
-                  : () => _showSectionPicker(context, availableSections),
-              onQueryChanged: (value) {
-                setState(() {
-                  _query = value;
-                  if (value.trim().isNotEmpty) {
-                    _searchVisible = true;
-                  }
-                });
-              },
+            AppSectionCard(
+              child: _GuideSearchCard(
+                totalCount: widget.lessons.length,
+                readCount: readCount,
+                visibleCount: filteredLessons.length,
+                query: _query,
+                selectedSectionLabels: selectedSectionLabels,
+                isSearchVisible: _searchVisible,
+                isLoadingLessonDocuments: _isLoadingLessonDocuments,
+                searchController: _searchController,
+                searchFocusNode: _searchFocusNode,
+                onToggleSearch: _toggleSearchVisibility,
+                onOpenSectionPicker: availableSections.isEmpty
+                    ? null
+                    : () => _showSectionPicker(context, availableSections),
+                onQueryChanged: (value) {
+                  setState(() {
+                    _query = value;
+                    if (value.trim().isNotEmpty) {
+                      _searchVisible = true;
+                    }
+                  });
+                },
+              ),
             ),
             const SizedBox(height: 18),
             if (!hasResults)
@@ -1767,12 +1772,8 @@ class _EmptyGuideSearchState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AppSectionCard(
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-      ),
       child: Column(
         children: [
           const Icon(
