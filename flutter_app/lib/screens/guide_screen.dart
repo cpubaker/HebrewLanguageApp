@@ -6,6 +6,7 @@ import '../models/guide_lesson_status.dart';
 import '../models/learning_bundle.dart';
 import '../models/lesson_document.dart';
 import '../services/lesson_document_loader.dart';
+import '../services/progress_snapshot.dart';
 import '../theme/app_theme.dart';
 import 'widgets/app_section_card.dart';
 import 'widgets/markdown_lesson_body.dart';
@@ -368,11 +369,10 @@ class _GuideScreenState extends State<GuideScreen> {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
-    final readCount = widget.lessons
-        .where(
-          (lesson) => _statusFor(lesson.assetPath) == GuideLessonStatus.read,
-        )
-        .length;
+    final progress = LessonProgressSnapshot.fromLessons(
+      lessons: widget.lessons,
+      lessonStatuses: widget.lessonStatuses,
+    );
     final filteredLessons = _filteredLessons;
     final hasResults = filteredLessons.isNotEmpty;
     final availableSections = _availableSections;
@@ -397,7 +397,7 @@ class _GuideScreenState extends State<GuideScreen> {
             AppSectionCard(
               child: _GuideSearchCard(
                 totalCount: widget.lessons.length,
-                readCount: readCount,
+                completedLabel: progress.completedLabel('тем'),
                 visibleCount: filteredLessons.length,
                 query: _query,
                 selectedSectionLabels: selectedSectionLabels,
@@ -488,17 +488,6 @@ class _GuideScreenState extends State<GuideScreen> {
         ),
       ],
     );
-  }
-}
-
-GuideLessonStatus _nextGuideLessonStatus(GuideLessonStatus status) {
-  switch (status) {
-    case GuideLessonStatus.unread:
-      return GuideLessonStatus.studying;
-    case GuideLessonStatus.studying:
-      return GuideLessonStatus.read;
-    case GuideLessonStatus.read:
-      return GuideLessonStatus.unread;
   }
 }
 
@@ -879,7 +868,7 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
                           _GuideStatusToggleButton(
                             status: _status,
                             onPressed: () {
-                              _updateStatus(_nextGuideLessonStatus(_status));
+                              _updateStatus(nextLessonProgressStatus(_status));
                             },
                             foregroundColor: Colors.white,
                             backgroundColor: Colors.white.withValues(
@@ -993,7 +982,7 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
 class _GuideSearchCard extends StatelessWidget {
   const _GuideSearchCard({
     required this.totalCount,
-    required this.readCount,
+    required this.completedLabel,
     required this.visibleCount,
     required this.query,
     required this.selectedSectionLabels,
@@ -1007,7 +996,7 @@ class _GuideSearchCard extends StatelessWidget {
   });
 
   final int totalCount;
-  final int readCount;
+  final String completedLabel;
   final int visibleCount;
   final String query;
   final List<String> selectedSectionLabels;
@@ -1026,6 +1015,9 @@ class _GuideSearchCard extends StatelessWidget {
     final title = hasQuery || hasSectionFilter
         ? 'Знайдено: $visibleCount із $totalCount'
         : 'Тем: $totalCount';
+    final readCount =
+        int.tryParse(RegExp(r'\d+').firstMatch(completedLabel)?.group(0) ?? '') ??
+        0;
     final subtitle = !hasSectionFilter
         ? 'Прочитано $readCount із $totalCount тем'
         : selectedSectionLabels.length == 1
@@ -1436,7 +1428,7 @@ class _GuideLessonCard extends StatelessWidget {
                     status: status,
                     compact: true,
                     onPressed: () {
-                      onStatusSelected(_nextGuideLessonStatus(status));
+                      onStatusSelected(nextLessonProgressStatus(status));
                     },
                   ),
                   const SizedBox(height: 18),

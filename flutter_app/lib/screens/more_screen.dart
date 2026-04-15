@@ -61,7 +61,7 @@ class MoreOverviewScreen extends StatelessWidget {
               const AppPageHeader(
                 title: 'Що є в цій зоні',
                 subtitle:
-                    'Розділ “Ще” збирає службові та оглядові екрани, які не повинні перевантажувати нижню навігацію.',
+                    'Розділ «Ще» збирає службові та оглядові екрани, які не повинні перевантажувати нижню навігацію.',
               ),
               const SizedBox(height: 14),
               AppActionWrap(
@@ -116,13 +116,13 @@ class MoreProgressScreen extends StatelessWidget {
     final study = StudyProgressSnapshot.fromWords(bundle.words);
     final flashcards = FlashcardFocusSnapshot.fromWords(bundle.words);
     final writing = WritingProgressSnapshot.fromWords(bundle.words);
-    final guide = LessonProgressSnapshot.fromStatuses(
-      total: bundle.guideLessons.length,
-      statuses: guideLessonStatuses.values,
+    final guide = LessonProgressSnapshot.fromLessons(
+      lessons: bundle.guideLessons,
+      lessonStatuses: guideLessonStatuses,
     );
-    final reading = LessonProgressSnapshot.fromStatuses(
-      total: bundle.readingLessons.length,
-      statuses: readingLessonStatuses.values,
+    final reading = LessonProgressSnapshot.fromLessons(
+      lessons: bundle.readingLessons,
+      lessonStatuses: readingLessonStatuses,
     );
 
     return ListView(
@@ -371,7 +371,7 @@ class MoreSettingsScreen extends StatelessWidget {
               const AppPageHeader(
                 title: 'Налаштування',
                 subtitle:
-                    'Локальні preferences для поточної сесії. Тут можна керувати поведінкою shell і точками входу в практику.',
+                    'Локальні налаштування для поточної сесії. Тут можна керувати поведінкою shell і точками входу в практику.',
               ),
               const SizedBox(height: 18),
               _SettingsSwitchTile(
@@ -390,7 +390,7 @@ class MoreSettingsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 6),
               Text(
-                'Це впливає на shortcut “Практика” у розділі “Ще”.',
+                'Це впливає на shortcut «Практика» у розділі «Ще».',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: const Color(0xFF6C665D),
                   height: 1.45,
@@ -420,7 +420,7 @@ class MoreSettingsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 6),
               Text(
-                'Використовується, коли shortcut “Практика” відкриває саме картки.',
+                'Використовується, коли shortcut «Практика» відкриває саме картки.',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: const Color(0xFF6C665D),
                   height: 1.45,

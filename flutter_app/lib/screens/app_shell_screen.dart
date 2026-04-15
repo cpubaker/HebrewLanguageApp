@@ -545,25 +545,25 @@ class _AppShellScreenState extends State<AppShellScreen> {
   Widget _buildMoreWorkspace(LearningBundle bundle) {
     final shortcuts = [
       WorkspaceShortcut(
-        title: 'Р“РѕР»РѕРІРЅР°',
+        title: 'Головна',
         subtitle:
-            'РџРѕРІРµСЂРЅСѓС‚РёСЃСЏ РґРѕ dashboard Р· СЂРµРєРѕРјРµРЅРґР°С†С–СЏРјРё С– РїСЂРѕРіСЂРµСЃРѕРј.',
+            'Повернутися до dashboard з рекомендаціями і прогресом.',
         icon: Icons.home_rounded,
         accent: const Color(0xFF2B5D4F),
         onTap: () => _selectArea(_RootArea.home.index),
       ),
       WorkspaceShortcut(
-        title: 'Р’С‡РёС‚Рё',
+        title: 'Вчити',
         subtitle:
-            'РЎР»РѕРІР° Р№ РґС–С”СЃР»РѕРІР° РІ РѕРґРЅРѕРјСѓ СЂРѕР±РѕС‡РѕРјСѓ РїСЂРѕСЃС‚РѕСЂС–.',
+            'Слова й дієслова в одному робочому просторі.',
         icon: Icons.translate_rounded,
         accent: const Color(0xFF0F766E),
         onTap: () => _selectArea(_RootArea.learn.index),
       ),
       WorkspaceShortcut(
-        title: 'РџСЂР°РєС‚РёРєР°',
+        title: 'Практика',
         subtitle:
-            'РљР°СЂС‚РєРё Р№ РїРёСЃСЊРјРѕ РґР»СЏ Р°РєС‚РёРІРЅРѕРіРѕ С‚СЂРµРЅСѓРІР°РЅРЅСЏ.',
+            'Картки й письмо для активного тренування.',
         icon: Icons.style_rounded,
         accent: const Color(0xFF8C3E9F),
         onTap: () {
@@ -575,9 +575,9 @@ class _AppShellScreenState extends State<AppShellScreen> {
         },
       ),
       WorkspaceShortcut(
-        title: 'РњР°С‚РµСЂС–Р°Р»Рё',
+        title: 'Матеріали',
         subtitle:
-            'Р”РѕРІС–РґРЅРёРє С– С‡РёС‚Р°РЅРЅСЏ РґР»СЏ С‚РµРѕСЂС–С— С‚Р° РєРѕРЅС‚РµРєСЃС‚Сѓ.',
+            'Довідник і читання для теорії та контексту.',
         icon: Icons.menu_book_rounded,
         accent: const Color(0xFFB45309),
         onTap: () => _selectArea(_RootArea.materials.index),
@@ -585,17 +585,17 @@ class _AppShellScreenState extends State<AppShellScreen> {
     ];
 
     return WorkspaceScreen(
-      title: 'Р©Рµ',
+      title: 'Ще',
       subtitle:
-          'РўСѓС‚ Р·С–Р±СЂР°РЅС– РґРѕРґР°С‚РєРѕРІС– С‚РѕС‡РєРё РІС…РѕРґСѓ С‚Р° РѕРіР»СЏРґРѕРІС– РµРєСЂР°РЅРё, СЏРєС– РЅРµ РІР°СЂС‚Рѕ С‚СЂРёРјР°С‚Рё РІ root navigation.',
+          'Тут зібрані додаткові точки входу та оглядові екрани, які не варто тримати в root navigation.',
       sections: const [
         WorkspaceSection(
-          label: 'РћРіР»СЏРґ',
+          label: 'Огляд',
           icon: Icons.dashboard_customize_rounded,
         ),
-        WorkspaceSection(label: 'РџСЂРѕРіСЂРµСЃ', icon: Icons.insights_rounded),
+        WorkspaceSection(label: 'Прогрес', icon: Icons.insights_rounded),
         WorkspaceSection(
-          label: 'РќР°Р»Р°С€С‚СѓРІР°РЅРЅСЏ',
+          label: 'Налаштування',
           icon: Icons.tune_rounded,
         ),
       ],
@@ -630,56 +630,6 @@ class _AppShellScreenState extends State<AppShellScreen> {
       ),
     );
   }
-
-  // ignore: unused_element
-  Widget _buildLegacyMoreWorkspaceUnused() {
-    return WorkspaceHubScreen(
-      title: 'Ще',
-      subtitle:
-          'Тут зібрані додаткові точки входу в застосунок, поки окремі налаштування й статистика ще не винесені в самостійні модулі.',
-      shortcuts: [
-        WorkspaceShortcut(
-          title: 'Головна',
-          subtitle: 'Повернутися до dashboard з рекомендаціями і прогресом.',
-          icon: Icons.home_rounded,
-          accent: const Color(0xFF2B5D4F),
-          onTap: () => _selectArea(_RootArea.home.index),
-        ),
-        WorkspaceShortcut(
-          title: 'Вчити',
-          subtitle: 'Слова й дієслова в одному робочому просторі.',
-          icon: Icons.translate_rounded,
-          accent: const Color(0xFF0F766E),
-          onTap: () => _selectArea(_RootArea.learn.index),
-        ),
-        WorkspaceShortcut(
-          title: 'Практика',
-          subtitle: 'Картки й письмо для активного тренування.',
-          icon: Icons.style_rounded,
-          accent: const Color(0xFF8C3E9F),
-          onTap: () => _selectArea(_RootArea.practice.index),
-        ),
-        WorkspaceShortcut(
-          title: 'Матеріали',
-          subtitle: 'Довідник і читання для теорії та контексту.',
-          icon: Icons.menu_book_rounded,
-          accent: const Color(0xFFB45309),
-          onTap: () => _selectArea(_RootArea.materials.index),
-        ),
-      ],
-    );
-    // ignore: dead_code
-    return PlaceholderWorkspaceScreen(
-      title: 'Ще',
-      subtitle:
-          'Тут з’являться налаштування, статистика та додаткові інструменти. Поки що це точка входу до головних зон застосунку.',
-      primaryAction: () => _selectArea(_RootArea.home.index),
-      primaryLabel: 'На головну',
-      secondaryAction: () => _selectArea(_RootArea.materials.index),
-      secondaryLabel: 'До матеріалів',
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<LearningBundle>(

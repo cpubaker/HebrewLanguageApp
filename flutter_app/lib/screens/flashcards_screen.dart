@@ -81,12 +81,9 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
   }
 
   void _toggleReviewDeck() {
-    final reviewWordCount = widget.words
-        .where(
-          (word) =>
-              classifyWordLearningState(word) == WordLearningState.needsReview,
-        )
-        .length;
+    final reviewWordCount = FlashcardFocusSnapshot.fromWords(
+      widget.words,
+    ).needsReview;
 
     if (_session.deckMode == FlashcardDeckMode.needsReview) {
       _changeDeckMode(FlashcardDeckMode.allWords);
@@ -148,16 +145,10 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
     final stats = _session.currentWordStats();
     final hasAnswered = _currentAnswer != null;
     final isKnownAnswer = _currentAnswer?.known == true;
-    final totalWordCount = widget.words.length;
-    final contextWordCount = widget.words
-        .where((word) => word.contexts.isNotEmpty)
-        .length;
-    final reviewWordCount = widget.words
-        .where(
-          (word) =>
-              classifyWordLearningState(word) == WordLearningState.needsReview,
-        )
-        .length;
+    final focus = FlashcardFocusSnapshot.fromWords(widget.words);
+    final totalWordCount = focus.total;
+    final contextWordCount = focus.withContexts;
+    final reviewWordCount = focus.needsReview;
 
     return ListView(
       padding: tokens.pagePadding.copyWith(bottom: 32),

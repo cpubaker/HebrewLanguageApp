@@ -6,6 +6,7 @@ import '../models/guide_lesson_status.dart';
 import '../models/learning_bundle.dart';
 import '../models/lesson_document.dart';
 import '../services/lesson_document_loader.dart';
+import '../services/progress_snapshot.dart';
 import '../theme/app_theme.dart';
 import 'reading_lesson_catalog.dart';
 import 'widgets/app_section_card.dart';
@@ -188,6 +189,10 @@ class _ReadingScreenState extends State<ReadingScreen> {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
+    final progress = LessonProgressSnapshot.fromLessons(
+      lessons: widget.lessons,
+      lessonStatuses: widget.lessonStatuses,
+    );
     final lessonGroups = buildReadingLessonGroups(widget.lessons);
     final visibleGroups = _selectedLevelKeys.isEmpty
         ? lessonGroups
@@ -255,7 +260,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            '\u041f\u0440\u043e\u0447\u0438\u0442\u0430\u043d\u043e ${widget.lessons.where((lesson) => _statusFor(lesson.assetPath) == GuideLessonStatus.read).length} \u0456\u0437 ${widget.lessons.length}',
+                            progress.completedLabel('уроків'),
                             style: Theme.of(context).textTheme.bodyMedium
                                 ?.copyWith(
                                   color: const Color(0xFF5F5A52),
@@ -398,17 +403,6 @@ class _ReadingScreenState extends State<ReadingScreen> {
         );
       },
     );
-  }
-}
-
-GuideLessonStatus _nextReadingLessonStatus(GuideLessonStatus status) {
-  switch (status) {
-    case GuideLessonStatus.unread:
-      return GuideLessonStatus.studying;
-    case GuideLessonStatus.studying:
-      return GuideLessonStatus.read;
-    case GuideLessonStatus.read:
-      return GuideLessonStatus.unread;
   }
 }
 
@@ -565,7 +559,7 @@ class _ReadingDetailScreenState extends State<ReadingDetailScreen> {
                       _ReadingStatusToggleButton(
                         status: _status,
                         onPressed: () {
-                          _updateStatus(_nextReadingLessonStatus(_status));
+                          _updateStatus(nextLessonProgressStatus(_status));
                         },
                         foregroundColor: Colors.white,
                         backgroundColor: Colors.white.withValues(alpha: 0.18),
@@ -713,8 +707,8 @@ class _ReadingLessonCard extends StatelessWidget {
               _ReadingStatusToggleButton(
                 status: status,
                 compact: true,
-                onPressed: () {
-                  onStatusSelected(_nextReadingLessonStatus(status));
+                  onPressed: () {
+                  onStatusSelected(nextLessonProgressStatus(status));
                 },
               ),
               const SizedBox(width: 4),

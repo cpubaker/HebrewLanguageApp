@@ -1,4 +1,5 @@
 import '../models/guide_lesson_status.dart';
+import '../models/learning_bundle.dart';
 import '../models/learning_word.dart';
 
 enum WordLearningState { unseen, known, needsReview }
@@ -14,6 +15,17 @@ WordLearningState classifyWordLearningState(LearningWord word) {
   }
 
   return WordLearningState.known;
+}
+
+GuideLessonStatus nextLessonProgressStatus(GuideLessonStatus status) {
+  switch (status) {
+    case GuideLessonStatus.unread:
+      return GuideLessonStatus.studying;
+    case GuideLessonStatus.studying:
+      return GuideLessonStatus.read;
+    case GuideLessonStatus.read:
+      return GuideLessonStatus.unread;
+  }
 }
 
 class FlashcardFocusSnapshot {
@@ -198,10 +210,25 @@ class LessonProgressSnapshot {
     );
   }
 
+  factory LessonProgressSnapshot.fromLessons({
+    required Iterable<LessonEntry> lessons,
+    required Map<String, GuideLessonStatus> lessonStatuses,
+  }) {
+    final lessonList = lessons.toList(growable: false);
+    return LessonProgressSnapshot.fromStatuses(
+      total: lessonList.length,
+      statuses: lessonList.map(
+        (lesson) => lessonStatuses[lesson.assetPath] ?? GuideLessonStatus.unread,
+      ),
+    );
+  }
+
   final int total;
   final int read;
   final int studying;
   final int unread;
 
   double get completionRatio => total == 0 ? 0 : read / total;
+
+  String completedLabel(String noun) => 'Прочитано $read із $total $noun';
 }

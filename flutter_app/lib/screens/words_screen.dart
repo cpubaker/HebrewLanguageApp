@@ -282,17 +282,12 @@ class _WordsScreenState extends State<WordsScreen> {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
+    final progress = StudyProgressSnapshot.fromWords(widget.words);
     final filterSummaries = <_WordsFilter, int>{
-      _WordsFilter.all: _indexedWords.length,
-      _WordsFilter.newWords: _indexedWords
-          .where((word) => _matchesFilter(word.word, _WordsFilter.newWords))
-          .length,
-      _WordsFilter.learned: _indexedWords
-          .where((word) => _matchesFilter(word.word, _WordsFilter.learned))
-          .length,
-      _WordsFilter.review: _indexedWords
-          .where((word) => _matchesFilter(word.word, _WordsFilter.review))
-          .length,
+      _WordsFilter.all: progress.total,
+      _WordsFilter.newWords: progress.unseen,
+      _WordsFilter.learned: progress.known,
+      _WordsFilter.review: progress.needsReview,
     };
 
     return Stack(
