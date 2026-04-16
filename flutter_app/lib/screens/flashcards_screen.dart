@@ -208,7 +208,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                   children: [
                     Expanded(
                       child: PracticeStatPill(
-                        label: 'РџСЂР°РІРёР»СЊРЅРѕ',
+                        label: 'Правильно',
                         value: stats.correct,
                         icon: Icons.check_rounded,
                         accent: const Color(0xFF0F766E),
@@ -217,7 +217,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                     const SizedBox(width: 12),
                     Expanded(
                       child: PracticeStatPill(
-                        label: 'РџРѕРјРёР»РєРё',
+                        label: 'Помилки',
                         value: stats.wrong,
                         icon: Icons.close_rounded,
                         accent: const Color(0xFFB91C1C),
@@ -232,13 +232,13 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                     icon: const Icon(Icons.arrow_forward_rounded),
                     label: Text(
                       _session.seenCount == _session.wordCount
-                          ? 'Р”Рѕ РїС–РґСЃСѓРјРєСѓ'
-                          : 'Р”Р°Р»С–',
+                          ? 'До підсумку'
+                          : 'Далі',
                     ),
                   )
                 else
                   Text(
-                    'Р—РјР°С…РЅС–С‚СЊ РєР°СЂС‚РєСѓ Р°Р±Рѕ РЅР°С‚РёСЃРЅС–С‚СЊ РїРѕС‚СЂС–Р±РЅРёР№ РІР°СЂС–Р°РЅС‚.',
+                    'Змахніть картку або натисніть потрібний варіант.',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: const Color(0xFF6C665D),
@@ -271,11 +271,11 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
   String _deckLabel(FlashcardDeckMode mode) {
     switch (mode) {
       case FlashcardDeckMode.allWords:
-        return 'РЈСЃС– СЃР»РѕРІР°';
+        return 'Усі слова';
       case FlashcardDeckMode.withContexts:
-        return 'Р— РїСЂРёРєР»Р°РґР°РјРё';
+        return 'З прикладами';
       case FlashcardDeckMode.needsReview:
-        return 'РќР° РїРѕРІС‚РѕСЂРµРЅРЅСЏ';
+        return 'На повторення';
     }
   }
 
@@ -339,7 +339,7 @@ class _SessionDetailsSection extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'РџРѕС‚РѕС‡РЅР° СЃРµСЃС–СЏ',
+                            'Поточна сесія',
                             style: Theme.of(context).textTheme.titleSmall
                                 ?.copyWith(
                                   fontWeight: FontWeight.w700,
@@ -348,7 +348,7 @@ class _SessionDetailsSection extends StatelessWidget {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            '$currentCardNumber С–Р· $wordCount',
+                            ' із ',
                             style: Theme.of(context).textTheme.bodyMedium
                                 ?.copyWith(color: const Color(0xFF6C665D)),
                           ),
@@ -394,8 +394,8 @@ class _SessionDetailsSection extends StatelessWidget {
                   const SizedBox(height: 10),
                   Text(
                     remainingCount > 0
-                        ? 'РџС–СЃР»СЏ РЅРµС— Р»РёС€РёС‚СЊСЃСЏ С‰Рµ $remainingCount РєР°СЂС‚РѕРє'
-                        : 'Р¦Рµ РѕСЃС‚Р°РЅРЅСЏ РєР°СЂС‚РєР°',
+                        ? 'Після неї лишиться ще $remainingCount карток'
+                        : 'Це остання картка',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: const Color(0xFF6C665D),
                     ),
@@ -405,7 +405,7 @@ class _SessionDetailsSection extends StatelessWidget {
                     children: [
                       Expanded(
                         child: PracticeStatPill(
-                          label: 'РџСЂР°РІРёР»СЊРЅРѕ',
+                          label: 'Правильно',
                           value: correctCount,
                           icon: Icons.check_rounded,
                           accent: const Color(0xFF0F766E),
@@ -414,7 +414,7 @@ class _SessionDetailsSection extends StatelessWidget {
                       const SizedBox(width: 12),
                       Expanded(
                         child: PracticeStatPill(
-                          label: 'РџРѕРјРёР»РєРё',
+                          label: 'Помилки',
                           value: wrongCount,
                           icon: Icons.close_rounded,
                           accent: const Color(0xFFB91C1C),
@@ -449,26 +449,26 @@ class _CompactFlashcardsHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final deckLabel = switch (selectedMode) {
-      FlashcardDeckMode.allWords => 'РЈСЃС– СЃР»РѕРІР°',
-      FlashcardDeckMode.withContexts => 'Р— РїСЂРёРєР»Р°РґР°РјРё',
-      FlashcardDeckMode.needsReview => 'РќР° РїРѕРІС‚РѕСЂРµРЅРЅСЏ',
+      FlashcardDeckMode.allWords => 'Усі слова',
+      FlashcardDeckMode.withContexts => 'З прикладами',
+      FlashcardDeckMode.needsReview => 'На повторення',
     };
     final countLabel = switch (selectedMode) {
-      FlashcardDeckMode.allWords => '$totalWordCount Сѓ РЅР°Р±РѕСЂС–',
+      FlashcardDeckMode.allWords => '$totalWordCount у наборі',
       FlashcardDeckMode.withContexts =>
-        '$contextWordCount Р· РїСЂРёРєР»Р°РґР°РјРё',
+        '$contextWordCount з прикладами',
       FlashcardDeckMode.needsReview =>
-        '$reviewWordCount РЅР° РїРѕРІС‚РѕСЂРµРЅРЅС–',
+        '$reviewWordCount на повторенні',
     };
     final canToggleReview =
         reviewWordCount > 0 || selectedMode == FlashcardDeckMode.needsReview;
     final helperLabel = switch (selectedMode) {
       FlashcardDeckMode.needsReview =>
-        'РќР°С‚РёСЃРЅС–С‚СЊ РЅР° Р»С–С‡РёР»СЊРЅРёРє, С‰РѕР± РїРѕРІРµСЂРЅСѓС‚РёСЃСЏ РґРѕ РІСЃС–С… РєР°СЂС‚РѕРє.',
+        'Натисніть на лічильник, щоб повернутися до всіх карток.',
       FlashcardDeckMode.withContexts when reviewWordCount > 0 =>
-        'РќР°С‚РёСЃРЅС–С‚СЊ РЅР° Р»С–С‡РёР»СЊРЅРёРє, С‰РѕР± РїРµСЂРµР№С‚Рё РґРѕ РїРѕРІС‚РѕСЂРµРЅРЅСЏ.',
+        'Натисніть на лічильник, щоб перейти до повторення.',
       FlashcardDeckMode.allWords when reviewWordCount > 0 =>
-        'РќР°С‚РёСЃРЅС–С‚СЊ РЅР° Р»С–С‡РёР»СЊРЅРёРє, С‰РѕР± РІС–РґРєСЂРёС‚Рё РїРѕРІС‚РѕСЂРµРЅРЅСЏ.',
+        'Натисніть на лічильник, щоб відкрити повторення.',
       _ => null,
     };
     final pillColor = selectedMode == FlashcardDeckMode.needsReview
@@ -674,8 +674,8 @@ class _SwipeHintStrip extends StatelessWidget {
           child: _SwipeHintCard(
             alignment: CrossAxisAlignment.start,
             icon: Icons.arrow_back_rounded,
-            title: 'Р›С–РІРѕСЂСѓС‡',
-            subtitle: 'Р©Рµ СЂР°Р·',
+            title: 'Ліворуч',
+            subtitle: 'Ще раз',
             accent: Color(0xFFB45309),
             onTap: onRepeatTap,
           ),
@@ -685,8 +685,8 @@ class _SwipeHintStrip extends StatelessWidget {
           child: _SwipeHintCard(
             alignment: CrossAxisAlignment.end,
             icon: Icons.arrow_forward_rounded,
-            title: 'РџСЂР°РІРѕСЂСѓС‡',
-            subtitle: 'Р—РЅР°СЋ',
+            title: 'Праворуч',
+            subtitle: 'Знаю',
             accent: Color(0xFF0F766E),
             onTap: onKnowTap,
           ),
@@ -777,17 +777,17 @@ class _DeckModeSection extends StatelessWidget {
           runSpacing: 10,
           children: [
             _DeckChoiceChip(
-              label: 'РЈСЃС–',
+              label: 'Усі',
               isSelected: selectedMode == FlashcardDeckMode.allWords,
               onTap: () => onChanged(FlashcardDeckMode.allWords),
             ),
             _DeckChoiceChip(
-              label: 'РљРѕРЅС‚РµРєСЃС‚',
+              label: 'Контекст',
               isSelected: selectedMode == FlashcardDeckMode.withContexts,
               onTap: () => onChanged(FlashcardDeckMode.withContexts),
             ),
             _DeckChoiceChip(
-              label: 'РџРѕРІС‚РѕСЂРµРЅРЅСЏ',
+              label: 'Повторення',
               isSelected: selectedMode == FlashcardDeckMode.needsReview,
               onTap: () => onChanged(FlashcardDeckMode.needsReview),
             ),
@@ -859,7 +859,7 @@ class _FlashcardContextPanel extends StatelessWidget {
           borderRadius: BorderRadius.circular(24),
         ),
         child: Text(
-          'Р”Р»СЏ С†СЊРѕРіРѕ СЃР»РѕРІР° С‰Рµ РЅРµРјР°С” РїСЂРёРєР»Р°РґСѓ РІ СЂРµС‡РµРЅРЅС–.',
+          'Для цього слова ще немає прикладу в реченні.',
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
             color: const Color(0xFF6C665D),
@@ -882,7 +882,7 @@ class _FlashcardContextPanel extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'РљРѕРЅС‚РµРєСЃС‚',
+            'Контекст',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.w700,
               color: const Color(0xFF5F5A52),
@@ -976,22 +976,22 @@ class _EmptyFlashcardsState extends StatelessWidget {
   String _emptyTitle(FlashcardDeckMode mode) {
     switch (mode) {
       case FlashcardDeckMode.allWords:
-        return 'РЎР»РѕРІР° С‰Рµ РЅРµ Р·Р°РІР°РЅС‚Р°Р¶РµРЅС–.';
+        return 'Слова ще не завантажені.';
       case FlashcardDeckMode.withContexts:
-        return 'РљР°СЂС‚РѕРє С–Р· РїСЂРёРєР»Р°РґР°РјРё РїРѕРєРё РЅРµРјР°С”.';
+        return 'Карток із прикладами поки немає.';
       case FlashcardDeckMode.needsReview:
-        return 'РќР° РїРѕРІС‚РѕСЂРµРЅРЅС– РїРѕРєРё РїРѕСЂРѕР¶РЅСЊРѕ.';
+        return 'На повторенні поки порожньо.';
     }
   }
 
   String _emptyBody(FlashcardDeckMode mode) {
     switch (mode) {
       case FlashcardDeckMode.allWords:
-        return 'Р©РѕР№РЅРѕ СЃР»РѕРІР° Р·вЂ™СЏРІР»СЏС‚СЊСЃСЏ, С‚СѓС‚ РјРѕР¶РЅР° Р±СѓРґРµ РїРѕС‡Р°С‚Рё С‚СЂРµРЅСѓРІР°РЅРЅСЏ.';
+        return 'Щойно слова з’являться, тут можна буде почати тренування.';
       case FlashcardDeckMode.withContexts:
-        return 'РљРѕР»Рё РґР»СЏ СЃР»С–РІ Р·вЂ™СЏРІР»СЏС‚СЊСЃСЏ РїСЂРёРєР»Р°РґРё, С†РµР№ СЂРµР¶РёРј СЃС‚Р°РЅРµ РґРѕСЃС‚СѓРїРЅРёРј.';
+        return 'Коли для слів з’являться приклади, цей режим стане доступним.';
       case FlashcardDeckMode.needsReview:
-        return 'РџРѕР·РЅР°С‡Р°Р№С‚Рµ СЃР»РѕРІР° СЏРє В«Р©Рµ СЂР°Р·В», С– РІРѕРЅРё Р·вЂ™СЏРІР»СЏС‚СЊСЃСЏ С‚СѓС‚ РѕРєСЂРµРјРѕ.';
+        return 'Позначайте слова як «Ще раз», і вони з’являться тут окремо.';
     }
   }
 }
@@ -1053,7 +1053,7 @@ class _CompletedFlashcardsState extends StatelessWidget {
                   borderRadius: BorderRadius.circular(999),
                 ),
                 child: Text(
-                  'Р“РѕС‚РѕРІРѕ',
+                  'Готово',
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
                     color: const Color(0xFF0F766E),
                     fontWeight: FontWeight.w800,
@@ -1062,7 +1062,7 @@ class _CompletedFlashcardsState extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                '$wordCount РєР°СЂС‚РѕРє РїСЂРѕР№РґРµРЅРѕ',
+                '$wordCount карток пройдено',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w800,
                 ),
@@ -1083,13 +1083,13 @@ class _CompletedFlashcardsState extends StatelessWidget {
                 alignment: WrapAlignment.center,
                 children: [
                   PracticeStatPill(
-                    label: 'Р—РЅР°СЋ',
+                    label: 'Знаю',
                     value: correctAnswers,
                     icon: Icons.check_rounded,
                     accent: const Color(0xFF0F766E),
                   ),
                   PracticeStatPill(
-                    label: 'РџРѕРІС‚РѕСЂРёС‚Рё',
+                    label: 'Повторити',
                     value: repeatAnswers,
                     icon: Icons.refresh_rounded,
                     accent: const Color(0xFFB45309),
@@ -1100,7 +1100,7 @@ class _CompletedFlashcardsState extends StatelessWidget {
               FilledButton.icon(
                 onPressed: () => onRestartDeck(),
                 icon: const Icon(Icons.refresh_rounded),
-                label: const Text('РџРѕС‡Р°С‚Рё С‰Рµ СЂР°Р·'),
+                label: const Text('Почати ще раз'),
               ),
               if (mode != FlashcardDeckMode.needsReview &&
                   reviewWordCount > 0) ...[
@@ -1108,7 +1108,7 @@ class _CompletedFlashcardsState extends StatelessWidget {
                 OutlinedButton.icon(
                   onPressed: () => onRestartDeck(FlashcardDeckMode.needsReview),
                   icon: const Icon(Icons.rule_rounded),
-                  label: const Text('Р”Рѕ РїРѕРІС‚РѕСЂРµРЅРЅСЏ'),
+                  label: const Text('До повторення'),
                 ),
               ],
             ],
@@ -1122,16 +1122,16 @@ class _CompletedFlashcardsState extends StatelessWidget {
     switch (mode) {
       case FlashcardDeckMode.allWords:
         if (reviewWordCount > 0) {
-          return 'РќР° РїРѕРІС‚РѕСЂРµРЅРЅСЏ С‡РµРєР°СЋС‚СЊ $reviewWordCount РєР°СЂС‚РѕРє.';
+          return 'На повторення чекають $reviewWordCount карток.';
         }
-        return 'РЈСЃС– СЃР»РѕРІР° Р· С†С–С”С— РєРѕР»РѕРґРё РІР¶Рµ РїРµСЂРµРіР»СЏРЅСѓС‚С–.';
+        return 'Усі слова з цієї колоди вже переглянуті.';
       case FlashcardDeckMode.withContexts:
         if (reviewWordCount > 0) {
-          return 'РџС–СЃР»СЏ С†СЊРѕРіРѕ РїСЂРѕС…РѕРґСѓ $reviewWordCount РєР°СЂС‚РѕРє РїРµСЂРµР№С€Р»Рё РЅР° РїРѕРІС‚РѕСЂРµРЅРЅСЏ.';
+          return 'Після цього проходу $reviewWordCount карток перейшли на повторення.';
         }
-        return 'РЈСЃС– РєР°СЂС‚РєРё Р· РїСЂРёРєР»Р°РґР°РјРё РІР¶Рµ РїСЂРѕР№РґРµРЅС–.';
+        return 'Усі картки з прикладами вже пройдені.';
       case FlashcardDeckMode.needsReview:
-        return 'РЈ РєРѕР»РѕРґС– РїРѕРІС‚РѕСЂРµРЅРЅСЏ Р±С–Р»СЊС€Рµ РЅРµ Р»РёС€РёР»РѕСЃСЏ РєР°СЂС‚РѕРє.';
+        return 'У колоді повторення більше не лишилося карток.';
     }
   }
 }

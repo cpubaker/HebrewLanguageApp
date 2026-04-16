@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 import '../models/learning_word.dart';
 import '../services/flashcard_session.dart';
@@ -61,7 +61,7 @@ class _WritingScreenState extends State<WritingScreen> {
 
     if (result.status == WritingAnswerStatus.empty) {
       setState(() {
-        _inlineMessage = 'Р’РІРµРґС–С‚СЊ СЃР»РѕРІРѕ С–РІСЂРёС‚РѕРј, С‰РѕР± РїРµСЂРµРІС–СЂРёС‚Рё РІС–РґРїРѕРІС–РґСЊ.';
+        _inlineMessage = 'Введіть слово івритом, щоб перевірити відповідь.';
       });
       return;
     }
@@ -144,7 +144,7 @@ class _WritingScreenState extends State<WritingScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'РџС–РґРєР°Р·РєСѓ РЅРµ РїРѕРєР°Р·СѓС”РјРѕ: С‚СѓС‚ РїСЂР°С†СЋС”РјРѕ СЃР°РјРµ РЅР° РїСЂРёРіР°РґСѓРІР°РЅРЅСЏ.',
+                      'Підказку не показуємо: тут працюємо саме на пригадування.',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: const Color(0xFF6C665D),
@@ -163,7 +163,7 @@ class _WritingScreenState extends State<WritingScreen> {
                 textInputAction: TextInputAction.done,
                 onSubmitted: (_) => _submitAnswer(),
                 decoration: InputDecoration(
-                  hintText: 'Р’РІРµРґС–С‚СЊ СЃР»РѕРІРѕ С–РІСЂРёС‚РѕРј',
+                  hintText: 'Введіть слово івритом',
                   prefixIcon: const Icon(Icons.edit_rounded),
                   filled: true,
                   fillColor: const Color(0xFFF9F5EC),
@@ -211,7 +211,7 @@ class _WritingScreenState extends State<WritingScreen> {
                 )
               else
                 Text(
-                  'РќР°С‚РёСЃРЅС–С‚СЊ В«РџРµСЂРµРІС–СЂРёС‚РёВ», РєРѕР»Рё Р±СѓРґРµС‚Рµ РіРѕС‚РѕРІС–.',
+                  'Натисніть «Перевірити», коли будете готові.',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: const Color(0xFF6C665D),
@@ -325,7 +325,7 @@ class _WritingResultCard extends StatelessWidget {
                 size: 22,
               ),
               Text(
-                isCorrect ? 'РџСЂР°РІРёР»СЊРЅРѕ' : 'РџРѕС‚СЂС–Р±РЅРѕ С‰Рµ СЂР°Р·',
+                isCorrect ? 'Правильно' : 'Потрібно ще раз',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w800,
