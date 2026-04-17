@@ -810,8 +810,6 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final statusTheme = _GuideLessonStatusTheme.fromStatus(_status);
-
     return Scaffold(
       body: SafeArea(
         child: FutureBuilder<LessonDocument>(
@@ -901,19 +899,6 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                Row(
-                  children: [
-                    Icon(statusTheme.icon, size: 18, color: statusTheme.color),
-                    const SizedBox(width: 8),
-                    Text(
-                      statusTheme.label,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: statusTheme.color,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
-                ),
                 const SizedBox(height: 20),
                 MarkdownLessonBody(
                   body: document.body,

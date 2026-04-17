@@ -477,7 +477,6 @@ class _ReadingDetailScreenState extends State<ReadingDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final level = readingLevelLabelFromAssetPath(widget.lesson.assetPath);
-    final statusTheme = _ReadingLessonStatusTheme.fromStatus(_status);
 
     return Scaffold(
       appBar: AppBar(),
@@ -568,23 +567,6 @@ class _ReadingDetailScreenState extends State<ReadingDetailScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                Row(
-                  children: [
-                    Icon(
-                      statusTheme.icon,
-                      size: 18,
-                      color: statusTheme.color,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      statusTheme.label,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: statusTheme.color,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
-                ),
                 const SizedBox(height: 20),
                 MarkdownLessonBody(
                   body: document.body,
