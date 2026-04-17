@@ -813,10 +813,10 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
     final statusTheme = _GuideLessonStatusTheme.fromStatus(_status);
 
     return Scaffold(
-      appBar: AppBar(),
-      body: FutureBuilder<LessonDocument>(
-        future: widget.documentLoader.load(widget.lesson.assetPath),
-        builder: (context, snapshot) {
+      body: SafeArea(
+        child: FutureBuilder<LessonDocument>(
+          future: widget.documentLoader.load(widget.lesson.assetPath),
+          builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -973,7 +973,8 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
               ],
             ),
           );
-        },
+          },
+        ),
       ),
     );
   }
