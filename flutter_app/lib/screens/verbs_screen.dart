@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 
 import '../models/learning_bundle.dart';
 import '../models/lesson_document.dart';
+import '../services/audio_playback_awareness.dart';
 import '../services/lesson_document_loader.dart';
 import '../services/verb_audio_player.dart';
 import '../theme/app_theme.dart';
+import 'audio_playback_feedback.dart';
 import 'widgets/app_action_wrap.dart';
 import 'widgets/app_page_header.dart';
 import 'widgets/app_search_field.dart';
@@ -20,11 +22,13 @@ class VerbsScreen extends StatefulWidget {
     required this.lessons,
     required this.documentLoader,
     required this.audioPlayerFactory,
+    this.audioPlaybackAwareness = const NoopAudioPlaybackAwareness(),
   });
 
   final List<LessonEntry> lessons;
   final LessonDocumentLoader documentLoader;
   final CreateVerbAudioPlayer audioPlayerFactory;
+  final AudioPlaybackAwareness audioPlaybackAwareness;
 
   @override
   State<VerbsScreen> createState() => _VerbsScreenState();
@@ -264,6 +268,8 @@ class _VerbsScreenState extends State<VerbsScreen> {
                             lesson: lesson,
                             documentLoader: widget.documentLoader,
                             audioPlayerFactory: widget.audioPlayerFactory,
+                            audioPlaybackAwareness:
+                                widget.audioPlaybackAwareness,
                           ),
                         ),
                       );
@@ -323,11 +329,13 @@ class VerbDetailScreen extends StatelessWidget {
     required this.lesson,
     required this.documentLoader,
     required this.audioPlayerFactory,
+    required this.audioPlaybackAwareness,
   });
 
   final LessonEntry lesson;
   final LessonDocumentLoader documentLoader;
   final CreateVerbAudioPlayer audioPlayerFactory;
+  final AudioPlaybackAwareness audioPlaybackAwareness;
 
   @override
   Widget build(BuildContext context) {
@@ -363,6 +371,7 @@ class VerbDetailScreen extends StatelessWidget {
                 title: document.title,
                 audioAssetPath: media.audioAssetPath,
                 audioPlayerFactory: audioPlayerFactory,
+                audioPlaybackAwareness: audioPlaybackAwareness,
               ),
               const SizedBox(height: 18),
               _VerbImageCard(imageAssetPath: media.imageAssetPath),
@@ -590,11 +599,13 @@ class _VerbHeroCard extends StatefulWidget {
     required this.title,
     required this.audioAssetPath,
     required this.audioPlayerFactory,
+    required this.audioPlaybackAwareness,
   });
 
   final String title;
   final String audioAssetPath;
   final CreateVerbAudioPlayer audioPlayerFactory;
+  final AudioPlaybackAwareness audioPlaybackAwareness;
 
   @override
   State<_VerbHeroCard> createState() => _VerbHeroCardState();
@@ -653,6 +664,10 @@ class _VerbHeroCardState extends State<_VerbHeroCard> {
       if (wasPlaying) {
         await _audioPlayer.stop();
       } else {
+        await showAudioPlaybackHintIfNeeded(
+          context: context,
+          awareness: widget.audioPlaybackAwareness,
+        );
         await _audioPlayer.playAsset(widget.audioAssetPath);
       }
       if (!mounted) {

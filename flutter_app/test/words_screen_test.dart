@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/screens/words_screen.dart';
+import 'package:hebrew_language_flutter/services/audio_playback_awareness.dart';
 import 'package:hebrew_language_flutter/services/learning_audio_player.dart';
 
 void main() {
@@ -89,6 +90,52 @@ void main() {
     expect(disabledButton.onPressed, isNull);
     expect(audioPlayer.playedAssets, isEmpty);
   });
+
+  testWidgets(
+    'shows a muted-volume hint before playback when awareness requests it',
+    (WidgetTester tester) async {
+      final audioPlayer = _FakeLearningAudioPlayer(assetExistsResult: true);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: WordsScreen(
+              words: const [
+                LearningWord(
+                  wordId: 'word_man',
+                  hebrew: 'ЧђЧ™Ч©',
+                  english: 'man',
+                  transcription: 'ish',
+                  audioAssetPath:
+                      'assets/learning/input/audio/words/word_man.mp3',
+                  correct: 0,
+                  wrong: 0,
+                ),
+              ],
+              audioPlayerFactory: () => audioPlayer,
+              audioPlaybackAwareness: _FakeAudioPlaybackAwareness(
+                hint: AudioPlaybackHint.mediaVolumeMuted,
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('РђСѓРґС–Рѕ'));
+      await tester.pump();
+
+      expect(
+        find.text(
+          'Звук вимкнений. Підніміть гучність медіа кнопками збоку.',
+        ),
+        findsOneWidget,
+      );
+      expect(audioPlayer.playedAssets, [
+        'assets/learning/input/audio/words/word_man.mp3',
+      ]);
+    },
+  );
 
   testWidgets('opens word details from the trailing arrow', (
     WidgetTester tester,
@@ -211,4 +258,13 @@ class _FakeLearningAudioPlayer implements LearningAudioPlayer {
 
   @override
   Future<void> stop() async {}
+}
+
+class _FakeAudioPlaybackAwareness implements AudioPlaybackAwareness {
+  _FakeAudioPlaybackAwareness({this.hint});
+
+  final AudioPlaybackHint? hint;
+
+  @override
+  Future<AudioPlaybackHint?> checkBeforePlayback() async => hint;
 }

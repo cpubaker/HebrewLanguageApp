@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 
 import '../models/guide_lesson_status.dart';
 import '../models/learning_bundle.dart';
 import '../models/learning_word.dart';
+import '../services/audio_playback_awareness.dart';
 import '../services/flashcard_session.dart';
 import '../services/guide_progress_store.dart';
 import '../services/learning_bundle_loader.dart';
@@ -43,6 +45,7 @@ class AppShellScreen extends StatefulWidget {
     required this.guideProgressStore,
     required this.readingProgressStore,
     required this.audioPlayerFactory,
+    this.audioPlaybackAwarenessFactory = createAudioPlaybackAwareness,
   });
 
   final LearningBundleLoader loader;
@@ -51,6 +54,7 @@ class AppShellScreen extends StatefulWidget {
   final GuideProgressStore guideProgressStore;
   final ReadingProgressStore readingProgressStore;
   final CreateVerbAudioPlayer audioPlayerFactory;
+  final CreateAudioPlaybackAwareness audioPlaybackAwarenessFactory;
 
   @override
   State<AppShellScreen> createState() => _AppShellScreenState();
@@ -64,6 +68,8 @@ class _AppShellScreenState extends State<AppShellScreen> {
   static const double _collapsedBodyBottomInset = 36;
 
   late Future<LearningBundle> _bundleFuture;
+  late final AudioPlaybackAwareness _audioPlaybackAwareness =
+      widget.audioPlaybackAwarenessFactory();
   LearningBundle? _bundle;
   Map<String, GuideLessonStatus> _guideLessonStatuses =
       <String, GuideLessonStatus>{};
@@ -83,6 +89,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
   bool _preferWritingPractice = false;
   FlashcardDeckMode _preferredFlashcardDeckMode = FlashcardDeckMode.allWords;
   bool _isBottomNavVisible = true;
+  bool? _pendingBottomNavVisibility;
 
   @override
   void initState() {
@@ -284,6 +291,38 @@ class _AppShellScreenState extends State<AppShellScreen> {
       return;
     }
 
+    final schedulerPhase = WidgetsBinding.instance.schedulerPhase;
+    final canUpdateImmediately =
+        schedulerPhase == SchedulerPhase.idle ||
+        schedulerPhase == SchedulerPhase.postFrameCallbacks;
+
+    if (!canUpdateImmediately) {
+      if (_pendingBottomNavVisibility == isVisible) {
+        return;
+      }
+
+      _pendingBottomNavVisibility = isVisible;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) {
+          _pendingBottomNavVisibility = null;
+          return;
+        }
+
+        final pendingVisibility = _pendingBottomNavVisibility;
+        _pendingBottomNavVisibility = null;
+        if (pendingVisibility == null ||
+            _isBottomNavVisible == pendingVisibility) {
+          return;
+        }
+
+        setState(() {
+          _isBottomNavVisible = pendingVisibility;
+        });
+      });
+      return;
+    }
+
+    _pendingBottomNavVisibility = null;
     setState(() {
       _isBottomNavVisible = isVisible;
     });
@@ -469,11 +508,13 @@ class _AppShellScreenState extends State<AppShellScreen> {
           WordsScreen(
             words: bundle.words,
             audioPlayerFactory: widget.audioPlayerFactory,
+            audioPlaybackAwareness: _audioPlaybackAwareness,
           ),
           VerbsScreen(
             lessons: bundle.verbLessons,
             documentLoader: widget.documentLoader,
             audioPlayerFactory: widget.audioPlayerFactory,
+            audioPlaybackAwareness: _audioPlaybackAwareness,
           ),
         ],
       ),

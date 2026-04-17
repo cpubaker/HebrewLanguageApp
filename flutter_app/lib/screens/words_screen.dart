@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../models/learning_word.dart';
+import '../services/audio_playback_awareness.dart';
 import '../services/learning_audio_player.dart';
 import '../services/progress_snapshot.dart';
 import '../theme/app_theme.dart';
+import 'audio_playback_feedback.dart';
 import 'widgets/app_action_wrap.dart';
 import 'widgets/app_page_header.dart';
 import 'widgets/app_search_field.dart';
@@ -17,10 +19,12 @@ class WordsScreen extends StatefulWidget {
     super.key,
     required this.words,
     required this.audioPlayerFactory,
+    this.audioPlaybackAwareness = const NoopAudioPlaybackAwareness(),
   });
 
   final List<LearningWord> words;
   final CreateLearningAudioPlayer audioPlayerFactory;
+  final AudioPlaybackAwareness audioPlaybackAwareness;
 
   @override
   State<WordsScreen> createState() => _WordsScreenState();
@@ -240,6 +244,7 @@ class _WordsScreenState extends State<WordsScreen> {
                       _WordDetailsAudioButton(
                         word: word,
                         audioPlayerFactory: widget.audioPlayerFactory,
+                        audioPlaybackAwareness: widget.audioPlaybackAwareness,
                       ),
                     ],
                   ],
@@ -388,6 +393,7 @@ class _WordsScreenState extends State<WordsScreen> {
                       child: _WordCard(
                         word: word,
                         audioPlayerFactory: widget.audioPlayerFactory,
+                        audioPlaybackAwareness: widget.audioPlaybackAwareness,
                         onOpenDetails: () => _showWordDetails(word),
                       ),
                     );
@@ -484,11 +490,13 @@ class _WordCard extends StatelessWidget {
   const _WordCard({
     required this.word,
     required this.audioPlayerFactory,
+    required this.audioPlaybackAwareness,
     required this.onOpenDetails,
   });
 
   final LearningWord word;
   final CreateLearningAudioPlayer audioPlayerFactory;
+  final AudioPlaybackAwareness audioPlaybackAwareness;
   final VoidCallback onOpenDetails;
 
   @override
@@ -550,6 +558,7 @@ class _WordCard extends StatelessWidget {
                           _InlineWordAudioButton(
                             word: word,
                             audioPlayerFactory: audioPlayerFactory,
+                            audioPlaybackAwareness: audioPlaybackAwareness,
                           ),
                       ],
                     ),
@@ -598,10 +607,12 @@ class _InlineWordAudioButton extends StatefulWidget {
   const _InlineWordAudioButton({
     required this.word,
     required this.audioPlayerFactory,
+    required this.audioPlaybackAwareness,
   });
 
   final LearningWord word;
   final CreateLearningAudioPlayer audioPlayerFactory;
+  final AudioPlaybackAwareness audioPlaybackAwareness;
 
   @override
   State<_InlineWordAudioButton> createState() => _InlineWordAudioButtonState();
@@ -668,6 +679,10 @@ class _InlineWordAudioButtonState extends State<_InlineWordAudioButton> {
       if (wasPlaying) {
         await _audioPlayer.stop();
       } else {
+        await showAudioPlaybackHintIfNeeded(
+          context: context,
+          awareness: widget.audioPlaybackAwareness,
+        );
         await _audioPlayer.playAsset(_audioAssetPath);
       }
     } catch (_) {
@@ -759,10 +774,12 @@ class _WordDetailsAudioButton extends StatefulWidget {
   const _WordDetailsAudioButton({
     required this.word,
     required this.audioPlayerFactory,
+    required this.audioPlaybackAwareness,
   });
 
   final LearningWord word;
   final CreateLearningAudioPlayer audioPlayerFactory;
+  final AudioPlaybackAwareness audioPlaybackAwareness;
 
   @override
   State<_WordDetailsAudioButton> createState() =>
@@ -838,6 +855,10 @@ class _WordDetailsAudioButtonState extends State<_WordDetailsAudioButton> {
       if (wasPlaying) {
         await _audioPlayer.stop();
       } else {
+        await showAudioPlaybackHintIfNeeded(
+          context: context,
+          awareness: widget.audioPlaybackAwareness,
+        );
         await _audioPlayer.playAsset(_audioAssetPath);
       }
 

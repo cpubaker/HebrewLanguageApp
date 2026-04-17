@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'screens/app_shell_screen.dart';
+import 'services/audio_playback_awareness.dart';
 import 'services/guide_progress_store.dart';
 import 'services/lesson_document_loader.dart';
 import 'services/learning_bundle_loader.dart';
@@ -19,12 +20,14 @@ class HebrewFlutterApp extends StatelessWidget {
     GuideProgressStore? guideProgressStore,
     ReadingProgressStore? readingProgressStore,
     CreateVerbAudioPlayer? audioPlayerFactory,
+    CreateAudioPlaybackAwareness? audioPlaybackAwarenessFactory,
   }) : _loader = loader,
        _documentLoader = documentLoader,
        _progressStore = progressStore,
        _guideProgressStore = guideProgressStore,
        _readingProgressStore = readingProgressStore,
-       _audioPlayerFactory = audioPlayerFactory;
+       _audioPlayerFactory = audioPlayerFactory,
+       _audioPlaybackAwarenessFactory = audioPlaybackAwarenessFactory;
 
   final LearningBundleLoader? _loader;
   final LessonDocumentLoader? _documentLoader;
@@ -32,6 +35,7 @@ class HebrewFlutterApp extends StatelessWidget {
   final GuideProgressStore? _guideProgressStore;
   final ReadingProgressStore? _readingProgressStore;
   final CreateVerbAudioPlayer? _audioPlayerFactory;
+  final CreateAudioPlaybackAwareness? _audioPlaybackAwarenessFactory;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +55,8 @@ class HebrewFlutterApp extends StatelessWidget {
         readingProgressStore:
             _readingProgressStore ?? SharedPreferencesReadingProgressStore(),
         audioPlayerFactory: _audioPlayerFactory ?? createAssetVerbAudioPlayer,
+        audioPlaybackAwarenessFactory:
+            _audioPlaybackAwarenessFactory ?? createAudioPlaybackAwareness,
       ),
     );
   }
