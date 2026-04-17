@@ -16,7 +16,7 @@ class AssetLessonDocumentLoader implements LessonDocumentLoader {
       <String, Future<LessonDocument>>{};
 
   @override
-  Future<LessonDocument> load(String assetPath) async {
+  Future<LessonDocument> load(String assetPath) {
     return _cache.putIfAbsent(assetPath, () async {
       final content = await assetBundle.loadString(assetPath);
       final (title, rawBody) = _splitMarkdownSection(content);
