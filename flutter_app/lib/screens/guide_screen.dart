@@ -811,6 +811,7 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: SafeArea(
         child: FutureBuilder<LessonDocument>(
           future: widget.documentLoader.load(widget.lesson.assetPath),

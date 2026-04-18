@@ -7,15 +7,15 @@ void main() {
 
   const channel = MethodChannel('com.nedash.hebrewlanguageapp/audio_output');
 
-  tearDown(() async {
-    await TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+  tearDown(() {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(channel, null);
   });
 
   test('returns a muted-volume hint once within the cooldown window', () async {
     var now = DateTime(2026, 4, 17, 12);
 
-    await TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(channel, (call) async {
           expect(call.method, 'isMediaVolumeMuted');
           return true;
@@ -39,7 +39,7 @@ void main() {
   });
 
   test('returns null when media volume is available', () async {
-    await TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(channel, (call) async => false);
 
     final awareness = AndroidAudioPlaybackAwareness(channel: channel);

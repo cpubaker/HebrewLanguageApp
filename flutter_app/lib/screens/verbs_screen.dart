@@ -674,9 +674,7 @@ class _VerbHeroCardState extends State<_VerbHeroCard> {
         return;
       }
       setState(() {
-        if (wasPlaying) {
-          _isPlaying = false;
-        }
+        _isPlaying = !wasPlaying;
       });
     } catch (_) {
       if (!mounted) {

@@ -39,7 +39,7 @@ void main() {
 
     expect(find.byTooltip('Увімкнути вимову слова'), findsOneWidget);
 
-    await tester.tap(find.text('Аудіо'));
+    await tester.tap(find.byTooltip('Увімкнути вимову слова'));
     await tester.pumpAndSettle();
 
     expect(audioPlayer.playedAssets, [
@@ -103,7 +103,7 @@ void main() {
               words: const [
                 LearningWord(
                   wordId: 'word_man',
-                  hebrew: 'ЧђЧ™Ч©',
+                  hebrew: 'איש',
                   english: 'man',
                   transcription: 'ish',
                   audioAssetPath:
@@ -122,13 +122,11 @@ void main() {
       );
 
       await tester.pumpAndSettle();
-      await tester.tap(find.text('РђСѓРґС–Рѕ'));
+      await tester.tap(find.byTooltip('Увімкнути вимову слова'));
       await tester.pump();
 
       expect(
-        find.text(
-          'Звук вимкнений. Підніміть гучність медіа кнопками збоку.',
-        ),
+        find.text(AudioPlaybackHint.mediaVolumeMuted.message),
         findsOneWidget,
       );
       expect(audioPlayer.playedAssets, [

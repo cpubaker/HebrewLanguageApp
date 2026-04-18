@@ -18,7 +18,7 @@ void main() {
       ),
       LearningWord(
         wordId: 'word_house',
-        hebrew: 'בית',
+        hebrew: 'בַּיִת',
         english: 'house',
         ukrainian: 'будинок',
         transcription: 'bayit',
@@ -60,12 +60,59 @@ void main() {
     expect(session.currentWordStats().wrong, 0);
   });
 
+  test('nextPrompt exposes constructor puzzle with syllable blocks', () {
+    final session = WritingSession(const [
+      LearningWord(
+        wordId: 'word_house',
+        hebrew: 'בַּיִת',
+        english: 'house',
+        ukrainian: 'будинок',
+        transcription: 'bayit',
+        correct: 0,
+        wrong: 0,
+      ),
+    ], rng: Random(5));
+
+    final prompt = session.nextPrompt();
+
+    expect(prompt, isNotNull);
+    expect(prompt!.constructorPuzzle.solution, <String>['בַּ', 'יִת']);
+    expect(
+      prompt.constructorPuzzle.availableBlocks.map((block) => block.text),
+      containsAll(<String>['בַּ', 'יִת']),
+    );
+  });
+
+  test('constructor puzzle falls back to transcription when word has no niqqud', () {
+    final session = WritingSession(const [
+      LearningWord(
+        wordId: 'word_peace',
+        hebrew: 'שלום',
+        english: 'peace',
+        ukrainian: 'мир',
+        transcription: 'shalom',
+        correct: 0,
+        wrong: 0,
+      ),
+    ], rng: Random(6));
+
+    final prompt = session.nextPrompt();
+
+    expect(prompt, isNotNull);
+    expect(prompt!.constructorPuzzle.solution.length, 2);
+    expect(prompt.constructorPuzzle.solution.join(), 'שלום');
+    expect(
+      prompt.constructorPuzzle.availableBlocks.length,
+      greaterThan(prompt.constructorPuzzle.solution.length),
+    );
+  });
+
   test('submitAnswer updates writing stats and tolerates missing niqqud', () {
     final session = WritingSession(
       const [
         LearningWord(
-          wordId: 'word_teacher',
-          hebrew: 'בְּעִקְבוֹת',
+          wordId: 'word_following',
+          hebrew: 'בְּעִקְבוֹת',
           english: 'following',
           ukrainian: 'слідом за; внаслідок, через',
           transcription: 'be\'ikvot',
