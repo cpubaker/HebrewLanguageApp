@@ -115,12 +115,6 @@ class _WritingScreenState extends State<WritingScreen> {
     return ListView(
       padding: tokens.pagePadding.copyWith(bottom: 32),
       children: [
-        const PracticeHeader(
-          title: 'Писання',
-          subtitle:
-              'Бачите переклад українською, а далі або пишете слово самі, або складаєте його з готових блоків.',
-        ),
-        const SizedBox(height: 18),
         Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
@@ -137,36 +131,6 @@ class _WritingScreenState extends State<WritingScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Wrap(
-                spacing: 10,
-                runSpacing: 10,
-                alignment: WrapAlignment.center,
-                children: [
-                  ChoiceChip(
-                    key: const ValueKey('writing_mode_typing'),
-                    label: const Text('Писання'),
-                    selected: _mode == WritingPracticeMode.typing,
-                    onSelected: (_) {
-                      setState(() {
-                        _mode = WritingPracticeMode.typing;
-                        _inlineMessage = null;
-                      });
-                    },
-                  ),
-                  ChoiceChip(
-                    key: const ValueKey('writing_mode_constructor'),
-                    label: const Text('Конструктор'),
-                    selected: _mode == WritingPracticeMode.constructor,
-                    onSelected: (_) {
-                      setState(() {
-                        _mode = WritingPracticeMode.constructor;
-                        _inlineMessage = null;
-                      });
-                    },
-                  ),
-                ],
-              ),
-              const SizedBox(height: 18),
               Container(
                 padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(

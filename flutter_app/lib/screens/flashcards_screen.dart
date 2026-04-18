@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../models/learning_context.dart';
 import '../models/learning_word.dart';
 import '../services/flashcard_session.dart';
-import '../services/progress_snapshot.dart';
 import '../theme/app_theme.dart';
 import 'widgets/practice_header.dart';
 import 'widgets/practice_panel.dart';
@@ -80,21 +79,6 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
     });
   }
 
-  void _toggleReviewDeck() {
-    final reviewWordCount = FlashcardFocusSnapshot.fromWords(
-      widget.words,
-    ).needsReview;
-
-    if (_session.deckMode == FlashcardDeckMode.needsReview) {
-      _changeDeckMode(FlashcardDeckMode.allWords);
-      return;
-    }
-
-    if (reviewWordCount > 0) {
-      _changeDeckMode(FlashcardDeckMode.needsReview);
-    }
-  }
-
   void _handleCardSwipe(DragEndDetails details) {
     if (_currentCard == null || _currentAnswer != null) {
       return;
@@ -145,22 +129,9 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
     final stats = _session.currentWordStats();
     final hasAnswered = _currentAnswer != null;
     final isKnownAnswer = _currentAnswer?.known == true;
-    final focus = FlashcardFocusSnapshot.fromWords(widget.words);
-    final totalWordCount = focus.total;
-    final contextWordCount = focus.withContexts;
-    final reviewWordCount = focus.needsReview;
-
     return ListView(
       padding: tokens.pagePadding.copyWith(bottom: 32),
       children: [
-        _CompactFlashcardsHeader(
-          selectedMode: _session.deckMode,
-          totalWordCount: totalWordCount,
-          contextWordCount: contextWordCount,
-          reviewWordCount: reviewWordCount,
-          onToggleReview: _toggleReviewDeck,
-        ),
-        const SizedBox(height: 16),
         GestureDetector(
           onHorizontalDragEnd: hasAnswered ? null : _handleCardSwipe,
           behavior: HitTestBehavior.opaque,
@@ -426,100 +397,6 @@ class _SessionDetailsSection extends StatelessWidget {
               ),
             ),
         ],
-      ),
-    );
-  }
-}
-
-class _CompactFlashcardsHeader extends StatelessWidget {
-  const _CompactFlashcardsHeader({
-    required this.selectedMode,
-    required this.totalWordCount,
-    required this.contextWordCount,
-    required this.reviewWordCount,
-    required this.onToggleReview,
-  });
-
-  final FlashcardDeckMode selectedMode;
-  final int totalWordCount;
-  final int contextWordCount;
-  final int reviewWordCount;
-  final VoidCallback onToggleReview;
-
-  @override
-  Widget build(BuildContext context) {
-    final deckLabel = switch (selectedMode) {
-      FlashcardDeckMode.allWords => 'Усі слова',
-      FlashcardDeckMode.withContexts => 'З прикладами',
-      FlashcardDeckMode.needsReview => 'На повторення',
-    };
-    final countLabel = switch (selectedMode) {
-      FlashcardDeckMode.allWords => '$totalWordCount у наборі',
-      FlashcardDeckMode.withContexts =>
-        '$contextWordCount з прикладами',
-      FlashcardDeckMode.needsReview =>
-        '$reviewWordCount на повторенні',
-    };
-    final canToggleReview =
-        reviewWordCount > 0 || selectedMode == FlashcardDeckMode.needsReview;
-    final helperLabel = switch (selectedMode) {
-      FlashcardDeckMode.needsReview =>
-        'Натисніть на лічильник, щоб повернутися до всіх карток.',
-      FlashcardDeckMode.withContexts when reviewWordCount > 0 =>
-        'Натисніть на лічильник, щоб перейти до повторення.',
-      FlashcardDeckMode.allWords when reviewWordCount > 0 =>
-        'Натисніть на лічильник, щоб відкрити повторення.',
-      _ => null,
-    };
-    final pillColor = selectedMode == FlashcardDeckMode.needsReview
-        ? const Color(0xFFB45309).withValues(alpha: 0.12)
-        : const Color(0xFF163832).withValues(alpha: 0.08);
-    final pillTextColor = selectedMode == FlashcardDeckMode.needsReview
-        ? const Color(0xFF8A460C)
-        : const Color(0xFF163832);
-
-    return PracticeHeader(
-      title: 'Картки',
-      subtitle: helperLabel ?? 'Поточний режим: $deckLabel.',
-      trailing: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: canToggleReview ? onToggleReview : null,
-          borderRadius: BorderRadius.circular(999),
-          child: Ink(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            decoration: BoxDecoration(
-              color: pillColor,
-              borderRadius: BorderRadius.circular(999),
-            ),
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              alignment: Alignment.centerLeft,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    countLabel,
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: pillTextColor,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  if (canToggleReview) ...[
-                    const SizedBox(width: 6),
-                    Icon(
-                      selectedMode == FlashcardDeckMode.needsReview
-                          ? Icons.undo_rounded
-                          : Icons.rule_folder_rounded,
-                      size: 18,
-                      color: pillTextColor,
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          ),
-        ),
       ),
     );
   }

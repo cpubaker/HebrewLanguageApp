@@ -323,7 +323,6 @@ void main() {
     await tester.tap(find.text('Картки').last);
     await tester.pumpAndSettle();
 
-    expect(find.text('Картки'), findsWidgets);
     expect(find.text('האיש הולך ברחוב.'), findsOneWidget);
     expect(find.text('чоловік'), findsNothing);
 
@@ -363,7 +362,6 @@ void main() {
     await tester.tap(find.text('Написання'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Писання'), findsWidgets);
     expect(find.text('мир'), findsOneWidget);
 
     await tester.enterText(find.byType(EditableText), 'בית');
@@ -528,7 +526,7 @@ void main() {
     await tester.tap(find.text('Продовжити'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Картки'), findsWidgets);
+    expect(find.text('Знаю'), findsOneWidget);
     expect(find.text('Продовжити'), findsNothing);
   });
 

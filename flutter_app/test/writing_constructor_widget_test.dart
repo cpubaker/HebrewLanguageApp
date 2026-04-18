@@ -17,6 +17,7 @@ void main() {
       MaterialApp(
         home: Scaffold(
           body: WritingScreen(
+            initialMode: WritingPracticeMode.constructor,
             words: const [
               LearningWord(
                 wordId: 'word_peace',
@@ -35,9 +36,6 @@ void main() {
         ),
       ),
     );
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.byKey(const ValueKey('writing_mode_constructor')));
     await tester.pumpAndSettle();
 
     await tester.tap(find.text('של').first);
