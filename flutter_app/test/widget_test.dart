@@ -320,6 +320,9 @@ void main() {
     await tester.tap(find.byIcon(Icons.bolt_outlined));
     await tester.pumpAndSettle();
 
+    await tester.tap(find.text('Картки').last);
+    await tester.pumpAndSettle();
+
     expect(find.text('Картки'), findsWidgets);
     expect(find.text('האיש הולך ברחוב.'), findsOneWidget);
     expect(find.text('чоловік'), findsNothing);
@@ -357,10 +360,10 @@ void main() {
     await tester.tap(find.byIcon(Icons.bolt_outlined));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Письмо').last);
+    await tester.tap(find.text('Написання'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Письмо'), findsWidgets);
+    expect(find.text('Писання'), findsWidgets);
     expect(find.text('мир'), findsOneWidget);
 
     await tester.enterText(find.byType(EditableText), 'בית');
@@ -408,6 +411,9 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.tap(find.byIcon(Icons.bolt_outlined));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Картки').last);
     await tester.pumpAndSettle();
 
     await tester.tap(find.byIcon(Icons.arrow_forward_rounded).first);

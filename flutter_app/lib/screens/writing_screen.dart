@@ -8,17 +8,19 @@ import 'widgets/practice_header.dart';
 import 'widgets/practice_session_summary.dart';
 import 'widgets/practice_stat_pill.dart';
 
-enum _WritingPracticeMode { typing, constructor }
+enum WritingPracticeMode { typing, constructor }
 
 class WritingScreen extends StatefulWidget {
   const WritingScreen({
     super.key,
     required this.words,
     required this.onWordProgressChanged,
+    this.initialMode = WritingPracticeMode.typing,
   });
 
   final List<LearningWord> words;
   final WordProgressCallback onWordProgressChanged;
+  final WritingPracticeMode initialMode;
 
   @override
   State<WritingScreen> createState() => _WritingScreenState();
@@ -28,7 +30,7 @@ class _WritingScreenState extends State<WritingScreen> {
   late final WritingSession _session;
   late final TextEditingController _answerController;
 
-  _WritingPracticeMode _mode = _WritingPracticeMode.typing;
+  late WritingPracticeMode _mode;
   WritingPrompt? _currentPrompt;
   WritingAnswerResult? _currentAnswer;
   String? _inlineMessage;
@@ -41,6 +43,7 @@ class _WritingScreenState extends State<WritingScreen> {
     super.initState();
     _session = WritingSession(widget.words);
     _answerController = TextEditingController();
+    _mode = widget.initialMode;
     _moveToNextPrompt();
   }
 
@@ -61,11 +64,11 @@ class _WritingScreenState extends State<WritingScreen> {
   }
 
   void _submitAnswer() {
-    final answer = _mode == _WritingPracticeMode.typing
+    final answer = _mode == WritingPracticeMode.typing
         ? _answerController.text
         : _buildConstructorAnswer();
 
-    if (_mode == _WritingPracticeMode.constructor &&
+    if (_mode == WritingPracticeMode.constructor &&
         _selectedBlocks.any((block) => block == null)) {
       setState(() {
         _inlineMessage =
@@ -81,7 +84,7 @@ class _WritingScreenState extends State<WritingScreen> {
 
     if (result.status == WritingAnswerStatus.empty) {
       setState(() {
-        _inlineMessage = _mode == _WritingPracticeMode.typing
+        _inlineMessage = _mode == WritingPracticeMode.typing
             ? 'Введіть слово івритом, щоб перевірити відповідь.'
             : 'Складіть слово з блоків, щоб перевірити відповідь.';
       });
@@ -142,10 +145,10 @@ class _WritingScreenState extends State<WritingScreen> {
                   ChoiceChip(
                     key: const ValueKey('writing_mode_typing'),
                     label: const Text('Писання'),
-                    selected: _mode == _WritingPracticeMode.typing,
+                    selected: _mode == WritingPracticeMode.typing,
                     onSelected: (_) {
                       setState(() {
-                        _mode = _WritingPracticeMode.typing;
+                        _mode = WritingPracticeMode.typing;
                         _inlineMessage = null;
                       });
                     },
@@ -153,10 +156,10 @@ class _WritingScreenState extends State<WritingScreen> {
                   ChoiceChip(
                     key: const ValueKey('writing_mode_constructor'),
                     label: const Text('Конструктор'),
-                    selected: _mode == _WritingPracticeMode.constructor,
+                    selected: _mode == WritingPracticeMode.constructor,
                     onSelected: (_) {
                       setState(() {
-                        _mode = _WritingPracticeMode.constructor;
+                        _mode = WritingPracticeMode.constructor;
                         _inlineMessage = null;
                       });
                     },
@@ -196,7 +199,7 @@ class _WritingScreenState extends State<WritingScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      _mode == _WritingPracticeMode.typing
+                      _mode == WritingPracticeMode.typing
                           ? 'Підказку не показуємо: тут працюємо саме на пригадування.'
                           : 'Складіть слово з блоків. Частина блоків може бути зайвою.',
                       textAlign: TextAlign.center,
@@ -209,7 +212,7 @@ class _WritingScreenState extends State<WritingScreen> {
                 ),
               ),
               const SizedBox(height: 18),
-              if (_mode == _WritingPracticeMode.typing)
+              if (_mode == WritingPracticeMode.typing)
                 TextField(
                   controller: _answerController,
                   enabled: !hasAnswered,
@@ -276,7 +279,7 @@ class _WritingScreenState extends State<WritingScreen> {
                 )
               else
                 Text(
-                  _mode == _WritingPracticeMode.typing
+                  _mode == WritingPracticeMode.typing
                       ? 'Натисніть «Перевірити», коли будете готові.'
                       : 'Перетягніть або натисніть блоки, щоб зібрати слово, а потім перевірте відповідь.',
                   textAlign: TextAlign.center,

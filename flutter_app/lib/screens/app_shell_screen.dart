@@ -30,8 +30,6 @@ enum _RootArea { home, learn, practice, materials, more }
 
 enum _LearnSection { words, verbs }
 
-enum _PracticeSection { flashcards, writing }
-
 enum _MaterialsSection { guide, reading }
 
 enum _MoreSection { overview, progress, settings }
@@ -78,11 +76,8 @@ class _AppShellScreenState extends State<AppShellScreen> {
   final Map<String, int> _guidePersistenceTokens = <String, int>{};
   final Map<String, int> _readingPersistenceTokens = <String, int>{};
   final Map<String, int> _wordPersistenceTokens = <String, int>{};
-  FlashcardDeckMode _flashcardDeckMode = FlashcardDeckMode.allWords;
-  int _flashcardDeckRequestToken = 0;
   _RootArea _selectedArea = _RootArea.home;
   _LearnSection _learnSection = _LearnSection.words;
-  _PracticeSection _practiceSection = _PracticeSection.flashcards;
   _MaterialsSection _materialsSection = _MaterialsSection.guide;
   _MoreSection _moreSection = _MoreSection.overview;
   bool _autoHideBottomNavOnScroll = true;
@@ -252,22 +247,34 @@ class _AppShellScreenState extends State<AppShellScreen> {
     });
   }
 
-  void _openPracticeSection(_PracticeSection section) {
-    setState(() {
-      _practiceSection = section;
-      _selectedArea = _RootArea.practice;
-      _isBottomNavVisible = true;
-    });
+  void _openFlashcards([FlashcardDeckMode mode = FlashcardDeckMode.allWords]) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => _PracticeSessionScreen(
+          child: FlashcardsScreen(
+            words: _bundle?.words ?? const <LearningWord>[],
+            onWordProgressChanged: _handleWordProgressChanged,
+            initialDeckMode: mode,
+          ),
+        ),
+      ),
+    );
   }
 
-  void _openFlashcards([FlashcardDeckMode mode = FlashcardDeckMode.allWords]) {
-    setState(() {
-      _flashcardDeckMode = mode;
-      _flashcardDeckRequestToken += 1;
-      _practiceSection = _PracticeSection.flashcards;
-      _selectedArea = _RootArea.practice;
-      _isBottomNavVisible = true;
-    });
+  void _openWritingPractice([
+    WritingPracticeMode mode = WritingPracticeMode.typing,
+  ]) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => _PracticeSessionScreen(
+          child: WritingScreen(
+            words: _bundle?.words ?? const <LearningWord>[],
+            onWordProgressChanged: _handleWordProgressChanged,
+            initialMode: mode,
+          ),
+        ),
+      ),
+    );
   }
 
   void _openMaterialsSection(_MaterialsSection section) {
@@ -539,32 +546,35 @@ class _AppShellScreenState extends State<AppShellScreen> {
   }
 
   Widget _buildPracticeWorkspace(LearningBundle bundle) {
-    return WorkspaceScreen(
+    return WorkspaceHubScreen(
       title: 'Практика',
-      subtitle: 'Картки та письмо для повторення й активного пригадування.',
-      sections: const [
-        WorkspaceSection(label: 'Картки', icon: Icons.style_rounded),
-        WorkspaceSection(label: 'Письмо', icon: Icons.edit_rounded),
+      subtitle:
+          'Оберіть формат тренування і відкрийте його окремим повноекранним сеансом.',
+      shortcuts: [
+        WorkspaceShortcut(
+          title: 'Картки',
+          subtitle:
+              'Швидке повторення перекладу, контексту і наборів на повторення.',
+          icon: Icons.style_rounded,
+          accent: const Color(0xFF0F766E),
+          onTap: () => _openFlashcards(_preferredFlashcardDeckMode),
+        ),
+        WorkspaceShortcut(
+          title: 'Написання',
+          subtitle:
+              'Введення слова івритом без підказки для активного пригадування.',
+          icon: Icons.edit_rounded,
+          accent: const Color(0xFF2B5D4F),
+          onTap: () => _openWritingPractice(),
+        ),
+        WorkspaceShortcut(
+          title: 'Конструктор',
+          subtitle: 'Складання слова з блоків у правильному порядку.',
+          icon: Icons.extension_rounded,
+          accent: const Color(0xFFB45309),
+          onTap: () => _openWritingPractice(WritingPracticeMode.constructor),
+        ),
       ],
-      selectedIndex: _practiceSection.index,
-      onSectionSelected: (index) {
-        _openPracticeSection(_PracticeSection.values[index]);
-      },
-      child: IndexedStack(
-        index: _practiceSection.index,
-        children: [
-          FlashcardsScreen(
-            words: bundle.words,
-            onWordProgressChanged: _handleWordProgressChanged,
-            initialDeckMode: _flashcardDeckMode,
-            deckRequestToken: _flashcardDeckRequestToken,
-          ),
-          WritingScreen(
-            words: bundle.words,
-            onWordProgressChanged: _handleWordProgressChanged,
-          ),
-        ],
-      ),
     );
   }
 
@@ -626,7 +636,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
         accent: const Color(0xFF8C3E9F),
         onTap: () {
           if (_preferWritingPractice) {
-            _openPracticeSection(_PracticeSection.writing);
+            _openWritingPractice();
           } else {
             _openFlashcards(_preferredFlashcardDeckMode);
           }
@@ -671,7 +681,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
             readingLessonStatuses: _readingLessonStatuses,
             onOpenWords: () => _openLearnSection(_LearnSection.words),
             onOpenFlashcards: _openFlashcards,
-            onOpenWriting: () => _openPracticeSection(_PracticeSection.writing),
+            onOpenWriting: () => _openWritingPractice(),
             onOpenGuide: () => _openMaterialsSection(_MaterialsSection.guide),
             onOpenReading: () =>
                 _openMaterialsSection(_MaterialsSection.reading),
@@ -728,8 +738,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
                           onOpenWords: () =>
                               _openLearnSection(_LearnSection.words),
                           onOpenFlashcards: _openFlashcards,
-                          onOpenWriting: () =>
-                              _openPracticeSection(_PracticeSection.writing),
+                          onOpenWriting: () => _openWritingPractice(),
                           onOpenGuide: () =>
                               _openMaterialsSection(_MaterialsSection.guide),
                           onOpenVerbs: () =>
@@ -764,6 +773,20 @@ class _AppShellScreenState extends State<AppShellScreen> {
           ),
         );
       },
+    );
+  }
+}
+
+class _PracticeSessionScreen extends StatelessWidget {
+  const _PracticeSessionScreen({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: child,
     );
   }
 }
