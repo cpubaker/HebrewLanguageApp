@@ -25,6 +25,7 @@ class HomeScreen extends StatelessWidget {
     required this.onOpenGuide,
     required this.onOpenVerbs,
     required this.onOpenReading,
+    required this.onOpenReadingLesson,
   });
 
   final LearningBundle bundle;
@@ -35,6 +36,7 @@ class HomeScreen extends StatelessWidget {
   final VoidCallback onOpenGuide;
   final VoidCallback onOpenVerbs;
   final VoidCallback onOpenReading;
+  final ValueChanged<LessonEntry> onOpenReadingLesson;
 
   @override
   Widget build(BuildContext context) {
@@ -131,6 +133,7 @@ class HomeScreen extends StatelessWidget {
                     (lesson) => _ReadingLessonTile(
                       lesson: lesson,
                       documentLoader: documentLoader,
+                      onTap: () => onOpenReadingLesson(lesson),
                     ),
                   ),
                 ],
@@ -966,10 +969,12 @@ class _ReadingLessonTile extends StatelessWidget {
   const _ReadingLessonTile({
     required this.lesson,
     required this.documentLoader,
+    required this.onTap,
   });
 
   final LessonEntry lesson;
   final LessonDocumentLoader documentLoader;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -978,58 +983,62 @@ class _ReadingLessonTile extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
-      child: Container(
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: const Color(0xFFF1F5FF),
+      child: Material(
+        color: const Color(0xFFF1F5FF),
+        borderRadius: BorderRadius.circular(18),
+        child: InkWell(
           borderRadius: BorderRadius.circular(18),
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 38,
-              height: 38,
-              decoration: BoxDecoration(
-                color: const Color(0xFF1D4ED8).withValues(alpha: 0.10),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Icon(
-                Icons.auto_stories_rounded,
-                color: Color(0xFF1D4ED8),
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  FutureBuilder<LessonDocument>(
-                    future: documentLoader.load(lesson.assetPath),
-                    builder: (context, snapshot) {
-                      final document = snapshot.data;
-                      final resolvedTitle =
-                          document != null && document.title.trim().isNotEmpty
-                          ? document.title.trim()
-                          : fallbackTitle;
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(14),
+            child: Row(
+              children: [
+                Container(
+                  width: 38,
+                  height: 38,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1D4ED8).withValues(alpha: 0.10),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(
+                    Icons.auto_stories_rounded,
+                    color: Color(0xFF1D4ED8),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      FutureBuilder<LessonDocument>(
+                        future: documentLoader.load(lesson.assetPath),
+                        builder: (context, snapshot) {
+                          final document = snapshot.data;
+                          final resolvedTitle =
+                              document != null && document.title.trim().isNotEmpty
+                              ? document.title.trim()
+                              : fallbackTitle;
 
-                      return Text(
-                        resolvedTitle,
-                        style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(fontWeight: FontWeight.w700),
-                      );
-                    },
+                          return Text(
+                            resolvedTitle,
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.w700),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        level,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: const Color(0xFF5F5A52),
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    level,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: const Color(0xFF5F5A52),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

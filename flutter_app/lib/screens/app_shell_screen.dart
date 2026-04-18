@@ -278,6 +278,23 @@ class _AppShellScreenState extends State<AppShellScreen> {
     });
   }
 
+  void _openReadingLesson(LessonEntry lesson) {
+    final lessonStatus =
+        _readingLessonStatuses[lesson.assetPath] ?? GuideLessonStatus.unread;
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => ReadingDetailScreen(
+          lesson: lesson,
+          documentLoader: widget.documentLoader,
+          initialStatus: lessonStatus,
+          onStatusChanged: (status) {
+            _handleReadingStatusChanged(lesson.assetPath, status);
+          },
+        ),
+      ),
+    );
+  }
+
   void _openMoreSection(_MoreSection section) {
     setState(() {
       _moreSection = section;
@@ -719,6 +736,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
                               _openLearnSection(_LearnSection.verbs),
                           onOpenReading: () =>
                               _openMaterialsSection(_MaterialsSection.reading),
+                          onOpenReadingLesson: _openReadingLesson,
                         ),
                         _buildLearnWorkspace(bundle),
                         _buildPracticeWorkspace(bundle),
