@@ -414,18 +414,15 @@ class _SummaryCard extends StatelessWidget {
       ),
     );
 
-    return SizedBox(
-      width: 156,
-      child: Material(
-        color: Colors.transparent,
-        child: onTap == null
-            ? card
-            : InkWell(
-                borderRadius: BorderRadius.circular(tokens.panelRadius + 2),
-                onTap: onTap,
-                child: card,
-              ),
-      ),
+    return Material(
+      color: Colors.transparent,
+      child: onTap == null
+          ? card
+          : InkWell(
+              borderRadius: BorderRadius.circular(tokens.panelRadius + 2),
+              onTap: onTap,
+              child: card,
+            ),
     );
   }
 }
@@ -665,6 +662,47 @@ class _InventoryOverviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final summaryCards = [
+      _SummaryCard(
+        label: 'Слова',
+        value: bundle.words.length,
+        accent: const Color(0xFF0F766E),
+        onTap: onOpenWords,
+      ),
+      _SummaryCard(
+        label: 'Картки',
+        value: bundle.words.where((word) => word.contexts.isNotEmpty).length,
+        accent: const Color(0xFFBE5B00),
+        onTap: onOpenFlashcards,
+      ),
+      _SummaryCard(
+        label: 'Письмо',
+        value: bundle.words
+            .where((word) => word.writingCorrect > 0 || word.writingWrong > 0)
+            .length,
+        accent: const Color(0xFF8C3E9F),
+        onTap: onOpenWriting,
+      ),
+      _SummaryCard(
+        label: 'Довідник',
+        value: bundle.guideLessons.length,
+        accent: const Color(0xFFB45309),
+        onTap: onOpenGuide,
+      ),
+      _SummaryCard(
+        label: 'Дієслова',
+        value: bundle.verbLessons.length,
+        accent: const Color(0xFF7C3AED),
+        onTap: onOpenVerbs,
+      ),
+      _SummaryCard(
+        label: 'Читання',
+        value: bundle.readingLessons.length,
+        accent: const Color(0xFF1D4ED8),
+        onTap: onOpenReading,
+      ),
+    ];
+
     return AppSectionCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -674,53 +712,22 @@ class _InventoryOverviewCard extends StatelessWidget {
             subtitle: 'Повна база застосунку лишається під рукою як довідкова карта.',
           ),
           const SizedBox(height: 16),
-          Wrap(
-            spacing: 12,
-            runSpacing: 12,
-            children: [
-              _SummaryCard(
-                label: 'Слова',
-                value: bundle.words.length,
-                accent: const Color(0xFF0F766E),
-                onTap: onOpenWords,
-              ),
-              _SummaryCard(
-                label: 'Картки',
-                value: bundle.words
-                    .where((word) => word.contexts.isNotEmpty)
-                    .length,
-                accent: const Color(0xFFBE5B00),
-                onTap: onOpenFlashcards,
-              ),
-              _SummaryCard(
-                label: 'Письмо',
-                value: bundle.words
-                    .where(
-                      (word) => word.writingCorrect > 0 || word.writingWrong > 0,
-                    )
-                    .length,
-                accent: const Color(0xFF8C3E9F),
-                onTap: onOpenWriting,
-              ),
-              _SummaryCard(
-                label: 'Довідник',
-                value: bundle.guideLessons.length,
-                accent: const Color(0xFFB45309),
-                onTap: onOpenGuide,
-              ),
-              _SummaryCard(
-                label: 'Дієслова',
-                value: bundle.verbLessons.length,
-                accent: const Color(0xFF7C3AED),
-                onTap: onOpenVerbs,
-              ),
-              _SummaryCard(
-                label: 'Читання',
-                value: bundle.readingLessons.length,
-                accent: const Color(0xFF1D4ED8),
-                onTap: onOpenReading,
-              ),
-            ],
+          LayoutBuilder(
+            builder: (context, constraints) {
+              const spacing = 12.0;
+              final columns = constraints.maxWidth >= 560 ? 3 : 2;
+              final itemWidth =
+                  (constraints.maxWidth - spacing * (columns - 1)) / columns;
+
+              return Wrap(
+                spacing: spacing,
+                runSpacing: spacing,
+                children: [
+                  for (final card in summaryCards)
+                    SizedBox(width: itemWidth, child: card),
+                ],
+              );
+            },
           ),
         ],
       ),
