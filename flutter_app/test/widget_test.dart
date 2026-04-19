@@ -132,45 +132,56 @@ void main() {
 
     expect(find.text('Видимі: 1'), findsOneWidget);
     expect(find.text('Усього: 2'), findsOneWidget);
-
   });
 
-  testWidgets('collapses bottom navigation on scroll and restores it from handle', (
-    WidgetTester tester,
-  ) async {
-    await _useTallMobileViewport(tester);
-    await tester.pumpWidget(
-      HebrewFlutterApp(
-        loader: FakeLearningBundleLoader(),
-        documentLoader: FakeLessonDocumentLoader(),
-        progressStore: FakeWordProgressStore(),
-        guideProgressStore: FakeGuideProgressStore(),
-        readingProgressStore: FakeReadingProgressStore(),
-      ),
-    );
-    await tester.pumpAndSettle();
+  testWidgets(
+    'collapses bottom navigation on scroll and restores it from handle',
+    (WidgetTester tester) async {
+      await _useTallMobileViewport(tester);
+      await tester.pumpWidget(
+        HebrewFlutterApp(
+          loader: FakeLearningBundleLoader(),
+          documentLoader: FakeLessonDocumentLoader(),
+          progressStore: FakeWordProgressStore(),
+          guideProgressStore: FakeGuideProgressStore(),
+          readingProgressStore: FakeReadingProgressStore(),
+        ),
+      );
+      await tester.pumpAndSettle();
 
-    expect(find.byKey(const ValueKey('app-shell-bottom-nav')), findsOneWidget);
-    expect(find.byKey(const ValueKey('app-shell-nav-handle')), findsNothing);
+      expect(
+        find.byKey(const ValueKey('app-shell-bottom-nav')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const ValueKey('app-shell-nav-handle')), findsNothing);
 
-    await tester.drag(
-      find.descendant(
-        of: find.byType(HomeScreen),
-        matching: find.byType(ListView),
-      ).first,
-      const Offset(0, -500),
-    );
-    await tester.pumpAndSettle();
+      await tester.drag(
+        find
+            .descendant(
+              of: find.byType(HomeScreen),
+              matching: find.byType(ListView),
+            )
+            .first,
+        const Offset(0, -500),
+      );
+      await tester.pumpAndSettle();
 
-    expect(find.byKey(const ValueKey('app-shell-nav-handle')), findsOneWidget);
-    expect(find.byKey(const ValueKey('app-shell-bottom-nav')), findsNothing);
+      expect(
+        find.byKey(const ValueKey('app-shell-nav-handle')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const ValueKey('app-shell-bottom-nav')), findsNothing);
 
-    await tester.tap(find.byKey(const ValueKey('app-shell-nav-handle')));
-    await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const ValueKey('app-shell-nav-handle')));
+      await tester.pumpAndSettle();
 
-    expect(find.byKey(const ValueKey('app-shell-bottom-nav')), findsOneWidget);
-    expect(find.byKey(const ValueKey('app-shell-nav-handle')), findsNothing);
-  });
+      expect(
+        find.byKey(const ValueKey('app-shell-bottom-nav')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const ValueKey('app-shell-nav-handle')), findsNothing);
+    },
+  );
 
   testWidgets('matches Hebrew search without requiring niqqud', (
     WidgetTester tester,
@@ -391,6 +402,39 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(store.savedByWordId['word_peace']?.writingCorrect, 1);
+  });
+
+  testWidgets('opens sprint from practice hub and persists an answer', (
+    WidgetTester tester,
+  ) async {
+    await _useTallMobileViewport(tester);
+    final store = FakeWordProgressStore();
+
+    await tester.pumpWidget(
+      HebrewFlutterApp(
+        loader: FakeLearningBundleLoader(),
+        documentLoader: FakeLessonDocumentLoader(),
+        progressStore: store,
+        guideProgressStore: FakeGuideProgressStore(),
+        readingProgressStore: FakeReadingProgressStore(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.bolt_outlined));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Спринт'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('01:00'), findsOneWidget);
+    expect(find.byKey(const ValueKey('sprint-option-0')), findsOneWidget);
+    expect(find.byKey(const ValueKey('sprint-option-1')), findsOneWidget);
+
+    await tester.tap(find.byKey(const ValueKey('sprint-option-0')));
+    await tester.pumpAndSettle();
+
+    expect(store.savedWordIds, isNotEmpty);
   });
 
   testWidgets('shows a completion state after the last flashcard in the deck', (

@@ -22,6 +22,7 @@ class HomeScreen extends StatelessWidget {
     required this.onOpenWords,
     required this.onOpenFlashcards,
     required this.onOpenWriting,
+    required this.onOpenSprint,
     required this.onOpenGuide,
     required this.onOpenVerbs,
     required this.onOpenReading,
@@ -33,6 +34,7 @@ class HomeScreen extends StatelessWidget {
   final VoidCallback onOpenWords;
   final ValueChanged<FlashcardDeckMode> onOpenFlashcards;
   final VoidCallback onOpenWriting;
+  final VoidCallback onOpenSprint;
   final VoidCallback onOpenGuide;
   final VoidCallback onOpenVerbs;
   final VoidCallback onOpenReading;
@@ -62,14 +64,13 @@ class HomeScreen extends StatelessWidget {
         const SizedBox(height: 20),
         _DashboardPrimaryActionCard(action: continueAction),
         const SizedBox(height: 16),
-        _DashboardRecommendationsCard(
-          actions: recommendedActions,
-        ),
+        _DashboardRecommendationsCard(actions: recommendedActions),
         const SizedBox(height: 16),
         _QuickActionStrip(
           onOpenWords: onOpenWords,
           onOpenFlashcards: onOpenFlashcards,
           onOpenWriting: onOpenWriting,
+          onOpenSprint: onOpenSprint,
           onOpenGuide: onOpenGuide,
           onOpenVerbs: onOpenVerbs,
           onOpenReading: onOpenReading,
@@ -432,6 +433,7 @@ class _QuickActionStrip extends StatelessWidget {
     required this.onOpenWords,
     required this.onOpenFlashcards,
     required this.onOpenWriting,
+    required this.onOpenSprint,
     required this.onOpenGuide,
     required this.onOpenVerbs,
     required this.onOpenReading,
@@ -440,6 +442,7 @@ class _QuickActionStrip extends StatelessWidget {
   final VoidCallback onOpenWords;
   final ValueChanged<FlashcardDeckMode> onOpenFlashcards;
   final VoidCallback onOpenWriting;
+  final VoidCallback onOpenSprint;
   final VoidCallback onOpenGuide;
   final VoidCallback onOpenVerbs;
   final VoidCallback onOpenReading;
@@ -466,6 +469,11 @@ class _QuickActionStrip extends StatelessWidget {
                 onPressed: onOpenWriting,
                 icon: const Icon(Icons.edit_rounded),
                 label: const Text('До письма'),
+              ),
+              OutlinedButton.icon(
+                onPressed: onOpenSprint,
+                icon: const Icon(Icons.timer_rounded),
+                label: const Text('До спринту'),
               ),
               OutlinedButton.icon(
                 onPressed: onOpenWords,
@@ -530,9 +538,9 @@ class _DashboardPrimaryActionCard extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   action.title,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
                 ),
                 const SizedBox(height: 6),
                 Text(
@@ -709,7 +717,8 @@ class _InventoryOverviewCard extends StatelessWidget {
         children: [
           const AppPageHeader(
             title: 'Усі модулі',
-            subtitle: 'Повна база застосунку лишається під рукою як довідкова карта.',
+            subtitle:
+                'Повна база застосунку лишається під рукою як довідкова карта.',
           ),
           const SizedBox(height: 16),
           LayoutBuilder(
@@ -893,20 +902,20 @@ class _WordTile extends StatelessWidget {
     final learningState = classifyWordLearningState(word);
     final status = switch (learningState) {
       WordLearningState.unseen => (
-          label: 'Нове',
-          color: const Color(0xFF7C3AED),
-          background: const Color(0xFFF3E8FF),
-        ),
+        label: 'Нове',
+        color: const Color(0xFF7C3AED),
+        background: const Color(0xFFF3E8FF),
+      ),
       WordLearningState.known => (
-          label: 'Вивчене',
-          color: const Color(0xFF0F766E),
-          background: const Color(0xFFE7F8F2),
-        ),
+        label: 'Вивчене',
+        color: const Color(0xFF0F766E),
+        background: const Color(0xFFE7F8F2),
+      ),
       WordLearningState.needsReview => (
-          label: 'Повторити',
-          color: const Color(0xFFB45309),
-          background: const Color(0xFFFFF1E6),
-        ),
+        label: 'Повторити',
+        color: const Color(0xFFB45309),
+        background: const Color(0xFFFFF1E6),
+      ),
     };
 
     return Padding(
@@ -1022,7 +1031,8 @@ class _ReadingLessonTile extends StatelessWidget {
                         builder: (context, snapshot) {
                           final document = snapshot.data;
                           final resolvedTitle =
-                              document != null && document.title.trim().isNotEmpty
+                              document != null &&
+                                  document.title.trim().isNotEmpty
                               ? document.title.trim()
                               : fallbackTitle;
 

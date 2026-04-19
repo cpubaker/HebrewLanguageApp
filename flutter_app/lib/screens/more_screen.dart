@@ -97,6 +97,7 @@ class MoreProgressScreen extends StatelessWidget {
     required this.onOpenWords,
     required this.onOpenFlashcards,
     required this.onOpenWriting,
+    required this.onOpenSprint,
     required this.onOpenGuide,
     required this.onOpenReading,
   });
@@ -107,6 +108,7 @@ class MoreProgressScreen extends StatelessWidget {
   final VoidCallback onOpenWords;
   final ValueChanged<FlashcardDeckMode> onOpenFlashcards;
   final VoidCallback onOpenWriting;
+  final VoidCallback onOpenSprint;
   final VoidCallback onOpenGuide;
   final VoidCallback onOpenReading;
 
@@ -310,6 +312,11 @@ class MoreProgressScreen extends StatelessWidget {
                     onPressed: onOpenWriting,
                     icon: const Icon(Icons.edit_rounded),
                     label: const Text('До письма'),
+                  ),
+                  OutlinedButton.icon(
+                    onPressed: onOpenSprint,
+                    icon: const Icon(Icons.timer_rounded),
+                    label: const Text('Спринт'),
                   ),
                   OutlinedButton.icon(
                     onPressed: guide.studying > 0 ? onOpenGuide : onOpenReading,

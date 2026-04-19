@@ -21,6 +21,7 @@ import 'guide_screen.dart';
 import 'home_screen.dart';
 import 'more_screen.dart';
 import 'reading_screen.dart';
+import 'sprint_screen.dart';
 import 'verbs_screen.dart';
 import 'workspace_screen.dart';
 import 'words_screen.dart';
@@ -66,8 +67,8 @@ class _AppShellScreenState extends State<AppShellScreen> {
   static const double _collapsedBodyBottomInset = 36;
 
   late Future<LearningBundle> _bundleFuture;
-  late final AudioPlaybackAwareness _audioPlaybackAwareness =
-      widget.audioPlaybackAwarenessFactory();
+  late final AudioPlaybackAwareness _audioPlaybackAwareness = widget
+      .audioPlaybackAwarenessFactory();
   LearningBundle? _bundle;
   Map<String, GuideLessonStatus> _guideLessonStatuses =
       <String, GuideLessonStatus>{};
@@ -271,6 +272,19 @@ class _AppShellScreenState extends State<AppShellScreen> {
             words: _bundle?.words ?? const <LearningWord>[],
             onWordProgressChanged: _handleWordProgressChanged,
             initialMode: mode,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _openSprint() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => _PracticeSessionScreen(
+          child: SprintScreen(
+            words: _bundle?.words ?? const <LearningWord>[],
+            onWordProgressChanged: _handleWordProgressChanged,
           ),
         ),
       ),
@@ -574,6 +588,14 @@ class _AppShellScreenState extends State<AppShellScreen> {
           accent: const Color(0xFFB45309),
           onTap: () => _openWritingPractice(WritingPracticeMode.constructor),
         ),
+        WorkspaceShortcut(
+          title: 'Спринт',
+          subtitle:
+              'Хвилинний режим на швидкість: для кожного слова є два варіанти перекладу.',
+          icon: Icons.timer_rounded,
+          accent: const Color(0xFFB91C1C),
+          onTap: _openSprint,
+        ),
       ],
     );
   }
@@ -614,24 +636,21 @@ class _AppShellScreenState extends State<AppShellScreen> {
     final shortcuts = [
       WorkspaceShortcut(
         title: 'Головна',
-        subtitle:
-            'Повернутися до dashboard з рекомендаціями і прогресом.',
+        subtitle: 'Повернутися до dashboard з рекомендаціями і прогресом.',
         icon: Icons.home_rounded,
         accent: const Color(0xFF2B5D4F),
         onTap: () => _selectArea(_RootArea.home.index),
       ),
       WorkspaceShortcut(
         title: 'Вчити',
-        subtitle:
-            'Слова й дієслова в одному робочому просторі.',
+        subtitle: 'Слова й дієслова в одному робочому просторі.',
         icon: Icons.translate_rounded,
         accent: const Color(0xFF0F766E),
         onTap: () => _selectArea(_RootArea.learn.index),
       ),
       WorkspaceShortcut(
         title: 'Практика',
-        subtitle:
-            'Картки й письмо для активного тренування.',
+        subtitle: 'Картки й письмо для активного тренування.',
         icon: Icons.style_rounded,
         accent: const Color(0xFF8C3E9F),
         onTap: () {
@@ -643,9 +662,16 @@ class _AppShellScreenState extends State<AppShellScreen> {
         },
       ),
       WorkspaceShortcut(
-        title: 'Матеріали',
+        title: 'Спринт',
         subtitle:
-            'Довідник і читання для теорії та контексту.',
+            'Хвилинна вправа з вибором правильного перекладу між двома варіантами.',
+        icon: Icons.timer_rounded,
+        accent: const Color(0xFFB91C1C),
+        onTap: _openSprint,
+      ),
+      WorkspaceShortcut(
+        title: 'Матеріали',
+        subtitle: 'Довідник і читання для теорії та контексту.',
         icon: Icons.menu_book_rounded,
         accent: const Color(0xFFB45309),
         onTap: () => _selectArea(_RootArea.materials.index),
@@ -662,10 +688,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
           icon: Icons.dashboard_customize_rounded,
         ),
         WorkspaceSection(label: 'Прогрес', icon: Icons.insights_rounded),
-        WorkspaceSection(
-          label: 'Налаштування',
-          icon: Icons.tune_rounded,
-        ),
+        WorkspaceSection(label: 'Налаштування', icon: Icons.tune_rounded),
       ],
       selectedIndex: _moreSection.index,
       onSectionSelected: (index) {
@@ -682,6 +705,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
             onOpenWords: () => _openLearnSection(_LearnSection.words),
             onOpenFlashcards: _openFlashcards,
             onOpenWriting: () => _openWritingPractice(),
+            onOpenSprint: _openSprint,
             onOpenGuide: () => _openMaterialsSection(_MaterialsSection.guide),
             onOpenReading: () =>
                 _openMaterialsSection(_MaterialsSection.reading),
@@ -698,6 +722,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<LearningBundle>(
@@ -739,6 +764,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
                               _openLearnSection(_LearnSection.words),
                           onOpenFlashcards: _openFlashcards,
                           onOpenWriting: () => _openWritingPractice(),
+                          onOpenSprint: _openSprint,
                           onOpenGuide: () =>
                               _openMaterialsSection(_MaterialsSection.guide),
                           onOpenVerbs: () =>
@@ -784,9 +810,7 @@ class _PracticeSessionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(child: child),
-    );
+    return Scaffold(body: SafeArea(child: child));
   }
 }
 
