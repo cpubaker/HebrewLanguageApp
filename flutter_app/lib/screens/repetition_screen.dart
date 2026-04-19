@@ -9,11 +9,10 @@ import '../services/learning_audio_player.dart';
 import '../services/repetition_queue.dart';
 import '../theme/app_theme.dart';
 import 'audio_playback_feedback.dart';
-import 'widgets/practice_header.dart';
 import 'widgets/practice_panel.dart';
 import 'widgets/practice_stat_pill.dart';
 
-class RepetitionScreen extends StatelessWidget {
+class RepetitionScreen extends StatefulWidget {
   const RepetitionScreen({
     super.key,
     required this.words,
@@ -26,142 +25,324 @@ class RepetitionScreen extends StatelessWidget {
   final AudioPlaybackAwareness audioPlaybackAwareness;
 
   @override
+  State<RepetitionScreen> createState() => _RepetitionScreenState();
+}
+
+class _RepetitionScreenState extends State<RepetitionScreen> {
+  late RepetitionQueue _queue;
+  int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _rebuildQueue();
+  }
+
+  @override
+  void didUpdateWidget(covariant RepetitionScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!identical(oldWidget.words, widget.words)) {
+      _rebuildQueue();
+    }
+  }
+
+  void _rebuildQueue() {
+    _queue = RepetitionQueue.fromWords(widget.words);
+    _currentIndex = 0;
+  }
+
+  List<RepetitionEntry> get _entries => _queue.entries;
+
+  RepetitionEntry? get _currentEntry {
+    if (_currentIndex < 0 || _currentIndex >= _entries.length) {
+      return null;
+    }
+
+    return _entries[_currentIndex];
+  }
+
+  void _showNextCard() {
+    if (_entries.isEmpty) {
+      return;
+    }
+
+    setState(() {
+      _currentIndex += 1;
+    });
+  }
+
+  void _restart() {
+    setState(() {
+      _currentIndex = 0;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
-    final queue = RepetitionQueue.fromWords(words);
-    final lastMistakes = queue.entriesFor(RepetitionKind.lastMistake);
-    final recentStarts = queue.entriesFor(RepetitionKind.recentStart);
+    final currentEntry = _currentEntry;
 
-    return ListView(
-      padding: tokens.pagePadding.copyWith(bottom: 32),
-      children: [
-        const PracticeHeader(
-          title: 'Повторення',
-          subtitle:
-              'Спокійний режим без таймера і без варіантів відповіді. Тут зібрані слова, які щойно увійшли у вивчення, та слова з останньою помилкою.',
-        ),
-        const SizedBox(height: 16),
-        Wrap(
-          spacing: 12,
-          runSpacing: 12,
+    if (_queue.isEmpty) {
+      return Padding(
+        padding: tokens.pagePadding.copyWith(bottom: 32),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            PracticeStatPill(
-              label: 'Усього',
-              value: queue.total,
-              icon: Icons.layers_rounded,
-              accent: const Color(0xFF163832),
+            const _CompactHeader(
+              title: 'Повторення',
+              subtitle: 'Коли з’являться нові слова або останні помилки, вони будуть тут.',
             ),
-            PracticeStatPill(
-              label: 'Остання помилка',
-              value: queue.lastMistakeCount,
-              icon: Icons.error_outline_rounded,
-              accent: const Color(0xFFB45309),
-            ),
-            PracticeStatPill(
-              label: 'Щойно у вивченні',
-              value: queue.recentStartCount,
-              icon: Icons.new_releases_outlined,
-              accent: const Color(0xFF1D4ED8),
+            const SizedBox(height: 16),
+            const Expanded(
+              child: _EmptyState(),
             ),
           ],
         ),
-        const SizedBox(height: 18),
-        if (queue.isEmpty)
-          const PracticePanel(
-            child: Column(
-              children: [
-                Icon(
-                  Icons.check_circle_outline_rounded,
-                  size: 32,
-                  color: Color(0xFF0F766E),
-                ),
-                SizedBox(height: 12),
-                Text(
-                  'Зараз список повторення порожній.',
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 8),
-                Text(
-                  'Слова з’являться тут, коли ви почнете новий набір або десь помилитеся востаннє.',
-                  textAlign: TextAlign.center,
-                ),
-              ],
+      );
+    }
+
+    if (currentEntry == null) {
+      return Padding(
+        padding: tokens.pagePadding.copyWith(bottom: 32),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const _CompactHeader(
+              title: 'Повторення',
+              subtitle: 'Сесію завершено. Можна одразу пройти її ще раз.',
             ),
-          )
-        else ...[
-          if (lastMistakes.isNotEmpty) ...[
-            const _SectionHeader(
-              title: 'Після помилки',
-              subtitle:
-                  'Слова, по яких остання спроба завершилась помилкою.',
+            const SizedBox(height: 16),
+            Expanded(
+              child: _CompletedState(
+                queue: _queue,
+                onRestart: _restart,
+              ),
             ),
-            const SizedBox(height: 12),
-            for (var index = 0; index < lastMistakes.length; index += 1)
-              Padding(
-                padding: EdgeInsets.only(
-                  bottom: index == lastMistakes.length - 1 ? 0 : 12,
-                ),
-                child: _RepetitionCard(
-                  entry: lastMistakes[index],
-                  audioPlayerFactory: audioPlayerFactory,
-                  audioPlaybackAwareness: audioPlaybackAwareness,
+          ],
+        ),
+      );
+    }
+
+    final progressValue =
+        _entries.isEmpty ? 0.0 : (_currentIndex + 1) / _entries.length;
+    final isLastCard = _currentIndex == _entries.length - 1;
+
+    return Padding(
+      padding: tokens.pagePadding.copyWith(bottom: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _CompactHeader(
+            title: 'Повторення',
+            subtitle: 'Одне слово на екран, без таймера і без варіантів.',
+            trailing: Text(
+              '${_currentIndex + 1}/${_entries.length}',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w800,
+                color: const Color(0xFF163832),
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(999),
+            child: LinearProgressIndicator(
+              minHeight: 8,
+              value: progressValue,
+              backgroundColor: const Color(0xFFE9E2D3),
+              valueColor: const AlwaysStoppedAnimation<Color>(
+                Color(0xFF0F766E),
+              ),
+            ),
+          ),
+          const SizedBox(height: 14),
+          Expanded(
+            child: _RepetitionCard(
+              entry: currentEntry,
+              audioPlayerFactory: widget.audioPlayerFactory,
+              audioPlaybackAwareness: widget.audioPlaybackAwareness,
+            ),
+          ),
+          const SizedBox(height: 14),
+          FilledButton.icon(
+            onPressed: _showNextCard,
+            icon: Icon(
+              isLastCard
+                  ? Icons.check_circle_outline_rounded
+                  : Icons.arrow_forward_rounded,
+            ),
+            label: Text(isLastCard ? 'Завершити' : 'Далі'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _CompactHeader extends StatelessWidget {
+  const _CompactHeader({
+    required this.title,
+    required this.subtitle,
+    this.trailing,
+  });
+
+  final String title;
+  final String subtitle;
+  final Widget? trailing;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: const Color(0xFF163832),
                 ),
               ),
-            const SizedBox(height: 18),
-          ],
-          if (recentStarts.isNotEmpty) ...[
-            const _SectionHeader(
-              title: 'Щойно у вивченні',
-              subtitle:
-                  'Слова, з якими ви вже почали працювати, але вони ще нові у вашому циклі.',
-            ),
-            const SizedBox(height: 12),
-            for (var index = 0; index < recentStarts.length; index += 1)
-              Padding(
-                padding: EdgeInsets.only(
-                  bottom: index == recentStarts.length - 1 ? 0 : 12,
-                ),
-                child: _RepetitionCard(
-                  entry: recentStarts[index],
-                  audioPlayerFactory: audioPlayerFactory,
-                  audioPlaybackAwareness: audioPlaybackAwareness,
+              const SizedBox(height: 4),
+              Text(
+                subtitle,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: const Color(0xFF6C665D),
+                  height: 1.35,
                 ),
               ),
-          ],
+            ],
+          ),
+        ),
+        if (trailing != null) ...[
+          const SizedBox(width: 12),
+          trailing!,
         ],
       ],
     );
   }
 }
 
-class _SectionHeader extends StatelessWidget {
-  const _SectionHeader({
-    required this.title,
-    required this.subtitle,
-  });
-
-  final String title;
-  final String subtitle;
+class _EmptyState extends StatelessWidget {
+  const _EmptyState();
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: Theme.of(
-            context,
-          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          subtitle,
-          style: Theme.of(
-            context,
-          ).textTheme.bodyMedium?.copyWith(color: const Color(0xFF6C665D)),
-        ),
-      ],
+    return PracticePanel(
+      backgroundColor: Colors.white,
+      radius: 28,
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.check_circle_outline_rounded,
+            size: 36,
+            color: Color(0xFF0F766E),
+          ),
+          const SizedBox(height: 14),
+          Text(
+            'Список повторення поки порожній.',
+            textAlign: TextAlign.center,
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Спочатку відкрийте нові слова або зробіть кілька спроб у практиці.',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: const Color(0xFF6C665D),
+              height: 1.45,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _CompletedState extends StatelessWidget {
+  const _CompletedState({
+    required this.queue,
+    required this.onRestart,
+  });
+
+  final RepetitionQueue queue;
+  final VoidCallback onRestart;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(28),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x14000000),
+            blurRadius: 22,
+            offset: Offset(0, 12),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: const Color(0xFF0F766E).withValues(alpha: 0.10),
+              borderRadius: BorderRadius.circular(999),
+            ),
+            child: Text(
+              'Готово',
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                color: const Color(0xFF0F766E),
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            '${queue.total} слів переглянуто',
+            textAlign: TextAlign.center,
+            style: Theme.of(
+              context,
+            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w800),
+          ),
+          const SizedBox(height: 10),
+          Wrap(
+            spacing: 12,
+            runSpacing: 12,
+            alignment: WrapAlignment.center,
+            children: [
+              PracticeStatPill(
+                label: 'Після помилки',
+                value: queue.lastMistakeCount,
+                icon: Icons.error_outline_rounded,
+                accent: const Color(0xFFB45309),
+              ),
+              PracticeStatPill(
+                label: 'Щойно у вивченні',
+                value: queue.recentStartCount,
+                icon: Icons.new_releases_outlined,
+                accent: const Color(0xFF1D4ED8),
+              ),
+            ],
+          ),
+          const SizedBox(height: 18),
+          FilledButton.icon(
+            onPressed: onRestart,
+            icon: const Icon(Icons.refresh_rounded),
+            label: const Text('Почати ще раз'),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -180,13 +361,9 @@ class _RepetitionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final word = entry.word;
-    final sectionAccent = switch (entry.kind) {
-      RepetitionKind.lastMistake => const Color(0xFFB45309),
-      RepetitionKind.recentStart => const Color(0xFF1D4ED8),
-    };
 
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(28),
@@ -214,7 +391,7 @@ class _RepetitionCard extends StatelessWidget {
                       _MetaChip(
                         icon: Icons.schedule_rounded,
                         label: label,
-                        accent: sectionAccent,
+                        accent: const Color(0xFF8C6A2A),
                       ),
                   ],
                 ),
@@ -227,9 +404,9 @@ class _RepetitionCard extends StatelessWidget {
                 ),
             ],
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: 14),
           Container(
-            padding: const EdgeInsets.all(18),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
                 colors: [Color(0xFFF1F6F2), Color(0xFFF7F3E8)],
@@ -238,32 +415,19 @@ class _RepetitionCard extends StatelessWidget {
               ),
               borderRadius: BorderRadius.circular(24),
             ),
-            child: Column(
-              children: [
-                Text(
-                  word.hebrew,
-                  textDirection: TextDirection.rtl,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    color: const Color(0xFF163832),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  word.transcription,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleMedium?.copyWith(
-                    color: const Color(0xFF6C665D),
-                  ),
-                ),
-              ],
+            child: Text(
+              word.hebrew,
+              textDirection: TextDirection.rtl,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                fontWeight: FontWeight.w800,
+                color: const Color(0xFF163832),
+              ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           PracticePanel(
+            padding: const EdgeInsets.all(14),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -277,7 +441,7 @@ class _RepetitionCard extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   word.translation,
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w800,
                     color: const Color(0xFF163832),
                   ),
@@ -286,7 +450,11 @@ class _RepetitionCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          _ContextPanel(contextEntry: word.contexts.isEmpty ? null : word.contexts.first),
+          Expanded(
+            child: _ContextPanel(
+              contextEntry: word.contexts.isEmpty ? null : word.contexts.first,
+            ),
+          ),
         ],
       ),
     );
@@ -331,11 +499,7 @@ class _ReasonChip extends StatelessWidget {
       ),
     };
 
-    return _MetaChip(
-      icon: icon,
-      label: label,
-      accent: accent,
-    );
+    return _MetaChip(icon: icon, label: label, accent: accent);
   }
 }
 
@@ -385,11 +549,15 @@ class _ContextPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     if (contextEntry == null) {
       return PracticePanel(
-        child: Text(
-          'Контекст для цього слова ще не додано.',
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: const Color(0xFF6C665D),
-            height: 1.45,
+        backgroundColor: const Color(0xFFF7F3E8),
+        child: Center(
+          child: Text(
+            'Контекст для цього слова ще не додано.',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              color: const Color(0xFF6C665D),
+              height: 1.45,
+            ),
           ),
         ),
       );
@@ -413,26 +581,36 @@ class _ContextPanel extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          Text(
-            hebrewText,
-            textDirection: hasHebrew ? TextDirection.rtl : TextDirection.ltr,
-            textAlign: hasHebrew ? TextAlign.right : TextAlign.left,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w700,
-              color: const Color(0xFF163832),
-              height: 1.4,
-            ),
-          ),
-          if (contextEntry!.translation.trim().isNotEmpty) ...[
-            const SizedBox(height: 10),
-            Text(
-              contextEntry!.translation,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: const Color(0xFF6C665D),
-                height: 1.45,
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    hebrewText,
+                    textDirection:
+                        hasHebrew ? TextDirection.rtl : TextDirection.ltr,
+                    textAlign: hasHebrew ? TextAlign.right : TextAlign.left,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF163832),
+                      height: 1.4,
+                    ),
+                  ),
+                  if (contextEntry!.translation.trim().isNotEmpty) ...[
+                    const SizedBox(height: 10),
+                    Text(
+                      contextEntry!.translation,
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: const Color(0xFF6C665D),
+                        height: 1.45,
+                      ),
+                    ),
+                  ],
+                ],
               ),
             ),
-          ],
+          ),
         ],
       ),
     );
