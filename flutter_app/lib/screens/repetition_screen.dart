@@ -85,17 +85,16 @@ class _RepetitionScreenState extends State<RepetitionScreen> {
     if (_queue.isEmpty) {
       return Padding(
         padding: tokens.pagePadding.copyWith(bottom: 32),
-        child: Column(
+        child: const Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const _CompactHeader(
+            _CompactHeader(
               title: 'Повторення',
-              subtitle: 'Коли з’являться нові слова або останні помилки, вони будуть тут.',
+              subtitle:
+                  'Коли з’являться нові слова або останні помилки, вони будуть тут.',
             ),
-            const SizedBox(height: 16),
-            const Expanded(
-              child: _EmptyState(),
-            ),
+            SizedBox(height: 16),
+            Expanded(child: _EmptyState()),
           ],
         ),
       );
@@ -362,101 +361,119 @@ class _RepetitionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final word = entry.word;
 
-    return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(28),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x14000000),
-            blurRadius: 22,
-            offset: Offset(0, 12),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    _ReasonChip(kind: entry.kind),
-                    if (_formatReviewedAt(word.lastReviewedAt) case final label?)
-                      _MetaChip(
-                        icon: Icons.schedule_rounded,
-                        label: label,
-                        accent: const Color(0xFF8C6A2A),
-                      ),
-                  ],
-                ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final chipMaxWidth = word.hasPlannedAudio
+            ? (constraints.maxWidth - 76).clamp(120.0, constraints.maxWidth)
+            : constraints.maxWidth;
+
+        return Container(
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(28),
+            boxShadow: const [
+              BoxShadow(
+                color: Color(0x14000000),
+                blurRadius: 22,
+                offset: Offset(0, 12),
               ),
-              if (word.hasPlannedAudio)
-                _RepetitionAudioButton(
-                  word: word,
-                  audioPlayerFactory: audioPlayerFactory,
-                  audioPlaybackAwareness: audioPlaybackAwareness,
-                ),
             ],
           ),
-          const SizedBox(height: 14),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Color(0xFFF1F6F2), Color(0xFFF7F3E8)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(24),
-            ),
-            child: Text(
-              word.hebrew,
-              textDirection: TextDirection.rtl,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.w800,
-                color: const Color(0xFF163832),
-              ),
-            ),
-          ),
-          const SizedBox(height: 12),
-          PracticePanel(
-            padding: const EdgeInsets.all(14),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Переклад',
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: const Color(0xFF6C665D),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        _ReasonChip(
+                          kind: entry.kind,
+                          maxWidth: chipMaxWidth,
+                        ),
+                        if (_formatReviewedAt(word.lastReviewedAt)
+                            case final label?)
+                          _MetaChip(
+                            icon: Icons.schedule_rounded,
+                            label: label,
+                            accent: const Color(0xFF8C6A2A),
+                            maxWidth: chipMaxWidth,
+                          ),
+                      ],
+                    ),
                   ),
+                  if (word.hasPlannedAudio) ...[
+                    const SizedBox(width: 8),
+                    _RepetitionAudioButton(
+                      word: word,
+                      audioPlayerFactory: audioPlayerFactory,
+                      audioPlaybackAwareness: audioPlaybackAwareness,
+                    ),
+                  ],
+                ],
+              ),
+              const SizedBox(height: 14),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 18,
                 ),
-                const SizedBox(height: 6),
-                Text(
-                  word.translation,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFF1F6F2), Color(0xFFF7F3E8)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: Text(
+                  word.hebrew,
+                  textDirection: TextDirection.rtl,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.w800,
                     color: const Color(0xFF163832),
                   ),
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 12),
+              PracticePanel(
+                padding: const EdgeInsets.all(14),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Переклад',
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFF6C665D),
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      word.translation,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w800,
+                        color: const Color(0xFF163832),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 12),
+              Expanded(
+                child: _ContextPanel(
+                  contextEntry: word.contexts.isEmpty ? null : word.contexts.first,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 12),
-          Expanded(
-            child: _ContextPanel(
-              contextEntry: word.contexts.isEmpty ? null : word.contexts.first,
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -480,9 +497,13 @@ class _RepetitionCard extends StatelessWidget {
 }
 
 class _ReasonChip extends StatelessWidget {
-  const _ReasonChip({required this.kind});
+  const _ReasonChip({
+    required this.kind,
+    this.maxWidth,
+  });
 
   final RepetitionKind kind;
+  final double? maxWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -499,7 +520,12 @@ class _ReasonChip extends StatelessWidget {
       ),
     };
 
-    return _MetaChip(icon: icon, label: label, accent: accent);
+    return _MetaChip(
+      icon: icon,
+      label: label,
+      accent: accent,
+      maxWidth: maxWidth,
+    );
   }
 }
 
@@ -508,33 +534,43 @@ class _MetaChip extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.accent,
+    this.maxWidth,
   });
 
   final IconData icon;
   final String label;
   final Color accent;
+  final double? maxWidth;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-      decoration: BoxDecoration(
-        color: accent.withValues(alpha: 0.10),
-        borderRadius: BorderRadius.circular(999),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 16, color: accent),
-          const SizedBox(width: 6),
-          Text(
-            label,
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: accent,
-              fontWeight: FontWeight.w700,
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: maxWidth ?? double.infinity),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+        decoration: BoxDecoration(
+          color: accent.withValues(alpha: 0.10),
+          borderRadius: BorderRadius.circular(999),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 16, color: accent),
+            const SizedBox(width: 6),
+            Flexible(
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                softWrap: false,
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  color: accent,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
