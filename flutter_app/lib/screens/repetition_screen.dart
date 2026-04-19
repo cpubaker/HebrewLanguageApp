@@ -30,12 +30,15 @@ class RepetitionScreen extends StatefulWidget {
 
 class _RepetitionScreenState extends State<RepetitionScreen> {
   late RepetitionQueue _queue;
+  late final LearningAudioPlayer _audioPlayer = widget.audioPlayerFactory();
   int _currentIndex = 0;
+  int _audioRequestToken = 0;
 
   @override
   void initState() {
     super.initState();
     _rebuildQueue();
+    unawaited(_syncCurrentEntryAudio(_currentEntry));
   }
 
   @override
@@ -43,7 +46,15 @@ class _RepetitionScreenState extends State<RepetitionScreen> {
     super.didUpdateWidget(oldWidget);
     if (!identical(oldWidget.words, widget.words)) {
       _rebuildQueue();
+      unawaited(_syncCurrentEntryAudio(_currentEntry));
     }
+  }
+
+  @override
+  void dispose() {
+    unawaited(_audioPlayer.stop());
+    unawaited(_audioPlayer.dispose());
+    super.dispose();
   }
 
   void _rebuildQueue() {
@@ -69,12 +80,40 @@ class _RepetitionScreenState extends State<RepetitionScreen> {
     setState(() {
       _currentIndex += 1;
     });
+    unawaited(_syncCurrentEntryAudio(_currentEntry));
   }
 
   void _restart() {
     setState(() {
       _currentIndex = 0;
     });
+    unawaited(_syncCurrentEntryAudio(_currentEntry));
+  }
+
+  Future<void> _syncCurrentEntryAudio(RepetitionEntry? entry) async {
+    final requestToken = ++_audioRequestToken;
+
+    try {
+      await _audioPlayer.stop();
+    } catch (_) {}
+
+    if (!mounted || _audioRequestToken != requestToken) {
+      return;
+    }
+
+    final audioAssetPath = entry?.word.audioAssetPath;
+    if (audioAssetPath == null || audioAssetPath.trim().isEmpty) {
+      return;
+    }
+
+    final hasAudio = await _audioPlayer.assetExists(audioAssetPath);
+    if (!mounted || _audioRequestToken != requestToken || !hasAudio) {
+      return;
+    }
+
+    try {
+      await _audioPlayer.playAsset(audioAssetPath);
+    } catch (_) {}
   }
 
   @override
