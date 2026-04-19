@@ -11,6 +11,8 @@ class StoredWordProgress {
     required this.correct,
     required this.wrong,
     required this.lastCorrect,
+    this.lastReviewedAt,
+    this.lastReviewCorrect,
     this.writingCorrect = 0,
     this.writingWrong = 0,
     this.writingLastCorrect,
@@ -25,6 +27,8 @@ class StoredWordProgress {
       correct: _readNonNegativeInt(json['correct']),
       wrong: _readNonNegativeInt(json['wrong']),
       lastCorrect: _readOptionalString(json['last_correct']),
+      lastReviewedAt: _readOptionalString(json['last_reviewed_at']),
+      lastReviewCorrect: _readOptionalBool(json['last_review_correct']),
       writingCorrect: _readNonNegativeInt(json['writing_correct']),
       writingWrong: _readNonNegativeInt(json['writing_wrong']),
       writingLastCorrect: _readOptionalString(json['writing_last_correct']),
@@ -35,6 +39,8 @@ class StoredWordProgress {
   final int correct;
   final int wrong;
   final String? lastCorrect;
+  final String? lastReviewedAt;
+  final bool? lastReviewCorrect;
   final int writingCorrect;
   final int writingWrong;
   final String? writingLastCorrect;
@@ -45,6 +51,9 @@ class StoredWordProgress {
       'wrong': wrong,
       if (lastCorrect != null && lastCorrect!.trim().isNotEmpty)
         'last_correct': lastCorrect,
+      if (lastReviewedAt != null && lastReviewedAt!.trim().isNotEmpty)
+        'last_reviewed_at': lastReviewedAt,
+      if (lastReviewCorrect != null) 'last_review_correct': lastReviewCorrect,
       'writing_correct': writingCorrect,
       'writing_wrong': writingWrong,
       if (writingLastCorrect != null && writingLastCorrect!.trim().isNotEmpty)
@@ -73,6 +82,21 @@ class StoredWordProgress {
 
     final trimmedValue = value.trim();
     return trimmedValue.isEmpty ? null : trimmedValue;
+  }
+
+  static bool? _readOptionalBool(Object? value) {
+    return switch (value) {
+      final bool booleanValue => booleanValue,
+      final num numericValue => numericValue != 0,
+      final String textValue => switch (textValue.trim().toLowerCase()) {
+        'true' => true,
+        'false' => false,
+        '1' => true,
+        '0' => false,
+        _ => null,
+      },
+      _ => null,
+    };
   }
 }
 
@@ -109,6 +133,8 @@ class SharedPreferencesWordProgressStore implements WordProgressStore {
         word.correct > 0 ||
         word.wrong > 0 ||
         (word.lastCorrect?.trim().isNotEmpty ?? false) ||
+        (word.lastReviewedAt?.trim().isNotEmpty ?? false) ||
+        word.lastReviewCorrect != null ||
         word.writingCorrect > 0 ||
         word.writingWrong > 0 ||
         (word.writingLastCorrect?.trim().isNotEmpty ?? false);
@@ -119,6 +145,8 @@ class SharedPreferencesWordProgressStore implements WordProgressStore {
         correct: word.correct,
         wrong: word.wrong,
         lastCorrect: word.lastCorrect,
+        lastReviewedAt: word.lastReviewedAt,
+        lastReviewCorrect: word.lastReviewCorrect,
         writingCorrect: word.writingCorrect,
         writingWrong: word.writingWrong,
         writingLastCorrect: word.writingLastCorrect,

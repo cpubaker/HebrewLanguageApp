@@ -132,13 +132,16 @@ void main() {
     expect(result.isCorrect, isTrue);
     expect(result.word.writingCorrect, 1);
     expect(result.word.writingWrong, 0);
+    expect(result.word.lastReviewedAt, '2026-04-07T10:30:00.000Z');
+    expect(result.word.lastReviewCorrect, isTrue);
     expect(result.word.writingLastCorrect, '2026-04-07T10:30:00.000Z');
   });
 
   test(
     'wrong answers increment writingWrong and keep last correct timestamp',
     () {
-      final session = WritingSession(const [
+      final session = WritingSession(
+        const [
         LearningWord(
           wordId: 'word_peace',
           hebrew: 'שלום',
@@ -151,7 +154,10 @@ void main() {
           writingWrong: 1,
           writingLastCorrect: '2026-04-06T08:00:00Z',
         ),
-      ], rng: Random(4));
+        ],
+        rng: Random(4),
+        now: () => DateTime.parse('2026-04-19T10:45:00Z'),
+      );
       session.nextPrompt();
 
       final result = session.submitAnswer('בית');
@@ -160,6 +166,8 @@ void main() {
       expect(result!.isCorrect, isFalse);
       expect(result.word.writingCorrect, 2);
       expect(result.word.writingWrong, 2);
+      expect(result.word.lastReviewedAt, '2026-04-19T10:45:00.000Z');
+      expect(result.word.lastReviewCorrect, isFalse);
       expect(result.word.writingLastCorrect, '2026-04-06T08:00:00Z');
     },
   );

@@ -21,6 +21,7 @@ import 'guide_screen.dart';
 import 'home_screen.dart';
 import 'more_screen.dart';
 import 'reading_screen.dart';
+import 'repetition_screen.dart';
 import 'sprint_screen.dart';
 import 'verbs_screen.dart';
 import 'workspace_screen.dart';
@@ -121,6 +122,8 @@ class _AppShellScreenState extends State<AppShellScreen> {
               correct: progress.correct,
               wrong: progress.wrong,
               lastCorrect: progress.lastCorrect,
+              lastReviewedAt: progress.lastReviewedAt,
+              lastReviewCorrect: progress.lastReviewCorrect,
               writingCorrect: progress.writingCorrect,
               writingWrong: progress.writingWrong,
               writingLastCorrect: progress.writingLastCorrect,
@@ -286,6 +289,20 @@ class _AppShellScreenState extends State<AppShellScreen> {
             words: _bundle?.words ?? const <LearningWord>[],
             onWordProgressChanged: _handleWordProgressChanged,
             audioPlayerFactory: widget.audioPlayerFactory,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _openRepetition() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => _PracticeSessionScreen(
+          child: RepetitionScreen(
+            words: _bundle?.words ?? const <LearningWord>[],
+            audioPlayerFactory: widget.audioPlayerFactory,
+            audioPlaybackAwareness: _audioPlaybackAwareness,
           ),
         ),
       ),
@@ -590,6 +607,14 @@ class _AppShellScreenState extends State<AppShellScreen> {
           onTap: () => _openWritingPractice(WritingPracticeMode.constructor),
         ),
         WorkspaceShortcut(
+          title: 'Повторення',
+          subtitle:
+              'Спокійний перегляд нових слів у вивченні та слів, де остання спроба була з помилкою.',
+          icon: Icons.refresh_rounded,
+          accent: const Color(0xFF8C6A2A),
+          onTap: _openRepetition,
+        ),
+        WorkspaceShortcut(
           title: 'Спринт',
           subtitle:
               'Хвилинний режим на швидкість: для кожного слова є два варіанти перекладу.',
@@ -661,6 +686,14 @@ class _AppShellScreenState extends State<AppShellScreen> {
             _openFlashcards(_preferredFlashcardDeckMode);
           }
         },
+      ),
+      WorkspaceShortcut(
+        title: 'Повторення',
+        subtitle:
+            'Перегляд нових слів у вивченні та останніх помилок без таймера.',
+        icon: Icons.refresh_rounded,
+        accent: const Color(0xFF8C6A2A),
+        onTap: _openRepetition,
       ),
       WorkspaceShortcut(
         title: 'Спринт',

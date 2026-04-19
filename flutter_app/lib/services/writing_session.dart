@@ -139,8 +139,11 @@ class WritingSession {
     answered = true;
     final isCorrect = normalizedAnswer == correctAnswer;
     answeredCount += 1;
+    final reviewedAt = _now().toIso8601String();
 
     final updatedWord = activeWord.copyWith(
+      lastReviewedAt: reviewedAt,
+      lastReviewCorrect: isCorrect,
       writingCorrect: isCorrect
           ? activeWord.writingCorrect + 1
           : activeWord.writingCorrect,
@@ -148,7 +151,7 @@ class WritingSession {
           ? activeWord.writingWrong
           : activeWord.writingWrong + 1,
       writingLastCorrect: isCorrect
-          ? _now().toIso8601String()
+          ? reviewedAt
           : activeWord.writingLastCorrect,
     );
 

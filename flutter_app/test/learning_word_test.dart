@@ -13,6 +13,8 @@ void main() {
       'correct': 2,
       'wrong': 1,
       'last_correct': '2026-04-04T10:00:00Z',
+      'last_reviewed_at': '2026-04-19T09:15:00Z',
+      'last_review_correct': false,
       'writing_correct': 5,
       'writing_wrong': 2,
       'writing_last_correct': '2026-04-04T12:30:00Z',
@@ -25,6 +27,8 @@ void main() {
       'assets/learning/input/audio/words/word_shalom.mp3',
     );
     expect(word.hasPlannedAudio, isTrue);
+    expect(word.lastReviewedAt, '2026-04-19T09:15:00Z');
+    expect(word.lastReviewCorrect, isFalse);
     expect(word.writingCorrect, 5);
     expect(word.writingWrong, 2);
     expect(word.writingLastCorrect, '2026-04-04T12:30:00Z');
@@ -40,12 +44,18 @@ void main() {
       audioAssetPath: 'assets/learning/input/audio/words/word_shalom.mp3',
       correct: 2,
       wrong: 1,
+      lastReviewedAt: '2026-04-19T09:15:00Z',
+      lastReviewCorrect: true,
       writingCorrect: 3,
       writingWrong: 0,
       writingLastCorrect: '2026-04-04T12:30:00Z',
     );
 
-    final updatedWord = baseWord.copyWith(writingCorrect: 4, writingWrong: 1);
+    final updatedWord = baseWord.copyWith(
+      lastReviewCorrect: false,
+      writingCorrect: 4,
+      writingWrong: 1,
+    );
 
     expect(updatedWord.correct, 2);
     expect(updatedWord.wrong, 1);
@@ -55,6 +65,8 @@ void main() {
     );
     expect(updatedWord.writingCorrect, 4);
     expect(updatedWord.writingWrong, 1);
+    expect(updatedWord.lastReviewedAt, '2026-04-19T09:15:00Z');
+    expect(updatedWord.lastReviewCorrect, isFalse);
     expect(updatedWord.writingLastCorrect, '2026-04-04T12:30:00Z');
   });
 

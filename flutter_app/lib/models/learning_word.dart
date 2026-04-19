@@ -13,6 +13,8 @@ class LearningWord {
     this.writingCorrect = 0,
     this.writingWrong = 0,
     this.lastCorrect,
+    this.lastReviewedAt,
+    this.lastReviewCorrect,
     this.writingLastCorrect,
     this.contexts = const <LearningContext>[],
   });
@@ -28,6 +30,8 @@ class LearningWord {
       correct: (json['correct'] as num?)?.toInt() ?? 0,
       wrong: (json['wrong'] as num?)?.toInt() ?? 0,
       lastCorrect: _parseLastCorrect(json['last_correct']),
+      lastReviewedAt: _parseLastCorrect(json['last_reviewed_at']),
+      lastReviewCorrect: _parseOptionalBool(json['last_review_correct']),
       writingCorrect: (json['writing_correct'] as num?)?.toInt() ?? 0,
       writingWrong: (json['writing_wrong'] as num?)?.toInt() ?? 0,
       writingLastCorrect: _parseLastCorrect(json['writing_last_correct']),
@@ -47,6 +51,8 @@ class LearningWord {
   final int correct;
   final int wrong;
   final String? lastCorrect;
+  final String? lastReviewedAt;
+  final bool? lastReviewCorrect;
   final int writingCorrect;
   final int writingWrong;
   final String? writingLastCorrect;
@@ -62,6 +68,8 @@ class LearningWord {
     int? correct,
     int? wrong,
     String? lastCorrect,
+    String? lastReviewedAt,
+    bool? lastReviewCorrect,
     int? writingCorrect,
     int? writingWrong,
     String? writingLastCorrect,
@@ -77,6 +85,8 @@ class LearningWord {
       correct: correct ?? this.correct,
       wrong: wrong ?? this.wrong,
       lastCorrect: lastCorrect ?? this.lastCorrect,
+      lastReviewedAt: lastReviewedAt ?? this.lastReviewedAt,
+      lastReviewCorrect: lastReviewCorrect ?? this.lastReviewCorrect,
       writingCorrect: writingCorrect ?? this.writingCorrect,
       writingWrong: writingWrong ?? this.writingWrong,
       writingLastCorrect: writingLastCorrect ?? this.writingLastCorrect,
@@ -104,6 +114,21 @@ class LearningWord {
     }
 
     return null;
+  }
+
+  static bool? _parseOptionalBool(Object? value) {
+    return switch (value) {
+      final bool booleanValue => booleanValue,
+      final num numericValue => numericValue != 0,
+      final String textValue => switch (textValue.trim().toLowerCase()) {
+        'true' => true,
+        'false' => false,
+        '1' => true,
+        '0' => false,
+        _ => null,
+      },
+      _ => null,
+    };
   }
 
   static String? _parseAudioAssetPath(Object? value) {

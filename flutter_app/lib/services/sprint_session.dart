@@ -106,12 +106,15 @@ class SprintSession {
 
     final correctTranslation = activeWord.translation.trim();
     final isCorrect = selectedTranslation == correctTranslation;
+    final reviewedAt = _now().toIso8601String();
     final updatedWord = activeWord.copyWith(
       correct: isCorrect ? activeWord.correct + 1 : activeWord.correct,
       wrong: isCorrect ? activeWord.wrong : activeWord.wrong + 1,
       lastCorrect: isCorrect
-          ? _now().toIso8601String()
+          ? reviewedAt
           : activeWord.lastCorrect,
+      lastReviewedAt: reviewedAt,
+      lastReviewCorrect: isCorrect,
     );
 
     _replaceWord(updatedWord);

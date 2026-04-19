@@ -9,18 +9,18 @@ void main() {
     final session = SprintSession(const [
       LearningWord(
         wordId: 'word_1',
-        hebrew: 'שלום',
+        hebrew: 'Ч©ЧљЧ•Чќ',
         english: 'peace',
-        ukrainian: 'мир',
+        ukrainian: 'РјРёСЂ',
         transcription: 'shalom',
         correct: 0,
         wrong: 0,
       ),
       LearningWord(
         wordId: 'word_2',
-        hebrew: 'היי',
+        hebrew: 'Ч”Ч™Ч™',
         english: 'hi',
-        ukrainian: 'мир',
+        ukrainian: 'РјРёСЂ',
         transcription: 'hey',
         correct: 0,
         wrong: 0,
@@ -37,27 +37,27 @@ void main() {
       final session = SprintSession(const [
         LearningWord(
           wordId: 'word_peace',
-          hebrew: 'שלום',
+          hebrew: 'Ч©ЧљЧ•Чќ',
           english: 'peace',
-          ukrainian: 'мир',
+          ukrainian: 'РјРёСЂ',
           transcription: 'shalom',
           correct: 0,
           wrong: 0,
         ),
         LearningWord(
           wordId: 'word_house',
-          hebrew: 'בית',
+          hebrew: 'Ч‘Ч™ЧЄ',
           english: 'house',
-          ukrainian: 'будинок',
+          ukrainian: 'Р±СѓРґРёРЅРѕРє',
           transcription: 'bayit',
           correct: 0,
           wrong: 0,
         ),
         LearningWord(
           wordId: 'word_book',
-          hebrew: 'ספר',
+          hebrew: 'ЧЎЧ¤ЧЁ',
           english: 'book',
-          ukrainian: 'книга',
+          ukrainian: 'РєРЅРёРіР°',
           transcription: 'sefer',
           correct: 0,
           wrong: 0,
@@ -80,18 +80,18 @@ void main() {
       const [
         LearningWord(
           wordId: 'word_peace',
-          hebrew: 'שלום',
+          hebrew: 'Ч©ЧљЧ•Чќ',
           english: 'peace',
-          ukrainian: 'мир',
+          ukrainian: 'РјРёСЂ',
           transcription: 'shalom',
           correct: 2,
           wrong: 1,
         ),
         LearningWord(
           wordId: 'word_house',
-          hebrew: 'בית',
+          hebrew: 'Ч‘Ч™ЧЄ',
           english: 'house',
-          ukrainian: 'будинок',
+          ukrainian: 'Р±СѓРґРёРЅРѕРє',
           transcription: 'bayit',
           correct: 0,
           wrong: 0,
@@ -108,32 +108,38 @@ void main() {
     expect(result!.isCorrect, isTrue);
     expect(result.word.correct, prompt.word.correct + 1);
     expect(result.word.lastCorrect, '2026-04-19T10:00:00.000Z');
+    expect(result.word.lastReviewedAt, '2026-04-19T10:00:00.000Z');
+    expect(result.word.lastReviewCorrect, isTrue);
     expect(session.correctCount, 1);
     expect(session.wrongCount, 0);
   });
 
   test('submitAnswer increments wrong answers and keeps lastCorrect', () {
-    final session = SprintSession(const [
-      LearningWord(
-        wordId: 'word_peace',
-        hebrew: 'שלום',
-        english: 'peace',
-        ukrainian: 'мир',
-        transcription: 'shalom',
-        correct: 2,
-        wrong: 1,
-        lastCorrect: '2026-04-18T08:00:00Z',
-      ),
-      LearningWord(
-        wordId: 'word_house',
-        hebrew: 'בית',
-        english: 'house',
-        ukrainian: 'будинок',
-        transcription: 'bayit',
-        correct: 0,
-        wrong: 0,
-      ),
-    ], rng: Random(3));
+    final session = SprintSession(
+      const [
+        LearningWord(
+          wordId: 'word_peace',
+          hebrew: 'Ч©ЧљЧ•Чќ',
+          english: 'peace',
+          ukrainian: 'РјРёСЂ',
+          transcription: 'shalom',
+          correct: 2,
+          wrong: 1,
+          lastCorrect: '2026-04-18T08:00:00Z',
+        ),
+        LearningWord(
+          wordId: 'word_house',
+          hebrew: 'Ч‘Ч™ЧЄ',
+          english: 'house',
+          ukrainian: 'Р±СѓРґРёРЅРѕРє',
+          transcription: 'bayit',
+          correct: 0,
+          wrong: 0,
+        ),
+      ],
+      rng: Random(3),
+      now: () => DateTime.parse('2026-04-19T10:15:00Z'),
+    );
 
     final prompt = session.nextPrompt()!;
     final wrongAnswer = prompt.options.firstWhere(
@@ -145,6 +151,8 @@ void main() {
     expect(result!.isCorrect, isFalse);
     expect(result.word.wrong, prompt.word.wrong + 1);
     expect(result.word.lastCorrect, prompt.word.lastCorrect);
+    expect(result.word.lastReviewedAt, '2026-04-19T10:15:00.000Z');
+    expect(result.word.lastReviewCorrect, isFalse);
     expect(session.correctCount, 0);
     expect(session.wrongCount, 1);
   });

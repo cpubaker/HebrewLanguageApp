@@ -52,13 +52,16 @@ class FlashcardSession {
   FlashcardSession(
     List<LearningWord> words, {
     Random? rng,
+    DateTime Function()? now,
     this.deckMode = FlashcardDeckMode.allWords,
   })  : _sourceWords = List<LearningWord>.from(words),
-        _rng = rng ?? Random() {
+        _rng = rng ?? Random(),
+        _now = now ?? DateTime.now {
     _rebuildDeck();
   }
 
   final Random _rng;
+  final DateTime Function() _now;
   final Map<String, String> _lastContextIds = <String, String>{};
   final List<LearningWord> _sourceWords;
   final Set<String> _seenWordIds = <String>{};
@@ -142,7 +145,9 @@ class FlashcardSession {
     final updatedWord = activeWord.copyWith(
       correct: known ? activeWord.correct + 1 : activeWord.correct,
       wrong: known ? activeWord.wrong : activeWord.wrong + 1,
-      lastCorrect: known ? DateTime.now().toIso8601String() : activeWord.lastCorrect,
+      lastCorrect: known ? _now().toIso8601String() : activeWord.lastCorrect,
+      lastReviewedAt: _now().toIso8601String(),
+      lastReviewCorrect: known,
     );
 
     final index = _words.indexWhere((word) => word.wordId == activeWord.wordId);

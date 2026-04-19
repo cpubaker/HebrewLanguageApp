@@ -187,4 +187,29 @@ void main() {
     expect(session.seenCount, 2);
     expect(session.sessionProgress, 1);
   });
+
+  test('answerCard stores last review outcome and review timestamp', () {
+    final session = FlashcardSession(
+      const [
+        LearningWord(
+          wordId: 'word_book',
+          hebrew: 'ЧЎЧ¤ЧЁ',
+          english: 'book',
+          transcription: 'sefer',
+          correct: 0,
+          wrong: 0,
+        ),
+      ],
+      rng: Random(7),
+      now: () => DateTime.parse('2026-04-19T11:00:00Z'),
+    );
+
+    session.nextCard();
+    final result = session.answerCard(false);
+
+    expect(result, isNotNull);
+    expect(result!.word.lastReviewedAt, '2026-04-19T11:00:00.000Z');
+    expect(result.word.lastReviewCorrect, isFalse);
+    expect(result.word.lastCorrect, isNull);
+  });
 }
