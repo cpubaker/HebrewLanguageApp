@@ -17,6 +17,7 @@
 - App root: `lib/app.dart`
 - Shared shell: `lib/screens/app_shell_screen.dart`
 - Home screen: `lib/screens/home_screen.dart`
+- Sprint practice: `lib/screens/sprint_screen.dart`
 - Learning bundle loader: `lib/services/learning_bundle_loader.dart`
 
 ## Working Rules
@@ -40,3 +41,4 @@
 ## Notes
 - Use the Tkinter app as a behavior reference when product details are unclear.
 - Prefer read-only content flows before persistence-heavy features unless the user asks otherwise.
+- The Flutter practice area currently includes flashcards, writing, constructor, and sprint modes.
