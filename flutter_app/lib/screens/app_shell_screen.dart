@@ -285,6 +285,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
           child: SprintScreen(
             words: _bundle?.words ?? const <LearningWord>[],
             onWordProgressChanged: _handleWordProgressChanged,
+            audioPlayerFactory: widget.audioPlayerFactory,
           ),
         ),
       ),

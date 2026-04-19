@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,6 +11,7 @@ import 'package:hebrew_language_flutter/models/learning_context.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/models/lesson_document.dart';
 import 'package:hebrew_language_flutter/screens/home_screen.dart';
+import 'package:hebrew_language_flutter/screens/sprint_screen.dart';
 import 'package:hebrew_language_flutter/services/guide_progress_store.dart';
 import 'package:hebrew_language_flutter/services/lesson_document_loader.dart';
 import 'package:hebrew_language_flutter/services/learning_bundle_loader.dart';
@@ -437,6 +439,115 @@ void main() {
     expect(store.savedWordIds, isNotEmpty);
   });
 
+  testWidgets('sprint auto-plays audio for the first and second prompts', (
+    WidgetTester tester,
+  ) async {
+    final audioPlayer = FakeVerbAudioPlayer(
+      availableAssets: const {
+        'assets/audio/shalom.mp3',
+        'assets/audio/bayit.mp3',
+      },
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: SprintScreen(
+            words: const [
+              LearningWord(
+                wordId: 'word_peace',
+                hebrew: 'שלום',
+                english: 'peace',
+                ukrainian: 'мир',
+                transcription: 'shalom',
+                audioAssetPath: 'assets/audio/shalom.mp3',
+                correct: 0,
+                wrong: 0,
+              ),
+              LearningWord(
+                wordId: 'word_house',
+                hebrew: 'בית',
+                english: 'house',
+                ukrainian: 'будинок',
+                transcription: 'bayit',
+                audioAssetPath: 'assets/audio/bayit.mp3',
+                correct: 0,
+                wrong: 0,
+              ),
+            ],
+            onWordProgressChanged: (_) {},
+            audioPlayerFactory: () => audioPlayer,
+            rng: _FixedRandom(),
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump();
+
+    expect(audioPlayer.playedAssets, ['assets/audio/shalom.mp3']);
+
+    await tester.tap(find.byKey(const ValueKey('sprint-option-0')));
+    await tester.pump();
+    await tester.pump();
+
+    expect(audioPlayer.playedAssets, [
+      'assets/audio/shalom.mp3',
+      'assets/audio/bayit.mp3',
+    ]);
+  });
+
+  testWidgets('sprint stays silent when the next prompt has no audio', (
+    WidgetTester tester,
+  ) async {
+    final audioPlayer = FakeVerbAudioPlayer(
+      availableAssets: const {'assets/audio/shalom.mp3'},
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: SprintScreen(
+            words: const [
+              LearningWord(
+                wordId: 'word_peace',
+                hebrew: 'שלום',
+                english: 'peace',
+                ukrainian: 'мир',
+                transcription: 'shalom',
+                audioAssetPath: 'assets/audio/shalom.mp3',
+                correct: 0,
+                wrong: 0,
+              ),
+              LearningWord(
+                wordId: 'word_house',
+                hebrew: 'בית',
+                english: 'house',
+                ukrainian: 'будинок',
+                transcription: 'bayit',
+                correct: 0,
+                wrong: 0,
+              ),
+            ],
+            onWordProgressChanged: (_) {},
+            audioPlayerFactory: () => audioPlayer,
+            rng: _FixedRandom(),
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump();
+
+    expect(audioPlayer.playedAssets, ['assets/audio/shalom.mp3']);
+
+    await tester.tap(find.byKey(const ValueKey('sprint-option-0')));
+    await tester.pump();
+    await tester.pump();
+
+    expect(audioPlayer.playedAssets, ['assets/audio/shalom.mp3']);
+  });
+
   testWidgets('shows a completion state after the last flashcard in the deck', (
     WidgetTester tester,
   ) async {
@@ -820,4 +931,15 @@ class FakeVerbAudioPlayer implements VerbAudioPlayer {
     stopped = true;
     _isPlayingController.add(false);
   }
+}
+
+class _FixedRandom implements Random {
+  @override
+  bool nextBool() => false;
+
+  @override
+  double nextDouble() => 0;
+
+  @override
+  int nextInt(int max) => 0;
 }
