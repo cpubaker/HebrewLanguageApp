@@ -100,10 +100,7 @@ class WorkspaceHeaderCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppPageHeader(
-            title: title,
-            subtitle: subtitle,
-          ),
+          AppPageHeader(title: title, subtitle: subtitle),
           const SizedBox(height: 16),
           AppActionWrap(
             children: [
@@ -154,7 +151,9 @@ class WorkspaceHubScreen extends StatelessWidget {
                         padding: EdgeInsets.only(
                           bottom: index == shortcuts.length - 1 ? 0 : 12,
                         ),
-                        child: _WorkspaceShortcutTile(shortcut: shortcuts[index]),
+                        child: _WorkspaceShortcutTile(
+                          shortcut: shortcuts[index],
+                        ),
                       ),
                   ],
                 ),
@@ -196,10 +195,7 @@ class PlaceholderWorkspaceScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppPageHeader(
-                title: title,
-                subtitle: subtitle,
-              ),
+              AppPageHeader(title: title, subtitle: subtitle),
               const SizedBox(height: 18),
               AppActionWrap(
                 children: [
@@ -231,6 +227,8 @@ class _WorkspaceShortcutTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -268,15 +266,18 @@ class _WorkspaceShortcutTile extends StatelessWidget {
                     Text(
                       shortcut.subtitle,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: const Color(0xFF6C665D),
+                        color: tokens.mutedText,
                         height: 1.35,
                       ),
                     ),
                   ],
                 ),
               ),
-              Icon(Icons.arrow_forward_ios_rounded,
-                  size: 16, color: shortcut.accent),
+              Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 16,
+                color: shortcut.accent,
+              ),
             ],
           ),
         ),
@@ -309,7 +310,9 @@ class _WorkspaceSectionChip extends StatelessWidget {
         child: Ink(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           decoration: BoxDecoration(
-            color: isSelected ? theme.colorScheme.primary : tokens.subtleSurface,
+            color: isSelected
+                ? theme.colorScheme.primary
+                : tokens.subtleSurface,
             borderRadius: BorderRadius.circular(999),
             border: Border.all(
               color: isSelected
@@ -323,13 +326,17 @@ class _WorkspaceSectionChip extends StatelessWidget {
               Icon(
                 section.icon,
                 size: 18,
-                color: isSelected ? Colors.white : theme.colorScheme.primary,
+                color: isSelected
+                    ? theme.colorScheme.onPrimary
+                    : theme.colorScheme.primary,
               ),
               const SizedBox(width: 8),
               Text(
                 section.label,
                 style: theme.textTheme.labelLarge?.copyWith(
-                  color: isSelected ? Colors.white : const Color(0xFF163832),
+                  color: isSelected
+                      ? theme.colorScheme.onPrimary
+                      : theme.colorScheme.primary,
                   fontWeight: FontWeight.w700,
                 ),
               ),

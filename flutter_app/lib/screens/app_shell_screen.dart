@@ -16,6 +16,7 @@ import '../services/lesson_document_loader.dart';
 import '../services/reading_progress_store.dart';
 import '../services/verb_audio_player.dart';
 import '../services/word_progress_store.dart';
+import '../theme/app_theme.dart';
 import 'flashcards_screen.dart';
 import 'guide_screen.dart';
 import 'home_screen.dart';
@@ -45,6 +46,8 @@ class AppShellScreen extends StatefulWidget {
     required this.guideProgressStore,
     required this.readingProgressStore,
     required this.audioPlayerFactory,
+    required this.isDarkMode,
+    required this.onToggleThemeMode,
     this.audioPlaybackAwarenessFactory = createAudioPlaybackAwareness,
   });
 
@@ -55,6 +58,8 @@ class AppShellScreen extends StatefulWidget {
   final ReadingProgressStore readingProgressStore;
   final CreateVerbAudioPlayer audioPlayerFactory;
   final CreateAudioPlaybackAwareness audioPlaybackAwarenessFactory;
+  final bool isDarkMode;
+  final VoidCallback onToggleThemeMode;
 
   @override
   State<AppShellScreen> createState() => _AppShellScreenState();
@@ -799,6 +804,8 @@ class _AppShellScreenState extends State<AppShellScreen> {
                         HomeScreen(
                           bundle: bundle,
                           documentLoader: widget.documentLoader,
+                          isDarkMode: widget.isDarkMode,
+                          onToggleThemeMode: widget.onToggleThemeMode,
                           onOpenWords: () =>
                               _openLearnSection(_LearnSection.words),
                           onOpenFlashcards: _openFlashcards,
@@ -954,13 +961,14 @@ class _CollapsedBottomNavigationHandle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final tokens = Theme.of(context).appTokens;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Material(
-        color: const Color(0xFFF8F3E8),
+        color: tokens.navBarBackground,
         elevation: 8,
-        shadowColor: Colors.black.withValues(alpha: 0.14),
+        shadowColor: tokens.shadowColor,
         borderRadius: BorderRadius.circular(999),
         child: InkWell(
           onTap: onTap,

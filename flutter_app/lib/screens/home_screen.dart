@@ -14,11 +14,20 @@ import 'widgets/app_page_header.dart';
 import 'widgets/app_section_card.dart';
 import 'widgets/app_stat_chip.dart';
 
+const _homeAccentForest = Color(0xFF2B5D4F);
+const _homeAccentTeal = Color(0xFF0F766E);
+const _homeAccentOlive = Color(0xFF5F6B2D);
+const _homeAccentMoss = Color(0xFF708244);
+const _homeAccentBronze = Color(0xFF8C6A2A);
+const _homeAccentAmber = Color(0xFFB45309);
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
     super.key,
     required this.bundle,
     required this.documentLoader,
+    required this.isDarkMode,
+    required this.onToggleThemeMode,
     required this.onOpenWords,
     required this.onOpenFlashcards,
     required this.onOpenWriting,
@@ -31,6 +40,8 @@ class HomeScreen extends StatelessWidget {
 
   final LearningBundle bundle;
   final LessonDocumentLoader documentLoader;
+  final bool isDarkMode;
+  final VoidCallback onToggleThemeMode;
   final VoidCallback onOpenWords;
   final ValueChanged<FlashcardDeckMode> onOpenFlashcards;
   final VoidCallback onOpenWriting;
@@ -60,7 +71,11 @@ class HomeScreen extends StatelessWidget {
     return ListView(
       padding: pagePadding.copyWith(bottom: 32),
       children: [
-        _HeroPanel(bundle: bundle),
+        _HeroPanel(
+          bundle: bundle,
+          isDarkMode: isDarkMode,
+          onToggleThemeMode: onToggleThemeMode,
+        ),
         const SizedBox(height: 20),
         _DashboardPrimaryActionCard(action: continueAction),
         const SizedBox(height: 16),
@@ -166,7 +181,7 @@ class HomeScreen extends StatelessWidget {
             '${flashcards.needsReview} слів чекають у картках на повторення.',
         buttonLabel: 'До повторення',
         icon: Icons.refresh_rounded,
-        accent: const Color(0xFFB45309),
+        accent: _homeAccentAmber,
         onTap: () => onOpenFlashcards(FlashcardDeckMode.needsReview),
       );
     }
@@ -177,7 +192,7 @@ class HomeScreen extends StatelessWidget {
         subtitle: '${progress.unseen} слів ще не відкривали в тренуванні.',
         buttonLabel: 'До карток',
         icon: Icons.style_rounded,
-        accent: const Color(0xFF0F766E),
+        accent: _homeAccentTeal,
         onTap: () => onOpenFlashcards(FlashcardDeckMode.allWords),
       );
     }
@@ -188,7 +203,7 @@ class HomeScreen extends StatelessWidget {
         subtitle: 'У бібліотеці вже є тексти, з яких можна продовжити.',
         buttonLabel: 'До читання',
         icon: Icons.auto_stories_rounded,
-        accent: const Color(0xFF1D4ED8),
+        accent: _homeAccentOlive,
         onTap: onOpenReading,
       );
     }
@@ -198,7 +213,7 @@ class HomeScreen extends StatelessWidget {
       subtitle: 'Перегляньте слова, щоб обрати наступний напрям навчання.',
       buttonLabel: 'До слів',
       icon: Icons.translate_rounded,
-      accent: const Color(0xFF2B5D4F),
+      accent: _homeAccentForest,
       onTap: onOpenWords,
     );
   }
@@ -215,7 +230,7 @@ class HomeScreen extends StatelessWidget {
             : 'Контекстні картки з’являтимуться, коли для слів буде більше прикладів.',
         buttonLabel: 'Відкрити',
         icon: Icons.chat_bubble_outline_rounded,
-        accent: const Color(0xFF1D4ED8),
+        accent: _homeAccentMoss,
         onTap: () => onOpenFlashcards(FlashcardDeckMode.withContexts),
       ),
       _DashboardAction(
@@ -225,7 +240,7 @@ class HomeScreen extends StatelessWidget {
             : 'Після перших карток тут буде зручно перевіряти пригадування.',
         buttonLabel: 'Тренувати',
         icon: Icons.edit_rounded,
-        accent: const Color(0xFF8C3E9F),
+        accent: _homeAccentOlive,
         onTap: onOpenWriting,
       ),
       _DashboardAction(
@@ -235,7 +250,7 @@ class HomeScreen extends StatelessWidget {
             : 'Матеріали з’являться тут, коли їх буде завантажено.',
         buttonLabel: 'Відкрити',
         icon: Icons.menu_book_rounded,
-        accent: const Color(0xFFB45309),
+        accent: _homeAccentBronze,
         onTap: onOpenGuide,
       ),
     ];
@@ -263,53 +278,96 @@ class _DashboardAction {
 }
 
 class _HeroPanel extends StatelessWidget {
-  const _HeroPanel({required this.bundle});
+  const _HeroPanel({
+    required this.bundle,
+    required this.isDarkMode,
+    required this.onToggleThemeMode,
+  });
 
   final LearningBundle bundle;
+  final bool isDarkMode;
+  final VoidCallback onToggleThemeMode;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final tokens = theme.appTokens;
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(28),
-        gradient: const LinearGradient(
-          colors: [Color(0xFF163832), Color(0xFF2B5D4F), Color(0xFF8C6A2A)],
+        gradient: LinearGradient(
+          colors: [
+            tokens.heroGradientStart,
+            tokens.heroGradientMiddle,
+            tokens.heroGradientEnd,
+          ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
-            color: Color(0x22000000),
+            color: tokens.heroShadowColor,
             blurRadius: 28,
-            offset: Offset(0, 14),
+            offset: const Offset(0, 14),
           ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.16),
-              borderRadius: BorderRadius.circular(999),
-            ),
-            child: Text(
-              'Мобільна версія',
-              style: theme.textTheme.labelLarge?.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.3,
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: tokens.heroChipBackground,
+                  borderRadius: BorderRadius.circular(999),
+                ),
+                child: Text(
+                  'Мобільна версія',
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    color: tokens.heroText,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.3,
+                  ),
+                ),
               ),
-            ),
+              const Spacer(),
+              Tooltip(
+                message: isDarkMode
+                    ? 'Увімкнути світлий режим'
+                    : 'Увімкнути нічний режим',
+                child: Material(
+                  color: tokens.heroChipBackground,
+                  shape: const CircleBorder(),
+                  child: InkWell(
+                    key: const ValueKey('theme-toggle-button'),
+                    customBorder: const CircleBorder(),
+                    onTap: onToggleThemeMode,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Icon(
+                        isDarkMode
+                            ? Icons.light_mode_rounded
+                            : Icons.dark_mode_rounded,
+                        color: tokens.heroText,
+                        size: 22,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 14),
           Text(
             'Вчимо іврит',
             style: theme.textTheme.headlineMedium?.copyWith(
-              color: Colors.white,
+              color: tokens.heroText,
               fontWeight: FontWeight.w800,
             ),
           ),
@@ -317,7 +375,7 @@ class _HeroPanel extends StatelessWidget {
           Text(
             'У мобільній версії вже є слова, картки, довідник, дієслова й читання. Усе працює з тією самою навчальною базою, що й десктопний застосунок.',
             style: theme.textTheme.bodyLarge?.copyWith(
-              color: const Color(0xFFF7F3E8),
+              color: tokens.heroMutedText,
               height: 1.45,
             ),
           ),
@@ -325,7 +383,7 @@ class _HeroPanel extends StatelessWidget {
           Text(
             '${bundle.words.length} слів уже доступні на цьому пристрої',
             style: theme.textTheme.titleMedium?.copyWith(
-              color: Colors.white,
+              color: tokens.heroText,
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -337,23 +395,23 @@ class _HeroPanel extends StatelessWidget {
               AppStatChip(
                 label: 'Слова',
                 value: bundle.words.length,
-                accent: Colors.white,
-                backgroundColor: Colors.white.withValues(alpha: 0.10),
-                textColor: Colors.white,
+                accent: tokens.heroText,
+                backgroundColor: tokens.heroChipBackground,
+                textColor: tokens.heroText,
               ),
               AppStatChip(
                 label: 'Читання',
                 value: bundle.readingLessons.length,
-                accent: Colors.white,
-                backgroundColor: Colors.white.withValues(alpha: 0.10),
-                textColor: Colors.white,
+                accent: tokens.heroText,
+                backgroundColor: tokens.heroChipBackground,
+                textColor: tokens.heroText,
               ),
               AppStatChip(
                 label: 'Дієслова',
                 value: bundle.verbLessons.length,
-                accent: Colors.white,
-                backgroundColor: Colors.white.withValues(alpha: 0.10),
-                textColor: Colors.white,
+                accent: tokens.heroText,
+                backgroundColor: tokens.heroChipBackground,
+                textColor: tokens.heroText,
               ),
             ],
           ),
@@ -382,7 +440,7 @@ class _SummaryCard extends StatelessWidget {
     final card = Ink(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: tokens.elevatedSurface,
         borderRadius: BorderRadius.circular(tokens.panelRadius + 2),
         border: Border.all(color: accent.withValues(alpha: 0.16)),
       ),
@@ -409,7 +467,7 @@ class _SummaryCard extends StatelessWidget {
             label,
             style: Theme.of(
               context,
-            ).textTheme.bodyMedium?.copyWith(color: const Color(0xFF5F5A52)),
+            ).textTheme.bodyMedium?.copyWith(color: tokens.mutedText),
           ),
         ],
       ),
@@ -531,7 +589,7 @@ class _DashboardPrimaryActionCard extends StatelessWidget {
                 Text(
                   'Продовжити',
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: const Color(0xFF6C665D),
+                    color: Theme.of(context).appTokens.secondaryText,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -546,7 +604,7 @@ class _DashboardPrimaryActionCard extends StatelessWidget {
                 Text(
                   action.subtitle,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: const Color(0xFF5F5A52),
+                    color: Theme.of(context).appTokens.mutedText,
                     height: 1.45,
                   ),
                 ),
@@ -601,7 +659,7 @@ class _DashboardRecommendationTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: const Color(0xFFF7F3E8),
+        color: Theme.of(context).appTokens.subtleSurface,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -631,7 +689,7 @@ class _DashboardRecommendationTile extends StatelessWidget {
                 Text(
                   action.subtitle,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: const Color(0xFF5F5A52),
+                    color: Theme.of(context).appTokens.mutedText,
                     height: 1.4,
                   ),
                 ),
@@ -674,13 +732,13 @@ class _InventoryOverviewCard extends StatelessWidget {
       _SummaryCard(
         label: 'Слова',
         value: bundle.words.length,
-        accent: const Color(0xFF0F766E),
+        accent: _homeAccentTeal,
         onTap: onOpenWords,
       ),
       _SummaryCard(
         label: 'Картки',
         value: bundle.words.where((word) => word.contexts.isNotEmpty).length,
-        accent: const Color(0xFFBE5B00),
+        accent: _homeAccentAmber,
         onTap: onOpenFlashcards,
       ),
       _SummaryCard(
@@ -688,25 +746,25 @@ class _InventoryOverviewCard extends StatelessWidget {
         value: bundle.words
             .where((word) => word.writingCorrect > 0 || word.writingWrong > 0)
             .length,
-        accent: const Color(0xFF8C3E9F),
+        accent: _homeAccentOlive,
         onTap: onOpenWriting,
       ),
       _SummaryCard(
         label: 'Довідник',
         value: bundle.guideLessons.length,
-        accent: const Color(0xFFB45309),
+        accent: _homeAccentBronze,
         onTap: onOpenGuide,
       ),
       _SummaryCard(
         label: 'Дієслова',
         value: bundle.verbLessons.length,
-        accent: const Color(0xFF7C3AED),
+        accent: _homeAccentMoss,
         onTap: onOpenVerbs,
       ),
       _SummaryCard(
         label: 'Читання',
         value: bundle.readingLessons.length,
-        accent: const Color(0xFF1D4ED8),
+        accent: _homeAccentForest,
         onTap: onOpenReading,
       ),
     ];
@@ -777,22 +835,22 @@ class _FlashcardFocusCard extends StatelessWidget {
               AppMetricTile(
                 label: 'Усі',
                 value: snapshot.total,
-                accent: const Color(0xFF163832),
+                accent: _homeAccentForest,
               ),
               AppMetricTile(
                 label: 'З прикладами',
                 value: snapshot.withContexts,
-                accent: const Color(0xFF1D4ED8),
+                accent: _homeAccentMoss,
               ),
               AppMetricTile(
                 label: 'На повторенні',
                 value: snapshot.needsReview,
-                accent: const Color(0xFFB45309),
+                accent: _homeAccentAmber,
               ),
               AppMetricTile(
                 label: 'Вивчені',
                 value: snapshot.known,
-                accent: const Color(0xFF0F766E),
+                accent: _homeAccentTeal,
               ),
             ],
           ),
@@ -845,18 +903,16 @@ class _StudyProgressCard extends StatelessWidget {
             child: LinearProgressIndicator(
               minHeight: 10,
               value: progress.completionRatio,
-              backgroundColor: const Color(0xFFEAE2D2),
-              valueColor: const AlwaysStoppedAnimation<Color>(
-                Color(0xFF0F766E),
-              ),
+              backgroundColor: Theme.of(context).appTokens.progressTrack,
+              valueColor: const AlwaysStoppedAnimation<Color>(_homeAccentTeal),
             ),
           ),
           const SizedBox(height: 10),
           Text(
             'Опрацьовано ${progress.seen} із ${progress.total} слів',
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(color: const Color(0xFF6C665D)),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: Theme.of(context).appTokens.secondaryText,
+            ),
           ),
           const SizedBox(height: 16),
           Wrap(
@@ -866,22 +922,22 @@ class _StudyProgressCard extends StatelessWidget {
               AppMetricTile(
                 label: 'Опрацьовані',
                 value: progress.seen,
-                accent: const Color(0xFF1D4ED8),
+                accent: _homeAccentForest,
               ),
               AppMetricTile(
                 label: 'Вивчені',
                 value: progress.known,
-                accent: const Color(0xFF0F766E),
+                accent: _homeAccentTeal,
               ),
               AppMetricTile(
                 label: 'Повторити',
                 value: progress.needsReview,
-                accent: const Color(0xFFB45309),
+                accent: _homeAccentAmber,
               ),
               AppMetricTile(
                 label: 'Нові',
                 value: progress.unseen,
-                accent: const Color(0xFF7C3AED),
+                accent: _homeAccentOlive,
               ),
             ],
           ),
@@ -903,17 +959,17 @@ class _WordTile extends StatelessWidget {
     final status = switch (learningState) {
       WordLearningState.unseen => (
         label: 'Нове',
-        color: const Color(0xFF7C3AED),
-        background: const Color(0xFFF3E8FF),
+        color: _homeAccentOlive,
+        background: const Color(0xFFE6E7D6),
       ),
       WordLearningState.known => (
         label: 'Вивчене',
-        color: const Color(0xFF0F766E),
+        color: _homeAccentTeal,
         background: const Color(0xFFE7F8F2),
       ),
       WordLearningState.needsReview => (
         label: 'Повторити',
-        color: const Color(0xFFB45309),
+        color: _homeAccentAmber,
         background: const Color(0xFFFFF1E6),
       ),
     };
@@ -923,7 +979,7 @@ class _WordTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: const Color(0xFFF7F3E8),
+          color: Theme.of(context).appTokens.subtleSurface,
           borderRadius: BorderRadius.circular(18),
         ),
         child: Row(
@@ -942,7 +998,7 @@ class _WordTile extends StatelessWidget {
                   Text(
                     word.transcription,
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: const Color(0xFF6C665D),
+                      color: Theme.of(context).appTokens.secondaryText,
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -971,7 +1027,7 @@ class _WordTile extends StatelessWidget {
               textDirection: TextDirection.rtl,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w800,
-                color: const Color(0xFF163832),
+                color: theme.colorScheme.primary,
               ),
             ),
           ],
@@ -1000,7 +1056,7 @@ class _ReadingLessonTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Material(
-        color: const Color(0xFFF1F5FF),
+        color: Theme.of(context).appTokens.subtleSurface,
         borderRadius: BorderRadius.circular(18),
         child: InkWell(
           borderRadius: BorderRadius.circular(18),
@@ -1013,12 +1069,12 @@ class _ReadingLessonTile extends StatelessWidget {
                   width: 38,
                   height: 38,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF1D4ED8).withValues(alpha: 0.10),
+                    color: _homeAccentMoss.withValues(alpha: 0.14),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Icon(
                     Icons.auto_stories_rounded,
-                    color: Color(0xFF1D4ED8),
+                    color: _homeAccentMoss,
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -1047,7 +1103,7 @@ class _ReadingLessonTile extends StatelessWidget {
                       Text(
                         level,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: const Color(0xFF5F5A52),
+                          color: Theme.of(context).appTokens.mutedText,
                         ),
                       ),
                     ],

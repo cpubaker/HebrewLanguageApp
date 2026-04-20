@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -7,11 +9,12 @@ import 'services/guide_progress_store.dart';
 import 'services/lesson_document_loader.dart';
 import 'services/learning_bundle_loader.dart';
 import 'services/reading_progress_store.dart';
+import 'services/theme_mode_store.dart';
 import 'services/verb_audio_player.dart';
 import 'services/word_progress_store.dart';
 import 'theme/app_theme.dart';
 
-class HebrewFlutterApp extends StatelessWidget {
+class HebrewFlutterApp extends StatefulWidget {
   const HebrewFlutterApp({
     super.key,
     LearningBundleLoader? loader,
@@ -21,6 +24,8 @@ class HebrewFlutterApp extends StatelessWidget {
     ReadingProgressStore? readingProgressStore,
     CreateVerbAudioPlayer? audioPlayerFactory,
     CreateAudioPlaybackAwareness? audioPlaybackAwarenessFactory,
+    this.themeModeStore,
+    this.initialThemeMode = ThemeMode.light,
   }) : _loader = loader,
        _documentLoader = documentLoader,
        _progressStore = progressStore,
@@ -36,27 +41,78 @@ class HebrewFlutterApp extends StatelessWidget {
   final ReadingProgressStore? _readingProgressStore;
   final CreateVerbAudioPlayer? _audioPlayerFactory;
   final CreateAudioPlaybackAwareness? _audioPlaybackAwarenessFactory;
+  final ThemeModeStore? themeModeStore;
+  final ThemeMode initialThemeMode;
+
+  @override
+  State<HebrewFlutterApp> createState() => _HebrewFlutterAppState();
+}
+
+class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
+  late ThemeMode _themeMode = widget.initialThemeMode;
+
+  @override
+  void initState() {
+    super.initState();
+    final store = widget.themeModeStore;
+    if (store != null) {
+      unawaited(_restoreThemeMode(store));
+    }
+  }
+
+  Future<void> _restoreThemeMode(ThemeModeStore store) async {
+    final restoredMode = await store.load();
+    if (!mounted || restoredMode == _themeMode) {
+      return;
+    }
+
+    setState(() {
+      _themeMode = restoredMode;
+    });
+  }
+
+  void _toggleThemeMode() {
+    final nextMode = _themeMode == ThemeMode.dark
+        ? ThemeMode.light
+        : ThemeMode.dark;
+    setState(() {
+      _themeMode = nextMode;
+    });
+
+    final store = widget.themeModeStore;
+    if (store != null) {
+      unawaited(store.save(nextMode));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Вчимо іврит',
+      title: 'Р’С‡РёРјРѕ С–РІСЂРёС‚',
       debugShowCheckedModeBanner: false,
       locale: const Locale('uk'),
       supportedLocales: const [Locale('uk')],
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
-      theme: buildAppTheme(),
+      theme: buildLightAppTheme(),
+      darkTheme: buildDarkAppTheme(),
+      themeMode: _themeMode,
       home: AppShellScreen(
-        loader: _loader ?? AssetLearningBundleLoader(),
-        documentLoader: _documentLoader ?? AssetLessonDocumentLoader(),
-        progressStore: _progressStore ?? SharedPreferencesWordProgressStore(),
+        loader: widget._loader ?? AssetLearningBundleLoader(),
+        documentLoader: widget._documentLoader ?? AssetLessonDocumentLoader(),
+        progressStore:
+            widget._progressStore ?? SharedPreferencesWordProgressStore(),
         guideProgressStore:
-            _guideProgressStore ?? SharedPreferencesGuideProgressStore(),
+            widget._guideProgressStore ?? SharedPreferencesGuideProgressStore(),
         readingProgressStore:
-            _readingProgressStore ?? SharedPreferencesReadingProgressStore(),
-        audioPlayerFactory: _audioPlayerFactory ?? createAssetVerbAudioPlayer,
+            widget._readingProgressStore ??
+            SharedPreferencesReadingProgressStore(),
+        audioPlayerFactory:
+            widget._audioPlayerFactory ?? createAssetVerbAudioPlayer,
         audioPlaybackAwarenessFactory:
-            _audioPlaybackAwarenessFactory ?? createAudioPlaybackAwareness,
+            widget._audioPlaybackAwarenessFactory ??
+            createAudioPlaybackAwareness,
+        isDarkMode: _themeMode == ThemeMode.dark,
+        onToggleThemeMode: _toggleThemeMode,
       ),
     );
   }

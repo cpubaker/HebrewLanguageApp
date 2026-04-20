@@ -14,7 +14,7 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        theme: buildAppTheme(),
+        theme: buildLightAppTheme(),
         home: Scaffold(
           body: RepetitionScreen(
             words: const [

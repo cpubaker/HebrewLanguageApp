@@ -488,10 +488,12 @@ class _ProgressStrip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFF7F3E8),
+        color: tokens.subtleSurface,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -511,7 +513,7 @@ class _ProgressStrip extends StatelessWidget {
               Text(
                 completedLabel,
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: const Color(0xFF6C665D),
+                  color: tokens.secondaryText,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -523,7 +525,7 @@ class _ProgressStrip extends StatelessWidget {
             child: LinearProgressIndicator(
               minHeight: 9,
               value: ratio == 0 ? 0.0 : ratio.clamp(0.0, 1.0),
-              backgroundColor: const Color(0xFFE9E2D3),
+              backgroundColor: tokens.progressTrack,
               valueColor: AlwaysStoppedAnimation<Color>(accent),
             ),
           ),
@@ -548,10 +550,12 @@ class _SettingsSwitchTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFF7F3E8),
+        color: tokens.subtleSurface,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -570,7 +574,7 @@ class _SettingsSwitchTile extends StatelessWidget {
                 Text(
                   subtitle,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: const Color(0xFF6C665D),
+                    color: tokens.mutedText,
                     height: 1.45,
                   ),
                 ),
@@ -598,6 +602,9 @@ class _SettingsChoiceChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -606,18 +613,22 @@ class _SettingsChoiceChip extends StatelessWidget {
         child: Ink(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFF163832) : Colors.white,
+            color: isSelected
+                ? theme.colorScheme.primary
+                : tokens.elevatedSurface,
             borderRadius: BorderRadius.circular(999),
             border: Border.all(
               color: isSelected
-                  ? const Color(0xFF163832)
-                  : const Color(0xFF163832).withValues(alpha: 0.12),
+                  ? theme.colorScheme.primary
+                  : tokens.outlineSoft,
             ),
           ),
           child: Text(
             label,
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: isSelected ? Colors.white : const Color(0xFF163832),
+            style: theme.textTheme.labelLarge?.copyWith(
+              color: isSelected
+                  ? theme.colorScheme.onPrimary
+                  : theme.colorScheme.primary,
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -634,6 +645,8 @@ class _MoreShortcutTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -671,7 +684,7 @@ class _MoreShortcutTile extends StatelessWidget {
                     Text(
                       shortcut.subtitle,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: const Color(0xFF6C665D),
+                        color: tokens.mutedText,
                         height: 1.35,
                       ),
                     ),

@@ -16,6 +16,7 @@ import 'package:hebrew_language_flutter/services/guide_progress_store.dart';
 import 'package:hebrew_language_flutter/services/lesson_document_loader.dart';
 import 'package:hebrew_language_flutter/services/learning_bundle_loader.dart';
 import 'package:hebrew_language_flutter/services/reading_progress_store.dart';
+import 'package:hebrew_language_flutter/services/theme_mode_store.dart';
 import 'package:hebrew_language_flutter/services/verb_audio_player.dart';
 import 'package:hebrew_language_flutter/services/word_progress_store.dart';
 
@@ -134,6 +135,35 @@ void main() {
 
     expect(find.text('Видимі: 1'), findsOneWidget);
     expect(find.text('Усього: 2'), findsOneWidget);
+  });
+
+  testWidgets('toggles night mode from the home hero and persists it', (
+    WidgetTester tester,
+  ) async {
+    await _useTallMobileViewport(tester);
+    final themeModeStore = FakeThemeModeStore();
+
+    await tester.pumpWidget(
+      HebrewFlutterApp(
+        loader: FakeLearningBundleLoader(),
+        documentLoader: FakeLessonDocumentLoader(),
+        progressStore: FakeWordProgressStore(),
+        guideProgressStore: FakeGuideProgressStore(),
+        readingProgressStore: FakeReadingProgressStore(),
+        themeModeStore: themeModeStore,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byTooltip('Увімкнути нічний режим'), findsOneWidget);
+
+    await tester.tap(find.byKey(const ValueKey('theme-toggle-button')));
+    await tester.pumpAndSettle();
+
+    final app = tester.widget<MaterialApp>(find.byType(MaterialApp));
+    expect(app.themeMode, ThemeMode.dark);
+    expect(themeModeStore.savedModes, [ThemeMode.dark]);
+    expect(find.byTooltip('Увімкнути світлий режим'), findsOneWidget);
   });
 
   testWidgets(
@@ -930,6 +960,21 @@ class FakeVerbAudioPlayer implements VerbAudioPlayer {
   Future<void> stop() async {
     stopped = true;
     _isPlayingController.add(false);
+  }
+}
+
+class FakeThemeModeStore implements ThemeModeStore {
+  FakeThemeModeStore({this.initialMode = ThemeMode.light});
+
+  final ThemeMode initialMode;
+  final List<ThemeMode> savedModes = <ThemeMode>[];
+
+  @override
+  Future<ThemeMode> load() async => initialMode;
+
+  @override
+  Future<void> save(ThemeMode mode) async {
+    savedModes.add(mode);
   }
 }
 
