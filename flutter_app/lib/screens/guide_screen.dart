@@ -18,6 +18,7 @@ class GuideScreen extends StatefulWidget {
     required this.documentLoader,
     required this.lessonStatuses,
     required this.onStatusChanged,
+    this.topContent,
   });
 
   final List<LessonEntry> lessons;
@@ -25,6 +26,7 @@ class GuideScreen extends StatefulWidget {
   final Map<String, GuideLessonStatus> lessonStatuses;
   final void Function(String assetPath, GuideLessonStatus status)
   onStatusChanged;
+  final Widget? topContent;
 
   @override
   State<GuideScreen> createState() => _GuideScreenState();
@@ -387,6 +389,10 @@ class _GuideScreenState extends State<GuideScreen> {
           controller: _scrollController,
           padding: tokens.pagePadding.copyWith(bottom: 108),
           children: [
+            if (widget.topContent != null) ...[
+              widget.topContent!,
+              const SizedBox(height: 18),
+            ],
             Text(
               'Довідник',
               style: Theme.of(

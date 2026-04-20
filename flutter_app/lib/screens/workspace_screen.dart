@@ -64,31 +64,59 @@ class WorkspaceScreen extends StatelessWidget {
             tokens.pagePadding.right,
             16,
           ),
-          child: AppSectionCard(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AppPageHeader(
-                  title: title,
-                  subtitle: subtitle,
-                ),
-                const SizedBox(height: 16),
-                AppActionWrap(
-                  children: [
-                    for (var index = 0; index < sections.length; index += 1)
-                      _WorkspaceSectionChip(
-                        section: sections[index],
-                        isSelected: index == selectedIndex,
-                        onTap: () => onSectionSelected(index),
-                      ),
-                  ],
-                ),
-              ],
-            ),
+          child: WorkspaceHeaderCard(
+            title: title,
+            subtitle: subtitle,
+            sections: sections,
+            selectedIndex: selectedIndex,
+            onSectionSelected: onSectionSelected,
           ),
         ),
         Expanded(child: child),
       ],
+    );
+  }
+}
+
+class WorkspaceHeaderCard extends StatelessWidget {
+  const WorkspaceHeaderCard({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.sections,
+    required this.selectedIndex,
+    required this.onSectionSelected,
+  });
+
+  final String title;
+  final String subtitle;
+  final List<WorkspaceSection> sections;
+  final int selectedIndex;
+  final ValueChanged<int> onSectionSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return AppSectionCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AppPageHeader(
+            title: title,
+            subtitle: subtitle,
+          ),
+          const SizedBox(height: 16),
+          AppActionWrap(
+            children: [
+              for (var index = 0; index < sections.length; index += 1)
+                _WorkspaceSectionChip(
+                  section: sections[index],
+                  isSelected: index == selectedIndex,
+                  onTap: () => onSectionSelected(index),
+                ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

@@ -627,7 +627,29 @@ class _AppShellScreenState extends State<AppShellScreen> {
   }
 
   Widget _buildMaterialsWorkspace(LearningBundle bundle) {
-    return WorkspaceScreen(
+    return IndexedStack(
+      index: _materialsSection.index,
+      children: [
+        GuideScreen(
+          topContent: _buildMaterialsHeaderCard(),
+          lessons: bundle.guideLessons,
+          documentLoader: widget.documentLoader,
+          lessonStatuses: _guideLessonStatuses,
+          onStatusChanged: _handleGuideStatusChanged,
+        ),
+        ReadingScreen(
+          topContent: _buildMaterialsHeaderCard(),
+          lessons: bundle.readingLessons,
+          documentLoader: widget.documentLoader,
+          lessonStatuses: _readingLessonStatuses,
+          onStatusChanged: _handleReadingStatusChanged,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMaterialsHeaderCard() {
+    return WorkspaceHeaderCard(
       title: 'Матеріали',
       subtitle: 'Довідник і тексти для читання в одному робочому просторі.',
       sections: const [
@@ -638,23 +660,6 @@ class _AppShellScreenState extends State<AppShellScreen> {
       onSectionSelected: (index) {
         _openMaterialsSection(_MaterialsSection.values[index]);
       },
-      child: IndexedStack(
-        index: _materialsSection.index,
-        children: [
-          GuideScreen(
-            lessons: bundle.guideLessons,
-            documentLoader: widget.documentLoader,
-            lessonStatuses: _guideLessonStatuses,
-            onStatusChanged: _handleGuideStatusChanged,
-          ),
-          ReadingScreen(
-            lessons: bundle.readingLessons,
-            documentLoader: widget.documentLoader,
-            lessonStatuses: _readingLessonStatuses,
-            onStatusChanged: _handleReadingStatusChanged,
-          ),
-        ],
-      ),
     );
   }
 

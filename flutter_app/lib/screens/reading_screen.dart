@@ -19,6 +19,7 @@ class ReadingScreen extends StatefulWidget {
     required this.documentLoader,
     required this.lessonStatuses,
     required this.onStatusChanged,
+    this.topContent,
   });
 
   final List<LessonEntry> lessons;
@@ -26,6 +27,7 @@ class ReadingScreen extends StatefulWidget {
   final Map<String, GuideLessonStatus> lessonStatuses;
   final void Function(String assetPath, GuideLessonStatus status)
   onStatusChanged;
+  final Widget? topContent;
 
   @override
   State<ReadingScreen> createState() => _ReadingScreenState();
@@ -204,93 +206,80 @@ class _ReadingScreenState extends State<ReadingScreen> {
       (count, group) => count + group.lessons.length,
     );
 
-    final itemCount = visibleGroups.length + 5;
-
     return Stack(
       children: [
-        ListView.builder(
+        ListView(
           controller: _scrollController,
           padding: tokens.pagePadding.copyWith(bottom: 108),
-          itemCount: itemCount,
-          itemBuilder: (context, index) {
-            if (index == 0) {
-              return Text(
-                '\u0427\u0438\u0442\u0430\u043d\u043d\u044f',
-                style: Theme.of(
-                  context,
-                ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
-              );
-            }
-
-            if (index == 1) {
-              return Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Text(
-                  '\u0422\u0435\u043a\u0441\u0442\u0438 \u0434\u043b\u044f \u0447\u0438\u0442\u0430\u043d\u043d\u044f, \u0440\u043e\u0437\u043a\u043b\u0430\u0434\u0435\u043d\u0456 \u0437\u0430 \u0440\u0456\u0432\u043d\u044f\u043c\u0438.',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: const Color(0xFF5F5A52),
-                    height: 1.4,
-                  ),
+          children: [
+            if (widget.topContent != null) ...[
+              widget.topContent!,
+              const SizedBox(height: 18),
+            ],
+            Text(
+              '\u0427\u0438\u0442\u0430\u043d\u043d\u044f',
+              style: Theme.of(
+                context,
+              ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(
+                '\u0422\u0435\u043a\u0441\u0442\u0438 \u0434\u043b\u044f \u0447\u0438\u0442\u0430\u043d\u043d\u044f, \u0440\u043e\u0437\u043a\u043b\u0430\u0434\u0435\u043d\u0456 \u0437\u0430 \u0440\u0456\u0432\u043d\u044f\u043c\u0438.',
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: const Color(0xFF5F5A52),
+                  height: 1.4,
                 ),
-              );
-            }
-
-            if (index == 2) {
-              return const SizedBox(height: 18);
-            }
-
-            if (index == 3) {
-              return AppSectionCard(
-                padding: const EdgeInsets.all(16),
-                borderColor: const Color(0xFF1D4ED8).withValues(alpha: 0.16),
-                child: Row(
-                  children: [
-                    const Icon(Icons.auto_stories_rounded, color: Color(0xFF1D4ED8)),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            _selectedLevelKeys.isEmpty
-                                ? '\u0423\u0440\u043e\u043a\u0456\u0432: ${widget.lessons.length}'
-                                : '\u041f\u043e\u043a\u0430\u0437\u0430\u043d\u043e: $visibleLessonCount',
-                            style: Theme.of(context).textTheme.titleMedium
-                                ?.copyWith(fontWeight: FontWeight.w700),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            progress.completedLabel('уроків'),
-                            style: Theme.of(context).textTheme.bodyMedium
-                                ?.copyWith(
-                                  color: const Color(0xFF5F5A52),
-                                  fontWeight: FontWeight.w600,
-                                ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }
-
-            if (index == 4) {
-              return const SizedBox(height: 18);
-            }
-
-            final group = visibleGroups[index - 5];
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 18),
-              child: _ReadingLevelSection(
-                group: group,
-                documentLoader: widget.documentLoader,
-                statusFor: _statusFor,
-                onStatusChanged: widget.onStatusChanged,
-                titleResolver: _resolvedLessonTitle,
               ),
-            );
-          },
+            ),
+            const SizedBox(height: 18),
+            AppSectionCard(
+              padding: const EdgeInsets.all(16),
+              borderColor: const Color(0xFF1D4ED8).withValues(alpha: 0.16),
+              child: Row(
+                children: [
+                  const Icon(Icons.auto_stories_rounded, color: Color(0xFF1D4ED8)),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _selectedLevelKeys.isEmpty
+                              ? '\u0423\u0440\u043e\u043a\u0456\u0432: ${widget.lessons.length}'
+                              : '\u041f\u043e\u043a\u0430\u0437\u0430\u043d\u043e: $visibleLessonCount',
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.w700),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          progress.completedLabel('уроків'),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: const Color(0xFF5F5A52),
+                                fontWeight: FontWeight.w600,
+                              ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 18),
+            ...visibleGroups.map(
+              (group) => Padding(
+                padding: const EdgeInsets.only(bottom: 18),
+                child: _ReadingLevelSection(
+                  group: group,
+                  documentLoader: widget.documentLoader,
+                  statusFor: _statusFor,
+                  onStatusChanged: widget.onStatusChanged,
+                  titleResolver: _resolvedLessonTitle,
+                ),
+              ),
+            ),
+          ],
         ),
         Positioned(
           right: 20,
