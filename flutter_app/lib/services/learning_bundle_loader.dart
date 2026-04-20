@@ -154,6 +154,7 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
         assetPath: path,
         displayName: _displayNameForPath(
           path,
+          titleOverride: metadataEntry?.title,
           orderOverride: metadataEntry?.sortOrder,
         ),
         sortOrder: metadataEntry?.sortOrder,
@@ -268,26 +269,38 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
     return match == null ? null : int.tryParse(match.group(1)!);
   }
 
-  String _displayNameForPath(String path, {int? orderOverride}) {
+  String _displayNameForPath(
+    String path, {
+    String? titleOverride,
+    int? orderOverride,
+  }) {
     final filename = path.split('/').last;
-    final withoutExtension = filename.replaceFirst(RegExp(r'\.md$'), '');
-    final withoutPrefix = withoutExtension.replaceFirst(
-      RegExp(r'^\d+[_-]*'),
-      '',
-    );
-    final words = withoutPrefix
-        .split(RegExp(r'[_-]+'))
-        .where((part) => part.isNotEmpty)
-        .map((part) => '${part[0].toUpperCase()}${part.substring(1)}')
-        .join(' ');
+    final resolvedTitle =
+        titleOverride?.trim().isNotEmpty == true
+            ? titleOverride!.trim()
+            : () {
+              final withoutExtension = filename.replaceFirst(
+                RegExp(r'\.md$'),
+                '',
+              );
+              final withoutPrefix = withoutExtension.replaceFirst(
+                RegExp(r'^\d+[_-]*'),
+                '',
+              );
+              return withoutPrefix
+                  .split(RegExp(r'[_-]+'))
+                  .where((part) => part.isNotEmpty)
+                  .map((part) => '${part[0].toUpperCase()}${part.substring(1)}')
+                  .join(' ');
+            }();
     final numericPrefix = orderOverride ?? _numericPrefix(filename);
 
     if (numericPrefix == null) {
-      return words;
+      return resolvedTitle;
     }
 
     final paddedPrefix = numericPrefix.toString().padLeft(2, '0');
-    return '$paddedPrefix $words';
+    return '$paddedPrefix $resolvedTitle';
   }
 
   String _lessonIdForPath(String path) {
@@ -324,6 +337,7 @@ class _GuideMetadataEntry {
   const _GuideMetadataEntry({
     this.sortOrder,
     this.lessonId,
+    this.title,
     this.sectionId,
     this.aliases = const <String>[],
     this.relatedIds = const <String>[],
@@ -331,6 +345,7 @@ class _GuideMetadataEntry {
 
   final int? sortOrder;
   final String? lessonId;
+  final String? title;
   final String? sectionId;
   final List<String> aliases;
   final List<String> relatedIds;
@@ -343,6 +358,7 @@ class _GuideMetadataEntry {
     return _GuideMetadataEntry(
       sortOrder: _parseSortOrder(value['order']),
       lessonId: value['id']?.toString(),
+      title: value['title']?.toString(),
       sectionId: value['section']?.toString(),
       aliases: (value['aliases'] as List<dynamic>? ?? const <dynamic>[])
           .map((item) => item.toString())

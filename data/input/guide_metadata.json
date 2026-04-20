@@ -10,6 +10,7 @@
     "lessons": {
         "01_intro_alphabet.md": {
             "id": "intro_alphabet",
+            "title": "Знайомство з івритом",
             "order": 1,
             "section": "script",
             "aliases": [
