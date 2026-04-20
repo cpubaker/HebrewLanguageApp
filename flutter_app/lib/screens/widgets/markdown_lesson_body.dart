@@ -1,6 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+import '../../theme/app_theme.dart';
+
 class MarkdownLessonBody extends StatefulWidget {
   const MarkdownLessonBody({
     super.key,
@@ -29,6 +31,7 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
   @override
   Widget build(BuildContext context) {
     _disposeRecognizers();
+    final tokens = Theme.of(context).appTokens;
 
     final lines = widget.body.split('\n');
     final children = <Widget>[];
@@ -67,7 +70,8 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
         final displayText = _prepareBidirectionalText(bulletText);
         final textDirection = _preferredTextDirectionForDisplay(bulletText);
         final bulletRowDirection =
-            textDirection == TextDirection.rtl && !_hasMixedScriptContent(bulletText)
+            textDirection == TextDirection.rtl &&
+                !_hasMixedScriptContent(bulletText)
             ? TextDirection.rtl
             : TextDirection.ltr;
         children.add(
@@ -80,7 +84,11 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
-                    child: Icon(Icons.circle, size: 8, color: widget.accentColor),
+                    child: Icon(
+                      Icons.circle,
+                      size: 8,
+                      color: widget.accentColor,
+                    ),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
@@ -121,8 +129,9 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: tokens.elevatedSurface,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: tokens.outlineSoft),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -203,10 +212,9 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
     String text,
     TextStyle? baseStyle,
   ) {
-    final rawTokens = RegExp(r'\s+|[^\s]+')
-        .allMatches(text)
-        .map((match) => match.group(0)!)
-        .toList(growable: false);
+    final rawTokens = RegExp(
+      r'\s+|[^\s]+',
+    ).allMatches(text).map((match) => match.group(0)!).toList(growable: false);
     if (rawTokens.isEmpty) {
       return null;
     }
@@ -236,9 +244,8 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
     }
     for (final entries in entriesByFirstWord.values) {
       entries.sort(
-        (left, right) => right.normalizedWords.length.compareTo(
-          left.normalizedWords.length,
-        ),
+        (left, right) =>
+            right.normalizedWords.length.compareTo(left.normalizedWords.length),
       );
     }
 
@@ -250,10 +257,7 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
       }
 
       wordTokens.add(
-        _WordToken(
-          rawTokenIndex: rawIndex,
-          normalized: normalized,
-        ),
+        _WordToken(rawTokenIndex: rawIndex, normalized: normalized),
       );
     }
 
@@ -265,7 +269,8 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
     for (var wordIndex = 0; wordIndex < wordTokens.length; wordIndex++) {
       final currentWord = wordTokens[wordIndex];
       final candidates =
-          entriesByFirstWord[currentWord.normalized] ?? const <_GlossaryEntry>[];
+          entriesByFirstWord[currentWord.normalized] ??
+          const <_GlossaryEntry>[];
       if (candidates.isEmpty) {
         continue;
       }
@@ -274,13 +279,18 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
       var matchedWordEndIndex = wordIndex;
 
       for (final candidate in candidates) {
-        final nextWordEndIndex = wordIndex + candidate.normalizedWords.length - 1;
+        final nextWordEndIndex =
+            wordIndex + candidate.normalizedWords.length - 1;
         if (nextWordEndIndex >= wordTokens.length) {
           continue;
         }
 
         var matches = true;
-        for (var offset = 0; offset < candidate.normalizedWords.length; offset++) {
+        for (
+          var offset = 0;
+          offset < candidate.normalizedWords.length;
+          offset++
+        ) {
           if (wordTokens[wordIndex + offset].normalized !=
               candidate.normalizedWords[offset]) {
             matches = false;
@@ -329,9 +339,7 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
 
       spans.add(
         TextSpan(
-          text: rawTokens
-              .sublist(rawIndex, match.rawTokenEndIndex + 1)
-              .join(),
+          text: rawTokens.sublist(rawIndex, match.rawTokenEndIndex + 1).join(),
           style: tappableStyle,
           recognizer: _createTapRecognizer(() {
             _showGlossarySheet(
@@ -397,7 +405,9 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
   }
 
   TextAlign _textAlignForDirection(TextDirection textDirection) {
-    return textDirection == TextDirection.rtl ? TextAlign.right : TextAlign.left;
+    return textDirection == TextDirection.rtl
+        ? TextAlign.right
+        : TextAlign.left;
   }
 
   bool _containsHebrew(String text) {
@@ -462,10 +472,7 @@ class _GlossaryEntry {
 }
 
 class _WordToken {
-  const _WordToken({
-    required this.rawTokenIndex,
-    required this.normalized,
-  });
+  const _WordToken({required this.rawTokenIndex, required this.normalized});
 
   final int rawTokenIndex;
   final String normalized;

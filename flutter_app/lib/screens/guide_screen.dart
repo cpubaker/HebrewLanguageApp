@@ -481,7 +481,7 @@ class _GuideScreenState extends State<GuideScreen> {
                       child: FloatingActionButton.small(
                         heroTag: 'guideScrollToTop',
                         onPressed: _scrollToTop,
-                        backgroundColor: Colors.white,
+                        backgroundColor: tokens.elevatedSurface,
                         foregroundColor: const Color(0xFFB45309),
                         child: const Icon(Icons.vertical_align_top_rounded),
                       ),
@@ -582,8 +582,10 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
 
   Future<Map<String, String>> _resolveAdjacentLessonTitles() async {
     final titlesByAssetPath = <String, String>{};
-    final adjacentLessons = [_previousLesson, _nextLesson]
-        .whereType<LessonEntry>();
+    final adjacentLessons = [
+      _previousLesson,
+      _nextLesson,
+    ].whereType<LessonEntry>();
 
     for (final lesson in adjacentLessons) {
       try {
@@ -822,149 +824,151 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
         child: FutureBuilder<LessonDocument>(
           future: widget.documentLoader.load(widget.lesson.assetPath),
           builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return const Center(child: CircularProgressIndicator());
-          }
+            if (snapshot.connectionState != ConnectionState.done) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-          if (snapshot.hasError) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Text(
-                  'Не вдалося відкрити цей урок.',
-                  style: Theme.of(context).textTheme.titleMedium,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            );
-          }
-
-          final document = snapshot.requireData;
-          return NotificationListener<ScrollNotification>(
-            onNotification: _handleScrollNotification,
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(28),
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFF8C6A2A), Color(0xFFB45309)],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
+            if (snapshot.hasError) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Text(
+                    'Не вдалося відкрити цей урок.',
+                    style: Theme.of(context).textTheme.titleMedium,
+                    textAlign: TextAlign.center,
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          if (widget.lesson.sectionLabel != null)
-                            _GuideSectionPill(
-                              label: widget.lesson.sectionLabel!,
+                ),
+              );
+            }
+
+            final document = snapshot.requireData;
+            return NotificationListener<ScrollNotification>(
+              onNotification: _handleScrollNotification,
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(28),
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF8C6A2A), Color(0xFFB45309)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            if (widget.lesson.sectionLabel != null)
+                              _GuideSectionPill(
+                                label: widget.lesson.sectionLabel!,
+                                foregroundColor: Colors.white,
+                                backgroundColor: Colors.white.withValues(
+                                  alpha: 0.18,
+                                ),
+                              ),
+                            const Spacer(),
+                            _GuideStatusToggleButton(
+                              status: _status,
+                              onPressed: () {
+                                _updateStatus(
+                                  nextLessonProgressStatus(_status),
+                                );
+                              },
                               foregroundColor: Colors.white,
                               backgroundColor: Colors.white.withValues(
                                 alpha: 0.18,
                               ),
                             ),
-                          const Spacer(),
-                          _GuideStatusToggleButton(
-                            status: _status,
-                            onPressed: () {
-                              _updateStatus(nextLessonProgressStatus(_status));
-                            },
-                            foregroundColor: Colors.white,
-                            backgroundColor: Colors.white.withValues(
-                              alpha: 0.18,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 14),
-                      Text(
-                        document.title,
-                        style: Theme.of(context).textTheme.headlineMedium
-                            ?.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w800,
-                            ),
-                      ),
-                      if (document.summary.trim().isNotEmpty) ...[
+                          ],
+                        ),
                         const SizedBox(height: 14),
                         Text(
-                          document.summary.trim(),
-                          style: Theme.of(context).textTheme.bodyLarge
+                          document.title,
+                          style: Theme.of(context).textTheme.headlineMedium
                               ?.copyWith(
-                                color: Colors.white.withValues(alpha: 0.92),
-                                height: 1.45,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w800,
                               ),
                         ),
+                        if (document.summary.trim().isNotEmpty) ...[
+                          const SizedBox(height: 14),
+                          Text(
+                            document.summary.trim(),
+                            style: Theme.of(context).textTheme.bodyLarge
+                                ?.copyWith(
+                                  color: Colors.white.withValues(alpha: 0.92),
+                                  height: 1.45,
+                                ),
+                          ),
+                        ],
                       ],
-                    ],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                const SizedBox(height: 20),
-                MarkdownLessonBody(
-                  body: document.body,
-                  accentColor: const Color(0xFF8C6A2A),
-                ),
-                if (document.headings.isNotEmpty) ...[
-                  const SizedBox(height: 18),
-                  _GuideOutlineCard(headings: document.headings),
-                ],
-                if (_previousLesson != null || _nextLesson != null) ...[
-                  const SizedBox(height: 18),
-                  FutureBuilder<Map<String, String>>(
-                    future: _adjacentLessonTitlesFuture,
-                    builder: (context, adjacentSnapshot) {
-                      final titlesByAssetPath =
-                          adjacentSnapshot.data ?? const <String, String>{};
-                      return _GuideAdjacentLessonsCard(
-                        previousLessonTitle: _previousLesson == null
-                            ? null
-                            : titlesByAssetPath[_previousLesson!.assetPath] ??
-                                  _fallbackLessonTitle(_previousLesson!),
-                        nextLessonTitle: _nextLesson == null
-                            ? null
-                            : titlesByAssetPath[_nextLesson!.assetPath] ??
-                                  _fallbackLessonTitle(_nextLesson!),
-                        onOpenPrevious: _previousLesson == null
-                            ? null
-                            : () => _openLesson(_previousLesson!),
-                        onOpenNext: _nextLesson == null
-                            ? null
-                            : () => _openLesson(_nextLesson!),
-                      );
-                    },
+                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
+                  MarkdownLessonBody(
+                    body: document.body,
+                    accentColor: const Color(0xFF8C6A2A),
                   ),
-                ],
-                if (document.relatedTopics.isNotEmpty ||
-                    widget.lesson.relatedIds.isNotEmpty) ...[
-                  const SizedBox(height: 18),
-                  FutureBuilder<_GuideRelatedTopicsResolution>(
-                    future: _relatedTopicsFuture,
-                    builder: (context, relatedSnapshot) {
-                      if (relatedSnapshot.connectionState !=
-                          ConnectionState.done) {
-                        return const _GuideRelatedTopicsLoadingCard();
-                      }
+                  if (document.headings.isNotEmpty) ...[
+                    const SizedBox(height: 18),
+                    _GuideOutlineCard(headings: document.headings),
+                  ],
+                  if (_previousLesson != null || _nextLesson != null) ...[
+                    const SizedBox(height: 18),
+                    FutureBuilder<Map<String, String>>(
+                      future: _adjacentLessonTitlesFuture,
+                      builder: (context, adjacentSnapshot) {
+                        final titlesByAssetPath =
+                            adjacentSnapshot.data ?? const <String, String>{};
+                        return _GuideAdjacentLessonsCard(
+                          previousLessonTitle: _previousLesson == null
+                              ? null
+                              : titlesByAssetPath[_previousLesson!.assetPath] ??
+                                    _fallbackLessonTitle(_previousLesson!),
+                          nextLessonTitle: _nextLesson == null
+                              ? null
+                              : titlesByAssetPath[_nextLesson!.assetPath] ??
+                                    _fallbackLessonTitle(_nextLesson!),
+                          onOpenPrevious: _previousLesson == null
+                              ? null
+                              : () => _openLesson(_previousLesson!),
+                          onOpenNext: _nextLesson == null
+                              ? null
+                              : () => _openLesson(_nextLesson!),
+                        );
+                      },
+                    ),
+                  ],
+                  if (document.relatedTopics.isNotEmpty ||
+                      widget.lesson.relatedIds.isNotEmpty) ...[
+                    const SizedBox(height: 18),
+                    FutureBuilder<_GuideRelatedTopicsResolution>(
+                      future: _relatedTopicsFuture,
+                      builder: (context, relatedSnapshot) {
+                        if (relatedSnapshot.connectionState !=
+                            ConnectionState.done) {
+                          return const _GuideRelatedTopicsLoadingCard();
+                        }
 
-                      final resolution =
-                          relatedSnapshot.data ??
-                          _GuideRelatedTopicsResolution.empty();
-                      return _GuideRelatedTopicsCard(
-                        resolution: resolution,
-                        onOpenLesson: _openLesson,
-                      );
-                    },
-                  ),
+                        final resolution =
+                            relatedSnapshot.data ??
+                            _GuideRelatedTopicsResolution.empty();
+                        return _GuideRelatedTopicsCard(
+                          resolution: resolution,
+                          onOpenLesson: _openLesson,
+                        );
+                      },
+                    ),
+                  ],
                 ],
-              ],
-            ),
-          );
+              ),
+            );
           },
         ),
       ),
@@ -1003,13 +1007,16 @@ class _GuideSearchCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
     final hasQuery = query.trim().isNotEmpty;
     final hasSectionFilter = selectedSectionLabels.isNotEmpty;
     final title = hasQuery || hasSectionFilter
         ? 'Знайдено: $visibleCount із $totalCount'
         : 'Тем: $totalCount';
     final readCount =
-        int.tryParse(RegExp(r'\d+').firstMatch(completedLabel)?.group(0) ?? '') ??
+        int.tryParse(
+          RegExp(r'\d+').firstMatch(completedLabel)?.group(0) ?? '',
+        ) ??
         0;
     final subtitle = !hasSectionFilter
         ? 'Прочитано $readCount із $totalCount тем'
@@ -1022,7 +1029,7 @@ class _GuideSearchCard extends StatelessWidget {
       curve: Curves.easeOutCubic,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: tokens.elevatedSurface,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
           color: const Color(0xFFB45309).withValues(alpha: 0.16),
@@ -1060,9 +1067,9 @@ class _GuideSearchCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       subtitle,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: const Color(0xFF5F5A52),
-                      ),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(color: tokens.mutedText),
                     ),
                   ],
                 ),
@@ -1212,7 +1219,7 @@ class _GuideSearchField extends StatelessWidget {
                 icon: const Icon(Icons.close_rounded),
               ),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: Theme.of(context).appTokens.elevatedSurface,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 18,
           vertical: 16,
@@ -1249,6 +1256,7 @@ class _GuideSectionOptionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -1259,12 +1267,12 @@ class _GuideSectionOptionTile extends StatelessWidget {
           decoration: BoxDecoration(
             color: selected
                 ? const Color(0xFFB45309).withValues(alpha: 0.08)
-                : const Color(0xFFF9FAFB),
+                : tokens.subtleSurface,
             borderRadius: BorderRadius.circular(18),
             border: Border.all(
               color: selected
                   ? const Color(0xFFB45309).withValues(alpha: 0.30)
-                  : const Color(0xFFE5E7EB),
+                  : tokens.outlineSoft,
             ),
           ),
           child: Row(
@@ -1324,6 +1332,7 @@ class _GuideLessonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
     final statusTheme = _GuideLessonStatusTheme.fromStatus(status);
     final orderMatch = RegExp(r'^(\d+)').firstMatch(lesson.displayName);
     final orderLabel = orderMatch?.group(1) ?? '*';
@@ -1336,11 +1345,11 @@ class _GuideLessonCard extends StatelessWidget {
         child: Ink(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: tokens.elevatedSurface,
             borderRadius: BorderRadius.circular(22),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                color: Color(0x12000000),
+                color: tokens.shadowColor,
                 blurRadius: 16,
                 offset: Offset(0, 8),
               ),
@@ -1387,7 +1396,7 @@ class _GuideLessonCard extends StatelessWidget {
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: const Color(0xFF5F5A52),
+                          color: tokens.mutedText,
                           height: 1.35,
                         ),
                       ),
@@ -1447,12 +1456,13 @@ class _GuideOutlineCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: tokens.elevatedSurface,
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: const Color(0xFFE8DED1)),
+        border: Border.all(color: tokens.outlineSoft),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1483,7 +1493,7 @@ class _GuideOutlineCard extends StatelessWidget {
                     child: Text(
                       heading,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: const Color(0xFF443D35),
+                        color: tokens.secondaryText,
                         height: 1.35,
                       ),
                     ),
@@ -1555,11 +1565,12 @@ class _GuideNavigationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: tokens.elevatedSurface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFE8DED1)),
+        border: Border.all(color: tokens.outlineSoft),
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(20),
@@ -1595,8 +1606,8 @@ class _GuideNavigationButton extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: onPressed == null
-                            ? const Color(0xFF9A9288)
-                            : const Color(0xFF443D35),
+                            ? tokens.mutedText.withValues(alpha: 0.75)
+                            : tokens.secondaryText,
                         fontWeight: FontWeight.w600,
                         height: 1.35,
                       ),
@@ -1626,12 +1637,13 @@ class _GuideRelatedTopicsLoadingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: tokens.elevatedSurface,
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: const Color(0xFFE8DED1)),
+        border: Border.all(color: tokens.outlineSoft),
       ),
       child: Row(
         children: [
@@ -1649,7 +1661,7 @@ class _GuideRelatedTopicsLoadingCard extends StatelessWidget {
               'Підбираємо пов’язані теми для швидких переходів.',
               style: Theme.of(
                 context,
-              ).textTheme.bodyMedium?.copyWith(color: const Color(0xFF5F5A52)),
+              ).textTheme.bodyMedium?.copyWith(color: tokens.mutedText),
             ),
           ),
         ],
@@ -1669,12 +1681,13 @@ class _GuideRelatedTopicsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: tokens.elevatedSurface,
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: const Color(0xFFE8DED1)),
+        border: Border.all(color: tokens.outlineSoft),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1691,7 +1704,7 @@ class _GuideRelatedTopicsCard extends StatelessWidget {
               'Усі найближчі пов\'язані теми вже є в навігації вище.',
               style: Theme.of(
                 context,
-              ).textTheme.bodyMedium?.copyWith(color: const Color(0xFF5F5A52)),
+              ).textTheme.bodyMedium?.copyWith(color: tokens.mutedText),
             )
           else
             Wrap(
@@ -1706,10 +1719,11 @@ class _GuideRelatedTopicsCard extends StatelessWidget {
                       color: Color(0xFFB45309),
                     ),
                     label: Text(topic.label),
-                    labelStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: const Color(0xFF8C6A2A),
-                      fontWeight: FontWeight.w700,
-                    ),
+                    labelStyle: Theme.of(context).textTheme.labelLarge
+                        ?.copyWith(
+                          color: const Color(0xFF8C6A2A),
+                          fontWeight: FontWeight.w700,
+                        ),
                     backgroundColor: const Color(0xFFFDE7D4),
                     onPressed: () => onOpenLesson(topic.lesson),
                   ),

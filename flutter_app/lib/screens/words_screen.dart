@@ -197,9 +197,10 @@ class _WordsScreenState extends State<WordsScreen> {
     showModalBottomSheet<void>(
       context: context,
       showDragHandle: true,
-      backgroundColor: const Color(0xFFF9F5EC),
+      backgroundColor: Theme.of(context).appTokens.elevatedSurface,
       builder: (context) {
         final theme = Theme.of(context);
+        final tokens = theme.appTokens;
         return Padding(
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
           child: SingleChildScrollView(
@@ -219,7 +220,7 @@ class _WordsScreenState extends State<WordsScreen> {
                             textDirection: TextDirection.rtl,
                             style: theme.textTheme.headlineMedium?.copyWith(
                               fontWeight: FontWeight.w800,
-                              color: const Color(0xFF163832),
+                              color: theme.colorScheme.primary,
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -233,7 +234,7 @@ class _WordsScreenState extends State<WordsScreen> {
                           Text(
                             word.transcription,
                             style: theme.textTheme.bodyLarge?.copyWith(
-                              color: const Color(0xFF5F5A52),
+                              color: tokens.mutedText,
                             ),
                           ),
                         ],
@@ -273,7 +274,7 @@ class _WordsScreenState extends State<WordsScreen> {
                 Text(
                   'ID: ${word.wordId}',
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: const Color(0xFF6C665D),
+                    color: tokens.secondaryText,
                   ),
                 ),
               ],
@@ -369,9 +370,7 @@ class _WordsScreenState extends State<WordsScreen> {
                   32,
                 ),
                 sliver: SliverToBoxAdapter(
-                  child: _EmptySearchState(
-                    filter: _selectedFilter,
-                  ),
+                  child: _EmptySearchState(filter: _selectedFilter),
                 ),
               )
             else
@@ -422,7 +421,7 @@ class _WordsScreenState extends State<WordsScreen> {
                       child: FloatingActionButton.small(
                         heroTag: 'wordsScrollToTop',
                         onPressed: _scrollToTop,
-                        backgroundColor: Colors.white,
+                        backgroundColor: tokens.elevatedSurface,
                         foregroundColor: const Color(0xFF8C6A2A),
                         child: const Icon(Icons.vertical_align_top_rounded),
                       ),
@@ -502,6 +501,7 @@ class _WordCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final tokens = theme.appTokens;
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -510,11 +510,11 @@ class _WordCard extends StatelessWidget {
         child: Ink(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: tokens.elevatedSurface,
             borderRadius: BorderRadius.circular(22),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                color: Color(0x12000000),
+                color: tokens.shadowColor,
                 blurRadius: 16,
                 offset: Offset(0, 8),
               ),
@@ -536,7 +536,7 @@ class _WordCard extends StatelessWidget {
                     Text(
                       word.transcription,
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: const Color(0xFF5F5A52),
+                        color: tokens.mutedText,
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -573,7 +573,7 @@ class _WordCard extends StatelessWidget {
                     word.hebrew,
                     textDirection: TextDirection.rtl,
                     style: theme.textTheme.titleLarge?.copyWith(
-                      color: const Color(0xFF163832),
+                      color: theme.colorScheme.primary,
                       fontWeight: FontWeight.w800,
                     ),
                   ),
@@ -980,10 +980,11 @@ class _StatPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: tokens.elevatedSurface,
         borderRadius: BorderRadius.circular(999),
         border: Border.all(color: accent.withValues(alpha: 0.18)),
       ),
@@ -1041,6 +1042,8 @@ class _WordsFilterChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -1049,18 +1052,22 @@ class _WordsFilterChip extends StatelessWidget {
         child: Ink(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFF163832) : const Color(0xFFF7F3E8),
+            color: isSelected
+                ? theme.colorScheme.primary
+                : tokens.subtleSurface,
             borderRadius: BorderRadius.circular(999),
             border: Border.all(
               color: isSelected
-                  ? const Color(0xFF163832)
-                  : const Color(0xFF163832).withValues(alpha: 0.12),
+                  ? theme.colorScheme.primary
+                  : tokens.outlineSoft,
             ),
           ),
           child: Text(
             '$label · $value',
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: isSelected ? Colors.white : const Color(0xFF163832),
+            style: theme.textTheme.labelLarge?.copyWith(
+              color: isSelected
+                  ? theme.colorScheme.onPrimary
+                  : theme.colorScheme.primary,
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -1098,9 +1105,9 @@ class _EmptySearchState extends StatelessWidget {
                 ? 'Спробуйте інший запит: слово українською чи англійською, форму івритом або ID.'
                 : 'У поточному зрізі «${filter.label.toLowerCase()}» поки немає результатів. Спробуйте інший фільтр або запит.',
             textAlign: TextAlign.center,
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(color: const Color(0xFF5F5A52)),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: Theme.of(context).appTokens.mutedText,
+            ),
           ),
         ],
       ),
