@@ -1387,6 +1387,9 @@ class _GuideLessonCard extends StatelessWidget {
                       resolvedTitle,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w700,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? const Color(0xFFE2D0A3)
+                            : null,
                       ),
                     ),
                     if (resolvedSummary.isNotEmpty) ...[
@@ -1739,26 +1742,34 @@ class _GuideRelatedTopicsCard extends StatelessWidget {
 class _GuideSectionPill extends StatelessWidget {
   const _GuideSectionPill({
     required this.label,
-    this.foregroundColor = const Color(0xFF8C6A2A),
-    this.backgroundColor = const Color(0xFFFDE7D4),
+    this.foregroundColor,
+    this.backgroundColor,
   });
 
   final String label;
-  final Color foregroundColor;
-  final Color backgroundColor;
+  final Color? foregroundColor;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final resolvedForegroundColor =
+        foregroundColor ??
+        (isDark ? const Color(0xFFD6B16B) : const Color(0xFF8C6A2A));
+    final resolvedBackgroundColor =
+        backgroundColor ??
+        (isDark ? const Color(0xFF4C3924) : const Color(0xFFFDE7D4));
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: resolvedBackgroundColor,
         borderRadius: BorderRadius.circular(999),
       ),
       child: Text(
         label,
         style: Theme.of(context).textTheme.labelLarge?.copyWith(
-          color: foregroundColor,
+          color: resolvedForegroundColor,
           fontWeight: FontWeight.w700,
         ),
       ),

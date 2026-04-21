@@ -643,6 +643,9 @@ class _ReadingLessonCard extends StatelessWidget {
                       resolvedTitle,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w700,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? const Color(0xFFE2D0A3)
+                            : null,
                       ),
                     ),
                     const SizedBox(height: 4),

@@ -28,6 +28,10 @@
 - When adding loadable assets, update `pubspec.yaml` if needed.
 - Prefer extending existing models/services before adding a new architectural layer or state-management package.
 - Favor touch-friendly mobile patterns over desktop-style UI.
+- Treat light mode and night mode as equally supported mobile experiences.
+- For colors, surfaces, borders, and text contrast, extend `lib/theme/` tokens first and consume them from screens instead of hardcoding per-screen light values.
+- When adjusting learning or materials UI, verify that cards, pills, sheets, markdown/text bodies, and headers stay readable in both themes.
+- Keep the current night palette in the same family: deep green base, muted teal support, olive transitions, and restrained warm brown/bronze accents.
 
 ## Validation
 - After Flutter code changes:

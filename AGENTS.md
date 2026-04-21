@@ -20,6 +20,8 @@
 - Keep numbered lesson filenames, media filenames, and stable IDs unchanged unless the task explicitly requires coordinated renaming or migration.
 - Preserve UTF-8 for Hebrew content files.
 - Do not introduce a second source of truth for learning content unless the task explicitly defines the sync strategy.
+- Treat light and night mode as first-class app states for Flutter UI work.
+- For theme-related Flutter changes, prefer shared theme tokens and `ThemeData` over screen-local hardcoded light colors.
 
 ## Where To Start
 - Flutter app entry: `flutter_app/lib/main.dart`
@@ -50,3 +52,4 @@
 - Use the Flutter client as the main product surface.
 - Use the Tkinter app as a behavior reference when product details are unclear.
 - Reuse `src/app_paths.py` for Python-side path handling instead of hardcoding paths.
+- Night mode uses a dark earthy palette around deep green, teal, olive, and brown accents; preserve that direction unless the task explicitly redefines the visual system.
