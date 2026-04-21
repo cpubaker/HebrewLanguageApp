@@ -23,12 +23,14 @@ class VerbsScreen extends StatefulWidget {
     required this.documentLoader,
     required this.audioPlayerFactory,
     this.audioPlaybackAwareness = const NoopAudioPlaybackAwareness(),
+    this.topContent,
   });
 
   final List<LessonEntry> lessons;
   final LessonDocumentLoader documentLoader;
   final CreateVerbAudioPlayer audioPlayerFactory;
   final AudioPlaybackAwareness audioPlaybackAwareness;
+  final Widget? topContent;
 
   @override
   State<VerbsScreen> createState() => _VerbsScreenState();
@@ -225,6 +227,10 @@ class _VerbsScreenState extends State<VerbsScreen> {
           controller: _scrollController,
           padding: tokens.pagePadding.copyWith(bottom: 108),
           children: [
+            if (widget.topContent != null) ...[
+              widget.topContent!,
+              const SizedBox(height: 18),
+            ],
             AppSectionCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

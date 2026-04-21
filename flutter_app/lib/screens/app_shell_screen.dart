@@ -552,7 +552,28 @@ class _AppShellScreenState extends State<AppShellScreen> {
   }
 
   Widget _buildLearnWorkspace(LearningBundle bundle) {
-    return WorkspaceScreen(
+    return IndexedStack(
+      index: _learnSection.index,
+      children: [
+        WordsScreen(
+          topContent: _buildLearnHeaderCard(),
+          words: bundle.words,
+          audioPlayerFactory: widget.audioPlayerFactory,
+          audioPlaybackAwareness: _audioPlaybackAwareness,
+        ),
+        VerbsScreen(
+          topContent: _buildLearnHeaderCard(),
+          lessons: bundle.verbLessons,
+          documentLoader: widget.documentLoader,
+          audioPlayerFactory: widget.audioPlayerFactory,
+          audioPlaybackAwareness: _audioPlaybackAwareness,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLearnHeaderCard() {
+    return WorkspaceHeaderCard(
       title: 'Вчити',
       subtitle: 'Основні навчальні модулі: слова та дієслова.',
       sections: const [
@@ -563,22 +584,6 @@ class _AppShellScreenState extends State<AppShellScreen> {
       onSectionSelected: (index) {
         _openLearnSection(_LearnSection.values[index]);
       },
-      child: IndexedStack(
-        index: _learnSection.index,
-        children: [
-          WordsScreen(
-            words: bundle.words,
-            audioPlayerFactory: widget.audioPlayerFactory,
-            audioPlaybackAwareness: _audioPlaybackAwareness,
-          ),
-          VerbsScreen(
-            lessons: bundle.verbLessons,
-            documentLoader: widget.documentLoader,
-            audioPlayerFactory: widget.audioPlayerFactory,
-            audioPlaybackAwareness: _audioPlaybackAwareness,
-          ),
-        ],
-      ),
     );
   }
 

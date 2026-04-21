@@ -20,11 +20,13 @@ class WordsScreen extends StatefulWidget {
     required this.words,
     required this.audioPlayerFactory,
     this.audioPlaybackAwareness = const NoopAudioPlaybackAwareness(),
+    this.topContent,
   });
 
   final List<LearningWord> words;
   final CreateLearningAudioPlayer audioPlayerFactory;
   final AudioPlaybackAwareness audioPlaybackAwareness;
+  final Widget? topContent;
 
   @override
   State<WordsScreen> createState() => _WordsScreenState();
@@ -309,55 +311,64 @@ class _WordsScreenState extends State<WordsScreen> {
                 0,
               ),
               sliver: SliverToBoxAdapter(
-                child: AppSectionCard(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const AppPageHeader(
-                        title: 'Слова',
-                        subtitle:
-                            'Пошук за українською, англійською, транскрипцією, івритом або ID.',
-                      ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (widget.topContent != null) ...[
+                      widget.topContent!,
                       const SizedBox(height: 18),
-                      AppSearchField(
-                        controller: _searchController,
-                        focusNode: _searchFocusNode,
-                        hintText: 'Шукати слова',
-                        onChanged: _handleSearchChanged,
-                        onClear:
-                            _query.isEmpty && _searchController.text.isEmpty
-                            ? null
-                            : _clearSearch,
-                      ),
-                      const SizedBox(height: 16),
-                      AppActionWrap(
-                        children: [
-                          for (final filter in _WordsFilter.values)
-                            _WordsFilterChip(
-                              label: filter.label,
-                              value: filterSummaries[filter] ?? 0,
-                              isSelected: _selectedFilter == filter,
-                              onTap: () => _selectFilter(filter),
-                            ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      AppActionWrap(
-                        children: [
-                          AppStatChip(
-                            label: 'Видимі',
-                            value: _visibleWords.length,
-                            accent: const Color(0xFF1D4ED8),
-                          ),
-                          AppStatChip(
-                            label: 'Усього',
-                            value: widget.words.length,
-                            accent: const Color(0xFF8C6A2A),
-                          ),
-                        ],
-                      ),
                     ],
-                  ),
+                    AppSectionCard(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const AppPageHeader(
+                            title: 'Слова',
+                            subtitle:
+                                'Пошук за українською, англійською, транскрипцією, івритом або ID.',
+                          ),
+                          const SizedBox(height: 18),
+                          AppSearchField(
+                            controller: _searchController,
+                            focusNode: _searchFocusNode,
+                            hintText: 'Шукати слова',
+                            onChanged: _handleSearchChanged,
+                            onClear:
+                                _query.isEmpty && _searchController.text.isEmpty
+                                ? null
+                                : _clearSearch,
+                          ),
+                          const SizedBox(height: 16),
+                          AppActionWrap(
+                            children: [
+                              for (final filter in _WordsFilter.values)
+                                _WordsFilterChip(
+                                  label: filter.label,
+                                  value: filterSummaries[filter] ?? 0,
+                                  isSelected: _selectedFilter == filter,
+                                  onTap: () => _selectFilter(filter),
+                                ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          AppActionWrap(
+                            children: [
+                              AppStatChip(
+                                label: 'Видимі',
+                                value: _visibleWords.length,
+                                accent: const Color(0xFF1D4ED8),
+                              ),
+                              AppStatChip(
+                                label: 'Усього',
+                                value: widget.words.length,
+                                accent: const Color(0xFF8C6A2A),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
