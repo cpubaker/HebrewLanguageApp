@@ -388,6 +388,20 @@ class MoreSettingsScreen extends StatelessWidget {
                 value: autoHideBottomNavOnScroll,
                 onChanged: onAutoHideBottomNavOnScrollChanged,
               ),
+              const SizedBox(height: 12),
+              const _SettingsSwitchTile(
+                title: 'ШІ-генерація контексту для вправ',
+                subtitle:
+                    'Стане доступною, коли підключимо генерацію навчальних контекстів.',
+                value: false,
+              ),
+              const SizedBox(height: 12),
+              const _SettingsSwitchTile(
+                title: 'ШІ-генерація текстів',
+                subtitle:
+                    'Поки що недоступно. Перемикач з’явився як майбутня опція.',
+                value: false,
+              ),
               const SizedBox(height: 18),
               Text(
                 'Практика за замовчуванням',
@@ -540,17 +554,19 @@ class _SettingsSwitchTile extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.value,
-    required this.onChanged,
+    this.onChanged,
   });
 
   final String title;
   final String subtitle;
   final bool value;
-  final ValueChanged<bool> onChanged;
+  final ValueChanged<bool>? onChanged;
 
   @override
   Widget build(BuildContext context) {
-    final tokens = Theme.of(context).appTokens;
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+    final isEnabled = onChanged != null;
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -566,15 +582,18 @@ class _SettingsSwitchTile extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: isEnabled ? null : tokens.mutedText,
+                  ),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   subtitle,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: tokens.mutedText,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: isEnabled
+                        ? tokens.mutedText
+                        : tokens.mutedText.withValues(alpha: 0.8),
                     height: 1.45,
                   ),
                 ),
