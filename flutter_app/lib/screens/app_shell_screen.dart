@@ -31,8 +31,6 @@ import 'writing_screen.dart';
 
 enum _RootArea { home, learn, practice, materials, more }
 
-enum _LearnSection { words, verbs }
-
 enum _MaterialsSection { guide, reading }
 
 enum _MoreSection { overview, progress, settings }
@@ -84,7 +82,6 @@ class _AppShellScreenState extends State<AppShellScreen> {
   final Map<String, int> _readingPersistenceTokens = <String, int>{};
   final Map<String, int> _wordPersistenceTokens = <String, int>{};
   _RootArea _selectedArea = _RootArea.home;
-  _LearnSection _learnSection = _LearnSection.words;
   _MaterialsSection _materialsSection = _MaterialsSection.guide;
   _MoreSection _moreSection = _MoreSection.overview;
   bool _autoHideBottomNavOnScroll = true;
@@ -248,18 +245,39 @@ class _AppShellScreenState extends State<AppShellScreen> {
     });
   }
 
-  void _openLearnSection(_LearnSection section) {
-    setState(() {
-      _learnSection = section;
-      _selectedArea = _RootArea.learn;
-      _isBottomNavVisible = true;
-    });
+  void _openLearnWords() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => _FullscreenModuleScreen(
+          child: WordsScreen(
+            words: _bundle?.words ?? const <LearningWord>[],
+            audioPlayerFactory: widget.audioPlayerFactory,
+            audioPlaybackAwareness: _audioPlaybackAwareness,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _openLearnVerbs() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => _FullscreenModuleScreen(
+          child: VerbsScreen(
+            lessons: _bundle?.verbLessons ?? const <LessonEntry>[],
+            documentLoader: widget.documentLoader,
+            audioPlayerFactory: widget.audioPlayerFactory,
+            audioPlaybackAwareness: _audioPlaybackAwareness,
+          ),
+        ),
+      ),
+    );
   }
 
   void _openFlashcards([FlashcardDeckMode mode = FlashcardDeckMode.allWords]) {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) => _PracticeSessionScreen(
+        builder: (_) => _FullscreenModuleScreen(
           child: FlashcardsScreen(
             words: _bundle?.words ?? const <LearningWord>[],
             onWordProgressChanged: _handleWordProgressChanged,
@@ -275,7 +293,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
   ]) {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) => _PracticeSessionScreen(
+        builder: (_) => _FullscreenModuleScreen(
           child: WritingScreen(
             words: _bundle?.words ?? const <LearningWord>[],
             onWordProgressChanged: _handleWordProgressChanged,
@@ -289,7 +307,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
   void _openSprint() {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) => _PracticeSessionScreen(
+        builder: (_) => _FullscreenModuleScreen(
           child: SprintScreen(
             words: _bundle?.words ?? const <LearningWord>[],
             onWordProgressChanged: _handleWordProgressChanged,
@@ -303,7 +321,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
   void _openRepetition() {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) => _PracticeSessionScreen(
+        builder: (_) => _FullscreenModuleScreen(
           child: RepetitionScreen(
             words: _bundle?.words ?? const <LearningWord>[],
             audioPlayerFactory: widget.audioPlayerFactory,
@@ -552,38 +570,28 @@ class _AppShellScreenState extends State<AppShellScreen> {
   }
 
   Widget _buildLearnWorkspace(LearningBundle bundle) {
-    return IndexedStack(
-      index: _learnSection.index,
-      children: [
-        WordsScreen(
-          topContent: _buildLearnHeaderCard(),
-          words: bundle.words,
-          audioPlayerFactory: widget.audioPlayerFactory,
-          audioPlaybackAwareness: _audioPlaybackAwareness,
-        ),
-        VerbsScreen(
-          topContent: _buildLearnHeaderCard(),
-          lessons: bundle.verbLessons,
-          documentLoader: widget.documentLoader,
-          audioPlayerFactory: widget.audioPlayerFactory,
-          audioPlaybackAwareness: _audioPlaybackAwareness,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildLearnHeaderCard() {
-    return WorkspaceHeaderCard(
+    return WorkspaceHubScreen(
       title: 'Вчити',
-      subtitle: 'Основні навчальні модулі: слова та дієслова.',
-      sections: const [
-        WorkspaceSection(label: 'Слова', icon: Icons.translate_rounded),
-        WorkspaceSection(label: 'Дієслова', icon: Icons.play_lesson_rounded),
+      subtitle:
+          'Оберіть підмодуль для вивчення. Після вибору він відкриється окремим повноекранним екраном.',
+      shortcuts: [
+        WorkspaceShortcut(
+          title: 'Слова',
+          subtitle:
+              'Повний словник із пошуком, фільтрами й картками деталей. Доступно: ${bundle.words.length} слів.',
+          icon: Icons.translate_rounded,
+          accent: const Color(0xFF2B5D4F),
+          onTap: _openLearnWords,
+        ),
+        WorkspaceShortcut(
+          title: 'Дієслова',
+          subtitle:
+              'Добірка дієслівних уроків із поясненнями, озвученням і окремими екранами деталей. Доступно: ${bundle.verbLessons.length} уроків.',
+          icon: Icons.play_lesson_rounded,
+          accent: const Color(0xFF8C6A2A),
+          onTap: _openLearnVerbs,
+        ),
       ],
-      selectedIndex: _learnSection.index,
-      onSectionSelected: (index) {
-        _openLearnSection(_LearnSection.values[index]);
-      },
     );
   }
 
@@ -751,7 +759,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
             bundle: bundle,
             guideLessonStatuses: _guideLessonStatuses,
             readingLessonStatuses: _readingLessonStatuses,
-            onOpenWords: () => _openLearnSection(_LearnSection.words),
+            onOpenWords: _openLearnWords,
             onOpenFlashcards: _openFlashcards,
             onOpenWriting: () => _openWritingPractice(),
             onOpenSprint: _openSprint,
@@ -811,15 +819,13 @@ class _AppShellScreenState extends State<AppShellScreen> {
                           documentLoader: widget.documentLoader,
                           isDarkMode: widget.isDarkMode,
                           onToggleThemeMode: widget.onToggleThemeMode,
-                          onOpenWords: () =>
-                              _openLearnSection(_LearnSection.words),
+                          onOpenWords: _openLearnWords,
                           onOpenFlashcards: _openFlashcards,
                           onOpenWriting: () => _openWritingPractice(),
                           onOpenSprint: _openSprint,
                           onOpenGuide: () =>
                               _openMaterialsSection(_MaterialsSection.guide),
-                          onOpenVerbs: () =>
-                              _openLearnSection(_LearnSection.verbs),
+                          onOpenVerbs: _openLearnVerbs,
                           onOpenReading: () =>
                               _openMaterialsSection(_MaterialsSection.reading),
                           onOpenReadingLesson: _openReadingLesson,
@@ -854,8 +860,8 @@ class _AppShellScreenState extends State<AppShellScreen> {
   }
 }
 
-class _PracticeSessionScreen extends StatelessWidget {
-  const _PracticeSessionScreen({required this.child});
+class _FullscreenModuleScreen extends StatelessWidget {
+  const _FullscreenModuleScreen({required this.child});
 
   final Widget child;
 
