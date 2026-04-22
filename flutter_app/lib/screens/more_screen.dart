@@ -378,40 +378,40 @@ class MoreSettingsScreen extends StatelessWidget {
               const AppPageHeader(
                 title: 'Налаштування',
                 subtitle:
-                    'Локальні налаштування для поточної сесії. Тут можна керувати поведінкою shell і точками входу в практику.',
+                    'Ці параметри діють у поточній сесії. Тут можна змінити поведінку навігації та формат практики, який відкриватиметься за замовчуванням.',
               ),
               const SizedBox(height: 18),
               _SettingsSwitchTile(
-                title: 'Автоховати нижню навігацію',
+                title: 'Автоматично ховати нижню панель',
                 subtitle:
-                    'Коли опція активна, нижня панель ховається під час довгого вертикального скролу.',
+                    'Під час довгого перегляду сторінки вниз нижня панель тимчасово ховається, щоб звільнити більше місця на екрані.',
                 value: autoHideBottomNavOnScroll,
                 onChanged: onAutoHideBottomNavOnScrollChanged,
               ),
               const SizedBox(height: 12),
               const _SettingsSwitchTile(
-                title: 'ШІ-генерація контексту для вправ',
+                title: 'ШІ-контексти для вправ',
                 subtitle:
-                    'Стане доступною, коли підключимо генерацію навчальних контекстів.',
+                    'Добирає короткі ситуації й приклади для вправ з урахуванням вашого рівня, прогресу та слів, які ви зараз вивчаєте.',
                 value: false,
               ),
               const SizedBox(height: 12),
               const _SettingsSwitchTile(
-                title: 'ШІ-генерація текстів',
+                title: 'ШІ-тексти для практики',
                 subtitle:
-                    'Поки що недоступно. Перемикач з’явився як майбутня опція.',
+                    'Створює короткі тексти під ваш рівень і темп навчання, поєднуючи нові слова з уже знайомою лексикою.',
                 value: false,
               ),
               const SizedBox(height: 18),
               Text(
-                'Практика за замовчуванням',
+                'Формат практики за замовчуванням',
                 style: Theme.of(
                   context,
                 ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
               ),
               const SizedBox(height: 6),
               Text(
-                'Це впливає на shortcut «Практика» у розділі «Ще».',
+                'Оберіть, що відкриватиметься після натискання кнопки «Практика» в розділі «Ще».',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: const Color(0xFF6C665D),
                   height: 1.45,
@@ -434,14 +434,14 @@ class MoreSettingsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 18),
               Text(
-                'Режим карток за замовчуванням',
+                'Набір карток за замовчуванням',
                 style: Theme.of(
                   context,
                 ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
               ),
               const SizedBox(height: 6),
               Text(
-                'Використовується, коли shortcut «Практика» відкриває саме картки.',
+                'Цей вибір застосовується, якщо за замовчуванням відкриваються картки.',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: const Color(0xFF6C665D),
                   height: 1.45,
@@ -451,7 +451,7 @@ class MoreSettingsScreen extends StatelessWidget {
               AppActionWrap(
                 children: [
                   _SettingsChoiceChip(
-                    label: 'Усі',
+                    label: 'Усі слова',
                     isSelected:
                         preferredFlashcardDeckMode ==
                         FlashcardDeckMode.allWords,
@@ -460,7 +460,7 @@ class MoreSettingsScreen extends StatelessWidget {
                     ),
                   ),
                   _SettingsChoiceChip(
-                    label: 'Контексти',
+                    label: 'У контексті',
                     isSelected:
                         preferredFlashcardDeckMode ==
                         FlashcardDeckMode.withContexts,
@@ -469,7 +469,7 @@ class MoreSettingsScreen extends StatelessWidget {
                     ),
                   ),
                   _SettingsChoiceChip(
-                    label: 'Повторення',
+                    label: 'На повторення',
                     isSelected:
                         preferredFlashcardDeckMode ==
                         FlashcardDeckMode.needsReview,
