@@ -104,6 +104,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
+    final theme = Theme.of(context);
     final currentCard = _currentCard;
     if (currentCard == null) {
       if (_session.wordCount > 0 && _session.answeredCount > 0) {
@@ -138,11 +139,11 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
           child: Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: tokens.elevatedSurface,
               borderRadius: BorderRadius.circular(28),
-              boxShadow: const [
+              boxShadow: [
                 BoxShadow(
-                  color: Color(0x14000000),
+                  color: tokens.shadowColor,
                   blurRadius: 22,
                   offset: Offset(0, 12),
                 ),
@@ -211,8 +212,8 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                   Text(
                     'Змахніть картку або натисніть потрібний варіант.',
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: const Color(0xFF6C665D),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: tokens.secondaryText,
                     ),
                   ),
                 const SizedBox(height: 14),
@@ -290,6 +291,9 @@ class _SessionDetailsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+
     return PracticePanel(
       child: Column(
         children: [
@@ -311,17 +315,17 @@ class _SessionDetailsSection extends StatelessWidget {
                         children: [
                           Text(
                             'Поточна сесія',
-                            style: Theme.of(context).textTheme.titleSmall
-                                ?.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  color: const Color(0xFF163832),
-                                ),
+                            style: theme.textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.w700,
+                              color: theme.colorScheme.onSurface,
+                            ),
                           ),
                           const SizedBox(height: 4),
                           Text(
                             ' із ',
-                            style: Theme.of(context).textTheme.bodyMedium
-                                ?.copyWith(color: const Color(0xFF6C665D)),
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: tokens.secondaryText,
+                            ),
                           ),
                         ],
                       ),
@@ -330,7 +334,7 @@ class _SessionDetailsSection extends StatelessWidget {
                       isExpanded
                           ? Icons.keyboard_arrow_up_rounded
                           : Icons.keyboard_arrow_down_rounded,
-                      color: const Color(0xFF6C665D),
+                      color: tokens.secondaryText,
                     ),
                   ],
                 ),
@@ -345,8 +349,8 @@ class _SessionDetailsSection extends StatelessWidget {
                 children: [
                   Text(
                     deckLabel,
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: const Color(0xFF6C665D),
+                    style: theme.textTheme.labelLarge?.copyWith(
+                      color: tokens.secondaryText,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -356,7 +360,7 @@ class _SessionDetailsSection extends StatelessWidget {
                     child: LinearProgressIndicator(
                       minHeight: 8,
                       value: sessionProgress == 0 ? 0.02 : sessionProgress,
-                      backgroundColor: const Color(0xFFE9E2D3),
+                      backgroundColor: tokens.progressTrack,
                       valueColor: const AlwaysStoppedAnimation<Color>(
                         Color(0xFF0F766E),
                       ),
@@ -367,8 +371,8 @@ class _SessionDetailsSection extends StatelessWidget {
                     remainingCount > 0
                         ? 'Після неї лишиться ще $remainingCount карток'
                         : 'Це остання картка',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: const Color(0xFF6C665D),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: tokens.secondaryText,
                     ),
                   ),
                   const SizedBox(height: 14),
@@ -410,11 +414,16 @@ class _PromptPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFFF1F6F2), Color(0xFFF7F3E8)],
+        gradient: LinearGradient(
+          colors: theme.brightness == Brightness.dark
+              ? <Color>[tokens.elevatedSurface, tokens.subtleSurface]
+              : const <Color>[Color(0xFFF1F6F2), Color(0xFFF7F3E8)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -425,9 +434,9 @@ class _PromptPanel extends StatelessWidget {
           Text(
             'Спробуйте згадати переклад',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+            style: theme.textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.w700,
-              color: const Color(0xFF5F5A52),
+              color: tokens.mutedText,
             ),
           ),
           const SizedBox(height: 14),
@@ -435,18 +444,18 @@ class _PromptPanel extends StatelessWidget {
             hebrew,
             textDirection: TextDirection.rtl,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+            style: theme.textTheme.headlineMedium?.copyWith(
               fontWeight: FontWeight.w800,
-              color: const Color(0xFF163832),
+              color: theme.colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             transcription,
             textAlign: TextAlign.center,
-            style: Theme.of(
-              context,
-            ).textTheme.titleMedium?.copyWith(color: const Color(0xFF6C665D)),
+            style: theme.textTheme.titleMedium?.copyWith(
+              color: tokens.secondaryText,
+            ),
           ),
         ],
       ),
@@ -467,9 +476,15 @@ class _AnswerRevealCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
     final background = isKnownAnswer
-        ? const Color(0xFFEAF6F2)
-        : const Color(0xFFF9EFE4);
+        ? (theme.brightness == Brightness.dark
+              ? const Color(0xFF17352F)
+              : const Color(0xFFEAF6F2))
+        : (theme.brightness == Brightness.dark
+              ? const Color(0xFF3A2A1F)
+              : const Color(0xFFF9EFE4));
     final accent = isKnownAnswer
         ? const Color(0xFF0F766E)
         : const Color(0xFFB45309);
@@ -494,9 +509,9 @@ class _AnswerRevealCard extends StatelessWidget {
               Text(
                 isKnownAnswer ? 'Зараховано' : 'На повторення',
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                style: theme.textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w700,
-                  color: const Color(0xFF5F5A52),
+                  color: tokens.mutedText,
                 ),
               ),
             ],
@@ -505,9 +520,9 @@ class _AnswerRevealCard extends StatelessWidget {
           Text(
             translation,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+            style: theme.textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.w800,
-              color: const Color(0xFF163832),
+              color: theme.colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: 8),
@@ -516,8 +531,8 @@ class _AnswerRevealCard extends StatelessWidget {
                 ? 'Добре. Це слово зараховано як знайоме.'
                 : 'Нічого, повернемося до нього ще раз трохи пізніше.',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: const Color(0xFF6C665D),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: tokens.secondaryText,
               height: 1.45,
             ),
           ),
@@ -526,9 +541,9 @@ class _AnswerRevealCard extends StatelessWidget {
             Text(
               'Востаннє правильно: $lastCorrect',
               textAlign: TextAlign.center,
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: const Color(0xFF6C665D)),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: tokens.secondaryText,
+              ),
             ),
           ],
         ],
@@ -592,6 +607,8 @@ class _SwipeHintCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -600,7 +617,9 @@ class _SwipeHintCard extends StatelessWidget {
         child: Ink(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           decoration: BoxDecoration(
-            color: accent.withValues(alpha: 0.08),
+            color: Theme.of(context).brightness == Brightness.dark
+                ? accent.withValues(alpha: 0.18)
+                : accent.withValues(alpha: 0.08),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Column(
@@ -611,7 +630,7 @@ class _SwipeHintCard extends StatelessWidget {
               Text(
                 title,
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: const Color(0xFF5F5A52),
+                  color: tokens.mutedText,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -688,6 +707,9 @@ class _DeckChoiceChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -696,18 +718,20 @@ class _DeckChoiceChip extends StatelessWidget {
         child: Ink(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFF163832) : Colors.white,
+            color: isSelected ? theme.colorScheme.primary : tokens.elevatedSurface,
             borderRadius: BorderRadius.circular(999),
             border: Border.all(
               color: isSelected
-                  ? const Color(0xFF163832)
-                  : const Color(0xFF163832).withValues(alpha: 0.12),
+                  ? theme.colorScheme.primary
+                  : tokens.outlineSoft,
             ),
           ),
           child: Text(
             label,
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: isSelected ? Colors.white : const Color(0xFF163832),
+            style: theme.textTheme.labelLarge?.copyWith(
+              color: isSelected
+                  ? theme.colorScheme.onPrimary
+                  : theme.colorScheme.onSurface,
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -728,18 +752,21 @@ class _FlashcardContextPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+
     if (this.context == null) {
       return Container(
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-          color: const Color(0xFFF7F3E8),
+          color: tokens.subtleSurface,
           borderRadius: BorderRadius.circular(24),
         ),
         child: Text(
           'Для цього слова ще немає прикладу в реченні.',
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: const Color(0xFF6C665D),
+          style: theme.textTheme.bodyLarge?.copyWith(
+            color: tokens.secondaryText,
             height: 1.45,
           ),
         ),
@@ -752,7 +779,9 @@ class _FlashcardContextPanel extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: const Color(0xFF163832).withValues(alpha: 0.06),
+        color: theme.brightness == Brightness.dark
+            ? theme.colorScheme.primary.withValues(alpha: 0.22)
+            : const Color(0xFF163832).withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(24),
       ),
       child: Column(
@@ -760,9 +789,9 @@ class _FlashcardContextPanel extends StatelessWidget {
         children: [
           Text(
             'Контекст',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+            style: theme.textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.w700,
-              color: const Color(0xFF5F5A52),
+              color: tokens.mutedText,
             ),
           ),
           const SizedBox(height: 10),
@@ -770,9 +799,9 @@ class _FlashcardContextPanel extends StatelessWidget {
             hebrewText,
             textDirection: hasHebrew ? TextDirection.rtl : TextDirection.ltr,
             textAlign: hasHebrew ? TextAlign.right : TextAlign.left,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w700,
-              color: const Color(0xFF163832),
+              color: theme.colorScheme.onSurface,
               height: 1.4,
             ),
           ),
@@ -782,8 +811,8 @@ class _FlashcardContextPanel extends StatelessWidget {
             Text(
               this.context!.translation,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: const Color(0xFF6C665D),
+              style: theme.textTheme.bodyLarge?.copyWith(
+                color: tokens.secondaryText,
                 height: 1.45,
               ),
             ),
@@ -822,7 +851,7 @@ class _EmptyFlashcardsState extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(22),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: tokens.elevatedSurface,
             borderRadius: BorderRadius.circular(28),
           ),
           child: Column(
@@ -839,7 +868,7 @@ class _EmptyFlashcardsState extends StatelessWidget {
                 _emptyBody(mode),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: const Color(0xFF6C665D),
+                  color: tokens.secondaryText,
                   height: 1.45,
                 ),
               ),
@@ -908,11 +937,11 @@ class _CompletedFlashcardsState extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(22),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: tokens.elevatedSurface,
             borderRadius: BorderRadius.circular(28),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                color: Color(0x14000000),
+                color: tokens.shadowColor,
                 blurRadius: 22,
                 offset: Offset(0, 12),
               ),
@@ -949,7 +978,7 @@ class _CompletedFlashcardsState extends StatelessWidget {
                 _completionBody(mode, reviewWordCount),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: const Color(0xFF6C665D),
+                  color: tokens.secondaryText,
                   height: 1.45,
                 ),
               ),

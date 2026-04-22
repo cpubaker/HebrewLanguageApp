@@ -272,14 +272,17 @@ class _ActiveSprintCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: tokens.elevatedSurface,
         borderRadius: BorderRadius.circular(28),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
-            color: Color(0x14000000),
+            color: tokens.shadowColor,
             blurRadius: 22,
             offset: Offset(0, 12),
           ),
@@ -296,13 +299,15 @@ class _ActiveSprintCard extends StatelessWidget {
               _SprintMetaChip(
                 icon: Icons.timer_rounded,
                 label: _formatDuration(remainingSeconds),
-                background: const Color(0xFF163832),
-                foreground: Colors.white,
+                background: theme.colorScheme.primary,
+                foreground: theme.colorScheme.onPrimary,
               ),
               _SprintMetaChip(
                 icon: Icons.bolt_rounded,
                 label: '$attempts відповідей',
-                background: const Color(0xFFF3E8D2),
+                background: theme.brightness == Brightness.dark
+                    ? const Color(0xFF4B3A22)
+                    : const Color(0xFFF3E8D2),
                 foreground: const Color(0xFF8C6A2A),
               ),
               IconButton(
@@ -316,8 +321,10 @@ class _ActiveSprintCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Color(0xFFF6EFE1), Color(0xFFEAF4EF)],
+              gradient: LinearGradient(
+                colors: theme.brightness == Brightness.dark
+                    ? <Color>[tokens.subtleSurface, tokens.elevatedSurface]
+                    : const <Color>[Color(0xFFF6EFE1), Color(0xFFEAF4EF)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -328,8 +335,8 @@ class _ActiveSprintCard extends StatelessWidget {
                 Text(
                   'Оберіть правильний переклад',
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: const Color(0xFF5F5A52),
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    color: tokens.mutedText,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -338,9 +345,9 @@ class _ActiveSprintCard extends StatelessWidget {
                   prompt.word.hebrew,
                   textDirection: TextDirection.rtl,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  style: theme.textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.w800,
-                    color: const Color(0xFF163832),
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
                 if (prompt.word.transcription.trim().isNotEmpty) ...[
@@ -348,8 +355,8 @@ class _ActiveSprintCard extends StatelessWidget {
                   Text(
                     prompt.word.transcription,
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: const Color(0xFF6C665D),
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: tokens.secondaryText,
                     ),
                   ),
                 ],
@@ -362,15 +369,15 @@ class _ActiveSprintCard extends StatelessWidget {
               key: ValueKey('sprint-option-$index'),
               onPressed: () => onAnswer(prompt.options[index]),
               style: FilledButton.styleFrom(
-                backgroundColor: const Color(0xFFF7F3E8),
-                foregroundColor: const Color(0xFF163832),
+                backgroundColor: tokens.subtleSurface,
+                foregroundColor: theme.colorScheme.onSurface,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 18,
                   vertical: 18,
                 ),
-                textStyle: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+                textStyle: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
               ),
               child: Text(prompt.options[index], textAlign: TextAlign.center),
             ),
@@ -434,14 +441,17 @@ class _SprintCompletedCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+
     return Container(
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: tokens.elevatedSurface,
         borderRadius: BorderRadius.circular(28),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
-            color: Color(0x14000000),
+            color: tokens.shadowColor,
             blurRadius: 22,
             offset: Offset(0, 12),
           ),
@@ -475,8 +485,8 @@ class _SprintCompletedCard extends StatelessWidget {
           Text(
             completionMessage,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: const Color(0xFF6C665D),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: tokens.secondaryText,
               height: 1.45,
             ),
           ),
@@ -519,10 +529,12 @@ class _SprintUnavailableCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     return Container(
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: tokens.elevatedSurface,
         borderRadius: BorderRadius.circular(28),
       ),
       child: Column(
@@ -539,7 +551,7 @@ class _SprintUnavailableCard extends StatelessWidget {
             'Для цієї вправи потрібно щонайменше два слова з різними перекладами. Зараз у наборі $wordCount слів.',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: const Color(0xFF6C665D),
+              color: tokens.secondaryText,
               height: 1.45,
             ),
           ),
@@ -557,15 +569,21 @@ class _SprintFeedbackCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
     final background = switch (isSuccess) {
-      true => const Color(0xFFEAF6F2),
-      false => const Color(0xFFFCECE8),
-      null => const Color(0xFFF7F3E8),
+      true => theme.brightness == Brightness.dark
+          ? const Color(0xFF17352F)
+          : const Color(0xFFEAF6F2),
+      false => theme.brightness == Brightness.dark
+          ? const Color(0xFF3A2323)
+          : const Color(0xFFFCECE8),
+      null => tokens.subtleSurface,
     };
     final accent = switch (isSuccess) {
       true => const Color(0xFF0F766E),
       false => const Color(0xFFB91C1C),
-      null => const Color(0xFF6C665D),
+      null => tokens.secondaryText,
     };
     final icon = switch (isSuccess) {
       true => Icons.check_circle_rounded,

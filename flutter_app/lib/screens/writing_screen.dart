@@ -102,6 +102,7 @@ class _WritingScreenState extends State<WritingScreen> {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
+    final theme = Theme.of(context);
     final currentPrompt = _currentPrompt;
     if (currentPrompt == null) {
       return const _EmptyWritingState();
@@ -118,11 +119,11 @@ class _WritingScreenState extends State<WritingScreen> {
         Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: tokens.elevatedSurface,
             borderRadius: BorderRadius.circular(28),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                color: Color(0x14000000),
+                color: tokens.shadowColor,
                 blurRadius: 22,
                 offset: Offset(0, 12),
               ),
@@ -134,8 +135,10 @@ class _WritingScreenState extends State<WritingScreen> {
               Container(
                 padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFFF1F6F2), Color(0xFFF7F3E8)],
+                  gradient: LinearGradient(
+                    colors: theme.brightness == Brightness.dark
+                        ? <Color>[tokens.elevatedSurface, tokens.subtleSurface]
+                        : const <Color>[Color(0xFFF1F6F2), Color(0xFFF7F3E8)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -146,8 +149,8 @@ class _WritingScreenState extends State<WritingScreen> {
                     Text(
                       'Слово для перекладу',
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: const Color(0xFF5F5A52),
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        color: tokens.mutedText,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -155,10 +158,10 @@ class _WritingScreenState extends State<WritingScreen> {
                     Text(
                       currentPrompt.prompt,
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headlineSmall
+                      style: theme.textTheme.headlineSmall
                           ?.copyWith(
                             fontWeight: FontWeight.w800,
-                            color: const Color(0xFF163832),
+                            color: theme.colorScheme.onSurface,
                           ),
                     ),
                     const SizedBox(height: 8),
@@ -167,8 +170,8 @@ class _WritingScreenState extends State<WritingScreen> {
                           ? 'Підказку не показуємо: тут працюємо саме на пригадування.'
                           : 'Складіть слово з блоків. Частина блоків може бути зайвою.',
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: const Color(0xFF6C665D),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: tokens.secondaryText,
                         height: 1.4,
                       ),
                     ),
@@ -188,7 +191,7 @@ class _WritingScreenState extends State<WritingScreen> {
                     hintText: 'Введіть слово івритом',
                     prefixIcon: const Icon(Icons.edit_rounded),
                     filled: true,
-                    fillColor: const Color(0xFFF9F5EC),
+                    fillColor: tokens.subtleSurface,
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 18,
                       vertical: 16,
@@ -225,7 +228,7 @@ class _WritingScreenState extends State<WritingScreen> {
                 Text(
                   _inlineMessage!,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  style: theme.textTheme.bodyMedium?.copyWith(
                     color: const Color(0xFFB45309),
                     fontWeight: FontWeight.w700,
                   ),
@@ -247,8 +250,8 @@ class _WritingScreenState extends State<WritingScreen> {
                       ? 'Натисніть «Перевірити», коли будете готові.'
                       : 'Перетягніть або натисніть блоки, щоб зібрати слово, а потім перевірте відповідь.',
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: const Color(0xFF6C665D),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: tokens.secondaryText,
                   ),
                 ),
               const SizedBox(height: 18),
@@ -442,12 +445,18 @@ class _WritingResultCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
     final accent = isCorrect
         ? const Color(0xFF0F766E)
         : const Color(0xFFB91C1C);
     final background = isCorrect
-        ? const Color(0xFFEAF5EE)
-        : const Color(0xFFF8ECE8);
+        ? (theme.brightness == Brightness.dark
+              ? const Color(0xFF17352F)
+              : const Color(0xFFEAF5EE))
+        : (theme.brightness == Brightness.dark
+              ? const Color(0xFF3A2323)
+              : const Color(0xFFF8ECE8));
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -471,9 +480,9 @@ class _WritingResultCard extends StatelessWidget {
               Text(
                 isCorrect ? 'Правильно' : 'Потрібно ще раз',
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                style: theme.textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w800,
-                  color: const Color(0xFF5F5A52),
+                  color: tokens.mutedText,
                 ),
               ),
             ],
@@ -483,9 +492,9 @@ class _WritingResultCard extends StatelessWidget {
             correctAnswer,
             textDirection: TextDirection.rtl,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+            style: theme.textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.w800,
-              color: const Color(0xFF163832),
+              color: theme.colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: 8),
@@ -494,8 +503,8 @@ class _WritingResultCard extends StatelessWidget {
                 ? 'Слово записано правильно. Можна переходити далі.'
                 : 'Звірте форму і напишіть наступне слово з пам’яті.',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: const Color(0xFF6C665D),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: tokens.secondaryText,
               height: 1.45,
             ),
           ),
@@ -504,9 +513,9 @@ class _WritingResultCard extends StatelessWidget {
             Text(
               'Востаннє правильно: $lastCorrect',
               textAlign: TextAlign.center,
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: const Color(0xFF6C665D)),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: tokens.secondaryText,
+              ),
             ),
           ],
         ],
@@ -533,14 +542,14 @@ class _EmptyWritingState extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(22),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: tokens.elevatedSurface,
             borderRadius: BorderRadius.circular(28),
           ),
           child: Text(
             'Щойно у наборі з’являться доступні слова, тут можна буде тренувати письмо окремою сесією.',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: const Color(0xFF5F5A52),
+              color: tokens.mutedText,
               height: 1.45,
             ),
           ),
@@ -572,13 +581,16 @@ class _ConstructorComposer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Container(
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
-            color: const Color(0xFFF9F5EC),
+            color: tokens.subtleSurface,
             borderRadius: BorderRadius.circular(24),
           ),
           child: Column(
@@ -587,17 +599,17 @@ class _ConstructorComposer extends StatelessWidget {
               Text(
                 'Складіть слово',
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w800,
-                  color: const Color(0xFF163832),
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 6),
               Text(
                 'Перетягніть блоки у правильному порядку. Натискання на блок теж працює.',
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: const Color(0xFF6C665D),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: tokens.secondaryText,
                   height: 1.4,
                 ),
               ),
@@ -635,7 +647,7 @@ class _ConstructorComposer extends StatelessWidget {
             return Container(
               padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(
-                color: const Color(0xFFF3F4F6),
+                color: tokens.elevatedSurface,
                 borderRadius: BorderRadius.circular(24),
                 border: Border.all(
                   color: candidateData.isNotEmpty
@@ -650,9 +662,9 @@ class _ConstructorComposer extends StatelessWidget {
                   Text(
                     'Доступні блоки',
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    style: theme.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w800,
-                      color: const Color(0xFF5F5A52),
+                      color: tokens.mutedText,
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -699,6 +711,8 @@ class _ConstructorSlot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     return DragTarget<ConstructorBlock>(
       onWillAcceptWithDetails: (_) => enabled,
       onAcceptWithDetails: (details) => onAccept(details.data),
@@ -714,8 +728,12 @@ class _ConstructorSlot extends StatelessWidget {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: isActive
-                    ? const Color(0xFFEEDDBA)
-                    : const Color(0xFFFFFBF4),
+                    ? (Theme.of(context).brightness == Brightness.dark
+                          ? const Color(0xFF5B4824)
+                          : const Color(0xFFEEDDBA))
+                    : (Theme.of(context).brightness == Brightness.dark
+                          ? tokens.elevatedSurface
+                          : const Color(0xFFFFFBF4)),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                   color: isActive
@@ -758,6 +776,9 @@ class _ConstructorBlockChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+
     final chip = Material(
       color: Colors.transparent,
       child: InkWell(
@@ -766,12 +787,12 @@ class _ConstructorBlockChip extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: tokens.elevatedSurface,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: const Color(0x1F8C6A2A)),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                color: Color(0x10000000),
+                color: tokens.shadowColor,
                 blurRadius: 12,
                 offset: Offset(0, 6),
               ),
@@ -783,7 +804,7 @@ class _ConstructorBlockChip extends StatelessWidget {
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w800,
-              color: const Color(0xFF163832),
+              color: theme.colorScheme.onSurface,
             ),
           ),
         ),

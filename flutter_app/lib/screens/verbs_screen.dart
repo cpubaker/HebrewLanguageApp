@@ -305,7 +305,7 @@ class _VerbsScreenState extends State<VerbsScreen> {
                       child: FloatingActionButton.small(
                         heroTag: 'verbsScrollToTop',
                         onPressed: _scrollToTop,
-                        backgroundColor: Colors.white,
+                        backgroundColor: tokens.elevatedSurface,
                         foregroundColor: const Color(0xFF7C3AED),
                         child: const Icon(Icons.vertical_align_top_rounded),
                       ),
@@ -458,10 +458,12 @@ class _LoadingTitlesChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
-        color: const Color(0xFFF7F3E8),
+        color: tokens.subtleSurface,
         borderRadius: BorderRadius.circular(999),
         border: Border.all(
           color: const Color(0xFF7C3AED).withValues(alpha: 0.12),
@@ -505,6 +507,7 @@ class _VerbLessonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
     final orderMatch = RegExp(r'^(\d+)').firstMatch(lesson.displayName);
     final orderLabel = orderMatch?.group(1) ?? '*';
 
@@ -516,11 +519,11 @@ class _VerbLessonCard extends StatelessWidget {
         child: Ink(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: tokens.elevatedSurface,
             borderRadius: BorderRadius.circular(22),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                color: Color(0x12000000),
+                color: tokens.shadowColor,
                 blurRadius: 16,
                 offset: Offset(0, 8),
               ),
@@ -571,6 +574,8 @@ class _EmptyVerbSearchState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     return AppSectionCard(
       child: Column(
         children: [
@@ -592,7 +597,7 @@ class _EmptyVerbSearchState extends StatelessWidget {
             textAlign: TextAlign.center,
             style: Theme.of(
               context,
-            ).textTheme.bodyMedium?.copyWith(color: const Color(0xFF5F5A52)),
+            ).textTheme.bodyMedium?.copyWith(color: tokens.mutedText),
           ),
         ],
       ),
@@ -783,14 +788,17 @@ class _VerbImageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+
     return Container(
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: tokens.elevatedSurface,
         borderRadius: BorderRadius.circular(24),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
-            color: Color(0x14000000),
+            color: tokens.shadowColor,
             blurRadius: 18,
             offset: Offset(0, 10),
           ),
@@ -803,12 +811,18 @@ class _VerbImageCard extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(22),
-                gradient: const LinearGradient(
-                  colors: [
-                    Color(0xFFF7F1FF),
-                    Color(0xFFF3ECFF),
-                    Color(0xFFF9F6ED),
-                  ],
+                gradient: LinearGradient(
+                  colors: theme.brightness == Brightness.dark
+                      ? <Color>[
+                          const Color(0xFF23153A),
+                          const Color(0xFF2A1E46),
+                          tokens.subtleSurface,
+                        ]
+                      : const <Color>[
+                          Color(0xFFF7F1FF),
+                          Color(0xFFF3ECFF),
+                          Color(0xFFF9F6ED),
+                        ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),

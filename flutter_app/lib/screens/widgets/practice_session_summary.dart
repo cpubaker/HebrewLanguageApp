@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../theme/app_theme.dart';
 import 'practice_panel.dart';
 
 class PracticeSessionSummary extends StatelessWidget {
@@ -16,6 +17,9 @@ class PracticeSessionSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+
     return PracticePanel(
       padding: padding,
       child: Column(
@@ -23,9 +27,9 @@ class PracticeSessionSummary extends StatelessWidget {
           Text(
             title,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+            style: theme.textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.w700,
-              color: const Color(0xFF163832),
+              color: theme.colorScheme.onSurface,
             ),
           ),
           for (final line in lines) ...[
@@ -33,8 +37,8 @@ class PracticeSessionSummary extends StatelessWidget {
             Text(
               line,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: const Color(0xFF6C665D),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: tokens.secondaryText,
                 height: 1.45,
               ),
             ),

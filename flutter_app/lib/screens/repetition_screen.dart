@@ -119,6 +119,7 @@ class _RepetitionScreenState extends State<RepetitionScreen> {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
+    final theme = Theme.of(context);
     final currentEntry = _currentEntry;
 
     if (_queue.isEmpty) {
@@ -175,9 +176,9 @@ class _RepetitionScreenState extends State<RepetitionScreen> {
             subtitle: 'Одне слово на екран, без таймера і без варіантів.',
             trailing: Text(
               '${_currentIndex + 1}/${_entries.length}',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w800,
-                color: const Color(0xFF163832),
+                color: theme.colorScheme.onSurface,
               ),
             ),
           ),
@@ -187,7 +188,7 @@ class _RepetitionScreenState extends State<RepetitionScreen> {
             child: LinearProgressIndicator(
               minHeight: 8,
               value: progressValue,
-              backgroundColor: const Color(0xFFE9E2D3),
+              backgroundColor: tokens.progressTrack,
               valueColor: const AlwaysStoppedAnimation<Color>(
                 Color(0xFF0F766E),
               ),
@@ -230,6 +231,9 @@ class _CompactHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -239,16 +243,16 @@ class _CompactHeader extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w800,
-                  color: const Color(0xFF163832),
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 4),
               Text(
                 subtitle,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: const Color(0xFF6C665D),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: tokens.secondaryText,
                   height: 1.35,
                 ),
               ),
@@ -269,8 +273,10 @@ class _EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     return PracticePanel(
-      backgroundColor: Colors.white,
+      backgroundColor: tokens.elevatedSurface,
       radius: 28,
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -294,7 +300,7 @@ class _EmptyState extends StatelessWidget {
             'Спочатку відкрийте нові слова або зробіть кілька спроб у практиці.',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: const Color(0xFF6C665D),
+              color: tokens.secondaryText,
               height: 1.45,
             ),
           ),
@@ -315,14 +321,16 @@ class _CompletedState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: tokens.elevatedSurface,
         borderRadius: BorderRadius.circular(28),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
-            color: Color(0x14000000),
+            color: tokens.shadowColor,
             blurRadius: 22,
             offset: Offset(0, 12),
           ),
@@ -398,6 +406,8 @@ class _RepetitionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
     final word = entry.word;
 
     return LayoutBuilder(
@@ -409,11 +419,11 @@ class _RepetitionCard extends StatelessWidget {
         return Container(
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: tokens.elevatedSurface,
             borderRadius: BorderRadius.circular(28),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                color: Color(0x14000000),
+                color: tokens.shadowColor,
                 blurRadius: 22,
                 offset: Offset(0, 12),
               ),
@@ -462,8 +472,10 @@ class _RepetitionCard extends StatelessWidget {
                   vertical: 18,
                 ),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFFF1F6F2), Color(0xFFF7F3E8)],
+                  gradient: LinearGradient(
+                    colors: theme.brightness == Brightness.dark
+                        ? <Color>[tokens.elevatedSurface, tokens.subtleSurface]
+                        : const <Color>[Color(0xFFF1F6F2), Color(0xFFF7F3E8)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -473,9 +485,9 @@ class _RepetitionCard extends StatelessWidget {
                   word.hebrew,
                   textDirection: TextDirection.rtl,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  style: theme.textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.w800,
-                    color: const Color(0xFF163832),
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
               ),
@@ -487,17 +499,17 @@ class _RepetitionCard extends StatelessWidget {
                   children: [
                     Text(
                       'Переклад',
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      style: theme.textTheme.labelLarge?.copyWith(
                         fontWeight: FontWeight.w700,
-                        color: const Color(0xFF6C665D),
+                        color: tokens.secondaryText,
                       ),
                     ),
                     const SizedBox(height: 6),
                     Text(
                       word.translation,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      style: theme.textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.w800,
-                        color: const Color(0xFF163832),
+                        color: theme.colorScheme.onSurface,
                       ),
                     ),
                   ],
@@ -622,15 +634,18 @@ class _ContextPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+
     if (contextEntry == null) {
       return PracticePanel(
-        backgroundColor: const Color(0xFFF7F3E8),
+        backgroundColor: tokens.subtleSurface,
         child: Center(
           child: Text(
             'Контекст для цього слова ще не додано.',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: const Color(0xFF6C665D),
+            style: theme.textTheme.bodyLarge?.copyWith(
+              color: tokens.secondaryText,
               height: 1.45,
             ),
           ),
@@ -644,15 +659,17 @@ class _ContextPanel extends StatelessWidget {
     );
 
     return PracticePanel(
-      backgroundColor: const Color(0xFF163832).withValues(alpha: 0.06),
+      backgroundColor: theme.brightness == Brightness.dark
+          ? theme.colorScheme.primary.withValues(alpha: 0.22)
+          : const Color(0xFF163832).withValues(alpha: 0.06),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
             'Контекст',
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
+            style: theme.textTheme.labelLarge?.copyWith(
               fontWeight: FontWeight.w700,
-              color: const Color(0xFF6C665D),
+              color: tokens.secondaryText,
             ),
           ),
           const SizedBox(height: 10),
@@ -666,9 +683,9 @@ class _ContextPanel extends StatelessWidget {
                     textDirection:
                         hasHebrew ? TextDirection.rtl : TextDirection.ltr,
                     textAlign: hasHebrew ? TextAlign.right : TextAlign.left,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w700,
-                      color: const Color(0xFF163832),
+                      color: theme.colorScheme.onSurface,
                       height: 1.4,
                     ),
                   ),
@@ -676,8 +693,8 @@ class _ContextPanel extends StatelessWidget {
                     const SizedBox(height: 10),
                     Text(
                       contextEntry!.translation,
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: const Color(0xFF6C665D),
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        color: tokens.secondaryText,
                         height: 1.45,
                       ),
                     ),
