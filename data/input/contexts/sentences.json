@@ -1,412 +1,1282 @@
 [
-    {
-        "id": "ctx_dog_park_01",
-        "hebrew": "הכלב רץ בפארק.",
-        "translation": "Собака біжить у парку."
-    },
-    {
-        "id": "ctx_dog_house_01",
-        "hebrew": "הכלב ישן ליד הבית.",
-        "translation": "Собака спить біля будинку."
-    },
-    {
-        "id": "ctx_star_city_01",
-        "hebrew": "הכוכב נראה מעל העיר.",
-        "translation": "Зірку видно над містом."
-    },
-    {
-        "id": "ctx_television_house_01",
-        "hebrew": "אנחנו רואים טלוויזיה בבית.",
-        "translation": "Ми дивимося телевізор удома."
-    },
-    {
-        "id": "ctx_weather_country_01",
-        "hebrew": "מזג האוויר בארץ חם היום.",
-        "translation": "Сьогодні в країні спекотна погода."
-    },
-    {
-        "id": "ctx_park_game_01",
-        "hebrew": "הילדים משחקים בפארק.",
-        "translation": "Діти граються в парку."
-    },
-    {
-        "id": "ctx_apple_water_01",
-        "hebrew": "אני אוכל תפוח ושותה מים.",
-        "translation": "Я їм яблуко й п'ю воду."
-    },
-    {
-        "id": "ctx_book_house_01",
-        "hebrew": "יש ספר חדש בבית.",
-        "translation": "Удома є нова книга."
-    },
-    {
-        "id": "ctx_cat_house_01",
-        "hebrew": "החתול יושב ליד הבית.",
-        "translation": "Кіт сидить біля будинку."
-    },
-    {
-        "id": "ctx_people_street_01",
-        "hebrew": "האיש והאישה הולכים ברחוב.",
-        "translation": "Чоловік і жінка йдуть вулицею."
-    },
-    {
-        "id": "ctx_tree_street_01",
-        "hebrew": "העץ עומד ליד הרחוב.",
-        "translation": "Дерево стоїть біля вулиці."
-    },
-    {
-        "id": "ctx_car_street_01",
-        "hebrew": "המכונית חונה ברחוב.",
-        "translation": "Автомобіль припаркований на вулиці."
-    },
-    {
-        "id": "ctx_fish_water_01",
-        "hebrew": "הדג שוחה במים.",
-        "translation": "Риба плаває у воді."
-    },
-    {
-        "id": "ctx_computer_table_chair_01",
-        "hebrew": "המחשב על השולחן ליד הכיסא.",
-        "translation": "Комп'ютер стоїть на столі поруч зі стільцем."
-    },
-    {
-        "id": "ctx_flower_window_01",
-        "hebrew": "הפרח עומד ליד החלון.",
-        "translation": "Квітка стоїть біля вікна."
-    },
-    {
-        "id": "ctx_phone_key_door_01",
-        "hebrew": "הטלפון והמפתח ליד הדלת.",
-        "translation": "Телефон і ключ лежать біля дверей."
-    },
-    {
-        "id": "ctx_newspaper_table_01",
-        "hebrew": "העיתון על השולחן.",
-        "translation": "Газета лежить на столі."
-    },
-    {
-        "id": "ctx_sun_moon_year_01",
-        "hebrew": "השמש והירח נראים אחרת בכל שנה.",
-        "translation": "Сонце й місяць щороку виглядають по-різному."
-    },
-    {
-        "id": "ctx_food_drink_restaurant_01",
-        "hebrew": "במסעדה יש אוכל ושתייה.",
-        "translation": "У ресторані є їжа й напої."
-    },
-    {
-        "id": "ctx_school_teacher_student_01",
-        "hebrew": "בבית הספר המורה מדבר עם התלמיד.",
-        "translation": "У школі вчитель розмовляє зі студентом."
-    },
-    {
-        "id": "ctx_university_student_computer_01",
-        "hebrew": "באוניברסיטה הסטודנט עובד עם מחשב.",
-        "translation": "В університеті студент працює за комп'ютером."
-    },
-    {
-        "id": "ctx_doctor_nurse_hospital_medicine_01",
-        "hebrew": "בבית החולים הרופא נותן תרופה והאחות עוזרת.",
-        "translation": "У лікарні лікар дає ліки, а медсестра допомагає."
-    },
-    {
-        "id": "ctx_sport_ball_01",
-        "hebrew": "בפארק אנחנו משחקים בכדור ואוהבים ספורט.",
-        "translation": "У парку ми граємося м'ячем і любимо спорт."
-    },
-    {
-        "id": "ctx_time_after_01",
-        "hebrew": "בשעה אחת, אחרי דקה ושנייה, אנחנו מתחילים.",
-        "translation": "О першій годині, за хвилину й секунду, ми починаємо."
-    },
-    {
-        "id": "ctx_odot_weather_01",
-        "hebrew": "אנחנו מדברים אודות מזג האוויר.",
-        "translation": "Ми говоримо про погоду."
-    },
-    {
-        "id": "ctx_behind_house_01",
-        "hebrew": "החתול יושב מאחורי הבית.",
-        "translation": "Кіт сидить позаду будинку."
-    },
-    {
-        "id": "ctx_el_school_01",
-        "hebrew": "הילד הולך אל בית הספר.",
-        "translation": "Дитина йде до школи."
-    },
-    {
-        "id": "ctx_etzel_teacher_01",
-        "hebrew": "המפתח אצל המורה.",
-        "translation": "Ключ у вчителя."
-    },
-    {
-        "id": "ctx_et_newspaper_01",
-        "hebrew": "אני קורא את העיתון.",
-        "translation": "Я читаю газету."
-    },
-    {
-        "id": "ctx_be_city_01",
-        "hebrew": "הילד גר בעיר.",
-        "translation": "Дитина живе в місті."
-    },
-    {
-        "id": "ctx_beemtzaut_key_01",
-        "hebrew": "אני פותח את הדלת באמצעות מפתח.",
-        "translation": "Я відчиняю двері ключем."
-    },
-    {
-        "id": "ctx_biglal_rain_01",
-        "hebrew": "בגלל הגשם אנחנו בבית.",
-        "translation": "Через дощ ми вдома."
-    },
-    {
-        "id": "ctx_bizchut_teacher_01",
-        "hebrew": "בזכות המורה התלמיד מצליח.",
-        "translation": "Завдяки вчителю студент досягає успіху."
-    },
-    {
-        "id": "ctx_ben_ball_01",
-        "hebrew": "הכדור בין הכיסא לשולחן.",
-        "translation": "М'яч лежить між стільцем і столом."
-    },
-    {
-        "id": "ctx_bli_water_01",
-        "hebrew": "אני שותה מים בלי סוכר.",
-        "translation": "Я п'ю воду без цукру."
-    },
-    {
-        "id": "ctx_bemahalach_year_01",
-        "hebrew": "במהלך השנה אנחנו לומדים באוניברסיטה.",
-        "translation": "Протягом року ми навчаємося в університеті."
-    },
-    {
-        "id": "ctx_bemaamad_teacher_01",
-        "hebrew": "במעמד המורה התלמיד ענה.",
-        "translation": "У присутності вчителя студент відповів."
-    },
-    {
-        "id": "ctx_bimkom_water_01",
-        "hebrew": "במקום מים אני שותה תה.",
-        "translation": "Замість води я п'ю чай."
-    },
-    {
-        "id": "ctx_baad_game_01",
-        "hebrew": "אני בעד המשחק הזה.",
-        "translation": "Я за цю гру."
-    },
-    {
-        "id": "ctx_beikvot_game_01",
-        "hebrew": "בעקבות המשחק כולם הלכו לפארק.",
-        "translation": "Після гри всі пішли до парку."
-    },
-    {
-        "id": "ctx_beikvot_rain_01",
-        "hebrew": "בעקבות הגשם הרחוב רטוב.",
-        "translation": "Внаслідок дощу вулиця мокра."
-    },
-    {
-        "id": "ctx_bifnei_teacher_01",
-        "hebrew": "התלמיד עומד בפני המורה.",
-        "translation": "Студент стоїть перед учителем."
-    },
-    {
-        "id": "ctx_bekerev_students_01",
-        "hebrew": "בקרב התלמידים הספר הזה מוכר.",
-        "translation": "Серед студентів ця книга добре відома."
-    },
-    {
-        "id": "ctx_bishvil_child_01",
-        "hebrew": "אני קונה תרופה בשביל הילד.",
-        "translation": "Я купую ліки для дитини."
-    },
-    {
-        "id": "ctx_beshem_university_01",
-        "hebrew": "הדובר מדבר בשם האוניברסיטה.",
-        "translation": "Доповідач виступає від імені університету."
-    },
-    {
-        "id": "ctx_betoch_key_01",
-        "hebrew": "המפתח בתוך התיק.",
-        "translation": "Ключ усередині сумки."
-    },
-    {
-        "id": "ctx_zulat_teacher_01",
-        "hebrew": "זולת המורה, כולם הגיעו.",
-        "translation": "Крім учителя, усі прийшли."
-    },
-    {
-        "id": "ctx_ke_teacher_01",
-        "hebrew": "הוא עובד כמורה.",
-        "translation": "Він працює вчителем."
-    },
-    {
-        "id": "ctx_klapei_student_01",
-        "hebrew": "היחס כלפי התלמיד מכבד.",
-        "translation": "Ставлення до студента є шанобливим."
-    },
-    {
-        "id": "ctx_kmo_cat_01",
-        "hebrew": "הילד רץ כמו חתול.",
-        "translation": "Дитина біжить, мов кіт."
-    },
-    {
-        "id": "ctx_kmot_newspaper_01",
-        "hebrew": "כמות חברו, גם הוא קורא עיתון.",
-        "translation": "Як і його друг, він теж читає газету."
-    },
-    {
-        "id": "ctx_keneged_hatsaah_01",
-        "hebrew": "הם הצביעו כנגד ההצעה.",
-        "translation": "Вони проголосували проти пропозиції."
-    },
-    {
-        "id": "ctx_le_student_01",
-        "hebrew": "אני נותן ספר לתלמיד.",
-        "translation": "Я даю книгу студентові."
-    },
-    {
-        "id": "ctx_leorech_street_01",
-        "hebrew": "אנחנו הולכים לאורך הרחוב.",
-        "translation": "Ми йдемо вздовж вулиці."
-    },
-    {
-        "id": "ctx_legabei_medicine_01",
-        "hebrew": "לגבי התרופה, שאל את הרופא.",
-        "translation": "Щодо ліків, запитайте лікаря."
-    },
-    {
-        "id": "ctx_ledivrei_teacher_01",
-        "hebrew": "לדברי המורה, הספר חשוב.",
-        "translation": "За словами вчителя, ця книга важлива."
-    },
-    {
-        "id": "ctx_leyad_window_01",
-        "hebrew": "הכיסא ליד החלון.",
-        "translation": "Стілець стоїть біля вікна."
-    },
-    {
-        "id": "ctx_lidei_doctor_01",
-        "hebrew": "המסמך הגיע לידי הרופא.",
-        "translation": "Документ потрапив до лікаря."
-    },
-    {
-        "id": "ctx_lemaan_city_01",
-        "hebrew": "אנחנו עובדים למען העיר.",
-        "translation": "Ми працюємо заради міста."
-    },
-    {
-        "id": "ctx_lefi_newspaper_01",
-        "hebrew": "לפי העיתון, מחר חם.",
-        "translation": "За повідомленням газети, завтра буде спекотно."
-    },
-    {
-        "id": "ctx_lifnei_house_01",
-        "hebrew": "לפני הבית יש עץ.",
-        "translation": "Перед будинком стоїть дерево."
-    },
-    {
-        "id": "ctx_likrat_year_01",
-        "hebrew": "אנחנו מתכוננים לקראת השנה החדשה.",
-        "translation": "Ми готуємося до нового року."
-    },
-    {
-        "id": "ctx_lerochav_street_01",
-        "hebrew": "הכדור עף לרוחב הרחוב.",
-        "translation": "М'яч перелетів через вулицю."
-    },
-    {
-        "id": "ctx_mul_house_01",
-        "hebrew": "המכונית עומדת מול הבית.",
-        "translation": "Автомобіль стоїть навпроти будинку."
-    },
-    {
-        "id": "ctx_min_city_01",
-        "hebrew": "אני בא מן העיר.",
-        "translation": "Я приїжджаю з міста."
-    },
-    {
-        "id": "ctx_meal_moon_01",
-        "hebrew": "הירח מעל הבית.",
-        "translation": "Місяць над будинком."
-    },
-    {
-        "id": "ctx_mipnei_game_01",
-        "hebrew": "המשחק בוטל מפני הגשם.",
-        "translation": "Гру скасували через дощ."
-    },
-    {
-        "id": "ctx_mitachat_table_01",
-        "hebrew": "הכדור מתחת לשולחן.",
-        "translation": "М'яч під столом."
-    },
-    {
-        "id": "ctx_neged_school_01",
-        "hebrew": "הם שיחקו נגד בית הספר השכן.",
-        "translation": "Вони грали проти сусідньої школи."
-    },
-    {
-        "id": "ctx_avur_teacher_01",
-        "hebrew": "המתנה היא עבור המורה.",
-        "translation": "Подарунок для вчителя."
-    },
-    {
-        "id": "ctx_ad_hour_01",
-        "hebrew": "אני עובד עד השעה חמש.",
-        "translation": "Я працюю до п'ятої години."
-    },
-    {
-        "id": "ctx_al_city_01",
-        "hebrew": "אנחנו מדברים על העיר.",
-        "translation": "Ми говоримо про місто."
-    },
-    {
-        "id": "ctx_al_gav_chair_01",
-        "hebrew": "העיתון על גב הכיסא.",
-        "translation": "Газета лежить на спинці стільця."
-    },
-    {
-        "id": "ctx_al_gabei_chair_01",
-        "hebrew": "העיתון על גבי הכיסא.",
-        "translation": "Газета лежить зверху на стільці."
-    },
-    {
-        "id": "ctx_al_yad_door_01",
-        "hebrew": "הכדור על יד הדלת.",
-        "translation": "М'яч лежить біля дверей."
-    },
-    {
-        "id": "ctx_al_yedei_teacher_01",
-        "hebrew": "הדלת נפתחה על ידי המורה.",
-        "translation": "Двері були відчинені вчителем."
-    },
-    {
-        "id": "ctx_al_pi_newspaper_01",
-        "hebrew": "על פי העיתון, העיר שקטה.",
-        "translation": "За повідомленням газети, місто спокійне."
-    },
-    {
-        "id": "ctx_al_pnei_moon_01",
-        "hebrew": "הענן עבר על פני הירח.",
-        "translation": "Хмара пройшла над місяцем."
-    },
-    {
-        "id": "ctx_im_teacher_01",
-        "hebrew": "אני יושב עם המורה.",
-        "translation": "Я сиджу з учителем."
-    },
-    {
-        "id": "ctx_leumat_year_01",
-        "hebrew": "לעומת השנה שעברה, השנה טובה.",
-        "translation": "Порівняно з минулим роком, цей рік хороший."
-    },
-    {
-        "id": "ctx_shel_computer_01",
-        "hebrew": "המחשב של המורה חדש.",
-        "translation": "Комп'ютер учителя новий."
-    },
-    {
-        "id": "ctx_tachat_chair_01",
-        "hebrew": "הכדור תחת הכיסא.",
-        "translation": "М'яч під стільцем."
-    }
+  {
+    "id": "ctx_dog_park_01",
+    "hebrew": "הכלב רץ בפארק.",
+    "translation": "Собака біжить у парку."
+  },
+  {
+    "id": "ctx_dog_house_01",
+    "hebrew": "הכלב ישן ליד הבית.",
+    "translation": "Собака спить біля будинку."
+  },
+  {
+    "id": "ctx_star_city_01",
+    "hebrew": "הכוכב נראה מעל העיר.",
+    "translation": "Зірку видно над містом."
+  },
+  {
+    "id": "ctx_television_house_01",
+    "hebrew": "אנחנו רואים טלוויזיה בבית.",
+    "translation": "Ми дивимося телевізор удома."
+  },
+  {
+    "id": "ctx_weather_country_01",
+    "hebrew": "מזג האוויר בארץ חם היום.",
+    "translation": "Сьогодні в країні спекотна погода."
+  },
+  {
+    "id": "ctx_park_game_01",
+    "hebrew": "הילדים משחקים בפארק.",
+    "translation": "Діти граються в парку."
+  },
+  {
+    "id": "ctx_apple_water_01",
+    "hebrew": "אני אוכל תפוח ושותה מים.",
+    "translation": "Я їм яблуко й п'ю воду."
+  },
+  {
+    "id": "ctx_book_house_01",
+    "hebrew": "יש ספר חדש בבית.",
+    "translation": "Удома є нова книга."
+  },
+  {
+    "id": "ctx_cat_house_01",
+    "hebrew": "החתול יושב ליד הבית.",
+    "translation": "Кіт сидить біля будинку."
+  },
+  {
+    "id": "ctx_people_street_01",
+    "hebrew": "האיש והאישה הולכים ברחוב.",
+    "translation": "Чоловік і жінка йдуть вулицею."
+  },
+  {
+    "id": "ctx_tree_street_01",
+    "hebrew": "העץ עומד ליד הרחוב.",
+    "translation": "Дерево стоїть біля вулиці."
+  },
+  {
+    "id": "ctx_car_street_01",
+    "hebrew": "המכונית חונה ברחוב.",
+    "translation": "Автомобіль припаркований на вулиці."
+  },
+  {
+    "id": "ctx_fish_water_01",
+    "hebrew": "הדג שוחה במים.",
+    "translation": "Риба плаває у воді."
+  },
+  {
+    "id": "ctx_computer_table_chair_01",
+    "hebrew": "המחשב על השולחן ליד הכיסא.",
+    "translation": "Комп'ютер стоїть на столі поруч зі стільцем."
+  },
+  {
+    "id": "ctx_flower_window_01",
+    "hebrew": "הפרח עומד ליד החלון.",
+    "translation": "Квітка стоїть біля вікна."
+  },
+  {
+    "id": "ctx_phone_key_door_01",
+    "hebrew": "הטלפון והמפתח ליד הדלת.",
+    "translation": "Телефон і ключ лежать біля дверей."
+  },
+  {
+    "id": "ctx_newspaper_table_01",
+    "hebrew": "העיתון על השולחן.",
+    "translation": "Газета лежить на столі."
+  },
+  {
+    "id": "ctx_sun_moon_year_01",
+    "hebrew": "השמש והירח נראים אחרת בכל שנה.",
+    "translation": "Сонце й місяць щороку виглядають по-різному."
+  },
+  {
+    "id": "ctx_food_drink_restaurant_01",
+    "hebrew": "במסעדה יש אוכל ושתייה.",
+    "translation": "У ресторані є їжа й напої."
+  },
+  {
+    "id": "ctx_school_teacher_student_01",
+    "hebrew": "בבית הספר המורה מדבר עם התלמיד.",
+    "translation": "У школі вчитель розмовляє зі студентом."
+  },
+  {
+    "id": "ctx_university_student_computer_01",
+    "hebrew": "באוניברסיטה הסטודנט עובד עם מחשב.",
+    "translation": "В університеті студент працює за комп'ютером."
+  },
+  {
+    "id": "ctx_doctor_nurse_hospital_medicine_01",
+    "hebrew": "בבית החולים הרופא נותן תרופה והאחות עוזרת.",
+    "translation": "У лікарні лікар дає ліки, а медсестра допомагає."
+  },
+  {
+    "id": "ctx_sport_ball_01",
+    "hebrew": "בפארק אנחנו משחקים בכדור ואוהבים ספורט.",
+    "translation": "У парку ми граємося м'ячем і любимо спорт."
+  },
+  {
+    "id": "ctx_time_after_01",
+    "hebrew": "בשעה אחת, אחרי דקה ושנייה, אנחנו מתחילים.",
+    "translation": "О першій годині, за хвилину й секунду, ми починаємо."
+  },
+  {
+    "id": "ctx_odot_weather_01",
+    "hebrew": "אנחנו מדברים אודות מזג האוויר.",
+    "translation": "Ми говоримо про погоду."
+  },
+  {
+    "id": "ctx_behind_house_01",
+    "hebrew": "החתול יושב מאחורי הבית.",
+    "translation": "Кіт сидить позаду будинку."
+  },
+  {
+    "id": "ctx_el_school_01",
+    "hebrew": "הילד הולך אל בית הספר.",
+    "translation": "Дитина йде до школи."
+  },
+  {
+    "id": "ctx_etzel_teacher_01",
+    "hebrew": "המפתח אצל המורה.",
+    "translation": "Ключ у вчителя."
+  },
+  {
+    "id": "ctx_et_newspaper_01",
+    "hebrew": "אני קורא את העיתון.",
+    "translation": "Я читаю газету."
+  },
+  {
+    "id": "ctx_be_city_01",
+    "hebrew": "הילד גר בעיר.",
+    "translation": "Дитина живе в місті."
+  },
+  {
+    "id": "ctx_beemtzaut_key_01",
+    "hebrew": "אני פותח את הדלת באמצעות מפתח.",
+    "translation": "Я відчиняю двері ключем."
+  },
+  {
+    "id": "ctx_biglal_rain_01",
+    "hebrew": "בגלל הגשם אנחנו בבית.",
+    "translation": "Через дощ ми вдома."
+  },
+  {
+    "id": "ctx_bizchut_teacher_01",
+    "hebrew": "בזכות המורה התלמיד מצליח.",
+    "translation": "Завдяки вчителю студент досягає успіху."
+  },
+  {
+    "id": "ctx_ben_ball_01",
+    "hebrew": "הכדור בין הכיסא לשולחן.",
+    "translation": "М'яч лежить між стільцем і столом."
+  },
+  {
+    "id": "ctx_bli_water_01",
+    "hebrew": "אני שותה מים בלי סוכר.",
+    "translation": "Я п'ю воду без цукру."
+  },
+  {
+    "id": "ctx_bemahalach_year_01",
+    "hebrew": "במהלך השנה אנחנו לומדים באוניברסיטה.",
+    "translation": "Протягом року ми навчаємося в університеті."
+  },
+  {
+    "id": "ctx_bemaamad_teacher_01",
+    "hebrew": "במעמד המורה התלמיד ענה.",
+    "translation": "У присутності вчителя студент відповів."
+  },
+  {
+    "id": "ctx_bimkom_water_01",
+    "hebrew": "במקום מים אני שותה תה.",
+    "translation": "Замість води я п'ю чай."
+  },
+  {
+    "id": "ctx_baad_game_01",
+    "hebrew": "אני בעד המשחק הזה.",
+    "translation": "Я за цю гру."
+  },
+  {
+    "id": "ctx_beikvot_game_01",
+    "hebrew": "בעקבות המשחק כולם הלכו לפארק.",
+    "translation": "Після гри всі пішли до парку."
+  },
+  {
+    "id": "ctx_beikvot_rain_01",
+    "hebrew": "בעקבות הגשם הרחוב רטוב.",
+    "translation": "Внаслідок дощу вулиця мокра."
+  },
+  {
+    "id": "ctx_bifnei_teacher_01",
+    "hebrew": "התלמיד עומד בפני המורה.",
+    "translation": "Студент стоїть перед учителем."
+  },
+  {
+    "id": "ctx_bekerev_students_01",
+    "hebrew": "בקרב התלמידים הספר הזה מוכר.",
+    "translation": "Серед студентів ця книга добре відома."
+  },
+  {
+    "id": "ctx_bishvil_child_01",
+    "hebrew": "אני קונה תרופה בשביל הילד.",
+    "translation": "Я купую ліки для дитини."
+  },
+  {
+    "id": "ctx_beshem_university_01",
+    "hebrew": "הדובר מדבר בשם האוניברסיטה.",
+    "translation": "Доповідач виступає від імені університету."
+  },
+  {
+    "id": "ctx_betoch_key_01",
+    "hebrew": "המפתח בתוך התיק.",
+    "translation": "Ключ усередині сумки."
+  },
+  {
+    "id": "ctx_zulat_teacher_01",
+    "hebrew": "זולת המורה, כולם הגיעו.",
+    "translation": "Крім учителя, усі прийшли."
+  },
+  {
+    "id": "ctx_ke_teacher_01",
+    "hebrew": "הוא עובד כמורה.",
+    "translation": "Він працює вчителем."
+  },
+  {
+    "id": "ctx_klapei_student_01",
+    "hebrew": "היחס כלפי התלמיד מכבד.",
+    "translation": "Ставлення до студента є шанобливим."
+  },
+  {
+    "id": "ctx_kmo_cat_01",
+    "hebrew": "הילד רץ כמו חתול.",
+    "translation": "Дитина біжить, мов кіт."
+  },
+  {
+    "id": "ctx_kmot_newspaper_01",
+    "hebrew": "כמות חברו, גם הוא קורא עיתון.",
+    "translation": "Як і його друг, він теж читає газету."
+  },
+  {
+    "id": "ctx_keneged_hatsaah_01",
+    "hebrew": "הם הצביעו כנגד ההצעה.",
+    "translation": "Вони проголосували проти пропозиції."
+  },
+  {
+    "id": "ctx_le_student_01",
+    "hebrew": "אני נותן ספר לתלמיד.",
+    "translation": "Я даю книгу студентові."
+  },
+  {
+    "id": "ctx_leorech_street_01",
+    "hebrew": "אנחנו הולכים לאורך הרחוב.",
+    "translation": "Ми йдемо вздовж вулиці."
+  },
+  {
+    "id": "ctx_legabei_medicine_01",
+    "hebrew": "לגבי התרופה, שאל את הרופא.",
+    "translation": "Щодо ліків, запитайте лікаря."
+  },
+  {
+    "id": "ctx_ledivrei_teacher_01",
+    "hebrew": "לדברי המורה, הספר חשוב.",
+    "translation": "За словами вчителя, ця книга важлива."
+  },
+  {
+    "id": "ctx_leyad_window_01",
+    "hebrew": "הכיסא ליד החלון.",
+    "translation": "Стілець стоїть біля вікна."
+  },
+  {
+    "id": "ctx_lidei_doctor_01",
+    "hebrew": "המסמך הגיע לידי הרופא.",
+    "translation": "Документ потрапив до лікаря."
+  },
+  {
+    "id": "ctx_lemaan_city_01",
+    "hebrew": "אנחנו עובדים למען העיר.",
+    "translation": "Ми працюємо заради міста."
+  },
+  {
+    "id": "ctx_lefi_newspaper_01",
+    "hebrew": "לפי העיתון, מחר חם.",
+    "translation": "За повідомленням газети, завтра буде спекотно."
+  },
+  {
+    "id": "ctx_lifnei_house_01",
+    "hebrew": "לפני הבית יש עץ.",
+    "translation": "Перед будинком стоїть дерево."
+  },
+  {
+    "id": "ctx_likrat_year_01",
+    "hebrew": "אנחנו מתכוננים לקראת השנה החדשה.",
+    "translation": "Ми готуємося до нового року."
+  },
+  {
+    "id": "ctx_lerochav_street_01",
+    "hebrew": "הכדור עף לרוחב הרחוב.",
+    "translation": "М'яч перелетів через вулицю."
+  },
+  {
+    "id": "ctx_mul_house_01",
+    "hebrew": "המכונית עומדת מול הבית.",
+    "translation": "Автомобіль стоїть навпроти будинку."
+  },
+  {
+    "id": "ctx_min_city_01",
+    "hebrew": "אני בא מן העיר.",
+    "translation": "Я приїжджаю з міста."
+  },
+  {
+    "id": "ctx_meal_moon_01",
+    "hebrew": "הירח מעל הבית.",
+    "translation": "Місяць над будинком."
+  },
+  {
+    "id": "ctx_mipnei_game_01",
+    "hebrew": "המשחק בוטל מפני הגשם.",
+    "translation": "Гру скасували через дощ."
+  },
+  {
+    "id": "ctx_mitachat_table_01",
+    "hebrew": "הכדור מתחת לשולחן.",
+    "translation": "М'яч під столом."
+  },
+  {
+    "id": "ctx_neged_school_01",
+    "hebrew": "הם שיחקו נגד בית הספר השכן.",
+    "translation": "Вони грали проти сусідньої школи."
+  },
+  {
+    "id": "ctx_avur_teacher_01",
+    "hebrew": "המתנה היא עבור המורה.",
+    "translation": "Подарунок для вчителя."
+  },
+  {
+    "id": "ctx_ad_hour_01",
+    "hebrew": "אני עובד עד השעה חמש.",
+    "translation": "Я працюю до п'ятої години."
+  },
+  {
+    "id": "ctx_al_city_01",
+    "hebrew": "אנחנו מדברים על העיר.",
+    "translation": "Ми говоримо про місто."
+  },
+  {
+    "id": "ctx_al_gav_chair_01",
+    "hebrew": "העיתון על גב הכיסא.",
+    "translation": "Газета лежить на спинці стільця."
+  },
+  {
+    "id": "ctx_al_gabei_chair_01",
+    "hebrew": "העיתון על גבי הכיסא.",
+    "translation": "Газета лежить зверху на стільці."
+  },
+  {
+    "id": "ctx_al_yad_door_01",
+    "hebrew": "הכדור על יד הדלת.",
+    "translation": "М'яч лежить біля дверей."
+  },
+  {
+    "id": "ctx_al_yedei_teacher_01",
+    "hebrew": "הדלת נפתחה על ידי המורה.",
+    "translation": "Двері були відчинені вчителем."
+  },
+  {
+    "id": "ctx_al_pi_newspaper_01",
+    "hebrew": "על פי העיתון, העיר שקטה.",
+    "translation": "За повідомленням газети, місто спокійне."
+  },
+  {
+    "id": "ctx_al_pnei_moon_01",
+    "hebrew": "הענן עבר על פני הירח.",
+    "translation": "Хмара пройшла над місяцем."
+  },
+  {
+    "id": "ctx_im_teacher_01",
+    "hebrew": "אני יושב עם המורה.",
+    "translation": "Я сиджу з учителем."
+  },
+  {
+    "id": "ctx_leumat_year_01",
+    "hebrew": "לעומת השנה שעברה, השנה טובה.",
+    "translation": "Порівняно з минулим роком, цей рік хороший."
+  },
+  {
+    "id": "ctx_shel_computer_01",
+    "hebrew": "המחשב של המורה חדש.",
+    "translation": "Комп'ютер учителя новий."
+  },
+  {
+    "id": "ctx_tachat_chair_01",
+    "hebrew": "הכדור תחת הכיסא.",
+    "translation": "М'яч під стільцем."
+  },
+  {
+    "id": "ctx_mother_auto_01",
+    "hebrew": "האם במטבח עכשיו.",
+    "translation": "Мати зараз на кухні."
+  },
+  {
+    "id": "ctx_father_auto_01",
+    "hebrew": "האב קורא עיתון בערב.",
+    "translation": "Батько читає газету ввечері."
+  },
+  {
+    "id": "ctx_boy_auto_01",
+    "hebrew": "הילד משחק עם כדור.",
+    "translation": "Хлопець грається м'ячем."
+  },
+  {
+    "id": "ctx_girl_auto_01",
+    "hebrew": "הילדה שרה שיר יפה.",
+    "translation": "Дівчина співає гарну пісню."
+  },
+  {
+    "id": "ctx_family_auto_01",
+    "hebrew": "המשפחה גרה בעיר קטנה.",
+    "translation": "Родина живе в маленькому місті."
+  },
+  {
+    "id": "ctx_friend_auto_01",
+    "hebrew": "החבר מחכה לי בחוץ.",
+    "translation": "Друг чекає на мене надворі."
+  },
+  {
+    "id": "ctx_person_auto_01",
+    "hebrew": "האדם עומד ליד הדלת.",
+    "translation": "Людина стоїть біля дверей."
+  },
+  {
+    "id": "ctx_day_auto_01",
+    "hebrew": "היום יום חם.",
+    "translation": "Сьогодні теплий день."
+  },
+  {
+    "id": "ctx_night_auto_01",
+    "hebrew": "הלילה שקט מאוד.",
+    "translation": "Ніч дуже тиха."
+  },
+  {
+    "id": "ctx_morning_auto_01",
+    "hebrew": "הבוקר מתחיל מוקדם.",
+    "translation": "Ранок починається рано."
+  },
+  {
+    "id": "ctx_evening_auto_01",
+    "hebrew": "בערב אנחנו בבית.",
+    "translation": "Увечері ми вдома."
+  },
+  {
+    "id": "ctx_week_auto_01",
+    "hebrew": "השבוע יש הרבה עבודה.",
+    "translation": "Цього тижня багато роботи."
+  },
+  {
+    "id": "ctx_month_auto_01",
+    "hebrew": "החודש הבא קצר.",
+    "translation": "Наступний місяць короткий."
+  },
+  {
+    "id": "ctx_time_auto_01",
+    "hebrew": "אין לי זמן עכשיו.",
+    "translation": "У мене зараз немає часу."
+  },
+  {
+    "id": "ctx_name_auto_01",
+    "hebrew": "מה השם שלך?",
+    "translation": "Як тебе звати?"
+  },
+  {
+    "id": "ctx_place_auto_01",
+    "hebrew": "זה מקום שקט ונעים.",
+    "translation": "Це тихе й приємне місце."
+  },
+  {
+    "id": "ctx_work_auto_01",
+    "hebrew": "יש לי הרבה עבודה היום.",
+    "translation": "У мене сьогодні багато роботи."
+  },
+  {
+    "id": "ctx_question_auto_01",
+    "hebrew": "יש לי שאלה קטנה.",
+    "translation": "У мене є маленьке запитання."
+  },
+  {
+    "id": "ctx_answer_auto_01",
+    "hebrew": "התשובה שלך נכונה.",
+    "translation": "Твоя відповідь правильна."
+  },
+  {
+    "id": "ctx_story_auto_01",
+    "hebrew": "הסיפור הזה מעניין מאוד.",
+    "translation": "Ця історія дуже цікава."
+  },
+  {
+    "id": "ctx_language_auto_01",
+    "hebrew": "עברית היא שפה יפה.",
+    "translation": "Іврит - гарна мова."
+  },
+  {
+    "id": "ctx_word_auto_01",
+    "hebrew": "זאת מילה חדשה בשבילי.",
+    "translation": "Це нове для мене слово."
+  },
+  {
+    "id": "ctx_sentence_auto_01",
+    "hebrew": "זה משפט קצר ופשוט.",
+    "translation": "Це коротке й просте речення."
+  },
+  {
+    "id": "ctx_music_auto_01",
+    "hebrew": "אני שומע מוזיקה באוטו.",
+    "translation": "Я слухаю музику в машині."
+  },
+  {
+    "id": "ctx_song_auto_01",
+    "hebrew": "השיר הזה מוכר לי.",
+    "translation": "Ця пісня мені знайома."
+  },
+  {
+    "id": "ctx_movie_auto_01",
+    "hebrew": "אנחנו רואים סרט הערב.",
+    "translation": "Ми дивимося фільм увечері."
+  },
+  {
+    "id": "ctx_picture_auto_01",
+    "hebrew": "התמונה יפה מאוד.",
+    "translation": "Ця картина дуже гарна."
+  },
+  {
+    "id": "ctx_bread_auto_01",
+    "hebrew": "הלחם טרי וחם.",
+    "translation": "Хліб свіжий і теплий."
+  },
+  {
+    "id": "ctx_milk_auto_01",
+    "hebrew": "יש חלב במקרר.",
+    "translation": "У холодильнику є молоко."
+  },
+  {
+    "id": "ctx_coffee_auto_01",
+    "hebrew": "הקפה חם מדי.",
+    "translation": "Кава занадто гаряча."
+  },
+  {
+    "id": "ctx_tea_auto_01",
+    "hebrew": "אני שותה תה עם לימון.",
+    "translation": "Я п'ю чай з лимоном."
+  },
+  {
+    "id": "ctx_sugar_auto_01",
+    "hebrew": "יש קצת סוכר בקפה.",
+    "translation": "У каві є трохи цукру."
+  },
+  {
+    "id": "ctx_salt_auto_01",
+    "hebrew": "צריך עוד מלח במרק.",
+    "translation": "У суп треба ще солі."
+  },
+  {
+    "id": "ctx_egg_auto_01",
+    "hebrew": "הביצה על הצלחת.",
+    "translation": "Яйце на тарілці."
+  },
+  {
+    "id": "ctx_cheese_auto_01",
+    "hebrew": "הגבינה במקרר.",
+    "translation": "Сир у холодильнику."
+  },
+  {
+    "id": "ctx_meat_auto_01",
+    "hebrew": "הבשר חם ומוכן.",
+    "translation": "М'ясо гаряче й готове."
+  },
+  {
+    "id": "ctx_fruit_auto_01",
+    "hebrew": "אני אוכל פרי בבוקר.",
+    "translation": "Я їм фрукт зранку."
+  },
+  {
+    "id": "ctx_kitchen_auto_01",
+    "hebrew": "המטבח קטן אבל נוח.",
+    "translation": "Кухня маленька, але зручна."
+  },
+  {
+    "id": "ctx_store_auto_01",
+    "hebrew": "החנות פתוחה עד הערב.",
+    "translation": "Магазин відкритий до вечора."
+  },
+  {
+    "id": "ctx_market_auto_01",
+    "hebrew": "בשוק יש ירקות טריים.",
+    "translation": "На ринку є свіжі овочі."
+  },
+  {
+    "id": "ctx_bus_auto_01",
+    "hebrew": "האוטובוס מגיע בזמן.",
+    "translation": "Автобус прибуває вчасно."
+  },
+  {
+    "id": "ctx_train_auto_01",
+    "hebrew": "הרכבת יוצאת מהתחנה.",
+    "translation": "Потяг вирушає зі станції."
+  },
+  {
+    "id": "ctx_station_auto_01",
+    "hebrew": "התחנה קרובה לבית.",
+    "translation": "Станція близько до дому."
+  },
+  {
+    "id": "ctx_road_auto_01",
+    "hebrew": "הדרך ארוכה מאוד.",
+    "translation": "Дорога дуже довга."
+  },
+  {
+    "id": "ctx_room_auto_01",
+    "hebrew": "החדר שלי מסודר.",
+    "translation": "Моя кімната прибрана."
+  },
+  {
+    "id": "ctx_bed_auto_01",
+    "hebrew": "המיטה ליד החלון.",
+    "translation": "Ліжко біля вікна."
+  },
+  {
+    "id": "ctx_bag_auto_01",
+    "hebrew": "התיק על הכיסא.",
+    "translation": "Сумка на стільці."
+  },
+  {
+    "id": "ctx_shoe_auto_01",
+    "hebrew": "הנעל מתחת לשולחן.",
+    "translation": "Черевик під столом."
+  },
+  {
+    "id": "ctx_shirt_auto_01",
+    "hebrew": "החולצה חדשה ונקייה.",
+    "translation": "Сорочка нова й чиста."
+  },
+  {
+    "id": "ctx_pants_auto_01",
+    "hebrew": "המכנסיים בארון.",
+    "translation": "Штани в шафі."
+  },
+  {
+    "id": "ctx_money_auto_01",
+    "hebrew": "אין לי כסף היום.",
+    "translation": "У мене сьогодні немає грошей."
+  },
+  {
+    "id": "ctx_hand_auto_01",
+    "hebrew": "היד שלי קרה.",
+    "translation": "Моя рука холодна."
+  },
+  {
+    "id": "ctx_head_auto_01",
+    "hebrew": "הראש שלי כואב.",
+    "translation": "У мене болить голова."
+  },
+  {
+    "id": "ctx_heart_auto_01",
+    "hebrew": "הלב פועם מהר.",
+    "translation": "Серце б'ється швидко."
+  },
+  {
+    "id": "ctx_eye_auto_01",
+    "hebrew": "העין שלי אדומה.",
+    "translation": "Моє око червоне."
+  },
+  {
+    "id": "ctx_face_auto_01",
+    "hebrew": "הפנים שלו מוכרות לי.",
+    "translation": "Його обличчя мені знайоме."
+  },
+  {
+    "id": "ctx_body_auto_01",
+    "hebrew": "הגוף צריך מנוחה.",
+    "translation": "Тілу потрібен відпочинок."
+  },
+  {
+    "id": "ctx_sea_auto_01",
+    "hebrew": "הים שקט הבוקר.",
+    "translation": "Море спокійне цього ранку."
+  },
+  {
+    "id": "ctx_rain_auto_01",
+    "hebrew": "הגשם מתחיל בערב.",
+    "translation": "Дощ починається ввечері."
+  },
+  {
+    "id": "ctx_wind_auto_01",
+    "hebrew": "הרוח חזקה היום.",
+    "translation": "Вітер сьогодні сильний."
+  },
+  {
+    "id": "ctx_fire_auto_01",
+    "hebrew": "האש חמה מאוד.",
+    "translation": "Вогонь дуже гарячий."
+  },
+  {
+    "id": "ctx_light_auto_01",
+    "hebrew": "האור בחדר חזק.",
+    "translation": "Світло в кімнаті яскраве."
+  },
+  {
+    "id": "ctx_good_auto_01",
+    "hebrew": "זה יום טוב.",
+    "translation": "Це хороший день."
+  },
+  {
+    "id": "ctx_bad_auto_01",
+    "hebrew": "היום מזג האוויר רע.",
+    "translation": "Сьогодні погана погода."
+  },
+  {
+    "id": "ctx_big_auto_01",
+    "hebrew": "יש לנו בית גדול.",
+    "translation": "У нас великий будинок."
+  },
+  {
+    "id": "ctx_small_auto_01",
+    "hebrew": "זה חדר קטן.",
+    "translation": "Це маленька кімната."
+  },
+  {
+    "id": "ctx_new_auto_01",
+    "hebrew": "קניתי ספר חדש.",
+    "translation": "Я купив нову книгу."
+  },
+  {
+    "id": "ctx_old_auto_01",
+    "hebrew": "האוטו הישן עדיין עובד.",
+    "translation": "Старе авто досі працює."
+  },
+  {
+    "id": "ctx_young_auto_01",
+    "hebrew": "המורה צעיר מאוד.",
+    "translation": "Учитель дуже молодий."
+  },
+  {
+    "id": "ctx_beautiful_auto_01",
+    "hebrew": "העיר יפה בלילה.",
+    "translation": "Місто гарне вночі."
+  },
+  {
+    "id": "ctx_long_auto_01",
+    "hebrew": "יש לנו דרך ארוכה.",
+    "translation": "Попереду в нас довга дорога."
+  },
+  {
+    "id": "ctx_short_auto_01",
+    "hebrew": "השיעור קצר היום.",
+    "translation": "Урок сьогодні короткий."
+  },
+  {
+    "id": "ctx_high_auto_01",
+    "hebrew": "ההר גבוה מאוד.",
+    "translation": "Гора дуже висока."
+  },
+  {
+    "id": "ctx_low_auto_01",
+    "hebrew": "הכיסא נמוך מדי.",
+    "translation": "Стілець занадто низький."
+  },
+  {
+    "id": "ctx_hot_auto_01",
+    "hebrew": "המרק חם מאוד.",
+    "translation": "Суп дуже гарячий."
+  },
+  {
+    "id": "ctx_cold_auto_01",
+    "hebrew": "החדר קר בלילה.",
+    "translation": "Кімната холодна вночі."
+  },
+  {
+    "id": "ctx_clean_auto_01",
+    "hebrew": "החדר נקי עכשיו.",
+    "translation": "Кімната зараз чиста."
+  },
+  {
+    "id": "ctx_dirty_auto_01",
+    "hebrew": "השולחן מלוכלך מאוד.",
+    "translation": "Стіл дуже брудний."
+  },
+  {
+    "id": "ctx_fast_auto_01",
+    "hebrew": "האוטובוס מהיר מאוד.",
+    "translation": "Автобус дуже швидкий."
+  },
+  {
+    "id": "ctx_slow_auto_01",
+    "hebrew": "המחשב איטי היום.",
+    "translation": "Комп'ютер сьогодні повільний."
+  },
+  {
+    "id": "ctx_strong_auto_01",
+    "hebrew": "הילד חזק מאוד.",
+    "translation": "Хлопець дуже сильний."
+  },
+  {
+    "id": "ctx_weak_auto_01",
+    "hebrew": "הוא חלש היום.",
+    "translation": "Він сьогодні слабкий."
+  },
+  {
+    "id": "ctx_easy_auto_01",
+    "hebrew": "זה קל מאוד.",
+    "translation": "Це дуже легко."
+  },
+  {
+    "id": "ctx_difficult_auto_01",
+    "hebrew": "המבחן קשה היום.",
+    "translation": "Іспит сьогодні складний."
+  },
+  {
+    "id": "ctx_happy_auto_01",
+    "hebrew": "אני שמח היום.",
+    "translation": "Я сьогодні щасливий."
+  },
+  {
+    "id": "ctx_sad_auto_01",
+    "hebrew": "הוא עצוב הבוקר.",
+    "translation": "Він сумний цього ранку."
+  },
+  {
+    "id": "ctx_important_auto_01",
+    "hebrew": "זה חשוב מאוד.",
+    "translation": "Це дуже важливо."
+  },
+  {
+    "id": "ctx_interesting_auto_01",
+    "hebrew": "הספר הזה מעניין.",
+    "translation": "Ця книга цікава."
+  },
+  {
+    "id": "ctx_open_auto_01",
+    "hebrew": "החלון פתוח עכשיו.",
+    "translation": "Вікно зараз відкрите."
+  },
+  {
+    "id": "ctx_closed_auto_01",
+    "hebrew": "הדלת סגורה עכשיו.",
+    "translation": "Двері зараз зачинені."
+  },
+  {
+    "id": "ctx_full_auto_01",
+    "hebrew": "הבקבוק מלא מים.",
+    "translation": "Пляшка повна води."
+  },
+  {
+    "id": "ctx_empty_auto_01",
+    "hebrew": "החדר ריק עכשיו.",
+    "translation": "Кімната зараз порожня."
+  },
+  {
+    "id": "ctx_expensive_auto_01",
+    "hebrew": "הטלפון יקר מדי.",
+    "translation": "Телефон занадто дорогий."
+  },
+  {
+    "id": "ctx_cheap_auto_01",
+    "hebrew": "הספר הזה זול.",
+    "translation": "Ця книга дешева."
+  },
+  {
+    "id": "ctx_world_auto_01",
+    "hebrew": "העולם גדול מאוד.",
+    "translation": "Світ дуже великий."
+  },
+  {
+    "id": "ctx_office_auto_01",
+    "hebrew": "המשרד פתוח בבוקר.",
+    "translation": "Офіс відкритий зранку."
+  },
+  {
+    "id": "ctx_company_auto_01",
+    "hebrew": "החברה שלנו קטנה.",
+    "translation": "Наша компанія маленька."
+  },
+  {
+    "id": "ctx_class_auto_01",
+    "hebrew": "הכיתה שקטה עכשיו.",
+    "translation": "Клас зараз тихий."
+  },
+  {
+    "id": "ctx_lesson_auto_01",
+    "hebrew": "השיעור מתחיל בזמן.",
+    "translation": "Урок починається вчасно."
+  },
+  {
+    "id": "ctx_page_auto_01",
+    "hebrew": "הדף הראשון ריק.",
+    "translation": "Перша сторінка порожня."
+  },
+  {
+    "id": "ctx_letter_auto_01",
+    "hebrew": "קיבלתי מכתב אתמול.",
+    "translation": "Я отримав листа вчора."
+  },
+  {
+    "id": "ctx_note_auto_01",
+    "hebrew": "כתבתי פתק קצר.",
+    "translation": "Я написав коротку записку."
+  },
+  {
+    "id": "ctx_example_auto_01",
+    "hebrew": "זאת דוגמה טובה.",
+    "translation": "Це хороший приклад."
+  },
+  {
+    "id": "ctx_idea_auto_01",
+    "hebrew": "יש לי רעיון חדש.",
+    "translation": "У мене є нова ідея."
+  },
+  {
+    "id": "ctx_plan_auto_01",
+    "hebrew": "התוכנית ברורה לכולם.",
+    "translation": "План зрозумілий усім."
+  },
+  {
+    "id": "ctx_result_auto_01",
+    "hebrew": "זאת תוצאה טובה.",
+    "translation": "Це хороший результат."
+  },
+  {
+    "id": "ctx_problem_auto_01",
+    "hebrew": "יש בעיה קטנה.",
+    "translation": "Є маленька проблема."
+  },
+  {
+    "id": "ctx_news_auto_01",
+    "hebrew": "החדשות מתחילות בשמונה.",
+    "translation": "Новини починаються о восьмій."
+  },
+  {
+    "id": "ctx_voice_auto_01",
+    "hebrew": "הקול שלה שקט.",
+    "translation": "Її голос тихий."
+  },
+  {
+    "id": "ctx_color_auto_01",
+    "hebrew": "אני אוהב את הצבע הזה.",
+    "translation": "Мені подобається цей колір."
+  },
+  {
+    "id": "ctx_cup_auto_01",
+    "hebrew": "הכוס על השולחן.",
+    "translation": "Чашка на столі."
+  },
+  {
+    "id": "ctx_plate_auto_01",
+    "hebrew": "הצלחת נקייה.",
+    "translation": "Тарілка чиста."
+  },
+  {
+    "id": "ctx_bottle_auto_01",
+    "hebrew": "הבקבוק במקרר.",
+    "translation": "Пляшка в холодильнику."
+  },
+  {
+    "id": "ctx_knife_auto_01",
+    "hebrew": "הסכין חדה מאוד.",
+    "translation": "Ніж дуже гострий."
+  },
+  {
+    "id": "ctx_government_auto_01",
+    "hebrew": "הממשלה הודיעה על שינוי.",
+    "translation": "Уряд оголосив про зміни."
+  },
+  {
+    "id": "ctx_village_auto_01",
+    "hebrew": "הכפר שקט בלילה.",
+    "translation": "Село тихе вночі."
+  },
+  {
+    "id": "ctx_neighborhood_auto_01",
+    "hebrew": "השכונה שלנו ירוקה.",
+    "translation": "Наш район зелений."
+  },
+  {
+    "id": "ctx_factory_auto_01",
+    "hebrew": "המפעל עובד כל היום.",
+    "translation": "Фабрика працює весь день."
+  },
+  {
+    "id": "ctx_meeting_auto_01",
+    "hebrew": "יש לנו פגישה בבוקר.",
+    "translation": "У нас зустріч зранку."
+  },
+  {
+    "id": "ctx_team_auto_01",
+    "hebrew": "הקבוצה שלנו חזקה.",
+    "translation": "Наша команда сильна."
+  },
+  {
+    "id": "ctx_spoon_auto_01",
+    "hebrew": "הכף ליד הצלחת.",
+    "translation": "Ложка біля тарілки."
+  },
+  {
+    "id": "ctx_fork_auto_01",
+    "hebrew": "המזלג על השולחן.",
+    "translation": "Виделка на столі."
+  },
+  {
+    "id": "ctx_wall_auto_01",
+    "hebrew": "התמונה תלויה על הקיר.",
+    "translation": "Картина висить на стіні."
+  },
+  {
+    "id": "ctx_floor_auto_01",
+    "hebrew": "הרצפה נקייה מאוד.",
+    "translation": "Підлога дуже чиста."
+  },
+  {
+    "id": "ctx_roof_auto_01",
+    "hebrew": "החתול על הגג.",
+    "translation": "Кіт на даху."
+  },
+  {
+    "id": "ctx_garden_auto_01",
+    "hebrew": "יש פרחים יפים בגינה.",
+    "translation": "У саду є гарні квіти."
+  },
+  {
+    "id": "ctx_bathroom_auto_01",
+    "hebrew": "חדר האמבטיה פנוי עכשיו.",
+    "translation": "Ванна кімната зараз вільна."
+  },
+  {
+    "id": "ctx_mouth_auto_01",
+    "hebrew": "הילד פותח את הפה.",
+    "translation": "Хлопець відкриває рот."
+  },
+  {
+    "id": "ctx_tooth_auto_01",
+    "hebrew": "כואבת לי שן אחת.",
+    "translation": "У мене болить один зуб."
+  },
+  {
+    "id": "ctx_nose_auto_01",
+    "hebrew": "האף שלי קר.",
+    "translation": "Мій ніс холодний."
+  },
+  {
+    "id": "ctx_ear_auto_01",
+    "hebrew": "האוזן כואבת קצת.",
+    "translation": "Вухо трохи болить."
+  },
+  {
+    "id": "ctx_hair_auto_01",
+    "hebrew": "יש לה שיער ארוך.",
+    "translation": "У неї довге волосся."
+  },
+  {
+    "id": "ctx_center_auto_01",
+    "hebrew": "אנחנו נפגשים במרכז העיר.",
+    "translation": "Ми зустрічаємося в центрі міста."
+  },
+  {
+    "id": "ctx_number_auto_01",
+    "hebrew": "המספר הזה חשוב.",
+    "translation": "Це число важливе."
+  },
+  {
+    "id": "ctx_point_auto_01",
+    "hebrew": "יש נקודה שחורה כאן.",
+    "translation": "Тут є чорна точка."
+  },
+  {
+    "id": "ctx_map_auto_01",
+    "hebrew": "המפה על השולחן.",
+    "translation": "Мапа на столі."
+  },
+  {
+    "id": "ctx_line_auto_01",
+    "hebrew": "הקו ישר וברור.",
+    "translation": "Лінія пряма й чітка."
+  },
+  {
+    "id": "ctx_price_auto_01",
+    "hebrew": "המחיר גבוה מדי.",
+    "translation": "Ціна занадто висока."
+  },
+  {
+    "id": "ctx_wide_auto_01",
+    "hebrew": "הרחוב רחב מאוד.",
+    "translation": "Вулиця дуже широка."
+  },
+  {
+    "id": "ctx_narrow_auto_01",
+    "hebrew": "המעבר צר מדי.",
+    "translation": "Прохід занадто вузький."
+  },
+  {
+    "id": "ctx_rich_auto_01",
+    "hebrew": "האיש הזה עשיר מאוד.",
+    "translation": "Цей чоловік дуже багатий."
+  },
+  {
+    "id": "ctx_poor_auto_01",
+    "hebrew": "האיש ההוא עני מאוד.",
+    "translation": "Той чоловік дуже бідний."
+  },
+  {
+    "id": "ctx_loud_auto_01",
+    "hebrew": "הקול רם מדי.",
+    "translation": "Голос занадто гучний."
+  },
+  {
+    "id": "ctx_quiet_auto_01",
+    "hebrew": "הבית שקט עכשיו.",
+    "translation": "У домі зараз тихо."
+  },
+  {
+    "id": "ctx_dark_auto_01",
+    "hebrew": "החדר כהה בלילה.",
+    "translation": "Кімната темна вночі."
+  },
+  {
+    "id": "ctx_bright_auto_01",
+    "hebrew": "הקיר בהיר מאוד.",
+    "translation": "Стіна дуже світла."
+  },
+  {
+    "id": "ctx_soft_auto_01",
+    "hebrew": "הלחם רך וטרי.",
+    "translation": "Хліб м'який і свіжий."
+  },
+  {
+    "id": "ctx_deep_auto_01",
+    "hebrew": "הבור עמוק מאוד.",
+    "translation": "Яма дуже глибока."
+  },
+  {
+    "id": "ctx_sweet_auto_01",
+    "hebrew": "התה מתוק מדי.",
+    "translation": "Чай занадто солодкий."
+  },
+  {
+    "id": "ctx_bitter_auto_01",
+    "hebrew": "הקפה מר היום.",
+    "translation": "Кава сьогодні гірка."
+  },
+  {
+    "id": "ctx_spicy_auto_01",
+    "hebrew": "המרק חריף מאוד.",
+    "translation": "Суп дуже гострий."
+  },
+  {
+    "id": "ctx_dry_auto_01",
+    "hebrew": "הלחם יבש כבר.",
+    "translation": "Хліб уже сухий."
+  },
+  {
+    "id": "ctx_wet_auto_01",
+    "hebrew": "המעיל רטוב מהגשם.",
+    "translation": "Пальто мокре від дощу."
+  },
+  {
+    "id": "ctx_heavy_auto_01",
+    "hebrew": "התיק כבד מאוד.",
+    "translation": "Сумка дуже важка."
+  },
+  {
+    "id": "ctx_river_auto_01",
+    "hebrew": "הנהר עובר ליד העיר.",
+    "translation": "Річка проходить біля міста."
+  },
+  {
+    "id": "ctx_lake_auto_01",
+    "hebrew": "האגם יפה בשקיעה.",
+    "translation": "Озеро гарне на заході сонця."
+  },
+  {
+    "id": "ctx_mountain_auto_01",
+    "hebrew": "ההר גבוה וקר.",
+    "translation": "Гора висока й холодна."
+  },
+  {
+    "id": "ctx_hill_auto_01",
+    "hebrew": "הגבעה קטנה וירוקה.",
+    "translation": "Пагорб маленький і зелений."
+  },
+  {
+    "id": "ctx_forest_auto_01",
+    "hebrew": "היער שקט בבוקר.",
+    "translation": "Ліс тихий зранку."
+  },
+  {
+    "id": "ctx_field_auto_01",
+    "hebrew": "השדה רחב ופתוח.",
+    "translation": "Поле широке й відкрите."
+  },
+  {
+    "id": "ctx_beach_auto_01",
+    "hebrew": "החוף מלא אנשים.",
+    "translation": "Пляж повний людей."
+  },
+  {
+    "id": "ctx_island_auto_01",
+    "hebrew": "האי קטן מאוד.",
+    "translation": "Острів дуже маленький."
+  },
+  {
+    "id": "ctx_desert_auto_01",
+    "hebrew": "המדבר חם ויבש.",
+    "translation": "Пустеля спекотна й суха."
+  },
+  {
+    "id": "ctx_sky_auto_01",
+    "hebrew": "השמיים כחולים היום.",
+    "translation": "Небо сьогодні блакитне."
+  },
+  {
+    "id": "ctx_cloud_auto_01",
+    "hebrew": "ענן גדול מעל הבית.",
+    "translation": "Велика хмара над будинком."
+  },
+  {
+    "id": "ctx_snow_auto_01",
+    "hebrew": "השלג יורד בשקט.",
+    "translation": "Сніг падає тихо."
+  },
+  {
+    "id": "ctx_ice_auto_01",
+    "hebrew": "הקרח נמס לאט.",
+    "translation": "Лід тане повільно."
+  },
+  {
+    "id": "ctx_bridge_auto_01",
+    "hebrew": "הגשר מעל הנהר.",
+    "translation": "Міст над річкою."
+  },
+  {
+    "id": "ctx_building_auto_01",
+    "hebrew": "הבניין חדש וגבוה.",
+    "translation": "Будівля нова й висока."
+  },
+  {
+    "id": "ctx_apartment_auto_01",
+    "hebrew": "הדירה שלנו קטנה.",
+    "translation": "Наша квартира маленька."
+  },
+  {
+    "id": "ctx_balcony_auto_01",
+    "hebrew": "המרפסת פונה לים.",
+    "translation": "Балкон виходить до моря."
+  },
+  {
+    "id": "ctx_elevator_auto_01",
+    "hebrew": "המעלית מגיעה לקומה החמישית.",
+    "translation": "Ліфт піднімається на п'ятий поверх."
+  },
+  {
+    "id": "ctx_stairs_auto_01",
+    "hebrew": "המדרגות ארוכות ותלולות.",
+    "translation": "Сходи довгі й круті."
+  },
+  {
+    "id": "ctx_yard_auto_01",
+    "hebrew": "הילדים משחקים בחצר.",
+    "translation": "Діти граються у дворі."
+  }
 ]
