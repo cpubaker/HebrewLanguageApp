@@ -332,6 +332,37 @@ class _AppShellScreenState extends State<AppShellScreen> {
     );
   }
 
+  void _openGuide() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => _FullscreenModuleScreen(
+          child: GuideScreen(
+            lessons: _bundle?.guideLessons ?? const <LessonEntry>[],
+            documentLoader: widget.documentLoader,
+            lessonStatuses: _guideLessonStatuses,
+            onStatusChanged: _handleGuideStatusChanged,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _openReading() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => _FullscreenModuleScreen(
+          child: ReadingScreen(
+            lessons: _bundle?.readingLessons ?? const <LessonEntry>[],
+            documentLoader: widget.documentLoader,
+            lessonStatuses: _readingLessonStatuses,
+            onStatusChanged: _handleReadingStatusChanged,
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ignore: unused_element
   void _openMaterialsSection(_MaterialsSection section) {
     setState(() {
       _materialsSection = section;
@@ -645,28 +676,37 @@ class _AppShellScreenState extends State<AppShellScreen> {
   }
 
   Widget _buildMaterialsWorkspace(LearningBundle bundle) {
-    return IndexedStack(
-      index: _materialsSection.index,
-      children: [
-        GuideScreen(
-          topContent: _buildMaterialsHeaderCard(),
-          lessons: bundle.guideLessons,
-          documentLoader: widget.documentLoader,
-          lessonStatuses: _guideLessonStatuses,
-          onStatusChanged: _handleGuideStatusChanged,
+    return _buildMaterialsHub(bundle);
+  }
+
+  Widget _buildMaterialsHub(LearningBundle bundle) {
+    return WorkspaceHubScreen(
+      title: 'Матеріали',
+      subtitle:
+          'Тут зібрані довідник і тексти для читання. Оберіть, з чого продовжити.',
+      shortcuts: [
+        WorkspaceShortcut(
+          title: 'Довідник',
+          subtitle:
+              'Теми з поясненнями, пошуком і прогресом по матеріалах. Доступно: ${bundle.guideLessons.length} уроків.',
+          icon: Icons.menu_book_rounded,
+          accent: const Color(0xFF8C6A2A),
+          onTap: _openGuide,
         ),
-        ReadingScreen(
-          topContent: _buildMaterialsHeaderCard(),
-          lessons: bundle.readingLessons,
-          documentLoader: widget.documentLoader,
-          lessonStatuses: _readingLessonStatuses,
-          onStatusChanged: _handleReadingStatusChanged,
+        WorkspaceShortcut(
+          title: 'Читання',
+          subtitle:
+              'Тексти за рівнями складності з відмітками прочитаного. Доступно: ${bundle.readingLessons.length} уроків.',
+          icon: Icons.auto_stories_rounded,
+          accent: const Color(0xFF0F766E),
+          onTap: _openReading,
         ),
       ],
     );
   }
 
-  Widget _buildMaterialsHeaderCard() {
+  // ignore: unused_element
+  Widget _buildMaterialsHeaderCard(LearningBundle bundle) {
     return WorkspaceHeaderCard(
       title: 'Матеріали',
       subtitle: 'Довідник і тексти для читання в одному робочому просторі.',
@@ -763,9 +803,8 @@ class _AppShellScreenState extends State<AppShellScreen> {
             onOpenFlashcards: _openFlashcards,
             onOpenWriting: () => _openWritingPractice(),
             onOpenSprint: _openSprint,
-            onOpenGuide: () => _openMaterialsSection(_MaterialsSection.guide),
-            onOpenReading: () =>
-                _openMaterialsSection(_MaterialsSection.reading),
+            onOpenGuide: _openGuide,
+            onOpenReading: _openReading,
           ),
           MoreSettingsScreen(
             autoHideBottomNavOnScroll: _autoHideBottomNavOnScroll,
@@ -823,11 +862,9 @@ class _AppShellScreenState extends State<AppShellScreen> {
                           onOpenFlashcards: _openFlashcards,
                           onOpenWriting: () => _openWritingPractice(),
                           onOpenSprint: _openSprint,
-                          onOpenGuide: () =>
-                              _openMaterialsSection(_MaterialsSection.guide),
+                          onOpenGuide: _openGuide,
                           onOpenVerbs: _openLearnVerbs,
-                          onOpenReading: () =>
-                              _openMaterialsSection(_MaterialsSection.reading),
+                          onOpenReading: _openReading,
                           onOpenReadingLesson: _openReadingLesson,
                         ),
                         _buildLearnWorkspace(bundle),
