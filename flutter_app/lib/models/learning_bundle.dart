@@ -32,24 +32,28 @@ class LearningBundle {
     required this.guideLessons,
     required this.verbLessons,
     required this.readingLessons,
+    this.hasFullWordContexts = true,
   });
 
   final List<LearningWord> words;
   final List<LessonEntry> guideLessons;
   final List<LessonEntry> verbLessons;
   final List<LessonEntry> readingLessons;
+  final bool hasFullWordContexts;
 
   LearningBundle copyWith({
     List<LearningWord>? words,
     List<LessonEntry>? guideLessons,
     List<LessonEntry>? verbLessons,
     List<LessonEntry>? readingLessons,
+    bool? hasFullWordContexts,
   }) {
     return LearningBundle(
       words: words ?? this.words,
       guideLessons: guideLessons ?? this.guideLessons,
       verbLessons: verbLessons ?? this.verbLessons,
       readingLessons: readingLessons ?? this.readingLessons,
+      hasFullWordContexts: hasFullWordContexts ?? this.hasFullWordContexts,
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hebrew_language_flutter/models/guide_lesson_status.dart';
+import 'package:hebrew_language_flutter/models/learning_context.dart';
 import 'package:hebrew_language_flutter/models/learning_bundle.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/services/guide_progress_store.dart';
@@ -95,6 +96,41 @@ void main() {
       GuideLessonStatus.studying,
     );
   });
+
+  test('loads summary first and full word contexts on demand', () async {
+    final loader = _FakeLazyBundleLoader();
+    final repository = StoreBackedLearningProgressRepository(
+      loader: loader,
+      wordProgressStore: _FakeWordProgressStore(
+        initialProgress: const {
+          'word_man': StoredWordProgress(
+            wordId: 'word_man',
+            correct: 2,
+            wrong: 0,
+            lastCorrect: null,
+          ),
+        },
+      ),
+      guideProgressStore: _FakeGuideProgressStore(),
+      readingProgressStore: _FakeReadingProgressStore(),
+    );
+
+    final summaryState = await repository.load();
+
+    expect(loader.summaryLoadCount, 1);
+    expect(loader.fullContextLoadCount, 0);
+    expect(summaryState.bundle.hasFullWordContexts, isFalse);
+    expect(summaryState.bundle.words.single.contexts.single.hebrew, isEmpty);
+    expect(summaryState.bundle.words.single.correct, 2);
+
+    final fullState = await repository.loadWithFullWordContexts();
+
+    expect(loader.summaryLoadCount, 1);
+    expect(loader.fullContextLoadCount, 1);
+    expect(fullState.bundle.hasFullWordContexts, isTrue);
+    expect(fullState.bundle.words.single.contexts.single.hebrew, 'ish holech');
+    expect(fullState.bundle.words.single.correct, 2);
+  });
 }
 
 class _FakeBundleLoader implements LearningBundleLoader {
@@ -130,6 +166,67 @@ class _FakeBundleLoader implements LearningBundleLoader {
           lessonId: 'yosi_goes_to_school',
         ),
       ],
+    );
+  }
+}
+
+class _FakeLazyBundleLoader
+    implements LearningBundleLoader, LazyLearningBundleLoader {
+  int summaryLoadCount = 0;
+  int fullContextLoadCount = 0;
+
+  @override
+  Future<LearningBundle> load() {
+    return loadWithFullWordContexts();
+  }
+
+  @override
+  Future<LearningBundle> loadSummary() async {
+    summaryLoadCount += 1;
+    return _bundleWithContext(
+      const LearningContext(
+        contextId: 'ctx_man_01',
+        hebrew: '',
+        translation: '',
+      ),
+      hasFullWordContexts: false,
+    );
+  }
+
+  @override
+  Future<LearningBundle> loadWithFullWordContexts() async {
+    fullContextLoadCount += 1;
+    return _bundleWithContext(
+      const LearningContext(
+        contextId: 'ctx_man_01',
+        hebrew: 'ish holech',
+        translation: 'A man walks',
+      ),
+      hasFullWordContexts: true,
+    );
+  }
+
+  LearningBundle _bundleWithContext(
+    LearningContext context, {
+    required bool hasFullWordContexts,
+  }) {
+    return LearningBundle(
+      words: <LearningWord>[
+        LearningWord(
+          wordId: 'word_man',
+          hebrew: 'ish',
+          english: 'man',
+          ukrainian: 'man',
+          transcription: 'ish',
+          correct: 0,
+          wrong: 0,
+          contexts: <LearningContext>[context],
+        ),
+      ],
+      guideLessons: const <LessonEntry>[],
+      verbLessons: const <LessonEntry>[],
+      readingLessons: const <LessonEntry>[],
+      hasFullWordContexts: hasFullWordContexts,
     );
   }
 }

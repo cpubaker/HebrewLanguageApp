@@ -65,6 +65,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
   late final AudioPlaybackAwareness _audioPlaybackAwareness = widget
       .audioPlaybackAwarenessFactory();
   LearningBundle? _bundle;
+  Future<LearningBundle>? _fullWordContextsFuture;
   Map<String, GuideLessonStatus> _guideLessonStatuses =
       <String, GuideLessonStatus>{};
   Map<String, GuideLessonStatus> _readingLessonStatuses =
@@ -90,6 +91,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
   Future<void> _reload() async {
     setState(() {
       _bundle = null;
+      _fullWordContextsFuture = null;
       _bundleFuture = _loadBundle();
     });
     await _bundleFuture;
@@ -102,6 +104,68 @@ class _AppShellScreenState extends State<AppShellScreen> {
     _readingLessonStatuses = loadedState.readingLessonStatuses;
     _bundle = loadedState.bundle;
     return loadedState.bundle;
+  }
+
+  Future<LearningBundle> _ensureFullWordContextsLoaded() {
+    final activeBundle = _bundle;
+    if (activeBundle != null && activeBundle.hasFullWordContexts) {
+      return Future<LearningBundle>.value(activeBundle);
+    }
+
+    return _fullWordContextsFuture ??= _loadFullWordContexts();
+  }
+
+  Future<LearningBundle> _loadFullWordContexts() async {
+    try {
+      final loadedState = await widget.progressRepository
+          .loadWithFullWordContexts();
+      final loadedBundle = _mergeCurrentWordProgress(loadedState.bundle);
+
+      if (mounted) {
+        setState(() {
+          _guideLessonStatuses = loadedState.guideLessonStatuses;
+          _readingLessonStatuses = loadedState.readingLessonStatuses;
+          _bundle = loadedBundle;
+        });
+      }
+
+      return loadedBundle;
+    } finally {
+      _fullWordContextsFuture = null;
+    }
+  }
+
+  LearningBundle _mergeCurrentWordProgress(LearningBundle loadedBundle) {
+    final activeBundle = _bundle;
+    if (activeBundle == null) {
+      return loadedBundle;
+    }
+
+    final activeWordsById = <String, LearningWord>{
+      for (final word in activeBundle.words) word.wordId: word,
+    };
+
+    return loadedBundle.copyWith(
+      words: loadedBundle.words
+          .map((loadedWord) {
+            final activeWord = activeWordsById[loadedWord.wordId];
+            if (activeWord == null) {
+              return loadedWord;
+            }
+
+            return loadedWord.copyWith(
+              correct: activeWord.correct,
+              wrong: activeWord.wrong,
+              lastCorrect: activeWord.lastCorrect,
+              lastReviewedAt: activeWord.lastReviewedAt,
+              lastReviewCorrect: activeWord.lastReviewCorrect,
+              writingCorrect: activeWord.writingCorrect,
+              writingWrong: activeWord.writingWrong,
+              writingLastCorrect: activeWord.writingLastCorrect,
+            );
+          })
+          .toList(growable: false),
+    );
   }
 
   void _handleWordProgressChanged(LearningWord updatedWord) {
@@ -241,11 +305,31 @@ class _AppShellScreenState extends State<AppShellScreen> {
   }
 
   void _openFlashcards([FlashcardDeckMode mode = FlashcardDeckMode.allWords]) {
+    unawaited(_openFlashcardsWithFullContexts(mode));
+  }
+
+  Future<void> _openFlashcardsWithFullContexts(FlashcardDeckMode mode) async {
+    final LearningBundle bundle;
+    try {
+      bundle = await _ensureFullWordContextsLoaded();
+    } catch (error) {
+      debugPrint('Failed to load word contexts for flashcards: $error');
+      if (mounted) {
+        _showPersistenceError(
+          'РќРµ РІРґР°Р»РѕСЃСЏ Р·Р°РІР°РЅС‚Р°Р¶РёС‚Рё РєРѕРЅС‚РµРєСЃС‚Рё СЃР»С–РІ. РЎРїСЂРѕР±СѓР№С‚Рµ С‰Рµ СЂР°Р·.',
+        );
+      }
+      return;
+    }
+    if (!mounted) {
+      return;
+    }
+
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => _FullscreenModuleScreen(
           child: FlashcardsScreen(
-            words: _bundle?.words ?? const <LearningWord>[],
+            words: bundle.words,
             onWordProgressChanged: _handleWordProgressChanged,
             initialDeckMode: mode,
           ),
@@ -285,11 +369,31 @@ class _AppShellScreenState extends State<AppShellScreen> {
   }
 
   void _openRepetition() {
+    unawaited(_openRepetitionWithFullContexts());
+  }
+
+  Future<void> _openRepetitionWithFullContexts() async {
+    final LearningBundle bundle;
+    try {
+      bundle = await _ensureFullWordContextsLoaded();
+    } catch (error) {
+      debugPrint('Failed to load word contexts for repetition: $error');
+      if (mounted) {
+        _showPersistenceError(
+          'РќРµ РІРґР°Р»РѕСЃСЏ Р·Р°РІР°РЅС‚Р°Р¶РёС‚Рё РєРѕРЅС‚РµРєСЃС‚Рё СЃР»С–РІ. РЎРїСЂРѕР±СѓР№С‚Рµ С‰Рµ СЂР°Р·.',
+        );
+      }
+      return;
+    }
+    if (!mounted) {
+      return;
+    }
+
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => _FullscreenModuleScreen(
           child: RepetitionScreen(
-            words: _bundle?.words ?? const <LearningWord>[],
+            words: bundle.words,
             audioPlayerFactory: widget.audioPlayerFactory,
             audioPlaybackAwareness: _audioPlaybackAwareness,
           ),

@@ -11,7 +11,34 @@ abstract class LearningBundleLoader {
   Future<LearningBundle> load();
 }
 
-class AssetLearningBundleLoader implements LearningBundleLoader {
+abstract class LazyLearningBundleLoader {
+  Future<LearningBundle> loadSummary();
+
+  Future<LearningBundle> loadWithFullWordContexts();
+}
+
+extension LazyLearningBundleLoaderFallback on LearningBundleLoader {
+  Future<LearningBundle> loadLazySummary() {
+    final loader = this;
+    if (loader is LazyLearningBundleLoader) {
+      return (loader as LazyLearningBundleLoader).loadSummary();
+    }
+
+    return load();
+  }
+
+  Future<LearningBundle> loadLazyWithFullWordContexts() {
+    final loader = this;
+    if (loader is LazyLearningBundleLoader) {
+      return (loader as LazyLearningBundleLoader).loadWithFullWordContexts();
+    }
+
+    return load();
+  }
+}
+
+class AssetLearningBundleLoader
+    implements LearningBundleLoader, LazyLearningBundleLoader {
   AssetLearningBundleLoader({AssetBundle? assetBundle})
     : assetBundle = assetBundle ?? rootBundle;
 
@@ -29,15 +56,33 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
   static const String _readingPrefix = 'assets/learning/input/reading/';
 
   final AssetBundle assetBundle;
+  Future<LearningBundle>? _summaryFuture;
+  Future<LearningBundle>? _fullWordContextsFuture;
 
   @override
   Future<LearningBundle> load() async {
+    return loadWithFullWordContexts();
+  }
+
+  @override
+  Future<LearningBundle> loadSummary() {
+    return _summaryFuture ??= _load(includeFullWordContexts: false);
+  }
+
+  @override
+  Future<LearningBundle> loadWithFullWordContexts() {
+    return _fullWordContextsFuture ??= _load(includeFullWordContexts: true);
+  }
+
+  Future<LearningBundle> _load({required bool includeFullWordContexts}) async {
     final wordsJson = await assetBundle.loadString(_wordsAsset);
     final baseWords = (jsonDecode(wordsJson) as List<dynamic>)
         .cast<Map<String, dynamic>>()
         .map(LearningWord.fromJson)
         .toList(growable: false);
-    final contextsByWordId = await _loadContextsByWordId();
+    final contextsByWordId = await _loadContextsByWordId(
+      includeFullWordContexts: includeFullWordContexts,
+    );
     final guideMetadata = await _loadGuideMetadata();
     final words = baseWords
         .map(
@@ -48,9 +93,10 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
         )
         .toList(growable: false);
 
-    final manifest = await AssetManifest.loadFromAssetBundle(assetBundle);
-    final assetPaths = manifest.listAssets();
     final lessonCatalog = await _loadLessonCatalog();
+    final assetPaths = lessonCatalog.isEmpty
+        ? (await AssetManifest.loadFromAssetBundle(assetBundle)).listAssets()
+        : const <String>[];
 
     return LearningBundle(
       words: words,
@@ -70,50 +116,65 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
         _readingPrefix,
         lessonCatalog['reading'],
       ),
+      hasFullWordContexts: includeFullWordContexts,
     );
   }
 
-  Future<Map<String, List<LearningContext>>> _loadContextsByWordId() async {
+  Future<Map<String, List<LearningContext>>> _loadContextsByWordId({
+    required bool includeFullWordContexts,
+  }) async {
     try {
-      final contextSentencesJson = await assetBundle.loadString(
-        _contextSentencesAsset,
-      );
-      final wordContextLinksJson = await assetBundle.loadString(
-        _wordContextLinksAsset,
-      );
-
-      final contextSentences =
-          (jsonDecode(contextSentencesJson) as List<dynamic>)
-              .cast<Map<String, dynamic>>()
-              .map(LearningContext.fromJson)
-              .toList(growable: false);
-      final contextsById = <String, LearningContext>{
-        for (final context in contextSentences)
-          if (context.contextId.isNotEmpty) context.contextId: context,
-      };
-
-      final wordContextLinks =
-          (jsonDecode(wordContextLinksJson) as Map<String, dynamic>).map(
-            (key, value) => MapEntry(
-              key,
-              (value as List<dynamic>).whereType<String>().toList(
-                growable: false,
-              ),
-            ),
-          );
+      final wordContextLinks = await _loadWordContextLinks();
+      final contextsById = includeFullWordContexts
+          ? await _loadContextsById()
+          : const <String, LearningContext>{};
 
       return wordContextLinks.map(
         (wordId, contextIds) => MapEntry(
           wordId,
           contextIds
-              .where((contextId) => contextsById.containsKey(contextId))
-              .map((contextId) => contextsById[contextId]!)
+              .map((contextId) {
+                return contextsById[contextId] ??
+                    LearningContext(
+                      contextId: contextId,
+                      hebrew: '',
+                      translation: '',
+                    );
+              })
               .toList(growable: false),
         ),
       );
     } on FlutterError {
       return const <String, List<LearningContext>>{};
     }
+  }
+
+  Future<Map<String, List<String>>> _loadWordContextLinks() async {
+    final wordContextLinksJson = await assetBundle.loadString(
+      _wordContextLinksAsset,
+    );
+
+    return (jsonDecode(wordContextLinksJson) as Map<String, dynamic>).map(
+      (key, value) => MapEntry(
+        key,
+        (value as List<dynamic>).whereType<String>().toList(growable: false),
+      ),
+    );
+  }
+
+  Future<Map<String, LearningContext>> _loadContextsById() async {
+    final contextSentencesJson = await assetBundle.loadString(
+      _contextSentencesAsset,
+    );
+    final contextSentences = (jsonDecode(contextSentencesJson) as List<dynamic>)
+        .cast<Map<String, dynamic>>()
+        .map(LearningContext.fromJson)
+        .toList(growable: false);
+
+    return <String, LearningContext>{
+      for (final context in contextSentences)
+        if (context.contextId.isNotEmpty) context.contextId: context,
+    };
   }
 
   List<LessonEntry> _buildLessonEntries(
@@ -142,29 +203,31 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
           ),
     }.toList();
 
-    final lessons = filteredPaths.map((path) {
-      final metadataEntry = guideMetadata?.lessonForPath(path);
-      final lessonId = metadataEntry?.lessonId ?? _lessonIdForPath(path);
-      final sectionId = metadataEntry?.sectionId;
-      final sectionLabel = sectionId == null
-          ? null
-          : guideMetadata?.sectionLabelFor(sectionId);
+    final lessons = filteredPaths
+        .map((path) {
+          final metadataEntry = guideMetadata?.lessonForPath(path);
+          final lessonId = metadataEntry?.lessonId ?? _lessonIdForPath(path);
+          final sectionId = metadataEntry?.sectionId;
+          final sectionLabel = sectionId == null
+              ? null
+              : guideMetadata?.sectionLabelFor(sectionId);
 
-      return LessonEntry(
-        assetPath: path,
-        displayName: _displayNameForPath(
-          path,
-          titleOverride: metadataEntry?.title,
-          orderOverride: metadataEntry?.sortOrder,
-        ),
-        sortOrder: metadataEntry?.sortOrder,
-        lessonId: lessonId,
-        sectionId: sectionId,
-        sectionLabel: sectionLabel,
-        aliases: metadataEntry?.aliases ?? const <String>[],
-        relatedIds: metadataEntry?.relatedIds ?? const <String>[],
-      );
-    }).toList(growable: false);
+          return LessonEntry(
+            assetPath: path,
+            displayName: _displayNameForPath(
+              path,
+              titleOverride: metadataEntry?.title,
+              orderOverride: metadataEntry?.sortOrder,
+            ),
+            sortOrder: metadataEntry?.sortOrder,
+            lessonId: lessonId,
+            sectionId: sectionId,
+            sectionLabel: sectionLabel,
+            aliases: metadataEntry?.aliases ?? const <String>[],
+            relatedIds: metadataEntry?.relatedIds ?? const <String>[],
+          );
+        })
+        .toList(growable: false);
 
     lessons.sort(_compareLessonEntries);
     return lessons;
@@ -178,24 +241,19 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
         return const _GuideMetadata.empty();
       }
 
-      final sections = ((decodedMetadata['sections'] as Map<String, dynamic>?) ??
-              const <String, dynamic>{})
-          .map(
-            (key, value) => MapEntry(key, value.toString()),
-          );
-      final lessons = ((decodedMetadata['lessons'] as Map<String, dynamic>?) ??
-              const <String, dynamic>{})
-          .map(
-            (filename, value) => MapEntry(
-              filename,
-              _GuideMetadataEntry.fromJson(value),
-            ),
-          );
+      final sections =
+          ((decodedMetadata['sections'] as Map<String, dynamic>?) ??
+                  const <String, dynamic>{})
+              .map((key, value) => MapEntry(key, value.toString()));
+      final lessons =
+          ((decodedMetadata['lessons'] as Map<String, dynamic>?) ??
+                  const <String, dynamic>{})
+              .map(
+                (filename, value) =>
+                    MapEntry(filename, _GuideMetadataEntry.fromJson(value)),
+              );
 
-      return _GuideMetadata(
-        sections: sections,
-        lessons: lessons,
-      );
+      return _GuideMetadata(sections: sections, lessons: lessons);
     } on FlutterError {
       return const _GuideMetadata.empty();
     } on FormatException {
@@ -275,24 +333,23 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
     int? orderOverride,
   }) {
     final filename = path.split('/').last;
-    final resolvedTitle =
-        titleOverride?.trim().isNotEmpty == true
-            ? titleOverride!.trim()
-            : () {
-              final withoutExtension = filename.replaceFirst(
-                RegExp(r'\.md$'),
-                '',
-              );
-              final withoutPrefix = withoutExtension.replaceFirst(
-                RegExp(r'^\d+[_-]*'),
-                '',
-              );
-              return withoutPrefix
-                  .split(RegExp(r'[_-]+'))
-                  .where((part) => part.isNotEmpty)
-                  .map((part) => '${part[0].toUpperCase()}${part.substring(1)}')
-                  .join(' ');
-            }();
+    final resolvedTitle = titleOverride?.trim().isNotEmpty == true
+        ? titleOverride!.trim()
+        : () {
+            final withoutExtension = filename.replaceFirst(
+              RegExp(r'\.md$'),
+              '',
+            );
+            final withoutPrefix = withoutExtension.replaceFirst(
+              RegExp(r'^\d+[_-]*'),
+              '',
+            );
+            return withoutPrefix
+                .split(RegExp(r'[_-]+'))
+                .where((part) => part.isNotEmpty)
+                .map((part) => '${part[0].toUpperCase()}${part.substring(1)}')
+                .join(' ');
+          }();
     final numericPrefix = orderOverride ?? _numericPrefix(filename);
 
     if (numericPrefix == null) {
@@ -311,10 +368,7 @@ class AssetLearningBundleLoader implements LearningBundleLoader {
 }
 
 class _GuideMetadata {
-  const _GuideMetadata({
-    required this.sections,
-    required this.lessons,
-  });
+  const _GuideMetadata({required this.sections, required this.lessons});
 
   const _GuideMetadata.empty()
     : sections = const <String, String>{},

@@ -21,6 +21,8 @@ class LearningProgressState {
 abstract class LearningProgressRepository {
   Future<LearningProgressState> load();
 
+  Future<LearningProgressState> loadWithFullWordContexts();
+
   Future<void> saveWord(LearningWord word);
 
   Future<void> setGuideLessonStatus(String lessonKey, GuideLessonStatus status);
@@ -47,7 +49,19 @@ class StoreBackedLearningProgressRepository
 
   @override
   Future<LearningProgressState> load() async {
-    final bundle = await loader.load();
+    final bundle = await loader.loadLazySummary();
+    return _loadStateForBundle(bundle);
+  }
+
+  @override
+  Future<LearningProgressState> loadWithFullWordContexts() async {
+    final bundle = await loader.loadLazyWithFullWordContexts();
+    return _loadStateForBundle(bundle);
+  }
+
+  Future<LearningProgressState> _loadStateForBundle(
+    LearningBundle bundle,
+  ) async {
     final storedProgress = await wordProgressStore.load();
     final guideLessonStatuses = await guideProgressStore.loadLessonStatuses();
     final readingLessonStatuses = await readingProgressStore
