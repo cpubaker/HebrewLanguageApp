@@ -7,12 +7,16 @@ import 'package:flutter/scheduler.dart';
 
 import '../models/guide_lesson_status.dart';
 import '../models/learning_bundle.dart';
+import '../models/learning_context.dart';
 import '../models/learning_word.dart';
+import '../services/ai_context_service.dart';
+import '../services/ai_context_settings_store.dart';
 import '../services/audio_playback_awareness.dart';
 import '../services/feature_access_service.dart';
 import '../services/flashcard_session.dart';
 import '../services/lesson_document_loader.dart';
 import '../services/learning_progress_repository.dart';
+import '../services/progress_snapshot.dart';
 import '../services/verb_audio_player.dart';
 import '../theme/app_theme.dart';
 import 'flashcards_screen.dart';
@@ -39,6 +43,8 @@ class AppShellScreen extends StatefulWidget {
     required this.progressRepository,
     required this.documentLoader,
     required this.featureAccessService,
+    required this.aiContextService,
+    required this.aiContextSettingsStore,
     required this.audioPlayerFactory,
     required this.isDarkMode,
     required this.onToggleThemeMode,
@@ -48,6 +54,8 @@ class AppShellScreen extends StatefulWidget {
   final LearningProgressRepository progressRepository;
   final LessonDocumentLoader documentLoader;
   final FeatureAccessService featureAccessService;
+  final AiContextService aiContextService;
+  final AiContextSettingsStore aiContextSettingsStore;
   final CreateVerbAudioPlayer audioPlayerFactory;
   final CreateAudioPlaybackAwareness audioPlaybackAwarenessFactory;
   final bool isDarkMode;
@@ -80,6 +88,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
   _MaterialsSection _materialsSection = _MaterialsSection.guide;
   _MoreSection _moreSection = _MoreSection.overview;
   bool _autoHideBottomNavOnScroll = true;
+  bool _aiWordContextsEnabled = false;
   bool _preferWritingPractice = false;
   FlashcardDeckMode _preferredFlashcardDeckMode = FlashcardDeckMode.allWords;
   bool _isBottomNavVisible = true;
@@ -89,6 +98,20 @@ class _AppShellScreenState extends State<AppShellScreen> {
   void initState() {
     super.initState();
     _bundleFuture = _loadBundle();
+    unawaited(_restoreAiWordContextsEnabled());
+  }
+
+  Future<void> _restoreAiWordContextsEnabled() async {
+    final enabled = await widget.aiContextSettingsStore.loadEnabled();
+    if (!mounted ||
+        !enabled ||
+        !widget.featureAccessService.isEnabled(AppFeature.aiWordContexts)) {
+      return;
+    }
+
+    setState(() {
+      _aiWordContextsEnabled = true;
+    });
   }
 
   Future<void> _reload() async {
@@ -181,6 +204,134 @@ class _AppShellScreenState extends State<AppShellScreen> {
           })
           .toList(growable: false),
     );
+  }
+
+  Future<LearningBundle> _withAiContextsForWords(
+    LearningBundle bundle,
+    List<LearningWord> scopeWords,
+  ) async {
+    if (!_aiWordContextsEnabled ||
+        !widget.featureAccessService.isEnabled(AppFeature.aiWordContexts) ||
+        scopeWords.isEmpty) {
+      return bundle;
+    }
+
+    try {
+      final contextsByWordId = await widget.aiContextService.contextsForWords(
+        scopeWords,
+      );
+      if (contextsByWordId.isEmpty) {
+        return bundle;
+      }
+
+      final updatedBundle = _mergeGeneratedContexts(bundle, contextsByWordId);
+      if (mounted) {
+        setState(() {
+          _bundle = updatedBundle;
+        });
+      }
+      return updatedBundle;
+    } catch (error) {
+      debugPrint('Failed to load AI word contexts: $error');
+      return bundle;
+    }
+  }
+
+  LearningBundle _mergeGeneratedContexts(
+    LearningBundle bundle,
+    Map<String, List<LearningContext>> contextsByWordId,
+  ) {
+    return bundle.copyWith(
+      words: bundle.words
+          .map((word) {
+            final generatedContexts = contextsByWordId[word.wordId];
+            if (generatedContexts == null || generatedContexts.isEmpty) {
+              return word;
+            }
+
+            return word.copyWith(
+              contexts: _mergeWordContexts(word.contexts, generatedContexts),
+            );
+          })
+          .toList(growable: false),
+    );
+  }
+
+  List<LearningContext> _mergeWordContexts(
+    List<LearningContext> currentContexts,
+    List<LearningContext> generatedContexts,
+  ) {
+    final seenContextIds = currentContexts
+        .map((context) => context.contextId)
+        .where((contextId) => contextId.trim().isNotEmpty)
+        .toSet();
+    final uniqueGeneratedContexts = generatedContexts
+        .where((context) => seenContextIds.add(context.contextId))
+        .toList(growable: false);
+
+    if (uniqueGeneratedContexts.isEmpty) {
+      return currentContexts;
+    }
+
+    return <LearningContext>[...uniqueGeneratedContexts, ...currentContexts];
+  }
+
+  Future<LearningWord> _resolveWordWithAiContext(LearningWord word) async {
+    if (!_aiWordContextsEnabled ||
+        !widget.featureAccessService.isEnabled(AppFeature.aiWordContexts)) {
+      return word;
+    }
+
+    try {
+      final contextsByWordId = await widget.aiContextService.contextsForWords(
+        <LearningWord>[word],
+      );
+      final generatedContexts = contextsByWordId[word.wordId];
+      if (generatedContexts == null || generatedContexts.isEmpty) {
+        return word;
+      }
+
+      final updatedWord = word.copyWith(
+        contexts: _mergeWordContexts(word.contexts, generatedContexts),
+      );
+      final activeBundle = _bundle;
+      if (mounted && activeBundle != null) {
+        final updatedBundle = _mergeGeneratedContexts(activeBundle, {
+          word.wordId: generatedContexts,
+        });
+        setState(() {
+          _bundle = updatedBundle;
+        });
+      }
+      return updatedWord;
+    } catch (error) {
+      debugPrint('Failed to load AI word context for ${word.wordId}: $error');
+      return word;
+    }
+  }
+
+  List<LearningWord> _practiceScopeWords(
+    LearningBundle bundle,
+    FlashcardDeckMode mode,
+  ) {
+    final words = switch (mode) {
+      FlashcardDeckMode.allWords => bundle.words,
+      FlashcardDeckMode.withContexts => bundle.words,
+      FlashcardDeckMode.needsReview =>
+        bundle.words
+            .where(
+              (word) =>
+                  classifyWordLearningState(word) ==
+                  WordLearningState.needsReview,
+            )
+            .toList(growable: false),
+    };
+
+    return words
+        .where(
+          (word) => word.contexts.every((context) => !context.isAiGenerated),
+        )
+        .toList(growable: false);
   }
 
   void _handleWordProgressChanged(LearningWord updatedWord) {
@@ -291,13 +442,35 @@ class _AppShellScreenState extends State<AppShellScreen> {
   }
 
   void _openLearnWords() {
+    unawaited(_openLearnWordsWithFullContexts());
+  }
+
+  Future<void> _openLearnWordsWithFullContexts() async {
+    final LearningBundle bundle;
+    try {
+      bundle = await _ensureFullWordContextsLoaded();
+    } catch (error) {
+      debugPrint('Failed to load word contexts for dictionary: $error');
+      if (!mounted) {
+        return;
+      }
+      _showPersistenceError(
+        'Не вдалося завантажити контексти слів. Спробуйте ще раз.',
+      );
+      return;
+    }
+    if (!mounted) {
+      return;
+    }
+
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => _FullscreenModuleScreen(
           child: WordsScreen(
-            words: _bundle?.words ?? const <LearningWord>[],
+            words: bundle.words,
             audioPlayerFactory: widget.audioPlayerFactory,
             audioPlaybackAwareness: _audioPlaybackAwareness,
+            resolveWordContexts: _resolveWordWithAiContext,
           ),
         ),
       ),
@@ -324,9 +497,13 @@ class _AppShellScreenState extends State<AppShellScreen> {
   }
 
   Future<void> _openFlashcardsWithFullContexts(FlashcardDeckMode mode) async {
-    final LearningBundle bundle;
+    LearningBundle bundle;
     try {
       bundle = await _ensureFullWordContextsLoaded();
+      bundle = await _withAiContextsForWords(
+        bundle,
+        _practiceScopeWords(bundle, mode),
+      );
     } catch (error) {
       debugPrint('Failed to load word contexts for flashcards: $error');
       if (mounted) {
@@ -388,9 +565,13 @@ class _AppShellScreenState extends State<AppShellScreen> {
   }
 
   Future<void> _openRepetitionWithFullContexts() async {
-    final LearningBundle bundle;
+    LearningBundle bundle;
     try {
       bundle = await _ensureFullWordContextsLoaded();
+      bundle = await _withAiContextsForWords(
+        bundle,
+        _practiceScopeWords(bundle, FlashcardDeckMode.needsReview),
+      );
     } catch (error) {
       debugPrint('Failed to load word contexts for repetition: $error');
       if (mounted) {
@@ -568,6 +749,21 @@ class _AppShellScreenState extends State<AppShellScreen> {
         _isBottomNavVisible = true;
       }
     });
+  }
+
+  void _setAiWordContextsEnabled(bool value) {
+    final decision = widget.featureAccessService.accessFor(
+      AppFeature.aiWordContexts,
+    );
+    if (value && !decision.isEnabled) {
+      _showFeatureLocked(decision);
+      return;
+    }
+
+    setState(() {
+      _aiWordContextsEnabled = value;
+    });
+    unawaited(widget.aiContextSettingsStore.saveEnabled(value));
   }
 
   void _setPreferWritingPractice(bool value) {
@@ -913,6 +1109,11 @@ class _AppShellScreenState extends State<AppShellScreen> {
           MoreSettingsScreen(
             autoHideBottomNavOnScroll: _autoHideBottomNavOnScroll,
             onAutoHideBottomNavOnScrollChanged: _setAutoHideBottomNavOnScroll,
+            aiWordContextsEnabled: _aiWordContextsEnabled,
+            aiWordContextsAccess: widget.featureAccessService.accessFor(
+              AppFeature.aiWordContexts,
+            ),
+            onAiWordContextsEnabledChanged: _setAiWordContextsEnabled,
             preferWritingPractice: _preferWritingPractice,
             onPreferWritingPracticeChanged: _setPreferWritingPractice,
             preferredFlashcardDeckMode: _preferredFlashcardDeckMode,

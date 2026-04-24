@@ -9,6 +9,7 @@ import '../services/learning_audio_player.dart';
 import '../services/repetition_queue.dart';
 import '../theme/app_theme.dart';
 import 'audio_playback_feedback.dart';
+import 'widgets/context_source_badge.dart';
 import 'widgets/practice_panel.dart';
 import 'widgets/practice_stat_pill.dart';
 
@@ -152,18 +153,16 @@ class _RepetitionScreenState extends State<RepetitionScreen> {
             ),
             const SizedBox(height: 16),
             Expanded(
-              child: _CompletedState(
-                queue: _queue,
-                onRestart: _restart,
-              ),
+              child: _CompletedState(queue: _queue, onRestart: _restart),
             ),
           ],
         ),
       );
     }
 
-    final progressValue =
-        _entries.isEmpty ? 0.0 : (_currentIndex + 1) / _entries.length;
+    final progressValue = _entries.isEmpty
+        ? 0.0
+        : (_currentIndex + 1) / _entries.length;
     final isLastCard = _currentIndex == _entries.length - 1;
 
     return Padding(
@@ -259,10 +258,7 @@ class _CompactHeader extends StatelessWidget {
             ],
           ),
         ),
-        if (trailing != null) ...[
-          const SizedBox(width: 12),
-          trailing!,
-        ],
+        if (trailing != null) ...[const SizedBox(width: 12), trailing!],
       ],
     );
   }
@@ -311,10 +307,7 @@ class _EmptyState extends StatelessWidget {
 }
 
 class _CompletedState extends StatelessWidget {
-  const _CompletedState({
-    required this.queue,
-    required this.onRestart,
-  });
+  const _CompletedState({required this.queue, required this.onRestart});
 
   final RepetitionQueue queue;
   final VoidCallback onRestart;
@@ -440,10 +433,7 @@ class _RepetitionCard extends StatelessWidget {
                       spacing: 8,
                       runSpacing: 8,
                       children: [
-                        _ReasonChip(
-                          kind: entry.kind,
-                          maxWidth: chipMaxWidth,
-                        ),
+                        _ReasonChip(kind: entry.kind, maxWidth: chipMaxWidth),
                         if (_formatReviewedAt(word.lastReviewedAt)
                             case final label?)
                           _MetaChip(
@@ -518,7 +508,9 @@ class _RepetitionCard extends StatelessWidget {
               const SizedBox(height: 12),
               Expanded(
                 child: _ContextPanel(
-                  contextEntry: word.contexts.isEmpty ? null : word.contexts.first,
+                  contextEntry: word.contexts.isEmpty
+                      ? null
+                      : word.contexts.first,
                 ),
               ),
             ],
@@ -548,10 +540,7 @@ class _RepetitionCard extends StatelessWidget {
 }
 
 class _ReasonChip extends StatelessWidget {
-  const _ReasonChip({
-    required this.kind,
-    this.maxWidth,
-  });
+  const _ReasonChip({required this.kind, this.maxWidth});
 
   final RepetitionKind kind;
   final double? maxWidth;
@@ -665,12 +654,20 @@ class _ContextPanel extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            'Контекст',
-            style: theme.textTheme.labelLarge?.copyWith(
-              fontWeight: FontWeight.w700,
-              color: tokens.secondaryText,
-            ),
+          Row(
+            children: [
+              Text(
+                'Контекст',
+                style: theme.textTheme.labelLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: tokens.secondaryText,
+                ),
+              ),
+              if (contextEntry!.isAiGenerated) ...[
+                const SizedBox(width: 10),
+                ContextSourceBadge(context: contextEntry!),
+              ],
+            ],
           ),
           const SizedBox(height: 10),
           Expanded(
@@ -680,8 +677,9 @@ class _ContextPanel extends StatelessWidget {
                 children: [
                   Text(
                     hebrewText,
-                    textDirection:
-                        hasHebrew ? TextDirection.rtl : TextDirection.ltr,
+                    textDirection: hasHebrew
+                        ? TextDirection.rtl
+                        : TextDirection.ltr,
                     textAlign: hasHebrew ? TextAlign.right : TextAlign.left,
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w700,

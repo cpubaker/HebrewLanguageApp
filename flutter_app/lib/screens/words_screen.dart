@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../models/learning_context.dart';
 import '../models/learning_word.dart';
 import '../services/audio_playback_awareness.dart';
 import '../services/learning_audio_player.dart';
@@ -13,6 +14,9 @@ import 'widgets/app_page_header.dart';
 import 'widgets/app_search_field.dart';
 import 'widgets/app_section_card.dart';
 import 'widgets/app_stat_chip.dart';
+import 'widgets/context_source_badge.dart';
+
+typedef ResolveWordContexts = Future<LearningWord> Function(LearningWord word);
 
 class WordsScreen extends StatefulWidget {
   const WordsScreen({
@@ -20,12 +24,14 @@ class WordsScreen extends StatefulWidget {
     required this.words,
     required this.audioPlayerFactory,
     this.audioPlaybackAwareness = const NoopAudioPlaybackAwareness(),
+    this.resolveWordContexts,
     this.topContent,
   });
 
   final List<LearningWord> words;
   final CreateLearningAudioPlayer audioPlayerFactory;
   final AudioPlaybackAwareness audioPlaybackAwareness;
+  final ResolveWordContexts? resolveWordContexts;
   final Widget? topContent;
 
   @override
@@ -196,6 +202,10 @@ class _WordsScreenState extends State<WordsScreen> {
   }
 
   void _showWordDetails(LearningWord word) {
+    final wordFuture =
+        widget.resolveWordContexts?.call(word) ??
+        Future<LearningWord>.value(word);
+
     showModalBottomSheet<void>(
       context: context,
       showDragHandle: true,
@@ -203,85 +213,101 @@ class _WordsScreenState extends State<WordsScreen> {
       builder: (context) {
         final theme = Theme.of(context);
         final tokens = theme.appTokens;
-        return Padding(
-          padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+        return FutureBuilder<LearningWord>(
+          future: wordFuture,
+          initialData: word,
+          builder: (context, snapshot) {
+            final detailWord = snapshot.data ?? word;
+            final isLoadingContexts =
+                snapshot.connectionState != ConnectionState.done;
+
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            word.hebrew,
-                            textDirection: TextDirection.rtl,
-                            style: theme.textTheme.headlineMedium?.copyWith(
-                              fontWeight: FontWeight.w800,
-                              color: theme.colorScheme.primary,
-                            ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                detailWord.hebrew,
+                                textDirection: TextDirection.rtl,
+                                style: theme.textTheme.headlineMedium?.copyWith(
+                                  fontWeight: FontWeight.w800,
+                                  color: theme.colorScheme.primary,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                detailWord.translation,
+                                style: theme.textTheme.titleLarge?.copyWith(
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                detailWord.transcription,
+                                style: theme.textTheme.bodyLarge?.copyWith(
+                                  color: tokens.mutedText,
+                                ),
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 8),
-                          Text(
-                            word.translation,
-                            style: theme.textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            word.transcription,
-                            style: theme.textTheme.bodyLarge?.copyWith(
-                              color: tokens.mutedText,
-                            ),
+                        ),
+                        if (detailWord.hasPlannedAudio) ...[
+                          const SizedBox(width: 16),
+                          _WordDetailsAudioButton(
+                            word: detailWord,
+                            audioPlayerFactory: widget.audioPlayerFactory,
+                            audioPlaybackAwareness:
+                                widget.audioPlaybackAwareness,
                           ),
                         ],
+                      ],
+                    ),
+                    const SizedBox(height: 18),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _StatPill(
+                            label: 'Правильно',
+                            value: detailWord.correct,
+                            accent: const Color(0xFF0F766E),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: _StatPill(
+                            label: 'Помилки',
+                            value: detailWord.wrong,
+                            accent: const Color(0xFFB91C1C),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 14),
+                    Text(
+                      'ID: ${detailWord.wordId}',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: tokens.secondaryText,
                       ),
                     ),
-                    if (word.hasPlannedAudio) ...[
-                      const SizedBox(width: 16),
-                      _WordDetailsAudioButton(
-                        word: word,
-                        audioPlayerFactory: widget.audioPlayerFactory,
-                        audioPlaybackAwareness: widget.audioPlaybackAwareness,
-                      ),
-                    ],
+                    const SizedBox(height: 18),
+                    _WordContextsSection(
+                      contexts: detailWord.contexts,
+                      isLoading: isLoadingContexts,
+                    ),
                   ],
                 ),
-                const SizedBox(height: 18),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _StatPill(
-                        label: 'Правильно',
-                        value: word.correct,
-                        accent: const Color(0xFF0F766E),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: _StatPill(
-                        label: 'Помилки',
-                        value: word.wrong,
-                        accent: const Color(0xFFB91C1C),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 14),
-                Text(
-                  'ID: ${word.wordId}',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: tokens.secondaryText,
-                  ),
-                ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         );
       },
     );
@@ -452,6 +478,125 @@ class _WordsScreenState extends State<WordsScreen> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _WordContextsSection extends StatelessWidget {
+  const _WordContextsSection({required this.contexts, required this.isLoading});
+
+  final List<LearningContext> contexts;
+  final bool isLoading;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+    final visibleContexts = contexts
+        .where(
+          (entry) =>
+              entry.hebrew.trim().isNotEmpty ||
+              entry.translation.trim().isNotEmpty,
+        )
+        .toList(growable: false);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text(
+              'Контексти',
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            if (isLoading) ...[
+              const SizedBox(width: 10),
+              SizedBox(
+                width: 14,
+                height: 14,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: tokens.mutedText,
+                ),
+              ),
+            ],
+          ],
+        ),
+        const SizedBox(height: 10),
+        if (visibleContexts.isEmpty)
+          Text(
+            isLoading
+                ? 'Шукаємо новий контекст...'
+                : 'Для цього слова ще немає контексту.',
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: tokens.secondaryText,
+              height: 1.45,
+            ),
+          )
+        else
+          for (final entry in visibleContexts) ...[
+            _WordContextTile(contextEntry: entry),
+            if (entry != visibleContexts.last) const SizedBox(height: 10),
+          ],
+      ],
+    );
+  }
+}
+
+class _WordContextTile extends StatelessWidget {
+  const _WordContextTile({required this.contextEntry});
+
+  final LearningContext contextEntry;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+    final hasHebrew = contextEntry.hebrew.runes.any(
+      (codePoint) => codePoint >= 0x0590 && codePoint <= 0x05FF,
+    );
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: tokens.subtleSurface,
+        borderRadius: BorderRadius.circular(18),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (contextEntry.isAiGenerated) ...[
+            Align(
+              alignment: Alignment.centerLeft,
+              child: ContextSourceBadge(context: contextEntry),
+            ),
+            const SizedBox(height: 8),
+          ],
+          if (contextEntry.hebrew.trim().isNotEmpty)
+            Text(
+              contextEntry.hebrew,
+              textDirection: hasHebrew ? TextDirection.rtl : TextDirection.ltr,
+              textAlign: hasHebrew ? TextAlign.right : TextAlign.left,
+              style: theme.textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.w800,
+                height: 1.4,
+              ),
+            ),
+          if (contextEntry.translation.trim().isNotEmpty) ...[
+            const SizedBox(height: 8),
+            Text(
+              contextEntry.translation,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: tokens.secondaryText,
+                height: 1.45,
+              ),
+            ),
+          ],
+        ],
+      ),
     );
   }
 }

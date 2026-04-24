@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/guide_lesson_status.dart';
 import '../models/learning_bundle.dart';
+import '../services/feature_access_service.dart';
 import '../services/flashcard_session.dart';
 import '../services/progress_snapshot.dart';
 import '../theme/app_theme.dart';
@@ -346,6 +347,9 @@ class MoreSettingsScreen extends StatelessWidget {
     super.key,
     required this.autoHideBottomNavOnScroll,
     required this.onAutoHideBottomNavOnScrollChanged,
+    required this.aiWordContextsEnabled,
+    required this.aiWordContextsAccess,
+    required this.onAiWordContextsEnabledChanged,
     required this.preferWritingPractice,
     required this.onPreferWritingPracticeChanged,
     required this.preferredFlashcardDeckMode,
@@ -354,6 +358,9 @@ class MoreSettingsScreen extends StatelessWidget {
 
   final bool autoHideBottomNavOnScroll;
   final ValueChanged<bool> onAutoHideBottomNavOnScrollChanged;
+  final bool aiWordContextsEnabled;
+  final FeatureAccessDecision aiWordContextsAccess;
+  final ValueChanged<bool> onAiWordContextsEnabledChanged;
   final bool preferWritingPractice;
   final ValueChanged<bool> onPreferWritingPracticeChanged;
   final FlashcardDeckMode preferredFlashcardDeckMode;
@@ -389,11 +396,13 @@ class MoreSettingsScreen extends StatelessWidget {
                 onChanged: onAutoHideBottomNavOnScrollChanged,
               ),
               const SizedBox(height: 12),
-              const _SettingsSwitchTile(
+              _SettingsSwitchTile(
                 title: 'ШІ-контексти для вправ',
                 subtitle:
-                    'Добирає короткі ситуації й приклади для вправ з урахуванням вашого рівня, прогресу та слів, які ви зараз вивчаєте.',
-                value: false,
+                    'Добирає короткі ситуації й приклади для вправ і словника з урахуванням вашого рівня, прогресу та слів, які ви зараз вивчаєте.',
+                value: aiWordContextsEnabled,
+                onChanged: onAiWordContextsEnabledChanged,
+                isLocked: !aiWordContextsAccess.isEnabled,
               ),
               const SizedBox(height: 12),
               const _SettingsSwitchTile(
@@ -555,12 +564,14 @@ class _SettingsSwitchTile extends StatelessWidget {
     required this.subtitle,
     required this.value,
     this.onChanged,
+    this.isLocked = false,
   });
 
   final String title;
   final String subtitle;
   final bool value;
   final ValueChanged<bool>? onChanged;
+  final bool isLocked;
 
   @override
   Widget build(BuildContext context) {
@@ -601,6 +612,10 @@ class _SettingsSwitchTile extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 16),
+          if (isLocked) ...[
+            Icon(Icons.lock_rounded, color: tokens.mutedText, size: 20),
+            const SizedBox(width: 8),
+          ],
           Switch.adaptive(value: value, onChanged: onChanged),
         ],
       ),

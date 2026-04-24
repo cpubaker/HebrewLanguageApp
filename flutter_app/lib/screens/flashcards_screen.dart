@@ -4,6 +4,7 @@ import '../models/learning_context.dart';
 import '../models/learning_word.dart';
 import '../services/flashcard_session.dart';
 import '../theme/app_theme.dart';
+import 'widgets/context_source_badge.dart';
 import 'widgets/practice_header.dart';
 import 'widgets/practice_panel.dart';
 import 'widgets/practice_stat_pill.dart';
@@ -718,7 +719,9 @@ class _DeckChoiceChip extends StatelessWidget {
         child: Ink(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           decoration: BoxDecoration(
-            color: isSelected ? theme.colorScheme.primary : tokens.elevatedSurface,
+            color: isSelected
+                ? theme.colorScheme.primary
+                : tokens.elevatedSurface,
             borderRadius: BorderRadius.circular(999),
             border: Border.all(
               color: isSelected
@@ -787,12 +790,20 @@ class _FlashcardContextPanel extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            'Контекст',
-            style: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w700,
-              color: tokens.mutedText,
-            ),
+          Row(
+            children: [
+              Text(
+                'Контекст',
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: tokens.mutedText,
+                ),
+              ),
+              if (this.context!.isAiGenerated) ...[
+                const SizedBox(width: 10),
+                ContextSourceBadge(context: this.context!),
+              ],
+            ],
           ),
           const SizedBox(height: 10),
           Text(
