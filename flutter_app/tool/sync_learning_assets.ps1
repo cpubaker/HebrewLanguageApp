@@ -44,12 +44,12 @@ foreach ($relativePath in $pathsToMirror) {
     New-Item -ItemType Directory -Force -Path $destinationPath | Out-Null
 
     Get-ChildItem -LiteralPath $destinationPath -Force -ErrorAction SilentlyContinue |
-        Where-Object { $_.Name -ne "AGENTS.md" } |
+        Where-Object { $_.Name -ne "AGENTS.md" -and $_.Name -ne ".gitkeep" } |
         Where-Object { -not (Test-Path (Join-Path $sourcePath $_.Name)) } |
         Remove-Item -Recurse -Force
 
     Get-ChildItem -LiteralPath $sourcePath -Force |
-        Where-Object { $_.Name -ne "AGENTS.md" } |
+        Where-Object { $_.Name -ne "AGENTS.md" -and $_.Name -ne ".gitkeep" } |
         Copy-Item -Destination $destinationPath -Recurse -Force
 }
 
