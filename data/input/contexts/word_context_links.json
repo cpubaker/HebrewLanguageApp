@@ -911,5 +911,41 @@
   ],
   "word_under_below_beneath_in_exchange_for": [
     "ctx_tachat_chair_01"
+  ],
+  "word_podcast": [
+    "ctx_podcast_auto_01"
+  ],
+  "word_appointment": [
+    "ctx_appointment_auto_01"
+  ],
+  "word_subscription": [
+    "ctx_subscription_auto_01"
+  ],
+  "word_refund": [
+    "ctx_refund_auto_01"
+  ],
+  "word_privacy": [
+    "ctx_privacy_auto_01"
+  ],
+  "word_deadline": [
+    "ctx_deadline_auto_01"
+  ],
+  "word_gesture": [
+    "ctx_gesture_auto_01"
+  ],
+  "word_landmark": [
+    "ctx_landmark_auto_01"
+  ],
+  "word_tram": [
+    "ctx_tram_auto_01"
+  ],
+  "word_metro": [
+    "ctx_metro_auto_01"
+  ],
+  "word_ferry": [
+    "ctx_ferry_auto_01"
+  ],
+  "word_recycling": [
+    "ctx_recycling_auto_01"
   ]
 }
