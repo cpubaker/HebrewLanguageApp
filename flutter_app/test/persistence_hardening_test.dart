@@ -66,6 +66,22 @@ void main() {
       loadedProgress['word_walk']?.writingLastCorrect,
       '2026-04-04T12:00:00Z',
     );
+
+    final prefs = await SharedPreferences.getInstance();
+    expect(prefs.getStringList('learning_word_progress_v2_index'), <String>[
+      'word_walk',
+    ]);
+    expect(
+      jsonDecode(prefs.getString('learning_word_progress_v2_word_word_walk')!),
+      <String, Object?>{
+        'correct': 3,
+        'wrong': 0,
+        'last_correct': '2026-04-04T10:00:00Z',
+        'writing_correct': 5,
+        'writing_wrong': 0,
+        'writing_last_correct': '2026-04-04T12:00:00Z',
+      },
+    );
   });
 
   test(
@@ -89,21 +105,111 @@ void main() {
       );
 
       final prefs = await SharedPreferences.getInstance();
-      final rawPayload = prefs.getString('learning_word_progress_v1');
+      final rawPayload = prefs.getString(
+        'learning_word_progress_v2_word_word_shalom',
+      );
 
+      expect(prefs.getString('learning_word_progress_v1'), isNull);
+      expect(prefs.getStringList('learning_word_progress_v2_index'), <String>[
+        'word_shalom',
+      ]);
       expect(rawPayload, isNotNull);
       expect(jsonDecode(rawPayload!), <String, Object?>{
-        'word_shalom': <String, Object?>{
-          'correct': 2,
-          'wrong': 1,
-          'last_correct': '2026-04-04T10:00:00Z',
-          'writing_correct': 4,
-          'writing_wrong': 3,
-          'writing_last_correct': '2026-04-04T12:30:00Z',
-        },
+        'correct': 2,
+        'wrong': 1,
+        'last_correct': '2026-04-04T10:00:00Z',
+        'writing_correct': 4,
+        'writing_wrong': 3,
+        'writing_last_correct': '2026-04-04T12:30:00Z',
       });
     },
   );
+
+  test('word progress store migrates legacy payload before saving', () async {
+    SharedPreferences.setMockInitialValues(<String, Object>{
+      'learning_word_progress_v1': jsonEncode(<String, Object?>{
+        'word_walk': <String, Object?>{
+          'correct': 3,
+          'wrong': 1,
+          'last_correct': '2026-04-04T10:00:00Z',
+        },
+      }),
+    });
+
+    final store = SharedPreferencesWordProgressStore();
+
+    await store.saveWord(
+      const LearningWord(
+        wordId: 'word_shalom',
+        hebrew: 'shalom',
+        english: 'peace',
+        transcription: 'shalom',
+        correct: 1,
+        wrong: 0,
+      ),
+    );
+
+    final prefs = await SharedPreferences.getInstance();
+
+    expect(prefs.getStringList('learning_word_progress_v2_index'), <String>[
+      'word_shalom',
+      'word_walk',
+    ]);
+    expect(
+      jsonDecode(prefs.getString('learning_word_progress_v2_word_word_walk')!),
+      <String, Object?>{
+        'correct': 3,
+        'wrong': 1,
+        'last_correct': '2026-04-04T10:00:00Z',
+        'writing_correct': 0,
+        'writing_wrong': 0,
+      },
+    );
+    expect(
+      jsonDecode(
+        prefs.getString('learning_word_progress_v2_word_word_shalom')!,
+      ),
+      <String, Object?>{
+        'correct': 1,
+        'wrong': 0,
+        'writing_correct': 0,
+        'writing_wrong': 0,
+      },
+    );
+  });
+
+  test('word progress store removes empty word progress entries', () async {
+    final store = SharedPreferencesWordProgressStore();
+
+    await store.saveWord(
+      const LearningWord(
+        wordId: 'word_shalom',
+        hebrew: 'shalom',
+        english: 'peace',
+        transcription: 'shalom',
+        correct: 1,
+        wrong: 0,
+      ),
+    );
+    await store.saveWord(
+      const LearningWord(
+        wordId: 'word_shalom',
+        hebrew: 'shalom',
+        english: 'peace',
+        transcription: 'shalom',
+        correct: 0,
+        wrong: 0,
+      ),
+    );
+
+    final prefs = await SharedPreferences.getInstance();
+
+    expect(prefs.getStringList('learning_word_progress_v2_index'), isEmpty);
+    expect(
+      prefs.getString('learning_word_progress_v2_word_word_shalom'),
+      isNull,
+    );
+  });
 
   test('guide progress store migrates legacy read lessons', () async {
     SharedPreferences.setMockInitialValues(<String, Object>{

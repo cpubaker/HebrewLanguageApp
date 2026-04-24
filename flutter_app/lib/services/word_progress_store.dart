@@ -109,7 +109,9 @@ abstract class WordProgressStore {
 class SharedPreferencesWordProgressStore implements WordProgressStore {
   SharedPreferencesWordProgressStore();
 
-  static const String _storageKey = 'learning_word_progress_v1';
+  static const String _legacyStorageKey = 'learning_word_progress_v1';
+  static const String _indexKey = 'learning_word_progress_v2_index';
+  static const String _entryKeyPrefix = 'learning_word_progress_v2_word_';
 
   @override
   Future<Map<String, StoredWordProgress>> load() async {
@@ -118,7 +120,7 @@ class SharedPreferencesWordProgressStore implements WordProgressStore {
       return _loadFromPrefs(prefs);
     } catch (error) {
       debugPrint(
-        'Ignoring word progress for $_storageKey because it could not be loaded: $error',
+        'Ignoring word progress for $_indexKey because it could not be loaded: $error',
       );
       return <String, StoredWordProgress>{};
     }
@@ -127,10 +129,41 @@ class SharedPreferencesWordProgressStore implements WordProgressStore {
   @override
   Future<void> saveWord(LearningWord word) async {
     final prefs = await SharedPreferences.getInstance();
-    final currentMap = await _loadRawMap(prefs);
+    final wordId = word.wordId.trim();
+    if (wordId.isEmpty) {
+      return;
+    }
 
-    final hasProgress =
-        word.correct > 0 ||
+    final indexedWordIds = (await _loadIndexedWordIds(prefs)).toSet();
+
+    if (_hasProgress(word)) {
+      await prefs.setString(
+        _entryKeyFor(wordId),
+        jsonEncode(
+          StoredWordProgress(
+            wordId: wordId,
+            correct: word.correct,
+            wrong: word.wrong,
+            lastCorrect: word.lastCorrect,
+            lastReviewedAt: word.lastReviewedAt,
+            lastReviewCorrect: word.lastReviewCorrect,
+            writingCorrect: word.writingCorrect,
+            writingWrong: word.writingWrong,
+            writingLastCorrect: word.writingLastCorrect,
+          ).toJson(),
+        ),
+      );
+      indexedWordIds.add(wordId);
+    } else {
+      await prefs.remove(_entryKeyFor(wordId));
+      indexedWordIds.remove(wordId);
+    }
+
+    await prefs.setStringList(_indexKey, _sortedWordIds(indexedWordIds));
+  }
+
+  bool _hasProgress(LearningWord word) {
+    return word.correct > 0 ||
         word.wrong > 0 ||
         (word.lastCorrect?.trim().isNotEmpty ?? false) ||
         (word.lastReviewedAt?.trim().isNotEmpty ?? false) ||
@@ -138,51 +171,65 @@ class SharedPreferencesWordProgressStore implements WordProgressStore {
         word.writingCorrect > 0 ||
         word.writingWrong > 0 ||
         (word.writingLastCorrect?.trim().isNotEmpty ?? false);
-
-    if (hasProgress) {
-      currentMap[word.wordId] = StoredWordProgress(
-        wordId: word.wordId,
-        correct: word.correct,
-        wrong: word.wrong,
-        lastCorrect: word.lastCorrect,
-        lastReviewedAt: word.lastReviewedAt,
-        lastReviewCorrect: word.lastReviewCorrect,
-        writingCorrect: word.writingCorrect,
-        writingWrong: word.writingWrong,
-        writingLastCorrect: word.writingLastCorrect,
-      ).toJson();
-    } else {
-      currentMap.remove(word.wordId);
-    }
-
-    await prefs.setString(_storageKey, jsonEncode(currentMap));
-  }
-
-  Future<Map<String, dynamic>> _loadRawMap(SharedPreferences prefs) async {
-    final rawValue = prefs.getString(_storageKey);
-    if (rawValue == null || rawValue.trim().isEmpty) {
-      return <String, dynamic>{};
-    }
-
-    try {
-      final decoded = jsonDecode(rawValue);
-      if (decoded is! Map) {
-        return <String, dynamic>{};
-      }
-
-      return decoded.map((key, value) => MapEntry(key.toString(), value));
-    } on FormatException catch (error) {
-      debugPrint(
-        'Ignoring corrupted word progress payload for $_storageKey: $error',
-      );
-      return <String, dynamic>{};
-    }
   }
 
   Future<Map<String, StoredWordProgress>> _loadFromPrefs(
     SharedPreferences prefs,
   ) async {
-    final rawMap = await _loadRawMap(prefs);
+    final indexedWordIds = prefs.getStringList(_indexKey);
+    if (indexedWordIds != null) {
+      return _loadIndexedProgress(prefs, indexedWordIds);
+    }
+
+    final legacyProgress = await _loadLegacyProgress(prefs);
+    if (legacyProgress.isNotEmpty) {
+      await _persistMigratedProgress(prefs, legacyProgress);
+    }
+
+    return legacyProgress;
+  }
+
+  Map<String, StoredWordProgress> _loadIndexedProgress(
+    SharedPreferences prefs,
+    List<String> indexedWordIds,
+  ) {
+    final progressByWordId = <String, StoredWordProgress>{};
+
+    for (final rawWordId in indexedWordIds) {
+      final wordId = rawWordId.trim();
+      if (wordId.isEmpty) {
+        continue;
+      }
+
+      final rawProgress = prefs.getString(_entryKeyFor(wordId));
+      if (rawProgress == null || rawProgress.trim().isEmpty) {
+        continue;
+      }
+
+      try {
+        final decoded = jsonDecode(rawProgress);
+        if (decoded is! Map) {
+          continue;
+        }
+
+        progressByWordId[wordId] = StoredWordProgress.fromJson(
+          wordId,
+          decoded.map((key, value) => MapEntry(key.toString(), value)),
+        );
+      } on FormatException catch (error) {
+        debugPrint(
+          'Ignoring corrupted word progress entry for $wordId: $error',
+        );
+      }
+    }
+
+    return progressByWordId;
+  }
+
+  Future<Map<String, StoredWordProgress>> _loadLegacyProgress(
+    SharedPreferences prefs,
+  ) async {
+    final rawMap = await _loadLegacyRawMap(prefs);
     final progressByWordId = <String, StoredWordProgress>{};
 
     rawMap.forEach((wordId, value) {
@@ -199,4 +246,91 @@ class SharedPreferencesWordProgressStore implements WordProgressStore {
 
     return progressByWordId;
   }
+
+  Future<void> _persistMigratedProgress(
+    SharedPreferences prefs,
+    Map<String, StoredWordProgress> progressByWordId,
+  ) async {
+    final indexedWordIds = <String>{};
+
+    for (final entry in progressByWordId.entries) {
+      final wordId = entry.key.trim();
+      if (wordId.isEmpty) {
+        continue;
+      }
+
+      final progress = entry.value;
+      await prefs.setString(
+        _entryKeyFor(wordId),
+        jsonEncode(
+          StoredWordProgress(
+            wordId: wordId,
+            correct: progress.correct,
+            wrong: progress.wrong,
+            lastCorrect: progress.lastCorrect,
+            lastReviewedAt: progress.lastReviewedAt,
+            lastReviewCorrect: progress.lastReviewCorrect,
+            writingCorrect: progress.writingCorrect,
+            writingWrong: progress.writingWrong,
+            writingLastCorrect: progress.writingLastCorrect,
+          ).toJson(),
+        ),
+      );
+      indexedWordIds.add(wordId);
+    }
+
+    await prefs.setStringList(_indexKey, _sortedWordIds(indexedWordIds));
+  }
+
+  Future<Map<String, dynamic>> _loadLegacyRawMap(
+    SharedPreferences prefs,
+  ) async {
+    final rawValue = prefs.getString(_legacyStorageKey);
+    if (rawValue == null || rawValue.trim().isEmpty) {
+      return <String, dynamic>{};
+    }
+
+    try {
+      final decoded = jsonDecode(rawValue);
+      if (decoded is! Map) {
+        return <String, dynamic>{};
+      }
+
+      return decoded.map((key, value) => MapEntry(key.toString(), value));
+    } on FormatException catch (error) {
+      debugPrint(
+        'Ignoring corrupted word progress payload for $_legacyStorageKey: $error',
+      );
+      return <String, dynamic>{};
+    }
+  }
+
+  Future<List<String>> _loadIndexedWordIds(SharedPreferences prefs) async {
+    final indexedWordIds = prefs.getStringList(_indexKey);
+    if (indexedWordIds != null) {
+      return indexedWordIds
+          .map((wordId) => wordId.trim())
+          .where((wordId) => wordId.isNotEmpty)
+          .toList(growable: false);
+    }
+
+    final legacyProgress = await _loadLegacyProgress(prefs);
+    if (legacyProgress.isEmpty) {
+      return const <String>[];
+    }
+
+    await _persistMigratedProgress(prefs, legacyProgress);
+    return _sortedWordIds(legacyProgress.keys);
+  }
+
+  List<String> _sortedWordIds(Iterable<String> wordIds) {
+    return wordIds
+        .map((wordId) => wordId.trim())
+        .where((wordId) => wordId.isNotEmpty)
+        .toSet()
+        .toList(growable: false)
+      ..sort();
+  }
+
+  String _entryKeyFor(String wordId) => '$_entryKeyPrefix$wordId';
 }
