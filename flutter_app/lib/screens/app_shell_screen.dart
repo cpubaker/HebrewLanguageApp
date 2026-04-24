@@ -10,12 +10,9 @@ import '../models/learning_bundle.dart';
 import '../models/learning_word.dart';
 import '../services/audio_playback_awareness.dart';
 import '../services/flashcard_session.dart';
-import '../services/guide_progress_store.dart';
-import '../services/learning_bundle_loader.dart';
 import '../services/lesson_document_loader.dart';
-import '../services/reading_progress_store.dart';
+import '../services/learning_progress_repository.dart';
 import '../services/verb_audio_player.dart';
-import '../services/word_progress_store.dart';
 import '../theme/app_theme.dart';
 import 'flashcards_screen.dart';
 import 'guide_screen.dart';
@@ -38,22 +35,16 @@ enum _MoreSection { overview, progress, settings }
 class AppShellScreen extends StatefulWidget {
   const AppShellScreen({
     super.key,
-    required this.loader,
+    required this.progressRepository,
     required this.documentLoader,
-    required this.progressStore,
-    required this.guideProgressStore,
-    required this.readingProgressStore,
     required this.audioPlayerFactory,
     required this.isDarkMode,
     required this.onToggleThemeMode,
     this.audioPlaybackAwarenessFactory = createAudioPlaybackAwareness,
   });
 
-  final LearningBundleLoader loader;
+  final LearningProgressRepository progressRepository;
   final LessonDocumentLoader documentLoader;
-  final WordProgressStore progressStore;
-  final GuideProgressStore guideProgressStore;
-  final ReadingProgressStore readingProgressStore;
   final CreateVerbAudioPlayer audioPlayerFactory;
   final CreateAudioPlaybackAwareness audioPlaybackAwarenessFactory;
   final bool isDarkMode;
@@ -105,39 +96,12 @@ class _AppShellScreenState extends State<AppShellScreen> {
   }
 
   Future<LearningBundle> _loadBundle() async {
-    final bundle = await widget.loader.load();
-    final storedProgress = await widget.progressStore.load();
-    final guideLessonStatuses = await widget.guideProgressStore
-        .loadLessonStatuses();
-    final readingLessonStatuses = await widget.readingProgressStore
-        .loadLessonStatuses();
+    final loadedState = await widget.progressRepository.load();
 
-    final hydratedBundle = bundle.copyWith(
-      words: bundle.words
-          .map((word) {
-            final progress = storedProgress[word.wordId];
-            if (progress == null) {
-              return word;
-            }
-
-            return word.copyWith(
-              correct: progress.correct,
-              wrong: progress.wrong,
-              lastCorrect: progress.lastCorrect,
-              lastReviewedAt: progress.lastReviewedAt,
-              lastReviewCorrect: progress.lastReviewCorrect,
-              writingCorrect: progress.writingCorrect,
-              writingWrong: progress.writingWrong,
-              writingLastCorrect: progress.writingLastCorrect,
-            );
-          })
-          .toList(growable: false),
-    );
-
-    _guideLessonStatuses = guideLessonStatuses;
-    _readingLessonStatuses = readingLessonStatuses;
-    _bundle = hydratedBundle;
-    return hydratedBundle;
+    _guideLessonStatuses = loadedState.guideLessonStatuses;
+    _readingLessonStatuses = loadedState.readingLessonStatuses;
+    _bundle = loadedState.bundle;
+    return loadedState.bundle;
   }
 
   void _handleWordProgressChanged(LearningWord updatedWord) {
@@ -511,7 +475,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
     required int requestToken,
   }) async {
     try {
-      await widget.progressStore.saveWord(updatedWord);
+      await widget.progressRepository.saveWord(updatedWord);
     } catch (error) {
       debugPrint(
         'Failed to save word progress for ${updatedWord.wordId}: $error',
@@ -552,7 +516,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
     required int requestToken,
   }) async {
     try {
-      await widget.guideProgressStore.setLessonStatus(lessonKey, status);
+      await widget.progressRepository.setGuideLessonStatus(lessonKey, status);
       return true;
     } catch (error) {
       debugPrint('Failed to save guide progress for $lessonKey: $error');
@@ -579,7 +543,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
     required int requestToken,
   }) async {
     try {
-      await widget.readingProgressStore.setLessonStatus(lessonKey, status);
+      await widget.progressRepository.setReadingLessonStatus(lessonKey, status);
       return true;
     } catch (error) {
       debugPrint('Failed to save reading progress for $lessonKey: $error');

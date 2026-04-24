@@ -8,6 +8,7 @@ import 'services/audio_playback_awareness.dart';
 import 'services/guide_progress_store.dart';
 import 'services/lesson_document_loader.dart';
 import 'services/learning_bundle_loader.dart';
+import 'services/learning_progress_repository.dart';
 import 'services/reading_progress_store.dart';
 import 'services/theme_mode_store.dart';
 import 'services/verb_audio_player.dart';
@@ -22,6 +23,7 @@ class HebrewFlutterApp extends StatefulWidget {
     WordProgressStore? progressStore,
     GuideProgressStore? guideProgressStore,
     ReadingProgressStore? readingProgressStore,
+    LearningProgressRepository? progressRepository,
     CreateVerbAudioPlayer? audioPlayerFactory,
     CreateAudioPlaybackAwareness? audioPlaybackAwarenessFactory,
     this.themeModeStore,
@@ -31,6 +33,7 @@ class HebrewFlutterApp extends StatefulWidget {
        _progressStore = progressStore,
        _guideProgressStore = guideProgressStore,
        _readingProgressStore = readingProgressStore,
+       _progressRepository = progressRepository,
        _audioPlayerFactory = audioPlayerFactory,
        _audioPlaybackAwarenessFactory = audioPlaybackAwarenessFactory;
 
@@ -39,6 +42,7 @@ class HebrewFlutterApp extends StatefulWidget {
   final WordProgressStore? _progressStore;
   final GuideProgressStore? _guideProgressStore;
   final ReadingProgressStore? _readingProgressStore;
+  final LearningProgressRepository? _progressRepository;
   final CreateVerbAudioPlayer? _audioPlayerFactory;
   final CreateAudioPlaybackAwareness? _audioPlaybackAwarenessFactory;
   final ThemeModeStore? themeModeStore;
@@ -97,15 +101,20 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
       darkTheme: buildDarkAppTheme(),
       themeMode: _themeMode,
       home: AppShellScreen(
-        loader: widget._loader ?? AssetLearningBundleLoader(),
+        progressRepository:
+            widget._progressRepository ??
+            StoreBackedLearningProgressRepository(
+              loader: widget._loader ?? AssetLearningBundleLoader(),
+              wordProgressStore:
+                  widget._progressStore ?? SharedPreferencesWordProgressStore(),
+              guideProgressStore:
+                  widget._guideProgressStore ??
+                  SharedPreferencesGuideProgressStore(),
+              readingProgressStore:
+                  widget._readingProgressStore ??
+                  SharedPreferencesReadingProgressStore(),
+            ),
         documentLoader: widget._documentLoader ?? AssetLessonDocumentLoader(),
-        progressStore:
-            widget._progressStore ?? SharedPreferencesWordProgressStore(),
-        guideProgressStore:
-            widget._guideProgressStore ?? SharedPreferencesGuideProgressStore(),
-        readingProgressStore:
-            widget._readingProgressStore ??
-            SharedPreferencesReadingProgressStore(),
         audioPlayerFactory:
             widget._audioPlayerFactory ?? createAssetVerbAudioPlayer,
         audioPlaybackAwarenessFactory:
