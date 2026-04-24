@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'screens/app_shell_screen.dart';
 import 'services/audio_playback_awareness.dart';
+import 'services/feature_access_service.dart';
 import 'services/guide_progress_store.dart';
 import 'services/lesson_document_loader.dart';
 import 'services/learning_bundle_loader.dart';
@@ -24,6 +25,7 @@ class HebrewFlutterApp extends StatefulWidget {
     GuideProgressStore? guideProgressStore,
     ReadingProgressStore? readingProgressStore,
     LearningProgressRepository? progressRepository,
+    FeatureAccessService? featureAccessService,
     CreateVerbAudioPlayer? audioPlayerFactory,
     CreateAudioPlaybackAwareness? audioPlaybackAwarenessFactory,
     this.themeModeStore,
@@ -34,6 +36,7 @@ class HebrewFlutterApp extends StatefulWidget {
        _guideProgressStore = guideProgressStore,
        _readingProgressStore = readingProgressStore,
        _progressRepository = progressRepository,
+       _featureAccessService = featureAccessService,
        _audioPlayerFactory = audioPlayerFactory,
        _audioPlaybackAwarenessFactory = audioPlaybackAwarenessFactory;
 
@@ -43,6 +46,7 @@ class HebrewFlutterApp extends StatefulWidget {
   final GuideProgressStore? _guideProgressStore;
   final ReadingProgressStore? _readingProgressStore;
   final LearningProgressRepository? _progressRepository;
+  final FeatureAccessService? _featureAccessService;
   final CreateVerbAudioPlayer? _audioPlayerFactory;
   final CreateAudioPlaybackAwareness? _audioPlaybackAwarenessFactory;
   final ThemeModeStore? themeModeStore;
@@ -54,6 +58,8 @@ class HebrewFlutterApp extends StatefulWidget {
 
 class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
   late ThemeMode _themeMode = widget.initialThemeMode;
+  late final FeatureAccessService _featureAccessService =
+      widget._featureAccessService ?? const StaticFeatureAccessService();
 
   @override
   void initState() {
@@ -66,6 +72,11 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
 
   Future<void> _restoreThemeMode(ThemeModeStore store) async {
     final restoredMode = await store.load();
+    if (restoredMode == ThemeMode.dark &&
+        !_featureAccessService.isEnabled(AppFeature.nightMode)) {
+      return;
+    }
+
     if (!mounted || restoredMode == _themeMode) {
       return;
     }
@@ -79,6 +90,11 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
     final nextMode = _themeMode == ThemeMode.dark
         ? ThemeMode.light
         : ThemeMode.dark;
+    if (nextMode == ThemeMode.dark &&
+        !_featureAccessService.isEnabled(AppFeature.nightMode)) {
+      return;
+    }
+
     setState(() {
       _themeMode = nextMode;
     });
@@ -115,6 +131,7 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
                   SharedPreferencesReadingProgressStore(),
             ),
         documentLoader: widget._documentLoader ?? AssetLessonDocumentLoader(),
+        featureAccessService: _featureAccessService,
         audioPlayerFactory:
             widget._audioPlayerFactory ?? createAssetVerbAudioPlayer,
         audioPlaybackAwarenessFactory:

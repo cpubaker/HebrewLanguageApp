@@ -9,6 +9,7 @@ import '../models/guide_lesson_status.dart';
 import '../models/learning_bundle.dart';
 import '../models/learning_word.dart';
 import '../services/audio_playback_awareness.dart';
+import '../services/feature_access_service.dart';
 import '../services/flashcard_session.dart';
 import '../services/lesson_document_loader.dart';
 import '../services/learning_progress_repository.dart';
@@ -37,6 +38,7 @@ class AppShellScreen extends StatefulWidget {
     super.key,
     required this.progressRepository,
     required this.documentLoader,
+    required this.featureAccessService,
     required this.audioPlayerFactory,
     required this.isDarkMode,
     required this.onToggleThemeMode,
@@ -45,6 +47,7 @@ class AppShellScreen extends StatefulWidget {
 
   final LearningProgressRepository progressRepository;
   final LessonDocumentLoader documentLoader;
+  final FeatureAccessService featureAccessService;
   final CreateVerbAudioPlayer audioPlayerFactory;
   final CreateAudioPlaybackAwareness audioPlaybackAwarenessFactory;
   final bool isDarkMode;
@@ -104,6 +107,18 @@ class _AppShellScreenState extends State<AppShellScreen> {
     _readingLessonStatuses = loadedState.readingLessonStatuses;
     _bundle = loadedState.bundle;
     return loadedState.bundle;
+  }
+
+  void _handleThemeToggleRequested() {
+    final decision = widget.featureAccessService.accessFor(
+      AppFeature.nightMode,
+    );
+    if (!decision.isEnabled) {
+      _showFeatureLocked(decision);
+      return;
+    }
+
+    widget.onToggleThemeMode();
   }
 
   Future<LearningBundle> _ensureFullWordContextsLoaded() {
@@ -674,6 +689,21 @@ class _AppShellScreenState extends State<AppShellScreen> {
       ..showSnackBar(SnackBar(content: Text(message)));
   }
 
+  void _showFeatureLocked(FeatureAccessDecision decision) {
+    final messenger = ScaffoldMessenger.maybeOf(context);
+    messenger
+      ?..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text('${decision.title}: ${decision.description}'),
+          action: SnackBarAction(
+            label: decision.upgradeLabel,
+            onPressed: () {},
+          ),
+        ),
+      );
+  }
+
   Widget _buildLearnWorkspace(LearningBundle bundle) {
     return WorkspaceHubScreen(
       title: 'Вчити',
@@ -931,7 +961,9 @@ class _AppShellScreenState extends State<AppShellScreen> {
                           bundle: bundle,
                           documentLoader: widget.documentLoader,
                           isDarkMode: widget.isDarkMode,
-                          onToggleThemeMode: widget.onToggleThemeMode,
+                          nightModeAccess: widget.featureAccessService
+                              .accessFor(AppFeature.nightMode),
+                          onToggleThemeMode: _handleThemeToggleRequested,
                           onOpenWords: _openLearnWords,
                           onOpenFlashcards: _openFlashcards,
                           onOpenWriting: () => _openWritingPractice(),

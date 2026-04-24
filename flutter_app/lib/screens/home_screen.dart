@@ -4,6 +4,7 @@ import '../models/learning_bundle.dart';
 import '../models/lesson_document.dart';
 import '../models/learning_word.dart';
 import '../services/flashcard_session.dart';
+import '../services/feature_access_service.dart';
 import '../services/lesson_document_loader.dart';
 import '../services/progress_snapshot.dart';
 import '../theme/app_theme.dart';
@@ -27,6 +28,7 @@ class HomeScreen extends StatelessWidget {
     required this.bundle,
     required this.documentLoader,
     required this.isDarkMode,
+    required this.nightModeAccess,
     required this.onToggleThemeMode,
     required this.onOpenWords,
     required this.onOpenFlashcards,
@@ -41,6 +43,7 @@ class HomeScreen extends StatelessWidget {
   final LearningBundle bundle;
   final LessonDocumentLoader documentLoader;
   final bool isDarkMode;
+  final FeatureAccessDecision nightModeAccess;
   final VoidCallback onToggleThemeMode;
   final VoidCallback onOpenWords;
   final ValueChanged<FlashcardDeckMode> onOpenFlashcards;
@@ -74,6 +77,7 @@ class HomeScreen extends StatelessWidget {
         _HeroPanel(
           bundle: bundle,
           isDarkMode: isDarkMode,
+          nightModeAccess: nightModeAccess,
           onToggleThemeMode: onToggleThemeMode,
         ),
         const SizedBox(height: 20),
@@ -281,11 +285,13 @@ class _HeroPanel extends StatelessWidget {
   const _HeroPanel({
     required this.bundle,
     required this.isDarkMode,
+    required this.nightModeAccess,
     required this.onToggleThemeMode,
   });
 
   final LearningBundle bundle;
   final bool isDarkMode;
+  final FeatureAccessDecision nightModeAccess;
   final VoidCallback onToggleThemeMode;
 
   @override
@@ -338,7 +344,9 @@ class _HeroPanel extends StatelessWidget {
               ),
               const Spacer(),
               Tooltip(
-                message: isDarkMode
+                message: !nightModeAccess.isEnabled
+                    ? nightModeAccess.description
+                    : isDarkMode
                     ? 'Увімкнути світлий режим'
                     : 'Увімкнути нічний режим',
                 child: Material(
@@ -351,7 +359,9 @@ class _HeroPanel extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(10),
                       child: Icon(
-                        isDarkMode
+                        !nightModeAccess.isEnabled
+                            ? Icons.lock_rounded
+                            : isDarkMode
                             ? Icons.light_mode_rounded
                             : Icons.dark_mode_rounded,
                         color: tokens.heroText,

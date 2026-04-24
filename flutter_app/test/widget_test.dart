@@ -12,6 +12,7 @@ import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/models/lesson_document.dart';
 import 'package:hebrew_language_flutter/screens/home_screen.dart';
 import 'package:hebrew_language_flutter/screens/sprint_screen.dart';
+import 'package:hebrew_language_flutter/services/feature_access_service.dart';
 import 'package:hebrew_language_flutter/services/guide_progress_store.dart';
 import 'package:hebrew_language_flutter/services/lesson_document_loader.dart';
 import 'package:hebrew_language_flutter/services/learning_bundle_loader.dart';
@@ -166,6 +167,41 @@ void main() {
     expect(app.themeMode, ThemeMode.dark);
     expect(themeModeStore.savedModes, [ThemeMode.dark]);
     expect(find.byTooltip('Увімкнути світлий режим'), findsOneWidget);
+  });
+
+  testWidgets('shows locked state when night mode is not available', (
+    WidgetTester tester,
+  ) async {
+    await _useTallMobileViewport(tester);
+    final themeModeStore = FakeThemeModeStore();
+
+    await tester.pumpWidget(
+      HebrewFlutterApp(
+        loader: FakeLearningBundleLoader(),
+        documentLoader: FakeLessonDocumentLoader(),
+        progressStore: FakeWordProgressStore(),
+        guideProgressStore: FakeGuideProgressStore(),
+        readingProgressStore: FakeReadingProgressStore(),
+        themeModeStore: themeModeStore,
+        featureAccessService: const StaticFeatureAccessService(
+          enabledFeatures: <AppFeature>{
+            AppFeature.advancedPractice,
+            AppFeature.extraLessons,
+          },
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byIcon(Icons.lock_rounded), findsOneWidget);
+
+    await tester.tap(find.byKey(const ValueKey('theme-toggle-button')));
+    await tester.pumpAndSettle();
+
+    final app = tester.widget<MaterialApp>(find.byType(MaterialApp));
+    expect(app.themeMode, ThemeMode.light);
+    expect(themeModeStore.savedModes, isEmpty);
+    expect(find.textContaining('Night mode'), findsOneWidget);
   });
 
   testWidgets(
