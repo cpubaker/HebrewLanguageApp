@@ -1,4 +1,5 @@
 import 'learning_word.dart';
+import 'lesson_progress_key.dart';
 
 class LessonEntry {
   const LessonEntry({
@@ -20,6 +21,9 @@ class LessonEntry {
   final String? sectionLabel;
   final List<String> aliases;
   final List<String> relatedIds;
+
+  String get progressKey =>
+      lessonProgressKey(assetPath: assetPath, lessonId: lessonId);
 }
 
 class LearningBundle {

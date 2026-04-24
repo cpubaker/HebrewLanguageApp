@@ -174,7 +174,10 @@ class _AppShellScreenState extends State<AppShellScreen> {
     );
   }
 
-  void _handleGuideStatusChanged(String assetPath, GuideLessonStatus status) {
+  Future<bool> _handleGuideStatusChanged(
+    String lessonKey,
+    GuideLessonStatus status,
+  ) async {
     final previousStatuses = Map<String, GuideLessonStatus>.from(
       _guideLessonStatuses,
     );
@@ -182,31 +185,32 @@ class _AppShellScreenState extends State<AppShellScreen> {
       if (status == GuideLessonStatus.unread) {
         _guideLessonStatuses = <String, GuideLessonStatus>{
           for (final entry in _guideLessonStatuses.entries)
-            if (entry.key != assetPath) entry.key: entry.value,
+            if (entry.key != lessonKey) entry.key: entry.value,
         };
       } else {
         _guideLessonStatuses = <String, GuideLessonStatus>{
           ..._guideLessonStatuses,
-          assetPath: status,
+          lessonKey: status,
         };
       }
     });
 
     final requestToken = _nextPersistenceToken(
       _guidePersistenceTokens,
-      assetPath,
+      lessonKey,
     );
-    unawaited(
-      _persistGuideReadChange(
-        assetPath: assetPath,
-        status: status,
-        previousStatuses: previousStatuses,
-        requestToken: requestToken,
-      ),
+    return _persistGuideReadChange(
+      lessonKey: lessonKey,
+      status: status,
+      previousStatuses: previousStatuses,
+      requestToken: requestToken,
     );
   }
 
-  void _handleReadingStatusChanged(String assetPath, GuideLessonStatus status) {
+  Future<bool> _handleReadingStatusChanged(
+    String lessonKey,
+    GuideLessonStatus status,
+  ) async {
     final previousStatuses = Map<String, GuideLessonStatus>.from(
       _readingLessonStatuses,
     );
@@ -214,27 +218,25 @@ class _AppShellScreenState extends State<AppShellScreen> {
       if (status == GuideLessonStatus.unread) {
         _readingLessonStatuses = <String, GuideLessonStatus>{
           for (final entry in _readingLessonStatuses.entries)
-            if (entry.key != assetPath) entry.key: entry.value,
+            if (entry.key != lessonKey) entry.key: entry.value,
         };
       } else {
         _readingLessonStatuses = <String, GuideLessonStatus>{
           ..._readingLessonStatuses,
-          assetPath: status,
+          lessonKey: status,
         };
       }
     });
 
     final requestToken = _nextPersistenceToken(
       _readingPersistenceTokens,
-      assetPath,
+      lessonKey,
     );
-    unawaited(
-      _persistReadingStatusChange(
-        assetPath: assetPath,
-        status: status,
-        previousStatuses: previousStatuses,
-        requestToken: requestToken,
-      ),
+    return _persistReadingStatusChange(
+      lessonKey: lessonKey,
+      status: status,
+      previousStatuses: previousStatuses,
+      requestToken: requestToken,
     );
   }
 
@@ -373,7 +375,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
 
   void _openReadingLesson(LessonEntry lesson) {
     final lessonStatus =
-        _readingLessonStatuses[lesson.assetPath] ?? GuideLessonStatus.unread;
+        _readingLessonStatuses[lesson.progressKey] ?? GuideLessonStatus.unread;
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => ReadingDetailScreen(
@@ -381,7 +383,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
           documentLoader: widget.documentLoader,
           initialStatus: lessonStatus,
           onStatusChanged: (status) {
-            _handleReadingStatusChanged(lesson.assetPath, status);
+            _handleReadingStatusChanged(lesson.progressKey, status);
           },
         ),
       ),
@@ -543,19 +545,20 @@ class _AppShellScreenState extends State<AppShellScreen> {
     }
   }
 
-  Future<void> _persistGuideReadChange({
-    required String assetPath,
+  Future<bool> _persistGuideReadChange({
+    required String lessonKey,
     required GuideLessonStatus status,
     required Map<String, GuideLessonStatus> previousStatuses,
     required int requestToken,
   }) async {
     try {
-      await widget.guideProgressStore.setLessonStatus(assetPath, status);
+      await widget.guideProgressStore.setLessonStatus(lessonKey, status);
+      return true;
     } catch (error) {
-      debugPrint('Failed to save guide progress for $assetPath: $error');
+      debugPrint('Failed to save guide progress for $lessonKey: $error');
 
-      if (!mounted || _guidePersistenceTokens[assetPath] != requestToken) {
-        return;
+      if (!mounted || _guidePersistenceTokens[lessonKey] != requestToken) {
+        return false;
       }
 
       setState(() {
@@ -565,22 +568,24 @@ class _AppShellScreenState extends State<AppShellScreen> {
       _showPersistenceError(
         'Не вдалося зберегти прогрес довідника. Спробуйте ще раз.',
       );
+      return false;
     }
   }
 
-  Future<void> _persistReadingStatusChange({
-    required String assetPath,
+  Future<bool> _persistReadingStatusChange({
+    required String lessonKey,
     required GuideLessonStatus status,
     required Map<String, GuideLessonStatus> previousStatuses,
     required int requestToken,
   }) async {
     try {
-      await widget.readingProgressStore.setLessonStatus(assetPath, status);
+      await widget.readingProgressStore.setLessonStatus(lessonKey, status);
+      return true;
     } catch (error) {
-      debugPrint('Failed to save reading progress for $assetPath: $error');
+      debugPrint('Failed to save reading progress for $lessonKey: $error');
 
-      if (!mounted || _readingPersistenceTokens[assetPath] != requestToken) {
-        return;
+      if (!mounted || _readingPersistenceTokens[lessonKey] != requestToken) {
+        return false;
       }
 
       setState(() {
@@ -590,6 +595,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
       _showPersistenceError(
         'Не вдалося зберегти прогрес читання. Спробуйте ще раз.',
       );
+      return false;
     }
   }
 

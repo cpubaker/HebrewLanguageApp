@@ -25,8 +25,7 @@ class ReadingScreen extends StatefulWidget {
   final List<LessonEntry> lessons;
   final LessonDocumentLoader documentLoader;
   final Map<String, GuideLessonStatus> lessonStatuses;
-  final void Function(String assetPath, GuideLessonStatus status)
-  onStatusChanged;
+  final LessonStatusChangeHandler onStatusChanged;
   final Widget? topContent;
 
   @override
@@ -37,6 +36,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
   late final ScrollController _scrollController;
 
   final Map<String, String> _lessonTitles = <String, String>{};
+  late Map<String, GuideLessonStatus> _lessonStatuses;
 
   final Set<String> _selectedLevelKeys = <String>{};
   bool _isLoadingLessonTitles = false;
@@ -46,12 +46,20 @@ class _ReadingScreenState extends State<ReadingScreen> {
   void initState() {
     super.initState();
     _scrollController = ScrollController()..addListener(_handleScroll);
+    _lessonStatuses = Map<String, GuideLessonStatus>.from(
+      widget.lessonStatuses,
+    );
     unawaited(_primeLessonTitles());
   }
 
   @override
   void didUpdateWidget(covariant ReadingScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (oldWidget.lessonStatuses != widget.lessonStatuses) {
+      _lessonStatuses = Map<String, GuideLessonStatus>.from(
+        widget.lessonStatuses,
+      );
+    }
     if (oldWidget.lessons != widget.lessons) {
       unawaited(_primeLessonTitles());
     }
@@ -186,8 +194,45 @@ class _ReadingScreenState extends State<ReadingScreen> {
     });
   }
 
-  GuideLessonStatus _statusFor(String assetPath) {
-    return widget.lessonStatuses[assetPath] ?? GuideLessonStatus.unread;
+  GuideLessonStatus _statusFor(LessonEntry lesson) {
+    return _lessonStatuses[lesson.progressKey] ?? GuideLessonStatus.unread;
+  }
+
+  Future<void> _handleLessonStatusSelected(
+    LessonEntry lesson,
+    GuideLessonStatus status,
+  ) async {
+    final lessonKey = lesson.progressKey;
+    final previousStatus = _lessonStatuses[lessonKey];
+    setState(() {
+      _setLocalLessonStatus(lessonKey, status);
+    });
+
+    final saved = await widget.onStatusChanged(lessonKey, status);
+    if (!saved && mounted) {
+      setState(() {
+        _restoreLocalLessonStatus(lessonKey, previousStatus);
+      });
+    }
+  }
+
+  void _setLocalLessonStatus(String lessonKey, GuideLessonStatus status) {
+    if (status == GuideLessonStatus.unread) {
+      _lessonStatuses.remove(lessonKey);
+    } else {
+      _lessonStatuses[lessonKey] = status;
+    }
+  }
+
+  void _restoreLocalLessonStatus(
+    String lessonKey,
+    GuideLessonStatus? previousStatus,
+  ) {
+    if (previousStatus == null || previousStatus == GuideLessonStatus.unread) {
+      _lessonStatuses.remove(lessonKey);
+    } else {
+      _lessonStatuses[lessonKey] = previousStatus;
+    }
   }
 
   @override
@@ -279,7 +324,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
                   group: group,
                   documentLoader: widget.documentLoader,
                   statusFor: _statusFor,
-                  onStatusChanged: widget.onStatusChanged,
+                  onStatusChanged: _handleLessonStatusSelected,
                   titleResolver: _resolvedLessonTitle,
                 ),
               ),
@@ -718,8 +763,8 @@ class _ReadingLevelSection extends StatelessWidget {
 
   final ReadingLessonGroup group;
   final LessonDocumentLoader documentLoader;
-  final GuideLessonStatus Function(String assetPath) statusFor;
-  final void Function(String assetPath, GuideLessonStatus status)
+  final GuideLessonStatus Function(LessonEntry lesson) statusFor;
+  final Future<void> Function(LessonEntry lesson, GuideLessonStatus status)
   onStatusChanged;
   final String Function(LessonEntry lesson) titleResolver;
 
@@ -749,7 +794,7 @@ class _ReadingLevelSection extends StatelessWidget {
           ),
         ),
         ...group.lessons.map((lesson) {
-          final lessonStatus = statusFor(lesson.assetPath);
+          final lessonStatus = statusFor(lesson);
           return Padding(
             padding: const EdgeInsets.only(bottom: 12),
             child: _ReadingLessonCard(
@@ -757,7 +802,7 @@ class _ReadingLevelSection extends StatelessWidget {
               resolvedTitle: titleResolver(lesson),
               status: lessonStatus,
               onStatusSelected: (status) {
-                onStatusChanged(lesson.assetPath, status);
+                unawaited(onStatusChanged(lesson, status));
               },
               onTap: () {
                 Navigator.of(context).push(
@@ -767,7 +812,7 @@ class _ReadingLevelSection extends StatelessWidget {
                       documentLoader: documentLoader,
                       initialStatus: lessonStatus,
                       onStatusChanged: (status) {
-                        onStatusChanged(lesson.assetPath, status);
+                        unawaited(onStatusChanged(lesson, status));
                       },
                     ),
                   ),

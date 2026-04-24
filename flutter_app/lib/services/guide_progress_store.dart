@@ -4,19 +4,18 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/guide_lesson_status.dart';
+import '../models/lesson_progress_key.dart';
 
 abstract class GuideProgressStore {
   Future<Map<String, GuideLessonStatus>> loadLessonStatuses();
 
-  Future<void> setLessonStatus(
-    String assetPath,
-    GuideLessonStatus status,
-  );
+  Future<void> setLessonStatus(String lessonKey, GuideLessonStatus status);
 }
 
 class SharedPreferencesGuideProgressStore implements GuideProgressStore {
   static const String _legacyReadLessonsKey = 'guide_read_lessons_v1';
-  static const String _storageKey = 'guide_lesson_statuses_v2';
+  static const String _legacyStatusesKey = 'guide_lesson_statuses_v2';
+  static const String _storageKey = 'guide_lesson_statuses_v3';
   static const Map<String, String> _renamedGuidePaths = <String, String>{
     'assets/learning/input/guide/08_verbs_intro.md':
         'assets/learning/input/guide/20_verbs_intro.md',
@@ -164,6 +163,10 @@ class SharedPreferencesGuideProgressStore implements GuideProgressStore {
       if (storedStatuses != null && storedStatuses.trim().isNotEmpty) {
         return _decodeStatuses(storedStatuses);
       }
+      final legacyStatuses = prefs.getString(_legacyStatusesKey);
+      if (legacyStatuses != null && legacyStatuses.trim().isNotEmpty) {
+        return _decodeStatuses(legacyStatuses);
+      }
 
       return _loadLegacyReadLessons(prefs);
     } catch (error) {
@@ -176,20 +179,20 @@ class SharedPreferencesGuideProgressStore implements GuideProgressStore {
 
   @override
   Future<void> setLessonStatus(
-    String assetPath,
+    String lessonKey,
     GuideLessonStatus status,
   ) async {
     final prefs = await SharedPreferences.getInstance();
     final storedStatuses = await loadLessonStatuses();
-    final sanitizedAssetPath = _canonicalGuideAssetPath(assetPath);
-    if (sanitizedAssetPath.isEmpty) {
+    final sanitizedLessonKey = _canonicalGuideProgressKey(lessonKey);
+    if (sanitizedLessonKey.isEmpty) {
       return;
     }
 
     if (status == GuideLessonStatus.unread) {
-      storedStatuses.remove(sanitizedAssetPath);
+      storedStatuses.remove(sanitizedLessonKey);
     } else {
-      storedStatuses[sanitizedAssetPath] = status;
+      storedStatuses[sanitizedLessonKey] = status;
     }
 
     final encodedStatuses = <String, String>{
@@ -211,14 +214,14 @@ class SharedPreferencesGuideProgressStore implements GuideProgressStore {
       final rawPath = entry.key?.toString().trim() ?? '';
       final rawStatus = entry.value?.toString() ?? '';
       final status = GuideLessonStatus.fromStorageValue(rawStatus);
-      final canonicalPath = _canonicalGuideAssetPath(rawPath);
-      if (canonicalPath.isEmpty ||
+      final canonicalKey = _canonicalGuideProgressKey(rawPath);
+      if (canonicalKey.isEmpty ||
           status == null ||
           status == GuideLessonStatus.unread) {
         continue;
       }
 
-      statuses[canonicalPath] = _mergeStatus(statuses[canonicalPath], status);
+      statuses[canonicalKey] = _mergeStatus(statuses[canonicalKey], status);
     }
 
     return statuses;
@@ -231,13 +234,13 @@ class SharedPreferencesGuideProgressStore implements GuideProgressStore {
         prefs.getStringList(_legacyReadLessonsKey) ?? const <String>[];
     final statuses = <String, GuideLessonStatus>{};
     for (final lessonPath in storedLessons) {
-      final canonicalPath = _canonicalGuideAssetPath(lessonPath);
-      if (canonicalPath.isEmpty) {
+      final canonicalKey = _canonicalGuideProgressKey(lessonPath);
+      if (canonicalKey.isEmpty) {
         continue;
       }
 
-      statuses[canonicalPath] = _mergeStatus(
-        statuses[canonicalPath],
+      statuses[canonicalKey] = _mergeStatus(
+        statuses[canonicalKey],
         GuideLessonStatus.read,
       );
     }
@@ -245,13 +248,11 @@ class SharedPreferencesGuideProgressStore implements GuideProgressStore {
     return statuses;
   }
 
-  String _canonicalGuideAssetPath(String rawPath) {
-    final sanitizedPath = rawPath.trim();
-    if (sanitizedPath.isEmpty) {
-      return '';
-    }
-
-    return _renamedGuidePaths[sanitizedPath] ?? sanitizedPath;
+  String _canonicalGuideProgressKey(String rawValue) {
+    return lessonProgressKeyFromStoredValue(
+      rawValue,
+      renamedAssetPaths: _renamedGuidePaths,
+    );
   }
 
   GuideLessonStatus _mergeStatus(

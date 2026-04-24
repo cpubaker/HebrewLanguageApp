@@ -24,8 +24,7 @@ class GuideScreen extends StatefulWidget {
   final List<LessonEntry> lessons;
   final LessonDocumentLoader documentLoader;
   final Map<String, GuideLessonStatus> lessonStatuses;
-  final void Function(String assetPath, GuideLessonStatus status)
-  onStatusChanged;
+  final LessonStatusChangeHandler onStatusChanged;
   final Widget? topContent;
 
   @override
@@ -39,6 +38,7 @@ class _GuideScreenState extends State<GuideScreen> {
 
   final Map<String, LessonDocument> _lessonDocuments =
       <String, LessonDocument>{};
+  late Map<String, GuideLessonStatus> _lessonStatuses;
 
   String _query = '';
   final Set<String> _selectedSectionIds = <String>{};
@@ -52,12 +52,20 @@ class _GuideScreenState extends State<GuideScreen> {
     _searchController = TextEditingController();
     _scrollController = ScrollController()..addListener(_handleScroll);
     _searchFocusNode = FocusNode();
+    _lessonStatuses = Map<String, GuideLessonStatus>.from(
+      widget.lessonStatuses,
+    );
     unawaited(_primeLessonDocuments());
   }
 
   @override
   void didUpdateWidget(covariant GuideScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (oldWidget.lessonStatuses != widget.lessonStatuses) {
+      _lessonStatuses = Map<String, GuideLessonStatus>.from(
+        widget.lessonStatuses,
+      );
+    }
     if (oldWidget.lessons != widget.lessons) {
       final availableSectionIds = _availableSections
           .map((section) => section.id)
@@ -82,8 +90,45 @@ class _GuideScreenState extends State<GuideScreen> {
     super.dispose();
   }
 
-  GuideLessonStatus _statusFor(String assetPath) {
-    return widget.lessonStatuses[assetPath] ?? GuideLessonStatus.unread;
+  GuideLessonStatus _statusFor(LessonEntry lesson) {
+    return _lessonStatuses[lesson.progressKey] ?? GuideLessonStatus.unread;
+  }
+
+  Future<void> _handleLessonStatusSelected(
+    LessonEntry lesson,
+    GuideLessonStatus status,
+  ) async {
+    final lessonKey = lesson.progressKey;
+    final previousStatus = _lessonStatuses[lessonKey];
+    setState(() {
+      _setLocalLessonStatus(lessonKey, status);
+    });
+
+    final saved = await widget.onStatusChanged(lessonKey, status);
+    if (!saved && mounted) {
+      setState(() {
+        _restoreLocalLessonStatus(lessonKey, previousStatus);
+      });
+    }
+  }
+
+  void _setLocalLessonStatus(String lessonKey, GuideLessonStatus status) {
+    if (status == GuideLessonStatus.unread) {
+      _lessonStatuses.remove(lessonKey);
+    } else {
+      _lessonStatuses[lessonKey] = status;
+    }
+  }
+
+  void _restoreLocalLessonStatus(
+    String lessonKey,
+    GuideLessonStatus? previousStatus,
+  ) {
+    if (previousStatus == null || previousStatus == GuideLessonStatus.unread) {
+      _lessonStatuses.remove(lessonKey);
+    } else {
+      _lessonStatuses[lessonKey] = previousStatus;
+    }
   }
 
   Future<void> _primeLessonDocuments() async {
@@ -434,11 +479,11 @@ class _GuideScreenState extends State<GuideScreen> {
                   padding: const EdgeInsets.only(bottom: 12),
                   child: _GuideLessonCard(
                     lesson: lesson,
-                    status: _statusFor(lesson.assetPath),
+                    status: _statusFor(lesson),
                     resolvedTitle: _resolvedLessonTitle(lesson),
                     resolvedSummary: _resolvedLessonSummary(lesson),
                     onStatusSelected: (status) {
-                      widget.onStatusChanged(lesson.assetPath, status);
+                      unawaited(_handleLessonStatusSelected(lesson, status));
                     },
                     onTap: () {
                       Navigator.of(context).push(
@@ -448,9 +493,12 @@ class _GuideScreenState extends State<GuideScreen> {
                             allLessons: widget.lessons,
                             documentLoader: widget.documentLoader,
                             lessonStatuses: widget.lessonStatuses,
-                            initialStatus: _statusFor(lesson.assetPath),
+                            initialStatus: _statusFor(lesson),
                             onStatusChanged: (status) {
-                              widget.onStatusChanged(lesson.assetPath, status);
+                              return widget.onStatusChanged(
+                                lesson.progressKey,
+                                status,
+                              );
                             },
                           ),
                         ),
@@ -513,7 +561,7 @@ class GuideDetailScreen extends StatefulWidget {
   final Map<String, GuideLessonStatus> lessonStatuses;
   final LessonDocumentLoader documentLoader;
   final GuideLessonStatus initialStatus;
-  final ValueChanged<GuideLessonStatus> onStatusChanged;
+  final FutureOr<bool> Function(GuideLessonStatus status) onStatusChanged;
 
   @override
   State<GuideDetailScreen> createState() => _GuideDetailScreenState();
@@ -539,7 +587,7 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
           return;
         }
 
-        widget.onStatusChanged(_status);
+        unawaited(Future.value(widget.onStatusChanged(_status)));
       });
     }
   }
@@ -552,7 +600,7 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
     setState(() {
       _status = status;
     });
-    widget.onStatusChanged(status);
+    unawaited(Future.value(widget.onStatusChanged(status)));
   }
 
   int get _currentLessonIndex {
@@ -790,7 +838,7 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
           lessonStatuses: widget.lessonStatuses,
           documentLoader: widget.documentLoader,
           initialStatus:
-              widget.lessonStatuses[lesson.assetPath] ??
+              widget.lessonStatuses[lesson.progressKey] ??
               GuideLessonStatus.unread,
           onStatusChanged: widget.onStatusChanged,
         ),

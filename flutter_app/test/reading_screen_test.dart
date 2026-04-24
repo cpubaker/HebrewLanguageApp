@@ -32,10 +32,10 @@ void main() {
     ]);
 
     expect(groups.length, 3);
-    expect(groups.first.lessons.map(readingLessonTitle).toList(growable: false), [
-      'Yosi Goes To School',
-      'My Room',
-    ]);
+    expect(
+      groups.first.lessons.map(readingLessonTitle).toList(growable: false),
+      ['Yosi Goes To School', 'My Room'],
+    );
   });
 
   testWidgets('filters reading lessons by selected levels', (
@@ -64,7 +64,7 @@ void main() {
             ],
             documentLoader: _FakeLessonDocumentLoader(),
             lessonStatuses: const <String, GuideLessonStatus>{},
-            onStatusChanged: (_, _) {},
+            onStatusChanged: (_, _) => true,
           ),
         ),
       ),
@@ -173,10 +173,13 @@ void main() {
     await tester.pumpAndSettle();
 
     final richTextFinder = find.byWidgetPredicate(
-      (widget) => widget is RichText && widget.text.toPlainText() == 'בֹּקֶר טוֹב!',
+      (widget) =>
+          widget is RichText && widget.text.toPlainText() == 'בֹּקֶר טוֹב!',
     );
 
-    await tester.tapAt(tester.getTopRight(richTextFinder) + const Offset(-24, 12));
+    await tester.tapAt(
+      tester.getTopRight(richTextFinder) + const Offset(-24, 12),
+    );
     await tester.pumpAndSettle();
 
     expect(find.text('доброго ранку'), findsOneWidget);
@@ -187,24 +190,15 @@ class _FakeLessonDocumentLoader implements LessonDocumentLoader {
   @override
   Future<LessonDocument> load(String assetPath) async {
     if (assetPath.contains('yosi_goes_to_school')) {
-      return const LessonDocument(
-        title: 'Yosi Goes To School',
-        body: 'Stub',
-      );
+      return const LessonDocument(title: 'Yosi Goes To School', body: 'Stub');
     }
 
     if (assetPath.contains('my_room')) {
-      return const LessonDocument(
-        title: 'My Room',
-        body: 'Stub',
-      );
+      return const LessonDocument(title: 'My Room', body: 'Stub');
     }
 
     if (assetPath.contains('neighborhood_library')) {
-      return const LessonDocument(
-        title: 'Neighborhood Library',
-        body: 'Stub',
-      );
+      return const LessonDocument(title: 'Neighborhood Library', body: 'Stub');
     }
 
     return const LessonDocument(title: 'Stub', body: 'Stub');
@@ -219,10 +213,7 @@ class _LongReadingDocumentLoader implements LessonDocumentLoader {
       (index) => 'Paragraph ${index + 1} about reading practice.',
     ).join('\n\n');
 
-    return LessonDocument(
-      title: 'Long Reading',
-      body: body,
-    );
+    return LessonDocument(title: 'Long Reading', body: body);
   }
 }
 
@@ -232,9 +223,7 @@ class _GlossaryLessonDocumentLoader implements LessonDocumentLoader {
     return const LessonDocument(
       title: 'Glossary Reading',
       body: 'בֹּקֶר טוֹב!',
-      glossary: <String, String>{
-        'בֹּקֶר טוֹב': 'доброго ранку',
-      },
+      glossary: <String, String>{'בֹּקֶר טוֹב': 'доброго ранку'},
     );
   }
 }

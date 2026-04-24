@@ -47,9 +47,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(
-      readingStore.lessonStatuses[
-        'assets/learning/input/reading/beginner/01_yosi_goes_to_school.md'
-      ],
+      readingStore.lessonStatuses['yosi_goes_to_school'],
       GuideLessonStatus.read,
     );
     expect(find.text('Прочитано'), findsWidgets);
@@ -98,9 +96,8 @@ class FakeGuideProgressStore implements GuideProgressStore {
 }
 
 class FakeReadingProgressStore implements ReadingProgressStore {
-  FakeReadingProgressStore({
-    Map<String, GuideLessonStatus>? initialStatuses,
-  }) : lessonStatuses = <String, GuideLessonStatus>{...?initialStatuses};
+  FakeReadingProgressStore({Map<String, GuideLessonStatus>? initialStatuses})
+    : lessonStatuses = <String, GuideLessonStatus>{...?initialStatuses};
 
   final Map<String, GuideLessonStatus> lessonStatuses;
 

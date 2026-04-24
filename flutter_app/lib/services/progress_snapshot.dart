@@ -218,7 +218,8 @@ class LessonProgressSnapshot {
     return LessonProgressSnapshot.fromStatuses(
       total: lessonList.length,
       statuses: lessonList.map(
-        (lesson) => lessonStatuses[lesson.assetPath] ?? GuideLessonStatus.unread,
+        (lesson) =>
+            lessonStatuses[lesson.progressKey] ?? GuideLessonStatus.unread,
       ),
     );
   }

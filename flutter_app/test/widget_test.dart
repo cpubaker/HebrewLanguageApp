@@ -121,6 +121,8 @@ void main() {
 
     await tester.tap(find.byIcon(Icons.school_outlined));
     await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.translate_rounded).first);
+    await tester.pumpAndSettle();
 
     expect(
       find.text(
@@ -232,6 +234,8 @@ void main() {
 
     await tester.tap(find.byIcon(Icons.school_outlined));
     await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.translate_rounded).first);
+    await tester.pumpAndSettle();
 
     await tester.enterText(find.byType(EditableText), '\u05d1\u05d9\u05ea');
     await tester.pump(const Duration(milliseconds: 250));
@@ -255,6 +259,8 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.tap(find.byIcon(Icons.library_books_outlined));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.menu_book_rounded).first);
     await tester.pumpAndSettle();
 
     expect(find.text('Alphabet Basics'), findsOneWidget);
@@ -284,6 +290,8 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.tap(find.byIcon(Icons.school_outlined));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.translate_rounded).first);
     await tester.pumpAndSettle();
 
     await tester.tap(find.text('Дієслова').last);
@@ -637,6 +645,8 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.tap(find.byIcon(Icons.school_outlined));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.translate_rounded).first);
     await tester.pumpAndSettle();
 
     expect(find.text('чоловік'), findsOneWidget);

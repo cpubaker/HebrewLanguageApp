@@ -1,3 +1,5 @@
+import 'dart:async';
+
 enum GuideLessonStatus {
   unread('unread'),
   studying('studying'),
@@ -18,3 +20,6 @@ enum GuideLessonStatus {
     return null;
   }
 }
+
+typedef LessonStatusChangeHandler =
+    FutureOr<bool> Function(String lessonKey, GuideLessonStatus status);

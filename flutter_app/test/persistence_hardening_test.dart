@@ -120,36 +120,34 @@ void main() {
     final loadedStatuses = await store.loadLessonStatuses();
 
     expect(loadedStatuses, <String, GuideLessonStatus>{
-      'assets/learning/input/guide/01_intro_alphabet.md':
-          GuideLessonStatus.read,
-      'assets/learning/input/guide/34_infinitive_constructions.md':
-          GuideLessonStatus.read,
+      'intro_alphabet': GuideLessonStatus.read,
+      'infinitive_constructions': GuideLessonStatus.read,
     });
   });
 
-  test('guide progress store remaps renamed lesson paths in status payloads', () async {
-    SharedPreferences.setMockInitialValues(<String, Object>{
-      'guide_lesson_statuses_v2': jsonEncode(<String, Object?>{
-        'assets/learning/input/guide/42_infinitive_constructions.md':
-            'studying',
-        'assets/learning/input/guide/49_register_formal_vs_spoken.md': 'read',
-        'assets/learning/input/guide/47_relative_clause_expansion.md': 'read',
-      }),
-    });
+  test(
+    'guide progress store remaps renamed lesson paths in status payloads',
+    () async {
+      SharedPreferences.setMockInitialValues(<String, Object>{
+        'guide_lesson_statuses_v2': jsonEncode(<String, Object?>{
+          'assets/learning/input/guide/42_infinitive_constructions.md':
+              'studying',
+          'assets/learning/input/guide/49_register_formal_vs_spoken.md': 'read',
+          'assets/learning/input/guide/47_relative_clause_expansion.md': 'read',
+        }),
+      });
 
-    final store = SharedPreferencesGuideProgressStore();
+      final store = SharedPreferencesGuideProgressStore();
 
-    final loadedStatuses = await store.loadLessonStatuses();
+      final loadedStatuses = await store.loadLessonStatuses();
 
-    expect(loadedStatuses, <String, GuideLessonStatus>{
-      'assets/learning/input/guide/34_infinitive_constructions.md':
-          GuideLessonStatus.studying,
-      'assets/learning/input/guide/39_relative_and_she.md':
-          GuideLessonStatus.read,
-      'assets/learning/input/guide/59_register_formal_vs_spoken.md':
-          GuideLessonStatus.read,
-    });
-  });
+      expect(loadedStatuses, <String, GuideLessonStatus>{
+        'infinitive_constructions': GuideLessonStatus.studying,
+        'relative_and_she': GuideLessonStatus.read,
+        'register_formal_vs_spoken': GuideLessonStatus.read,
+      });
+    },
+  );
 
   test('guide progress store sanitizes malformed status payloads', () async {
     SharedPreferences.setMockInitialValues(<String, Object>{
@@ -167,9 +165,8 @@ void main() {
     final loadedStatuses = await store.loadLessonStatuses();
 
     expect(loadedStatuses, <String, GuideLessonStatus>{
-      'assets/learning/input/guide/01_intro_alphabet.md':
-          GuideLessonStatus.studying,
-      'assets/learning/input/guide/02_numbers.md': GuideLessonStatus.read,
+      'intro_alphabet': GuideLessonStatus.studying,
+      'numbers': GuideLessonStatus.read,
     });
   });
 
@@ -190,10 +187,42 @@ void main() {
     final loadedStatuses = await store.loadLessonStatuses();
 
     expect(loadedStatuses, <String, GuideLessonStatus>{
-      'assets/learning/input/reading/beginner/01_yosi_goes_to_school.md':
-          GuideLessonStatus.studying,
-      'assets/learning/input/reading/intermediate/02_city_trip.md':
-          GuideLessonStatus.read,
+      'yosi_goes_to_school': GuideLessonStatus.studying,
+      'city_trip': GuideLessonStatus.read,
+    });
+  });
+
+  test('guide progress store writes stable lesson keys', () async {
+    final store = SharedPreferencesGuideProgressStore();
+
+    await store.setLessonStatus(
+      'assets/learning/input/guide/01_intro_alphabet.md',
+      GuideLessonStatus.studying,
+    );
+
+    final prefs = await SharedPreferences.getInstance();
+    final rawPayload = prefs.getString('guide_lesson_statuses_v3');
+
+    expect(rawPayload, isNotNull);
+    expect(jsonDecode(rawPayload!), <String, Object?>{
+      'intro_alphabet': 'studying',
+    });
+  });
+
+  test('reading progress store writes stable lesson keys', () async {
+    final store = SharedPreferencesReadingProgressStore();
+
+    await store.setLessonStatus(
+      'assets/learning/input/reading/beginner/01_yosi_goes_to_school.md',
+      GuideLessonStatus.read,
+    );
+
+    final prefs = await SharedPreferences.getInstance();
+    final rawPayload = prefs.getString('reading_lesson_statuses_v2');
+
+    expect(rawPayload, isNotNull);
+    expect(jsonDecode(rawPayload!), <String, Object?>{
+      'yosi_goes_to_school': 'read',
     });
   });
 
@@ -215,6 +244,8 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.tap(find.byIcon(Icons.library_books_outlined));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.menu_book_rounded).first);
     await tester.pumpAndSettle();
 
     expect(find.text('Не прочитано'), findsOneWidget);

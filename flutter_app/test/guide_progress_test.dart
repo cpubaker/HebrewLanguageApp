@@ -15,12 +15,16 @@ import 'package:hebrew_language_flutter/services/reading_progress_store.dart';
 import 'package:hebrew_language_flutter/services/verb_audio_player.dart';
 import 'package:hebrew_language_flutter/services/word_progress_store.dart';
 
-const _unreadLabel = '\u041d\u0435 \u043f\u0440\u043e\u0447\u0438\u0442\u0430\u043d\u043e';
-const _studyingLabel = '\u0412\u0438\u0432\u0447\u0430\u0454\u0442\u044c\u0441\u044f';
+const _unreadLabel =
+    '\u041d\u0435 \u043f\u0440\u043e\u0447\u0438\u0442\u0430\u043d\u043e';
+const _studyingLabel =
+    '\u0412\u0438\u0432\u0447\u0430\u0454\u0442\u044c\u0441\u044f';
 const _readLabel = '\u041f\u0440\u043e\u0447\u0438\u0442\u0430\u043d\u043e';
 const _guideTitle = '\u0414\u043e\u0432\u0456\u0434\u043d\u0438\u043a';
-const _outlineHeading = '\u0423 \u0446\u0456\u0439 \u0441\u0442\u0430\u0442\u0442\u0456';
-const _nextLessonLabel = '\u041d\u0430\u0441\u0442\u0443\u043f\u043d\u0430 \u0442\u0435\u043c\u0430';
+const _outlineHeading =
+    '\u0423 \u0446\u0456\u0439 \u0441\u0442\u0430\u0442\u0442\u0456';
+const _nextLessonLabel =
+    '\u041d\u0430\u0441\u0442\u0443\u043f\u043d\u0430 \u0442\u0435\u043c\u0430';
 const _changeStatusTooltip =
     '\u0417\u043c\u0456\u043d\u0438\u0442\u0438 \u0441\u0442\u0430\u0442\u0443\u0441 \u0443\u0440\u043e\u043a\u0443';
 const _openSectionFilterTooltip =
@@ -60,6 +64,8 @@ void main() {
 
     await tester.tap(find.byIcon(Icons.library_books_outlined));
     await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.menu_book_rounded).first);
+    await tester.pumpAndSettle();
 
     expect(find.text(_unreadLabel), findsOneWidget);
 
@@ -71,10 +77,7 @@ void main() {
     await tester.tap(find.byTooltip(_changeStatusTooltip));
     await tester.pumpAndSettle();
 
-    expect(
-      guideStore.lessonStatuses[_introAssetPath],
-      GuideLessonStatus.read,
-    );
+    expect(guideStore.lessonStatuses['intro_alphabet'], GuideLessonStatus.read);
     expect(find.text(_readLabel), findsWidgets);
   });
 
@@ -112,7 +115,7 @@ void main() {
             ],
             documentLoader: _GuideSearchDocumentLoader(),
             lessonStatuses: const <String, GuideLessonStatus>{},
-            onStatusChanged: (_, _) {},
+            onStatusChanged: (_, _) => true,
           ),
         ),
       ),
@@ -190,6 +193,7 @@ void main() {
           initialStatus: GuideLessonStatus.unread,
           onStatusChanged: (status) {
             latestStatus = status;
+            return true;
           },
         ),
       ),
@@ -219,6 +223,7 @@ void main() {
           initialStatus: GuideLessonStatus.studying,
           onStatusChanged: (status) {
             latestStatus = status;
+            return true;
           },
         ),
       ),
@@ -274,7 +279,7 @@ void main() {
             ],
             documentLoader: _GuideAdjacentTitlesDocumentLoader(),
             initialStatus: GuideLessonStatus.studying,
-            onStatusChanged: (_) {},
+            onStatusChanged: (_) => true,
           ),
         ),
       );
@@ -320,7 +325,7 @@ void main() {
             ],
             documentLoader: _GuideRelatedTopicsCleanupLoader(),
             initialStatus: GuideLessonStatus.studying,
-            onStatusChanged: (_) {},
+            onStatusChanged: (_) => true,
           ),
         ),
       );
@@ -363,7 +368,7 @@ void main() {
               ],
               documentLoader: _GuideNavigationFlowDocumentLoader(),
               lessonStatuses: const <String, GuideLessonStatus>{},
-              onStatusChanged: (_, _) {},
+              onStatusChanged: (_, _) => true,
             ),
           ),
         ),
@@ -455,7 +460,8 @@ class _GuideSearchDocumentLoader implements LessonDocumentLoader {
       title: 'Formal vs Spoken',
       summary: 'How to sound natural instead of overly formal.',
       headings: ['Natural alternatives'],
-      body: '## Natural alternatives\n\nThis lesson shows more natural phrasing.',
+      body:
+          '## Natural alternatives\n\nThis lesson shows more natural phrasing.',
     );
   }
 }
