@@ -1,6 +1,12 @@
 import 'package:flutter/foundation.dart';
 
-enum AppFeature { nightMode, advancedPractice, extraLessons, aiWordContexts }
+enum AppFeature {
+  nightMode,
+  advancedPractice,
+  extraLessons,
+  aiWordContexts,
+  aiPracticeTexts,
+}
 
 @immutable
 class FeatureAccessDecision {
@@ -32,6 +38,7 @@ class StaticFeatureAccessService implements FeatureAccessService {
       AppFeature.advancedPractice,
       AppFeature.extraLessons,
       AppFeature.aiWordContexts,
+      AppFeature.aiPracticeTexts,
     },
   });
 
@@ -70,6 +77,10 @@ class StaticFeatureAccessService implements FeatureAccessService {
       AppFeature.aiWordContexts => const _FeatureAccessMetadata(
         title: 'AI word contexts',
         description: 'AI-generated word contexts are available in Pro.',
+      ),
+      AppFeature.aiPracticeTexts => const _FeatureAccessMetadata(
+        title: 'AI practice texts',
+        description: 'AI-generated practice texts are available in Pro.',
       ),
     };
   }

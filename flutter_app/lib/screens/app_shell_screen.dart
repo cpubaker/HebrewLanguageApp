@@ -11,6 +11,7 @@ import '../models/learning_context.dart';
 import '../models/learning_word.dart';
 import '../services/ai_context_service.dart';
 import '../services/ai_context_settings_store.dart';
+import '../services/ai_practice_text_settings_store.dart';
 import '../services/audio_playback_awareness.dart';
 import '../services/feature_access_service.dart';
 import '../services/flashcard_session.dart';
@@ -45,6 +46,7 @@ class AppShellScreen extends StatefulWidget {
     required this.featureAccessService,
     required this.aiContextService,
     required this.aiContextSettingsStore,
+    required this.aiPracticeTextSettingsStore,
     required this.audioPlayerFactory,
     required this.isDarkMode,
     required this.onToggleThemeMode,
@@ -56,6 +58,7 @@ class AppShellScreen extends StatefulWidget {
   final FeatureAccessService featureAccessService;
   final AiContextService aiContextService;
   final AiContextSettingsStore aiContextSettingsStore;
+  final AiPracticeTextSettingsStore aiPracticeTextSettingsStore;
   final CreateVerbAudioPlayer audioPlayerFactory;
   final CreateAudioPlaybackAwareness audioPlaybackAwarenessFactory;
   final bool isDarkMode;
@@ -89,6 +92,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
   _MoreSection _moreSection = _MoreSection.overview;
   bool _autoHideBottomNavOnScroll = true;
   bool _aiWordContextsEnabled = false;
+  bool _aiPracticeTextsEnabled = false;
   bool _preferWritingPractice = false;
   FlashcardDeckMode _preferredFlashcardDeckMode = FlashcardDeckMode.allWords;
   bool _isBottomNavVisible = true;
@@ -99,6 +103,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
     super.initState();
     _bundleFuture = _loadBundle();
     unawaited(_restoreAiWordContextsEnabled());
+    unawaited(_restoreAiPracticeTextsEnabled());
   }
 
   Future<void> _restoreAiWordContextsEnabled() async {
@@ -111,6 +116,19 @@ class _AppShellScreenState extends State<AppShellScreen> {
 
     setState(() {
       _aiWordContextsEnabled = true;
+    });
+  }
+
+  Future<void> _restoreAiPracticeTextsEnabled() async {
+    final enabled = await widget.aiPracticeTextSettingsStore.loadEnabled();
+    if (!mounted ||
+        !enabled ||
+        !widget.featureAccessService.isEnabled(AppFeature.aiPracticeTexts)) {
+      return;
+    }
+
+    setState(() {
+      _aiPracticeTextsEnabled = true;
     });
   }
 
@@ -766,6 +784,21 @@ class _AppShellScreenState extends State<AppShellScreen> {
     unawaited(widget.aiContextSettingsStore.saveEnabled(value));
   }
 
+  void _setAiPracticeTextsEnabled(bool value) {
+    final decision = widget.featureAccessService.accessFor(
+      AppFeature.aiPracticeTexts,
+    );
+    if (value && !decision.isEnabled) {
+      _showFeatureLocked(decision);
+      return;
+    }
+
+    setState(() {
+      _aiPracticeTextsEnabled = value;
+    });
+    unawaited(widget.aiPracticeTextSettingsStore.saveEnabled(value));
+  }
+
   void _setPreferWritingPractice(bool value) {
     setState(() {
       _preferWritingPractice = value;
@@ -1114,6 +1147,11 @@ class _AppShellScreenState extends State<AppShellScreen> {
               AppFeature.aiWordContexts,
             ),
             onAiWordContextsEnabledChanged: _setAiWordContextsEnabled,
+            aiPracticeTextsEnabled: _aiPracticeTextsEnabled,
+            aiPracticeTextsAccess: widget.featureAccessService.accessFor(
+              AppFeature.aiPracticeTexts,
+            ),
+            onAiPracticeTextsEnabledChanged: _setAiPracticeTextsEnabled,
             preferWritingPractice: _preferWritingPractice,
             onPreferWritingPracticeChanged: _setPreferWritingPractice,
             preferredFlashcardDeckMode: _preferredFlashcardDeckMode,

@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'screens/app_shell_screen.dart';
 import 'services/ai_context_service.dart';
 import 'services/ai_context_settings_store.dart';
+import 'services/ai_practice_text_settings_store.dart';
 import 'services/audio_playback_awareness.dart';
 import 'services/feature_access_service.dart';
 import 'services/guide_progress_store.dart';
@@ -30,6 +31,7 @@ class HebrewFlutterApp extends StatefulWidget {
     FeatureAccessService? featureAccessService,
     AiContextService? aiContextService,
     AiContextSettingsStore? aiContextSettingsStore,
+    AiPracticeTextSettingsStore? aiPracticeTextSettingsStore,
     CreateVerbAudioPlayer? audioPlayerFactory,
     CreateAudioPlaybackAwareness? audioPlaybackAwarenessFactory,
     this.themeModeStore,
@@ -43,6 +45,7 @@ class HebrewFlutterApp extends StatefulWidget {
        _featureAccessService = featureAccessService,
        _aiContextService = aiContextService,
        _aiContextSettingsStore = aiContextSettingsStore,
+       _aiPracticeTextSettingsStore = aiPracticeTextSettingsStore,
        _audioPlayerFactory = audioPlayerFactory,
        _audioPlaybackAwarenessFactory = audioPlaybackAwarenessFactory;
 
@@ -55,6 +58,7 @@ class HebrewFlutterApp extends StatefulWidget {
   final FeatureAccessService? _featureAccessService;
   final AiContextService? _aiContextService;
   final AiContextSettingsStore? _aiContextSettingsStore;
+  final AiPracticeTextSettingsStore? _aiPracticeTextSettingsStore;
   final CreateVerbAudioPlayer? _audioPlayerFactory;
   final CreateAudioPlaybackAwareness? _audioPlaybackAwarenessFactory;
   final ThemeModeStore? themeModeStore;
@@ -145,6 +149,9 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
         aiContextSettingsStore:
             widget._aiContextSettingsStore ??
             const SharedPreferencesAiContextSettingsStore(),
+        aiPracticeTextSettingsStore:
+            widget._aiPracticeTextSettingsStore ??
+            const SharedPreferencesAiPracticeTextSettingsStore(),
         audioPlayerFactory:
             widget._audioPlayerFactory ?? createAssetVerbAudioPlayer,
         audioPlaybackAwarenessFactory:

@@ -350,6 +350,9 @@ class MoreSettingsScreen extends StatelessWidget {
     required this.aiWordContextsEnabled,
     required this.aiWordContextsAccess,
     required this.onAiWordContextsEnabledChanged,
+    required this.aiPracticeTextsEnabled,
+    required this.aiPracticeTextsAccess,
+    required this.onAiPracticeTextsEnabledChanged,
     required this.preferWritingPractice,
     required this.onPreferWritingPracticeChanged,
     required this.preferredFlashcardDeckMode,
@@ -361,6 +364,9 @@ class MoreSettingsScreen extends StatelessWidget {
   final bool aiWordContextsEnabled;
   final FeatureAccessDecision aiWordContextsAccess;
   final ValueChanged<bool> onAiWordContextsEnabledChanged;
+  final bool aiPracticeTextsEnabled;
+  final FeatureAccessDecision aiPracticeTextsAccess;
+  final ValueChanged<bool> onAiPracticeTextsEnabledChanged;
   final bool preferWritingPractice;
   final ValueChanged<bool> onPreferWritingPracticeChanged;
   final FlashcardDeckMode preferredFlashcardDeckMode;
@@ -405,11 +411,13 @@ class MoreSettingsScreen extends StatelessWidget {
                 isLocked: !aiWordContextsAccess.isEnabled,
               ),
               const SizedBox(height: 12),
-              const _SettingsSwitchTile(
+              _SettingsSwitchTile(
                 title: 'ШІ-тексти для практики',
                 subtitle:
                     'Створює короткі тексти під ваш рівень і темп навчання, поєднуючи нові слова з уже знайомою лексикою.',
-                value: false,
+                value: aiPracticeTextsEnabled,
+                onChanged: onAiPracticeTextsEnabledChanged,
+                isLocked: !aiPracticeTextsAccess.isEnabled,
               ),
               const SizedBox(height: 18),
               Text(
