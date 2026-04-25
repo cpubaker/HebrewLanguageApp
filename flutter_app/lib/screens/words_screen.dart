@@ -315,7 +315,11 @@ class _WordsScreenState extends State<WordsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final tokens = Theme.of(context).appTokens;
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+    final accentForeground = theme.brightness == Brightness.dark
+        ? tokens.heroText
+        : Colors.white;
     final progress = StudyProgressSnapshot.fromWords(widget.words);
     final filterSummaries = <_WordsFilter, int>{
       _WordsFilter.all: progress.total,
@@ -471,7 +475,7 @@ class _WordsScreenState extends State<WordsScreen> {
                 tooltip: 'Пошук по словнику',
                 onPressed: _openSearch,
                 backgroundColor: const Color(0xFF8C6A2A),
-                foregroundColor: Colors.white,
+                foregroundColor: accentForeground,
                 child: const Icon(Icons.search_rounded),
               ),
             ],

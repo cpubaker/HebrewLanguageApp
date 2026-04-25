@@ -866,6 +866,15 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+    final heroForeground = theme.brightness == Brightness.dark
+        ? tokens.heroText
+        : Colors.white;
+    final heroMutedForeground = theme.brightness == Brightness.dark
+        ? tokens.heroMutedText
+        : Colors.white.withValues(alpha: 0.92);
+
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
@@ -914,8 +923,8 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
                             if (widget.lesson.sectionLabel != null)
                               _GuideSectionPill(
                                 label: widget.lesson.sectionLabel!,
-                                foregroundColor: Colors.white,
-                                backgroundColor: Colors.white.withValues(
+                                foregroundColor: heroForeground,
+                                backgroundColor: heroForeground.withValues(
                                   alpha: 0.18,
                                 ),
                               ),
@@ -927,8 +936,8 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
                                   nextLessonProgressStatus(_status),
                                 );
                               },
-                              foregroundColor: Colors.white,
-                              backgroundColor: Colors.white.withValues(
+                              foregroundColor: heroForeground,
+                              backgroundColor: heroForeground.withValues(
                                 alpha: 0.18,
                               ),
                             ),
@@ -937,21 +946,19 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
                         const SizedBox(height: 14),
                         Text(
                           document.title,
-                          style: Theme.of(context).textTheme.headlineMedium
-                              ?.copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w800,
-                              ),
+                          style: theme.textTheme.headlineMedium?.copyWith(
+                            color: heroForeground,
+                            fontWeight: FontWeight.w800,
+                          ),
                         ),
                         if (document.summary.trim().isNotEmpty) ...[
                           const SizedBox(height: 14),
                           Text(
                             document.summary.trim(),
-                            style: Theme.of(context).textTheme.bodyLarge
-                                ?.copyWith(
-                                  color: Colors.white.withValues(alpha: 0.92),
-                                  height: 1.45,
-                                ),
+                            style: theme.textTheme.bodyLarge?.copyWith(
+                              color: heroMutedForeground,
+                              height: 1.45,
+                            ),
                           ),
                         ],
                       ],

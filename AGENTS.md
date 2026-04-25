@@ -22,6 +22,7 @@
 - Do not introduce a second source of truth for learning content unless the task explicitly defines the sync strategy.
 - Treat light and night mode as first-class app states for Flutter UI work.
 - For theme-related Flutter changes, prefer shared theme tokens and `ThemeData` over screen-local hardcoded light colors.
+- In Flutter night mode, avoid pure white text; use shared warm muted theme tokens for foreground colors.
 
 ## Where To Start
 - Flutter app entry: `flutter_app/lib/main.dart`

@@ -213,7 +213,7 @@ class _AppThemePalette {
         elevatedSurface: Color(0xFF17201D),
         subtleSurface: Color(0xFF212D28),
         mutedText: Color(0xFFB8B0A4),
-        secondaryText: Color(0xFFD7CCBE),
+        secondaryText: Color(0xFFC8BDAF),
         outlineSoft: Color(0x335A6C64),
         shadowColor: Color(0x42000000),
         progressTrack: Color(0xFF2B3833),
@@ -221,8 +221,8 @@ class _AppThemePalette {
         heroGradientMiddle: Color(0xFF18352C),
         heroGradientEnd: Color(0xFF5B4824),
         heroChipBackground: Color(0x24FFF8EE),
-        heroText: Color(0xFFF5EFE4),
-        heroMutedText: Color(0xFFE3D9C9),
+        heroText: Color(0xFFDAD1C3),
+        heroMutedText: Color(0xFFC8BDAF),
         heroShadowColor: Color(0x44000000),
       ),
     );
@@ -244,16 +244,17 @@ ThemeData _buildAppTheme(_AppThemePalette palette) {
         secondary: palette.secondaryColor,
         surface: palette.tokens.elevatedSurface,
         onSurface: palette.brightness == Brightness.dark
-            ? const Color(0xFFF3EEE4)
+            ? const Color(0xFFD8D0C2)
             : const Color(0xFF2D2A24),
         onSurfaceVariant: palette.tokens.secondaryText,
         outline: palette.brightness == Brightness.dark
             ? const Color(0xFF55645E)
             : const Color(0xFF9F9484),
       );
-  final baseTextTheme = palette.brightness == Brightness.dark
-      ? Typography.whiteMountainView
-      : Typography.blackMountainView;
+  final baseTextTheme = Typography.blackMountainView.apply(
+    bodyColor: colorScheme.onSurface,
+    displayColor: colorScheme.onSurface,
+  );
 
   return ThemeData(
     colorScheme: colorScheme,

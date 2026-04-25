@@ -237,7 +237,11 @@ class _ReadingScreenState extends State<ReadingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final tokens = Theme.of(context).appTokens;
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+    final accentForeground = theme.brightness == Brightness.dark
+        ? tokens.heroText
+        : Colors.white;
     final progress = LessonProgressSnapshot.fromLessons(
       lessons: widget.lessons,
       lessonStatuses: widget.lessonStatuses,
@@ -351,7 +355,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
                       child: FloatingActionButton.small(
                         heroTag: 'readingScrollToTop',
                         onPressed: _scrollToTop,
-                        backgroundColor: Colors.white,
+                        backgroundColor: tokens.elevatedSurface,
                         foregroundColor: const Color(0xFF1D4ED8),
                         child: const Icon(Icons.vertical_align_top_rounded),
                       ),
@@ -366,7 +370,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
                     ? 'Відкрити фільтр'
                     : 'Змінити фільтр',
                 backgroundColor: const Color(0xFF1D4ED8),
-                foregroundColor: Colors.white,
+                foregroundColor: accentForeground,
                 child: Icon(
                   _selectedLevelKeys.isEmpty
                       ? Icons.tune_rounded
@@ -516,6 +520,11 @@ class _ReadingDetailScreenState extends State<ReadingDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+    final heroForeground = theme.brightness == Brightness.dark
+        ? tokens.heroText
+        : Colors.white;
     final level = readingLevelLabelFromAssetPath(widget.lesson.assetPath);
 
     return Scaffold(
@@ -569,26 +578,24 @@ class _ReadingDetailScreenState extends State<ReadingDetailScreen> {
                                 vertical: 6,
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.white.withValues(alpha: 0.18),
+                                color: heroForeground.withValues(alpha: 0.18),
                                 borderRadius: BorderRadius.circular(999),
                               ),
                               child: Text(
                                 level,
-                                style: Theme.of(context).textTheme.labelLarge
-                                    ?.copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700,
-                                    ),
+                                style: theme.textTheme.labelLarge?.copyWith(
+                                  color: heroForeground,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                             ),
                             const SizedBox(height: 14),
                             Text(
                               document.title,
-                              style: Theme.of(context).textTheme.headlineMedium
-                                  ?.copyWith(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w800,
-                                  ),
+                              style: theme.textTheme.headlineMedium?.copyWith(
+                                color: heroForeground,
+                                fontWeight: FontWeight.w800,
+                              ),
                             ),
                           ],
                         ),
@@ -599,8 +606,8 @@ class _ReadingDetailScreenState extends State<ReadingDetailScreen> {
                         onPressed: () {
                           _updateStatus(nextLessonProgressStatus(_status));
                         },
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.white.withValues(alpha: 0.18),
+                        foregroundColor: heroForeground,
+                        backgroundColor: heroForeground.withValues(alpha: 0.18),
                       ),
                     ],
                   ),

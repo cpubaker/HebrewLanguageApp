@@ -217,7 +217,11 @@ class _VerbsScreenState extends State<VerbsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final tokens = Theme.of(context).appTokens;
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+    final accentForeground = theme.brightness == Brightness.dark
+        ? tokens.heroText
+        : Colors.white;
     final filteredLessons = _filteredLessons;
     final hasResults = filteredLessons.isNotEmpty;
 
@@ -318,7 +322,7 @@ class _VerbsScreenState extends State<VerbsScreen> {
                 onPressed: _openSearch,
                 tooltip: 'Показати пошук',
                 backgroundColor: const Color(0xFF7C3AED),
-                foregroundColor: Colors.white,
+                foregroundColor: accentForeground,
                 child: const Icon(Icons.search_rounded),
               ),
             ],
@@ -716,6 +720,13 @@ class _VerbHeroCardState extends State<_VerbHeroCard> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+    final heroForeground = theme.brightness == Brightness.dark
+        ? tokens.heroText
+        : Colors.white;
+    final disabledHeroForeground = heroForeground.withValues(alpha: 0.65);
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -739,8 +750,8 @@ class _VerbHeroCardState extends State<_VerbHeroCard> {
           Expanded(
             child: Text(
               widget.title,
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                color: Colors.white,
+              style: theme.textTheme.headlineMedium?.copyWith(
+                color: heroForeground,
                 fontWeight: FontWeight.w800,
               ),
             ),
@@ -748,7 +759,7 @@ class _VerbHeroCardState extends State<_VerbHeroCard> {
           const SizedBox(width: 12),
           Container(
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.16),
+              color: heroForeground.withValues(alpha: 0.16),
               borderRadius: BorderRadius.circular(18),
             ),
             child: IconButton(
@@ -759,19 +770,23 @@ class _VerbHeroCardState extends State<_VerbHeroCard> {
                   : 'Аудіо поки недоступне',
               onPressed: _hasAudio && !_isBusy ? _togglePlayback : null,
               icon: _isBusy
-                  ? const SizedBox(
+                  ? SizedBox(
                       width: 18,
                       height: 18,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          heroForeground,
+                        ),
                       ),
                     )
                   : Icon(
                       _isPlaying
                           ? Icons.stop_circle_outlined
                           : Icons.volume_up_rounded,
-                      color: _hasAudio ? Colors.white : Colors.white70,
+                      color: _hasAudio
+                          ? heroForeground
+                          : disabledHeroForeground,
                     ),
             ),
           ),
