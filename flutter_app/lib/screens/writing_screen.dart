@@ -164,17 +164,17 @@ class _WritingScreenState extends State<WritingScreen> {
                             color: theme.colorScheme.onSurface,
                           ),
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      _mode == WritingPracticeMode.typing
-                          ? 'Підказку не показуємо: тут працюємо саме на пригадування.'
-                          : 'Складіть слово з блоків. Частина блоків може бути зайвою.',
-                      textAlign: TextAlign.center,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: tokens.secondaryText,
-                        height: 1.4,
+                    if (_mode == WritingPracticeMode.typing) ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        'Підказку не показуємо: тут працюємо саме на пригадування.',
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: tokens.secondaryText,
+                          height: 1.4,
+                        ),
                       ),
-                    ),
+                    ],
                   ],
                 ),
               ),
@@ -259,7 +259,7 @@ class _WritingScreenState extends State<WritingScreen> {
                 children: [
                   Expanded(
                     child: PracticeStatPill(
-                      label: 'Правильно',
+                      label: 'Вірно',
                       value: stats.correct,
                       accent: const Color(0xFF0F766E),
                     ),
