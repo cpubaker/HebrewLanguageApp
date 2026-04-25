@@ -62,7 +62,7 @@ class MoreOverviewScreen extends StatelessWidget {
               const AppPageHeader(
                 title: 'Що є в цій зоні',
                 subtitle:
-                    'Розділ «Ще» збирає службові та оглядові екрани, які не повинні перевантажувати нижню навігацію.',
+                    'Профіль збирає службові та оглядові екрани, які не повинні перевантажувати нижню навігацію.',
               ),
               const SizedBox(height: 14),
               AppActionWrap(
@@ -428,7 +428,7 @@ class MoreSettingsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 6),
               Text(
-                'Оберіть, що відкриватиметься після натискання кнопки «Практика» в розділі «Ще».',
+                'Оберіть, що відкриватиметься після натискання кнопки «Практика» в профілі.',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: const Color(0xFF6C665D),
                   height: 1.45,

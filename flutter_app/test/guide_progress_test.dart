@@ -62,7 +62,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byIcon(Icons.library_books_outlined));
+    await tester.tap(find.byIcon(Icons.school_outlined));
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(Icons.menu_book_rounded).first);
     await tester.pumpAndSettle();

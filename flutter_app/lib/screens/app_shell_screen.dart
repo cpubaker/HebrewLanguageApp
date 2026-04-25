@@ -34,9 +34,7 @@ import 'workspace_screen.dart';
 import 'words_screen.dart';
 import 'writing_screen.dart';
 
-enum _RootArea { home, learn, practice, materials, more }
-
-enum _MaterialsSection { guide, reading }
+enum _RootArea { home, learn, practice, more }
 
 enum _MoreSection { overview, progress, settings }
 
@@ -92,7 +90,6 @@ class _AppShellScreenState extends State<AppShellScreen> {
   final Map<String, int> _readingPersistenceTokens = <String, int>{};
   final Map<String, int> _wordPersistenceTokens = <String, int>{};
   _RootArea _selectedArea = _RootArea.home;
-  _MaterialsSection _materialsSection = _MaterialsSection.guide;
   _MoreSection _moreSection = _MoreSection.overview;
   bool _autoHideBottomNavOnScroll = true;
   bool _aiWordContextsEnabled = false;
@@ -715,15 +712,6 @@ class _AppShellScreenState extends State<AppShellScreen> {
     );
   }
 
-  // ignore: unused_element
-  void _openMaterialsSection(_MaterialsSection section) {
-    setState(() {
-      _materialsSection = section;
-      _selectedArea = _RootArea.materials;
-      _isBottomNavVisible = true;
-    });
-  }
-
   void _openReadingLesson(LessonEntry lesson) {
     final lessonStatus =
         _readingLessonStatuses[lesson.progressKey] ?? GuideLessonStatus.unread;
@@ -1004,9 +992,9 @@ class _AppShellScreenState extends State<AppShellScreen> {
 
   Widget _buildLearnWorkspace(LearningBundle bundle) {
     return WorkspaceHubScreen(
-      title: 'Вчити',
+      title: 'Вчитись',
       subtitle:
-          'Оберіть підмодуль для вивчення. Після вибору він відкриється окремим повноекранним екраном.',
+          'Оберіть, з чого продовжити навчання. Після вибору модуль відкриється окремим повноекранним екраном.',
       shortcuts: [
         WorkspaceShortcut(
           title: 'Слова',
@@ -1023,6 +1011,22 @@ class _AppShellScreenState extends State<AppShellScreen> {
           icon: Icons.play_lesson_rounded,
           accent: const Color(0xFF8C6A2A),
           onTap: _openLearnVerbs,
+        ),
+        WorkspaceShortcut(
+          title: 'Довідник',
+          subtitle:
+              'Теми з поясненнями, пошуком і прогресом по матеріалах. Доступно: ${bundle.guideLessons.length} уроків.',
+          icon: Icons.menu_book_rounded,
+          accent: const Color(0xFFB45309),
+          onTap: _openGuide,
+        ),
+        WorkspaceShortcut(
+          title: 'Читання',
+          subtitle:
+              'Тексти за рівнями складності з відмітками прочитаного. Доступно: ${bundle.readingLessons.length} уроків.',
+          icon: Icons.auto_stories_rounded,
+          accent: const Color(0xFF0F766E),
+          onTap: _openReading,
         ),
       ],
     );
@@ -1085,52 +1089,6 @@ class _AppShellScreenState extends State<AppShellScreen> {
     );
   }
 
-  Widget _buildMaterialsWorkspace(LearningBundle bundle) {
-    return _buildMaterialsHub(bundle);
-  }
-
-  Widget _buildMaterialsHub(LearningBundle bundle) {
-    return WorkspaceHubScreen(
-      title: 'Матеріали',
-      subtitle:
-          'Тут зібрані довідник і тексти для читання. Оберіть, з чого продовжити.',
-      shortcuts: [
-        WorkspaceShortcut(
-          title: 'Довідник',
-          subtitle:
-              'Теми з поясненнями, пошуком і прогресом по матеріалах. Доступно: ${bundle.guideLessons.length} уроків.',
-          icon: Icons.menu_book_rounded,
-          accent: const Color(0xFF8C6A2A),
-          onTap: _openGuide,
-        ),
-        WorkspaceShortcut(
-          title: 'Читання',
-          subtitle:
-              'Тексти за рівнями складності з відмітками прочитаного. Доступно: ${bundle.readingLessons.length} уроків.',
-          icon: Icons.auto_stories_rounded,
-          accent: const Color(0xFF0F766E),
-          onTap: _openReading,
-        ),
-      ],
-    );
-  }
-
-  // ignore: unused_element
-  Widget _buildMaterialsHeaderCard(LearningBundle bundle) {
-    return WorkspaceHeaderCard(
-      title: 'Матеріали',
-      subtitle: 'Довідник і тексти для читання в одному робочому просторі.',
-      sections: const [
-        WorkspaceSection(label: 'Довідник', icon: Icons.menu_book_rounded),
-        WorkspaceSection(label: 'Читання', icon: Icons.auto_stories_rounded),
-      ],
-      selectedIndex: _materialsSection.index,
-      onSectionSelected: (index) {
-        _openMaterialsSection(_MaterialsSection.values[index]);
-      },
-    );
-  }
-
   Widget _buildMoreWorkspace(LearningBundle bundle) {
     final shortcuts = [
       WorkspaceShortcut(
@@ -1141,8 +1099,9 @@ class _AppShellScreenState extends State<AppShellScreen> {
         onTap: () => _selectArea(_RootArea.home.index),
       ),
       WorkspaceShortcut(
-        title: 'Вчити',
-        subtitle: 'Слова й дієслова в одному робочому просторі.',
+        title: 'Вчитись',
+        subtitle:
+            'Слова, дієслова, довідник і читання в одному робочому просторі.',
         icon: Icons.translate_rounded,
         accent: const Color(0xFF0F766E),
         onTap: () => _selectArea(_RootArea.learn.index),
@@ -1176,19 +1135,12 @@ class _AppShellScreenState extends State<AppShellScreen> {
         accent: const Color(0xFFB91C1C),
         onTap: _openSprint,
       ),
-      WorkspaceShortcut(
-        title: 'Матеріали',
-        subtitle: 'Довідник і читання для теорії та контексту.',
-        icon: Icons.menu_book_rounded,
-        accent: const Color(0xFFB45309),
-        onTap: () => _selectArea(_RootArea.materials.index),
-      ),
     ];
 
     return WorkspaceScreen(
-      title: 'Ще',
+      title: 'Профіль',
       subtitle:
-          'Тут зібрані додаткові точки входу та оглядові екрани, які не варто тримати в root navigation.',
+          'Тут зібрані прогрес, налаштування та додаткові точки входу, які не повинні перевантажувати нижню навігацію.',
       sections: const [
         WorkspaceSection(
           label: 'Огляд',
@@ -1291,7 +1243,6 @@ class _AppShellScreenState extends State<AppShellScreen> {
                         ),
                         _buildLearnWorkspace(bundle),
                         _buildPracticeWorkspace(bundle),
-                        _buildMaterialsWorkspace(bundle),
                         _buildMoreWorkspace(bundle),
                       ],
                     ),
@@ -1401,7 +1352,7 @@ class _ExpandedBottomNavigationBar extends StatelessWidget {
         NavigationDestination(
           icon: Icon(Icons.school_outlined),
           selectedIcon: Icon(Icons.school_rounded),
-          label: 'Вчити',
+          label: 'Вчитись',
         ),
         NavigationDestination(
           icon: Icon(Icons.bolt_outlined),
@@ -1409,14 +1360,9 @@ class _ExpandedBottomNavigationBar extends StatelessWidget {
           label: 'Практика',
         ),
         NavigationDestination(
-          icon: Icon(Icons.library_books_outlined),
-          selectedIcon: Icon(Icons.library_books_rounded),
-          label: 'Матеріали',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.more_horiz_rounded),
-          selectedIcon: Icon(Icons.more_horiz_rounded),
-          label: 'Ще',
+          icon: Icon(Icons.person_outline_rounded),
+          selectedIcon: Icon(Icons.person_rounded),
+          label: 'Профіль',
         ),
       ],
     );
