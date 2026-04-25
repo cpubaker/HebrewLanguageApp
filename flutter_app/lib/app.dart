@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'screens/app_shell_screen.dart';
 import 'services/ai_context_service.dart';
 import 'services/ai_context_settings_store.dart';
+import 'services/ai_practice_text_service.dart';
 import 'services/ai_practice_text_settings_store.dart';
 import 'services/audio_playback_awareness.dart';
 import 'services/feature_access_service.dart';
@@ -31,6 +32,7 @@ class HebrewFlutterApp extends StatefulWidget {
     FeatureAccessService? featureAccessService,
     AiContextService? aiContextService,
     AiContextSettingsStore? aiContextSettingsStore,
+    AiPracticeTextService? aiPracticeTextService,
     AiPracticeTextSettingsStore? aiPracticeTextSettingsStore,
     CreateVerbAudioPlayer? audioPlayerFactory,
     CreateAudioPlaybackAwareness? audioPlaybackAwarenessFactory,
@@ -45,6 +47,7 @@ class HebrewFlutterApp extends StatefulWidget {
        _featureAccessService = featureAccessService,
        _aiContextService = aiContextService,
        _aiContextSettingsStore = aiContextSettingsStore,
+       _aiPracticeTextService = aiPracticeTextService,
        _aiPracticeTextSettingsStore = aiPracticeTextSettingsStore,
        _audioPlayerFactory = audioPlayerFactory,
        _audioPlaybackAwarenessFactory = audioPlaybackAwarenessFactory;
@@ -58,6 +61,7 @@ class HebrewFlutterApp extends StatefulWidget {
   final FeatureAccessService? _featureAccessService;
   final AiContextService? _aiContextService;
   final AiContextSettingsStore? _aiContextSettingsStore;
+  final AiPracticeTextService? _aiPracticeTextService;
   final AiPracticeTextSettingsStore? _aiPracticeTextSettingsStore;
   final CreateVerbAudioPlayer? _audioPlayerFactory;
   final CreateAudioPlaybackAwareness? _audioPlaybackAwarenessFactory;
@@ -149,6 +153,9 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
         aiContextSettingsStore:
             widget._aiContextSettingsStore ??
             const SharedPreferencesAiContextSettingsStore(),
+        aiPracticeTextService:
+            widget._aiPracticeTextService ??
+            createDefaultAiPracticeTextService(),
         aiPracticeTextSettingsStore:
             widget._aiPracticeTextSettingsStore ??
             const SharedPreferencesAiPracticeTextSettingsStore(),

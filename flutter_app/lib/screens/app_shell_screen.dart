@@ -11,6 +11,7 @@ import '../models/learning_context.dart';
 import '../models/learning_word.dart';
 import '../services/ai_context_service.dart';
 import '../services/ai_context_settings_store.dart';
+import '../services/ai_practice_text_service.dart';
 import '../services/ai_practice_text_settings_store.dart';
 import '../services/audio_playback_awareness.dart';
 import '../services/feature_access_service.dart';
@@ -23,6 +24,7 @@ import '../theme/app_theme.dart';
 import 'flashcards_screen.dart';
 import 'guide_screen.dart';
 import 'home_screen.dart';
+import 'ai_practice_text_screen.dart';
 import 'more_screen.dart';
 import 'reading_screen.dart';
 import 'repetition_screen.dart';
@@ -46,6 +48,7 @@ class AppShellScreen extends StatefulWidget {
     required this.featureAccessService,
     required this.aiContextService,
     required this.aiContextSettingsStore,
+    required this.aiPracticeTextService,
     required this.aiPracticeTextSettingsStore,
     required this.audioPlayerFactory,
     required this.isDarkMode,
@@ -58,6 +61,7 @@ class AppShellScreen extends StatefulWidget {
   final FeatureAccessService featureAccessService;
   final AiContextService aiContextService;
   final AiContextSettingsStore aiContextSettingsStore;
+  final AiPracticeTextService aiPracticeTextService;
   final AiPracticeTextSettingsStore aiPracticeTextSettingsStore;
   final CreateVerbAudioPlayer audioPlayerFactory;
   final CreateAudioPlaybackAwareness audioPlaybackAwarenessFactory;
@@ -352,6 +356,33 @@ class _AppShellScreenState extends State<AppShellScreen> {
         .toList(growable: false);
   }
 
+  List<LearningWord> _aiPracticeTextScopeWords(List<LearningWord> words) {
+    if (words.isEmpty) {
+      return const <LearningWord>[];
+    }
+
+    final reviewWords = words
+        .where(
+          (word) =>
+              classifyWordLearningState(word) == WordLearningState.needsReview,
+        )
+        .toList(growable: false);
+    if (reviewWords.isNotEmpty) {
+      return reviewWords.take(12).toList(growable: false);
+    }
+
+    final newWords = words
+        .where(
+          (word) => classifyWordLearningState(word) == WordLearningState.unseen,
+        )
+        .toList(growable: false);
+    if (newWords.isNotEmpty) {
+      return newWords.take(12).toList(growable: false);
+    }
+
+    return words.take(12).toList(growable: false);
+  }
+
   void _handleWordProgressChanged(LearningWord updatedWord) {
     final activeBundle = _bundle;
     LearningWord? previousWord;
@@ -572,6 +603,44 @@ class _AppShellScreenState extends State<AppShellScreen> {
             words: _bundle?.words ?? const <LearningWord>[],
             onWordProgressChanged: _handleWordProgressChanged,
             audioPlayerFactory: widget.audioPlayerFactory,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _openAiPracticeText() {
+    final decision = widget.featureAccessService.accessFor(
+      AppFeature.aiPracticeTexts,
+    );
+    if (!decision.isEnabled) {
+      _showFeatureLocked(decision);
+      return;
+    }
+
+    if (!_aiPracticeTextsEnabled) {
+      _showPersistenceError(
+        'Увімкніть ШІ-тексти для практики в налаштуваннях.',
+      );
+      return;
+    }
+
+    final scopeWords = _aiPracticeTextScopeWords(
+      _bundle?.words ?? const <LearningWord>[],
+    );
+    if (scopeWords.isEmpty) {
+      _showPersistenceError('Поки немає слів для генерації тексту.');
+      return;
+    }
+
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => _FullscreenModuleScreen(
+          child: AiPracticeTextScreen(
+            words: scopeWords,
+            textService: widget.aiPracticeTextService,
+            onOpenFlashcards: () => _openFlashcards(FlashcardDeckMode.allWords),
+            onOpenWriting: () => _openWritingPractice(),
           ),
         ),
       ),
@@ -1003,6 +1072,14 @@ class _AppShellScreenState extends State<AppShellScreen> {
           icon: Icons.timer_rounded,
           accent: const Color(0xFFB91C1C),
           onTap: _openSprint,
+        ),
+        WorkspaceShortcut(
+          title: 'Текст зі словами',
+          subtitle:
+              'Короткий ШІ-текст з вашими словами, перекладом і швидким переходом до практики.',
+          icon: Icons.auto_awesome_rounded,
+          accent: const Color(0xFF7C3AED),
+          onTap: _openAiPracticeText,
         ),
       ],
     );
