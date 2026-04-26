@@ -235,7 +235,7 @@ class _WritingScreenState extends State<WritingScreen> {
                 ),
               ],
               const SizedBox(height: 18),
-              if (hasAnswered)
+              if (hasAnswered) ...[
                 _WritingResultCard(
                   isCorrect: isCorrect,
                   correctAnswer:
@@ -243,18 +243,18 @@ class _WritingScreenState extends State<WritingScreen> {
                   lastCorrect: stats.lastCorrect == null
                       ? null
                       : _formatTimestamp(stats.lastCorrect!),
-                )
-              else
+                ),
+                const SizedBox(height: 18),
+              ] else if (_mode == WritingPracticeMode.typing) ...[
                 Text(
-                  _mode == WritingPracticeMode.typing
-                      ? 'Натисніть «Перевірити», коли будете готові.'
-                      : 'Перетягніть або натисніть блоки, щоб зібрати слово, а потім перевірте відповідь.',
+                  'Натисніть «Перевірити», коли будете готові.',
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: tokens.secondaryText,
                   ),
                 ),
-              const SizedBox(height: 18),
+                const SizedBox(height: 18),
+              ],
               Row(
                 children: [
                   Expanded(
