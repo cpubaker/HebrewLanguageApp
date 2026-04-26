@@ -83,29 +83,32 @@ void main() {
     );
   });
 
-  test('constructor puzzle falls back to transcription when word has no niqqud', () {
-    final session = WritingSession(const [
-      LearningWord(
-        wordId: 'word_peace',
-        hebrew: 'שלום',
-        english: 'peace',
-        ukrainian: 'мир',
-        transcription: 'shalom',
-        correct: 0,
-        wrong: 0,
-      ),
-    ], rng: Random(6));
+  test(
+    'constructor puzzle falls back to transcription when word has no niqqud',
+    () {
+      final session = WritingSession(const [
+        LearningWord(
+          wordId: 'word_peace',
+          hebrew: 'שלום',
+          english: 'peace',
+          ukrainian: 'мир',
+          transcription: 'shalom',
+          correct: 0,
+          wrong: 0,
+        ),
+      ], rng: Random(6));
 
-    final prompt = session.nextPrompt();
+      final prompt = session.nextPrompt();
 
-    expect(prompt, isNotNull);
-    expect(prompt!.constructorPuzzle.solution.length, 2);
-    expect(prompt.constructorPuzzle.solution.join(), 'שלום');
-    expect(
-      prompt.constructorPuzzle.availableBlocks.length,
-      greaterThan(prompt.constructorPuzzle.solution.length),
-    );
-  });
+      expect(prompt, isNotNull);
+      expect(prompt!.constructorPuzzle.solution.length, 2);
+      expect(prompt.constructorPuzzle.solution.join(), 'שלום');
+      expect(
+        prompt.constructorPuzzle.availableBlocks.length,
+        greaterThan(prompt.constructorPuzzle.solution.length),
+      );
+    },
+  );
 
   test('submitAnswer updates writing stats and tolerates missing niqqud', () {
     final session = WritingSession(
@@ -142,18 +145,18 @@ void main() {
     () {
       final session = WritingSession(
         const [
-        LearningWord(
-          wordId: 'word_peace',
-          hebrew: 'שלום',
-          english: 'peace',
-          ukrainian: 'мир',
-          transcription: 'shalom',
-          correct: 0,
-          wrong: 0,
-          writingCorrect: 2,
-          writingWrong: 1,
-          writingLastCorrect: '2026-04-06T08:00:00Z',
-        ),
+          LearningWord(
+            wordId: 'word_peace',
+            hebrew: 'שלום',
+            english: 'peace',
+            ukrainian: 'мир',
+            transcription: 'shalom',
+            correct: 0,
+            wrong: 0,
+            writingCorrect: 2,
+            writingWrong: 1,
+            writingLastCorrect: '2026-04-06T08:00:00Z',
+          ),
         ],
         rng: Random(4),
         now: () => DateTime.parse('2026-04-19T10:45:00Z'),
@@ -171,4 +174,35 @@ void main() {
       expect(result.word.writingLastCorrect, '2026-04-06T08:00:00Z');
     },
   );
+
+  test('submitUnknown records a wrong writing answer without user input', () {
+    final session = WritingSession(
+      const [
+        LearningWord(
+          wordId: 'word_peace',
+          hebrew: 'שלום',
+          english: 'peace',
+          ukrainian: 'мир',
+          transcription: 'shalom',
+          correct: 0,
+          wrong: 0,
+        ),
+      ],
+      rng: Random(7),
+      now: () => DateTime.parse('2026-04-26T09:50:00Z'),
+    );
+    session.nextPrompt();
+
+    final result = session.submitUnknown();
+
+    expect(result, isNotNull);
+    expect(result!.status, WritingAnswerStatus.submitted);
+    expect(result.isCorrect, isFalse);
+    expect(result.correctAnswer, 'שלום');
+    expect(result.word.writingCorrect, 0);
+    expect(result.word.writingWrong, 1);
+    expect(result.word.lastReviewedAt, '2026-04-26T09:50:00.000Z');
+    expect(result.word.lastReviewCorrect, isFalse);
+    expect(session.answeredCount, 1);
+  });
 }

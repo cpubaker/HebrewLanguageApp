@@ -136,34 +136,32 @@ class WritingSession {
       return WritingAnswerResult.empty(word: activeWord);
     }
 
-    answered = true;
     final isCorrect = normalizedAnswer == correctAnswer;
-    answeredCount += 1;
-    final reviewedAt = _now().toIso8601String();
-
-    final updatedWord = activeWord.copyWith(
-      lastReviewedAt: reviewedAt,
-      lastReviewCorrect: isCorrect,
-      writingCorrect: isCorrect
-          ? activeWord.writingCorrect + 1
-          : activeWord.writingCorrect,
-      writingWrong: isCorrect
-          ? activeWord.writingWrong
-          : activeWord.writingWrong + 1,
-      writingLastCorrect: isCorrect
-          ? reviewedAt
-          : activeWord.writingLastCorrect,
+    final updatedWord = _recordSubmittedAnswer(
+      activeWord: activeWord,
+      isCorrect: isCorrect,
     );
-
-    final index = _words.indexWhere((word) => word.wordId == activeWord.wordId);
-    if (index != -1) {
-      _words[index] = updatedWord;
-    }
-
-    currentWord = updatedWord;
 
     return WritingAnswerResult.submitted(
       isCorrect: isCorrect,
+      word: updatedWord,
+      correctAnswer: activeWord.hebrew,
+    );
+  }
+
+  WritingAnswerResult? submitUnknown() {
+    final activeWord = currentWord;
+    if (answered || activeWord == null) {
+      return null;
+    }
+
+    final updatedWord = _recordSubmittedAnswer(
+      activeWord: activeWord,
+      isCorrect: false,
+    );
+
+    return WritingAnswerResult.submitted(
+      isCorrect: false,
       word: updatedWord,
       correctAnswer: activeWord.hebrew,
     );
@@ -193,6 +191,37 @@ class WritingSession {
         .replaceAll(RegExp(r'[\u0591-\u05C7]'), '')
         .replaceAll(RegExp(r'\s+'), ' ')
         .trim();
+  }
+
+  LearningWord _recordSubmittedAnswer({
+    required LearningWord activeWord,
+    required bool isCorrect,
+  }) {
+    answered = true;
+    answeredCount += 1;
+    final reviewedAt = _now().toIso8601String();
+
+    final updatedWord = activeWord.copyWith(
+      lastReviewedAt: reviewedAt,
+      lastReviewCorrect: isCorrect,
+      writingCorrect: isCorrect
+          ? activeWord.writingCorrect + 1
+          : activeWord.writingCorrect,
+      writingWrong: isCorrect
+          ? activeWord.writingWrong
+          : activeWord.writingWrong + 1,
+      writingLastCorrect: isCorrect
+          ? reviewedAt
+          : activeWord.writingLastCorrect,
+    );
+
+    final index = _words.indexWhere((word) => word.wordId == activeWord.wordId);
+    if (index != -1) {
+      _words[index] = updatedWord;
+    }
+
+    currentWord = updatedWord;
+    return updatedWord;
   }
 
   ConstructorPuzzle _buildConstructorPuzzle(LearningWord word) {
@@ -264,20 +293,13 @@ class WritingSession {
     return distractors;
   }
 
-  List<String> _buildFallbackDistractors(
-    String hebrew,
-    List<String> solution,
-  ) {
+  List<String> _buildFallbackDistractors(String hebrew, List<String> solution) {
     final clusters = _splitIntoClusters(hebrew);
     final candidates = <String>{};
     final maxChunkLength = min(2, clusters.length);
 
     for (var chunkLength = 1; chunkLength <= maxChunkLength; chunkLength += 1) {
-      for (
-        var start = 0;
-        start <= clusters.length - chunkLength;
-        start += 1
-      ) {
+      for (var start = 0; start <= clusters.length - chunkLength; start += 1) {
         final candidate = clusters.sublist(start, start + chunkLength).join();
         if (candidate == hebrew || solution.contains(candidate)) {
           continue;

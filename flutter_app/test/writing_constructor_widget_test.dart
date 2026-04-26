@@ -44,11 +44,18 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.scrollUntilVisible(
-        find.widgetWithText(FilledButton, 'Перевірити'),
+        find.widgetWithText(OutlinedButton, 'Перевірити'),
         200,
       );
       await tester.pumpAndSettle();
-      await tester.tap(find.widgetWithText(FilledButton, 'Перевірити'));
+      expect(find.widgetWithText(FilledButton, 'Не знаю'), findsOneWidget);
+      expect(find.widgetWithText(FilledButton, 'Перевірити'), findsNothing);
+
+      final errorsLeft = tester.getTopLeft(find.textContaining('Помилки')).dx;
+      final correctLeft = tester.getTopLeft(find.textContaining('Вірно')).dx;
+      expect(errorsLeft, lessThan(correctLeft));
+
+      await tester.tap(find.widgetWithText(OutlinedButton, 'Перевірити'));
       await tester.pumpAndSettle();
 
       expect(updatedWord, isNotNull);
@@ -65,4 +72,54 @@ void main() {
       expect(find.text('Доступні блоки'), findsOneWidget);
     },
   );
+
+  testWidgets('constructor mode unknown button records a writing mistake', (
+    WidgetTester tester,
+  ) async {
+    LearningWord? updatedWord;
+    tester.view.physicalSize = const Size(430, 1400);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: WritingScreen(
+            initialMode: WritingPracticeMode.constructor,
+            words: const [
+              LearningWord(
+                wordId: 'word_peace',
+                hebrew: 'שלום',
+                english: 'peace',
+                ukrainian: 'мир',
+                transcription: 'shalom',
+                correct: 0,
+                wrong: 0,
+              ),
+            ],
+            onWordProgressChanged: (word) {
+              updatedWord = word;
+            },
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.scrollUntilVisible(
+      find.widgetWithText(FilledButton, 'Не знаю'),
+      200,
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(FilledButton, 'Не знаю'));
+    await tester.pumpAndSettle();
+
+    expect(updatedWord, isNotNull);
+    expect(updatedWord!.writingCorrect, 0);
+    expect(updatedWord!.writingWrong, 1);
+    expect(find.text('Ось правильний варіант'), findsOneWidget);
+    expect(find.text('שלום'), findsOneWidget);
+    expect(find.widgetWithText(OutlinedButton, 'Далі'), findsOneWidget);
+  });
 }

@@ -98,6 +98,20 @@ class _WritingScreenState extends State<WritingScreen> {
     widget.onWordProgressChanged(result.word);
   }
 
+  void _submitUnknownAnswer() {
+    final result = _session.submitUnknown();
+    if (result == null) {
+      return;
+    }
+
+    setState(() {
+      _currentAnswer = result;
+      _inlineMessage = null;
+    });
+
+    widget.onWordProgressChanged(result.word);
+  }
+
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
@@ -265,41 +279,49 @@ class _WritingScreenState extends State<WritingScreen> {
                 const SizedBox(height: 18),
               ],
               Row(
-                children: [
-                  Expanded(
-                    child: PracticeStatPill(
-                      label: 'Вірно',
-                      value: stats.correct,
-                      accent: const Color(0xFF0F766E),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: PracticeStatPill(
-                      label: 'Помилки',
-                      value: stats.wrong,
-                      accent: const Color(0xFFB91C1C),
-                    ),
-                  ),
-                ],
+                children: _mode == WritingPracticeMode.constructor
+                    ? [
+                        Expanded(
+                          child: PracticeStatPill(
+                            label: 'Помилки',
+                            value: stats.wrong,
+                            accent: const Color(0xFFB91C1C),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: PracticeStatPill(
+                            label: 'Вірно',
+                            value: stats.correct,
+                            accent: const Color(0xFF0F766E),
+                          ),
+                        ),
+                      ]
+                    : [
+                        Expanded(
+                          child: PracticeStatPill(
+                            label: 'Вірно',
+                            value: stats.correct,
+                            accent: const Color(0xFF0F766E),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: PracticeStatPill(
+                            label: 'Помилки',
+                            value: stats.wrong,
+                            accent: const Color(0xFFB91C1C),
+                          ),
+                        ),
+                      ],
               ),
               const SizedBox(height: 18),
-              Wrap(
-                spacing: 12,
-                runSpacing: 12,
-                alignment: WrapAlignment.center,
-                children: [
-                  FilledButton.icon(
-                    onPressed: hasAnswered ? null : _submitAnswer,
-                    icon: const Icon(Icons.check_rounded),
-                    label: const Text('Перевірити'),
-                  ),
-                  OutlinedButton.icon(
-                    onPressed: hasAnswered ? _moveToNextPrompt : null,
-                    icon: const Icon(Icons.arrow_forward_rounded),
-                    label: const Text('Далі'),
-                  ),
-                ],
+              _WritingActionButtons(
+                mode: _mode,
+                hasAnswered: hasAnswered,
+                onSubmit: _submitAnswer,
+                onUnknown: _submitUnknownAnswer,
+                onNext: _moveToNextPrompt,
               ),
               const SizedBox(height: 16),
               PracticeSessionSummary(
@@ -441,6 +463,65 @@ class _WritingScreenState extends State<WritingScreen> {
   }
 }
 
+class _WritingActionButtons extends StatelessWidget {
+  const _WritingActionButtons({
+    required this.mode,
+    required this.hasAnswered,
+    required this.onSubmit,
+    required this.onUnknown,
+    required this.onNext,
+  });
+
+  final WritingPracticeMode mode;
+  final bool hasAnswered;
+  final VoidCallback onSubmit;
+  final VoidCallback onUnknown;
+  final VoidCallback onNext;
+
+  @override
+  Widget build(BuildContext context) {
+    if (mode == WritingPracticeMode.constructor) {
+      return Wrap(
+        spacing: 12,
+        runSpacing: 12,
+        alignment: WrapAlignment.center,
+        children: [
+          FilledButton.icon(
+            onPressed: hasAnswered ? null : onUnknown,
+            icon: const Icon(Icons.help_outline_rounded),
+            label: const Text('Не знаю'),
+          ),
+          OutlinedButton.icon(
+            onPressed: hasAnswered ? onNext : onSubmit,
+            icon: Icon(
+              hasAnswered ? Icons.arrow_forward_rounded : Icons.check_rounded,
+            ),
+            label: Text(hasAnswered ? 'Далі' : 'Перевірити'),
+          ),
+        ],
+      );
+    }
+
+    return Wrap(
+      spacing: 12,
+      runSpacing: 12,
+      alignment: WrapAlignment.center,
+      children: [
+        FilledButton.icon(
+          onPressed: hasAnswered ? null : onSubmit,
+          icon: const Icon(Icons.check_rounded),
+          label: const Text('Перевірити'),
+        ),
+        OutlinedButton.icon(
+          onPressed: hasAnswered ? onNext : null,
+          icon: const Icon(Icons.arrow_forward_rounded),
+          label: const Text('Далі'),
+        ),
+      ],
+    );
+  }
+}
+
 class _WritingResultCard extends StatelessWidget {
   const _WritingResultCard({
     required this.isCorrect,
@@ -487,7 +568,7 @@ class _WritingResultCard extends StatelessWidget {
                 size: 22,
               ),
               Text(
-                isCorrect ? 'Правильно' : 'Потрібно ще раз',
+                isCorrect ? 'Правильно' : 'Ось правильний варіант',
                 textAlign: TextAlign.center,
                 style: theme.textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w800,
@@ -510,7 +591,7 @@ class _WritingResultCard extends StatelessWidget {
           Text(
             isCorrect
                 ? 'Слово записано правильно. Можна переходити далі.'
-                : 'Звірте форму і напишіть наступне слово з пам’яті.',
+                : 'Нічого страшного. Повернемось до цього слова пізніше.',
             textAlign: TextAlign.center,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: tokens.secondaryText,
