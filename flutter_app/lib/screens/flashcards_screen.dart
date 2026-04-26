@@ -323,7 +323,7 @@ class _SessionDetailsSection extends StatelessWidget {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            ' із ',
+                            '$currentCardNumber із $wordCount, $deckLabel',
                             style: theme.textTheme.bodyMedium?.copyWith(
                               color: tokens.secondaryText,
                             ),
