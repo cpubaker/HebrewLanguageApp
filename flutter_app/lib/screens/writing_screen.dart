@@ -71,8 +71,7 @@ class _WritingScreenState extends State<WritingScreen> {
     if (_mode == WritingPracticeMode.constructor &&
         _selectedBlocks.any((block) => block == null)) {
       setState(() {
-        _inlineMessage =
-            'Заповніть усі склади, а потім перевіряйте відповідь.';
+        _inlineMessage = 'Заповніть усі склади, а потім перевіряйте відповідь.';
       });
       return;
     }
@@ -158,11 +157,10 @@ class _WritingScreenState extends State<WritingScreen> {
                     Text(
                       currentPrompt.prompt,
                       textAlign: TextAlign.center,
-                      style: theme.textTheme.headlineSmall
-                          ?.copyWith(
-                            fontWeight: FontWeight.w800,
-                            color: theme.colorScheme.onSurface,
-                          ),
+                      style: theme.textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.w800,
+                        color: theme.colorScheme.onSurface,
+                      ),
                     ),
                     if (_mode == WritingPracticeMode.typing) ...[
                       const SizedBox(height: 8),
@@ -218,6 +216,17 @@ class _WritingScreenState extends State<WritingScreen> {
                   hasAnswered: hasAnswered,
                   availableBlocks: _availableBlocks,
                   selectedBlocks: _selectedBlocks,
+                  resultCard: hasAnswered
+                      ? _WritingResultCard(
+                          isCorrect: isCorrect,
+                          correctAnswer:
+                              _currentAnswer?.correctAnswer ??
+                              currentWord.hebrew,
+                          lastCorrect: stats.lastCorrect == null
+                              ? null
+                              : _formatTimestamp(stats.lastCorrect!),
+                        )
+                      : null,
                   onBlockTap: _placeBlockInNextSlot,
                   onSlotTap: _returnBlockToPool,
                   onBlockDroppedOnSlot: _placeBlockInSlot,
@@ -235,7 +244,7 @@ class _WritingScreenState extends State<WritingScreen> {
                 ),
               ],
               const SizedBox(height: 18),
-              if (hasAnswered) ...[
+              if (hasAnswered && _mode == WritingPracticeMode.typing) ...[
                 _WritingResultCard(
                   isCorrect: isCorrect,
                   correctAnswer:
@@ -564,6 +573,7 @@ class _ConstructorComposer extends StatelessWidget {
     required this.hasAnswered,
     required this.availableBlocks,
     required this.selectedBlocks,
+    required this.resultCard,
     required this.onBlockTap,
     required this.onSlotTap,
     required this.onBlockDroppedOnSlot,
@@ -573,6 +583,7 @@ class _ConstructorComposer extends StatelessWidget {
   final bool hasAnswered;
   final List<ConstructorBlock> availableBlocks;
   final List<ConstructorBlock?> selectedBlocks;
+  final Widget? resultCard;
   final ValueChanged<ConstructorBlock> onBlockTap;
   final ValueChanged<int> onSlotTap;
   final void Function(ConstructorBlock block, int slotIndex)
@@ -640,56 +651,60 @@ class _ConstructorComposer extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 14),
-        DragTarget<ConstructorBlock>(
-          onWillAcceptWithDetails: (_) => !hasAnswered,
-          onAcceptWithDetails: (details) => onBlockDroppedToPool(details.data),
-          builder: (context, candidateData, rejectedData) {
-            return Container(
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                color: tokens.elevatedSurface,
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(
-                  color: candidateData.isNotEmpty
-                      ? const Color(0xFF8C6A2A)
-                      : const Color(0x1F8C6A2A),
-                  width: candidateData.isNotEmpty ? 1.5 : 1,
+        if (resultCard != null)
+          resultCard!
+        else
+          DragTarget<ConstructorBlock>(
+            onWillAcceptWithDetails: (_) => !hasAnswered,
+            onAcceptWithDetails: (details) =>
+                onBlockDroppedToPool(details.data),
+            builder: (context, candidateData, rejectedData) {
+              return Container(
+                padding: const EdgeInsets.all(18),
+                decoration: BoxDecoration(
+                  color: tokens.elevatedSurface,
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(
+                    color: candidateData.isNotEmpty
+                        ? const Color(0xFF8C6A2A)
+                        : const Color(0x1F8C6A2A),
+                    width: candidateData.isNotEmpty ? 1.5 : 1,
+                  ),
                 ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'Доступні блоки',
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
-                      color: tokens.mutedText,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      'Доступні блоки',
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w800,
+                        color: tokens.mutedText,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 12),
-                  Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: Wrap(
-                      spacing: 10,
-                      runSpacing: 10,
-                      alignment: WrapAlignment.center,
-                      children: [
-                        for (final block in availableBlocks)
-                          _ConstructorBlockChip(
-                            key: ValueKey('constructor_block_${block.id}'),
-                            block: block,
-                            enabled: !hasAnswered,
-                            onTap: () => onBlockTap(block),
-                          ),
-                      ],
+                    const SizedBox(height: 12),
+                    Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: Wrap(
+                        spacing: 10,
+                        runSpacing: 10,
+                        alignment: WrapAlignment.center,
+                        children: [
+                          for (final block in availableBlocks)
+                            _ConstructorBlockChip(
+                              key: ValueKey('constructor_block_${block.id}'),
+                              block: block,
+                              enabled: !hasAnswered,
+                              onTap: () => onBlockTap(block),
+                            ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
+                  ],
+                ),
+              );
+            },
+          ),
       ],
     );
   }
