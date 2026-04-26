@@ -113,10 +113,7 @@ class _SprintScreenState extends State<SprintScreen> {
     });
   }
 
-  void _finishSprint([
-    String message =
-        'Хвилина завершилася. Подивіться на результат і, якщо хочете, спробуйте ще раз.',
-  ]) {
+  void _finishSprint([String message = '']) {
     _timer?.cancel();
     unawaited(_syncPromptAudio(null));
     if (!mounted) {
@@ -481,15 +478,17 @@ class _SprintCompletedCard extends StatelessWidget {
               context,
             ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w800),
           ),
-          const SizedBox(height: 8),
-          Text(
-            completionMessage,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: tokens.secondaryText,
-              height: 1.45,
+          if (completionMessage.trim().isNotEmpty) ...[
+            const SizedBox(height: 8),
+            Text(
+              completionMessage,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: tokens.secondaryText,
+                height: 1.45,
+              ),
             ),
-          ),
+          ],
           const SizedBox(height: 18),
           Wrap(
             spacing: 12,
@@ -572,12 +571,14 @@ class _SprintFeedbackCard extends StatelessWidget {
     final theme = Theme.of(context);
     final tokens = theme.appTokens;
     final background = switch (isSuccess) {
-      true => theme.brightness == Brightness.dark
-          ? const Color(0xFF17352F)
-          : const Color(0xFFEAF6F2),
-      false => theme.brightness == Brightness.dark
-          ? const Color(0xFF3A2323)
-          : const Color(0xFFFCECE8),
+      true =>
+        theme.brightness == Brightness.dark
+            ? const Color(0xFF17352F)
+            : const Color(0xFFEAF6F2),
+      false =>
+        theme.brightness == Brightness.dark
+            ? const Color(0xFF3A2323)
+            : const Color(0xFFFCECE8),
       null => tokens.subtleSurface,
     };
     final accent = switch (isSuccess) {
