@@ -181,7 +181,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                   children: [
                     Expanded(
                       child: PracticeStatPill(
-                        label: 'Правильно',
+                        label: 'Вірно',
                         value: stats.correct,
                         icon: Icons.check_rounded,
                         accent: const Color(0xFF0F766E),
@@ -381,7 +381,7 @@ class _SessionDetailsSection extends StatelessWidget {
                     children: [
                       Expanded(
                         child: PracticeStatPill(
-                          label: 'Правильно',
+                          label: 'Вірно',
                           value: correctCount,
                           icon: Icons.check_rounded,
                           accent: const Color(0xFF0F766E),

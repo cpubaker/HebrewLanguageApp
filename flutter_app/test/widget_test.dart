@@ -513,6 +513,54 @@ void main() {
     expect(store.savedWordIds, isNotEmpty);
   });
 
+  testWidgets('sprint timeout summary does not duplicate the expired label', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: SprintScreen(
+            words: const [
+              LearningWord(
+                wordId: 'word_peace',
+                hebrew: 'שלום',
+                english: 'peace',
+                ukrainian: 'мир',
+                transcription: 'shalom',
+                correct: 0,
+                wrong: 0,
+              ),
+              LearningWord(
+                wordId: 'word_house',
+                hebrew: 'בית',
+                english: 'house',
+                ukrainian: 'будинок',
+                transcription: 'bayit',
+                correct: 0,
+                wrong: 0,
+              ),
+            ],
+            onWordProgressChanged: (_) {},
+            audioPlayerFactory: FakeVerbAudioPlayer.new,
+            duration: const Duration(seconds: 1),
+            rng: _FixedRandom(),
+          ),
+        ),
+      ),
+    );
+
+    await tester.pump(const Duration(seconds: 1));
+    await tester.pump();
+
+    expect(find.text('Час вийшов'), findsOneWidget);
+    expect(
+      find.text(
+        'Хвилина завершилася. Подивіться на результат і, якщо хочете, спробуйте ще раз.',
+      ),
+      findsNothing,
+    );
+  });
+
   testWidgets('sprint auto-plays audio for the first and second prompts', (
     WidgetTester tester,
   ) async {

@@ -44,11 +44,23 @@ class PracticeStatPill extends StatelessWidget {
           const SizedBox(width: 10),
           Flexible(
             child: Text(
-              '$label: $value',
+              '$label:',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
               style: Theme.of(
                 context,
               ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w700),
             ),
+          ),
+          const SizedBox(width: 4),
+          Text(
+            '$value',
+            maxLines: 1,
+            softWrap: false,
+            style: Theme.of(
+              context,
+            ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w700),
           ),
         ],
       ),

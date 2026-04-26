@@ -405,9 +405,8 @@ class _RepetitionCard extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final chipMaxWidth = word.hasPlannedAudio
-            ? (constraints.maxWidth - 76).clamp(120.0, constraints.maxWidth)
-            : constraints.maxWidth;
+        final chipMaxWidth = constraints.maxWidth;
+        final reviewedAtLabel = _formatReviewedAt(word.lastReviewedAt);
 
         return Container(
           padding: const EdgeInsets.all(18),
@@ -425,37 +424,6 @@ class _RepetitionCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: [
-                        _ReasonChip(kind: entry.kind, maxWidth: chipMaxWidth),
-                        if (_formatReviewedAt(word.lastReviewedAt)
-                            case final label?)
-                          _MetaChip(
-                            icon: Icons.schedule_rounded,
-                            label: label,
-                            accent: const Color(0xFF8C6A2A),
-                            maxWidth: chipMaxWidth,
-                          ),
-                      ],
-                    ),
-                  ),
-                  if (word.hasPlannedAudio) ...[
-                    const SizedBox(width: 8),
-                    _RepetitionAudioButton(
-                      word: word,
-                      audioPlayerFactory: audioPlayerFactory,
-                      audioPlaybackAwareness: audioPlaybackAwareness,
-                    ),
-                  ],
-                ],
-              ),
-              const SizedBox(height: 14),
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
@@ -471,14 +439,28 @@ class _RepetitionCard extends StatelessWidget {
                   ),
                   borderRadius: BorderRadius.circular(24),
                 ),
-                child: Text(
-                  word.hebrew,
-                  textDirection: TextDirection.rtl,
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    color: theme.colorScheme.onSurface,
-                  ),
+                child: Wrap(
+                  alignment: WrapAlignment.center,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    Text(
+                      word.hebrew,
+                      textDirection: TextDirection.rtl,
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.w800,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
+                    if (word.hasPlannedAudio)
+                      _RepetitionAudioButton(
+                        word: word,
+                        audioPlayerFactory: audioPlayerFactory,
+                        audioPlaybackAwareness: audioPlaybackAwareness,
+                      ),
+                  ],
                 ),
               ),
               const SizedBox(height: 12),
@@ -512,6 +494,21 @@ class _RepetitionCard extends StatelessWidget {
                       ? null
                       : word.contexts.first,
                 ),
+              ),
+              const SizedBox(height: 12),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  _ReasonChip(kind: entry.kind, maxWidth: chipMaxWidth),
+                  if (reviewedAtLabel != null)
+                    _MetaChip(
+                      icon: Icons.schedule_rounded,
+                      label: reviewedAtLabel,
+                      accent: const Color(0xFF8C6A2A),
+                      maxWidth: chipMaxWidth,
+                    ),
+                ],
               ),
             ],
           ),
