@@ -58,6 +58,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final pagePadding = Theme.of(context).appTokens.pagePadding;
     final progress = StudyProgressSnapshot.fromWords(bundle.words);
+    final streak = StudyStreakSnapshot.fromWords(bundle.words);
     final flashcards = FlashcardFocusSnapshot.fromWords(bundle.words);
     final readingPreviewLessons = sortReadingLessons(
       bundle.readingLessons,
@@ -95,6 +96,8 @@ class HomeScreen extends StatelessWidget {
           onOpenReading: onOpenReading,
         ),
         const SizedBox(height: 20),
+        _StudyStreakCard(streak: streak),
+        const SizedBox(height: 16),
         _StudyProgressCard(progress: progress),
         const SizedBox(height: 16),
         _FlashcardFocusCard(
@@ -888,6 +891,112 @@ class _FlashcardFocusCard extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class _StudyStreakCard extends StatelessWidget {
+  const _StudyStreakCard({required this.streak});
+
+  final StudyStreakSnapshot streak;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+    final currentDaysLabel = _dayCountLabel(streak.currentDays);
+    final subtitle = _streakSubtitle(streak);
+
+    return AppSectionCard(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              color: _homeAccentAmber.withValues(alpha: 0.14),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: const Icon(
+              Icons.local_fire_department_rounded,
+              color: _homeAccentAmber,
+            ),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Серія занять',
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    color: tokens.secondaryText,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  streak.currentDays > 0
+                      ? '$currentDaysLabel поспіль'
+                      : 'Почніть серію сьогодні',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  subtitle,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: tokens.mutedText,
+                    height: 1.45,
+                  ),
+                ),
+                if (streak.activityDays > 0) ...[
+                  const SizedBox(height: 12),
+                  AppStatChip(
+                    label: 'Активні дні',
+                    value: streak.activityDays,
+                    accent: _homeAccentForest,
+                    backgroundColor: tokens.subtleSurface,
+                    textColor: theme.colorScheme.onSurface,
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _streakSubtitle(StudyStreakSnapshot streak) {
+    if (streak.wasActiveToday) {
+      return 'Сьогоднішнє заняття вже враховано в серії.';
+    }
+
+    if (streak.wasActiveYesterday) {
+      return 'Серія ще тримається. Зробіть одне тренування сьогодні, щоб продовжити її.';
+    }
+
+    if (streak.hasActivity) {
+      return 'Остання активність була раніше, тож поточна серія почнеться з нового заняття.';
+    }
+
+    return 'Після першого тренування тут з’явиться кількість днів поспіль.';
+  }
+
+  String _dayCountLabel(int days) {
+    final suffix = days % 100;
+    final lastDigit = days % 10;
+    final noun = suffix >= 11 && suffix <= 14
+        ? 'днів'
+        : lastDigit == 1
+        ? 'день'
+        : lastDigit >= 2 && lastDigit <= 4
+        ? 'дні'
+        : 'днів';
+
+    return '$days $noun';
   }
 }
 

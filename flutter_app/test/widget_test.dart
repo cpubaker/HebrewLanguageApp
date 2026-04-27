@@ -773,6 +773,11 @@ void main() {
     );
     await tester.pumpAndSettle();
 
+    await tester.scrollUntilVisible(find.text('Серія занять'), 300);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Серія занять'), findsOneWidget);
+
     await tester.scrollUntilVisible(find.text('Ваш поступ'), 300);
     await tester.pumpAndSettle();
 

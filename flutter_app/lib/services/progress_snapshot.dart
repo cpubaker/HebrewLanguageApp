@@ -138,6 +138,76 @@ class StudyProgressSnapshot {
   double get completionRatio => total == 0 ? 0 : seen / total;
 }
 
+class StudyStreakSnapshot {
+  const StudyStreakSnapshot({
+    required this.currentDays,
+    required this.activityDays,
+    required this.wasActiveToday,
+    required this.wasActiveYesterday,
+    required this.lastActivityAt,
+  });
+
+  factory StudyStreakSnapshot.fromWords(
+    List<LearningWord> words, {
+    DateTime Function()? now,
+  }) {
+    final today = _calendarDayNumber((now ?? DateTime.now)());
+    final activityDayNumbers = <int>{};
+    DateTime? lastActivityAt;
+
+    for (final word in words) {
+      for (final timestamp in [
+        word.lastReviewedAt,
+        word.lastCorrect,
+        word.writingLastCorrect,
+      ]) {
+        final parsedTimestamp = _parseActivityTimestamp(timestamp);
+        if (parsedTimestamp == null) {
+          continue;
+        }
+
+        activityDayNumbers.add(_calendarDayNumber(parsedTimestamp));
+        if (lastActivityAt == null || parsedTimestamp.isAfter(lastActivityAt)) {
+          lastActivityAt = parsedTimestamp;
+        }
+      }
+    }
+
+    final wasActiveToday = activityDayNumbers.contains(today);
+    final wasActiveYesterday = activityDayNumbers.contains(today - 1);
+    final streakAnchor = wasActiveToday
+        ? today
+        : wasActiveYesterday
+        ? today - 1
+        : null;
+    var currentDays = 0;
+
+    if (streakAnchor != null) {
+      var day = streakAnchor;
+      while (activityDayNumbers.contains(day)) {
+        currentDays += 1;
+        day -= 1;
+      }
+    }
+
+    return StudyStreakSnapshot(
+      currentDays: currentDays,
+      activityDays: activityDayNumbers.length,
+      wasActiveToday: wasActiveToday,
+      wasActiveYesterday: wasActiveYesterday,
+      lastActivityAt: lastActivityAt,
+    );
+  }
+
+  final int currentDays;
+  final int activityDays;
+  final bool wasActiveToday;
+  final bool wasActiveYesterday;
+  final DateTime? lastActivityAt;
+
+  bool get hasActivity => activityDays > 0;
+}
+
 class WritingProgressSnapshot {
   const WritingProgressSnapshot({
     required this.total,
@@ -240,4 +310,22 @@ class LessonProgressSnapshot {
   double get completionRatio => total == 0 ? 0 : read / total;
 
   String completedLabel(String noun) => 'Прочитано $read із $total $noun';
+}
+
+DateTime? _parseActivityTimestamp(String? value) {
+  final trimmedValue = value?.trim();
+  if (trimmedValue == null || trimmedValue.isEmpty) {
+    return null;
+  }
+
+  return DateTime.tryParse(trimmedValue)?.toLocal();
+}
+
+int _calendarDayNumber(DateTime value) {
+  final localValue = value.toLocal();
+  return DateTime.utc(
+    localValue.year,
+    localValue.month,
+    localValue.day,
+  ).difference(DateTime.utc(1970)).inDays;
 }
