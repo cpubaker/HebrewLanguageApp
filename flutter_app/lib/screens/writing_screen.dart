@@ -91,7 +91,11 @@ class _WritingScreenState extends State<WritingScreen> {
       _hasCurrentAudio = false;
       _resetConstructorState(_currentPrompt?.constructorPuzzle);
     });
-    unawaited(_syncWordAudio(nextPrompt?.word));
+    if (_mode == WritingPracticeMode.typing) {
+      unawaited(_syncWordAudio(nextPrompt?.word));
+    } else {
+      unawaited(_stopWordAudio());
+    }
   }
 
   void _submitAnswer() {
@@ -127,6 +131,10 @@ class _WritingScreenState extends State<WritingScreen> {
     });
 
     widget.onWordProgressChanged(result.word);
+
+    if (_mode == WritingPracticeMode.constructor) {
+      unawaited(_syncWordAudio(result.word));
+    }
   }
 
   void _submitUnknownAnswer() {
@@ -141,6 +149,18 @@ class _WritingScreenState extends State<WritingScreen> {
     });
 
     widget.onWordProgressChanged(result.word);
+
+    if (_mode == WritingPracticeMode.constructor) {
+      unawaited(_syncWordAudio(result.word));
+    }
+  }
+
+  Future<void> _stopWordAudio() async {
+    ++_audioRequestToken;
+
+    try {
+      await _audioPlayer.stop();
+    } catch (_) {}
   }
 
   Future<void> _syncWordAudio(LearningWord? word) async {
@@ -294,7 +314,8 @@ class _WritingScreenState extends State<WritingScreen> {
                         color: theme.colorScheme.onSurface,
                       ),
                     ),
-                    if (_hasCurrentAudio) ...[
+                    if (_mode == WritingPracticeMode.typing &&
+                        _hasCurrentAudio) ...[
                       const SizedBox(height: 12),
                       _PromptAudioButton(
                         key: const ValueKey('writing_audio_button'),
@@ -368,6 +389,18 @@ class _WritingScreenState extends State<WritingScreen> {
                           lastCorrect: stats.lastCorrect == null
                               ? null
                               : _formatTimestamp(stats.lastCorrect!),
+                          audioButton: _hasCurrentAudio
+                              ? _PromptAudioButton(
+                                  key: const ValueKey(
+                                    'constructor_result_audio_button',
+                                  ),
+                                  isBusy: _isAudioBusy,
+                                  isPlaying: _isAudioPlaying,
+                                  onPressed: _isAudioBusy
+                                      ? null
+                                      : _replayCurrentWordAudio,
+                                )
+                              : null,
                         )
                       : null,
                   onBlockTap: _placeBlockInNextSlot,
@@ -686,11 +719,13 @@ class _WritingResultCard extends StatelessWidget {
     required this.isCorrect,
     required this.correctAnswer,
     this.lastCorrect,
+    this.audioButton,
   });
 
   final bool isCorrect;
   final String correctAnswer;
   final String? lastCorrect;
+  final Widget? audioButton;
 
   @override
   Widget build(BuildContext context) {
@@ -746,6 +781,10 @@ class _WritingResultCard extends StatelessWidget {
               color: theme.colorScheme.onSurface,
             ),
           ),
+          if (audioButton != null) ...[
+            const SizedBox(height: 10),
+            audioButton!,
+          ],
           const SizedBox(height: 8),
           Text(
             isCorrect
