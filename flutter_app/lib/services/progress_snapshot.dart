@@ -7,6 +7,14 @@ enum WordLearningState { unseen, known, needsReview }
 WordLearningState classifyWordLearningState(LearningWord word) {
   final attempts = word.correct + word.wrong;
   if (attempts == 0) {
+    if (word.lastReviewCorrect == true) {
+      return WordLearningState.known;
+    }
+
+    if (word.lastReviewCorrect == false) {
+      return WordLearningState.needsReview;
+    }
+
     return WordLearningState.unseen;
   }
 

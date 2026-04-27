@@ -517,6 +517,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
             audioPlayerFactory: widget.audioPlayerFactory,
             audioPlaybackAwareness: _audioPlaybackAwareness,
             resolveWordContexts: _resolveWordWithAiContext,
+            onWordProgressChanged: _handleWordProgressChanged,
           ),
         ),
       ),

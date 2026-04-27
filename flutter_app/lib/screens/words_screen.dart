@@ -25,6 +25,7 @@ class WordsScreen extends StatefulWidget {
     required this.audioPlayerFactory,
     this.audioPlaybackAwareness = const NoopAudioPlaybackAwareness(),
     this.resolveWordContexts,
+    this.onWordProgressChanged,
     this.topContent,
   });
 
@@ -32,6 +33,7 @@ class WordsScreen extends StatefulWidget {
   final CreateLearningAudioPlayer audioPlayerFactory;
   final AudioPlaybackAwareness audioPlaybackAwareness;
   final ResolveWordContexts? resolveWordContexts;
+  final ValueChanged<LearningWord>? onWordProgressChanged;
   final Widget? topContent;
 
   @override
@@ -46,6 +48,7 @@ class _WordsScreenState extends State<WordsScreen> {
   late final FocusNode _searchFocusNode;
   Timer? _searchDebounce;
   String _query = '';
+  late List<LearningWord> _words;
   late List<_IndexedWord> _indexedWords;
   late List<_IndexedWord> _visibleWords;
   _WordsFilter _selectedFilter = _WordsFilter.all;
@@ -57,6 +60,7 @@ class _WordsScreenState extends State<WordsScreen> {
     _searchController = TextEditingController();
     _scrollController = ScrollController()..addListener(_handleScroll);
     _searchFocusNode = FocusNode();
+    _words = List<LearningWord>.from(widget.words);
     _rebuildIndex();
   }
 
@@ -64,6 +68,7 @@ class _WordsScreenState extends State<WordsScreen> {
   void didUpdateWidget(covariant WordsScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (!identical(oldWidget.words, widget.words)) {
+      _words = List<LearningWord>.from(widget.words);
       _rebuildIndex();
     }
   }
@@ -81,7 +86,7 @@ class _WordsScreenState extends State<WordsScreen> {
 
   void _rebuildIndex() {
     final indexedWords =
-        widget.words.map(_IndexedWord.fromWord).toList(growable: false)
+        _words.map(_IndexedWord.fromWord).toList(growable: false)
           ..sort((left, right) => left.sortKey.compareTo(right.sortKey));
 
     _indexedWords = indexedWords;
@@ -163,6 +168,90 @@ class _WordsScreenState extends State<WordsScreen> {
         _selectedFilter,
       );
     });
+  }
+
+  void _cycleWordStatus(LearningWord word) {
+    final currentState = classifyWordLearningState(_currentWordFor(word));
+    final nextState = switch (currentState) {
+      WordLearningState.unseen => WordLearningState.needsReview,
+      WordLearningState.needsReview => WordLearningState.known,
+      WordLearningState.known => WordLearningState.unseen,
+    };
+    _updateWordStatus(word, nextState);
+  }
+
+  void _updateWordStatus(LearningWord word, WordLearningState targetState) {
+    final currentWord = _currentWordFor(word);
+    final updatedWord = _wordWithLearningState(currentWord, targetState);
+
+    setState(() {
+      _replaceWord(updatedWord);
+      _rebuildIndex();
+    });
+    widget.onWordProgressChanged?.call(updatedWord);
+  }
+
+  LearningWord _currentWordFor(LearningWord word) {
+    for (final currentWord in _words) {
+      if (currentWord.wordId == word.wordId) {
+        return currentWord;
+      }
+    }
+
+    return word;
+  }
+
+  void _replaceWord(LearningWord updatedWord) {
+    final wordIndex = _words.indexWhere(
+      (word) => word.wordId == updatedWord.wordId,
+    );
+    if (wordIndex < 0) {
+      return;
+    }
+
+    final updatedWords = List<LearningWord>.from(_words);
+    updatedWords[wordIndex] = updatedWord;
+    _words = updatedWords;
+  }
+
+  LearningWord _wordWithLearningState(
+    LearningWord word,
+    WordLearningState targetState,
+  ) {
+    final reviewedAt = DateTime.now().toIso8601String();
+
+    switch (targetState) {
+      case WordLearningState.known:
+        return word.copyWith(
+          correct: 0,
+          wrong: 0,
+          lastCorrect: reviewedAt,
+          lastReviewedAt: reviewedAt,
+          lastReviewCorrect: true,
+        );
+      case WordLearningState.needsReview:
+        return word.copyWith(
+          correct: 0,
+          wrong: 0,
+          lastReviewedAt: reviewedAt,
+          lastReviewCorrect: false,
+        );
+      case WordLearningState.unseen:
+        return LearningWord(
+          wordId: word.wordId,
+          hebrew: word.hebrew,
+          english: word.english,
+          ukrainian: word.ukrainian,
+          transcription: word.transcription,
+          audioAssetPath: word.audioAssetPath,
+          correct: 0,
+          wrong: 0,
+          writingCorrect: word.writingCorrect,
+          writingWrong: word.writingWrong,
+          writingLastCorrect: word.writingLastCorrect,
+          contexts: word.contexts,
+        );
+    }
   }
 
   void _handleScroll() {
@@ -320,7 +409,7 @@ class _WordsScreenState extends State<WordsScreen> {
     final accentForeground = theme.brightness == Brightness.dark
         ? tokens.heroText
         : Colors.white;
-    final progress = StudyProgressSnapshot.fromWords(widget.words);
+    final progress = StudyProgressSnapshot.fromWords(_words);
     final filterSummaries = <_WordsFilter, int>{
       _WordsFilter.all: progress.total,
       _WordsFilter.newWords: progress.unseen,
@@ -390,7 +479,7 @@ class _WordsScreenState extends State<WordsScreen> {
                               ),
                               AppStatChip(
                                 label: 'Усього',
-                                value: widget.words.length,
+                                value: _words.length,
                                 accent: const Color(0xFF8C6A2A),
                               ),
                             ],
@@ -434,6 +523,7 @@ class _WordsScreenState extends State<WordsScreen> {
                         word: word,
                         audioPlayerFactory: widget.audioPlayerFactory,
                         audioPlaybackAwareness: widget.audioPlaybackAwareness,
+                        onCycleStatus: () => _cycleWordStatus(word),
                         onOpenDetails: () => _showWordDetails(word),
                       ),
                     );
@@ -650,18 +740,21 @@ class _WordCard extends StatelessWidget {
     required this.word,
     required this.audioPlayerFactory,
     required this.audioPlaybackAwareness,
+    required this.onCycleStatus,
     required this.onOpenDetails,
   });
 
   final LearningWord word;
   final CreateLearningAudioPlayer audioPlayerFactory;
   final AudioPlaybackAwareness audioPlaybackAwareness;
+  final VoidCallback onCycleStatus;
   final VoidCallback onOpenDetails;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final tokens = theme.appTokens;
+    final learningState = classifyWordLearningState(word);
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -720,6 +813,10 @@ class _WordCard extends StatelessWidget {
                             audioPlayerFactory: audioPlayerFactory,
                             audioPlaybackAwareness: audioPlaybackAwareness,
                           ),
+                        _WordStatusActionButton(
+                          state: learningState,
+                          onTap: onCycleStatus,
+                        ),
                       ],
                     ),
                   ],
@@ -761,6 +858,85 @@ class _WordCard extends StatelessWidget {
       ),
     );
   }
+}
+
+class _WordStatusActionButton extends StatelessWidget {
+  const _WordStatusActionButton({required this.state, required this.onTap});
+
+  final WordLearningState state;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final presentation = _WordStatusPresentation.fromState(state);
+    final foreground = presentation.accent;
+    return Material(
+      color: presentation.accent.withValues(alpha: 0.12),
+      borderRadius: BorderRadius.circular(999),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(999),
+        child: Tooltip(
+          message: 'Змінити статус слова',
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(999),
+              border: Border.all(
+                color: presentation.accent.withValues(alpha: 0.24),
+              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(presentation.icon, size: 14, color: foreground),
+                const SizedBox(width: 6),
+                Text(
+                  presentation.label,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: foreground,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _WordStatusPresentation {
+  const _WordStatusPresentation({
+    required this.label,
+    required this.icon,
+    required this.accent,
+  });
+
+  factory _WordStatusPresentation.fromState(WordLearningState state) {
+    return switch (state) {
+      WordLearningState.unseen => const _WordStatusPresentation(
+        label: 'Не знаю',
+        icon: Icons.help_outline_rounded,
+        accent: Color(0xFF8C6A2A),
+      ),
+      WordLearningState.needsReview => const _WordStatusPresentation(
+        label: 'Вчу',
+        icon: Icons.school_rounded,
+        accent: Color(0xFF8C6A2A),
+      ),
+      WordLearningState.known => const _WordStatusPresentation(
+        label: 'Знаю',
+        icon: Icons.check_rounded,
+        accent: Color(0xFF0F766E),
+      ),
+    };
+  }
+
+  final String label;
+  final IconData icon;
+  final Color accent;
 }
 
 class _InlineWordAudioButton extends StatefulWidget {

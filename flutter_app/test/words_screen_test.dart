@@ -172,6 +172,121 @@ void main() {
     expect(find.text('ID: word_man'), findsOneWidget);
   });
 
+  testWidgets('cycles a new dictionary word through learning statuses', (
+    WidgetTester tester,
+  ) async {
+    LearningWord? changedWord;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: WordsScreen(
+            words: const [
+              LearningWord(
+                wordId: 'word_man',
+                hebrew: 'איש',
+                english: 'man',
+                ukrainian: 'чоловік',
+                transcription: 'ish',
+                correct: 0,
+                wrong: 0,
+              ),
+            ],
+            audioPlayerFactory: () =>
+                _FakeLearningAudioPlayer(assetExistsResult: false),
+            onWordProgressChanged: (word) {
+              changedWord = word;
+            },
+          ),
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+    expect(find.text('Не знаю'), findsOneWidget);
+
+    await tester.tap(find.text('Не знаю'));
+    await tester.pump();
+
+    expect(changedWord, isNotNull);
+    expect(changedWord!.wordId, 'word_man');
+    expect(changedWord!.correct, 0);
+    expect(changedWord!.wrong, 0);
+    expect(changedWord!.lastReviewedAt, isNotNull);
+    expect(changedWord!.lastReviewCorrect, isFalse);
+    expect(find.text('Вчу'), findsOneWidget);
+    expect(find.text('Повторити · 1'), findsOneWidget);
+
+    await tester.tap(find.text('Вчу'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('ID: word_man'), findsNothing);
+    expect(changedWord!.lastCorrect, isNotNull);
+    expect(changedWord!.lastReviewedAt, isNotNull);
+    expect(changedWord!.lastReviewCorrect, isTrue);
+    expect(find.text('Знаю'), findsOneWidget);
+    expect(find.text('Вивчені · 1'), findsOneWidget);
+
+    await tester.tap(find.text('Знаю'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('ID: word_man'), findsNothing);
+    expect(changedWord!.lastCorrect, isNull);
+    expect(changedWord!.lastReviewedAt, isNull);
+    expect(changedWord!.lastReviewCorrect, isNull);
+    expect(find.text('Не знаю'), findsOneWidget);
+    expect(find.text('Нові · 1'), findsOneWidget);
+  });
+
+  testWidgets('cycles a known dictionary word back to new', (
+    WidgetTester tester,
+  ) async {
+    LearningWord? changedWord;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: WordsScreen(
+            words: const [
+              LearningWord(
+                wordId: 'word_man',
+                hebrew: 'איש',
+                english: 'man',
+                ukrainian: 'чоловік',
+                transcription: 'ish',
+                correct: 4,
+                wrong: 0,
+                lastReviewCorrect: true,
+              ),
+            ],
+            audioPlayerFactory: () =>
+                _FakeLearningAudioPlayer(assetExistsResult: false),
+            onWordProgressChanged: (word) {
+              changedWord = word;
+            },
+          ),
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+    expect(find.text('Знаю'), findsOneWidget);
+
+    await tester.tap(find.text('Знаю'));
+    await tester.pump();
+
+    expect(changedWord, isNotNull);
+    expect(changedWord!.wordId, 'word_man');
+    expect(changedWord!.correct, 0);
+    expect(changedWord!.wrong, 0);
+    expect(changedWord!.lastCorrect, isNull);
+    expect(changedWord!.lastReviewedAt, isNull);
+    expect(changedWord!.lastReviewCorrect, isNull);
+    expect(find.text('ID: word_man'), findsNothing);
+    expect(find.text('Не знаю'), findsOneWidget);
+    expect(find.text('Нові · 1'), findsOneWidget);
+  });
+
   testWidgets(
     'shows scroll-to-top action after scrolling the vocabulary list',
     (WidgetTester tester) async {
