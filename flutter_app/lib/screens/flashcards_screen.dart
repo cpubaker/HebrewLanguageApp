@@ -1,9 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../models/learning_context.dart';
 import '../models/learning_word.dart';
+import '../services/audio_playback_awareness.dart';
 import '../services/flashcard_session.dart';
+import '../services/learning_audio_player.dart';
 import '../theme/app_theme.dart';
+import 'audio_playback_feedback.dart';
 import 'widgets/context_source_badge.dart';
 import 'widgets/practice_header.dart';
 import 'widgets/practice_panel.dart';
@@ -16,12 +21,16 @@ class FlashcardsScreen extends StatefulWidget {
     required this.onWordProgressChanged,
     this.initialDeckMode = FlashcardDeckMode.allWords,
     this.deckRequestToken = 0,
+    this.audioPlayerFactory,
+    this.audioPlaybackAwareness = const NoopAudioPlaybackAwareness(),
   });
 
   final List<LearningWord> words;
   final WordProgressCallback onWordProgressChanged;
   final FlashcardDeckMode initialDeckMode;
   final int deckRequestToken;
+  final CreateLearningAudioPlayer? audioPlayerFactory;
+  final AudioPlaybackAwareness audioPlaybackAwareness;
 
   @override
   State<FlashcardsScreen> createState() => _FlashcardsScreenState();
@@ -31,15 +40,31 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
   static const double _swipeVelocityThreshold = 325;
 
   late final FlashcardSession _session;
+  late final LearningAudioPlayer _audioPlayer =
+      (widget.audioPlayerFactory ?? createAssetLearningAudioPlayer)();
 
   FlashcardCard? _currentCard;
   FlashcardAnswerResult? _currentAnswer;
+  StreamSubscription<bool>? _playbackSubscription;
   bool _showSessionDetails = false;
+  bool _isAudioBusy = false;
+  bool _isAudioPlaying = false;
+  bool _hasCurrentAudio = false;
+  int _audioRequestToken = 0;
 
   @override
   void initState() {
     super.initState();
     _session = FlashcardSession(widget.words, deckMode: widget.initialDeckMode);
+    _playbackSubscription = _audioPlayer.isPlayingStream.listen((isPlaying) {
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _isAudioPlaying = isPlaying;
+      });
+    });
     _moveToNextCard();
   }
 
@@ -52,12 +77,23 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
     }
   }
 
+  @override
+  void dispose() {
+    unawaited(_playbackSubscription?.cancel());
+    unawaited(_audioPlayer.stop());
+    unawaited(_audioPlayer.dispose());
+    super.dispose();
+  }
+
   void _moveToNextCard() {
+    final nextCard = _session.nextCard();
     setState(() {
-      _currentCard = _session.nextCard();
+      _currentCard = nextCard;
       _currentAnswer = null;
       _showSessionDetails = false;
+      _hasCurrentAudio = false;
     });
+    unawaited(_syncWordAudio(nextCard?.word));
   }
 
   void _answerCard(bool known) {
@@ -72,12 +108,15 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
   }
 
   void _changeDeckMode(FlashcardDeckMode mode) {
+    _session.setDeckMode(mode);
+    final nextCard = _session.nextCard();
     setState(() {
-      _session.setDeckMode(mode);
-      _currentCard = _session.nextCard();
+      _currentCard = nextCard;
       _currentAnswer = null;
       _showSessionDetails = false;
+      _hasCurrentAudio = false;
     });
+    unawaited(_syncWordAudio(nextCard?.word));
   }
 
   void _handleCardSwipe(DragEndDetails details) {
@@ -94,12 +133,102 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
   }
 
   void _restartDeck([FlashcardDeckMode? mode]) {
+    _session.resetDeck(mode: mode ?? _session.deckMode);
+    final nextCard = _session.nextCard();
     setState(() {
-      _session.resetDeck(mode: mode ?? _session.deckMode);
-      _currentCard = _session.nextCard();
+      _currentCard = nextCard;
       _currentAnswer = null;
       _showSessionDetails = false;
+      _hasCurrentAudio = false;
     });
+    unawaited(_syncWordAudio(nextCard?.word));
+  }
+
+  Future<void> _syncWordAudio(LearningWord? word) async {
+    final requestToken = ++_audioRequestToken;
+
+    try {
+      await _audioPlayer.stop();
+    } catch (_) {}
+
+    if (!mounted || _audioRequestToken != requestToken) {
+      return;
+    }
+
+    final audioAssetPath = word?.audioAssetPath;
+    if (audioAssetPath == null || audioAssetPath.trim().isEmpty) {
+      return;
+    }
+
+    final hasAudio = await _audioPlayer.assetExists(audioAssetPath);
+    if (!mounted || _audioRequestToken != requestToken || !hasAudio) {
+      return;
+    }
+
+    try {
+      setState(() {
+        _hasCurrentAudio = true;
+      });
+      await _audioPlayer.playAsset(audioAssetPath);
+    } catch (_) {}
+  }
+
+  Future<void> _replayCurrentWordAudio() async {
+    final word = (_currentAnswer?.word ?? _currentCard?.word);
+    final audioAssetPath = word?.audioAssetPath;
+    if (audioAssetPath == null || audioAssetPath.trim().isEmpty) {
+      return;
+    }
+    if (!_hasCurrentAudio) {
+      return;
+    }
+
+    final requestToken = ++_audioRequestToken;
+
+    setState(() {
+      _isAudioBusy = true;
+    });
+
+    try {
+      if (_isAudioPlaying) {
+        await _audioPlayer.stop();
+        return;
+      }
+
+      await _audioPlayer.stop();
+      if (!mounted || _audioRequestToken != requestToken) {
+        return;
+      }
+
+      final hasAudio = await _audioPlayer.assetExists(audioAssetPath);
+      if (!mounted || _audioRequestToken != requestToken || !hasAudio) {
+        return;
+      }
+
+      await showAudioPlaybackHintIfNeeded(
+        context: context,
+        awareness: widget.audioPlaybackAwareness,
+      );
+      if (!mounted || _audioRequestToken != requestToken) {
+        return;
+      }
+
+      await _audioPlayer.playAsset(audioAssetPath);
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Не вдалося відтворити озвучку слова.')),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isAudioBusy = false;
+        });
+      }
+    }
   }
 
   @override
@@ -156,6 +285,16 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                 _PromptPanel(
                   hebrew: word.hebrew,
                   transcription: word.transcription,
+                  audioButton: _hasCurrentAudio
+                      ? _PromptAudioButton(
+                          key: const ValueKey('flashcards_audio_button'),
+                          isBusy: _isAudioBusy,
+                          isPlaying: _isAudioPlaying,
+                          onPressed: _isAudioBusy
+                              ? null
+                              : _replayCurrentWordAudio,
+                        )
+                      : null,
                 ),
                 const SizedBox(height: 20),
                 _FlashcardContextPanel(
@@ -408,10 +547,15 @@ class _SessionDetailsSection extends StatelessWidget {
 }
 
 class _PromptPanel extends StatelessWidget {
-  const _PromptPanel({required this.hebrew, required this.transcription});
+  const _PromptPanel({
+    required this.hebrew,
+    required this.transcription,
+    this.audioButton,
+  });
 
   final String hebrew;
   final String transcription;
+  final Widget? audioButton;
 
   @override
   Widget build(BuildContext context) {
@@ -458,8 +602,42 @@ class _PromptPanel extends StatelessWidget {
               color: tokens.secondaryText,
             ),
           ),
+          if (audioButton != null) ...[
+            const SizedBox(height: 12),
+            audioButton!,
+          ],
         ],
       ),
+    );
+  }
+}
+
+class _PromptAudioButton extends StatelessWidget {
+  const _PromptAudioButton({
+    super.key,
+    required this.isBusy,
+    required this.isPlaying,
+    required this.onPressed,
+  });
+
+  final bool isBusy;
+  final bool isPlaying;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton.filledTonal(
+      tooltip: 'Audio',
+      onPressed: onPressed,
+      icon: isBusy
+          ? const SizedBox(
+              width: 18,
+              height: 18,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            )
+          : Icon(
+              isPlaying ? Icons.stop_circle_outlined : Icons.volume_up_rounded,
+            ),
     );
   }
 }
