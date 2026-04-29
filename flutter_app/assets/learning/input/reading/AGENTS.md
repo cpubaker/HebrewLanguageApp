@@ -2,7 +2,7 @@
 
 ## Purpose
 - This folder contains numbered reading lessons for the local Hebrew learning app.
-- Lessons should stay easy for the Tkinter reading viewer to load and render.
+- Lessons should stay easy for the Flutter reading flow and content tooling to load and render.
 - Keep changes narrow and aligned with the neighboring lessons in the same level folder.
 
 ## What Counts As A Lesson

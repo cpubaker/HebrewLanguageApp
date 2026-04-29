@@ -2,10 +2,10 @@
 
 This folder contains the new Flutter client for the Hebrew learning app.
 
-The current migration goal is simple:
+The current migration goal is to make Flutter the only supported product surface:
 
-- keep the Tkinter desktop app working as-is
-- start a parallel Android UI in Flutter
+- keep new user-facing work in Flutter
+- use the frozen Tkinter app only as a temporary behavior reference
 - reuse the existing local learning content instead of inventing a second source of truth
 
 ## Current scope
@@ -19,12 +19,12 @@ The Flutter app currently provides:
 - a Reading list/detail flow grouped by lesson level
 - lesson discovery based on synced guide, verb, and reading markdown files
 
-The Flutter client is intentionally read-only for now. Progress persistence and feature parity will come in later steps.
+The Flutter client now owns the mobile product flow. Remaining desktop retirement work is tracked in `../docs/desktop_retirement_plan.md`.
 
-## Sync content from the desktop app
+## Sync content from source data
 
 The Flutter client uses bundled assets under `flutter_app/assets/learning/`.
-To refresh them from the existing desktop source data, run:
+To refresh them from the repository source data, run:
 
 ```powershell
 cd flutter_app
@@ -42,6 +42,6 @@ flutter run
 
 ## Notes
 
-- `src/main.py` remains the desktop entry point.
+- `src/main.py` is a frozen legacy reference entry point while desktop retirement is in progress.
 - The source-of-truth content still lives under `data/input/`.
 - Audio and image migration are intentionally postponed until the mobile content flow is stable.

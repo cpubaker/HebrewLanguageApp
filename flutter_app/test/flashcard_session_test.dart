@@ -212,4 +212,29 @@ void main() {
     expect(result.word.lastReviewCorrect, isFalse);
     expect(result.word.lastCorrect, isNull);
   });
+
+  test('currentWordStats returns the active word progress snapshot', () {
+    final session = FlashcardSession(
+      const [
+        LearningWord(
+          wordId: 'word_man',
+          hebrew: 'ish',
+          english: 'man',
+          transcription: 'ish',
+          correct: 2,
+          wrong: 1,
+          lastCorrect: '2026-03-25T11:15:00Z',
+        ),
+      ],
+      rng: Random(8),
+    );
+
+    session.nextCard();
+    final stats = session.currentWordStats();
+
+    expect(stats.correct, 2);
+    expect(stats.wrong, 1);
+    expect(stats.total, 3);
+    expect(stats.lastCorrect, '2026-03-25T11:15:00Z');
+  });
 }

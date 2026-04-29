@@ -205,4 +205,32 @@ void main() {
     expect(result.word.lastReviewCorrect, isFalse);
     expect(session.answeredCount, 1);
   });
+
+  test('currentWordStats returns the active writing progress snapshot', () {
+    final session = WritingSession(
+      const [
+        LearningWord(
+          wordId: 'word_peace',
+          hebrew: 'shalom',
+          english: 'peace',
+          ukrainian: 'mir',
+          transcription: 'shalom',
+          correct: 0,
+          wrong: 0,
+          writingCorrect: 3,
+          writingWrong: 2,
+          writingLastCorrect: '2026-03-25T11:30:00Z',
+        ),
+      ],
+      rng: Random(8),
+    );
+
+    session.nextPrompt();
+    final stats = session.currentWordStats();
+
+    expect(stats.correct, 3);
+    expect(stats.wrong, 2);
+    expect(stats.total, 5);
+    expect(stats.lastCorrect, '2026-03-25T11:30:00Z');
+  });
 }

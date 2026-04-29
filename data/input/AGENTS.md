@@ -1,7 +1,7 @@
 # Input Content Instructions
 
 ## Purpose
-- This folder contains the source-of-truth learning content shared by the Flutter client and the legacy desktop app.
+- This folder contains the source-of-truth learning content for the Flutter client and related content tooling.
 - For vocabulary work, treat `hebrew_words.json` plus `contexts/` as one connected content set.
 - Prefer content edits here over edits to synced Flutter asset copies.
 
@@ -44,7 +44,7 @@
 
 ## Editorial Guidance
 - Keep Ukrainian glosses concise when the entry is plain vocabulary.
-- Keep `english` as a compatibility fallback unless the task explicitly migrates the legacy consumers that still read it.
+- Keep `english` as a compatibility fallback unless the task explicitly migrates all consumers that still read it.
 - For function words or grammar-facing entries, a longer explanatory gloss is acceptable when it clarifies usage.
 - Avoid creating accidental duplicates where the Hebrew form, transliteration, and meaning overlap with an existing entry unless the distinction is intentional and documented by the gloss.
 - If a change materially affects search, flashcards, or deck composition, inspect the Flutter loaders and screens before finalizing the content update.

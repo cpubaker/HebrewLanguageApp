@@ -4,9 +4,11 @@ This app was designed by **Yevhen Nedashkivskyi** as a **research project for in
 
 ## **Interface Status**
 
-- **Tkinter desktop app** remains the main working interface and still starts from `python src/main.py`.
-- **Flutter Android client** now lives in `flutter_app/` as the first migration baseline.
-- The Flutter client currently loads synced text-based learning assets from the existing `data/input/` source data.
+- **Flutter Android client** in `flutter_app/` is the active product surface.
+- **Tkinter desktop app** in `src/` is frozen legacy code kept temporarily as a behavior reference during retirement.
+- New user-facing work should target Flutter unless a critical desktop retirement blocker requires a short-lived legacy fix.
+- The Flutter client loads synced learning assets from the durable `data/input/` source data.
+- The desktop retirement plan is tracked in `docs/desktop_retirement_plan.md`.
 
 ---
 
@@ -113,7 +115,11 @@ The following pre-trained language models are utilized in the project:
 
 ## **Prerequisites**
 
-To run this app, ensure the following requirements are met:
+For active product work, use the Flutter toolchain from `flutter_app/`.
+
+The Python environment is still used for backend, content tooling, validation scripts, model experiments, and temporary legacy reference work.
+
+To run Python-side tooling, ensure the following requirements are met:
 
 1. **Libraries**  
    Install all required libraries using `pip`:
