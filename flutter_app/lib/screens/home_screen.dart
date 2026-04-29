@@ -7,6 +7,7 @@ import '../services/flashcard_session.dart';
 import '../services/feature_access_service.dart';
 import '../services/lesson_document_loader.dart';
 import '../services/progress_snapshot.dart';
+import '../services/word_of_day_service.dart';
 import '../theme/app_theme.dart';
 import 'reading_lesson_catalog.dart';
 import 'widgets/app_action_wrap.dart';
@@ -38,6 +39,7 @@ class HomeScreen extends StatelessWidget {
     required this.onOpenVerbs,
     required this.onOpenReading,
     required this.onOpenReadingLesson,
+    this.wordOfDayDateProvider,
   });
 
   final LearningBundle bundle;
@@ -53,6 +55,7 @@ class HomeScreen extends StatelessWidget {
   final VoidCallback onOpenVerbs;
   final VoidCallback onOpenReading;
   final ValueChanged<LessonEntry> onOpenReadingLesson;
+  final DateTime Function()? wordOfDayDateProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +74,10 @@ class HomeScreen extends StatelessWidget {
       progress: progress,
       flashcards: flashcards,
     );
+    final wordOfDay = const WordOfDayService().select(
+      words: bundle.words,
+      date: (wordOfDayDateProvider ?? DateTime.now)(),
+    );
 
     return ListView(
       padding: pagePadding.copyWith(bottom: 32),
@@ -83,6 +90,17 @@ class HomeScreen extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         _DashboardPrimaryActionCard(action: continueAction),
+        if (wordOfDay != null) ...[
+          const SizedBox(height: 16),
+          _WordOfDayCard(
+            entry: wordOfDay,
+            onOpenFlashcards: () => onOpenFlashcards(
+              wordOfDay.word.contexts.isNotEmpty
+                  ? FlashcardDeckMode.withContexts
+                  : FlashcardDeckMode.allWords,
+            ),
+          ),
+        ],
         const SizedBox(height: 16),
         _DashboardRecommendationsCard(actions: recommendedActions),
         const SizedBox(height: 16),
@@ -263,6 +281,131 @@ class HomeScreen extends StatelessWidget {
     ];
 
     return actions;
+  }
+}
+
+class _WordOfDayCard extends StatelessWidget {
+  const _WordOfDayCard({
+    required this.entry,
+    required this.onOpenFlashcards,
+  });
+
+  final WordOfDayEntry entry;
+  final VoidCallback onOpenFlashcards;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+    final contextSentence = entry.context;
+
+    return AppSectionCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: _homeAccentTeal.withValues(alpha: 0.14),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: const Icon(
+                  Icons.wb_sunny_rounded,
+                  color: _homeAccentTeal,
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Слово дня',
+                      style: theme.textTheme.labelLarge?.copyWith(
+                        color: tokens.secondaryText,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      entry.word.hebrew,
+                      textDirection: TextDirection.rtl,
+                      style: theme.textTheme.headlineSmall?.copyWith(
+                        color: theme.colorScheme.primary,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      entry.word.translation,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      entry.word.transcription,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: tokens.mutedText,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          if (contextSentence != null) ...[
+            const SizedBox(height: 14),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: tokens.subtleSurface,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (contextSentence.hebrew.trim().isNotEmpty) ...[
+                    Text(
+                      contextSentence.hebrew,
+                      textDirection: TextDirection.rtl,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                  if (contextSentence.translation.trim().isNotEmpty) ...[
+                    if (contextSentence.hebrew.trim().isNotEmpty)
+                      const SizedBox(height: 6),
+                    Text(
+                      contextSentence.translation,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: tokens.secondaryText,
+                        height: 1.4,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ],
+          const SizedBox(height: 14),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: OutlinedButton.icon(
+              onPressed: onOpenFlashcards,
+              icon: const Icon(Icons.style_rounded),
+              label: const Text('До карток'),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 

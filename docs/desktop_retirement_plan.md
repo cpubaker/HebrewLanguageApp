@@ -57,7 +57,7 @@ Most Python tests import `src/` through `tests/test_support.py`. Remove that sha
 | `tests/test_sprint_session.py` | Migrate/delete | Dart sprint tests already exist; compare scoring gaps. |
 | `tests/test_progress_service.py` | Migrate/delete | Flutter progress repository/store tests should own product progress behavior. |
 | `tests/test_progress_repository.py` | Migrate/delete | Keep only until Flutter persistence coverage is confirmed. |
-| `tests/test_word_of_day_service.py` | Migrate/delete | Migrate if Flutter keeps word-of-day behavior; otherwise drop. |
+| `tests/test_word_of_day_service.py` | Migrate/delete | Migrated to Flutter home screen and `WordOfDayService`; delete after Flutter validation passes. |
 | `tests/test_app_paths.py` | Delete/replace | Tied to `src/` layout; replace only if Python tooling still needs path helpers. |
 | `tests/test_app_runtime.py` | Delete | Desktop runtime wiring test. |
 | `tests/test_main.py` | Delete | Desktop entry smoke test. |
@@ -87,7 +87,7 @@ Flutter coverage notes:
 - `test_sprint_session.py`: Covered by `flutter_app/test/sprint_session_test.dart`.
 - `test_app_content_loader.py`: Covered conceptually by Flutter bundle/document loader tests; confirm no missing aggregate bundle expectation before deleting.
 - `test_domain_models.py`: Covered mostly by `learning_word_test.dart` and `learning_context_test.dart`; confirm no missing transient-field serialization requirement before deleting.
-- `test_word_of_day_service.py`: No matching Flutter feature found yet. Decide whether word-of-day is intentionally dropped or should be rebuilt in Flutter before deleting the Python reference.
+- `test_word_of_day_service.py`: Migrated to `flutter_app/lib/services/word_of_day_service.dart` and the Home screen word-of-day card. Covered by `word_of_day_service_test.dart` and `home_word_of_day_test.dart`.
 - `test_vocabulary_session.py`: Legacy desktop quiz flow has no direct Flutter service equivalent. Treat as deprecated unless a Flutter multiple-choice vocabulary mode is still desired.
 
 ## Phase 4: Remove Desktop Runtime
