@@ -11,6 +11,9 @@ Flutter in `flutter_app/` is the only supported product surface. Durable learnin
 - Legacy Python desktop runtime and UI code.
 - Bundled Tcl/Tk runtime files.
 - Desktop setup script.
+- Tracked desktop/runtime progress snapshots.
+- Stale generated experiment outputs under `data/output/`.
+- Unused masked-sentence experiment inputs under `data/input/test_*.json`.
 - Python tests that existed only to validate desktop runtime, UI widgets, desktop sessions, path wiring, or desktop persistence mechanics.
 - Obsolete Python model and database experiments that lived inside the retired desktop tree.
 
@@ -42,6 +45,5 @@ flutter test
 
 ## Follow-Up Cleanup
 
-- Revisit legacy progress fields in `data/input/hebrew_words.json`.
 - Revisit fallback fields that were kept only for older consumers.
 - Keep generated Flutter asset instructions synchronized through the normal asset sync path.

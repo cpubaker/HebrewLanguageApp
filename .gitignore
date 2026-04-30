@@ -10,6 +10,11 @@ env/
 # Editor and local temp files
 .vscode/
 .idea/
+
+# Generated/local data artifacts
+data/output/
+data/runtime/
+
 flutter_app/.dart_tool/
 flutter_app/.flutter-plugins
 flutter_app/.flutter-plugins-dependencies
