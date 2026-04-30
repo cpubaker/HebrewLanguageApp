@@ -4,7 +4,6 @@
 - This folder contains the active Flutter client.
 - Root `AGENTS.md` still applies.
 - Use Flutter as the implementation target for product behavior.
-- The legacy desktop app is frozen and should only be consulted as a temporary behavior reference while `docs/desktop_retirement_plan.md` is in progress.
 
 ## Source Of Truth
 - Runtime assets under `assets/learning/` are generated copies.
@@ -22,8 +21,6 @@
 - Learning bundle loader: `lib/services/learning_bundle_loader.dart`
 
 ## Working Rules
-- Do not preserve desktop coexistence as a product requirement for new Flutter work.
-- Keep synced content contracts stable until the desktop retirement plan explicitly removes the related compatibility constraints.
 - Prefer narrow vertical slices over broad refactors.
 - Keep UI concerns in `lib/screens/` and `lib/theme/`; keep loading/parsing in `lib/services/`.
 - Do not hand-edit synced files under `assets/learning/input/` for permanent changes.
@@ -45,6 +42,5 @@
   - `flutter run`
 
 ## Notes
-- Use the Tkinter app only as a temporary behavior reference when product details are unclear.
 - Prefer read-only content flows before persistence-heavy features unless the user asks otherwise.
 - The Flutter practice area currently includes flashcards, writing, constructor, and sprint modes.

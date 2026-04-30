@@ -1,160 +1,60 @@
-# **Project Overview**
+# Hebrew Language App
 
-This app was designed by **Yevhen Nedashkivskyi** as a **research project for individual Hebrew learning**.
+This repository contains a Hebrew learning app for individual study.
 
-## **Interface Status**
+## Product Surface
 
-- **Flutter Android client** in `flutter_app/` is the active product surface.
-- **Tkinter desktop app** in `src/` is frozen legacy code kept temporarily as a behavior reference during retirement.
-- New user-facing work should target Flutter unless a critical desktop retirement blocker requires a short-lived legacy fix.
-- The Flutter client loads synced learning assets from the durable `data/input/` source data.
-- The desktop retirement plan is tracked in `docs/desktop_retirement_plan.md`.
+- `flutter_app/` is the active Flutter Android client.
+- `data/input/` contains the durable learning content.
+- `flutter_app/assets/learning/input/` contains generated runtime copies of that content.
+- `backend/ai_api/` contains optional backend/API support code.
 
----
+The legacy Tkinter desktop client has been removed. New user-facing work should target Flutter.
 
-## **Work Modes**
+## Content Sync
 
-Depending on configuration, the app supports three modes:
+After changing source learning content under `data/input/`, refresh Flutter assets:
 
-1. **Lightweight**  
-   Works with a pre-defined JSON file (`hebrew_words.json`).
+```powershell
+cd flutter_app
+powershell -ExecutionPolicy Bypass -File .\tool\sync_learning_assets.ps1
+```
 
-2. **Normal**  
-   Integrates a database and the OpenAI API.
+## Run The Flutter App
 
-3. **Research**  
-   Combines a database, the OpenAI API, and local language models for enhanced performance.
+```powershell
+cd flutter_app
+flutter run
+```
 
----
+## Validation
 
-## **Language Models Used**
+After Flutter code changes:
 
-The following pre-trained language models are utilized in the project:
+```powershell
+cd flutter_app
+flutter analyze
+flutter test
+```
 
-### 1. **AlephBERT**
-   - **Source**: [AlephBERT on Hugging Face](https://huggingface.co/onlplab/alephbert-base)
-   - **Authors**: *Onlp Lab*
-   - **Citation**:
-     ```bibtex
-     @inproceedings{alephbert2021,
-       title={AlephBERT: A Hebrew Language Model},
-       author={Onlp Lab},
-       year={2021}
-     }
-     ```
+After backend, content tooling, or content validation changes:
 
-### 2. **DictaBERT**
-   - **Source**: [DictaBERT GitHub](https://github.com/Dicta-Labs/DictaBERT)
-   - **Authors**: *Dicta Labs*
-   - **Citation**:
-     ```bibtex
-     @misc{dictabert,
-       title={DictaBERT: Hebrew Pretrained Model},
-       author={Dicta Labs},
-       year={2021},
-       howpublished={\url{https://github.com/Dicta-Labs/DictaBERT}}
-     }
-     ```
+```powershell
+python -m unittest discover -s tests -v
+```
 
-### 3. **DictaLM2**
-   - **Source**: [Dicta Language Models](https://dicta-labs.org/)
-   - **Authors**: *Dicta Labs*
-   - **Citation**:
-     ```bibtex
-     @misc{dictalm2,
-       title={DictaLM2: Hebrew Language Models},
-       author={Dicta Labs},
-       year={2022},
-       howpublished={\url{https://dicta-labs.org/}}
-     }
-     ```
+## OpenAI API Key
 
-### 4. **HeBERT**
-   - **Source**: [HeBERT on Hugging Face](https://huggingface.co/avichr/heBERT)
-   - **Authors**: *Avichai Levy*
-   - **Citation**:
-     ```bibtex
-     @misc{hebert2021,
-       title={HeBERT: Pretrained BERT for Hebrew},
-       author={Avichai Levy},
-       year={2021},
-       howpublished={\url{https://huggingface.co/avichr/heBERT}}
-     }
-     ```
+The optional backend/API tooling reads `OPENAI_API_KEY` from the environment.
 
-### 5. **OpenAI GPT Models**
-   - **Source**: [OpenAI Models](https://openai.com/)
-   - **Authors**: *OpenAI*
-   - **Citation**:
-     ```bibtex
-     @article{openai2023,
-       title={GPT Models by OpenAI},
-       author={OpenAI},
-       year={2023},
-       journal={openai.com}
-     }
-     ```
+Windows:
 
-### 6. **T5 (Text-to-Text Transfer Transformer)**
-   - **Source**: [T5 on Hugging Face](https://huggingface.co/models?search=T5)
-   - **Authors**: *Google Research*
-   - **Citation**:
-     ```bibtex
-     @article{raffel2020exploring,
-       title={Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer},
-       author={Colin Raffel and Noam Shazeer and Adam Roberts and others},
-       year={2020},
-       journal={Journal of Machine Learning Research},
-       volume={21},
-       number={140},
-       pages={1-67}
-     }
-     ```
+```powershell
+setx OPENAI_API_KEY "your_api_key_here"
+```
 
----
+macOS/Linux:
 
-## **Prerequisites**
-
-For active product work, use the Flutter toolchain from `flutter_app/`.
-
-The Python environment is still used for backend, content tooling, validation scripts, model experiments, and temporary legacy reference work.
-
-To run Python-side tooling, ensure the following requirements are met:
-
-1. **Libraries**  
-   Install all required libraries using `pip`:
-   ```bash
-   pip install json openai os random torch tkinter transformers
-
-
-## **OpenAI API Key Setup**
-
-To enable OpenAI API functionality in this project, follow these steps:
-
-1. **Obtain an API Key**  
-   - Visit [OpenAI's platform](https://platform.openai.com/) to obtain your API key.
-
-2. **Add the API Key to Environment Variables**
-
-   - **On Windows:**
-     Open Command Prompt and run:
-     ```bash
-     setx OPENAI_API_KEY "your_api_key_here"
-     ```
-
-   - **On macOS/Linux:**
-     Open a terminal and run:
-     ```bash
-     export OPENAI_API_KEY="your_api_key_here"
-     ```
-
-3. **Verify the Key in Your Code**  
-   In your Python script, load the API key as follows:
-   ```python
-   import os
-   import openai
-
-   openai.api_key = os.getenv("OPENAI_API_KEY")
-
-   if not openai.api_key:
-       raise ValueError("OpenAI API key not found. Set it as an environment variable.")
+```bash
+export OPENAI_API_KEY="your_api_key_here"
+```

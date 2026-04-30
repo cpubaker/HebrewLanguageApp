@@ -26,11 +26,17 @@ class ContentIntegrityTests(unittest.TestCase):
         self.assertIsInstance(words, list)
         self.assertGreater(len(words), 0)
 
+        seen_word_ids = set()
         for index, word in enumerate(words):
+            self.assertIn("word_id", word, f"Missing word_id in item {index}")
             self.assertIn("hebrew", word, f"Missing hebrew in item {index}")
             self.assertIn("english", word, f"Missing english in item {index}")
             self.assertIn("ukrainian", word, f"Missing ukrainian in item {index}")
             self.assertIn("transcription", word, f"Missing transcription in item {index}")
+            word_id = str(word["word_id"]).strip()
+            self.assertTrue(word_id, f"Empty word_id in item {index}")
+            self.assertNotIn(word_id, seen_word_ids, f"Duplicate word_id {word_id}")
+            seen_word_ids.add(word_id)
             self.assertTrue(str(word["hebrew"]).strip(), f"Empty hebrew in item {index}")
             self.assertTrue(
                 str(word["english"]).strip(), f"Empty english in item {index}"
@@ -88,6 +94,40 @@ class ContentIntegrityTests(unittest.TestCase):
         for section in sections:
             self.assertTrue(section["title"].strip())
             self.assertTrue(section["filename"].endswith((".md", ".txt")))
+
+    def test_context_links_reference_existing_words_and_sentences(self):
+        with (INPUT_ROOT / "hebrew_words.json").open("r", encoding="utf-8") as file:
+            words = json.load(file)
+        with (INPUT_ROOT / "contexts" / "sentences.json").open(
+            "r",
+            encoding="utf-8",
+        ) as file:
+            sentences = json.load(file)
+        with (INPUT_ROOT / "contexts" / "word_context_links.json").open(
+            "r",
+            encoding="utf-8",
+        ) as file:
+            word_context_links = json.load(file)
+
+        word_ids = {str(word.get("word_id", "")).strip() for word in words}
+        sentence_ids = {
+            str(sentence.get("id", "")).strip()
+            for sentence in sentences
+            if str(sentence.get("id", "")).strip()
+        }
+
+        self.assertGreater(len(sentence_ids), 0)
+        self.assertIsInstance(word_context_links, dict)
+
+        for word_id, context_ids in word_context_links.items():
+            self.assertIn(word_id, word_ids, f"Unknown word_id in context links: {word_id}")
+            self.assertIsInstance(context_ids, list, f"Context links for {word_id} must be a list")
+            for context_id in context_ids:
+                self.assertIn(
+                    context_id,
+                    sentence_ids,
+                    f"Unknown context id {context_id} linked from {word_id}",
+                )
 
 
 def _is_text_section_file(path):

@@ -10,15 +10,12 @@ env/
 # Editor and local temp files
 .vscode/
 .idea/
-src/tempCodeRunnerFile.py
-src/tempCodeRunnerFile.python
 flutter_app/.dart_tool/
 flutter_app/.flutter-plugins
 flutter_app/.flutter-plugins-dependencies
 flutter_app/build/
 flutter_app/android/key.properties
 flutter_app/upload-keystore.jks
-tk_runtime/
 
 # OS metadata
 .DS_Store
