@@ -14,6 +14,16 @@ READING_LEVELS = {
     "advanced",
     "proficient",
 }
+RUNTIME_PROGRESS_FIELDS = {
+    "correct",
+    "wrong",
+    "last_correct",
+    "last_reviewed_at",
+    "last_review_correct",
+    "writing_correct",
+    "writing_wrong",
+    "writing_last_correct",
+}
 
 
 class ContentIntegrityTests(unittest.TestCase):
@@ -47,6 +57,21 @@ class ContentIntegrityTests(unittest.TestCase):
             self.assertTrue(
                 str(word["transcription"]).strip(),
                 f"Empty transcription in item {index}",
+            )
+
+    def test_words_json_does_not_embed_runtime_progress(self):
+        words_path = INPUT_ROOT / "hebrew_words.json"
+
+        with words_path.open("r", encoding="utf-8") as file:
+            words = json.load(file)
+
+        for index, word in enumerate(words):
+            word_id = str(word.get("word_id", f"item {index}")).strip()
+            leaked_fields = sorted(RUNTIME_PROGRESS_FIELDS.intersection(word))
+            self.assertEqual(
+                leaked_fields,
+                [],
+                f"Runtime progress fields in source word {word_id}: {leaked_fields}",
             )
 
     def test_guide_and_verb_lessons_have_extractable_titles(self):

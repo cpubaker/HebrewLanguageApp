@@ -24,17 +24,15 @@
 - Prefer durable content edits over embedding personal study progress in source files.
 
 ## Data Shape
-- Vocabulary entries currently include:
+- Vocabulary entries are source content and currently include:
   - `word_id`
   - `hebrew`
   - `english`
   - `ukrainian`
   - `transcription`
   - optional `audio_file` relative to `data/input/audio/`
-  - legacy progress-style fields such as `correct`, `wrong`, `last_correct`, `writing_correct`, `writing_wrong`, and `writing_last_correct`
-- Flutter currently relies on the lexical fields plus `correct`, `wrong`, and string `last_correct`.
-- Flutter does not currently use the writing-progress fields, so treat them as legacy unless a task explicitly revives writing-mode behavior.
-- Some existing source entries still contain seeded progress values. Do not add new progress noise unless the task explicitly concerns migrations or cleanup of that model.
+- Do not add runtime progress fields such as `correct`, `wrong`, `last_correct`, `last_reviewed_at`, `last_review_correct`, `writing_correct`, `writing_wrong`, or `writing_last_correct`.
+- User study progress belongs in Flutter runtime storage, not in `data/input/`.
 
 ## Context Rules
 - `sentences.json` is the canonical registry of reusable context sentences.
