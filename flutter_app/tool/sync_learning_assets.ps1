@@ -15,6 +15,11 @@ $pathsToMirror = @(
     "images\verbs"
 )
 
+$excludedRuntimeAssetNames = @(
+    "AGENTS.md",
+    "rewrite_candidates.md"
+)
+
 $lessonCatalogRelativePaths = @(
     "guide",
     "verbs",
@@ -45,11 +50,15 @@ foreach ($relativePath in $pathsToMirror) {
 
     Get-ChildItem -LiteralPath $destinationPath -Force -ErrorAction SilentlyContinue |
         Where-Object { $_.Name -ne ".gitkeep" } |
-        Where-Object { -not (Test-Path (Join-Path $sourcePath $_.Name)) } |
+        Where-Object {
+            ($excludedRuntimeAssetNames -contains $_.Name) -or
+            (-not (Test-Path (Join-Path $sourcePath $_.Name)))
+        } |
         Remove-Item -Recurse -Force
 
     Get-ChildItem -LiteralPath $sourcePath -Force |
         Where-Object { $_.Name -ne ".gitkeep" } |
+        Where-Object { -not ($excludedRuntimeAssetNames -contains $_.Name) } |
         Copy-Item -Destination $destinationPath -Recurse -Force
 }
 

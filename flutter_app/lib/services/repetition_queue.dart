@@ -86,10 +86,6 @@ RepetitionKind? classifyRepetitionKind(
     return RepetitionKind.lastMistake;
   }
 
-  if (_looksLikeLegacyLastMistake(word)) {
-    return RepetitionKind.lastMistake;
-  }
-
   final totalAttempts =
       word.correct + word.wrong + word.writingCorrect + word.writingWrong;
   if (totalAttempts == 0) {
@@ -101,18 +97,6 @@ RepetitionKind? classifyRepetitionKind(
   }
 
   return null;
-}
-
-bool _looksLikeLegacyLastMistake(LearningWord word) {
-  if (word.lastReviewCorrect != null) {
-    return false;
-  }
-
-  if (word.wrong == 0) {
-    return false;
-  }
-
-  return word.lastCorrect == null || word.wrong >= word.correct;
 }
 
 DateTime? _parseReviewedAt(String? value) {

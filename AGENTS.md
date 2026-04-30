@@ -2,8 +2,7 @@
 
 ## Scope
 - This repo is a Hebrew learning app whose active product is the Flutter client in `flutter_app/`.
-- The legacy Tkinter desktop app has been removed.
-- Python code that remains in the repo is backend, content tooling, or validation code, not a desktop client.
+- Python code in the repo is backend, content tooling, validation, or generation code.
 
 ## Source Of Truth
 - Durable learning content lives in `data/input/`.
@@ -27,7 +26,6 @@
 - Flutter app entry: `flutter_app/lib/main.dart`
 - Flutter app root: `flutter_app/lib/app.dart`
 - Flutter asset sync: `flutter_app/tool/sync_learning_assets.ps1`
-- Desktop retirement plan: `docs/desktop_retirement_plan.md`
 
 ## Task Routing
 - Flutter UI or app flow: inspect `flutter_app/AGENTS.md` and then the relevant files under `flutter_app/lib/`.

@@ -25,7 +25,8 @@ void main() {
 
   test('word progress store ignores corrupted JSON payloads', () async {
     SharedPreferences.setMockInitialValues(<String, Object>{
-      'learning_word_progress_v1': '{not-valid-json',
+      'learning_word_progress_index': <String>['word_walk'],
+      'learning_word_progress_word_word_walk': '{not-valid-json',
     });
 
     final store = SharedPreferencesWordProgressStore();
@@ -37,18 +38,20 @@ void main() {
 
   test('word progress store sanitizes malformed entries', () async {
     SharedPreferences.setMockInitialValues(<String, Object>{
-      'learning_word_progress_v1': jsonEncode(<String, Object?>{
-        ' word_walk ': <String, Object?>{
-          'correct': '3',
-          'wrong': -7,
-          'last_correct': ' 2026-04-04T10:00:00Z ',
-          'writing_correct': '5',
-          'writing_wrong': -2,
-          'writing_last_correct': ' 2026-04-04T12:00:00Z ',
-        },
-        'broken_value': 'not-a-map',
-        '': <String, Object?>{'correct': 1},
+      'learning_word_progress_index': <String>[
+        ' word_walk ',
+        'broken_value',
+        '',
+      ],
+      'learning_word_progress_word_word_walk': jsonEncode(<String, Object?>{
+        'correct': '3',
+        'wrong': -7,
+        'last_correct': ' 2026-04-04T10:00:00Z ',
+        'writing_correct': '5',
+        'writing_wrong': -2,
+        'writing_last_correct': ' 2026-04-04T12:00:00Z ',
       }),
+      'learning_word_progress_word_broken_value': 'not-a-map',
     });
 
     final store = SharedPreferencesWordProgressStore();
@@ -65,22 +68,6 @@ void main() {
     expect(
       loadedProgress['word_walk']?.writingLastCorrect,
       '2026-04-04T12:00:00Z',
-    );
-
-    final prefs = await SharedPreferences.getInstance();
-    expect(prefs.getStringList('learning_word_progress_v2_index'), <String>[
-      'word_walk',
-    ]);
-    expect(
-      jsonDecode(prefs.getString('learning_word_progress_v2_word_word_walk')!),
-      <String, Object?>{
-        'correct': 3,
-        'wrong': 0,
-        'last_correct': '2026-04-04T10:00:00Z',
-        'writing_correct': 5,
-        'writing_wrong': 0,
-        'writing_last_correct': '2026-04-04T12:00:00Z',
-      },
     );
   });
 
@@ -106,11 +93,10 @@ void main() {
 
       final prefs = await SharedPreferences.getInstance();
       final rawPayload = prefs.getString(
-        'learning_word_progress_v2_word_word_shalom',
+        'learning_word_progress_word_word_shalom',
       );
 
-      expect(prefs.getString('learning_word_progress_v1'), isNull);
-      expect(prefs.getStringList('learning_word_progress_v2_index'), <String>[
+      expect(prefs.getStringList('learning_word_progress_index'), <String>[
         'word_shalom',
       ]);
       expect(rawPayload, isNotNull);
@@ -124,59 +110,6 @@ void main() {
       });
     },
   );
-
-  test('word progress store migrates legacy payload before saving', () async {
-    SharedPreferences.setMockInitialValues(<String, Object>{
-      'learning_word_progress_v1': jsonEncode(<String, Object?>{
-        'word_walk': <String, Object?>{
-          'correct': 3,
-          'wrong': 1,
-          'last_correct': '2026-04-04T10:00:00Z',
-        },
-      }),
-    });
-
-    final store = SharedPreferencesWordProgressStore();
-
-    await store.saveWord(
-      const LearningWord(
-        wordId: 'word_shalom',
-        hebrew: 'shalom',
-        english: 'peace',
-        transcription: 'shalom',
-        correct: 1,
-        wrong: 0,
-      ),
-    );
-
-    final prefs = await SharedPreferences.getInstance();
-
-    expect(prefs.getStringList('learning_word_progress_v2_index'), <String>[
-      'word_shalom',
-      'word_walk',
-    ]);
-    expect(
-      jsonDecode(prefs.getString('learning_word_progress_v2_word_word_walk')!),
-      <String, Object?>{
-        'correct': 3,
-        'wrong': 1,
-        'last_correct': '2026-04-04T10:00:00Z',
-        'writing_correct': 0,
-        'writing_wrong': 0,
-      },
-    );
-    expect(
-      jsonDecode(
-        prefs.getString('learning_word_progress_v2_word_word_shalom')!,
-      ),
-      <String, Object?>{
-        'correct': 1,
-        'wrong': 0,
-        'writing_correct': 0,
-        'writing_wrong': 0,
-      },
-    );
-  });
 
   test('word progress store removes empty word progress entries', () async {
     final store = SharedPreferencesWordProgressStore();
@@ -204,60 +137,16 @@ void main() {
 
     final prefs = await SharedPreferences.getInstance();
 
-    expect(prefs.getStringList('learning_word_progress_v2_index'), isEmpty);
+    expect(prefs.getStringList('learning_word_progress_index'), isEmpty);
     expect(
-      prefs.getString('learning_word_progress_v2_word_word_shalom'),
+      prefs.getString('learning_word_progress_word_word_shalom'),
       isNull,
     );
   });
 
-  test('guide progress store migrates legacy read lessons', () async {
-    SharedPreferences.setMockInitialValues(<String, Object>{
-      'guide_read_lessons_v1': <String>[
-        ' assets/learning/input/guide/01_intro_alphabet.md ',
-        ' assets/learning/input/guide/42_infinitive_constructions.md ',
-        '',
-        '   ',
-      ],
-    });
-
-    final store = SharedPreferencesGuideProgressStore();
-
-    final loadedStatuses = await store.loadLessonStatuses();
-
-    expect(loadedStatuses, <String, GuideLessonStatus>{
-      'intro_alphabet': GuideLessonStatus.read,
-      'infinitive_constructions': GuideLessonStatus.read,
-    });
-  });
-
-  test(
-    'guide progress store remaps renamed lesson paths in status payloads',
-    () async {
-      SharedPreferences.setMockInitialValues(<String, Object>{
-        'guide_lesson_statuses_v2': jsonEncode(<String, Object?>{
-          'assets/learning/input/guide/42_infinitive_constructions.md':
-              'studying',
-          'assets/learning/input/guide/49_register_formal_vs_spoken.md': 'read',
-          'assets/learning/input/guide/47_relative_clause_expansion.md': 'read',
-        }),
-      });
-
-      final store = SharedPreferencesGuideProgressStore();
-
-      final loadedStatuses = await store.loadLessonStatuses();
-
-      expect(loadedStatuses, <String, GuideLessonStatus>{
-        'infinitive_constructions': GuideLessonStatus.studying,
-        'relative_and_she': GuideLessonStatus.read,
-        'register_formal_vs_spoken': GuideLessonStatus.read,
-      });
-    },
-  );
-
   test('guide progress store sanitizes malformed status payloads', () async {
     SharedPreferences.setMockInitialValues(<String, Object>{
-      'guide_lesson_statuses_v2': jsonEncode(<String, Object?>{
+      'guide_lesson_statuses': jsonEncode(<String, Object?>{
         ' assets/learning/input/guide/01_intro_alphabet.md ': 'studying',
         'assets/learning/input/guide/02_numbers.md': 'read',
         'assets/learning/input/guide/03_colors.md': 'unknown',
@@ -278,7 +167,7 @@ void main() {
 
   test('reading progress store sanitizes malformed status payloads', () async {
     SharedPreferences.setMockInitialValues(<String, Object>{
-      'reading_lesson_statuses_v1': jsonEncode(<String, Object?>{
+      'reading_lesson_statuses': jsonEncode(<String, Object?>{
         ' assets/learning/input/reading/beginner/01_yosi_goes_to_school.md ':
             'studying',
         'assets/learning/input/reading/intermediate/02_city_trip.md': 'read',
@@ -307,7 +196,7 @@ void main() {
     );
 
     final prefs = await SharedPreferences.getInstance();
-    final rawPayload = prefs.getString('guide_lesson_statuses_v3');
+    final rawPayload = prefs.getString('guide_lesson_statuses');
 
     expect(rawPayload, isNotNull);
     expect(jsonDecode(rawPayload!), <String, Object?>{
@@ -324,7 +213,7 @@ void main() {
     );
 
     final prefs = await SharedPreferences.getInstance();
-    final rawPayload = prefs.getString('reading_lesson_statuses_v2');
+    final rawPayload = prefs.getString('reading_lesson_statuses');
 
     expect(rawPayload, isNotNull);
     expect(jsonDecode(rawPayload!), <String, Object?>{

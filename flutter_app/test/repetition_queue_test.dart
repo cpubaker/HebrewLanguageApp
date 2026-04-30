@@ -63,7 +63,7 @@ void main() {
     expect(queue.entries.single.kind, RepetitionKind.recentStart);
   });
 
-  test('falls back to legacy mistake-heavy progress when last result is missing', () {
+  test('does not infer a last mistake without an explicit last result', () {
     final queue = RepetitionQueue.fromWords(const [
       LearningWord(
         wordId: 'word_city',
@@ -76,7 +76,6 @@ void main() {
       ),
     ]);
 
-    expect(queue.total, 1);
-    expect(queue.entries.single.kind, RepetitionKind.lastMistake);
+    expect(queue.total, 0);
   });
 }

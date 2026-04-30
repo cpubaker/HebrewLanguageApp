@@ -92,6 +92,26 @@ void main() {
     expect(hiddenFiles, isEmpty);
   });
 
+  test(
+    'synced runtime assets do not include repo instruction or audit files',
+    () {
+      final runtimeNoise =
+          Directory('assets/learning/input')
+              .listSync(recursive: true)
+              .whereType<File>()
+              .map((file) => file.path.replaceAll('\\', '/'))
+              .where((path) {
+                final basename = _basename(path).toLowerCase();
+                return basename == 'agents.md' ||
+                    basename == 'rewrite_candidates.md';
+              })
+              .toList()
+            ..sort();
+
+      expect(runtimeNoise, isEmpty);
+    },
+  );
+
   test('packaged word audio is referenced by the vocabulary source', () async {
     final wordsJson =
         jsonDecode(

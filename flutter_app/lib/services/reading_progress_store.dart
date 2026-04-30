@@ -13,8 +13,7 @@ abstract class ReadingProgressStore {
 }
 
 class SharedPreferencesReadingProgressStore implements ReadingProgressStore {
-  static const String _legacyStorageKey = 'reading_lesson_statuses_v1';
-  static const String _storageKey = 'reading_lesson_statuses_v2';
+  static const String _storageKey = 'reading_lesson_statuses';
 
   @override
   Future<Map<String, GuideLessonStatus>> loadLessonStatuses() async {
@@ -24,12 +23,7 @@ class SharedPreferencesReadingProgressStore implements ReadingProgressStore {
       if (storedStatuses != null && storedStatuses.trim().isNotEmpty) {
         return _decodeStatuses(storedStatuses);
       }
-      final legacyStatuses = prefs.getString(_legacyStorageKey);
-      if (legacyStatuses == null || legacyStatuses.trim().isEmpty) {
-        return <String, GuideLessonStatus>{};
-      }
-
-      return _decodeStatuses(legacyStatuses);
+      return <String, GuideLessonStatus>{};
     } catch (error) {
       debugPrint(
         'Ignoring reading progress for $_storageKey because it could not be loaded: $error',

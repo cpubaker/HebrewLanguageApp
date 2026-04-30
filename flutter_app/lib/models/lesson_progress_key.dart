@@ -7,21 +7,17 @@ String lessonProgressKey({required String assetPath, String? lessonId}) {
   return lessonProgressKeyFromAssetPath(assetPath);
 }
 
-String lessonProgressKeyFromStoredValue(
-  String rawValue, {
-  Map<String, String> renamedAssetPaths = const <String, String>{},
-}) {
+String lessonProgressKeyFromStoredValue(String rawValue) {
   final sanitizedValue = rawValue.trim();
   if (sanitizedValue.isEmpty) {
     return '';
   }
 
-  final canonicalPath = renamedAssetPaths[sanitizedValue] ?? sanitizedValue;
-  if (!_looksLikeLessonAssetPath(canonicalPath)) {
-    return canonicalPath;
+  if (!_looksLikeLessonAssetPath(sanitizedValue)) {
+    return sanitizedValue;
   }
 
-  return lessonProgressKeyFromAssetPath(canonicalPath);
+  return lessonProgressKeyFromAssetPath(sanitizedValue);
 }
 
 String lessonProgressKeyFromAssetPath(String assetPath) {

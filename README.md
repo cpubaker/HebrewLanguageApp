@@ -9,7 +9,7 @@ This repository contains a Hebrew learning app for individual study.
 - `flutter_app/assets/learning/input/` contains generated runtime copies of that content.
 - `backend/ai_api/` contains optional backend/API support code.
 
-The legacy Tkinter desktop client has been removed. New user-facing work should target Flutter.
+New user-facing work should target Flutter.
 
 ## Content Sync
 
