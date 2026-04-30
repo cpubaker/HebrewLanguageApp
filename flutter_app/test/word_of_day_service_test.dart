@@ -50,7 +50,11 @@ void main() {
         correct: 0,
         wrong: 0,
         contexts: [
-          LearningContext(contextId: 'ctx_dog', hebrew: 'dog context'),
+          LearningContext(
+            contextId: 'ctx_dog',
+            hebrew: 'dog context',
+            translation: 'dog translation',
+          ),
         ],
       ),
       LearningWord(
@@ -61,15 +65,16 @@ void main() {
         correct: 0,
         wrong: 0,
         contexts: [
-          LearningContext(contextId: 'ctx_house', hebrew: 'house context'),
+          LearningContext(
+            contextId: 'ctx_house',
+            hebrew: 'house context',
+            translation: 'house translation',
+          ),
         ],
       ),
     ];
 
-    final today = service.select(
-      words: words,
-      date: DateTime.utc(2026, 3, 27),
-    );
+    final today = service.select(words: words, date: DateTime.utc(2026, 3, 27));
     final repeated = service.select(
       words: words,
       date: DateTime.utc(2026, 3, 27),
@@ -94,16 +99,21 @@ void main() {
         correct: 0,
         wrong: 0,
         contexts: [
-          LearningContext(contextId: 'ctx_1', hebrew: 'context one'),
-          LearningContext(contextId: 'ctx_2', hebrew: 'context two'),
+          LearningContext(
+            contextId: 'ctx_1',
+            hebrew: 'context one',
+            translation: 'translation one',
+          ),
+          LearningContext(
+            contextId: 'ctx_2',
+            hebrew: 'context two',
+            translation: 'translation two',
+          ),
         ],
       ),
     ];
 
-    final today = service.select(
-      words: words,
-      date: DateTime.utc(2026, 3, 27),
-    );
+    final today = service.select(words: words, date: DateTime.utc(2026, 3, 27));
     final nextDay = service.select(
       words: words,
       date: DateTime.utc(2026, 3, 28),

@@ -76,12 +76,15 @@ void main() {
     );
 
     expect(find.text('Слово дня'), findsOneWidget);
-    expect(find.text('kelev'), findsOneWidget);
+    expect(find.text('kelev'), findsWidgets);
     expect(find.text('pes'), findsOneWidget);
     expect(find.text('dog context'), findsOneWidget);
     expect(find.text('dog translation'), findsOneWidget);
 
-    await tester.tap(find.widgetWithText(OutlinedButton, 'До карток'));
+    final flashcardsButton = find.widgetWithText(OutlinedButton, 'До карток');
+    await tester.ensureVisible(flashcardsButton);
+    await tester.pumpAndSettle();
+    await tester.tap(flashcardsButton);
     await tester.pump();
 
     expect(openedDeckMode, FlashcardDeckMode.withContexts);

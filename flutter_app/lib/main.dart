@@ -11,6 +11,6 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
   ]);
   runApp(
-    const HebrewFlutterApp(themeModeStore: SharedPreferencesThemeModeStore()),
+    HebrewFlutterApp(themeModeStore: const SharedPreferencesThemeModeStore()),
   );
 }

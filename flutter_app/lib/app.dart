@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'app_dependencies.dart';
 import 'screens/app_shell_screen.dart';
 import 'services/ai_context_service.dart';
 import 'services/ai_context_settings_store.dart';
@@ -21,8 +22,9 @@ import 'services/word_progress_store.dart';
 import 'theme/app_theme.dart';
 
 class HebrewFlutterApp extends StatefulWidget {
-  const HebrewFlutterApp({
+  HebrewFlutterApp({
     super.key,
+    AppDependencies dependencies = const AppDependencies(),
     LearningBundleLoader? loader,
     LessonDocumentLoader? documentLoader,
     WordProgressStore? progressStore,
@@ -36,36 +38,26 @@ class HebrewFlutterApp extends StatefulWidget {
     AiPracticeTextSettingsStore? aiPracticeTextSettingsStore,
     CreateVerbAudioPlayer? audioPlayerFactory,
     CreateAudioPlaybackAwareness? audioPlaybackAwarenessFactory,
-    this.themeModeStore,
+    ThemeModeStore? themeModeStore,
     this.initialThemeMode = ThemeMode.light,
-  }) : _loader = loader,
-       _documentLoader = documentLoader,
-       _progressStore = progressStore,
-       _guideProgressStore = guideProgressStore,
-       _readingProgressStore = readingProgressStore,
-       _progressRepository = progressRepository,
-       _featureAccessService = featureAccessService,
-       _aiContextService = aiContextService,
-       _aiContextSettingsStore = aiContextSettingsStore,
-       _aiPracticeTextService = aiPracticeTextService,
-       _aiPracticeTextSettingsStore = aiPracticeTextSettingsStore,
-       _audioPlayerFactory = audioPlayerFactory,
-       _audioPlaybackAwarenessFactory = audioPlaybackAwarenessFactory;
+  }) : dependencies = dependencies.withOverrides(
+         loader: loader,
+         documentLoader: documentLoader,
+         progressStore: progressStore,
+         guideProgressStore: guideProgressStore,
+         readingProgressStore: readingProgressStore,
+         progressRepository: progressRepository,
+         featureAccessService: featureAccessService,
+         aiContextService: aiContextService,
+         aiContextSettingsStore: aiContextSettingsStore,
+         aiPracticeTextService: aiPracticeTextService,
+         aiPracticeTextSettingsStore: aiPracticeTextSettingsStore,
+         audioPlayerFactory: audioPlayerFactory,
+         audioPlaybackAwarenessFactory: audioPlaybackAwarenessFactory,
+         themeModeStore: themeModeStore,
+       );
 
-  final LearningBundleLoader? _loader;
-  final LessonDocumentLoader? _documentLoader;
-  final WordProgressStore? _progressStore;
-  final GuideProgressStore? _guideProgressStore;
-  final ReadingProgressStore? _readingProgressStore;
-  final LearningProgressRepository? _progressRepository;
-  final FeatureAccessService? _featureAccessService;
-  final AiContextService? _aiContextService;
-  final AiContextSettingsStore? _aiContextSettingsStore;
-  final AiPracticeTextService? _aiPracticeTextService;
-  final AiPracticeTextSettingsStore? _aiPracticeTextSettingsStore;
-  final CreateVerbAudioPlayer? _audioPlayerFactory;
-  final CreateAudioPlaybackAwareness? _audioPlaybackAwarenessFactory;
-  final ThemeModeStore? themeModeStore;
+  final AppDependencies dependencies;
   final ThemeMode initialThemeMode;
 
   @override
@@ -74,13 +66,30 @@ class HebrewFlutterApp extends StatefulWidget {
 
 class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
   late ThemeMode _themeMode = widget.initialThemeMode;
-  late final FeatureAccessService _featureAccessService =
-      widget._featureAccessService ?? const StaticFeatureAccessService();
+  late final AppDependencies _dependencies = widget.dependencies;
+  late final LearningProgressRepository _progressRepository = _dependencies
+      .resolveProgressRepository();
+  late final LessonDocumentLoader _documentLoader = _dependencies
+      .resolveDocumentLoader();
+  late final FeatureAccessService _featureAccessService = _dependencies
+      .resolveFeatureAccessService();
+  late final AiContextService _aiContextService = _dependencies
+      .resolveAiContextService();
+  late final AiContextSettingsStore _aiContextSettingsStore = _dependencies
+      .resolveAiContextSettingsStore();
+  late final AiPracticeTextService _aiPracticeTextService = _dependencies
+      .resolveAiPracticeTextService();
+  late final AiPracticeTextSettingsStore _aiPracticeTextSettingsStore =
+      _dependencies.resolveAiPracticeTextSettingsStore();
+  late final CreateVerbAudioPlayer _audioPlayerFactory = _dependencies
+      .resolveAudioPlayerFactory();
+  late final CreateAudioPlaybackAwareness _audioPlaybackAwarenessFactory =
+      _dependencies.resolveAudioPlaybackAwarenessFactory();
 
   @override
   void initState() {
     super.initState();
-    final store = widget.themeModeStore;
+    final store = _dependencies.themeModeStore;
     if (store != null) {
       unawaited(_restoreThemeMode(store));
     }
@@ -115,7 +124,7 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
       _themeMode = nextMode;
     });
 
-    final store = widget.themeModeStore;
+    final store = _dependencies.themeModeStore;
     if (store != null) {
       unawaited(store.save(nextMode));
     }
@@ -133,37 +142,15 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
       darkTheme: buildDarkAppTheme(),
       themeMode: _themeMode,
       home: AppShellScreen(
-        progressRepository:
-            widget._progressRepository ??
-            StoreBackedLearningProgressRepository(
-              loader: widget._loader ?? AssetLearningBundleLoader(),
-              wordProgressStore:
-                  widget._progressStore ?? SharedPreferencesWordProgressStore(),
-              guideProgressStore:
-                  widget._guideProgressStore ??
-                  SharedPreferencesGuideProgressStore(),
-              readingProgressStore:
-                  widget._readingProgressStore ??
-                  SharedPreferencesReadingProgressStore(),
-            ),
-        documentLoader: widget._documentLoader ?? AssetLessonDocumentLoader(),
+        progressRepository: _progressRepository,
+        documentLoader: _documentLoader,
         featureAccessService: _featureAccessService,
-        aiContextService:
-            widget._aiContextService ?? createDefaultAiContextService(),
-        aiContextSettingsStore:
-            widget._aiContextSettingsStore ??
-            const SharedPreferencesAiContextSettingsStore(),
-        aiPracticeTextService:
-            widget._aiPracticeTextService ??
-            createDefaultAiPracticeTextService(),
-        aiPracticeTextSettingsStore:
-            widget._aiPracticeTextSettingsStore ??
-            const SharedPreferencesAiPracticeTextSettingsStore(),
-        audioPlayerFactory:
-            widget._audioPlayerFactory ?? createAssetVerbAudioPlayer,
-        audioPlaybackAwarenessFactory:
-            widget._audioPlaybackAwarenessFactory ??
-            createAudioPlaybackAwareness,
+        aiContextService: _aiContextService,
+        aiContextSettingsStore: _aiContextSettingsStore,
+        aiPracticeTextService: _aiPracticeTextService,
+        aiPracticeTextSettingsStore: _aiPracticeTextSettingsStore,
+        audioPlayerFactory: _audioPlayerFactory,
+        audioPlaybackAwarenessFactory: _audioPlaybackAwarenessFactory,
         isDarkMode: _themeMode == ThemeMode.dark,
         onToggleThemeMode: _toggleThemeMode,
       ),
