@@ -23,21 +23,18 @@ import '../services/learning_word_progress.dart';
 import '../services/progress_snapshot.dart';
 import '../services/verb_audio_player.dart';
 import 'app_shell_navigation.dart';
+import 'app_shell_workspaces.dart';
 import 'bottom_nav_auto_hide_behavior.dart';
 import 'flashcards_screen.dart';
 import 'guide_screen.dart';
 import 'home_screen.dart';
 import 'ai_practice_text_screen.dart';
-import 'more_screen.dart';
 import 'reading_screen.dart';
 import 'repetition_screen.dart';
 import 'sprint_screen.dart';
 import 'verbs_screen.dart';
-import 'workspace_screen.dart';
 import 'words_screen.dart';
 import 'writing_screen.dart';
-
-enum _MoreSection { overview, progress, settings }
 
 class AppShellScreen extends StatefulWidget {
   const AppShellScreen({
@@ -94,7 +91,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
       LatestRequestTracker();
   final LatestRequestTracker _wordPersistenceRequests = LatestRequestTracker();
   AppRootArea _selectedArea = AppRootArea.home;
-  _MoreSection _moreSection = _MoreSection.overview;
+  AppShellMoreSection _moreSection = AppShellMoreSection.overview;
   bool _autoHideBottomNavOnScroll = true;
   bool _aiWordContextsEnabled = false;
   bool _aiPracticeTextsEnabled = false;
@@ -710,7 +707,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
     );
   }
 
-  void _openMoreSection(_MoreSection section) {
+  void _openMoreSection(AppShellMoreSection section) {
     setState(() {
       _moreSection = section;
       _selectedArea = AppRootArea.more;
@@ -962,207 +959,6 @@ class _AppShellScreenState extends State<AppShellScreen> {
       );
   }
 
-  Widget _buildLearnWorkspace(LearningBundle bundle) {
-    return WorkspaceHubScreen(
-      title: 'Вчитись',
-      subtitle:
-          'Оберіть, з чого продовжити навчання. Після вибору модуль відкриється окремим повноекранним екраном.',
-      shortcuts: [
-        WorkspaceShortcut(
-          title: 'Слова',
-          subtitle:
-              'Повний словник із пошуком, фільтрами й картками деталей. Доступно: ${bundle.words.length} слів.',
-          icon: Icons.translate_rounded,
-          accent: const Color(0xFF2B5D4F),
-          onTap: _openLearnWords,
-        ),
-        WorkspaceShortcut(
-          title: 'Дієслова',
-          subtitle:
-              'Добірка дієслівних уроків із поясненнями, озвученням і окремими екранами деталей. Доступно: ${bundle.verbLessons.length} уроків.',
-          icon: Icons.play_lesson_rounded,
-          accent: const Color(0xFF8C6A2A),
-          onTap: _openLearnVerbs,
-        ),
-        WorkspaceShortcut(
-          title: 'Довідник',
-          subtitle:
-              'Теми з поясненнями, пошуком і прогресом по матеріалах. Доступно: ${bundle.guideLessons.length} уроків.',
-          icon: Icons.menu_book_rounded,
-          accent: const Color(0xFFB45309),
-          onTap: _openGuide,
-        ),
-        WorkspaceShortcut(
-          title: 'Читання',
-          subtitle:
-              'Тексти за рівнями складності з відмітками прочитаного. Доступно: ${bundle.readingLessons.length} уроків.',
-          icon: Icons.auto_stories_rounded,
-          accent: const Color(0xFF0F766E),
-          onTap: _openReading,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildPracticeWorkspace(LearningBundle bundle) {
-    return WorkspaceHubScreen(
-      title: 'Практика',
-      subtitle:
-          'Оберіть формат тренування і відкрийте його окремим повноекранним сеансом.',
-      shortcuts: [
-        WorkspaceShortcut(
-          title: 'Картки',
-          subtitle:
-              'Швидке повторення перекладу, контексту і наборів на повторення.',
-          icon: Icons.style_rounded,
-          accent: const Color(0xFF0F766E),
-          onTap: () => _openFlashcards(_preferredFlashcardDeckMode),
-        ),
-        WorkspaceShortcut(
-          title: 'Написання',
-          subtitle:
-              'Введення слова івритом без підказки для активного пригадування.',
-          icon: Icons.edit_rounded,
-          accent: const Color(0xFF2B5D4F),
-          onTap: () => _openWritingPractice(),
-        ),
-        WorkspaceShortcut(
-          title: 'Конструктор',
-          subtitle: 'Складання слова з блоків у правильному порядку.',
-          icon: Icons.extension_rounded,
-          accent: const Color(0xFFB45309),
-          onTap: () => _openWritingPractice(WritingPracticeMode.constructor),
-        ),
-        WorkspaceShortcut(
-          title: 'Повторення',
-          subtitle:
-              'Спокійний перегляд нових слів у вивченні та слів, де остання спроба була з помилкою.',
-          icon: Icons.refresh_rounded,
-          accent: const Color(0xFF8C6A2A),
-          onTap: _openRepetition,
-        ),
-        WorkspaceShortcut(
-          title: 'Спринт',
-          subtitle:
-              'Хвилинний режим на швидкість: для кожного слова є два варіанти перекладу.',
-          icon: Icons.timer_rounded,
-          accent: const Color(0xFFB91C1C),
-          onTap: _openSprint,
-        ),
-        WorkspaceShortcut(
-          title: 'Текст зі словами',
-          subtitle:
-              'Короткий ШІ-текст з вашими словами, перекладом і швидким переходом до практики.',
-          icon: Icons.auto_awesome_rounded,
-          accent: const Color(0xFF7C3AED),
-          onTap: _openAiPracticeText,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildMoreWorkspace(LearningBundle bundle) {
-    final shortcuts = [
-      WorkspaceShortcut(
-        title: 'Головна',
-        subtitle: 'Повернутися до dashboard з рекомендаціями і прогресом.',
-        icon: Icons.home_rounded,
-        accent: const Color(0xFF2B5D4F),
-        onTap: () => _selectArea(AppRootArea.home.index),
-      ),
-      WorkspaceShortcut(
-        title: 'Вчитись',
-        subtitle:
-            'Слова, дієслова, довідник і читання в одному робочому просторі.',
-        icon: Icons.translate_rounded,
-        accent: const Color(0xFF0F766E),
-        onTap: () => _selectArea(AppRootArea.learn.index),
-      ),
-      WorkspaceShortcut(
-        title: 'Практика',
-        subtitle: 'Картки й письмо для активного тренування.',
-        icon: Icons.style_rounded,
-        accent: const Color(0xFF8C3E9F),
-        onTap: () {
-          if (_preferWritingPractice) {
-            _openWritingPractice();
-          } else {
-            _openFlashcards(_preferredFlashcardDeckMode);
-          }
-        },
-      ),
-      WorkspaceShortcut(
-        title: 'Повторення',
-        subtitle:
-            'Перегляд нових слів у вивченні та останніх помилок без таймера.',
-        icon: Icons.refresh_rounded,
-        accent: const Color(0xFF8C6A2A),
-        onTap: _openRepetition,
-      ),
-      WorkspaceShortcut(
-        title: 'Спринт',
-        subtitle:
-            'Хвилинна вправа з вибором правильного перекладу між двома варіантами.',
-        icon: Icons.timer_rounded,
-        accent: const Color(0xFFB91C1C),
-        onTap: _openSprint,
-      ),
-    ];
-
-    return WorkspaceScreen(
-      title: 'Профіль',
-      subtitle:
-          'Тут зібрані прогрес, налаштування та додаткові точки входу, які не повинні перевантажувати нижню навігацію.',
-      sections: const [
-        WorkspaceSection(
-          label: 'Огляд',
-          icon: Icons.dashboard_customize_rounded,
-        ),
-        WorkspaceSection(label: 'Прогрес', icon: Icons.insights_rounded),
-        WorkspaceSection(label: 'Налаштування', icon: Icons.tune_rounded),
-      ],
-      selectedIndex: _moreSection.index,
-      onSectionSelected: (index) {
-        _openMoreSection(_MoreSection.values[index]);
-      },
-      child: IndexedStack(
-        index: _moreSection.index,
-        children: [
-          MoreOverviewScreen(shortcuts: shortcuts),
-          MoreProgressScreen(
-            bundle: bundle,
-            guideLessonStatuses: _guideLessonStatuses,
-            readingLessonStatuses: _readingLessonStatuses,
-            onOpenWords: _openLearnWords,
-            onOpenFlashcards: _openFlashcards,
-            onOpenWriting: () => _openWritingPractice(),
-            onOpenSprint: _openSprint,
-            onOpenGuide: _openGuide,
-            onOpenReading: _openReading,
-          ),
-          MoreSettingsScreen(
-            autoHideBottomNavOnScroll: _autoHideBottomNavOnScroll,
-            onAutoHideBottomNavOnScrollChanged: _setAutoHideBottomNavOnScroll,
-            aiWordContextsEnabled: _aiWordContextsEnabled,
-            aiWordContextsAccess: widget.featureAccessService.accessFor(
-              AppFeature.aiWordContexts,
-            ),
-            onAiWordContextsEnabledChanged: _setAiWordContextsEnabled,
-            aiPracticeTextsEnabled: _aiPracticeTextsEnabled,
-            aiPracticeTextsAccess: widget.featureAccessService.accessFor(
-              AppFeature.aiPracticeTexts,
-            ),
-            onAiPracticeTextsEnabledChanged: _setAiPracticeTextsEnabled,
-            preferWritingPractice: _preferWritingPractice,
-            onPreferWritingPracticeChanged: _setPreferWritingPractice,
-            preferredFlashcardDeckMode: _preferredFlashcardDeckMode,
-            onPreferredFlashcardDeckModeChanged: _setPreferredFlashcardDeckMode,
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<LearningBundle>(
@@ -1213,9 +1009,70 @@ class _AppShellScreenState extends State<AppShellScreen> {
                           onOpenReading: _openReading,
                           onOpenReadingLesson: _openReadingLesson,
                         ),
-                        _buildLearnWorkspace(bundle),
-                        _buildPracticeWorkspace(bundle),
-                        _buildMoreWorkspace(bundle),
+                        AppShellLearnWorkspace(
+                          bundle: bundle,
+                          onOpenWords: _openLearnWords,
+                          onOpenVerbs: _openLearnVerbs,
+                          onOpenGuide: _openGuide,
+                          onOpenReading: _openReading,
+                        ),
+                        AppShellPracticeWorkspace(
+                          preferredFlashcardDeckMode:
+                              _preferredFlashcardDeckMode,
+                          onOpenFlashcards: _openFlashcards,
+                          onOpenWriting: () => _openWritingPractice(),
+                          onOpenWritingConstructor: () => _openWritingPractice(
+                            WritingPracticeMode.constructor,
+                          ),
+                          onOpenRepetition: _openRepetition,
+                          onOpenSprint: _openSprint,
+                          onOpenAiPracticeText: _openAiPracticeText,
+                        ),
+                        AppShellMoreWorkspace(
+                          bundle: bundle,
+                          selectedSection: _moreSection,
+                          onSectionSelected: _openMoreSection,
+                          guideLessonStatuses: _guideLessonStatuses,
+                          readingLessonStatuses: _readingLessonStatuses,
+                          autoHideBottomNavOnScroll: _autoHideBottomNavOnScroll,
+                          onAutoHideBottomNavOnScrollChanged:
+                              _setAutoHideBottomNavOnScroll,
+                          aiWordContextsEnabled: _aiWordContextsEnabled,
+                          aiWordContextsAccess: widget.featureAccessService
+                              .accessFor(AppFeature.aiWordContexts),
+                          onAiWordContextsEnabledChanged:
+                              _setAiWordContextsEnabled,
+                          aiPracticeTextsEnabled: _aiPracticeTextsEnabled,
+                          aiPracticeTextsAccess: widget.featureAccessService
+                              .accessFor(AppFeature.aiPracticeTexts),
+                          onAiPracticeTextsEnabledChanged:
+                              _setAiPracticeTextsEnabled,
+                          preferWritingPractice: _preferWritingPractice,
+                          onPreferWritingPracticeChanged:
+                              _setPreferWritingPractice,
+                          preferredFlashcardDeckMode:
+                              _preferredFlashcardDeckMode,
+                          onPreferredFlashcardDeckModeChanged:
+                              _setPreferredFlashcardDeckMode,
+                          onSelectHome: () =>
+                              _selectArea(AppRootArea.home.index),
+                          onSelectLearn: () =>
+                              _selectArea(AppRootArea.learn.index),
+                          onOpenPreferredPractice: () {
+                            if (_preferWritingPractice) {
+                              _openWritingPractice();
+                            } else {
+                              _openFlashcards(_preferredFlashcardDeckMode);
+                            }
+                          },
+                          onOpenRepetition: _openRepetition,
+                          onOpenSprint: _openSprint,
+                          onOpenWords: _openLearnWords,
+                          onOpenFlashcards: _openFlashcards,
+                          onOpenWriting: () => _openWritingPractice(),
+                          onOpenGuide: _openGuide,
+                          onOpenReading: _openReading,
+                        ),
                       ],
                     ),
                   ),

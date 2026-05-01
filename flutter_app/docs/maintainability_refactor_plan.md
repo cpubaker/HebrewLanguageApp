@@ -1,20 +1,26 @@
 # Maintainability Refactor Plan
 
+## Goals
+
+- Keep the Flutter client easy to change by people and AI agents.
+- Prefer narrow vertical slices over broad rewrites.
+- Keep product behavior stable after each refactor batch.
+- Make shared behavior testable outside large stateful screens.
+
 ## Problems Likely To Grow
 
-- Large stateful screens combine navigation, async loading, persistence rollback,
-  feature gates, and presentation. This makes small product changes risky because
-  unrelated concerns are edited in the same file.
-- App startup wiring was spread through `HebrewFlutterApp`, so adding one service
-  required changing the widget constructor, default creation, tests, and shell
-  parameters at the same time.
+- Large stateful screens still combine navigation, async loading, persistence
+  rollback, feature gates, and presentation. This makes small product changes
+  risky because unrelated concerns are edited in the same file.
 - UI colors are still partly screen-local. Night mode can regress when future
   changes bypass shared theme tokens.
 - Several practice modules have similar result cards, stat pills, audio hints,
   and progress updates. Divergence will make bug fixes repetitive.
 - Content loading tolerates missing optional files, but catalog and metadata
-  contracts are implicit. New content tools can break runtime assumptions without
-  a clear boundary test.
+  contracts are implicit. New content tools can break runtime assumptions
+  without a clear boundary test.
+- The largest screens are still hard to scan quickly, even after extracting the
+  first shared contracts.
 
 ## Refactoring Strategy
 
@@ -27,24 +33,45 @@
    layers.
 4. Extend `lib/theme/app_theme.dart` before adding screen-local light or dark
    colors.
-5. Add a focused test for every extracted contract before moving the next slice.
+5. Add or run a focused test for every extracted contract before moving the next
+   slice.
 
-## Completed First Slice
+## Completed Slices
 
 - Added `AppDependencies` as the explicit app composition boundary.
-- Kept legacy `HebrewFlutterApp` constructor parameters as compatibility
-  overrides for existing tests and narrow widget setup.
-- Resolved default app services once in `HebrewFlutterAppState`, then passed
-  stable instances into `AppShellScreen`.
+- Extracted `AppShellBottomNavigation` from `AppShellScreen`.
+- Extracted `LatestRequestTracker` for last-write-wins persistence guards.
+- Extracted `LearningWordProgress` for copying word progress between hydrated
+  bundle instances.
+- Extracted `BottomNavAutoHideBehavior` for scroll-driven bottom navigation
+  visibility.
+- Extracted `applyLessonStatus` and `restoreLessonStatus` for guide and reading
+  lesson status updates.
+- Extracted shared lesson status UI into `LessonStatusToggleButton` and
+  `lessonStatusVisuals`.
+- Extracted `AppShellLearnWorkspace`, `AppShellPracticeWorkspace`, and
+  `AppShellMoreWorkspace` so `AppShellScreen` keeps less workspace presentation
+  code.
 
 ## Next Slices
 
-1. Split `AppShellScreen` into navigation shell, progress mutation handlers, and
-   workspace shortcut builders.
+1. Continue splitting `AppShellScreen` by extracting progress mutation handlers
+   or persistence rollback helpers behind small testable contracts.
 2. Move repeated practice result/status widgets from flashcards, writing,
-   repetition, and sprint into shared widgets with golden or widget tests.
+   repetition, and sprint into shared widgets with focused widget tests.
 3. Replace hardcoded screen accent colors with named theme tokens for semantic
    states: success, danger, warning, AI, and lesson category accents.
 4. Add contract tests for lesson catalog metadata and content asset sync output.
 5. Review the largest screens one by one and extract only stable subtrees that
    already have test coverage.
+6. Review `MarkdownLessonBody` for separable parsing, layout, and glossary
+   behavior while keeping its public API stable.
+
+## Validation
+
+- After Flutter code changes:
+  - `flutter analyze`
+  - focused tests for the touched flow
+  - `flutter test`
+- After content source changes:
+  - `powershell -ExecutionPolicy Bypass -File .\tool\sync_learning_assets.ps1`
