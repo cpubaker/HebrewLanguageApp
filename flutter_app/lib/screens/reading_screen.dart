@@ -6,6 +6,7 @@ import '../models/guide_lesson_status.dart';
 import '../models/learning_bundle.dart';
 import '../models/lesson_document.dart';
 import '../services/lesson_document_loader.dart';
+import '../services/lesson_status_updates.dart';
 import '../services/progress_snapshot.dart';
 import '../theme/app_theme.dart';
 import 'reading_lesson_catalog.dart';
@@ -205,33 +206,22 @@ class _ReadingScreenState extends State<ReadingScreen> {
     final lessonKey = lesson.progressKey;
     final previousStatus = _lessonStatuses[lessonKey];
     setState(() {
-      _setLocalLessonStatus(lessonKey, status);
+      _lessonStatuses = applyLessonStatus(
+        _lessonStatuses,
+        lessonKey: lessonKey,
+        status: status,
+      );
     });
 
     final saved = await widget.onStatusChanged(lessonKey, status);
     if (!saved && mounted) {
       setState(() {
-        _restoreLocalLessonStatus(lessonKey, previousStatus);
+        _lessonStatuses = restoreLessonStatus(
+          _lessonStatuses,
+          lessonKey: lessonKey,
+          previousStatus: previousStatus,
+        );
       });
-    }
-  }
-
-  void _setLocalLessonStatus(String lessonKey, GuideLessonStatus status) {
-    if (status == GuideLessonStatus.unread) {
-      _lessonStatuses.remove(lessonKey);
-    } else {
-      _lessonStatuses[lessonKey] = status;
-    }
-  }
-
-  void _restoreLocalLessonStatus(
-    String lessonKey,
-    GuideLessonStatus? previousStatus,
-  ) {
-    if (previousStatus == null || previousStatus == GuideLessonStatus.unread) {
-      _lessonStatuses.remove(lessonKey);
-    } else {
-      _lessonStatuses[lessonKey] = previousStatus;
     }
   }
 

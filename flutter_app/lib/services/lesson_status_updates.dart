@@ -14,3 +14,15 @@ Map<String, GuideLessonStatus> applyLessonStatus(
 
   return <String, GuideLessonStatus>{...statuses, lessonKey: status};
 }
+
+Map<String, GuideLessonStatus> restoreLessonStatus(
+  Map<String, GuideLessonStatus> statuses, {
+  required String lessonKey,
+  required GuideLessonStatus? previousStatus,
+}) {
+  return applyLessonStatus(
+    statuses,
+    lessonKey: lessonKey,
+    status: previousStatus ?? GuideLessonStatus.unread,
+  );
+}

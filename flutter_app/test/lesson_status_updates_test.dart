@@ -64,4 +64,55 @@ void main() {
     expect(updated, original);
     expect(identical(updated, original), isFalse);
   });
+
+  test('restores a previous non-unread lesson status', () {
+    final updated = restoreLessonStatus(
+      const <String, GuideLessonStatus>{'intro': GuideLessonStatus.read},
+      lessonKey: 'intro',
+      previousStatus: GuideLessonStatus.studying,
+    );
+
+    expect(updated, const <String, GuideLessonStatus>{
+      'intro': GuideLessonStatus.studying,
+    });
+  });
+
+  test('removes a lesson status when previous status was absent', () {
+    final updated = restoreLessonStatus(
+      const <String, GuideLessonStatus>{'intro': GuideLessonStatus.read},
+      lessonKey: 'intro',
+      previousStatus: null,
+    );
+
+    expect(updated, isEmpty);
+  });
+
+  test('removes a lesson status when previous status was unread', () {
+    final updated = restoreLessonStatus(
+      const <String, GuideLessonStatus>{'intro': GuideLessonStatus.read},
+      lessonKey: 'intro',
+      previousStatus: GuideLessonStatus.unread,
+    );
+
+    expect(updated, isEmpty);
+  });
+
+  test('restores without mutating the optimistic status map', () {
+    final optimistic = <String, GuideLessonStatus>{
+      'intro': GuideLessonStatus.read,
+    };
+
+    final restored = restoreLessonStatus(
+      optimistic,
+      lessonKey: 'intro',
+      previousStatus: GuideLessonStatus.studying,
+    );
+
+    expect(restored, const <String, GuideLessonStatus>{
+      'intro': GuideLessonStatus.studying,
+    });
+    expect(optimistic, const <String, GuideLessonStatus>{
+      'intro': GuideLessonStatus.read,
+    });
+  });
 }
