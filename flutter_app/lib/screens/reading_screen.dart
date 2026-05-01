@@ -11,6 +11,7 @@ import '../services/progress_snapshot.dart';
 import '../theme/app_theme.dart';
 import 'reading_lesson_catalog.dart';
 import 'widgets/app_section_card.dart';
+import 'widgets/lesson_status_controls.dart';
 import 'widgets/markdown_lesson_body.dart';
 
 class ReadingScreen extends StatefulWidget {
@@ -591,7 +592,7 @@ class _ReadingDetailScreenState extends State<ReadingDetailScreen> {
                         ),
                       ),
                       const SizedBox(width: 12),
-                      _ReadingStatusToggleButton(
+                      LessonStatusToggleButton(
                         status: _status,
                         onPressed: () {
                           _updateStatus(nextLessonProgressStatus(_status));
@@ -637,7 +638,7 @@ class _ReadingLessonCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final level = readingLevelLabelFromAssetPath(lesson.assetPath);
     final orderLabel = readingLessonOrderLabel(lesson);
-    final statusTheme = _ReadingLessonStatusTheme.fromStatus(status);
+    final statusTheme = lessonStatusVisuals(status);
     final tokens = Theme.of(context).appTokens;
 
     return Material(
@@ -728,7 +729,7 @@ class _ReadingLessonCard extends StatelessWidget {
                   ],
                 ),
               ),
-              _ReadingStatusToggleButton(
+              LessonStatusToggleButton(
                 status: status,
                 compact: true,
                 onPressed: () {
@@ -823,65 +824,6 @@ class _ReadingLevelSection extends StatelessWidget {
   }
 }
 
-class _ReadingStatusToggleButton extends StatelessWidget {
-  const _ReadingStatusToggleButton({
-    required this.status,
-    required this.onPressed,
-    this.foregroundColor,
-    this.backgroundColor,
-    this.compact = false,
-  });
-
-  final GuideLessonStatus status;
-  final VoidCallback onPressed;
-  final Color? foregroundColor;
-  final Color? backgroundColor;
-  final bool compact;
-
-  @override
-  Widget build(BuildContext context) {
-    final statusTheme = _ReadingLessonStatusTheme.fromStatus(status);
-    final resolvedForegroundColor = foregroundColor ?? statusTheme.color;
-
-    return Tooltip(
-      message:
-          '\u0417\u043c\u0456\u043d\u0438\u0442\u0438 \u0441\u0442\u0430\u0442\u0443\u0441 \u0443\u0440\u043e\u043a\u0443',
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(999),
-          onTap: onPressed,
-          child: Container(
-            padding: compact
-                ? const EdgeInsets.all(6)
-                : const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-              color: backgroundColor ?? Colors.transparent,
-              borderRadius: BorderRadius.circular(999),
-            ),
-            child: compact
-                ? Icon(statusTheme.icon, color: resolvedForegroundColor)
-                : Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(statusTheme.icon, color: resolvedForegroundColor),
-                      const SizedBox(width: 6),
-                      Text(
-                        statusTheme.label,
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: resolvedForegroundColor,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ],
-                  ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class ReadingLevelSelector extends StatelessWidget {
   const ReadingLevelSelector({
     super.key,
@@ -953,42 +895,6 @@ class ReadingLevelSelector extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class _ReadingLessonStatusTheme {
-  const _ReadingLessonStatusTheme({
-    required this.label,
-    required this.icon,
-    required this.color,
-  });
-
-  final String label;
-  final IconData icon;
-  final Color color;
-
-  static _ReadingLessonStatusTheme fromStatus(GuideLessonStatus status) {
-    switch (status) {
-      case GuideLessonStatus.unread:
-        return const _ReadingLessonStatusTheme(
-          label:
-              '\u041d\u0435 \u043f\u0440\u043e\u0447\u0438\u0442\u0430\u043d\u043e',
-          icon: Icons.radio_button_unchecked_rounded,
-          color: Color(0xFF8C6A2A),
-        );
-      case GuideLessonStatus.studying:
-        return const _ReadingLessonStatusTheme(
-          label: '\u0412\u0438\u0432\u0447\u0430\u0454\u0442\u044c\u0441\u044f',
-          icon: Icons.timelapse_rounded,
-          color: Color(0xFF2563EB),
-        );
-      case GuideLessonStatus.read:
-        return const _ReadingLessonStatusTheme(
-          label: '\u041f\u0440\u043e\u0447\u0438\u0442\u0430\u043d\u043e',
-          icon: Icons.check_circle_rounded,
-          color: Color(0xFF0F766E),
-        );
-    }
   }
 }
 

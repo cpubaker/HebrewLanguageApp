@@ -10,6 +10,7 @@ import '../services/lesson_status_updates.dart';
 import '../services/progress_snapshot.dart';
 import '../theme/app_theme.dart';
 import 'widgets/app_section_card.dart';
+import 'widgets/lesson_status_controls.dart';
 import 'widgets/markdown_lesson_body.dart';
 
 class GuideScreen extends StatefulWidget {
@@ -919,7 +920,7 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
                                 ),
                               ),
                             const Spacer(),
-                            _GuideStatusToggleButton(
+                            LessonStatusToggleButton(
                               status: _status,
                               onPressed: () {
                                 _updateStatus(
@@ -1378,7 +1379,7 @@ class _GuideLessonCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
-    final statusTheme = _GuideLessonStatusTheme.fromStatus(status);
+    final statusTheme = lessonStatusVisuals(status);
     final orderMatch = RegExp(r'^(\d+)').firstMatch(lesson.displayName);
     final orderLabel = orderMatch?.group(1) ?? '*';
 
@@ -1474,7 +1475,7 @@ class _GuideLessonCard extends StatelessWidget {
               const SizedBox(width: 8),
               Column(
                 children: [
-                  _GuideStatusToggleButton(
+                  LessonStatusToggleButton(
                     status: status,
                     compact: true,
                     onPressed: () {
@@ -1854,99 +1855,6 @@ class _EmptyGuideSearchState extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class _GuideStatusToggleButton extends StatelessWidget {
-  const _GuideStatusToggleButton({
-    required this.status,
-    required this.onPressed,
-    this.foregroundColor,
-    this.backgroundColor,
-    this.compact = false,
-  });
-
-  final GuideLessonStatus status;
-  final VoidCallback onPressed;
-  final Color? foregroundColor;
-  final Color? backgroundColor;
-  final bool compact;
-
-  @override
-  Widget build(BuildContext context) {
-    final statusTheme = _GuideLessonStatusTheme.fromStatus(status);
-    final resolvedForegroundColor = foregroundColor ?? statusTheme.color;
-
-    return Tooltip(
-      message: 'Змінити статус уроку',
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(999),
-          onTap: onPressed,
-          child: Container(
-            padding: compact
-                ? const EdgeInsets.all(6)
-                : const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-              color: backgroundColor ?? Colors.transparent,
-              borderRadius: BorderRadius.circular(999),
-            ),
-            child: compact
-                ? Icon(statusTheme.icon, color: resolvedForegroundColor)
-                : Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(statusTheme.icon, color: resolvedForegroundColor),
-                      const SizedBox(width: 6),
-                      Text(
-                        statusTheme.label,
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: resolvedForegroundColor,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ],
-                  ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _GuideLessonStatusTheme {
-  const _GuideLessonStatusTheme({
-    required this.label,
-    required this.icon,
-    required this.color,
-  });
-
-  final String label;
-  final IconData icon;
-  final Color color;
-
-  static _GuideLessonStatusTheme fromStatus(GuideLessonStatus status) {
-    switch (status) {
-      case GuideLessonStatus.unread:
-        return const _GuideLessonStatusTheme(
-          label: 'Не прочитано',
-          icon: Icons.radio_button_unchecked_rounded,
-          color: Color(0xFF8C6A2A),
-        );
-      case GuideLessonStatus.studying:
-        return const _GuideLessonStatusTheme(
-          label: 'Вивчається',
-          icon: Icons.timelapse_rounded,
-          color: Color(0xFF2563EB),
-        );
-      case GuideLessonStatus.read:
-        return const _GuideLessonStatusTheme(
-          label: 'Прочитано',
-          icon: Icons.check_circle_rounded,
-          color: Color(0xFF0F766E),
-        );
-    }
   }
 }
 
