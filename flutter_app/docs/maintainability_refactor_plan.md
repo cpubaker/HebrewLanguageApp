@@ -52,11 +52,13 @@
 - Extracted `AppShellLearnWorkspace`, `AppShellPracticeWorkspace`, and
   `AppShellMoreWorkspace` so `AppShellScreen` keeps less workspace presentation
   code.
+- Extracted `applyWordUpdate` and `restoreWordUpdate` for optimistic word
+  progress updates and rollback.
 
 ## Next Slices
 
-1. Continue splitting `AppShellScreen` by extracting progress mutation handlers
-   or persistence rollback helpers behind small testable contracts.
+1. Continue splitting `AppShellScreen` by extracting lesson progress persistence
+   rollback helpers behind small testable contracts.
 2. Move repeated practice result/status widgets from flashcards, writing,
    repetition, and sprint into shared widgets with focused widget tests.
 3. Replace hardcoded screen accent colors with named theme tokens for semantic

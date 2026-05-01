@@ -18,6 +18,7 @@ import '../services/flashcard_session.dart';
 import '../services/latest_request_tracker.dart';
 import '../services/lesson_document_loader.dart';
 import '../services/lesson_status_updates.dart';
+import '../services/learning_bundle_word_updates.dart';
 import '../services/learning_progress_repository.dart';
 import '../services/learning_word_progress.dart';
 import '../services/progress_snapshot.dart';
@@ -377,20 +378,13 @@ class _AppShellScreenState extends State<AppShellScreen> {
   void _handleWordProgressChanged(LearningWord updatedWord) {
     final activeBundle = _bundle;
     LearningWord? previousWord;
-    int wordIndex = -1;
 
     if (activeBundle != null) {
-      wordIndex = activeBundle.words.indexWhere(
-        (word) => word.wordId == updatedWord.wordId,
-      );
-      if (wordIndex >= 0) {
-        previousWord = activeBundle.words[wordIndex];
-      }
-      if (wordIndex >= 0) {
-        final updatedWords = List<LearningWord>.from(activeBundle.words);
-        updatedWords[wordIndex] = updatedWord;
+      final update = applyWordUpdate(activeBundle, updatedWord);
+      previousWord = update.previousWord;
+      if (update.didUpdate) {
         setState(() {
-          _bundle = activeBundle.copyWith(words: updatedWords);
+          _bundle = update.bundle;
         });
       }
     }
@@ -860,18 +854,13 @@ class _AppShellScreenState extends State<AppShellScreen> {
 
       final activeBundle = _bundle;
       if (activeBundle != null && previousWord != null) {
-        final wordToRestore = previousWord;
-        final restoreIndex = activeBundle.words.indexWhere(
-          (word) => word.wordId == wordToRestore.wordId,
-        );
-        if (restoreIndex < 0) {
+        final restoredBundle = restoreWordUpdate(activeBundle, previousWord);
+        if (identical(restoredBundle, activeBundle)) {
           return;
         }
 
-        final restoredWords = List<LearningWord>.from(activeBundle.words);
-        restoredWords[restoreIndex] = wordToRestore;
         setState(() {
-          _bundle = activeBundle.copyWith(words: restoredWords);
+          _bundle = restoredBundle;
         });
       }
 
