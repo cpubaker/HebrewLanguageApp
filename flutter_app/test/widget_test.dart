@@ -12,6 +12,7 @@ import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/models/lesson_document.dart';
 import 'package:hebrew_language_flutter/screens/home_screen.dart';
 import 'package:hebrew_language_flutter/screens/sprint_screen.dart';
+import 'package:hebrew_language_flutter/services/audio_playback_awareness.dart';
 import 'package:hebrew_language_flutter/services/feature_access_service.dart';
 import 'package:hebrew_language_flutter/services/guide_progress_store.dart';
 import 'package:hebrew_language_flutter/services/lesson_document_loader.dart';
@@ -321,16 +322,14 @@ void main() {
         guideProgressStore: FakeGuideProgressStore(),
         readingProgressStore: FakeReadingProgressStore(),
         audioPlayerFactory: () => audioPlayer,
+        audioPlaybackAwarenessFactory: () => const NoopAudioPlaybackAwareness(),
       ),
     );
     await tester.pumpAndSettle();
 
     await tester.tap(find.byIcon(Icons.school_outlined));
     await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(Icons.translate_rounded).first);
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.text('Дієслова').last);
+    await tester.tap(find.byIcon(Icons.play_lesson_rounded).first);
     await tester.pumpAndSettle();
 
     expect(find.text('\u0425\u043e\u0434\u0438\u0442\u0438'), findsOneWidget);
@@ -355,7 +354,7 @@ void main() {
       'assets/learning/input/audio/verbs/walk.mp3',
     ]);
     expect(find.byTooltip('Зупинити вимову'), findsOneWidget);
-  }, skip: true);
+  });
 
   testWidgets('opens reading lesson details', (WidgetTester tester) async {
     await _useTallMobileViewport(tester);
