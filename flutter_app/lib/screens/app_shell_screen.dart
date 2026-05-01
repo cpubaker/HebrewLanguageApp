@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 
 import '../models/guide_lesson_status.dart';
@@ -23,6 +22,7 @@ import '../services/learning_word_progress.dart';
 import '../services/progress_snapshot.dart';
 import '../services/verb_audio_player.dart';
 import 'app_shell_navigation.dart';
+import 'bottom_nav_auto_hide_behavior.dart';
 import 'flashcards_screen.dart';
 import 'guide_screen.dart';
 import 'home_screen.dart';
@@ -76,6 +76,8 @@ class _AppShellScreenState extends State<AppShellScreen> {
   );
   static const double _expandedBodyBottomInset = 108;
   static const double _collapsedBodyBottomInset = 36;
+  static const BottomNavAutoHideBehavior _bottomNavAutoHideBehavior =
+      BottomNavAutoHideBehavior();
 
   late Future<LearningBundle> _bundleFuture;
   late final AudioPlaybackAwareness _audioPlaybackAwareness = widget
@@ -770,41 +772,33 @@ class _AppShellScreenState extends State<AppShellScreen> {
   }
 
   bool _handleShellScrollNotification(ScrollNotification notification) {
-    if (!_autoHideBottomNavOnScroll) {
-      _setBottomNavVisibility(true);
-      return false;
-    }
-
     final metrics = notification.metrics;
-    if (metrics.axis != Axis.vertical) {
-      return false;
-    }
-
-    if (metrics.maxScrollExtent <= 0 || metrics.pixels <= 24) {
-      _setBottomNavVisibility(true);
-      return false;
-    }
-
-    if (notification is UserScrollNotification) {
-      final direction = notification.direction;
-      if (direction == ScrollDirection.forward) {
-        _setBottomNavVisibility(true);
-      } else if (direction == ScrollDirection.reverse && metrics.pixels > 72) {
-        _setBottomNavVisibility(false);
-      }
-      return false;
-    }
-
-    if (notification is ScrollUpdateNotification) {
-      final delta = notification.scrollDelta ?? 0;
-      if (delta > 4 && metrics.pixels > 72) {
-        _setBottomNavVisibility(false);
-      } else if (delta < -4) {
-        _setBottomNavVisibility(true);
-      }
-    }
+    final decision = _bottomNavAutoHideBehavior.decisionFor(
+      autoHideEnabled: _autoHideBottomNavOnScroll,
+      axis: metrics.axis,
+      maxScrollExtent: metrics.maxScrollExtent,
+      pixels: metrics.pixels,
+      userScrollDirection: notification is UserScrollNotification
+          ? notification.direction
+          : null,
+      scrollDelta: notification is ScrollUpdateNotification
+          ? notification.scrollDelta
+          : null,
+    );
+    _applyBottomNavVisibilityDecision(decision);
 
     return false;
+  }
+
+  void _applyBottomNavVisibilityDecision(BottomNavVisibilityDecision decision) {
+    switch (decision) {
+      case BottomNavVisibilityDecision.show:
+        _setBottomNavVisibility(true);
+      case BottomNavVisibilityDecision.hide:
+        _setBottomNavVisibility(false);
+      case BottomNavVisibilityDecision.none:
+        break;
+    }
   }
 
   void _setAutoHideBottomNavOnScroll(bool value) {
