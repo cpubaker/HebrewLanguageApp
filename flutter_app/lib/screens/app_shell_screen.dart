@@ -17,6 +17,7 @@ import '../services/feature_access_service.dart';
 import '../services/flashcard_session.dart';
 import '../services/latest_request_tracker.dart';
 import '../services/lesson_document_loader.dart';
+import '../services/lesson_status_updates.dart';
 import '../services/learning_progress_repository.dart';
 import '../services/learning_word_progress.dart';
 import '../services/progress_snapshot.dart';
@@ -415,17 +416,11 @@ class _AppShellScreenState extends State<AppShellScreen> {
       _guideLessonStatuses,
     );
     setState(() {
-      if (status == GuideLessonStatus.unread) {
-        _guideLessonStatuses = <String, GuideLessonStatus>{
-          for (final entry in _guideLessonStatuses.entries)
-            if (entry.key != lessonKey) entry.key: entry.value,
-        };
-      } else {
-        _guideLessonStatuses = <String, GuideLessonStatus>{
-          ..._guideLessonStatuses,
-          lessonKey: status,
-        };
-      }
+      _guideLessonStatuses = applyLessonStatus(
+        _guideLessonStatuses,
+        lessonKey: lessonKey,
+        status: status,
+      );
     });
 
     final requestToken = _guidePersistenceRequests.start(lessonKey);
@@ -445,17 +440,11 @@ class _AppShellScreenState extends State<AppShellScreen> {
       _readingLessonStatuses,
     );
     setState(() {
-      if (status == GuideLessonStatus.unread) {
-        _readingLessonStatuses = <String, GuideLessonStatus>{
-          for (final entry in _readingLessonStatuses.entries)
-            if (entry.key != lessonKey) entry.key: entry.value,
-        };
-      } else {
-        _readingLessonStatuses = <String, GuideLessonStatus>{
-          ..._readingLessonStatuses,
-          lessonKey: status,
-        };
-      }
+      _readingLessonStatuses = applyLessonStatus(
+        _readingLessonStatuses,
+        lessonKey: lessonKey,
+        status: status,
+      );
     });
 
     final requestToken = _readingPersistenceRequests.start(lessonKey);
