@@ -6,12 +6,12 @@ import 'package:flutter/scheduler.dart';
 
 import '../models/guide_lesson_status.dart';
 import '../models/learning_bundle.dart';
-import '../models/learning_context.dart';
 import '../models/learning_word.dart';
 import '../services/ai_context_service.dart';
 import '../services/ai_context_settings_store.dart';
 import '../services/ai_practice_text_service.dart';
 import '../services/ai_practice_text_settings_store.dart';
+import '../services/ai_learning_helpers.dart';
 import '../services/audio_playback_awareness.dart';
 import '../services/feature_access_service.dart';
 import '../services/flashcard_session.dart';
@@ -21,7 +21,6 @@ import '../services/lesson_status_updates.dart';
 import '../services/learning_bundle_word_updates.dart';
 import '../services/learning_progress_repository.dart';
 import '../services/learning_word_progress.dart';
-import '../services/progress_snapshot.dart';
 import '../services/verb_audio_player.dart';
 import 'app_shell_navigation.dart';
 import 'app_shell_workspaces.dart';
@@ -36,6 +35,11 @@ import 'sprint_screen.dart';
 import 'verbs_screen.dart';
 import 'words_screen.dart';
 import 'writing_screen.dart';
+
+typedef _LessonStatusPersister =
+    Future<void> Function(String lessonKey, GuideLessonStatus status);
+typedef _LessonStatusesRestorer =
+    void Function(Map<String, GuideLessonStatus> statuses);
 
 class AppShellScreen extends StatefulWidget {
   const AppShellScreen({
@@ -112,8 +116,12 @@ class _AppShellScreenState extends State<AppShellScreen> {
   Future<void> _restoreAiWordContextsEnabled() async {
     final enabled = await widget.aiContextSettingsStore.loadEnabled();
     if (!mounted ||
-        !enabled ||
-        !widget.featureAccessService.isEnabled(AppFeature.aiWordContexts)) {
+        !shouldRestoreEnabledFeature(
+          storedEnabled: enabled,
+          featureEnabled: widget.featureAccessService.isEnabled(
+            AppFeature.aiWordContexts,
+          ),
+        )) {
       return;
     }
 
@@ -125,8 +133,12 @@ class _AppShellScreenState extends State<AppShellScreen> {
   Future<void> _restoreAiPracticeTextsEnabled() async {
     final enabled = await widget.aiPracticeTextSettingsStore.loadEnabled();
     if (!mounted ||
-        !enabled ||
-        !widget.featureAccessService.isEnabled(AppFeature.aiPracticeTexts)) {
+        !shouldRestoreEnabledFeature(
+          storedEnabled: enabled,
+          featureEnabled: widget.featureAccessService.isEnabled(
+            AppFeature.aiPracticeTexts,
+          ),
+        )) {
       return;
     }
 
@@ -224,9 +236,13 @@ class _AppShellScreenState extends State<AppShellScreen> {
     LearningBundle bundle,
     List<LearningWord> scopeWords,
   ) async {
-    if (!_aiWordContextsEnabled ||
-        !widget.featureAccessService.isEnabled(AppFeature.aiWordContexts) ||
-        scopeWords.isEmpty) {
+    if (!shouldLoadAiWordContexts(
+      aiWordContextsEnabled: _aiWordContextsEnabled,
+      featureEnabled: widget.featureAccessService.isEnabled(
+        AppFeature.aiWordContexts,
+      ),
+      scopeWords: scopeWords,
+    )) {
       return bundle;
     }
 
@@ -238,7 +254,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
         return bundle;
       }
 
-      final updatedBundle = _mergeGeneratedContexts(bundle, contextsByWordId);
+      final updatedBundle = mergeGeneratedContexts(bundle, contextsByWordId);
       if (mounted) {
         setState(() {
           _bundle = updatedBundle;
@@ -251,48 +267,14 @@ class _AppShellScreenState extends State<AppShellScreen> {
     }
   }
 
-  LearningBundle _mergeGeneratedContexts(
-    LearningBundle bundle,
-    Map<String, List<LearningContext>> contextsByWordId,
-  ) {
-    return bundle.copyWith(
-      words: bundle.words
-          .map((word) {
-            final generatedContexts = contextsByWordId[word.wordId];
-            if (generatedContexts == null || generatedContexts.isEmpty) {
-              return word;
-            }
-
-            return word.copyWith(
-              contexts: _mergeWordContexts(word.contexts, generatedContexts),
-            );
-          })
-          .toList(growable: false),
-    );
-  }
-
-  List<LearningContext> _mergeWordContexts(
-    List<LearningContext> currentContexts,
-    List<LearningContext> generatedContexts,
-  ) {
-    final seenContextIds = currentContexts
-        .map((context) => context.contextId)
-        .where((contextId) => contextId.trim().isNotEmpty)
-        .toSet();
-    final uniqueGeneratedContexts = generatedContexts
-        .where((context) => seenContextIds.add(context.contextId))
-        .toList(growable: false);
-
-    if (uniqueGeneratedContexts.isEmpty) {
-      return currentContexts;
-    }
-
-    return <LearningContext>[...uniqueGeneratedContexts, ...currentContexts];
-  }
-
   Future<LearningWord> _resolveWordWithAiContext(LearningWord word) async {
-    if (!_aiWordContextsEnabled ||
-        !widget.featureAccessService.isEnabled(AppFeature.aiWordContexts)) {
+    if (!shouldLoadAiWordContexts(
+      aiWordContextsEnabled: _aiWordContextsEnabled,
+      featureEnabled: widget.featureAccessService.isEnabled(
+        AppFeature.aiWordContexts,
+      ),
+      scopeWords: <LearningWord>[word],
+    )) {
       return word;
     }
 
@@ -306,11 +288,11 @@ class _AppShellScreenState extends State<AppShellScreen> {
       }
 
       final updatedWord = word.copyWith(
-        contexts: _mergeWordContexts(word.contexts, generatedContexts),
+        contexts: mergeWordContexts(word.contexts, generatedContexts),
       );
       final activeBundle = _bundle;
       if (mounted && activeBundle != null) {
-        final updatedBundle = _mergeGeneratedContexts(activeBundle, {
+        final updatedBundle = mergeGeneratedContexts(activeBundle, {
           word.wordId: generatedContexts,
         });
         setState(() {
@@ -322,57 +304,6 @@ class _AppShellScreenState extends State<AppShellScreen> {
       debugPrint('Failed to load AI word context for ${word.wordId}: $error');
       return word;
     }
-  }
-
-  List<LearningWord> _practiceScopeWords(
-    LearningBundle bundle,
-    FlashcardDeckMode mode,
-  ) {
-    final words = switch (mode) {
-      FlashcardDeckMode.allWords => bundle.words,
-      FlashcardDeckMode.withContexts => bundle.words,
-      FlashcardDeckMode.needsReview =>
-        bundle.words
-            .where(
-              (word) =>
-                  classifyWordLearningState(word) ==
-                  WordLearningState.needsReview,
-            )
-            .toList(growable: false),
-    };
-
-    return words
-        .where(
-          (word) => word.contexts.every((context) => !context.isAiGenerated),
-        )
-        .toList(growable: false);
-  }
-
-  List<LearningWord> _aiPracticeTextScopeWords(List<LearningWord> words) {
-    if (words.isEmpty) {
-      return const <LearningWord>[];
-    }
-
-    final reviewWords = words
-        .where(
-          (word) =>
-              classifyWordLearningState(word) == WordLearningState.needsReview,
-        )
-        .toList(growable: false);
-    if (reviewWords.isNotEmpty) {
-      return reviewWords.take(12).toList(growable: false);
-    }
-
-    final newWords = words
-        .where(
-          (word) => classifyWordLearningState(word) == WordLearningState.unseen,
-        )
-        .toList(growable: false);
-    if (newWords.isNotEmpty) {
-      return newWords.take(12).toList(growable: false);
-    }
-
-    return words.take(12).toList(growable: false);
   }
 
   void _handleWordProgressChanged(LearningWord updatedWord) {
@@ -415,11 +346,18 @@ class _AppShellScreenState extends State<AppShellScreen> {
     });
 
     final requestToken = _guidePersistenceRequests.start(lessonKey);
-    return _persistGuideReadChange(
+    return _persistLessonStatusChange(
       lessonKey: lessonKey,
       status: status,
       previousStatuses: previousStatuses,
       requestToken: requestToken,
+      requestTracker: _guidePersistenceRequests,
+      persistStatus: widget.progressRepository.setGuideLessonStatus,
+      restoreStatuses: (statuses) {
+        _guideLessonStatuses = statuses;
+      },
+      progressLabel: 'guide',
+      errorMessage: 'Не вдалося зберегти прогрес довідника. Спробуйте ще раз.',
     );
   }
 
@@ -439,11 +377,18 @@ class _AppShellScreenState extends State<AppShellScreen> {
     });
 
     final requestToken = _readingPersistenceRequests.start(lessonKey);
-    return _persistReadingStatusChange(
+    return _persistLessonStatusChange(
       lessonKey: lessonKey,
       status: status,
       previousStatuses: previousStatuses,
       requestToken: requestToken,
+      requestTracker: _readingPersistenceRequests,
+      persistStatus: widget.progressRepository.setReadingLessonStatus,
+      restoreStatuses: (statuses) {
+        _readingLessonStatuses = statuses;
+      },
+      progressLabel: 'reading',
+      errorMessage: 'Не вдалося зберегти прогрес читання. Спробуйте ще раз.',
     );
   }
 
@@ -516,7 +461,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
       bundle = await _ensureFullWordContextsLoaded();
       bundle = await _withAiContextsForWords(
         bundle,
-        _practiceScopeWords(bundle, mode),
+        aiContextScopeWords(bundle, mode),
       );
     } catch (error) {
       debugPrint('Failed to load word contexts for flashcards: $error');
@@ -594,7 +539,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
       return;
     }
 
-    final scopeWords = _aiPracticeTextScopeWords(
+    final scopeWords = aiPracticeTextScopeWords(
       _bundle?.words ?? const <LearningWord>[],
     );
     if (scopeWords.isEmpty) {
@@ -626,7 +571,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
       bundle = await _ensureFullWordContextsLoaded();
       bundle = await _withAiContextsForWords(
         bundle,
-        _practiceScopeWords(bundle, FlashcardDeckMode.needsReview),
+        aiContextScopeWords(bundle, FlashcardDeckMode.needsReview),
       );
     } catch (error) {
       debugPrint('Failed to load word contexts for repetition: $error');
@@ -870,58 +815,34 @@ class _AppShellScreenState extends State<AppShellScreen> {
     }
   }
 
-  Future<bool> _persistGuideReadChange({
+  Future<bool> _persistLessonStatusChange({
     required String lessonKey,
     required GuideLessonStatus status,
     required Map<String, GuideLessonStatus> previousStatuses,
     required int requestToken,
+    required LatestRequestTracker requestTracker,
+    required _LessonStatusPersister persistStatus,
+    required _LessonStatusesRestorer restoreStatuses,
+    required String progressLabel,
+    required String errorMessage,
   }) async {
     try {
-      await widget.progressRepository.setGuideLessonStatus(lessonKey, status);
+      await persistStatus(lessonKey, status);
       return true;
     } catch (error) {
-      debugPrint('Failed to save guide progress for $lessonKey: $error');
+      debugPrint(
+        'Failed to save $progressLabel progress for $lessonKey: $error',
+      );
 
-      if (!mounted ||
-          !_guidePersistenceRequests.isLatest(lessonKey, requestToken)) {
+      if (!mounted || !requestTracker.isLatest(lessonKey, requestToken)) {
         return false;
       }
 
       setState(() {
-        _guideLessonStatuses = previousStatuses;
+        restoreStatuses(previousStatuses);
       });
 
-      _showPersistenceError(
-        'Не вдалося зберегти прогрес довідника. Спробуйте ще раз.',
-      );
-      return false;
-    }
-  }
-
-  Future<bool> _persistReadingStatusChange({
-    required String lessonKey,
-    required GuideLessonStatus status,
-    required Map<String, GuideLessonStatus> previousStatuses,
-    required int requestToken,
-  }) async {
-    try {
-      await widget.progressRepository.setReadingLessonStatus(lessonKey, status);
-      return true;
-    } catch (error) {
-      debugPrint('Failed to save reading progress for $lessonKey: $error');
-
-      if (!mounted ||
-          !_readingPersistenceRequests.isLatest(lessonKey, requestToken)) {
-        return false;
-      }
-
-      setState(() {
-        _readingLessonStatuses = previousStatuses;
-      });
-
-      _showPersistenceError(
-        'Не вдалося зберегти прогрес читання. Спробуйте ще раз.',
-      );
+      _showPersistenceError(errorMessage);
       return false;
     }
   }

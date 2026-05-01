@@ -54,11 +54,15 @@
   code.
 - Extracted `applyWordUpdate` and `restoreWordUpdate` for optimistic word
   progress updates and rollback.
+- Collapsed guide and reading lesson status persistence rollback into one
+  `AppShellScreen` helper while keeping the existing screen contracts.
+- Extracted pure AI learning helpers for feature restore checks, generated
+  context merging, AI context scope selection, and AI practice text word scope.
 
 ## Next Slices
 
-1. Continue splitting `AppShellScreen` by extracting lesson progress persistence
-   rollback helpers behind small testable contracts.
+1. Continue shrinking `AppShellScreen` by extracting feature-setting handlers or
+   module opening helpers behind small contracts.
 2. Move repeated practice result/status widgets from flashcards, writing,
    repetition, and sprint into shared widgets with focused widget tests.
 3. Replace hardcoded screen accent colors with named theme tokens for semantic
