@@ -16,6 +16,7 @@ import '../services/ai_practice_text_settings_store.dart';
 import '../services/audio_playback_awareness.dart';
 import '../services/feature_access_service.dart';
 import '../services/flashcard_session.dart';
+import '../services/latest_request_tracker.dart';
 import '../services/lesson_document_loader.dart';
 import '../services/learning_progress_repository.dart';
 import '../services/progress_snapshot.dart';
@@ -84,9 +85,10 @@ class _AppShellScreenState extends State<AppShellScreen> {
       <String, GuideLessonStatus>{};
   Map<String, GuideLessonStatus> _readingLessonStatuses =
       <String, GuideLessonStatus>{};
-  final Map<String, int> _guidePersistenceTokens = <String, int>{};
-  final Map<String, int> _readingPersistenceTokens = <String, int>{};
-  final Map<String, int> _wordPersistenceTokens = <String, int>{};
+  final LatestRequestTracker _guidePersistenceRequests = LatestRequestTracker();
+  final LatestRequestTracker _readingPersistenceRequests =
+      LatestRequestTracker();
+  final LatestRequestTracker _wordPersistenceRequests = LatestRequestTracker();
   AppRootArea _selectedArea = AppRootArea.home;
   _MoreSection _moreSection = _MoreSection.overview;
   bool _autoHideBottomNavOnScroll = true;
@@ -399,10 +401,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
       }
     }
 
-    final requestToken = _nextPersistenceToken(
-      _wordPersistenceTokens,
-      updatedWord.wordId,
-    );
+    final requestToken = _wordPersistenceRequests.start(updatedWord.wordId);
     unawaited(
       _persistWordProgress(
         updatedWord: updatedWord,
@@ -433,10 +432,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
       }
     });
 
-    final requestToken = _nextPersistenceToken(
-      _guidePersistenceTokens,
-      lessonKey,
-    );
+    final requestToken = _guidePersistenceRequests.start(lessonKey);
     return _persistGuideReadChange(
       lessonKey: lessonKey,
       status: status,
@@ -466,10 +462,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
       }
     });
 
-    final requestToken = _nextPersistenceToken(
-      _readingPersistenceTokens,
-      lessonKey,
-    );
+    final requestToken = _readingPersistenceRequests.start(lessonKey);
     return _persistReadingStatusChange(
       lessonKey: lessonKey,
       status: status,
@@ -871,12 +864,6 @@ class _AppShellScreenState extends State<AppShellScreen> {
     });
   }
 
-  int _nextPersistenceToken(Map<String, int> tokenMap, String key) {
-    final nextToken = (tokenMap[key] ?? 0) + 1;
-    tokenMap[key] = nextToken;
-    return nextToken;
-  }
-
   Future<void> _persistWordProgress({
     required LearningWord updatedWord,
     required LearningWord? previousWord,
@@ -890,7 +877,10 @@ class _AppShellScreenState extends State<AppShellScreen> {
       );
 
       if (!mounted ||
-          _wordPersistenceTokens[updatedWord.wordId] != requestToken) {
+          !_wordPersistenceRequests.isLatest(
+            updatedWord.wordId,
+            requestToken,
+          )) {
         return;
       }
 
@@ -929,7 +919,8 @@ class _AppShellScreenState extends State<AppShellScreen> {
     } catch (error) {
       debugPrint('Failed to save guide progress for $lessonKey: $error');
 
-      if (!mounted || _guidePersistenceTokens[lessonKey] != requestToken) {
+      if (!mounted ||
+          !_guidePersistenceRequests.isLatest(lessonKey, requestToken)) {
         return false;
       }
 
@@ -956,7 +947,8 @@ class _AppShellScreenState extends State<AppShellScreen> {
     } catch (error) {
       debugPrint('Failed to save reading progress for $lessonKey: $error');
 
-      if (!mounted || _readingPersistenceTokens[lessonKey] != requestToken) {
+      if (!mounted ||
+          !_readingPersistenceRequests.isLatest(lessonKey, requestToken)) {
         return false;
       }
 
