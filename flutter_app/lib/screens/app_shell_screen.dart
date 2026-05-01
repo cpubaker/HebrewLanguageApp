@@ -20,7 +20,7 @@ import '../services/lesson_document_loader.dart';
 import '../services/learning_progress_repository.dart';
 import '../services/progress_snapshot.dart';
 import '../services/verb_audio_player.dart';
-import '../theme/app_theme.dart';
+import 'app_shell_navigation.dart';
 import 'flashcards_screen.dart';
 import 'guide_screen.dart';
 import 'home_screen.dart';
@@ -33,8 +33,6 @@ import 'verbs_screen.dart';
 import 'workspace_screen.dart';
 import 'words_screen.dart';
 import 'writing_screen.dart';
-
-enum _RootArea { home, learn, practice, more }
 
 enum _MoreSection { overview, progress, settings }
 
@@ -89,7 +87,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
   final Map<String, int> _guidePersistenceTokens = <String, int>{};
   final Map<String, int> _readingPersistenceTokens = <String, int>{};
   final Map<String, int> _wordPersistenceTokens = <String, int>{};
-  _RootArea _selectedArea = _RootArea.home;
+  AppRootArea _selectedArea = AppRootArea.home;
   _MoreSection _moreSection = _MoreSection.overview;
   bool _autoHideBottomNavOnScroll = true;
   bool _aiWordContextsEnabled = false;
@@ -482,7 +480,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
 
   void _selectArea(int index) {
     setState(() {
-      _selectedArea = _RootArea.values[index];
+      _selectedArea = AppRootArea.values[index];
       _isBottomNavVisible = true;
     });
   }
@@ -737,7 +735,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
   void _openMoreSection(_MoreSection section) {
     setState(() {
       _moreSection = section;
-      _selectedArea = _RootArea.more;
+      _selectedArea = AppRootArea.more;
       _isBottomNavVisible = true;
     });
   }
@@ -1101,7 +1099,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
         subtitle: 'Повернутися до dashboard з рекомендаціями і прогресом.',
         icon: Icons.home_rounded,
         accent: const Color(0xFF2B5D4F),
-        onTap: () => _selectArea(_RootArea.home.index),
+        onTap: () => _selectArea(AppRootArea.home.index),
       ),
       WorkspaceShortcut(
         title: 'Вчитись',
@@ -1109,7 +1107,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
             'Слова, дієслова, довідник і читання в одному робочому просторі.',
         icon: Icons.translate_rounded,
         accent: const Color(0xFF0F766E),
-        onTap: () => _selectArea(_RootArea.learn.index),
+        onTap: () => _selectArea(AppRootArea.learn.index),
       ),
       WorkspaceShortcut(
         title: 'Практика',
@@ -1257,7 +1255,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
                   alignment: Alignment.bottomCenter,
                   child: SafeArea(
                     top: false,
-                    child: _AppShellBottomNavigation(
+                    child: AppShellBottomNavigation(
                       isVisible: _isBottomNavVisible,
                       duration: _bottomNavAnimationDuration,
                       selectedIndex: _selectedArea.index,
@@ -1283,142 +1281,6 @@ class _FullscreenModuleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: SafeArea(child: child));
-  }
-}
-
-class _AppShellBottomNavigation extends StatelessWidget {
-  const _AppShellBottomNavigation({
-    required this.isVisible,
-    required this.duration,
-    required this.selectedIndex,
-    required this.onDestinationSelected,
-    required this.onRevealRequested,
-  });
-
-  final bool isVisible;
-  final Duration duration;
-  final int selectedIndex;
-  final ValueChanged<int> onDestinationSelected;
-  final VoidCallback onRevealRequested;
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-      duration: duration,
-      switchInCurve: Curves.easeOutCubic,
-      switchOutCurve: Curves.easeInCubic,
-      transitionBuilder: (child, animation) {
-        return FadeTransition(
-          opacity: animation,
-          child: SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(0, 0.18),
-              end: Offset.zero,
-            ).animate(animation),
-            child: child,
-          ),
-        );
-      },
-      child: isVisible
-          ? _ExpandedBottomNavigationBar(
-              key: const ValueKey('app-shell-bottom-nav'),
-              selectedIndex: selectedIndex,
-              onDestinationSelected: onDestinationSelected,
-            )
-          : _CollapsedBottomNavigationHandle(
-              key: const ValueKey('app-shell-nav-handle'),
-              onTap: onRevealRequested,
-            ),
-    );
-  }
-}
-
-class _ExpandedBottomNavigationBar extends StatelessWidget {
-  const _ExpandedBottomNavigationBar({
-    super.key,
-    required this.selectedIndex,
-    required this.onDestinationSelected,
-  });
-
-  final int selectedIndex;
-  final ValueChanged<int> onDestinationSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    return NavigationBar(
-      selectedIndex: selectedIndex,
-      onDestinationSelected: onDestinationSelected,
-      destinations: const [
-        NavigationDestination(
-          icon: Icon(Icons.home_outlined),
-          selectedIcon: Icon(Icons.home_rounded),
-          label: 'Головна',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.school_outlined),
-          selectedIcon: Icon(Icons.school_rounded),
-          label: 'Вчитись',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.bolt_outlined),
-          selectedIcon: Icon(Icons.bolt_rounded),
-          label: 'Практика',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.person_outline_rounded),
-          selectedIcon: Icon(Icons.person_rounded),
-          label: 'Профіль',
-        ),
-      ],
-    );
-  }
-}
-
-class _CollapsedBottomNavigationHandle extends StatelessWidget {
-  const _CollapsedBottomNavigationHandle({super.key, required this.onTap});
-
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final tokens = Theme.of(context).appTokens;
-
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Material(
-        color: tokens.navBarBackground,
-        elevation: 8,
-        shadowColor: tokens.shadowColor,
-        borderRadius: BorderRadius.circular(999),
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(999),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 28,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: colorScheme.primary.withValues(alpha: 0.35),
-                    borderRadius: BorderRadius.circular(999),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Icon(
-                  Icons.keyboard_arrow_up_rounded,
-                  size: 18,
-                  color: colorScheme.primary,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }
 
