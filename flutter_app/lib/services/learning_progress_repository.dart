@@ -3,6 +3,7 @@ import '../models/learning_bundle.dart';
 import '../models/learning_word.dart';
 import 'guide_progress_store.dart';
 import 'learning_bundle_loader.dart';
+import 'learning_word_progress.dart';
 import 'reading_progress_store.dart';
 import 'word_progress_store.dart';
 
@@ -111,16 +112,7 @@ class StoreBackedLearningProgressRepository
               return word;
             }
 
-            return word.copyWith(
-              correct: progress.correct,
-              wrong: progress.wrong,
-              lastCorrect: progress.lastCorrect,
-              lastReviewedAt: progress.lastReviewedAt,
-              lastReviewCorrect: progress.lastReviewCorrect,
-              writingCorrect: progress.writingCorrect,
-              writingWrong: progress.writingWrong,
-              writingLastCorrect: progress.writingLastCorrect,
-            );
+            return LearningWordProgress.fromStored(progress).applyTo(word);
           })
           .toList(growable: false),
     );

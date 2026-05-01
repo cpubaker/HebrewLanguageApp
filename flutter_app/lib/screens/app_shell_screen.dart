@@ -19,6 +19,7 @@ import '../services/flashcard_session.dart';
 import '../services/latest_request_tracker.dart';
 import '../services/lesson_document_loader.dart';
 import '../services/learning_progress_repository.dart';
+import '../services/learning_word_progress.dart';
 import '../services/progress_snapshot.dart';
 import '../services/verb_audio_player.dart';
 import 'app_shell_navigation.dart';
@@ -210,16 +211,9 @@ class _AppShellScreenState extends State<AppShellScreen> {
               return loadedWord;
             }
 
-            return loadedWord.copyWith(
-              correct: activeWord.correct,
-              wrong: activeWord.wrong,
-              lastCorrect: activeWord.lastCorrect,
-              lastReviewedAt: activeWord.lastReviewedAt,
-              lastReviewCorrect: activeWord.lastReviewCorrect,
-              writingCorrect: activeWord.writingCorrect,
-              writingWrong: activeWord.writingWrong,
-              writingLastCorrect: activeWord.writingLastCorrect,
-            );
+            return LearningWordProgress.fromWord(
+              activeWord,
+            ).applyTo(loadedWord);
           })
           .toList(growable: false),
     );
