@@ -132,8 +132,8 @@ class HomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const AppPageHeader(
-                title: 'Слова під рукою',
-                subtitle: 'Швидкий перехід до словника з пошуком і прогресом.',
+                title: 'Словник',
+                subtitle: 'Повний список слів із пошуком і позначками прогресу.',
               ),
               const SizedBox(height: 14),
               Column(
@@ -1280,7 +1280,7 @@ class _StudyStreakCard extends StatelessWidget {
       return 'Остання активність була раніше, тож поточна серія почнеться з нового заняття.';
     }
 
-    return 'Після першого тренування тут з’явиться кількість днів поспіль.';
+    return 'Коли пройдете перше тренування, тут з’явиться ваша серія занять.';
   }
 
   String _dayCountLabel(int days) {
@@ -1310,7 +1310,7 @@ class _StudyProgressCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const AppPageHeader(
-            title: 'Ваш поступ',
+            title: 'Прогрес навчання',
             subtitle:
                 'Прогрес зберігається на цьому пристрої, тож можна спокійно продовжити пізніше.',
           ),

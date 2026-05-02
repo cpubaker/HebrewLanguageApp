@@ -794,10 +794,10 @@ void main() {
 
     expect(find.text('Серія занять'), findsOneWidget);
 
-    await tester.scrollUntilVisible(find.text('Ваш поступ'), 300);
+    await tester.scrollUntilVisible(find.text('Прогрес навчання'), 300);
     await tester.pumpAndSettle();
 
-    expect(find.text('Ваш поступ'), findsOneWidget);
+    expect(find.text('Прогрес навчання'), findsOneWidget);
     expect(find.text('Опрацьовано 2 із 2 слів'), findsOneWidget);
     expect(find.text('Повторити'), findsWidgets);
     expect(find.text('Нові'), findsOneWidget);
