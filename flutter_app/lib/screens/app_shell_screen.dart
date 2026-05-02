@@ -96,7 +96,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
       LatestRequestTracker();
   final LatestRequestTracker _wordPersistenceRequests = LatestRequestTracker();
   AppRootArea _selectedArea = AppRootArea.home;
-  AppShellMoreSection _moreSection = AppShellMoreSection.overview;
+  AppShellProfileSection _profileSection = AppShellProfileSection.overview;
   bool _autoHideBottomNavOnScroll = true;
   bool _aiWordContextsEnabled = false;
   bool _aiPracticeTextsEnabled = false;
@@ -646,10 +646,10 @@ class _AppShellScreenState extends State<AppShellScreen> {
     );
   }
 
-  void _openMoreSection(AppShellMoreSection section) {
+  void _openProfileSection(AppShellProfileSection section) {
     setState(() {
-      _moreSection = section;
-      _selectedArea = AppRootArea.more;
+      _profileSection = section;
+      _selectedArea = AppRootArea.profile;
       _isBottomNavVisible = true;
     });
   }
@@ -936,10 +936,10 @@ class _AppShellScreenState extends State<AppShellScreen> {
                           onOpenSprint: _openSprint,
                           onOpenAiPracticeText: _openAiPracticeText,
                         ),
-                        AppShellMoreWorkspace(
+                        AppShellProfileWorkspace(
                           bundle: bundle,
-                          selectedSection: _moreSection,
-                          onSectionSelected: _openMoreSection,
+                          selectedSection: _profileSection,
+                          onSectionSelected: _openProfileSection,
                           guideLessonStatuses: _guideLessonStatuses,
                           readingLessonStatuses: _readingLessonStatuses,
                           autoHideBottomNavOnScroll: _autoHideBottomNavOnScroll,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
 
-enum AppRootArea { home, learn, practice, more }
+enum AppRootArea { home, learn, practice, profile }
 
 class AppShellBottomNavigation extends StatelessWidget {
   const AppShellBottomNavigation({

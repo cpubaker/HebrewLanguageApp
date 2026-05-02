@@ -4,10 +4,10 @@ import '../models/guide_lesson_status.dart';
 import '../models/learning_bundle.dart';
 import '../services/feature_access_service.dart';
 import '../services/flashcard_session.dart';
-import 'more_screen.dart';
+import 'profile_screen.dart';
 import 'workspace_screen.dart';
 
-enum AppShellMoreSection { overview, progress, settings }
+enum AppShellProfileSection { overview, progress, settings }
 
 class AppShellLearnWorkspace extends StatelessWidget {
   const AppShellLearnWorkspace({
@@ -148,8 +148,8 @@ class AppShellPracticeWorkspace extends StatelessWidget {
   }
 }
 
-class AppShellMoreWorkspace extends StatelessWidget {
-  const AppShellMoreWorkspace({
+class AppShellProfileWorkspace extends StatelessWidget {
+  const AppShellProfileWorkspace({
     super.key,
     required this.bundle,
     required this.selectedSection,
@@ -184,8 +184,8 @@ class AppShellMoreWorkspace extends StatelessWidget {
   });
 
   final LearningBundle bundle;
-  final AppShellMoreSection selectedSection;
-  final ValueChanged<AppShellMoreSection> onSectionSelected;
+  final AppShellProfileSection selectedSection;
+  final ValueChanged<AppShellProfileSection> onSectionSelected;
   final Map<String, GuideLessonStatus> guideLessonStatuses;
   final Map<String, GuideLessonStatus> readingLessonStatuses;
   final bool autoHideBottomNavOnScroll;
@@ -271,13 +271,13 @@ class AppShellMoreWorkspace extends StatelessWidget {
       ],
       selectedIndex: selectedSection.index,
       onSectionSelected: (index) {
-        onSectionSelected(AppShellMoreSection.values[index]);
+        onSectionSelected(AppShellProfileSection.values[index]);
       },
       child: IndexedStack(
         index: selectedSection.index,
         children: [
-          MoreOverviewScreen(bundle: bundle, shortcuts: shortcuts),
-          MoreProgressScreen(
+          ProfileOverviewScreen(bundle: bundle, shortcuts: shortcuts),
+          ProfileProgressScreen(
             bundle: bundle,
             guideLessonStatuses: guideLessonStatuses,
             readingLessonStatuses: readingLessonStatuses,
@@ -288,7 +288,7 @@ class AppShellMoreWorkspace extends StatelessWidget {
             onOpenGuide: onOpenGuide,
             onOpenReading: onOpenReading,
           ),
-          MoreSettingsScreen(
+          ProfileSettingsScreen(
             autoHideBottomNavOnScroll: autoHideBottomNavOnScroll,
             onAutoHideBottomNavOnScrollChanged:
                 onAutoHideBottomNavOnScrollChanged,

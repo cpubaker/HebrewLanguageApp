@@ -13,8 +13,8 @@ import 'widgets/app_section_card.dart';
 import 'widgets/app_stat_chip.dart';
 import 'workspace_screen.dart';
 
-class MoreOverviewScreen extends StatelessWidget {
-  const MoreOverviewScreen({
+class ProfileOverviewScreen extends StatelessWidget {
+  const ProfileOverviewScreen({
     super.key,
     required this.bundle,
     required this.shortcuts,
@@ -54,7 +54,7 @@ class MoreOverviewScreen extends StatelessWidget {
                       padding: EdgeInsets.only(
                         bottom: index == shortcuts.length - 1 ? 0 : 12,
                       ),
-                      child: _MoreShortcutTile(shortcut: shortcuts[index]),
+                      child: _ProfileShortcutTile(shortcut: shortcuts[index]),
                     ),
                 ],
               ),
@@ -203,8 +203,8 @@ class _ProfileSystemSummaryCard extends StatelessWidget {
   }
 }
 
-class MoreProgressScreen extends StatelessWidget {
-  const MoreProgressScreen({
+class ProfileProgressScreen extends StatelessWidget {
+  const ProfileProgressScreen({
     super.key,
     required this.bundle,
     required this.guideLessonStatuses,
@@ -456,8 +456,8 @@ class MoreProgressScreen extends StatelessWidget {
   }
 }
 
-class MoreSettingsScreen extends StatelessWidget {
-  const MoreSettingsScreen({
+class ProfileSettingsScreen extends StatelessWidget {
+  const ProfileSettingsScreen({
     super.key,
     required this.autoHideBottomNavOnScroll,
     required this.onAutoHideBottomNavOnScrollChanged,
@@ -813,8 +813,8 @@ class _SettingsChoiceChip extends StatelessWidget {
   }
 }
 
-class _MoreShortcutTile extends StatelessWidget {
-  const _MoreShortcutTile({required this.shortcut});
+class _ProfileShortcutTile extends StatelessWidget {
+  const _ProfileShortcutTile({required this.shortcut});
 
   final WorkspaceShortcut shortcut;
 
