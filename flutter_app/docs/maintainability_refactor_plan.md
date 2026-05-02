@@ -35,6 +35,9 @@
    colors.
 5. Add or run a focused test for every extracted contract before moving the next
    slice.
+6. Avoid continuing micro-refactors once a file is no longer the clearest
+   bottleneck. Move to the next high-impact area instead of extracting helpers
+   for their own sake.
 
 ## Completed Slices
 
@@ -61,17 +64,32 @@
 
 ## Next Slices
 
-1. Continue shrinking `AppShellScreen` by extracting feature-setting handlers or
-   module opening helpers behind small contracts.
-2. Move repeated practice result/status widgets from flashcards, writing,
+1. Pause additional `AppShellScreen` micro-refactors unless a new product change
+   touches that area. It is still large, but the highest-risk mixed concerns
+   have been reduced.
+2. Review `guide_screen.dart` first because it is currently the largest screen.
+   Extract only stable subtrees that already have widget coverage, such as
+   search/filter cards, lesson list cards, detail header/status sections, or
+   related-topic/navigation sections.
+3. Move repeated practice result/status widgets from flashcards, writing,
    repetition, and sprint into shared widgets with focused widget tests.
-3. Replace hardcoded screen accent colors with named theme tokens for semantic
+4. Replace hardcoded screen accent colors with named theme tokens for semantic
    states: success, danger, warning, AI, and lesson category accents.
-4. Add contract tests for lesson catalog metadata and content asset sync output.
-5. Review the largest screens one by one and extract only stable subtrees that
-   already have test coverage.
+5. Add contract tests for lesson catalog metadata and content asset sync output.
 6. Review `MarkdownLessonBody` for separable parsing, layout, and glossary
    behavior while keeping its public API stable.
+
+## Current Large Files
+
+- `lib/screens/guide_screen.dart` is the largest remaining screen and should be
+  the next refactor target if the goal is maintainability rather than polishing
+  already-improved shell code.
+- `lib/screens/words_screen.dart`, `lib/screens/home_screen.dart`,
+  `lib/screens/flashcards_screen.dart`, and `lib/screens/writing_screen.dart`
+  are still large enough to justify later targeted extraction.
+- `lib/screens/app_shell_screen.dart` is still over 1000 lines, but it has
+  already had several high-value concerns extracted. Further work there should
+  be driven by an actual feature or bug.
 
 ## Validation
 
