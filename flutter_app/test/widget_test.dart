@@ -853,6 +853,91 @@ void main() {
     expect(find.text('Початковий'), findsOneWidget);
     expect(find.text('До читання'), findsOneWidget);
   });
+
+  testWidgets('hydrates the word of day context after summary load', (
+    WidgetTester tester,
+  ) async {
+    await _useTallMobileViewport(tester);
+    final loader = _LazyWordOfDayContextLoader();
+
+    await tester.pumpWidget(
+      HebrewFlutterApp(
+        loader: loader,
+        documentLoader: FakeLessonDocumentLoader(),
+        progressStore: FakeWordProgressStore(),
+        guideProgressStore: FakeGuideProgressStore(),
+        readingProgressStore: FakeReadingProgressStore(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(loader.summaryLoadCount, 1);
+    expect(loader.fullLoadCount, 1);
+    expect(find.text('word of day context sentence'), findsOneWidget);
+    expect(find.text('word of day context translation'), findsOneWidget);
+  });
+}
+
+class _LazyWordOfDayContextLoader
+    implements LearningBundleLoader, LazyLearningBundleLoader {
+  int summaryLoadCount = 0;
+  int fullLoadCount = 0;
+
+  @override
+  Future<LearningBundle> load() {
+    return loadWithFullWordContexts();
+  }
+
+  @override
+  Future<LearningBundle> loadSummary() async {
+    summaryLoadCount += 1;
+    return _bundle(
+      hasFullWordContexts: false,
+      contextHebrew: '',
+      contextTranslation: '',
+    );
+  }
+
+  @override
+  Future<LearningBundle> loadWithFullWordContexts() async {
+    fullLoadCount += 1;
+    return _bundle(
+      hasFullWordContexts: true,
+      contextHebrew: 'word of day context sentence',
+      contextTranslation: 'word of day context translation',
+    );
+  }
+
+  LearningBundle _bundle({
+    required bool hasFullWordContexts,
+    required String contextHebrew,
+    required String contextTranslation,
+  }) {
+    return LearningBundle(
+      words: [
+        LearningWord(
+          wordId: 'word_of_day',
+          hebrew: 'word',
+          english: 'word',
+          ukrainian: 'word',
+          transcription: 'word',
+          correct: 0,
+          wrong: 0,
+          contexts: [
+            LearningContext(
+              contextId: 'ctx_word_of_day',
+              hebrew: contextHebrew,
+              translation: contextTranslation,
+            ),
+          ],
+        ),
+      ],
+      guideLessons: const [],
+      verbLessons: const [],
+      readingLessons: const [],
+      hasFullWordContexts: hasFullWordContexts,
+    );
+  }
 }
 
 class _FakeBundleWithVerbLoader implements LearningBundleLoader {

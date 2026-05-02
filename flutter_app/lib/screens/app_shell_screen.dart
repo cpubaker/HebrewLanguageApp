@@ -162,7 +162,23 @@ class _AppShellScreenState extends State<AppShellScreen> {
     _guideLessonStatuses = loadedState.guideLessonStatuses;
     _readingLessonStatuses = loadedState.readingLessonStatuses;
     _bundle = loadedState.bundle;
+    _primeFullWordContextsForHome(loadedState.bundle);
     return loadedState.bundle;
+  }
+
+  void _primeFullWordContextsForHome(LearningBundle bundle) {
+    if (bundle.hasFullWordContexts ||
+        bundle.words.every((word) => word.contexts.isEmpty)) {
+      return;
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+
+      unawaited(_ensureFullWordContextsLoaded());
+    });
   }
 
   void _handleThemeToggleRequested() {
