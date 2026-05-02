@@ -11,13 +11,12 @@ import '../services/progress_snapshot.dart';
 import '../theme/app_theme.dart';
 import 'widgets/app_section_card.dart';
 import 'widgets/guide/guide_adjacent_lessons_card.dart';
+import 'widgets/guide/guide_detail_header.dart';
 import 'widgets/guide/guide_empty_search_state.dart';
+import 'widgets/guide/guide_lesson_card.dart';
 import 'widgets/guide/guide_outline_card.dart';
 import 'widgets/guide/guide_related_topics_card.dart';
-import 'widgets/guide/guide_lesson_card.dart';
 import 'widgets/guide/guide_search_card.dart';
-import 'widgets/guide/guide_section_pill.dart';
-import 'widgets/lesson_status_controls.dart';
 import 'widgets/markdown_lesson_body.dart';
 
 class GuideScreen extends StatefulWidget {
@@ -864,15 +863,6 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final tokens = theme.appTokens;
-    final heroForeground = theme.brightness == Brightness.dark
-        ? tokens.heroText
-        : Colors.white;
-    final heroMutedForeground = theme.brightness == Brightness.dark
-        ? tokens.heroMutedText
-        : Colors.white.withValues(alpha: 0.92);
-
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
@@ -902,65 +892,14 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
               child: ListView(
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(28),
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFF8C6A2A), Color(0xFFB45309)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            if (widget.lesson.sectionLabel != null)
-                              GuideSectionPill(
-                                label: widget.lesson.sectionLabel!,
-                                foregroundColor: heroForeground,
-                                backgroundColor: heroForeground.withValues(
-                                  alpha: 0.18,
-                                ),
-                              ),
-                            const Spacer(),
-                            LessonStatusToggleButton(
-                              status: _status,
-                              onPressed: () {
-                                _updateStatus(
-                                  nextLessonProgressStatus(_status),
-                                );
-                              },
-                              foregroundColor: heroForeground,
-                              backgroundColor: heroForeground.withValues(
-                                alpha: 0.18,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 14),
-                        Text(
-                          document.title,
-                          style: theme.textTheme.headlineMedium?.copyWith(
-                            color: heroForeground,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                        if (document.summary.trim().isNotEmpty) ...[
-                          const SizedBox(height: 14),
-                          Text(
-                            document.summary.trim(),
-                            style: theme.textTheme.bodyLarge?.copyWith(
-                              color: heroMutedForeground,
-                              height: 1.45,
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
+                  GuideDetailHeader(
+                    lesson: widget.lesson,
+                    title: document.title,
+                    summary: document.summary,
+                    status: _status,
+                    onStatusPressed: () {
+                      _updateStatus(nextLessonProgressStatus(_status));
+                    },
                   ),
                   const SizedBox(height: 16),
                   const SizedBox(height: 20),
