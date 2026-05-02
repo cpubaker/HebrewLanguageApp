@@ -97,6 +97,8 @@ class HomeScreen extends StatelessWidget {
           )
         else
           const _EmptyWordOfDayHeroPanel(),
+        const SizedBox(height: 16),
+        _StudyStreakCard(streak: streak),
         const SizedBox(height: 20),
         _DashboardPrimaryActionCard(action: continueAction),
         const SizedBox(height: 16),
@@ -111,8 +113,6 @@ class HomeScreen extends StatelessWidget {
           onOpenVerbs: onOpenVerbs,
           onOpenReading: onOpenReading,
         ),
-        const SizedBox(height: 20),
-        _StudyStreakCard(streak: streak),
         const SizedBox(height: 16),
         _StudyProgressCard(progress: progress),
         const SizedBox(height: 16),
