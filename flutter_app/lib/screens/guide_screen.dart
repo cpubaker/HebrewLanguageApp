@@ -10,7 +10,10 @@ import '../services/lesson_status_updates.dart';
 import '../services/progress_snapshot.dart';
 import '../theme/app_theme.dart';
 import 'widgets/app_section_card.dart';
+import 'widgets/guide/guide_adjacent_lessons_card.dart';
 import 'widgets/guide/guide_empty_search_state.dart';
+import 'widgets/guide/guide_outline_card.dart';
+import 'widgets/guide/guide_related_topics_card.dart';
 import 'widgets/guide/guide_lesson_card.dart';
 import 'widgets/guide/guide_search_card.dart';
 import 'widgets/guide/guide_section_pill.dart';
@@ -565,7 +568,7 @@ class GuideDetailScreen extends StatefulWidget {
 class _GuideDetailScreenState extends State<GuideDetailScreen> {
   late GuideLessonStatus _status;
   late final Future<Map<String, String>> _adjacentLessonTitlesFuture;
-  late final Future<_GuideRelatedTopicsResolution> _relatedTopicsFuture;
+  late final Future<GuideRelatedTopicsResolution> _relatedTopicsFuture;
 
   @override
   void initState() {
@@ -645,12 +648,12 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
     return titlesByAssetPath;
   }
 
-  Future<_GuideRelatedTopicsResolution> _resolveRelatedTopics() async {
+  Future<GuideRelatedTopicsResolution> _resolveRelatedTopics() async {
     final currentDocument = await widget.documentLoader.load(
       widget.lesson.assetPath,
     );
     if (widget.allLessons.isEmpty) {
-      return const _GuideRelatedTopicsResolution.empty();
+      return const GuideRelatedTopicsResolution.empty();
     }
 
     final titlesByAssetPath = <String, String>{};
@@ -669,7 +672,7 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
       }
     }
 
-    final resolvedTopics = <_GuideResolvedTopic>[];
+    final resolvedTopics = <GuideResolvedTopic>[];
     final usedAssetPaths = <String>{};
     final usedTopicKeys = <String>{};
     final currentLessonTitle =
@@ -695,7 +698,7 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
       }
 
       resolvedTopics.add(
-        _GuideResolvedTopic(label: resolvedLabel, lesson: lesson),
+        GuideResolvedTopic(label: resolvedLabel, lesson: lesson),
       );
     }
 
@@ -708,7 +711,7 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
     }
 
     if (currentDocument.relatedTopics.isEmpty) {
-      return _GuideRelatedTopicsResolution(resolvedTopics: resolvedTopics);
+      return GuideRelatedTopicsResolution(resolvedTopics: resolvedTopics);
     }
 
     for (final topic in currentDocument.relatedTopics) {
@@ -726,7 +729,7 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
       addResolvedTopic(matchingLesson);
     }
 
-    return _GuideRelatedTopicsResolution(resolvedTopics: resolvedTopics);
+    return GuideRelatedTopicsResolution(resolvedTopics: resolvedTopics);
   }
 
   LessonEntry? _matchRelatedTopic(
@@ -967,7 +970,7 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
                   ),
                   if (document.headings.isNotEmpty) ...[
                     const SizedBox(height: 18),
-                    _GuideOutlineCard(headings: document.headings),
+                    GuideOutlineCard(headings: document.headings),
                   ],
                   if (_previousLesson != null || _nextLesson != null) ...[
                     const SizedBox(height: 18),
@@ -976,7 +979,7 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
                       builder: (context, adjacentSnapshot) {
                         final titlesByAssetPath =
                             adjacentSnapshot.data ?? const <String, String>{};
-                        return _GuideAdjacentLessonsCard(
+                        return GuideAdjacentLessonsCard(
                           previousLessonTitle: _previousLesson == null
                               ? null
                               : titlesByAssetPath[_previousLesson!.assetPath] ??
@@ -998,18 +1001,18 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
                   if (document.relatedTopics.isNotEmpty ||
                       widget.lesson.relatedIds.isNotEmpty) ...[
                     const SizedBox(height: 18),
-                    FutureBuilder<_GuideRelatedTopicsResolution>(
+                    FutureBuilder<GuideRelatedTopicsResolution>(
                       future: _relatedTopicsFuture,
                       builder: (context, relatedSnapshot) {
                         if (relatedSnapshot.connectionState !=
                             ConnectionState.done) {
-                          return const _GuideRelatedTopicsLoadingCard();
+                          return const GuideRelatedTopicsLoadingCard();
                         }
 
                         final resolution =
                             relatedSnapshot.data ??
-                            _GuideRelatedTopicsResolution.empty();
-                        return _GuideRelatedTopicsCard(
+                            GuideRelatedTopicsResolution.empty();
+                        return GuideRelatedTopicsCard(
                           resolution: resolution,
                           onOpenLesson: _openLesson,
                         );
@@ -1021,293 +1024,6 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
             );
           },
         ),
-      ),
-    );
-  }
-}
-
-class _GuideOutlineCard extends StatelessWidget {
-  const _GuideOutlineCard({required this.headings});
-
-  final List<String> headings;
-
-  @override
-  Widget build(BuildContext context) {
-    final tokens = Theme.of(context).appTokens;
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: tokens.elevatedSurface,
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: tokens.outlineSoft),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'У цій статті',
-            style: Theme.of(
-              context,
-            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
-          ),
-          const SizedBox(height: 10),
-          ...headings.map(
-            (heading) => Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 7),
-                    child: Icon(
-                      Icons.circle,
-                      size: 6,
-                      color: Color(0xFFB45309),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      heading,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: tokens.secondaryText,
-                        height: 1.35,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _GuideAdjacentLessonsCard extends StatelessWidget {
-  const _GuideAdjacentLessonsCard({
-    this.previousLessonTitle,
-    this.nextLessonTitle,
-    this.onOpenPrevious,
-    this.onOpenNext,
-  });
-
-  final String? previousLessonTitle;
-  final String? nextLessonTitle;
-  final VoidCallback? onOpenPrevious;
-  final VoidCallback? onOpenNext;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: _GuideNavigationButton(
-            label: 'Попередня тема',
-            title: previousLessonTitle,
-            icon: Icons.arrow_back_rounded,
-            onPressed: onOpenPrevious,
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: _GuideNavigationButton(
-            label: 'Наступна тема',
-            title: nextLessonTitle,
-            icon: Icons.arrow_forward_rounded,
-            iconTrailing: true,
-            onPressed: onOpenNext,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _GuideNavigationButton extends StatelessWidget {
-  const _GuideNavigationButton({
-    required this.label,
-    required this.title,
-    required this.icon,
-    required this.onPressed,
-    this.iconTrailing = false,
-  });
-
-  final String label;
-  final String? title;
-  final IconData icon;
-  final VoidCallback? onPressed;
-  final bool iconTrailing;
-
-  @override
-  Widget build(BuildContext context) {
-    final tokens = Theme.of(context).appTokens;
-    return Container(
-      decoration: BoxDecoration(
-        color: tokens.elevatedSurface,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: tokens.outlineSoft),
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(20),
-        onTap: onPressed,
-        child: Padding(
-          padding: const EdgeInsets.all(14),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: const Color(0xFF8C6A2A),
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  if (!iconTrailing)
-                    Icon(
-                      icon,
-                      size: 18,
-                      color: onPressed == null
-                          ? const Color(0xFFB7ADA1)
-                          : const Color(0xFFB45309),
-                    ),
-                  if (!iconTrailing) const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      title ?? 'Немає',
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: onPressed == null
-                            ? tokens.mutedText.withValues(alpha: 0.75)
-                            : tokens.secondaryText,
-                        fontWeight: FontWeight.w600,
-                        height: 1.35,
-                      ),
-                    ),
-                  ),
-                  if (iconTrailing) const SizedBox(width: 8),
-                  if (iconTrailing)
-                    Icon(
-                      icon,
-                      size: 18,
-                      color: onPressed == null
-                          ? const Color(0xFFB7ADA1)
-                          : const Color(0xFFB45309),
-                    ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _GuideRelatedTopicsLoadingCard extends StatelessWidget {
-  const _GuideRelatedTopicsLoadingCard();
-
-  @override
-  Widget build(BuildContext context) {
-    final tokens = Theme.of(context).appTokens;
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: tokens.elevatedSurface,
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: tokens.outlineSoft),
-      ),
-      child: Row(
-        children: [
-          const SizedBox(
-            width: 16,
-            height: 16,
-            child: CircularProgressIndicator(
-              strokeWidth: 2,
-              color: Color(0xFFB45309),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              'Підбираємо пов’язані теми для швидких переходів.',
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: tokens.mutedText),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _GuideRelatedTopicsCard extends StatelessWidget {
-  const _GuideRelatedTopicsCard({
-    required this.resolution,
-    required this.onOpenLesson,
-  });
-
-  final _GuideRelatedTopicsResolution resolution;
-  final ValueChanged<LessonEntry> onOpenLesson;
-
-  @override
-  Widget build(BuildContext context) {
-    final tokens = Theme.of(context).appTokens;
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: tokens.elevatedSurface,
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: tokens.outlineSoft),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Пов’язані теми',
-            style: Theme.of(
-              context,
-            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
-          ),
-          const SizedBox(height: 10),
-          if (resolution.resolvedTopics.isEmpty)
-            Text(
-              'Усі найближчі пов\'язані теми вже є в навігації вище.',
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: tokens.mutedText),
-            )
-          else
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                ...resolution.resolvedTopics.map(
-                  (topic) => ActionChip(
-                    avatar: const Icon(
-                      Icons.link_rounded,
-                      size: 18,
-                      color: Color(0xFFB45309),
-                    ),
-                    label: Text(topic.label),
-                    labelStyle: Theme.of(context).textTheme.labelLarge
-                        ?.copyWith(
-                          color: const Color(0xFF8C6A2A),
-                          fontWeight: FontWeight.w700,
-                        ),
-                    backgroundColor: const Color(0xFFFDE7D4),
-                    onPressed: () => onOpenLesson(topic.lesson),
-                  ),
-                ),
-              ],
-            ),
-        ],
       ),
     );
   }
@@ -1331,20 +1047,4 @@ class _GuideSectionOption {
       count: count ?? this.count,
     );
   }
-}
-
-class _GuideRelatedTopicsResolution {
-  const _GuideRelatedTopicsResolution({required this.resolvedTopics});
-
-  const _GuideRelatedTopicsResolution.empty()
-    : resolvedTopics = const <_GuideResolvedTopic>[];
-
-  final List<_GuideResolvedTopic> resolvedTopics;
-}
-
-class _GuideResolvedTopic {
-  const _GuideResolvedTopic({required this.label, required this.lesson});
-
-  final String label;
-  final LessonEntry lesson;
 }
