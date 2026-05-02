@@ -9,9 +9,10 @@ import '../services/learning_audio_player.dart';
 import '../services/writing_session.dart';
 import '../theme/app_theme.dart';
 import 'audio_playback_feedback.dart';
+import 'widgets/practice_feedback_card.dart';
 import 'widgets/practice_header.dart';
 import 'widgets/practice_session_summary.dart';
-import 'widgets/practice_stat_pill.dart';
+import 'widgets/practice_stats_row.dart';
 
 enum WritingPracticeMode { typing, constructor }
 
@@ -381,7 +382,7 @@ class _WritingScreenState extends State<WritingScreen> {
                   availableBlocks: _availableBlocks,
                   selectedBlocks: _selectedBlocks,
                   resultCard: hasAnswered
-                      ? _WritingResultCard(
+                      ? _buildWritingFeedbackCard(
                           isCorrect: isCorrect,
                           correctAnswer:
                               _currentAnswer?.correctAnswer ??
@@ -421,7 +422,7 @@ class _WritingScreenState extends State<WritingScreen> {
               ],
               const SizedBox(height: 18),
               if (hasAnswered && _mode == WritingPracticeMode.typing) ...[
-                _WritingResultCard(
+                _buildWritingFeedbackCard(
                   isCorrect: isCorrect,
                   correctAnswer:
                       _currentAnswer?.correctAnswer ?? currentWord.hebrew,
@@ -440,40 +441,30 @@ class _WritingScreenState extends State<WritingScreen> {
                 ),
                 const SizedBox(height: 18),
               ],
-              Row(
-                children: _mode == WritingPracticeMode.constructor
+              PracticeStatsRow(
+                stats: _mode == WritingPracticeMode.constructor
                     ? [
-                        Expanded(
-                          child: PracticeStatPill(
-                            label: 'Помилки',
-                            value: stats.wrong,
-                            accent: const Color(0xFFB91C1C),
-                          ),
+                        PracticeStatItem(
+                          label: 'Помилки',
+                          value: stats.wrong,
+                          accent: const Color(0xFFB91C1C),
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: PracticeStatPill(
-                            label: 'Вірно',
-                            value: stats.correct,
-                            accent: const Color(0xFF0F766E),
-                          ),
+                        PracticeStatItem(
+                          label: 'Вірно',
+                          value: stats.correct,
+                          accent: const Color(0xFF0F766E),
                         ),
                       ]
                     : [
-                        Expanded(
-                          child: PracticeStatPill(
-                            label: 'Вірно',
-                            value: stats.correct,
-                            accent: const Color(0xFF0F766E),
-                          ),
+                        PracticeStatItem(
+                          label: 'Вірно',
+                          value: stats.correct,
+                          accent: const Color(0xFF0F766E),
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: PracticeStatPill(
-                            label: 'Помилки',
-                            value: stats.wrong,
-                            accent: const Color(0xFFB91C1C),
-                          ),
+                        PracticeStatItem(
+                          label: 'Помилки',
+                          value: stats.wrong,
+                          accent: const Color(0xFFB91C1C),
                         ),
                       ],
               ),
@@ -512,6 +503,29 @@ class _WritingScreenState extends State<WritingScreen> {
     final hour = local.hour.toString().padLeft(2, '0');
     final minute = local.minute.toString().padLeft(2, '0');
     return '$day.$month.${local.year} $hour:$minute';
+  }
+
+  Widget _buildWritingFeedbackCard({
+    required bool isCorrect,
+    required String correctAnswer,
+    String? lastCorrect,
+    Widget? audioButton,
+  }) {
+    return PracticeFeedbackCard(
+      tone: isCorrect
+          ? PracticeFeedbackTone.success
+          : PracticeFeedbackTone.error,
+      title: isCorrect ? 'Правильно' : 'Ось правильний варіант',
+      primaryText: correctAnswer,
+      primaryTextDirection: TextDirection.rtl,
+      extraContent: audioButton,
+      message: isCorrect
+          ? 'Слово записано правильно. Можна переходити далі.'
+          : 'Нічого страшного. Повернемось до цього слова пізніше.',
+      footerText: lastCorrect == null
+          ? null
+          : 'Востаннє правильно: $lastCorrect',
+    );
   }
 
   void _resetConstructorState(ConstructorPuzzle? puzzle) {
@@ -710,104 +724,6 @@ class _PromptAudioButton extends StatelessWidget {
           : Icon(
               isPlaying ? Icons.stop_circle_outlined : Icons.volume_up_rounded,
             ),
-    );
-  }
-}
-
-class _WritingResultCard extends StatelessWidget {
-  const _WritingResultCard({
-    required this.isCorrect,
-    required this.correctAnswer,
-    this.lastCorrect,
-    this.audioButton,
-  });
-
-  final bool isCorrect;
-  final String correctAnswer;
-  final String? lastCorrect;
-  final Widget? audioButton;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final tokens = theme.appTokens;
-    final accent = isCorrect
-        ? const Color(0xFF0F766E)
-        : const Color(0xFFB91C1C);
-    final background = isCorrect
-        ? (theme.brightness == Brightness.dark
-              ? const Color(0xFF17352F)
-              : const Color(0xFFEAF5EE))
-        : (theme.brightness == Brightness.dark
-              ? const Color(0xFF3A2323)
-              : const Color(0xFFF8ECE8));
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: background,
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: Column(
-        children: [
-          Wrap(
-            alignment: WrapAlignment.center,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            spacing: 8,
-            runSpacing: 6,
-            children: [
-              Icon(
-                isCorrect ? Icons.check_circle_rounded : Icons.cancel_rounded,
-                color: accent,
-                size: 22,
-              ),
-              Text(
-                isCorrect ? 'Правильно' : 'Ось правильний варіант',
-                textAlign: TextAlign.center,
-                style: theme.textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w800,
-                  color: tokens.mutedText,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            correctAnswer,
-            textDirection: TextDirection.rtl,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.w800,
-              color: theme.colorScheme.onSurface,
-            ),
-          ),
-          if (audioButton != null) ...[
-            const SizedBox(height: 10),
-            audioButton!,
-          ],
-          const SizedBox(height: 8),
-          Text(
-            isCorrect
-                ? 'Слово записано правильно. Можна переходити далі.'
-                : 'Нічого страшного. Повернемось до цього слова пізніше.',
-            textAlign: TextAlign.center,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: tokens.secondaryText,
-              height: 1.45,
-            ),
-          ),
-          if (lastCorrect != null) ...[
-            const SizedBox(height: 10),
-            Text(
-              'Востаннє правильно: $lastCorrect',
-              textAlign: TextAlign.center,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: tokens.secondaryText,
-              ),
-            ),
-          ],
-        ],
-      ),
     );
   }
 }

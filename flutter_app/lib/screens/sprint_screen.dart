@@ -8,9 +8,11 @@ import '../services/flashcard_session.dart';
 import '../services/learning_audio_player.dart';
 import '../services/sprint_session.dart';
 import '../theme/app_theme.dart';
+import 'widgets/practice_feedback_card.dart';
 import 'widgets/practice_header.dart';
 import 'widgets/practice_session_summary.dart';
 import 'widgets/practice_stat_pill.dart';
+import 'widgets/practice_stats_row.dart';
 
 class SprintScreen extends StatefulWidget {
   const SprintScreen({
@@ -381,31 +383,31 @@ class _ActiveSprintCard extends StatelessWidget {
             if (index != prompt.options.length - 1) const SizedBox(height: 12),
           ],
           const SizedBox(height: 18),
-          _SprintFeedbackCard(
+          PracticeFeedbackCard(
             message:
                 feedbackMessage ??
                 'Після відповіді тут одразу з’явиться короткий результат.',
-            isSuccess: lastAnswerCorrect,
+            tone: switch (lastAnswerCorrect) {
+              true => PracticeFeedbackTone.success,
+              false => PracticeFeedbackTone.error,
+              null => PracticeFeedbackTone.neutral,
+            },
+            compact: true,
           ),
           const SizedBox(height: 18),
-          Row(
-            children: [
-              Expanded(
-                child: PracticeStatPill(
-                  label: 'Правильно',
-                  value: correctCount,
-                  icon: Icons.check_rounded,
-                  accent: const Color(0xFF0F766E),
-                ),
+          PracticeStatsRow(
+            stats: [
+              PracticeStatItem(
+                label: 'Правильно',
+                value: correctCount,
+                icon: Icons.check_rounded,
+                accent: const Color(0xFF0F766E),
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: PracticeStatPill(
-                  label: 'Помилки',
-                  value: wrongCount,
-                  icon: Icons.close_rounded,
-                  accent: const Color(0xFFB91C1C),
-                ),
+              PracticeStatItem(
+                label: 'Помилки',
+                value: wrongCount,
+                icon: Icons.close_rounded,
+                accent: const Color(0xFFB91C1C),
               ),
             ],
           ),
@@ -552,64 +554,6 @@ class _SprintUnavailableCard extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               color: tokens.secondaryText,
               height: 1.45,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _SprintFeedbackCard extends StatelessWidget {
-  const _SprintFeedbackCard({required this.message, required this.isSuccess});
-
-  final String message;
-  final bool? isSuccess;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final tokens = theme.appTokens;
-    final background = switch (isSuccess) {
-      true =>
-        theme.brightness == Brightness.dark
-            ? const Color(0xFF17352F)
-            : const Color(0xFFEAF6F2),
-      false =>
-        theme.brightness == Brightness.dark
-            ? const Color(0xFF3A2323)
-            : const Color(0xFFFCECE8),
-      null => tokens.subtleSurface,
-    };
-    final accent = switch (isSuccess) {
-      true => const Color(0xFF0F766E),
-      false => const Color(0xFFB91C1C),
-      null => tokens.secondaryText,
-    };
-    final icon = switch (isSuccess) {
-      true => Icons.check_circle_rounded,
-      false => Icons.cancel_rounded,
-      null => Icons.info_outline_rounded,
-    };
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: background,
-        borderRadius: BorderRadius.circular(22),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, color: accent),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              message,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: accent,
-                fontWeight: FontWeight.w700,
-                height: 1.4,
-              ),
             ),
           ),
         ],
