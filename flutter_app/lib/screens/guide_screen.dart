@@ -568,6 +568,7 @@ class GuideDetailScreen extends StatefulWidget {
 class _GuideDetailScreenState extends State<GuideDetailScreen> {
   late GuideLessonStatus _status;
   late final GuideDetailLinkResolver _linkResolver;
+  late final Future<LessonDocument> _lessonDocumentFuture;
   late final Future<Map<String, String>> _adjacentLessonTitlesFuture;
   late final Future<GuideRelatedTopicsResolution> _relatedTopicsFuture;
 
@@ -582,8 +583,12 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
       allLessons: widget.allLessons,
       documentLoader: widget.documentLoader,
     );
+    _lessonDocumentFuture = widget.documentLoader.load(widget.lesson.assetPath);
     _adjacentLessonTitlesFuture = _linkResolver.resolveAdjacentLessonTitles();
-    _relatedTopicsFuture = _linkResolver.resolveRelatedTopics();
+    _relatedTopicsFuture = _lessonDocumentFuture.then(
+      (document) =>
+          _linkResolver.resolveRelatedTopics(currentDocument: document),
+    );
 
     if (widget.initialStatus == GuideLessonStatus.unread) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -652,7 +657,7 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
       appBar: AppBar(),
       body: SafeArea(
         child: FutureBuilder<LessonDocument>(
-          future: widget.documentLoader.load(widget.lesson.assetPath),
+          future: _lessonDocumentFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
               return const Center(child: CircularProgressIndicator());

@@ -1,4 +1,5 @@
 import '../models/learning_bundle.dart';
+import '../models/lesson_document.dart';
 import 'lesson_document_loader.dart';
 
 class GuideDetailLinkResolver {
@@ -58,8 +59,11 @@ class GuideDetailLinkResolver {
     return titlesByAssetPath;
   }
 
-  Future<GuideRelatedTopicsResolution> resolveRelatedTopics() async {
-    final currentDocument = await documentLoader.load(lesson.assetPath);
+  Future<GuideRelatedTopicsResolution> resolveRelatedTopics({
+    LessonDocument? currentDocument,
+  }) async {
+    final resolvedCurrentDocument =
+        currentDocument ?? await documentLoader.load(lesson.assetPath);
     if (allLessons.isEmpty) {
       return const GuideRelatedTopicsResolution.empty();
     }
@@ -67,11 +71,16 @@ class GuideDetailLinkResolver {
     final titlesByAssetPath = <String, String>{};
     final lessonsById = <String, LessonEntry>{};
     for (final candidateLesson in allLessons) {
-      try {
-        final document = await documentLoader.load(candidateLesson.assetPath);
-        titlesByAssetPath[candidateLesson.assetPath] = document.title;
-      } catch (_) {
-        // Ignore broken optional documents and keep other links working.
+      if (candidateLesson.assetPath == lesson.assetPath) {
+        titlesByAssetPath[candidateLesson.assetPath] =
+            resolvedCurrentDocument.title;
+      } else {
+        try {
+          final document = await documentLoader.load(candidateLesson.assetPath);
+          titlesByAssetPath[candidateLesson.assetPath] = document.title;
+        } catch (_) {
+          // Ignore broken optional documents and keep other links working.
+        }
       }
 
       final lessonId = candidateLesson.lessonId;
@@ -119,11 +128,11 @@ class GuideDetailLinkResolver {
       }
     }
 
-    if (currentDocument.relatedTopics.isEmpty) {
+    if (resolvedCurrentDocument.relatedTopics.isEmpty) {
       return GuideRelatedTopicsResolution(resolvedTopics: resolvedTopics);
     }
 
-    for (final topic in currentDocument.relatedTopics) {
+    for (final topic in resolvedCurrentDocument.relatedTopics) {
       if (normalizeForGuideTopicMatching(topic) ==
           normalizedCurrentLessonTitle) {
         continue;

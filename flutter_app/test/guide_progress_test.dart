@@ -238,6 +238,14 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(latestStatus, GuideLessonStatus.read);
+
+    await tester.scrollUntilVisible(
+      find.text('Long Lesson'),
+      -400,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pumpAndSettle();
+
     expect(find.text(_readLabel), findsWidgets);
   });
 

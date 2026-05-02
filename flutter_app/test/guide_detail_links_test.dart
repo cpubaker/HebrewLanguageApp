@@ -154,10 +154,50 @@ void main() {
     expect(resolution.resolvedTopics.single.label, 'Verb Patterns');
   });
 
+  test('uses provided current document without loading it again', () async {
+    final loader = _CountingLessonDocumentLoader(
+      documents: const {
+        'guide/02_reading.md': LessonDocument(
+          title: 'Reading Rules',
+          body: 'Body',
+        ),
+        'guide/03_smixut.md': LessonDocument(title: 'Smixut', body: 'Body'),
+        'guide/04_verbs.md': LessonDocument(
+          title: 'Verb Patterns',
+          body: 'Body',
+        ),
+      },
+    );
+    final resolver = GuideDetailLinkResolver(
+      lesson: const LessonEntry(
+        assetPath: 'guide/01_intro.md',
+        displayName: '01 Intro Alphabet',
+        lessonId: 'intro',
+      ),
+      allLessons: const [intro, reading, smixut, verbs],
+      documentLoader: loader,
+    );
+
+    final resolution = await resolver.resolveRelatedTopics(
+      currentDocument: const LessonDocument(
+        title: 'Intro Alphabet',
+        body: 'Body',
+        relatedTopics: ['Verb Patterns'],
+      ),
+    );
+
+    expect(resolution.resolvedTopics.single.label, 'Verb Patterns');
+    expect(loader.loadCounts['guide/01_intro.md'], isNull);
+  });
+
   test('normalizes niqqud and punctuation for topic matching', () {
+    const shalomWithNiqqud =
+        '\u{05E9}\u{05B8}\u{05C1}\u{05DC}\u{05D5}\u{05B9}\u{05DD}';
+    const shalom = '\u{05E9}\u{05DC}\u{05D5}\u{05DD}';
+
     expect(
-      normalizeForGuideTopicMatching('שָׁלוֹם / Construct-State!'),
-      'שלום construct state',
+      normalizeForGuideTopicMatching('$shalomWithNiqqud / Construct-State!'),
+      '$shalom construct state',
     );
   });
 }
@@ -183,5 +223,17 @@ class _MapLessonDocumentLoader implements LessonDocumentLoader {
     }
 
     return document;
+  }
+}
+
+class _CountingLessonDocumentLoader extends _MapLessonDocumentLoader {
+  _CountingLessonDocumentLoader({required super.documents});
+
+  final Map<String, int> loadCounts = <String, int>{};
+
+  @override
+  Future<LessonDocument> load(String assetPath) {
+    loadCounts[assetPath] = (loadCounts[assetPath] ?? 0) + 1;
+    return super.load(assetPath);
   }
 }

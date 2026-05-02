@@ -67,6 +67,9 @@
   unit coverage for adjacent titles, related IDs, markdown topic matching,
   dedupe, current/adjacent exclusions, fallback titles, and optional document
   load failures.
+- Reused the guide detail current lesson document future for both body rendering
+  and related-topic resolution, avoiding a second load of the same current
+  asset.
 
 ## Next Slices
 
@@ -76,15 +79,12 @@
 2. Stop pure widget extraction in `guide_screen.dart` unless a feature or bug
    touches the extracted area. The next guide work should simplify behavior,
    not just move lines between files.
-3. Review whether guide detail can avoid
-   loading the current lesson document through separate futures for body and
-   related topics.
-4. Move repeated practice result/status widgets from flashcards, writing,
+3. Move repeated practice result/status widgets from flashcards, writing,
    repetition, and sprint into shared widgets with focused widget tests.
-5. Replace hardcoded screen accent colors with named theme tokens for semantic
+4. Replace hardcoded screen accent colors with named theme tokens for semantic
    states: success, danger, warning, AI, and lesson category accents.
-6. Add contract tests for lesson catalog metadata and content asset sync output.
-7. Review `MarkdownLessonBody` for separable parsing, layout, and glossary
+5. Add contract tests for lesson catalog metadata and content asset sync output.
+6. Review `MarkdownLessonBody` for separable parsing, layout, and glossary
    behavior while keeping its public API stable.
 
 ## Current Large Files
