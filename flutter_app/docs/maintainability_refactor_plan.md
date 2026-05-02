@@ -61,22 +61,30 @@
   `AppShellScreen` helper while keeping the existing screen contracts.
 - Extracted pure AI learning helpers for feature restore checks, generated
   context merging, AI context scope selection, and AI practice text word scope.
+- Extracted guide screen search/filter, list cards, detail header, outline,
+  adjacent navigation, and related-topic presentation into focused widgets.
+- Extracted guide detail link resolution into `GuideDetailLinkResolver` with
+  unit coverage for adjacent titles, related IDs, markdown topic matching,
+  dedupe, current/adjacent exclusions, fallback titles, and optional document
+  load failures.
 
 ## Next Slices
 
 1. Pause additional `AppShellScreen` micro-refactors unless a new product change
    touches that area. It is still large, but the highest-risk mixed concerns
    have been reduced.
-2. Review `guide_screen.dart` first because it is currently the largest screen.
-   Extract only stable subtrees that already have widget coverage, such as
-   search/filter cards, lesson list cards, detail header/status sections, or
-   related-topic/navigation sections.
-3. Move repeated practice result/status widgets from flashcards, writing,
+2. Stop pure widget extraction in `guide_screen.dart` unless a feature or bug
+   touches the extracted area. The next guide work should simplify behavior,
+   not just move lines between files.
+3. Review whether guide detail can avoid
+   loading the current lesson document through separate futures for body and
+   related topics.
+4. Move repeated practice result/status widgets from flashcards, writing,
    repetition, and sprint into shared widgets with focused widget tests.
-4. Replace hardcoded screen accent colors with named theme tokens for semantic
+5. Replace hardcoded screen accent colors with named theme tokens for semantic
    states: success, danger, warning, AI, and lesson category accents.
-5. Add contract tests for lesson catalog metadata and content asset sync output.
-6. Review `MarkdownLessonBody` for separable parsing, layout, and glossary
+6. Add contract tests for lesson catalog metadata and content asset sync output.
+7. Review `MarkdownLessonBody` for separable parsing, layout, and glossary
    behavior while keeping its public API stable.
 
 ## Current Large Files

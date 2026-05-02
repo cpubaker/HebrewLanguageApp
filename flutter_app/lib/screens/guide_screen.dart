@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../models/guide_lesson_status.dart';
 import '../models/learning_bundle.dart';
 import '../models/lesson_document.dart';
+import '../services/guide_detail_links.dart';
 import '../services/lesson_document_loader.dart';
 import '../services/lesson_status_updates.dart';
 import '../services/progress_snapshot.dart';
@@ -566,6 +567,7 @@ class GuideDetailScreen extends StatefulWidget {
 
 class _GuideDetailScreenState extends State<GuideDetailScreen> {
   late GuideLessonStatus _status;
+  late final GuideDetailLinkResolver _linkResolver;
   late final Future<Map<String, String>> _adjacentLessonTitlesFuture;
   late final Future<GuideRelatedTopicsResolution> _relatedTopicsFuture;
 
@@ -575,8 +577,13 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
     _status = widget.initialStatus == GuideLessonStatus.unread
         ? GuideLessonStatus.studying
         : widget.initialStatus;
-    _adjacentLessonTitlesFuture = _resolveAdjacentLessonTitles();
-    _relatedTopicsFuture = _resolveRelatedTopics();
+    _linkResolver = GuideDetailLinkResolver(
+      lesson: widget.lesson,
+      allLessons: widget.allLessons,
+      documentLoader: widget.documentLoader,
+    );
+    _adjacentLessonTitlesFuture = _linkResolver.resolveAdjacentLessonTitles();
+    _relatedTopicsFuture = _linkResolver.resolveRelatedTopics();
 
     if (widget.initialStatus == GuideLessonStatus.unread) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -600,231 +607,9 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
     unawaited(Future.value(widget.onStatusChanged(status)));
   }
 
-  int get _currentLessonIndex {
-    return widget.allLessons.indexWhere(
-      (lesson) => lesson.assetPath == widget.lesson.assetPath,
-    );
-  }
+  LessonEntry? get _previousLesson => _linkResolver.previousLesson;
 
-  LessonEntry? get _previousLesson {
-    final currentLessonIndex = _currentLessonIndex;
-    if (currentLessonIndex <= 0) {
-      return null;
-    }
-
-    return widget.allLessons[currentLessonIndex - 1];
-  }
-
-  LessonEntry? get _nextLesson {
-    final currentLessonIndex = _currentLessonIndex;
-    if (currentLessonIndex < 0 ||
-        currentLessonIndex >= widget.allLessons.length - 1) {
-      return null;
-    }
-
-    return widget.allLessons[currentLessonIndex + 1];
-  }
-
-  Future<Map<String, String>> _resolveAdjacentLessonTitles() async {
-    final titlesByAssetPath = <String, String>{};
-    final adjacentLessons = [
-      _previousLesson,
-      _nextLesson,
-    ].whereType<LessonEntry>();
-
-    for (final lesson in adjacentLessons) {
-      try {
-        final document = await widget.documentLoader.load(lesson.assetPath);
-        final title = document.title.trim();
-        if (title.isNotEmpty) {
-          titlesByAssetPath[lesson.assetPath] = title;
-        }
-      } catch (_) {
-        // Keep the navigation usable even if an adjacent lesson fails to load.
-      }
-    }
-
-    return titlesByAssetPath;
-  }
-
-  Future<GuideRelatedTopicsResolution> _resolveRelatedTopics() async {
-    final currentDocument = await widget.documentLoader.load(
-      widget.lesson.assetPath,
-    );
-    if (widget.allLessons.isEmpty) {
-      return const GuideRelatedTopicsResolution.empty();
-    }
-
-    final titlesByAssetPath = <String, String>{};
-    final lessonsById = <String, LessonEntry>{};
-    for (final lesson in widget.allLessons) {
-      try {
-        final document = await widget.documentLoader.load(lesson.assetPath);
-        titlesByAssetPath[lesson.assetPath] = document.title;
-      } catch (_) {
-        // Ignore broken lessons and keep other navigation links working.
-      }
-
-      final lessonId = lesson.lessonId;
-      if (lessonId != null && lessonId.trim().isNotEmpty) {
-        lessonsById[lessonId] = lesson;
-      }
-    }
-
-    final resolvedTopics = <GuideResolvedTopic>[];
-    final usedAssetPaths = <String>{};
-    final usedTopicKeys = <String>{};
-    final currentLessonTitle =
-        titlesByAssetPath[widget.lesson.assetPath] ??
-        _fallbackLessonTitle(widget.lesson);
-    final normalizedCurrentLessonTitle = _normalizeForMatching(
-      currentLessonTitle,
-    );
-
-    void addResolvedTopic(LessonEntry lesson) {
-      final resolvedLabel =
-          titlesByAssetPath[lesson.assetPath] ?? _fallbackLessonTitle(lesson);
-      final normalizedResolvedLabel = _normalizeForMatching(resolvedLabel);
-      final isAdjacentLesson =
-          lesson.assetPath == _previousLesson?.assetPath ||
-          lesson.assetPath == _nextLesson?.assetPath;
-      if (lesson.assetPath == widget.lesson.assetPath ||
-          isAdjacentLesson ||
-          !usedAssetPaths.add(lesson.assetPath) ||
-          normalizedResolvedLabel.isEmpty ||
-          !usedTopicKeys.add(normalizedResolvedLabel)) {
-        return;
-      }
-
-      resolvedTopics.add(
-        GuideResolvedTopic(label: resolvedLabel, lesson: lesson),
-      );
-    }
-
-    for (final relatedId in widget.lesson.relatedIds) {
-      final matchingLesson = lessonsById[relatedId];
-      if (matchingLesson == null) {
-        continue;
-      }
-      addResolvedTopic(matchingLesson);
-    }
-
-    if (currentDocument.relatedTopics.isEmpty) {
-      return GuideRelatedTopicsResolution(resolvedTopics: resolvedTopics);
-    }
-
-    for (final topic in currentDocument.relatedTopics) {
-      if (_normalizeForMatching(topic) == normalizedCurrentLessonTitle) {
-        continue;
-      }
-
-      final matchingLesson = _matchRelatedTopic(
-        topic,
-        titlesByAssetPath: titlesByAssetPath,
-      );
-      if (matchingLesson == null) {
-        continue;
-      }
-      addResolvedTopic(matchingLesson);
-    }
-
-    return GuideRelatedTopicsResolution(resolvedTopics: resolvedTopics);
-  }
-
-  LessonEntry? _matchRelatedTopic(
-    String topic, {
-    required Map<String, String> titlesByAssetPath,
-  }) {
-    final normalizedTopic = _normalizeForMatching(topic);
-    if (normalizedTopic.isEmpty) {
-      return null;
-    }
-
-    final topicTokens = normalizedTopic
-        .split(' ')
-        .where((token) => token.isNotEmpty)
-        .toSet();
-    LessonEntry? bestLesson;
-    var bestScore = 0;
-
-    for (final lesson in widget.allLessons) {
-      final candidates = <String>[
-        titlesByAssetPath[lesson.assetPath] ?? '',
-        _fallbackLessonTitle(lesson),
-        ...lesson.aliases,
-      ];
-
-      for (final candidate in candidates) {
-        final score = _topicMatchScore(
-          normalizedTopic: normalizedTopic,
-          topicTokens: topicTokens,
-          candidate: candidate,
-        );
-        if (score > bestScore) {
-          bestScore = score;
-          bestLesson = lesson;
-        }
-      }
-    }
-
-    if (bestScore < 20) {
-      return null;
-    }
-
-    return bestLesson;
-  }
-
-  int _topicMatchScore({
-    required String normalizedTopic,
-    required Set<String> topicTokens,
-    required String candidate,
-  }) {
-    final normalizedCandidate = _normalizeForMatching(candidate);
-    if (normalizedCandidate.isEmpty) {
-      return 0;
-    }
-
-    if (normalizedCandidate == normalizedTopic) {
-      return 100;
-    }
-
-    if (normalizedCandidate.contains(normalizedTopic) ||
-        normalizedTopic.contains(normalizedCandidate)) {
-      return 80;
-    }
-
-    final candidateTokens = normalizedCandidate
-        .split(' ')
-        .where((token) => token.isNotEmpty)
-        .toSet();
-    final overlap = topicTokens.intersection(candidateTokens).length;
-    if (overlap == 0) {
-      return 0;
-    }
-
-    var score = overlap * 10;
-    if (topicTokens.every(candidateTokens.contains)) {
-      score += 20;
-    }
-    if (candidateTokens.every(topicTokens.contains)) {
-      score += 15;
-    }
-
-    return score;
-  }
-
-  String _normalizeForMatching(String value) {
-    return value
-        .toLowerCase()
-        .replaceAll(RegExp(r'[\u0591-\u05C7]'), '')
-        .replaceAll(RegExp(r'[^0-9a-z\u0400-\u04ff\u0590-\u05ff]+'), ' ')
-        .trim()
-        .replaceAll(RegExp(r'\s+'), ' ');
-  }
-
-  String _fallbackLessonTitle(LessonEntry lesson) {
-    return lesson.displayName.replaceFirst(RegExp(r'^\d+\s+'), '').trim();
-  }
+  LessonEntry? get _nextLesson => _linkResolver.nextLesson;
 
   void _openLesson(LessonEntry lesson) {
     Navigator.of(context).pushReplacement(
@@ -922,11 +707,11 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
                           previousLessonTitle: _previousLesson == null
                               ? null
                               : titlesByAssetPath[_previousLesson!.assetPath] ??
-                                    _fallbackLessonTitle(_previousLesson!),
+                                    fallbackLessonTitle(_previousLesson!),
                           nextLessonTitle: _nextLesson == null
                               ? null
                               : titlesByAssetPath[_nextLesson!.assetPath] ??
-                                    _fallbackLessonTitle(_nextLesson!),
+                                    fallbackLessonTitle(_nextLesson!),
                           onOpenPrevious: _previousLesson == null
                               ? null
                               : () => _openLesson(_previousLesson!),

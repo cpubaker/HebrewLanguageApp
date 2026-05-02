@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../models/learning_bundle.dart';
+import '../../../services/guide_detail_links.dart';
 import '../../../theme/app_theme.dart';
 
 class GuideRelatedTopicsLoadingCard extends StatelessWidget {
@@ -106,20 +107,4 @@ class GuideRelatedTopicsCard extends StatelessWidget {
       ),
     );
   }
-}
-
-class GuideRelatedTopicsResolution {
-  const GuideRelatedTopicsResolution({required this.resolvedTopics});
-
-  const GuideRelatedTopicsResolution.empty()
-    : resolvedTopics = const <GuideResolvedTopic>[];
-
-  final List<GuideResolvedTopic> resolvedTopics;
-}
-
-class GuideResolvedTopic {
-  const GuideResolvedTopic({required this.label, required this.lesson});
-
-  final String label;
-  final LessonEntry lesson;
 }
