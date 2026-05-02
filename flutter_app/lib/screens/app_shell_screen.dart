@@ -906,10 +906,8 @@ class _AppShellScreenState extends State<AppShellScreen> {
                         HomeScreen(
                           bundle: bundle,
                           documentLoader: widget.documentLoader,
-                          isDarkMode: widget.isDarkMode,
-                          nightModeAccess: widget.featureAccessService
-                              .accessFor(AppFeature.nightMode),
-                          onToggleThemeMode: _handleThemeToggleRequested,
+                          audioPlayerFactory: widget.audioPlayerFactory,
+                          audioPlaybackAwareness: _audioPlaybackAwareness,
                           onOpenWords: _openLearnWords,
                           onOpenFlashcards: _openFlashcards,
                           onOpenWriting: () => _openWritingPractice(),
@@ -957,6 +955,10 @@ class _AppShellScreenState extends State<AppShellScreen> {
                               .accessFor(AppFeature.aiPracticeTexts),
                           onAiPracticeTextsEnabledChanged:
                               _setAiPracticeTextsEnabled,
+                          isDarkMode: widget.isDarkMode,
+                          nightModeAccess: widget.featureAccessService
+                              .accessFor(AppFeature.nightMode),
+                          onToggleThemeMode: _handleThemeToggleRequested,
                           preferWritingPractice: _preferWritingPractice,
                           onPreferWritingPracticeChanged:
                               _setPreferWritingPractice,

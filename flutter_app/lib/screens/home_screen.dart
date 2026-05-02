@@ -1,14 +1,18 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../models/learning_bundle.dart';
 import '../models/lesson_document.dart';
 import '../models/learning_word.dart';
+import '../services/audio_playback_awareness.dart';
 import '../services/flashcard_session.dart';
-import '../services/feature_access_service.dart';
+import '../services/learning_audio_player.dart';
 import '../services/lesson_document_loader.dart';
 import '../services/progress_snapshot.dart';
 import '../services/word_of_day_service.dart';
 import '../theme/app_theme.dart';
+import 'audio_playback_feedback.dart';
 import 'reading_lesson_catalog.dart';
 import 'widgets/app_action_wrap.dart';
 import 'widgets/app_metric_tile.dart';
@@ -28,9 +32,6 @@ class HomeScreen extends StatelessWidget {
     super.key,
     required this.bundle,
     required this.documentLoader,
-    required this.isDarkMode,
-    required this.nightModeAccess,
-    required this.onToggleThemeMode,
     required this.onOpenWords,
     required this.onOpenFlashcards,
     required this.onOpenWriting,
@@ -39,14 +40,13 @@ class HomeScreen extends StatelessWidget {
     required this.onOpenVerbs,
     required this.onOpenReading,
     required this.onOpenReadingLesson,
+    this.audioPlayerFactory = createAssetLearningAudioPlayer,
+    this.audioPlaybackAwareness = const NoopAudioPlaybackAwareness(),
     this.wordOfDayDateProvider,
   });
 
   final LearningBundle bundle;
   final LessonDocumentLoader documentLoader;
-  final bool isDarkMode;
-  final FeatureAccessDecision nightModeAccess;
-  final VoidCallback onToggleThemeMode;
   final VoidCallback onOpenWords;
   final ValueChanged<FlashcardDeckMode> onOpenFlashcards;
   final VoidCallback onOpenWriting;
@@ -55,6 +55,8 @@ class HomeScreen extends StatelessWidget {
   final VoidCallback onOpenVerbs;
   final VoidCallback onOpenReading;
   final ValueChanged<LessonEntry> onOpenReadingLesson;
+  final CreateLearningAudioPlayer audioPlayerFactory;
+  final AudioPlaybackAwareness audioPlaybackAwareness;
   final DateTime Function()? wordOfDayDateProvider;
 
   @override
@@ -82,25 +84,21 @@ class HomeScreen extends StatelessWidget {
     return ListView(
       padding: pagePadding.copyWith(bottom: 32),
       children: [
-        _HeroPanel(
-          bundle: bundle,
-          isDarkMode: isDarkMode,
-          nightModeAccess: nightModeAccess,
-          onToggleThemeMode: onToggleThemeMode,
-        ),
-        const SizedBox(height: 20),
-        _DashboardPrimaryActionCard(action: continueAction),
-        if (wordOfDay != null) ...[
-          const SizedBox(height: 16),
-          _WordOfDayCard(
+        if (wordOfDay != null)
+          _WordOfDayHeroPanel(
             entry: wordOfDay,
+            audioPlayerFactory: audioPlayerFactory,
+            audioPlaybackAwareness: audioPlaybackAwareness,
             onOpenFlashcards: () => onOpenFlashcards(
               wordOfDay.word.contexts.isNotEmpty
                   ? FlashcardDeckMode.withContexts
                   : FlashcardDeckMode.allWords,
             ),
-          ),
-        ],
+          )
+        else
+          const _EmptyWordOfDayHeroPanel(),
+        const SizedBox(height: 20),
+        _DashboardPrimaryActionCard(action: continueAction),
         const SizedBox(height: 16),
         _DashboardRecommendationsCard(actions: recommendedActions),
         const SizedBox(height: 16),
@@ -284,166 +282,199 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class _WordOfDayCard extends StatelessWidget {
-  const _WordOfDayCard({
+class _WordOfDayHeroPanel extends StatefulWidget {
+  const _WordOfDayHeroPanel({
     required this.entry,
+    required this.audioPlayerFactory,
+    required this.audioPlaybackAwareness,
     required this.onOpenFlashcards,
   });
 
   final WordOfDayEntry entry;
+  final CreateLearningAudioPlayer audioPlayerFactory;
+  final AudioPlaybackAwareness audioPlaybackAwareness;
   final VoidCallback onOpenFlashcards;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final tokens = theme.appTokens;
-    final contextSentence = entry.context;
+  State<_WordOfDayHeroPanel> createState() => _WordOfDayHeroPanelState();
+}
 
-    return AppSectionCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: _homeAccentTeal.withValues(alpha: 0.14),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: const Icon(
-                  Icons.wb_sunny_rounded,
-                  color: _homeAccentTeal,
-                ),
-              ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Слово дня',
-                      style: theme.textTheme.labelLarge?.copyWith(
-                        color: tokens.secondaryText,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      entry.word.hebrew,
-                      textDirection: TextDirection.rtl,
-                      style: theme.textTheme.headlineSmall?.copyWith(
-                        color: theme.colorScheme.primary,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      entry.word.translation,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      entry.word.transcription,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: tokens.mutedText,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          if (contextSentence != null) ...[
-            const SizedBox(height: 14),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                color: tokens.subtleSurface,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (contextSentence.hebrew.trim().isNotEmpty) ...[
-                    Text(
-                      contextSentence.hebrew,
-                      textDirection: TextDirection.rtl,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
-                  if (contextSentence.translation.trim().isNotEmpty) ...[
-                    if (contextSentence.hebrew.trim().isNotEmpty)
-                      const SizedBox(height: 6),
-                    Text(
-                      contextSentence.translation,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: tokens.secondaryText,
-                        height: 1.4,
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          ],
-          const SizedBox(height: 14),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: OutlinedButton.icon(
-              onPressed: onOpenFlashcards,
-              icon: const Icon(Icons.style_rounded),
-              label: const Text('До карток'),
-            ),
-          ),
-        ],
-      ),
-    );
+class _WordOfDayHeroPanelState extends State<_WordOfDayHeroPanel> {
+  StreamSubscription<bool>? _playbackSubscription;
+  LearningAudioPlayer? _audioPlayer;
+  bool _isCheckingAudio = false;
+  bool _hasAudio = false;
+  bool _isAudioBusy = false;
+  bool _isAudioPlaying = false;
+  int _audioRequestToken = 0;
+
+  String? get _audioAssetPath {
+    final path = widget.entry.word.audioAssetPath?.trim();
+    return path == null || path.isEmpty ? null : path;
   }
-}
 
-class _DashboardAction {
-  const _DashboardAction({
-    required this.title,
-    required this.subtitle,
-    required this.buttonLabel,
-    required this.icon,
-    required this.accent,
-    required this.onTap,
-  });
+  @override
+  void initState() {
+    super.initState();
+    unawaited(_checkAudioAvailability());
+  }
 
-  final String title;
-  final String subtitle;
-  final String buttonLabel;
-  final IconData icon;
-  final Color accent;
-  final VoidCallback onTap;
-}
+  @override
+  void didUpdateWidget(covariant _WordOfDayHeroPanel oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.entry.word.wordId != widget.entry.word.wordId ||
+        oldWidget.entry.word.audioAssetPath !=
+            widget.entry.word.audioAssetPath) {
+      unawaited(_stopAudio());
+      unawaited(_checkAudioAvailability());
+    }
+  }
 
-class _HeroPanel extends StatelessWidget {
-  const _HeroPanel({
-    required this.bundle,
-    required this.isDarkMode,
-    required this.nightModeAccess,
-    required this.onToggleThemeMode,
-  });
+  LearningAudioPlayer _ensureAudioPlayer() {
+    final existingPlayer = _audioPlayer;
+    if (existingPlayer != null) {
+      return existingPlayer;
+    }
 
-  final LearningBundle bundle;
-  final bool isDarkMode;
-  final FeatureAccessDecision nightModeAccess;
-  final VoidCallback onToggleThemeMode;
+    final player = widget.audioPlayerFactory();
+    _playbackSubscription = player.isPlayingStream.listen((isPlaying) {
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _isAudioPlaying = isPlaying;
+      });
+    });
+    _audioPlayer = player;
+    return player;
+  }
+
+  Future<void> _checkAudioAvailability() async {
+    final requestToken = ++_audioRequestToken;
+    final audioAssetPath = _audioAssetPath;
+    if (audioAssetPath == null) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _isCheckingAudio = false;
+        _hasAudio = false;
+      });
+      return;
+    }
+
+    setState(() {
+      _isCheckingAudio = true;
+      _hasAudio = false;
+    });
+
+    var hasAudio = false;
+    try {
+      final player = _ensureAudioPlayer();
+      hasAudio = await player.assetExists(audioAssetPath);
+      if (hasAudio) {
+        hasAudio = await player.prepareAsset(audioAssetPath);
+      }
+    } catch (error) {
+      debugPrint('Failed to prepare word of day audio: $error');
+      hasAudio = false;
+    }
+
+    if (!mounted || _audioRequestToken != requestToken) {
+      return;
+    }
+
+    setState(() {
+      _isCheckingAudio = false;
+      _hasAudio = hasAudio;
+    });
+  }
+
+  Future<void> _toggleAudio() async {
+    if (_isAudioBusy) {
+      return;
+    }
+
+    final audioAssetPath = _audioAssetPath;
+    final player = _audioPlayer;
+    if (audioAssetPath == null || player == null || !_hasAudio) {
+      return;
+    }
+
+    setState(() {
+      _isAudioBusy = true;
+    });
+
+    try {
+      if (_isAudioPlaying) {
+        await player.stop();
+      } else {
+        await showAudioPlaybackHintIfNeeded(
+          context: context,
+          awareness: widget.audioPlaybackAwareness,
+        );
+        await player.playAsset(audioAssetPath);
+      }
+    } catch (error) {
+      debugPrint('Failed to play word of day audio: $error');
+      if (mounted) {
+        final messenger = ScaffoldMessenger.maybeOf(context);
+        messenger
+          ?..hideCurrentSnackBar()
+          ..showSnackBar(
+            const SnackBar(
+              content: Text('Не вдалося відтворити озвучку слова.'),
+            ),
+          );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isAudioBusy = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _stopAudio() async {
+    _audioRequestToken += 1;
+    final player = _audioPlayer;
+    if (player == null) {
+      return;
+    }
+
+    try {
+      await player.stop();
+    } catch (error) {
+      debugPrint('Failed to stop word of day audio: $error');
+    }
+
+    if (mounted) {
+      setState(() {
+        _isAudioPlaying = false;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    unawaited(_playbackSubscription?.cancel());
+    final player = _audioPlayer;
+    if (player != null) {
+      unawaited(player.stop());
+      unawaited(player.dispose());
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final tokens = theme.appTokens;
+    final contextSentence = widget.entry.context;
+    final audioEnabled = _hasAudio && !_isAudioBusy && !_isCheckingAudio;
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -480,7 +511,7 @@ class _HeroPanel extends StatelessWidget {
                   borderRadius: BorderRadius.circular(999),
                 ),
                 child: Text(
-                  'Мобільна версія',
+                  'Слово дня',
                   style: theme.textTheme.labelLarge?.copyWith(
                     color: tokens.heroText,
                     fontWeight: FontWeight.w700,
@@ -490,28 +521,46 @@ class _HeroPanel extends StatelessWidget {
               ),
               const Spacer(),
               Tooltip(
-                message: !nightModeAccess.isEnabled
-                    ? nightModeAccess.description
-                    : isDarkMode
-                    ? 'Увімкнути світлий режим'
-                    : 'Увімкнути нічний режим',
+                message: _isCheckingAudio
+                    ? 'Перевіряємо озвучку'
+                    : _hasAudio
+                    ? (_isAudioPlaying
+                          ? 'Зупинити озвучку'
+                          : 'Увімкнути озвучку')
+                    : 'Озвучка ще недоступна',
                 child: Material(
                   color: tokens.heroChipBackground,
                   shape: const CircleBorder(),
                   child: InkWell(
-                    key: const ValueKey('theme-toggle-button'),
+                    key: const ValueKey('word-of-day-audio-button'),
                     customBorder: const CircleBorder(),
-                    onTap: onToggleThemeMode,
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Icon(
-                        !nightModeAccess.isEnabled
-                            ? Icons.lock_rounded
-                            : isDarkMode
-                            ? Icons.light_mode_rounded
-                            : Icons.dark_mode_rounded,
-                        color: tokens.heroText,
-                        size: 22,
+                    onTap: audioEnabled ? _toggleAudio : null,
+                    child: SizedBox(
+                      width: 44,
+                      height: 44,
+                      child: Center(
+                        child: _isCheckingAudio || _isAudioBusy
+                            ? SizedBox(
+                                width: 18,
+                                height: 18,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    tokens.heroText,
+                                  ),
+                                ),
+                              )
+                            : Icon(
+                                _hasAudio
+                                    ? (_isAudioPlaying
+                                          ? Icons.stop_rounded
+                                          : Icons.volume_up_rounded)
+                                    : Icons.volume_off_rounded,
+                                color: _hasAudio
+                                    ? tokens.heroText
+                                    : tokens.heroMutedText,
+                                size: 22,
+                              ),
                       ),
                     ),
                   ),
@@ -519,62 +568,168 @@ class _HeroPanel extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 18),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              widget.entry.word.hebrew,
+              textDirection: TextDirection.rtl,
+              style: theme.textTheme.headlineMedium?.copyWith(
+                color: tokens.heroText,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ),
+          const SizedBox(height: 6),
           Text(
-            'Вчимо іврит',
-            style: theme.textTheme.headlineMedium?.copyWith(
+            widget.entry.word.translation,
+            style: theme.textTheme.titleLarge?.copyWith(
               color: tokens.heroText,
               fontWeight: FontWeight.w800,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 2),
           Text(
-            'У мобільній версії вже є слова, картки, довідник, дієслова й читання. Усе працює з тією самою навчальною базою, що й десктопний застосунок.',
+            widget.entry.word.transcription,
             style: theme.textTheme.bodyLarge?.copyWith(
               color: tokens.heroMutedText,
-              height: 1.45,
+              height: 1.35,
             ),
           ),
-          const SizedBox(height: 16),
-          Text(
-            '${bundle.words.length} слів уже доступні на цьому пристрої',
-            style: theme.textTheme.titleMedium?.copyWith(
-              color: tokens.heroText,
-              fontWeight: FontWeight.w700,
+          if (contextSentence != null) ...[
+            const SizedBox(height: 14),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: tokens.heroChipBackground,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (contextSentence.hebrew.trim().isNotEmpty) ...[
+                    Text(
+                      contextSentence.hebrew,
+                      textDirection: TextDirection.rtl,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: tokens.heroText,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                  if (contextSentence.translation.trim().isNotEmpty) ...[
+                    if (contextSentence.hebrew.trim().isNotEmpty)
+                      const SizedBox(height: 6),
+                    Text(
+                      contextSentence.translation,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: tokens.heroMutedText,
+                        height: 1.4,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
-          AppActionWrap(
-            spacing: 10,
-            runSpacing: 10,
-            children: [
-              AppStatChip(
-                label: 'Слова',
-                value: bundle.words.length,
-                accent: tokens.heroText,
-                backgroundColor: tokens.heroChipBackground,
-                textColor: tokens.heroText,
+          ],
+          const SizedBox(height: 14),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: OutlinedButton.icon(
+              onPressed: widget.onOpenFlashcards,
+              style: OutlinedButton.styleFrom(
+                foregroundColor: tokens.heroText,
+                side: BorderSide(
+                  color: tokens.heroText.withValues(alpha: 0.35),
+                ),
               ),
-              AppStatChip(
-                label: 'Читання',
-                value: bundle.readingLessons.length,
-                accent: tokens.heroText,
-                backgroundColor: tokens.heroChipBackground,
-                textColor: tokens.heroText,
-              ),
-              AppStatChip(
-                label: 'Дієслова',
-                value: bundle.verbLessons.length,
-                accent: tokens.heroText,
-                backgroundColor: tokens.heroChipBackground,
-                textColor: tokens.heroText,
-              ),
-            ],
+              icon: const Icon(Icons.style_rounded),
+              label: const Text('До карток'),
+            ),
           ),
         ],
       ),
     );
   }
+}
+
+class _EmptyWordOfDayHeroPanel extends StatelessWidget {
+  const _EmptyWordOfDayHeroPanel();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(28),
+        gradient: LinearGradient(
+          colors: [
+            tokens.heroGradientStart,
+            tokens.heroGradientMiddle,
+            tokens.heroGradientEnd,
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: tokens.heroShadowColor,
+            blurRadius: 28,
+            offset: const Offset(0, 14),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            decoration: BoxDecoration(
+              color: tokens.heroChipBackground,
+              borderRadius: BorderRadius.circular(999),
+            ),
+            child: Text(
+              'Слово дня',
+              style: theme.textTheme.labelLarge?.copyWith(
+                color: tokens.heroText,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Слова з’являться після завантаження навчальної бази.',
+            style: theme.textTheme.titleLarge?.copyWith(
+              color: tokens.heroText,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DashboardAction {
+  const _DashboardAction({
+    required this.title,
+    required this.subtitle,
+    required this.buttonLabel,
+    required this.icon,
+    required this.accent,
+    required this.onTap,
+  });
+
+  final String title;
+  final String subtitle;
+  final String buttonLabel;
+  final IconData icon;
+  final Color accent;
+  final VoidCallback onTap;
 }
 
 class _SummaryCard extends StatelessWidget {

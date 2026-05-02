@@ -118,6 +118,11 @@ void main() {
     );
     await tester.pumpAndSettle();
 
+    expect(find.text('Слово дня'), findsOneWidget);
+
+    await tester.tap(find.byIcon(Icons.person_outline_rounded));
+    await tester.pumpAndSettle();
+
     expect(find.text('Вчимо іврит'), findsOneWidget);
     expect(find.text('Мобільна версія'), findsOneWidget);
 
@@ -141,7 +146,7 @@ void main() {
     expect(find.text('Усього: 2'), findsOneWidget);
   });
 
-  testWidgets('toggles night mode from the home hero and persists it', (
+  testWidgets('toggles night mode from settings and persists it', (
     WidgetTester tester,
   ) async {
     await _useTallMobileViewport(tester);
@@ -159,15 +164,19 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.byTooltip('Увімкнути нічний режим'), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.person_outline_rounded));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Налаштування'));
+    await tester.pumpAndSettle();
 
-    await tester.tap(find.byKey(const ValueKey('theme-toggle-button')));
+    expect(find.text('Нічний режим'), findsOneWidget);
+
+    await tester.tap(find.byKey(const ValueKey('theme-toggle-switch')));
     await tester.pumpAndSettle();
 
     final app = tester.widget<MaterialApp>(find.byType(MaterialApp));
     expect(app.themeMode, ThemeMode.dark);
     expect(themeModeStore.savedModes, [ThemeMode.dark]);
-    expect(find.byTooltip('Увімкнути світлий режим'), findsOneWidget);
   });
 
   testWidgets('shows locked state when night mode is not available', (
@@ -194,15 +203,23 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.byIcon(Icons.lock_rounded), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.person_outline_rounded));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Налаштування'));
+    await tester.pumpAndSettle();
 
-    await tester.tap(find.byKey(const ValueKey('theme-toggle-button')));
+    expect(find.text('Нічний режим'), findsOneWidget);
+
+    await tester.tap(find.byKey(const ValueKey('theme-toggle-switch')));
     await tester.pumpAndSettle();
 
     final app = tester.widget<MaterialApp>(find.byType(MaterialApp));
     expect(app.themeMode, ThemeMode.light);
     expect(themeModeStore.savedModes, isEmpty);
-    expect(find.textContaining('Night mode'), findsOneWidget);
+    expect(
+      find.text('Night mode: Night mode is available in the Pro version.'),
+      findsOneWidget,
+    );
   });
 
   testWidgets(

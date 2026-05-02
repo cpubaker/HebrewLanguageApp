@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hebrew_language_flutter/models/learning_bundle.dart';
@@ -5,14 +7,15 @@ import 'package:hebrew_language_flutter/models/learning_context.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/models/lesson_document.dart';
 import 'package:hebrew_language_flutter/screens/home_screen.dart';
-import 'package:hebrew_language_flutter/services/feature_access_service.dart';
 import 'package:hebrew_language_flutter/services/flashcard_session.dart';
+import 'package:hebrew_language_flutter/services/learning_audio_player.dart';
 import 'package:hebrew_language_flutter/services/lesson_document_loader.dart';
 import 'package:hebrew_language_flutter/theme/app_theme.dart';
 
 void main() {
   testWidgets('shows the word of the day on the home screen', (tester) async {
     FlashcardDeckMode? openedDeckMode;
+    final audioPlayer = _FakeLearningAudioPlayer();
 
     await tester.pumpWidget(
       MaterialApp(
@@ -35,6 +38,7 @@ void main() {
                   english: 'dog',
                   ukrainian: 'pes',
                   transcription: 'kelev',
+                  audioAssetPath: 'assets/learning/input/audio/dog.mp3',
                   correct: 0,
                   wrong: 0,
                   contexts: [
@@ -51,14 +55,6 @@ void main() {
               readingLessons: [],
             ),
             documentLoader: _FakeLessonDocumentLoader(),
-            isDarkMode: false,
-            nightModeAccess: const FeatureAccessDecision(
-              feature: AppFeature.nightMode,
-              isEnabled: true,
-              title: 'Night mode',
-              description: 'Night mode is available.',
-            ),
-            onToggleThemeMode: () {},
             onOpenWords: () {},
             onOpenFlashcards: (mode) {
               openedDeckMode = mode;
@@ -69,17 +65,25 @@ void main() {
             onOpenVerbs: () {},
             onOpenReading: () {},
             onOpenReadingLesson: (_) {},
+            audioPlayerFactory: () => audioPlayer,
             wordOfDayDateProvider: () => DateTime.utc(2026, 3, 27),
           ),
         ),
       ),
     );
+    await tester.pumpAndSettle();
 
     expect(find.text('Слово дня'), findsOneWidget);
     expect(find.text('kelev'), findsWidgets);
     expect(find.text('pes'), findsOneWidget);
     expect(find.text('dog context'), findsOneWidget);
     expect(find.text('dog translation'), findsOneWidget);
+    expect(audioPlayer.playedAssets, isEmpty);
+
+    await tester.tap(find.byKey(const ValueKey('word-of-day-audio-button')));
+    await tester.pump();
+
+    expect(audioPlayer.playedAssets, ['assets/learning/input/audio/dog.mp3']);
 
     final flashcardsButton = find.widgetWithText(OutlinedButton, 'До карток');
     await tester.ensureVisible(flashcardsButton);
@@ -89,6 +93,36 @@ void main() {
 
     expect(openedDeckMode, FlashcardDeckMode.withContexts);
   });
+}
+
+class _FakeLearningAudioPlayer implements LearningAudioPlayer {
+  final List<String> playedAssets = <String>[];
+  final _isPlayingController = StreamController<bool>.broadcast();
+
+  @override
+  Stream<bool> get isPlayingStream => _isPlayingController.stream;
+
+  @override
+  Future<bool> assetExists(String assetPath) async => true;
+
+  @override
+  Future<bool> prepareAsset(String assetPath) async => true;
+
+  @override
+  Future<void> playAsset(String assetPath) async {
+    playedAssets.add(assetPath);
+    _isPlayingController.add(true);
+  }
+
+  @override
+  Future<void> stop() async {
+    _isPlayingController.add(false);
+  }
+
+  @override
+  Future<void> dispose() async {
+    await _isPlayingController.close();
+  }
 }
 
 class _FakeLessonDocumentLoader implements LessonDocumentLoader {

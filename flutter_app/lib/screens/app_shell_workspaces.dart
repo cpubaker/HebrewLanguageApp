@@ -164,6 +164,9 @@ class AppShellMoreWorkspace extends StatelessWidget {
     required this.aiPracticeTextsEnabled,
     required this.aiPracticeTextsAccess,
     required this.onAiPracticeTextsEnabledChanged,
+    required this.isDarkMode,
+    required this.nightModeAccess,
+    required this.onToggleThemeMode,
     required this.preferWritingPractice,
     required this.onPreferWritingPracticeChanged,
     required this.preferredFlashcardDeckMode,
@@ -193,6 +196,9 @@ class AppShellMoreWorkspace extends StatelessWidget {
   final bool aiPracticeTextsEnabled;
   final FeatureAccessDecision aiPracticeTextsAccess;
   final ValueChanged<bool> onAiPracticeTextsEnabledChanged;
+  final bool isDarkMode;
+  final FeatureAccessDecision nightModeAccess;
+  final VoidCallback onToggleThemeMode;
   final bool preferWritingPractice;
   final ValueChanged<bool> onPreferWritingPracticeChanged;
   final FlashcardDeckMode preferredFlashcardDeckMode;
@@ -270,7 +276,7 @@ class AppShellMoreWorkspace extends StatelessWidget {
       child: IndexedStack(
         index: selectedSection.index,
         children: [
-          MoreOverviewScreen(shortcuts: shortcuts),
+          MoreOverviewScreen(bundle: bundle, shortcuts: shortcuts),
           MoreProgressScreen(
             bundle: bundle,
             guideLessonStatuses: guideLessonStatuses,
@@ -292,6 +298,9 @@ class AppShellMoreWorkspace extends StatelessWidget {
             aiPracticeTextsEnabled: aiPracticeTextsEnabled,
             aiPracticeTextsAccess: aiPracticeTextsAccess,
             onAiPracticeTextsEnabledChanged: onAiPracticeTextsEnabledChanged,
+            isDarkMode: isDarkMode,
+            nightModeAccess: nightModeAccess,
+            onToggleThemeMode: onToggleThemeMode,
             preferWritingPractice: preferWritingPractice,
             onPreferWritingPracticeChanged: onPreferWritingPracticeChanged,
             preferredFlashcardDeckMode: preferredFlashcardDeckMode,

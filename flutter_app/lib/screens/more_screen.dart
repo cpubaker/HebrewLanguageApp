@@ -14,8 +14,13 @@ import 'widgets/app_stat_chip.dart';
 import 'workspace_screen.dart';
 
 class MoreOverviewScreen extends StatelessWidget {
-  const MoreOverviewScreen({super.key, required this.shortcuts});
+  const MoreOverviewScreen({
+    super.key,
+    required this.bundle,
+    required this.shortcuts,
+  });
 
+  final LearningBundle bundle;
   final List<WorkspaceShortcut> shortcuts;
 
   @override
@@ -30,6 +35,8 @@ class MoreOverviewScreen extends StatelessWidget {
         32,
       ),
       children: [
+        _ProfileSystemSummaryCard(bundle: bundle),
+        const SizedBox(height: 16),
         AppSectionCard(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,6 +92,113 @@ class MoreOverviewScreen extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _ProfileSystemSummaryCard extends StatelessWidget {
+  const _ProfileSystemSummaryCard({required this.bundle});
+
+  final LearningBundle bundle;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(28),
+        gradient: LinearGradient(
+          colors: [
+            tokens.heroGradientStart,
+            tokens.heroGradientMiddle,
+            tokens.heroGradientEnd,
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: tokens.heroShadowColor,
+            blurRadius: 28,
+            offset: const Offset(0, 14),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            decoration: BoxDecoration(
+              color: tokens.heroChipBackground,
+              borderRadius: BorderRadius.circular(999),
+            ),
+            child: Text(
+              'Мобільна версія',
+              style: theme.textTheme.labelLarge?.copyWith(
+                color: tokens.heroText,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.3,
+              ),
+            ),
+          ),
+          const SizedBox(height: 14),
+          Text(
+            'Вчимо іврит',
+            style: theme.textTheme.headlineMedium?.copyWith(
+              color: tokens.heroText,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            'Слова, картки, довідник, дієслова й читання працюють з тією самою навчальною базою, що й десктопний застосунок.',
+            style: theme.textTheme.bodyLarge?.copyWith(
+              color: tokens.heroMutedText,
+              height: 1.45,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            '${bundle.words.length} слів доступні на цьому пристрої',
+            style: theme.textTheme.titleMedium?.copyWith(
+              color: tokens.heroText,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 16),
+          AppActionWrap(
+            spacing: 10,
+            runSpacing: 10,
+            children: [
+              AppStatChip(
+                label: 'Слова',
+                value: bundle.words.length,
+                accent: tokens.heroText,
+                backgroundColor: tokens.heroChipBackground,
+                textColor: tokens.heroText,
+              ),
+              AppStatChip(
+                label: 'Читання',
+                value: bundle.readingLessons.length,
+                accent: tokens.heroText,
+                backgroundColor: tokens.heroChipBackground,
+                textColor: tokens.heroText,
+              ),
+              AppStatChip(
+                label: 'Дієслова',
+                value: bundle.verbLessons.length,
+                accent: tokens.heroText,
+                backgroundColor: tokens.heroChipBackground,
+                textColor: tokens.heroText,
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
@@ -353,6 +467,9 @@ class MoreSettingsScreen extends StatelessWidget {
     required this.aiPracticeTextsEnabled,
     required this.aiPracticeTextsAccess,
     required this.onAiPracticeTextsEnabledChanged,
+    required this.isDarkMode,
+    required this.nightModeAccess,
+    required this.onToggleThemeMode,
     required this.preferWritingPractice,
     required this.onPreferWritingPracticeChanged,
     required this.preferredFlashcardDeckMode,
@@ -367,6 +484,9 @@ class MoreSettingsScreen extends StatelessWidget {
   final bool aiPracticeTextsEnabled;
   final FeatureAccessDecision aiPracticeTextsAccess;
   final ValueChanged<bool> onAiPracticeTextsEnabledChanged;
+  final bool isDarkMode;
+  final FeatureAccessDecision nightModeAccess;
+  final VoidCallback onToggleThemeMode;
   final bool preferWritingPractice;
   final ValueChanged<bool> onPreferWritingPracticeChanged;
   final FlashcardDeckMode preferredFlashcardDeckMode;
@@ -394,6 +514,17 @@ class MoreSettingsScreen extends StatelessWidget {
                     'Ці параметри діють у поточній сесії. Тут можна змінити поведінку навігації та формат практики, який відкриватиметься за замовчуванням.',
               ),
               const SizedBox(height: 18),
+              _SettingsSwitchTile(
+                title: 'Нічний режим',
+                subtitle: nightModeAccess.isEnabled
+                    ? 'Перемикає застосунок на темну земляну палітру для вечірнього навчання.'
+                    : nightModeAccess.description,
+                value: isDarkMode,
+                onChanged: (_) => onToggleThemeMode(),
+                isLocked: !nightModeAccess.isEnabled,
+                switchKey: const ValueKey('theme-toggle-switch'),
+              ),
+              const SizedBox(height: 12),
               _SettingsSwitchTile(
                 title: 'Автоматично ховати нижню панель',
                 subtitle:
@@ -573,6 +704,7 @@ class _SettingsSwitchTile extends StatelessWidget {
     required this.value,
     this.onChanged,
     this.isLocked = false,
+    this.switchKey,
   });
 
   final String title;
@@ -580,6 +712,7 @@ class _SettingsSwitchTile extends StatelessWidget {
   final bool value;
   final ValueChanged<bool>? onChanged;
   final bool isLocked;
+  final Key? switchKey;
 
   @override
   Widget build(BuildContext context) {
@@ -624,7 +757,7 @@ class _SettingsSwitchTile extends StatelessWidget {
             Icon(Icons.lock_rounded, color: tokens.mutedText, size: 20),
             const SizedBox(width: 8),
           ],
-          Switch.adaptive(value: value, onChanged: onChanged),
+          Switch.adaptive(key: switchKey, value: value, onChanged: onChanged),
         ],
       ),
     );
