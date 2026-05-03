@@ -78,13 +78,13 @@ class PracticeCompletionCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: BoxDecoration(
-              color: const Color(0xFF0F766E).withValues(alpha: 0.10),
+              color: tokens.successAccent.withValues(alpha: 0.10),
               borderRadius: BorderRadius.circular(999),
             ),
             child: Text(
               badgeLabel,
               style: theme.textTheme.labelLarge?.copyWith(
-                color: const Color(0xFF0F766E),
+                color: tokens.successAccent,
                 fontWeight: FontWeight.w800,
               ),
             ),

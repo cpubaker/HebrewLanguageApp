@@ -23,6 +23,11 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
     required this.heroText,
     required this.heroMutedText,
     required this.heroShadowColor,
+    required this.successAccent,
+    required this.dangerAccent,
+    required this.warningAccent,
+    required this.infoAccent,
+    required this.aiAccent,
   });
 
   const AppThemeTokens.fallback()
@@ -43,7 +48,12 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
       heroChipBackground = const Color(0x29FFFFFF),
       heroText = Colors.white,
       heroMutedText = const Color(0xFFF7F3E8),
-      heroShadowColor = const Color(0x22000000);
+      heroShadowColor = const Color(0x22000000),
+      successAccent = const Color(0xFF0F766E),
+      dangerAccent = const Color(0xFFB91C1C),
+      warningAccent = const Color(0xFFB45309),
+      infoAccent = const Color(0xFF1D4ED8),
+      aiAccent = const Color(0xFF8C3E9F);
 
   final EdgeInsets pagePadding;
   final double sectionRadius;
@@ -63,6 +73,11 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
   final Color heroText;
   final Color heroMutedText;
   final Color heroShadowColor;
+  final Color successAccent;
+  final Color dangerAccent;
+  final Color warningAccent;
+  final Color infoAccent;
+  final Color aiAccent;
 
   @override
   AppThemeTokens copyWith({
@@ -84,6 +99,11 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
     Color? heroText,
     Color? heroMutedText,
     Color? heroShadowColor,
+    Color? successAccent,
+    Color? dangerAccent,
+    Color? warningAccent,
+    Color? infoAccent,
+    Color? aiAccent,
   }) {
     return AppThemeTokens(
       pagePadding: pagePadding ?? this.pagePadding,
@@ -104,6 +124,11 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
       heroText: heroText ?? this.heroText,
       heroMutedText: heroMutedText ?? this.heroMutedText,
       heroShadowColor: heroShadowColor ?? this.heroShadowColor,
+      successAccent: successAccent ?? this.successAccent,
+      dangerAccent: dangerAccent ?? this.dangerAccent,
+      warningAccent: warningAccent ?? this.warningAccent,
+      infoAccent: infoAccent ?? this.infoAccent,
+      aiAccent: aiAccent ?? this.aiAccent,
     );
   }
 
@@ -148,6 +173,11 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
       heroText: Color.lerp(heroText, other.heroText, t)!,
       heroMutedText: Color.lerp(heroMutedText, other.heroMutedText, t)!,
       heroShadowColor: Color.lerp(heroShadowColor, other.heroShadowColor, t)!,
+      successAccent: Color.lerp(successAccent, other.successAccent, t)!,
+      dangerAccent: Color.lerp(dangerAccent, other.dangerAccent, t)!,
+      warningAccent: Color.lerp(warningAccent, other.warningAccent, t)!,
+      infoAccent: Color.lerp(infoAccent, other.infoAccent, t)!,
+      aiAccent: Color.lerp(aiAccent, other.aiAccent, t)!,
     );
   }
 }
@@ -195,6 +225,11 @@ class _AppThemePalette {
         heroText: Colors.white,
         heroMutedText: Color(0xFFF7F3E8),
         heroShadowColor: Color(0x22000000),
+        successAccent: Color(0xFF0F766E),
+        dangerAccent: Color(0xFFB91C1C),
+        warningAccent: Color(0xFFB45309),
+        infoAccent: Color(0xFF1D4ED8),
+        aiAccent: Color(0xFF8C3E9F),
       ),
     );
   }
@@ -224,6 +259,11 @@ class _AppThemePalette {
         heroText: Color(0xFFDAD1C3),
         heroMutedText: Color(0xFFC8BDAF),
         heroShadowColor: Color(0x44000000),
+        successAccent: Color(0xFF38B2A5),
+        dangerAccent: Color(0xFFE06B65),
+        warningAccent: Color(0xFFD6A451),
+        infoAccent: Color(0xFF7EA4F4),
+        aiAccent: Color(0xFFD08AE3),
       ),
     );
   }

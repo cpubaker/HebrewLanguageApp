@@ -447,24 +447,24 @@ class _WritingScreenState extends State<WritingScreen> {
                         PracticeStatItem(
                           label: 'Помилки',
                           value: stats.wrong,
-                          accent: const Color(0xFFB91C1C),
+                          accent: tokens.dangerAccent,
                         ),
                         PracticeStatItem(
                           label: 'Вірно',
                           value: stats.correct,
-                          accent: const Color(0xFF0F766E),
+                          accent: tokens.successAccent,
                         ),
                       ]
                     : [
                         PracticeStatItem(
                           label: 'Вірно',
                           value: stats.correct,
-                          accent: const Color(0xFF0F766E),
+                          accent: tokens.successAccent,
                         ),
                         PracticeStatItem(
                           label: 'Помилки',
                           value: stats.wrong,
-                          accent: const Color(0xFFB91C1C),
+                          accent: tokens.dangerAccent,
                         ),
                       ],
               ),

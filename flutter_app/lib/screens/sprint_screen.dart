@@ -401,13 +401,13 @@ class _ActiveSprintCard extends StatelessWidget {
                 label: 'Правильно',
                 value: correctCount,
                 icon: Icons.check_rounded,
-                accent: const Color(0xFF0F766E),
+                accent: tokens.successAccent,
               ),
               PracticeStatItem(
                 label: 'Помилки',
                 value: wrongCount,
                 icon: Icons.close_rounded,
-                accent: const Color(0xFFB91C1C),
+                accent: tokens.dangerAccent,
               ),
             ],
           ),
@@ -440,6 +440,8 @@ class _SprintCompletedCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     return PracticeCompletionCard(
       badgeLabel: 'Час вийшов',
       title: '$attempts відповідей за хвилину',
@@ -449,13 +451,13 @@ class _SprintCompletedCard extends StatelessWidget {
           label: 'Правильно',
           value: correctCount,
           icon: Icons.check_rounded,
-          accent: const Color(0xFF0F766E),
+          accent: tokens.successAccent,
         ),
         PracticeCompletionStat(
           label: 'Помилки',
           value: wrongCount,
           icon: Icons.close_rounded,
-          accent: const Color(0xFFB91C1C),
+          accent: tokens.dangerAccent,
         ),
       ],
       primaryAction: PracticeCompletionAction(
