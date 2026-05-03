@@ -10,8 +10,8 @@ import '../services/repetition_queue.dart';
 import '../theme/app_theme.dart';
 import 'audio_playback_feedback.dart';
 import 'widgets/context_source_badge.dart';
+import 'widgets/practice_completion_card.dart';
 import 'widgets/practice_panel.dart';
-import 'widgets/practice_stat_pill.dart';
 
 class RepetitionScreen extends StatefulWidget {
   const RepetitionScreen({
@@ -314,73 +314,28 @@ class _CompletedState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tokens = Theme.of(context).appTokens;
-
-    return Container(
+    return PracticeCompletionCard(
+      badgeLabel: 'Готово',
+      title: '${queue.total} слів переглянуто',
       padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: tokens.elevatedSurface,
-        borderRadius: BorderRadius.circular(28),
-        boxShadow: [
-          BoxShadow(
-            color: tokens.shadowColor,
-            blurRadius: 22,
-            offset: Offset(0, 12),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            decoration: BoxDecoration(
-              color: const Color(0xFF0F766E).withValues(alpha: 0.10),
-              borderRadius: BorderRadius.circular(999),
-            ),
-            child: Text(
-              'Готово',
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: const Color(0xFF0F766E),
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            '${queue.total} слів переглянуто',
-            textAlign: TextAlign.center,
-            style: Theme.of(
-              context,
-            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w800),
-          ),
-          const SizedBox(height: 10),
-          Wrap(
-            spacing: 12,
-            runSpacing: 12,
-            alignment: WrapAlignment.center,
-            children: [
-              PracticeStatPill(
-                label: 'Після помилки',
-                value: queue.lastMistakeCount,
-                icon: Icons.error_outline_rounded,
-                accent: const Color(0xFFB45309),
-              ),
-              PracticeStatPill(
-                label: 'Щойно у вивченні',
-                value: queue.recentStartCount,
-                icon: Icons.new_releases_outlined,
-                accent: const Color(0xFF1D4ED8),
-              ),
-            ],
-          ),
-          const SizedBox(height: 18),
-          FilledButton.icon(
-            onPressed: onRestart,
-            icon: const Icon(Icons.refresh_rounded),
-            label: const Text('Почати ще раз'),
-          ),
-        ],
+      stats: [
+        PracticeCompletionStat(
+          label: 'Після помилки',
+          value: queue.lastMistakeCount,
+          icon: Icons.error_outline_rounded,
+          accent: const Color(0xFFB45309),
+        ),
+        PracticeCompletionStat(
+          label: 'Щойно у вивченні',
+          value: queue.recentStartCount,
+          icon: Icons.new_releases_outlined,
+          accent: const Color(0xFF1D4ED8),
+        ),
+      ],
+      primaryAction: PracticeCompletionAction(
+        label: 'Почати ще раз',
+        icon: Icons.refresh_rounded,
+        onPressed: onRestart,
       ),
     );
   }

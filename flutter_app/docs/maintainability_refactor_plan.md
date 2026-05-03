@@ -74,6 +74,9 @@
   into writing and sprint flows with focused widget coverage.
 - Added shared `PracticeStatsRow` for repeated equal-width practice stat pill
   rows and wired it into writing and sprint active states.
+- Added shared `PracticeCompletionCard` for repeated practice completion states
+  and wired it into flashcards, repetition, and sprint with focused widget
+  coverage.
 
 ## Next Slices
 
@@ -83,9 +86,8 @@
 2. Stop pure widget extraction in `guide_screen.dart` unless a feature or bug
    touches the extracted area. The next guide work should simplify behavior,
    not just move lines between files.
-3. Continue practice surface unification by reviewing repeated completion
-   states across flashcards, writing, repetition, and sprint. Extract only
-   contracts that have at least two active call sites.
+3. Continue practice surface unification only where repeated contracts remain;
+   result/status widgets now need a fresh audit before another extraction.
 4. Replace remaining hardcoded screen accent colors with named theme tokens for semantic
    states: success, danger, warning, AI, and lesson category accents.
 5. Add contract tests for lesson catalog metadata and content asset sync output.

@@ -8,10 +8,10 @@ import '../services/flashcard_session.dart';
 import '../services/learning_audio_player.dart';
 import '../services/sprint_session.dart';
 import '../theme/app_theme.dart';
+import 'widgets/practice_completion_card.dart';
 import 'widgets/practice_feedback_card.dart';
 import 'widgets/practice_header.dart';
 import 'widgets/practice_session_summary.dart';
-import 'widgets/practice_stat_pill.dart';
 import 'widgets/practice_stats_row.dart';
 
 class SprintScreen extends StatefulWidget {
@@ -440,84 +440,28 @@ class _SprintCompletedCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final tokens = theme.appTokens;
-
-    return Container(
-      padding: const EdgeInsets.all(22),
-      decoration: BoxDecoration(
-        color: tokens.elevatedSurface,
-        borderRadius: BorderRadius.circular(28),
-        boxShadow: [
-          BoxShadow(
-            color: tokens.shadowColor,
-            blurRadius: 22,
-            offset: Offset(0, 12),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            decoration: BoxDecoration(
-              color: const Color(0xFF0F766E).withValues(alpha: 0.10),
-              borderRadius: BorderRadius.circular(999),
-            ),
-            child: Text(
-              'Час вийшов',
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: const Color(0xFF0F766E),
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            '$attempts відповідей за хвилину',
-            textAlign: TextAlign.center,
-            style: Theme.of(
-              context,
-            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w800),
-          ),
-          if (completionMessage.trim().isNotEmpty) ...[
-            const SizedBox(height: 8),
-            Text(
-              completionMessage,
-              textAlign: TextAlign.center,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: tokens.secondaryText,
-                height: 1.45,
-              ),
-            ),
-          ],
-          const SizedBox(height: 18),
-          Wrap(
-            spacing: 12,
-            runSpacing: 12,
-            alignment: WrapAlignment.center,
-            children: [
-              PracticeStatPill(
-                label: 'Правильно',
-                value: correctCount,
-                icon: Icons.check_rounded,
-                accent: const Color(0xFF0F766E),
-              ),
-              PracticeStatPill(
-                label: 'Помилки',
-                value: wrongCount,
-                icon: Icons.close_rounded,
-                accent: const Color(0xFFB91C1C),
-              ),
-            ],
-          ),
-          const SizedBox(height: 18),
-          FilledButton.icon(
-            onPressed: onRestart,
-            icon: const Icon(Icons.replay_rounded),
-            label: const Text('Почати ще раз'),
-          ),
-        ],
+    return PracticeCompletionCard(
+      badgeLabel: 'Час вийшов',
+      title: '$attempts відповідей за хвилину',
+      body: completionMessage,
+      stats: [
+        PracticeCompletionStat(
+          label: 'Правильно',
+          value: correctCount,
+          icon: Icons.check_rounded,
+          accent: const Color(0xFF0F766E),
+        ),
+        PracticeCompletionStat(
+          label: 'Помилки',
+          value: wrongCount,
+          icon: Icons.close_rounded,
+          accent: const Color(0xFFB91C1C),
+        ),
+      ],
+      primaryAction: PracticeCompletionAction(
+        label: 'Почати ще раз',
+        icon: Icons.replay_rounded,
+        onPressed: onRestart,
       ),
     );
   }

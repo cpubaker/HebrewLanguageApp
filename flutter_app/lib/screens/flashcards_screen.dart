@@ -10,6 +10,7 @@ import '../services/learning_audio_player.dart';
 import '../theme/app_theme.dart';
 import 'audio_playback_feedback.dart';
 import 'widgets/context_source_badge.dart';
+import 'widgets/practice_completion_card.dart';
 import 'widgets/practice_header.dart';
 import 'widgets/practice_panel.dart';
 import 'widgets/practice_stat_pill.dart';
@@ -1123,91 +1124,38 @@ class _CompletedFlashcardsState extends StatelessWidget {
         ),
         _DeckModeSection(selectedMode: mode, onChanged: onChanged),
         const SizedBox(height: 18),
-        Container(
-          padding: const EdgeInsets.all(22),
-          decoration: BoxDecoration(
-            color: tokens.elevatedSurface,
-            borderRadius: BorderRadius.circular(28),
-            boxShadow: [
-              BoxShadow(
-                color: tokens.shadowColor,
-                blurRadius: 22,
-                offset: Offset(0, 12),
-              ),
-            ],
+        PracticeCompletionCard(
+          badgeLabel: 'Готово',
+          title: '$wordCount карток пройдено',
+          body: _completionBody(mode, reviewWordCount),
+          stats: [
+            PracticeCompletionStat(
+              label: 'Знаю',
+              value: correctAnswers,
+              icon: Icons.check_rounded,
+              accent: const Color(0xFF0F766E),
+            ),
+            PracticeCompletionStat(
+              label: 'Повторити',
+              value: repeatAnswers,
+              icon: Icons.refresh_rounded,
+              accent: const Color(0xFFB45309),
+            ),
+          ],
+          primaryAction: PracticeCompletionAction(
+            label: 'Почати ще раз',
+            icon: Icons.refresh_rounded,
+            onPressed: () => onRestartDeck(),
           ),
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF0F766E).withValues(alpha: 0.10),
-                  borderRadius: BorderRadius.circular(999),
-                ),
-                child: Text(
-                  'Готово',
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: const Color(0xFF0F766E),
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                '$wordCount карток пройдено',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                _completionBody(mode, reviewWordCount),
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: tokens.secondaryText,
-                  height: 1.45,
-                ),
-              ),
-              const SizedBox(height: 18),
-              Wrap(
-                spacing: 12,
-                runSpacing: 12,
-                alignment: WrapAlignment.center,
-                children: [
-                  PracticeStatPill(
-                    label: 'Знаю',
-                    value: correctAnswers,
-                    icon: Icons.check_rounded,
-                    accent: const Color(0xFF0F766E),
-                  ),
-                  PracticeStatPill(
-                    label: 'Повторити',
-                    value: repeatAnswers,
-                    icon: Icons.refresh_rounded,
-                    accent: const Color(0xFFB45309),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 18),
-              FilledButton.icon(
-                onPressed: () => onRestartDeck(),
-                icon: const Icon(Icons.refresh_rounded),
-                label: const Text('Почати ще раз'),
-              ),
-              if (mode != FlashcardDeckMode.needsReview &&
-                  reviewWordCount > 0) ...[
-                const SizedBox(height: 12),
-                OutlinedButton.icon(
+          secondaryAction:
+              mode != FlashcardDeckMode.needsReview && reviewWordCount > 0
+              ? PracticeCompletionAction(
+                  label: 'До повторення',
+                  icon: Icons.rule_rounded,
                   onPressed: () => onRestartDeck(FlashcardDeckMode.needsReview),
-                  icon: const Icon(Icons.rule_rounded),
-                  label: const Text('До повторення'),
-                ),
-              ],
-            ],
-          ),
+                  style: PracticeCompletionActionStyle.outlined,
+                )
+              : null,
         ),
       ],
     );
