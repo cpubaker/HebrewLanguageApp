@@ -28,7 +28,7 @@ class GuideLessonCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
-    final statusTheme = lessonStatusVisuals(status);
+    final statusTheme = lessonStatusVisuals(status, tokens: tokens);
     final orderMatch = RegExp(r'^(\d+)').firstMatch(lesson.displayName);
     final orderLabel = orderMatch?.group(1) ?? '*';
 

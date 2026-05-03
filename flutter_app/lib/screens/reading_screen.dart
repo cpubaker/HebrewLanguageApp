@@ -638,8 +638,8 @@ class _ReadingLessonCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final level = readingLevelLabelFromAssetPath(lesson.assetPath);
     final orderLabel = readingLessonOrderLabel(lesson);
-    final statusTheme = lessonStatusVisuals(status);
     final tokens = Theme.of(context).appTokens;
+    final statusTheme = lessonStatusVisuals(status, tokens: tokens);
 
     return Material(
       color: Colors.transparent,

@@ -80,6 +80,9 @@
 - Replaced repeated practice success, danger, warning, info, and AI accent
   literals with shared `AppThemeTokens` semantic colors, with contract coverage
   for light and night mode token values.
+- Routed shared lesson status visuals through semantic `AppThemeTokens` colors
+  so guide and reading status UI no longer owns hardcoded unread, studying, and
+  read accents.
 
 ## Next Slices
 
@@ -92,8 +95,8 @@
 3. Continue practice surface unification only where repeated contracts remain;
    result/status widgets now need a fresh audit before another extraction.
 4. Continue replacing remaining hardcoded screen accent colors with named theme
-   tokens, focusing next on lesson category accents for guide, reading, verbs,
-   and word-status surfaces.
+   tokens, focusing next on category accents for guide search/detail, reading,
+   verbs, and word-status surfaces.
 5. Add contract tests for lesson catalog metadata and content asset sync output.
 6. Review `MarkdownLessonBody` for separable parsing, layout, and glossary
    behavior while keeping its public API stable.
