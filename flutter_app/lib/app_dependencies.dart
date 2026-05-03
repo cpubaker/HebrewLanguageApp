@@ -12,6 +12,7 @@ import 'services/lesson_document_loader.dart';
 import 'services/learning_bundle_loader.dart';
 import 'services/learning_progress_repository.dart';
 import 'services/reading_progress_store.dart';
+import 'services/sprint_stats_store.dart';
 import 'services/theme_mode_store.dart';
 import 'services/verb_audio_player.dart';
 import 'services/word_progress_store.dart';
@@ -24,6 +25,7 @@ class AppDependencies {
     this.progressStore,
     this.guideProgressStore,
     this.readingProgressStore,
+    this.sprintStatsStore,
     this.progressRepository,
     this.featureAccessService,
     this.aiContextService,
@@ -40,6 +42,7 @@ class AppDependencies {
   final WordProgressStore? progressStore;
   final GuideProgressStore? guideProgressStore;
   final ReadingProgressStore? readingProgressStore;
+  final SprintStatsStore? sprintStatsStore;
   final LearningProgressRepository? progressRepository;
   final FeatureAccessService? featureAccessService;
   final AiContextService? aiContextService;
@@ -69,6 +72,10 @@ class AppDependencies {
 
   FeatureAccessService resolveFeatureAccessService() {
     return featureAccessService ?? const StaticFeatureAccessService();
+  }
+
+  SprintStatsStore resolveSprintStatsStore() {
+    return sprintStatsStore ?? const SharedPreferencesSprintStatsStore();
   }
 
   AiContextService resolveAiContextService() {
@@ -103,6 +110,7 @@ class AppDependencies {
     WordProgressStore? progressStore,
     GuideProgressStore? guideProgressStore,
     ReadingProgressStore? readingProgressStore,
+    SprintStatsStore? sprintStatsStore,
     LearningProgressRepository? progressRepository,
     FeatureAccessService? featureAccessService,
     AiContextService? aiContextService,
@@ -119,6 +127,7 @@ class AppDependencies {
       progressStore: progressStore ?? this.progressStore,
       guideProgressStore: guideProgressStore ?? this.guideProgressStore,
       readingProgressStore: readingProgressStore ?? this.readingProgressStore,
+      sprintStatsStore: sprintStatsStore ?? this.sprintStatsStore,
       progressRepository: progressRepository ?? this.progressRepository,
       featureAccessService: featureAccessService ?? this.featureAccessService,
       aiContextService: aiContextService ?? this.aiContextService,

@@ -13,6 +13,7 @@ import 'package:hebrew_language_flutter/services/guide_progress_store.dart';
 import 'package:hebrew_language_flutter/services/lesson_document_loader.dart';
 import 'package:hebrew_language_flutter/services/learning_bundle_loader.dart';
 import 'package:hebrew_language_flutter/services/reading_progress_store.dart';
+import 'package:hebrew_language_flutter/services/sprint_stats_store.dart';
 import 'package:hebrew_language_flutter/services/verb_audio_player.dart';
 import 'package:hebrew_language_flutter/services/word_progress_store.dart';
 
@@ -138,10 +139,7 @@ void main() {
     final prefs = await SharedPreferences.getInstance();
 
     expect(prefs.getStringList('learning_word_progress_index'), isEmpty);
-    expect(
-      prefs.getString('learning_word_progress_word_word_shalom'),
-      isNull,
-    );
+    expect(prefs.getString('learning_word_progress_word_word_shalom'), isNull);
   });
 
   test('guide progress store sanitizes malformed status payloads', () async {
@@ -219,6 +217,43 @@ void main() {
     expect(jsonDecode(rawPayload!), <String, Object?>{
       'yosi_goes_to_school': 'read',
     });
+  });
+
+  test('sprint stats store ignores corrupted payloads', () async {
+    SharedPreferences.setMockInitialValues(<String, Object>{
+      'sprint_stats': '{not-valid-json',
+    });
+
+    const store = SharedPreferencesSprintStatsStore();
+
+    final stats = await store.load();
+
+    expect(stats.hasResults, isFalse);
+    expect(stats.bestCorrect, 0);
+    expect(stats.averageCorrect, 0);
+  });
+
+  test('sprint stats store persists best and average inputs', () async {
+    const store = SharedPreferencesSprintStatsStore();
+
+    await store.save(
+      const SprintStats(sessions: 3, bestCorrect: 7, totalCorrect: 15),
+    );
+
+    final prefs = await SharedPreferences.getInstance();
+    final rawPayload = prefs.getString('sprint_stats');
+
+    expect(rawPayload, isNotNull);
+    expect(jsonDecode(rawPayload!), <String, Object?>{
+      'sessions': 3,
+      'best_correct': 7,
+      'total_correct': 15,
+    });
+
+    final loadedStats = await store.load();
+    expect(loadedStats.sessions, 3);
+    expect(loadedStats.bestCorrect, 7);
+    expect(loadedStats.averageCorrect, 5);
   });
 
   testWidgets('guide progress rolls back when persistence fails', (

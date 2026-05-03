@@ -7,6 +7,7 @@ import '../models/learning_word.dart';
 import '../services/flashcard_session.dart';
 import '../services/learning_audio_player.dart';
 import '../services/sprint_session.dart';
+import '../services/sprint_stats_store.dart';
 import '../theme/app_theme.dart';
 import 'widgets/practice_completion_card.dart';
 import 'widgets/practice_feedback_card.dart';
@@ -20,6 +21,7 @@ class SprintScreen extends StatefulWidget {
     required this.words,
     required this.onWordProgressChanged,
     required this.audioPlayerFactory,
+    this.statsStore = const SharedPreferencesSprintStatsStore(),
     this.duration = const Duration(seconds: 60),
     this.rng,
     this.now,
@@ -28,6 +30,7 @@ class SprintScreen extends StatefulWidget {
   final List<LearningWord> words;
   final WordProgressCallback onWordProgressChanged;
   final CreateLearningAudioPlayer audioPlayerFactory;
+  final SprintStatsStore statsStore;
   final Duration duration;
   final Random? rng;
   final DateTime Function()? now;
@@ -45,13 +48,18 @@ class _SprintScreenState extends State<SprintScreen> {
   String? _feedbackMessage;
   bool? _lastAnswerCorrect;
   String? _completionMessage;
+  SprintStats _stats = const SprintStats.empty();
+  bool _statsLoaded = false;
+  _SprintRunFeedback? _lastRunFeedback;
   int _remainingSeconds = 0;
   bool _isActive = false;
   int _audioRequestToken = 0;
+  int _runToken = 0;
 
   @override
   void initState() {
     super.initState();
+    unawaited(_restoreSprintStats());
     _startSprint();
   }
 
@@ -65,6 +73,7 @@ class _SprintScreenState extends State<SprintScreen> {
 
   void _startSprint() {
     _timer?.cancel();
+    _runToken += 1;
     _session = SprintSession(widget.words, rng: widget.rng, now: widget.now);
 
     if (!_session.canStart) {
@@ -75,6 +84,7 @@ class _SprintScreenState extends State<SprintScreen> {
         _feedbackMessage = null;
         _lastAnswerCorrect = null;
         _completionMessage = null;
+        _lastRunFeedback = null;
       });
       unawaited(_syncPromptAudio(null));
       return;
@@ -89,6 +99,7 @@ class _SprintScreenState extends State<SprintScreen> {
           'Час пішов. Обирайте правильний переклад якомога швидше.';
       _lastAnswerCorrect = null;
       _completionMessage = null;
+      _lastRunFeedback = null;
     });
 
     if (firstPrompt == null) {
@@ -116,6 +127,9 @@ class _SprintScreenState extends State<SprintScreen> {
   }
 
   void _finishSprint([String message = '']) {
+    final shouldRecordResult = _isActive;
+    final runToken = _runToken;
+    final correctCount = _session.correctCount;
     _timer?.cancel();
     unawaited(_syncPromptAudio(null));
     if (!mounted) {
@@ -127,6 +141,60 @@ class _SprintScreenState extends State<SprintScreen> {
       _remainingSeconds = 0;
       _completionMessage = message;
     });
+
+    if (shouldRecordResult) {
+      unawaited(_recordSprintResult(correctCount, runToken));
+    }
+  }
+
+  Future<void> _restoreSprintStats() async {
+    final stats = await widget.statsStore.load();
+    if (!mounted || _statsLoaded) {
+      return;
+    }
+
+    setState(() {
+      _stats = stats;
+      _statsLoaded = true;
+    });
+  }
+
+  Future<void> _recordSprintResult(int correctCount, int runToken) async {
+    final previousStats = _statsLoaded
+        ? _stats
+        : await widget.statsStore.load();
+    final updatedStats = previousStats.recordScore(correctCount);
+    final feedback = _SprintRunFeedback.from(
+      previousStats: previousStats,
+      averageCorrect: updatedStats.averageCorrect,
+      correctCount: correctCount,
+    );
+
+    if (mounted) {
+      setState(() {
+        _stats = updatedStats;
+        _statsLoaded = true;
+        if (runToken == _runToken && !_isActive) {
+          _lastRunFeedback = feedback;
+        }
+      });
+    }
+
+    try {
+      await widget.statsStore.save(updatedStats);
+    } catch (error) {
+      debugPrint('Failed to save sprint stats: $error');
+      if (mounted) {
+        final messenger = ScaffoldMessenger.maybeOf(context);
+        messenger
+          ?..hideCurrentSnackBar()
+          ..showSnackBar(
+            const SnackBar(
+              content: Text('Не вдалося зберегти статистику спринту.'),
+            ),
+          );
+      }
+    }
   }
 
   void _answer(String selectedTranslation) {
@@ -230,6 +298,9 @@ class _SprintScreenState extends State<SprintScreen> {
             correctCount: _session.correctCount,
             wrongCount: _session.wrongCount,
             attempts: _session.attempts,
+            stats: _stats,
+            statsLoaded: _statsLoaded,
+            runFeedback: _lastRunFeedback,
             onRestart: _startSprint,
           ),
         const SizedBox(height: 16),
@@ -239,10 +310,28 @@ class _SprintScreenState extends State<SprintScreen> {
             'Доступно слів для спринту: ${widget.words.where((word) => word.translation.trim().isNotEmpty).length}',
             'Правильних відповідей: ${_session.correctCount}',
             'Неправильних відповідей: ${_session.wrongCount}',
+            ..._sprintHistoryLines(_stats, _statsLoaded),
           ],
         ),
       ],
     );
+  }
+
+  List<String> _sprintHistoryLines(SprintStats stats, bool statsLoaded) {
+    if (!statsLoaded) {
+      return const <String>['Статистика спринту завантажується...'];
+    }
+
+    if (!stats.hasResults) {
+      return const <String>[
+        'Рекорд і середній результат зʼявляться після першого завершеного спринту.',
+      ];
+    }
+
+    return <String>[
+      'Найкращий результат: ${stats.bestCorrect} правильних за спринт',
+      'Середній результат: ${_formatSprintScore(stats.averageCorrect)} правильних за спринт',
+    ];
   }
 }
 
@@ -429,6 +518,9 @@ class _SprintCompletedCard extends StatelessWidget {
     required this.correctCount,
     required this.wrongCount,
     required this.attempts,
+    required this.stats,
+    required this.statsLoaded,
+    required this.runFeedback,
     required this.onRestart,
   });
 
@@ -436,16 +528,25 @@ class _SprintCompletedCard extends StatelessWidget {
   final int correctCount;
   final int wrongCount;
   final int attempts;
+  final SprintStats stats;
+  final bool statsLoaded;
+  final _SprintRunFeedback? runFeedback;
   final VoidCallback onRestart;
 
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
+    final body = _completionBody(
+      completionMessage: completionMessage,
+      stats: stats,
+      statsLoaded: statsLoaded,
+      runFeedback: runFeedback,
+    );
 
     return PracticeCompletionCard(
-      badgeLabel: 'Час вийшов',
-      title: '$attempts відповідей за хвилину',
-      body: completionMessage,
+      badgeLabel: runFeedback?.badgeLabel ?? 'Час вийшов',
+      title: '$correctCount правильних за хвилину',
+      body: body,
       stats: [
         PracticeCompletionStat(
           label: 'Правильно',
@@ -459,6 +560,19 @@ class _SprintCompletedCard extends StatelessWidget {
           icon: Icons.close_rounded,
           accent: tokens.dangerAccent,
         ),
+        PracticeCompletionStat(
+          label: 'Відповіді',
+          value: attempts,
+          icon: Icons.bolt_rounded,
+          accent: tokens.infoAccent,
+        ),
+        if (statsLoaded && stats.hasResults)
+          PracticeCompletionStat(
+            label: 'Рекорд',
+            value: stats.bestCorrect,
+            icon: Icons.emoji_events_rounded,
+            accent: tokens.warningAccent,
+          ),
       ],
       primaryAction: PracticeCompletionAction(
         label: 'Почати ще раз',
@@ -466,6 +580,98 @@ class _SprintCompletedCard extends StatelessWidget {
         onPressed: onRestart,
       ),
     );
+  }
+
+  String? _completionBody({
+    required String completionMessage,
+    required SprintStats stats,
+    required bool statsLoaded,
+    required _SprintRunFeedback? runFeedback,
+  }) {
+    final lines = <String>[
+      if (completionMessage.trim().isNotEmpty) completionMessage.trim(),
+      ...?runFeedback?.messageLines,
+      if (statsLoaded && stats.hasResults)
+        'Середній результат: ${_formatSprintScore(stats.averageCorrect)} правильних за спринт.',
+    ];
+
+    if (lines.isEmpty) {
+      return null;
+    }
+
+    return lines.join('\n');
+  }
+}
+
+enum _SprintRecordStatus { none, first, tied, broken }
+
+class _SprintRunFeedback {
+  const _SprintRunFeedback({
+    required this.recordStatus,
+    required this.correctCount,
+    required this.previousBest,
+    required this.aboveAverageBy,
+  });
+
+  factory _SprintRunFeedback.from({
+    required SprintStats previousStats,
+    required double averageCorrect,
+    required int correctCount,
+  }) {
+    final hasHistory = previousStats.hasResults;
+    final recordStatus = !hasHistory && correctCount > 0
+        ? _SprintRecordStatus.first
+        : hasHistory && correctCount > previousStats.bestCorrect
+        ? _SprintRecordStatus.broken
+        : hasHistory &&
+              correctCount > 0 &&
+              correctCount == previousStats.bestCorrect
+        ? _SprintRecordStatus.tied
+        : _SprintRecordStatus.none;
+
+    final aboveAverageBy = correctCount - averageCorrect;
+
+    return _SprintRunFeedback(
+      recordStatus: recordStatus,
+      correctCount: correctCount,
+      previousBest: previousStats.bestCorrect,
+      aboveAverageBy: aboveAverageBy,
+    );
+  }
+
+  final _SprintRecordStatus recordStatus;
+  final int correctCount;
+  final int previousBest;
+  final double aboveAverageBy;
+
+  String? get badgeLabel {
+    return switch (recordStatus) {
+      _SprintRecordStatus.first => 'Перший рекорд',
+      _SprintRecordStatus.broken => 'Новий рекорд',
+      _SprintRecordStatus.tied => 'Рекорд досягнуто',
+      _SprintRecordStatus.none => null,
+    };
+  }
+
+  List<String> get messageLines {
+    final recordLine = _recordLine;
+    return <String>[
+      ?recordLine,
+      if (aboveAverageBy >= 0.05)
+        'Це на ${_formatSprintScore(aboveAverageBy)} вище вашого середнього.',
+    ];
+  }
+
+  String? get _recordLine {
+    return switch (recordStatus) {
+      _SprintRecordStatus.first =>
+        'Перший рекорд: $correctCount правильних за хвилину.',
+      _SprintRecordStatus.broken =>
+        'Ви побили рекорд: $correctCount правильних. Попередній був $previousBest.',
+      _SprintRecordStatus.tied =>
+        'Ви досягли свого рекорду: $correctCount правильних.',
+      _SprintRecordStatus.none => null,
+    };
   }
 }
 
@@ -506,6 +712,15 @@ class _SprintUnavailableCard extends StatelessWidget {
       ),
     );
   }
+}
+
+String _formatSprintScore(double value) {
+  final roundedValue = value.roundToDouble();
+  if ((value - roundedValue).abs() < 0.05) {
+    return roundedValue.toInt().toString();
+  }
+
+  return value.toStringAsFixed(1).replaceAll('.', ',');
 }
 
 class _SprintMetaChip extends StatelessWidget {

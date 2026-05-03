@@ -21,6 +21,7 @@ import '../services/lesson_status_updates.dart';
 import '../services/learning_bundle_word_updates.dart';
 import '../services/learning_progress_repository.dart';
 import '../services/learning_word_progress.dart';
+import '../services/sprint_stats_store.dart';
 import '../services/verb_audio_player.dart';
 import 'app_shell_navigation.dart';
 import 'app_shell_workspaces.dart';
@@ -51,6 +52,7 @@ class AppShellScreen extends StatefulWidget {
     required this.aiContextSettingsStore,
     required this.aiPracticeTextService,
     required this.aiPracticeTextSettingsStore,
+    required this.sprintStatsStore,
     required this.audioPlayerFactory,
     required this.isDarkMode,
     required this.onToggleThemeMode,
@@ -64,6 +66,7 @@ class AppShellScreen extends StatefulWidget {
   final AiContextSettingsStore aiContextSettingsStore;
   final AiPracticeTextService aiPracticeTextService;
   final AiPracticeTextSettingsStore aiPracticeTextSettingsStore;
+  final SprintStatsStore sprintStatsStore;
   final CreateVerbAudioPlayer audioPlayerFactory;
   final CreateAudioPlaybackAwareness audioPlaybackAwarenessFactory;
   final bool isDarkMode;
@@ -533,6 +536,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
             words: _bundle?.words ?? const <LearningWord>[],
             onWordProgressChanged: _handleWordProgressChanged,
             audioPlayerFactory: widget.audioPlayerFactory,
+            statsStore: widget.sprintStatsStore,
           ),
         ),
       ),

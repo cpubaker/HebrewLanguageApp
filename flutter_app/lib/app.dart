@@ -16,6 +16,7 @@ import 'services/lesson_document_loader.dart';
 import 'services/learning_bundle_loader.dart';
 import 'services/learning_progress_repository.dart';
 import 'services/reading_progress_store.dart';
+import 'services/sprint_stats_store.dart';
 import 'services/theme_mode_store.dart';
 import 'services/verb_audio_player.dart';
 import 'services/word_progress_store.dart';
@@ -30,6 +31,7 @@ class HebrewFlutterApp extends StatefulWidget {
     WordProgressStore? progressStore,
     GuideProgressStore? guideProgressStore,
     ReadingProgressStore? readingProgressStore,
+    SprintStatsStore? sprintStatsStore,
     LearningProgressRepository? progressRepository,
     FeatureAccessService? featureAccessService,
     AiContextService? aiContextService,
@@ -46,6 +48,7 @@ class HebrewFlutterApp extends StatefulWidget {
          progressStore: progressStore,
          guideProgressStore: guideProgressStore,
          readingProgressStore: readingProgressStore,
+         sprintStatsStore: sprintStatsStore,
          progressRepository: progressRepository,
          featureAccessService: featureAccessService,
          aiContextService: aiContextService,
@@ -81,6 +84,8 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
       .resolveAiPracticeTextService();
   late final AiPracticeTextSettingsStore _aiPracticeTextSettingsStore =
       _dependencies.resolveAiPracticeTextSettingsStore();
+  late final SprintStatsStore _sprintStatsStore = _dependencies
+      .resolveSprintStatsStore();
   late final CreateVerbAudioPlayer _audioPlayerFactory = _dependencies
       .resolveAudioPlayerFactory();
   late final CreateAudioPlaybackAwareness _audioPlaybackAwarenessFactory =
@@ -149,6 +154,7 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
         aiContextSettingsStore: _aiContextSettingsStore,
         aiPracticeTextService: _aiPracticeTextService,
         aiPracticeTextSettingsStore: _aiPracticeTextSettingsStore,
+        sprintStatsStore: _sprintStatsStore,
         audioPlayerFactory: _audioPlayerFactory,
         audioPlaybackAwarenessFactory: _audioPlaybackAwarenessFactory,
         isDarkMode: _themeMode == ThemeMode.dark,

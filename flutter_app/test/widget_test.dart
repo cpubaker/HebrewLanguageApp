@@ -18,6 +18,7 @@ import 'package:hebrew_language_flutter/services/guide_progress_store.dart';
 import 'package:hebrew_language_flutter/services/lesson_document_loader.dart';
 import 'package:hebrew_language_flutter/services/learning_bundle_loader.dart';
 import 'package:hebrew_language_flutter/services/reading_progress_store.dart';
+import 'package:hebrew_language_flutter/services/sprint_stats_store.dart';
 import 'package:hebrew_language_flutter/services/theme_mode_store.dart';
 import 'package:hebrew_language_flutter/services/verb_audio_player.dart';
 import 'package:hebrew_language_flutter/services/word_progress_store.dart';
@@ -577,6 +578,66 @@ void main() {
     );
   });
 
+  testWidgets('sprint completion shows record and above-average feedback', (
+    WidgetTester tester,
+  ) async {
+    final statsStore = FakeSprintStatsStore(
+      const SprintStats(sessions: 2, bestCorrect: 1, totalCorrect: 1),
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: SprintScreen(
+            words: const [
+              LearningWord(
+                wordId: 'word_peace',
+                hebrew: 'שלום',
+                english: 'peace',
+                ukrainian: 'мир',
+                transcription: 'shalom',
+                correct: 0,
+                wrong: 0,
+              ),
+              LearningWord(
+                wordId: 'word_house',
+                hebrew: 'בית',
+                english: 'house',
+                ukrainian: 'будинок',
+                transcription: 'bayit',
+                correct: 0,
+                wrong: 0,
+              ),
+            ],
+            onWordProgressChanged: (_) {},
+            audioPlayerFactory: FakeVerbAudioPlayer.new,
+            statsStore: statsStore,
+            duration: const Duration(seconds: 1),
+            rng: _FixedRandom(),
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    await tester.tap(find.byKey(const ValueKey('sprint-option-1')));
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
+    await tester.pump();
+
+    expect(find.text('Рекорд досягнуто'), findsOneWidget);
+    expect(
+      find.textContaining('Ви досягли свого рекорду: 1 правильних.'),
+      findsOneWidget,
+    );
+    expect(
+      find.textContaining('Це на 0,3 вище вашого середнього.'),
+      findsOneWidget,
+    );
+    expect(statsStore.savedStats.last.bestCorrect, 1);
+    expect(statsStore.savedStats.last.sessions, 3);
+  });
+
   testWidgets('sprint auto-plays audio for the first and second prompts', (
     WidgetTester tester,
   ) async {
@@ -1111,6 +1172,22 @@ class FakeReadingProgressStore implements ReadingProgressStore {
     } else {
       lessonStatuses[assetPath] = status;
     }
+  }
+}
+
+class FakeSprintStatsStore implements SprintStatsStore {
+  FakeSprintStatsStore([this.stats = const SprintStats.empty()]);
+
+  SprintStats stats;
+  final List<SprintStats> savedStats = <SprintStats>[];
+
+  @override
+  Future<SprintStats> load() async => stats;
+
+  @override
+  Future<void> save(SprintStats stats) async {
+    this.stats = stats;
+    savedStats.add(stats);
   }
 }
 
