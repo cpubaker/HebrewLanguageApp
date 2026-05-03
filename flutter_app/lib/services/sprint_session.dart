@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import '../models/learning_word.dart';
+import 'progress_snapshot.dart';
 
 class SprintPrompt {
   const SprintPrompt({required this.word, required this.options});
@@ -30,16 +31,21 @@ class SprintSession {
     DateTime Function()? now,
   }) : _words = List<LearningWord>.from(words),
        _rng = rng ?? Random(),
-       _now = now ?? DateTime.now;
+       _now = now ?? DateTime.now {
+    _words.removeWhere((word) => !isSprintLearningWord(word));
+  }
 
   final List<LearningWord> _words;
   final Random _rng;
   final DateTime Function() _now;
+  final Set<String> _seenWordKeys = <String>{};
 
   LearningWord? currentWord;
   List<String> currentOptions = const <String>[];
   int correctCount = 0;
   int wrongCount = 0;
+
+  int get availableWordCount => _eligibleWords.length;
 
   bool get canStart {
     final eligibleWords = _eligibleWords;
@@ -64,11 +70,15 @@ class SprintSession {
       return null;
     }
 
-    final candidates = currentWord != null && eligibleWords.length > 1
-        ? eligibleWords
-              .where((word) => !_isSameWord(word, currentWord!))
-              .toList(growable: false)
-        : eligibleWords;
+    final candidates = eligibleWords
+        .where((word) => !_seenWordKeys.contains(_wordKey(word)))
+        .toList(growable: false);
+
+    if (candidates.isEmpty) {
+      currentWord = null;
+      currentOptions = const <String>[];
+      return null;
+    }
 
     final nextWord = candidates[_rng.nextInt(candidates.length)];
     final correctTranslation = nextWord.translation.trim();
@@ -94,6 +104,7 @@ class SprintSession {
 
     currentWord = nextWord;
     currentOptions = List<String>.unmodifiable(options);
+    _seenWordKeys.add(_wordKey(nextWord));
 
     return SprintPrompt(word: nextWord, options: currentOptions);
   }
@@ -110,9 +121,7 @@ class SprintSession {
     final updatedWord = activeWord.copyWith(
       correct: isCorrect ? activeWord.correct + 1 : activeWord.correct,
       wrong: isCorrect ? activeWord.wrong : activeWord.wrong + 1,
-      lastCorrect: isCorrect
-          ? reviewedAt
-          : activeWord.lastCorrect,
+      lastCorrect: isCorrect ? reviewedAt : activeWord.lastCorrect,
       lastReviewedAt: reviewedAt,
       lastReviewCorrect: isCorrect,
     );
@@ -154,4 +163,17 @@ class SprintSession {
       _words[index] = updatedWord;
     }
   }
+
+  String _wordKey(LearningWord word) {
+    final wordId = word.wordId.trim();
+    if (wordId.isNotEmpty) {
+      return 'id:$wordId';
+    }
+
+    return 'object:${identityHashCode(word)}';
+  }
+}
+
+bool isSprintLearningWord(LearningWord word) {
+  return classifyWordLearningState(word) != WordLearningState.known;
 }

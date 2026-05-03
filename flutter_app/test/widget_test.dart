@@ -505,7 +505,7 @@ void main() {
 
     await tester.pumpWidget(
       HebrewFlutterApp(
-        loader: FakeLearningBundleLoader(),
+        loader: _SprintOnlyBundleLoader(),
         documentLoader: FakeLessonDocumentLoader(),
         progressStore: store,
         guideProgressStore: FakeGuideProgressStore(),
@@ -627,7 +627,7 @@ void main() {
 
     expect(find.text('Рекорд досягнуто'), findsOneWidget);
     expect(
-      find.textContaining('Ви досягли свого рекорду: 1 правильних.'),
+      find.textContaining('Ви досягли свого рекорду: 1 вірних відповідей.'),
       findsOneWidget,
     );
     expect(
@@ -636,6 +636,54 @@ void main() {
     );
     expect(statsStore.savedStats.last.bestCorrect, 1);
     expect(statsStore.savedStats.last.sessions, 3);
+  });
+
+  testWidgets('sprint ends early after all learning words are answered', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: SprintScreen(
+            words: const [
+              LearningWord(
+                wordId: 'word_peace',
+                hebrew: 'שלום',
+                english: 'peace',
+                ukrainian: 'мир',
+                transcription: 'shalom',
+                correct: 0,
+                wrong: 0,
+              ),
+              LearningWord(
+                wordId: 'word_house',
+                hebrew: 'בית',
+                english: 'house',
+                ukrainian: 'будинок',
+                transcription: 'bayit',
+                correct: 0,
+                wrong: 0,
+              ),
+            ],
+            onWordProgressChanged: (_) {},
+            audioPlayerFactory: FakeVerbAudioPlayer.new,
+            statsStore: FakeSprintStatsStore(),
+            rng: _FixedRandom(),
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    await tester.tap(find.text('мир'));
+    await tester.pump();
+    await tester.tap(find.text('будинок'));
+    await tester.pump();
+
+    expect(
+      find.textContaining('Усі слова на вивченні пройдено.'),
+      findsOneWidget,
+    );
   });
 
   testWidgets('sprint auto-plays audio for the first and second prompts', (
@@ -1038,6 +1086,37 @@ class _FlashcardOnlyBundleLoader implements LearningBundleLoader {
               translation: 'Чоловік іде вулицею.',
             ),
           ],
+        ),
+      ],
+      guideLessons: const [],
+      verbLessons: const [],
+      readingLessons: const [],
+    );
+  }
+}
+
+class _SprintOnlyBundleLoader implements LearningBundleLoader {
+  @override
+  Future<LearningBundle> load() async {
+    return LearningBundle(
+      words: const [
+        LearningWord(
+          wordId: 'word_peace',
+          hebrew: 'שלום',
+          english: 'peace',
+          ukrainian: 'мир',
+          transcription: 'shalom',
+          correct: 0,
+          wrong: 0,
+        ),
+        LearningWord(
+          wordId: 'word_house',
+          hebrew: 'בית',
+          english: 'house',
+          ukrainian: 'будинок',
+          transcription: 'bayit',
+          correct: 0,
+          wrong: 0,
         ),
       ],
       guideLessons: const [],

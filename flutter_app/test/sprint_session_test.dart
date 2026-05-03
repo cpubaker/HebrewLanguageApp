@@ -75,6 +75,76 @@ void main() {
     },
   );
 
+  test('uses only words that are still being learned', () {
+    final session = SprintSession(const [
+      LearningWord(
+        wordId: 'word_known',
+        hebrew: 'Ч©ЧљЧ•Чќ',
+        english: 'peace',
+        ukrainian: 'РјРёСЂ',
+        transcription: 'shalom',
+        correct: 3,
+        wrong: 0,
+      ),
+      LearningWord(
+        wordId: 'word_new',
+        hebrew: 'Ч‘Ч™ЧЄ',
+        english: 'house',
+        ukrainian: 'Р±СѓРґРёРЅРѕРє',
+        transcription: 'bayit',
+        correct: 0,
+        wrong: 0,
+      ),
+      LearningWord(
+        wordId: 'word_review',
+        hebrew: 'ЧЎЧ¤ЧЁ',
+        english: 'book',
+        ukrainian: 'РєРЅРёРіР°',
+        transcription: 'sefer',
+        correct: 1,
+        wrong: 1,
+      ),
+    ], rng: _FixedRandom());
+
+    expect(session.availableWordCount, 2);
+
+    final firstPrompt = session.nextPrompt();
+    final secondPrompt = session.nextPrompt();
+
+    expect(firstPrompt?.word.wordId, 'word_new');
+    expect(secondPrompt?.word.wordId, 'word_review');
+  });
+
+  test('ends after every learning word has been used once', () {
+    final session = SprintSession(const [
+      LearningWord(
+        wordId: 'word_peace',
+        hebrew: 'Ч©ЧљЧ•Чќ',
+        english: 'peace',
+        ukrainian: 'РјРёСЂ',
+        transcription: 'shalom',
+        correct: 0,
+        wrong: 0,
+      ),
+      LearningWord(
+        wordId: 'word_house',
+        hebrew: 'Ч‘Ч™ЧЄ',
+        english: 'house',
+        ukrainian: 'Р±СѓРґРёРЅРѕРє',
+        transcription: 'bayit',
+        correct: 0,
+        wrong: 0,
+      ),
+    ], rng: _FixedRandom());
+
+    final firstPrompt = session.nextPrompt()!;
+    session.submitAnswer(firstPrompt.word.translation);
+    final secondPrompt = session.nextPrompt()!;
+    session.submitAnswer(secondPrompt.word.translation);
+
+    expect(session.nextPrompt(), isNull);
+  });
+
   test('submitAnswer increments correct answers and stores lastCorrect', () {
     final session = SprintSession(
       const [
@@ -156,4 +226,15 @@ void main() {
     expect(session.correctCount, 0);
     expect(session.wrongCount, 1);
   });
+}
+
+class _FixedRandom implements Random {
+  @override
+  bool nextBool() => false;
+
+  @override
+  double nextDouble() => 0;
+
+  @override
+  int nextInt(int max) => 0;
 }

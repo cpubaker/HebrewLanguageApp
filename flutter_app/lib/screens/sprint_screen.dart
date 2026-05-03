@@ -220,7 +220,9 @@ class _SprintScreenState extends State<SprintScreen> {
     unawaited(_syncPromptAudio(nextPrompt));
 
     if (nextPrompt == null) {
-      _finishSprint('Не вдалося підготувати наступне завдання для спринту.');
+      _finishSprint(
+        'Усі слова на вивченні пройдено. Спринт завершено достроково, гарний темп.',
+      );
     }
   }
 
@@ -261,10 +263,10 @@ class _SprintScreenState extends State<SprintScreen> {
           const PracticeHeader(
             title: 'Спринт',
             subtitle:
-                'Хвилинна вправа з двома варіантами перекладу. Потрібно хоча б два слова з різними перекладами.',
+                'Хвилинна вправа з двома варіантами перекладу. Потрібно хоча б два слова на вивченні з різними перекладами.',
           ),
           const SizedBox(height: 18),
-          _SprintUnavailableCard(wordCount: widget.words.length),
+          _SprintUnavailableCard(wordCount: _session.availableWordCount),
         ],
       );
     }
@@ -275,7 +277,7 @@ class _SprintScreenState extends State<SprintScreen> {
         const PracticeHeader(
           title: 'Спринт',
           subtitle:
-              'За 60 секунд потрібно вибрати якомога більше правильних перекладів. Для кожного слова є лише два варіанти: правильний і хибний.',
+              'За 60 секунд потрібно вибрати якомога більше правильних перекладів. Кожне слово на вивченні трапляється один раз.',
         ),
         const SizedBox(height: 18),
         if (_isActive && _currentPrompt != null)
@@ -307,7 +309,7 @@ class _SprintScreenState extends State<SprintScreen> {
         PracticeSessionSummary(
           title: 'Поточна сесія',
           lines: [
-            'Доступно слів для спринту: ${widget.words.where((word) => word.translation.trim().isNotEmpty).length}',
+            'Слів на вивченні для спринту: ${_session.availableWordCount}',
             'Правильних відповідей: ${_session.correctCount}',
             'Неправильних відповідей: ${_session.wrongCount}',
             ..._sprintHistoryLines(_stats, _statsLoaded),
@@ -329,8 +331,8 @@ class _SprintScreenState extends State<SprintScreen> {
     }
 
     return <String>[
-      'Найкращий результат: ${stats.bestCorrect} правильних за спринт',
-      'Середній результат: ${_formatSprintScore(stats.averageCorrect)} правильних за спринт',
+      'Найкращий результат: ${stats.bestCorrect} вірних відповідей',
+      'Середній результат: ${_formatSprintScore(stats.averageCorrect)} вірних відповідей',
     ];
   }
 }
@@ -545,7 +547,7 @@ class _SprintCompletedCard extends StatelessWidget {
 
     return PracticeCompletionCard(
       badgeLabel: runFeedback?.badgeLabel ?? 'Час вийшов',
-      title: '$correctCount правильних за хвилину',
+      title: '$correctCount вірних відповідей',
       body: body,
       stats: [
         PracticeCompletionStat(
@@ -592,7 +594,7 @@ class _SprintCompletedCard extends StatelessWidget {
       if (completionMessage.trim().isNotEmpty) completionMessage.trim(),
       ...?runFeedback?.messageLines,
       if (statsLoaded && stats.hasResults)
-        'Середній результат: ${_formatSprintScore(stats.averageCorrect)} правильних за спринт.',
+        'Середній результат: ${_formatSprintScore(stats.averageCorrect)} вірних відповідей.',
     ];
 
     if (lines.isEmpty) {
@@ -665,11 +667,11 @@ class _SprintRunFeedback {
   String? get _recordLine {
     return switch (recordStatus) {
       _SprintRecordStatus.first =>
-        'Перший рекорд: $correctCount правильних за хвилину.',
+        'Перший рекорд: $correctCount вірних відповідей.',
       _SprintRecordStatus.broken =>
-        'Ви побили рекорд: $correctCount правильних. Попередній був $previousBest.',
+        'Ви побили рекорд: $correctCount вірних відповідей. Попередній був $previousBest.',
       _SprintRecordStatus.tied =>
-        'Ви досягли свого рекорду: $correctCount правильних.',
+        'Ви досягли свого рекорду: $correctCount вірних відповідей.',
       _SprintRecordStatus.none => null,
     };
   }
@@ -701,7 +703,7 @@ class _SprintUnavailableCard extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            'Для цієї вправи потрібно щонайменше два слова з різними перекладами. Зараз у наборі $wordCount слів.',
+            'Для цієї вправи потрібно щонайменше два слова на вивченні з різними перекладами. Зараз доступно $wordCount слів.',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               color: tokens.secondaryText,
