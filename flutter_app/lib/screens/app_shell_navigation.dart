@@ -4,6 +4,8 @@ import '../theme/app_theme.dart';
 
 enum AppRootArea { home, learn, practice, profile }
 
+const double appShellBottomNavigationHeight = 72;
+
 class AppShellBottomNavigation extends StatelessWidget {
   const AppShellBottomNavigation({
     super.key,
@@ -62,35 +64,161 @@ class _ExpandedBottomNavigationBar extends StatelessWidget {
   final int selectedIndex;
   final ValueChanged<int> onDestinationSelected;
 
+  static const List<_BottomNavigationItem> _items = [
+    _BottomNavigationItem(
+      area: AppRootArea.home,
+      icon: Icons.home_outlined,
+      selectedIcon: Icons.home_rounded,
+      label: 'Головна',
+    ),
+    _BottomNavigationItem(
+      area: AppRootArea.learn,
+      icon: Icons.school_outlined,
+      selectedIcon: Icons.school_rounded,
+      label: 'Вчитись',
+    ),
+    _BottomNavigationItem(
+      area: AppRootArea.practice,
+      icon: Icons.bolt_outlined,
+      selectedIcon: Icons.bolt_rounded,
+      label: 'Практика',
+    ),
+    _BottomNavigationItem(
+      area: AppRootArea.profile,
+      icon: Icons.person_outline_rounded,
+      selectedIcon: Icons.person_rounded,
+      label: 'Профіль',
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return NavigationBar(
-      selectedIndex: selectedIndex,
-      onDestinationSelected: onDestinationSelected,
-      destinations: const [
-        NavigationDestination(
-          icon: Icon(Icons.home_outlined),
-          selectedIcon: Icon(Icons.home_rounded),
-          label: 'Головна',
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+    final navigationBarTheme = theme.navigationBarTheme;
+
+    return Material(
+      color: navigationBarTheme.backgroundColor ?? tokens.navBarBackground,
+      child: SafeArea(
+        top: false,
+        child: SizedBox(
+          height: appShellBottomNavigationHeight,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(4, 5, 4, 11),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                for (final item in _items)
+                  Expanded(
+                    child: _BottomNavigationDestinationButton(
+                      item: item,
+                      isSelected: selectedIndex == item.area.index,
+                      onTap: () => onDestinationSelected(item.area.index),
+                    ),
+                  ),
+              ],
+            ),
+          ),
         ),
-        NavigationDestination(
-          icon: Icon(Icons.school_outlined),
-          selectedIcon: Icon(Icons.school_rounded),
-          label: 'Вчитись',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.bolt_outlined),
-          selectedIcon: Icon(Icons.bolt_rounded),
-          label: 'Практика',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.person_outline_rounded),
-          selectedIcon: Icon(Icons.person_rounded),
-          label: 'Профіль',
-        ),
-      ],
+      ),
     );
   }
+}
+
+class _BottomNavigationDestinationButton extends StatelessWidget {
+  const _BottomNavigationDestinationButton({
+    required this.item,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final _BottomNavigationItem item;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final navigationBarTheme = theme.navigationBarTheme;
+    final colorScheme = theme.colorScheme;
+    final states = isSelected
+        ? const <WidgetState>{WidgetState.selected}
+        : const <WidgetState>{};
+    final iconTheme =
+        navigationBarTheme.iconTheme?.resolve(states) ??
+        IconThemeData(
+          color: isSelected
+              ? colorScheme.primary
+              : theme.appTokens.secondaryText,
+        );
+    final labelStyle =
+        navigationBarTheme.labelTextStyle?.resolve(states) ??
+        theme.textTheme.labelSmall?.copyWith(
+          color: iconTheme.color,
+          fontWeight: FontWeight.w700,
+        );
+    final indicatorColor =
+        navigationBarTheme.indicatorColor ??
+        colorScheme.primary.withValues(alpha: 0.16);
+
+    return Semantics(
+      button: true,
+      selected: isSelected,
+      label: item.label,
+      onTap: onTap,
+      child: ExcludeSemantics(
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 180),
+                curve: Curves.easeOutCubic,
+                width: 56,
+                height: 32,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: isSelected ? indicatorColor : Colors.transparent,
+                  borderRadius: BorderRadius.circular(999),
+                ),
+                child: Icon(
+                  isSelected ? item.selectedIcon : item.icon,
+                  size: iconTheme.size ?? 24,
+                  color: iconTheme.color,
+                ),
+              ),
+              const SizedBox(height: 3),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  item.label,
+                  maxLines: 1,
+                  style: labelStyle?.copyWith(height: 1.1),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+@immutable
+class _BottomNavigationItem {
+  const _BottomNavigationItem({
+    required this.area,
+    required this.icon,
+    required this.selectedIcon,
+    required this.label,
+  });
+
+  final AppRootArea area;
+  final IconData icon;
+  final IconData selectedIcon;
+  final String label;
 }
 
 class _CollapsedBottomNavigationHandle extends StatelessWidget {
@@ -103,36 +231,39 @@ class _CollapsedBottomNavigationHandle extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final tokens = Theme.of(context).appTokens;
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Material(
-        color: tokens.navBarBackground,
-        elevation: 8,
-        shadowColor: tokens.shadowColor,
-        borderRadius: BorderRadius.circular(999),
-        child: InkWell(
-          onTap: onTap,
+    return SafeArea(
+      top: false,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 8),
+        child: Material(
+          color: tokens.navBarBackground,
+          elevation: 8,
+          shadowColor: tokens.shadowColor,
           borderRadius: BorderRadius.circular(999),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 28,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: colorScheme.primary.withValues(alpha: 0.35),
-                    borderRadius: BorderRadius.circular(999),
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(999),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 28,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: colorScheme.primary.withValues(alpha: 0.35),
+                      borderRadius: BorderRadius.circular(999),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                Icon(
-                  Icons.keyboard_arrow_up_rounded,
-                  size: 18,
-                  color: colorScheme.primary,
-                ),
-              ],
+                  const SizedBox(width: 10),
+                  Icon(
+                    Icons.keyboard_arrow_up_rounded,
+                    size: 18,
+                    color: colorScheme.primary,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

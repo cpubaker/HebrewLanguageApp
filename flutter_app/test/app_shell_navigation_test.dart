@@ -27,6 +27,10 @@ void main() {
     );
 
     expect(find.byKey(const ValueKey('app-shell-bottom-nav')), findsOneWidget);
+    expect(
+      tester.getSize(find.byKey(const ValueKey('app-shell-bottom-nav'))).height,
+      appShellBottomNavigationHeight,
+    );
 
     await tester.tap(find.byIcon(Icons.school_outlined));
     await tester.pump();

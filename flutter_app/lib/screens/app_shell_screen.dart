@@ -80,7 +80,8 @@ class _AppShellScreenState extends State<AppShellScreen> {
   static const Duration _bottomNavAnimationDuration = Duration(
     milliseconds: 260,
   );
-  static const double _expandedBodyBottomInset = 108;
+  static const double _expandedBodyBottomInset =
+      appShellBottomNavigationHeight + 16;
   static const double _collapsedBodyBottomInset = 36;
   static const BottomNavAutoHideBehavior _bottomNavAutoHideBehavior =
       BottomNavAutoHideBehavior();
@@ -1011,15 +1012,12 @@ class _AppShellScreenState extends State<AppShellScreen> {
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: SafeArea(
-                    top: false,
-                    child: AppShellBottomNavigation(
-                      isVisible: _isBottomNavVisible,
-                      duration: _bottomNavAnimationDuration,
-                      selectedIndex: _selectedArea.index,
-                      onDestinationSelected: _selectArea,
-                      onRevealRequested: () => _setBottomNavVisibility(true),
-                    ),
+                  child: AppShellBottomNavigation(
+                    isVisible: _isBottomNavVisible,
+                    duration: _bottomNavAnimationDuration,
+                    selectedIndex: _selectedArea.index,
+                    onDestinationSelected: _selectArea,
+                    onRevealRequested: () => _setBottomNavVisibility(true),
                   ),
                 ),
               ],
