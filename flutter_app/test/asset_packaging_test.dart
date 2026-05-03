@@ -31,14 +31,9 @@ void main() {
   test(
     'lesson catalog mirrors synced lesson assets and source content',
     () async {
-      final lessonCatalogFile = File(
-        'assets/learning/input/lesson_catalog.json',
+      final lessonCatalog = await _readJsonObject(
+        File('assets/learning/input/lesson_catalog.json'),
       );
-      expect(await lessonCatalogFile.exists(), isTrue);
-
-      final lessonCatalog =
-          jsonDecode(await lessonCatalogFile.readAsString())
-              as Map<String, dynamic>;
 
       _expectCatalogSectionMatches(
         lessonCatalog: lessonCatalog,
@@ -61,6 +56,184 @@ void main() {
     },
   );
 
+  test('lesson catalog output uses a normalized schema', () async {
+    final lessonCatalog = await _readJsonObject(
+      File('assets/learning/input/lesson_catalog.json'),
+    );
+
+    expect(
+      lessonCatalog.keys,
+      unorderedEquals(<String>['guide', 'verbs', 'reading']),
+    );
+
+    for (final sectionName in lessonCatalog.keys) {
+      final entries = _catalogEntries(lessonCatalog, sectionName);
+
+      expect(entries, isNotEmpty, reason: '$sectionName catalog is empty.');
+      expect(
+        entries.toSet().length,
+        entries.length,
+        reason: '$sectionName catalog contains duplicate paths.',
+      );
+
+      for (final entry in entries) {
+        expect(
+          entry,
+          endsWith('.md'),
+          reason: '$sectionName catalog contains a non-markdown entry.',
+        );
+        expect(
+          entry,
+          isNot(contains(r'\')),
+          reason: '$sectionName catalog must use forward slashes.',
+        );
+        expect(
+          entry,
+          isNot(startsWith('/')),
+          reason: '$sectionName catalog paths must be relative.',
+        );
+        expect(
+          entry,
+          isNot(contains('..')),
+          reason:
+              '$sectionName catalog paths must stay within the source root.',
+        );
+        expect(
+          _basename(entry).toLowerCase(),
+          isNot('agents.md'),
+          reason: '$sectionName catalog must not expose repo instructions.',
+        );
+      }
+    }
+  });
+
+  test(
+    'guide metadata references existing lessons and valid lesson IDs',
+    () async {
+      final metadata = await _readJsonObject(
+        File('../data/input/guide_metadata.json'),
+      );
+      final sections = _stringMap(metadata['sections']);
+      final lessons = _objectMap(metadata['lessons']);
+      final guideLessonFilenames = _collectRelativeLessonPaths(
+        Directory('../data/input/guide'),
+      );
+
+      expect(sections, isNotEmpty);
+      for (final section in sections.entries) {
+        expect(
+          section.key,
+          matches(RegExp(r'^[a-z0-9_]+$')),
+          reason: 'Guide section ids should stay stable.',
+        );
+        expect(
+          section.value,
+          section.value.trim(),
+          reason: '${section.key} section label should be trimmed.',
+        );
+        expect(
+          section.value,
+          isNotEmpty,
+          reason: '${section.key} section label should not be empty.',
+        );
+      }
+      expect(
+        lessons.keys,
+        unorderedEquals(guideLessonFilenames),
+        reason: 'Every guide lesson needs exactly one metadata entry.',
+      );
+
+      final lessonIdsByFilename = <String, String>{};
+      final sortOrders = <int>{};
+      final duplicateLessonIds = <String>{};
+      final duplicateSortOrders = <int>{};
+
+      for (final entry in lessons.entries) {
+        final filename = entry.key;
+        final value = entry.value;
+        final lessonId = _requiredTrimmedString(value, 'id', owner: filename);
+        final sectionId = _requiredTrimmedString(
+          value,
+          'section',
+          owner: filename,
+        );
+        final sortOrder = value['order'];
+
+        expect(
+          lessonId,
+          matches(RegExp(r'^[a-z0-9_]+$')),
+          reason: '$filename has an unstable lesson id.',
+        );
+        if (lessonIdsByFilename.containsValue(lessonId)) {
+          duplicateLessonIds.add(lessonId);
+        }
+        lessonIdsByFilename[filename] = lessonId;
+
+        expect(
+          sections.keys,
+          contains(sectionId),
+          reason: '$filename references an unknown guide section.',
+        );
+        expect(
+          sortOrder,
+          isA<int>(),
+          reason: '$filename order must be an int.',
+        );
+        expect(
+          sortOrder as int,
+          greaterThan(0),
+          reason: '$filename order must be positive.',
+        );
+        if (!sortOrders.add(sortOrder)) {
+          duplicateSortOrders.add(sortOrder);
+        }
+
+        _expectStringListContract(
+          value['aliases'],
+          owner: filename,
+          field: 'aliases',
+        );
+        _expectStringListContract(
+          value['related_ids'],
+          owner: filename,
+          field: 'related_ids',
+        );
+      }
+
+      expect(
+        duplicateLessonIds,
+        isEmpty,
+        reason: 'Guide lesson ids must be unique.',
+      );
+      expect(
+        duplicateSortOrders,
+        isEmpty,
+        reason: 'Guide lesson sort orders must be unique.',
+      );
+
+      final knownLessonIds = lessonIdsByFilename.values.toSet();
+      for (final entry in lessons.entries) {
+        final filename = entry.key;
+        final lessonId = lessonIdsByFilename[filename]!;
+        final relatedIds = _stringList(entry.value['related_ids']);
+        final missingRelatedIds = relatedIds
+            .where((relatedId) => !knownLessonIds.contains(relatedId))
+            .toList();
+
+        expect(
+          relatedIds,
+          isNot(contains(lessonId)),
+          reason: '$filename should not list itself as a related lesson.',
+        );
+        expect(
+          missingRelatedIds,
+          isEmpty,
+          reason: '$filename references unknown related guide lesson ids.',
+        );
+      }
+    },
+  );
+
   test('core synced JSON assets mirror source content', () async {
     await _expectFilesMatch(
       sourceFile: File('../data/input/hebrew_words.json'),
@@ -76,6 +249,31 @@ void main() {
     expect(
       _collectRelativeFilePaths(Directory('assets/learning/input/contexts')),
       _collectRelativeFilePaths(Directory('../data/input/contexts')),
+    );
+  });
+
+  test('reading lesson directories use known level keys', () {
+    const expectedLevelDirectories = <String>[
+      'advanced',
+      'beginner',
+      'intermediate',
+      'pre-intermediate',
+      'proficient',
+      'upper-intermediate',
+    ];
+
+    expect(
+      _collectDirectoryNames(Directory('../data/input/reading')),
+      expectedLevelDirectories,
+      reason:
+          'Reading source levels must match the UI grouping contract. Update '
+          'reading_lesson_catalog.dart and pubspec.yaml before adding a new '
+          'level.',
+    );
+    expect(
+      _collectDirectoryNames(Directory('assets/learning/input/reading')),
+      expectedLevelDirectories,
+      reason: 'Synced reading assets should expose the same known levels.',
     );
   });
 
@@ -180,6 +378,13 @@ void main() {
   });
 }
 
+Future<Map<String, dynamic>> _readJsonObject(File file) async {
+  expect(await file.exists(), isTrue, reason: '${file.path} is missing.');
+  final decoded = jsonDecode(await file.readAsString());
+  expect(decoded, isA<Map<String, dynamic>>());
+  return decoded as Map<String, dynamic>;
+}
+
 List<String> _pubspecLearningAssets(String pubspec) {
   return pubspec
       .split('\n')
@@ -188,6 +393,24 @@ List<String> _pubspecLearningAssets(String pubspec) {
       .map((match) => match.group(1)!)
       .where((path) => path.startsWith('assets/learning/'))
       .toList(growable: false);
+}
+
+List<String> _catalogEntries(
+  Map<String, dynamic> lessonCatalog,
+  String sectionName,
+) {
+  final entries = lessonCatalog[sectionName];
+  expect(
+    entries,
+    isA<List<dynamic>>(),
+    reason: '$sectionName catalog entries must be a list.',
+  );
+  expect(
+    entries as List<dynamic>,
+    everyElement(isA<String>()),
+    reason: '$sectionName catalog entries must all be strings.',
+  );
+  return entries.cast<String>().toList(growable: false);
 }
 
 Future<void> _expectFilesMatch({
@@ -225,6 +448,70 @@ void _expectCatalogSectionMatches({
   );
 }
 
+Map<String, String> _stringMap(Object? value) {
+  expect(value, isA<Map<String, dynamic>>());
+  return (value as Map<String, dynamic>).map((key, value) {
+    expect(value, isA<String>(), reason: '$key must be a string.');
+    return MapEntry(key, value as String);
+  });
+}
+
+Map<String, Map<String, dynamic>> _objectMap(Object? value) {
+  expect(value, isA<Map<String, dynamic>>());
+  return (value as Map<String, dynamic>).map((key, value) {
+    expect(
+      value,
+      isA<Map<String, dynamic>>(),
+      reason: '$key must be an object.',
+    );
+    return MapEntry(key, value as Map<String, dynamic>);
+  });
+}
+
+String _requiredTrimmedString(
+  Map<String, dynamic> value,
+  String field, {
+  required String owner,
+}) {
+  final rawValue = value[field];
+  expect(rawValue, isA<String>(), reason: '$owner.$field must be a string.');
+  final resolvedValue = (rawValue as String).trim();
+  expect(resolvedValue, isNotEmpty, reason: '$owner.$field must not be empty.');
+  return resolvedValue;
+}
+
+void _expectStringListContract(
+  Object? value, {
+  required String owner,
+  required String field,
+}) {
+  final values = _stringList(value);
+
+  expect(
+    values,
+    hasLength(values.toSet().length),
+    reason: '$owner.$field contains duplicate values.',
+  );
+  for (final item in values) {
+    expect(
+      item.trim(),
+      isNotEmpty,
+      reason: '$owner.$field has an empty value.',
+    );
+    expect(item, item.trim(), reason: '$owner.$field values must be trimmed.');
+  }
+}
+
+List<String> _stringList(Object? value) {
+  if (value == null) {
+    return const <String>[];
+  }
+
+  expect(value, isA<List<dynamic>>());
+  expect(value as List<dynamic>, everyElement(isA<String>()));
+  return value.cast<String>().toList(growable: false);
+}
+
 List<String> _collectRelativeLessonPaths(Directory directory) {
   return directory
       .listSync(recursive: true)
@@ -250,6 +537,15 @@ List<String> _collectRelativeFilePaths(Directory directory) {
             .substring(directory.path.length + 1)
             .replaceAll('\\', '/'),
       )
+      .toList()
+    ..sort();
+}
+
+List<String> _collectDirectoryNames(Directory directory) {
+  return directory
+      .listSync()
+      .whereType<Directory>()
+      .map((directory) => _basename(directory.path))
       .toList()
     ..sort();
 }

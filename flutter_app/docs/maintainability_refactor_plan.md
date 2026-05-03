@@ -83,6 +83,11 @@
 - Routed shared lesson status visuals through semantic `AppThemeTokens` colors
   so guide and reading status UI no longer owns hardcoded unread, studying, and
   read accents.
+- Added catalog and asset sync contract coverage for normalized lesson catalog
+  output plus guide metadata filename, section, lesson ID, order, alias, and
+  related-ID integrity.
+- Added reading level directory contract coverage so source and synced runtime
+  assets stay aligned with the UI grouping and pubspec packaging contract.
 
 ## Next Slices
 
@@ -97,7 +102,8 @@
 4. Continue replacing remaining hardcoded screen accent colors with named theme
    tokens, focusing next on category accents for guide search/detail, reading,
    verbs, and word-status surfaces.
-5. Add contract tests for lesson catalog metadata and content asset sync output.
+5. Add more content contract tests only where a concrete content workflow needs
+   a stronger guardrail.
 6. Review `MarkdownLessonBody` for separable parsing, layout, and glossary
    behavior while keeping its public API stable.
 
