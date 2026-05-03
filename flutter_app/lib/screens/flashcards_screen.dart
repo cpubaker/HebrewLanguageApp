@@ -324,7 +324,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                         label: 'Вірно',
                         value: stats.correct,
                         icon: Icons.check_rounded,
-                        accent: const Color(0xFF0F766E),
+                        accent: tokens.successAccent,
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -333,7 +333,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                         label: 'Помилки',
                         value: stats.wrong,
                         icon: Icons.close_rounded,
-                        accent: const Color(0xFFB91C1C),
+                        accent: tokens.dangerAccent,
                       ),
                     ),
                   ],
@@ -502,8 +502,8 @@ class _SessionDetailsSection extends StatelessWidget {
                       minHeight: 8,
                       value: sessionProgress == 0 ? 0.02 : sessionProgress,
                       backgroundColor: tokens.progressTrack,
-                      valueColor: const AlwaysStoppedAnimation<Color>(
-                        Color(0xFF0F766E),
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        tokens.successAccent,
                       ),
                     ),
                   ),
@@ -524,7 +524,7 @@ class _SessionDetailsSection extends StatelessWidget {
                           label: 'Вірно',
                           value: correctCount,
                           icon: Icons.check_rounded,
-                          accent: const Color(0xFF0F766E),
+                          accent: tokens.successAccent,
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -533,7 +533,7 @@ class _SessionDetailsSection extends StatelessWidget {
                           label: 'Помилки',
                           value: wrongCount,
                           icon: Icons.close_rounded,
-                          accent: const Color(0xFFB91C1C),
+                          accent: tokens.dangerAccent,
                         ),
                       ),
                     ],
@@ -665,9 +665,7 @@ class _AnswerRevealCard extends StatelessWidget {
         : (theme.brightness == Brightness.dark
               ? const Color(0xFF3A2A1F)
               : const Color(0xFFF9EFE4));
-    final accent = isKnownAnswer
-        ? const Color(0xFF0F766E)
-        : const Color(0xFFB45309);
+    final accent = isKnownAnswer ? tokens.successAccent : tokens.warningAccent;
     final icon = isKnownAnswer
         ? Icons.check_circle_rounded
         : Icons.refresh_rounded;
@@ -740,6 +738,8 @@ class _SwipeHintStrip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     return Row(
       children: [
         Expanded(
@@ -748,7 +748,7 @@ class _SwipeHintStrip extends StatelessWidget {
             icon: Icons.arrow_back_rounded,
             title: 'Ліворуч',
             subtitle: 'Ще раз',
-            accent: Color(0xFFB45309),
+            accent: tokens.warningAccent,
             onTap: onRepeatTap,
           ),
         ),
@@ -759,7 +759,7 @@ class _SwipeHintStrip extends StatelessWidget {
             icon: Icons.arrow_forward_rounded,
             title: 'Праворуч',
             subtitle: 'Знаю',
-            accent: Color(0xFF0F766E),
+            accent: tokens.successAccent,
             onTap: onKnowTap,
           ),
         ),
@@ -1133,13 +1133,13 @@ class _CompletedFlashcardsState extends StatelessWidget {
               label: 'Знаю',
               value: correctAnswers,
               icon: Icons.check_rounded,
-              accent: const Color(0xFF0F766E),
+              accent: tokens.successAccent,
             ),
             PracticeCompletionStat(
               label: 'Повторити',
               value: repeatAnswers,
               icon: Icons.refresh_rounded,
-              accent: const Color(0xFFB45309),
+              accent: tokens.warningAccent,
             ),
           ],
           primaryAction: PracticeCompletionAction(

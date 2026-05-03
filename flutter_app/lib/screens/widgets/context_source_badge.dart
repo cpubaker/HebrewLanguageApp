@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../models/learning_context.dart';
+import '../../theme/app_theme.dart';
 
 class ContextSourceBadge extends StatelessWidget {
   const ContextSourceBadge({super.key, required this.context});
@@ -14,9 +15,8 @@ class ContextSourceBadge extends StatelessWidget {
     }
 
     final theme = Theme.of(context);
-    final color = this.context.isNew
-        ? const Color(0xFFB45309)
-        : theme.colorScheme.primary;
+    final tokens = theme.appTokens;
+    final color = this.context.isNew ? tokens.warningAccent : tokens.aiAccent;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),

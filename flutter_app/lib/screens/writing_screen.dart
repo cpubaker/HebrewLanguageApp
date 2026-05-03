@@ -415,7 +415,7 @@ class _WritingScreenState extends State<WritingScreen> {
                   _inlineMessage!,
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: const Color(0xFFB45309),
+                    color: tokens.warningAccent,
                     fontWeight: FontWeight.w700,
                   ),
                 ),

@@ -188,9 +188,7 @@ class _RepetitionScreenState extends State<RepetitionScreen> {
               minHeight: 8,
               value: progressValue,
               backgroundColor: tokens.progressTrack,
-              valueColor: const AlwaysStoppedAnimation<Color>(
-                Color(0xFF0F766E),
-              ),
+              valueColor: AlwaysStoppedAnimation<Color>(tokens.successAccent),
             ),
           ),
           const SizedBox(height: 14),
@@ -278,10 +276,10 @@ class _EmptyState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(
+          Icon(
             Icons.check_circle_outline_rounded,
             size: 36,
-            color: Color(0xFF0F766E),
+            color: tokens.successAccent,
           ),
           const SizedBox(height: 14),
           Text(
@@ -314,6 +312,8 @@ class _CompletedState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     return PracticeCompletionCard(
       badgeLabel: 'Готово',
       title: '${queue.total} слів переглянуто',
@@ -323,13 +323,13 @@ class _CompletedState extends StatelessWidget {
           label: 'Після помилки',
           value: queue.lastMistakeCount,
           icon: Icons.error_outline_rounded,
-          accent: const Color(0xFFB45309),
+          accent: tokens.warningAccent,
         ),
         PracticeCompletionStat(
           label: 'Щойно у вивченні',
           value: queue.recentStartCount,
           icon: Icons.new_releases_outlined,
-          accent: const Color(0xFF1D4ED8),
+          accent: tokens.infoAccent,
         ),
       ],
       primaryAction: PracticeCompletionAction(
@@ -499,15 +499,16 @@ class _ReasonChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
     final (label, accent, icon) = switch (kind) {
       RepetitionKind.lastMistake => (
         'Остання спроба з помилкою',
-        const Color(0xFFB45309),
+        tokens.warningAccent,
         Icons.error_outline_rounded,
       ),
       RepetitionKind.recentStart => (
         'Нове слово у вивченні',
-        const Color(0xFF1D4ED8),
+        tokens.infoAccent,
         Icons.new_releases_outlined,
       ),
     };
