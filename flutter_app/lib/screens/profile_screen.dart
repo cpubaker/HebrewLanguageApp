@@ -69,7 +69,7 @@ class ProfileOverviewScreen extends StatelessWidget {
               const AppPageHeader(
                 title: 'Що є в цій зоні',
                 subtitle:
-                    'Профіль збирає службові та оглядові екрани, які не повинні перевантажувати нижню навігацію.',
+                    'Тут можна переглянути прогрес і налаштувати застосунок.',
               ),
               const SizedBox(height: 14),
               AppActionWrap(
@@ -257,7 +257,7 @@ class ProfileProgressScreen extends StatelessWidget {
               const AppPageHeader(
                 title: 'Прогрес',
                 subtitle:
-                    'Огляд того, як рухаються слова, практика та матеріали без переходу між модулями.',
+                    'Короткий огляд слів, практики й матеріалів в одному місці.',
               ),
               const SizedBox(height: 14),
               AppActionWrap(
@@ -298,8 +298,7 @@ class ProfileProgressScreen extends StatelessWidget {
             children: [
               const AppPageHeader(
                 title: 'Слова і практика',
-                subtitle:
-                    'Тут видно, як рухаються картки, письмо та загальний словниковий прогрес.',
+                subtitle: 'Загальний прогрес у словах, картках і письмі.',
               ),
               const SizedBox(height: 16),
               _ProgressStrip(
@@ -402,8 +401,7 @@ class ProfileProgressScreen extends StatelessWidget {
             children: [
               const AppPageHeader(
                 title: 'Що далі',
-                subtitle:
-                    'Швидкі дії, які мають найбільший сенс з огляду на поточний прогрес.',
+                subtitle: 'Рекомендації на основі вашого прогресу.',
               ),
               const SizedBox(height: 18),
               AppActionWrap(

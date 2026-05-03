@@ -89,11 +89,6 @@ class HomeScreen extends StatelessWidget {
             entry: wordOfDay,
             audioPlayerFactory: audioPlayerFactory,
             audioPlaybackAwareness: audioPlaybackAwareness,
-            onOpenFlashcards: () => onOpenFlashcards(
-              wordOfDay.word.contexts.isNotEmpty
-                  ? FlashcardDeckMode.withContexts
-                  : FlashcardDeckMode.allWords,
-            ),
           )
         else
           const _EmptyWordOfDayHeroPanel(),
@@ -133,7 +128,8 @@ class HomeScreen extends StatelessWidget {
             children: [
               const AppPageHeader(
                 title: 'Словник',
-                subtitle: 'Повний список слів із пошуком і позначками прогресу.',
+                subtitle:
+                    'Повний список слів із пошуком і позначками прогресу.',
               ),
               const SizedBox(height: 14),
               Column(
@@ -259,8 +255,8 @@ class HomeScreen extends StatelessWidget {
       _DashboardAction(
         title: 'Письмо',
         subtitle: progress.seen > 0
-            ? 'Закріпіть знайомі слова через пригадування і написання.'
-            : 'Після перших карток тут буде зручно перевіряти пригадування.',
+            ? 'Повторіть знайомі слова й потренуйте написання.'
+            : 'Спочатку відкрийте кілька слів у картках, а потім тренуйте їхнє написання тут.',
         buttonLabel: 'Тренувати',
         icon: Icons.edit_rounded,
         accent: _homeAccentOlive,
@@ -287,13 +283,11 @@ class _WordOfDayHeroPanel extends StatefulWidget {
     required this.entry,
     required this.audioPlayerFactory,
     required this.audioPlaybackAwareness,
-    required this.onOpenFlashcards,
   });
 
   final WordOfDayEntry entry;
   final CreateLearningAudioPlayer audioPlayerFactory;
   final AudioPlaybackAwareness audioPlaybackAwareness;
-  final VoidCallback onOpenFlashcards;
 
   @override
   State<_WordOfDayHeroPanel> createState() => _WordOfDayHeroPanelState();
@@ -633,21 +627,6 @@ class _WordOfDayHeroPanelState extends State<_WordOfDayHeroPanel> {
               ),
             ),
           ],
-          const SizedBox(height: 14),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: OutlinedButton.icon(
-              onPressed: widget.onOpenFlashcards,
-              style: OutlinedButton.styleFrom(
-                foregroundColor: tokens.heroText,
-                side: BorderSide(
-                  color: tokens.heroText.withValues(alpha: 0.35),
-                ),
-              ),
-              icon: const Icon(Icons.style_rounded),
-              label: const Text('До карток'),
-            ),
-          ),
         ],
       ),
     );
@@ -824,7 +803,7 @@ class _QuickActionStrip extends StatelessWidget {
         children: [
           const AppPageHeader(
             title: 'Швидкі дії',
-            subtitle: 'Основні переходи для поточного навчального циклу.',
+            subtitle: 'Швидкий доступ до основних вправ і матеріалів.',
           ),
           const SizedBox(height: 16),
           AppActionWrap(
@@ -947,7 +926,7 @@ class _DashboardRecommendationsCard extends StatelessWidget {
         children: [
           const AppPageHeader(
             title: 'Що далі',
-            subtitle: 'Кілька наступних кроків, які добре працюють разом.',
+            subtitle: 'Рекомендовані вправи й матеріали для продовження.',
           ),
           const SizedBox(height: 16),
           for (var index = 0; index < actions.length; index += 1) ...[
@@ -1086,8 +1065,7 @@ class _InventoryOverviewCard extends StatelessWidget {
         children: [
           const AppPageHeader(
             title: 'Усі модулі',
-            subtitle:
-                'Повна база застосунку лишається під рукою як довідкова карта.',
+            subtitle: 'Усі розділи навчальної бази зібрані в одному місці.',
           ),
           const SizedBox(height: 16),
           LayoutBuilder(

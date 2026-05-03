@@ -325,8 +325,7 @@ class _EmptyPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return _StatePanel(
       title: 'Текст ще не згенеровано',
-      message:
-          'Перевірте endpoint для ШІ-текстів або спробуйте оновити запит пізніше.',
+      message: 'Не вдалося оновити текст. Спробуйте ще раз пізніше.',
       icon: Icons.auto_awesome_outlined,
       actionLabel: 'Спробувати ще раз',
       onAction: onRetry,

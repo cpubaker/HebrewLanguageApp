@@ -427,7 +427,7 @@ class _VerbSearchCard extends StatelessWidget {
         AppSearchField(
           controller: searchController,
           focusNode: searchFocusNode,
-          hintText: 'Швидкий пошук за назвою уроку або іменем файла',
+          hintText: 'Шукайте за назвою уроку',
           onChanged: onQueryChanged,
           onClear: hasQuery
               ? () {
@@ -597,7 +597,7 @@ class _EmptyVerbSearchState extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            'Спробуйте інший запит: назву дієслова українською або частину імені файла.',
+            'Спробуйте інший запит: назву дієслова або тему уроку.',
             textAlign: TextAlign.center,
             style: Theme.of(
               context,

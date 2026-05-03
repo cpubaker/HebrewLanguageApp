@@ -628,7 +628,7 @@ class _PromptAudioButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton.filledTonal(
-      tooltip: 'Audio',
+      tooltip: 'Озвучка',
       onPressed: onPressed,
       icon: isBusy
           ? const SizedBox(
@@ -1174,7 +1174,7 @@ class _CompletedFlashcardsState extends StatelessWidget {
         }
         return 'Усі картки з прикладами вже пройдені.';
       case FlashcardDeckMode.needsReview:
-        return 'У колоді повторення більше не лишилося карток.';
+        return 'Ви вже все повторили.';
     }
   }
 }

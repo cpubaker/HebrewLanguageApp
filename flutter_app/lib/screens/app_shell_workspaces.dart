@@ -29,13 +29,12 @@ class AppShellLearnWorkspace extends StatelessWidget {
   Widget build(BuildContext context) {
     return WorkspaceHubScreen(
       title: 'Вчитись',
-      subtitle:
-          'Оберіть, з чого продовжити навчання. Після вибору модуль відкриється окремим повноекранним екраном.',
+      subtitle: 'Оберіть, з чого продовжити навчання.',
       shortcuts: [
         WorkspaceShortcut(
           title: 'Слова',
           subtitle:
-              'Повний словник із пошуком, фільтрами й картками деталей. Доступно: ${bundle.words.length} слів.',
+              'Усі слова в одному місці: пошук, фільтри й прогрес. Доступно: ${bundle.words.length} слів.',
           icon: Icons.translate_rounded,
           accent: const Color(0xFF2B5D4F),
           onTap: onOpenWords,
@@ -43,7 +42,7 @@ class AppShellLearnWorkspace extends StatelessWidget {
         WorkspaceShortcut(
           title: 'Дієслова',
           subtitle:
-              'Добірка дієслівних уроків із поясненнями, озвученням і окремими екранами деталей. Доступно: ${bundle.verbLessons.length} уроків.',
+              'Добірка уроків про дієслова з поясненнями, озвученням і прикладами. Доступно: ${bundle.verbLessons.length} уроків.',
           icon: Icons.play_lesson_rounded,
           accent: const Color(0xFF8C6A2A),
           onTap: onOpenVerbs,
@@ -106,8 +105,7 @@ class AppShellPracticeWorkspace extends StatelessWidget {
         ),
         WorkspaceShortcut(
           title: 'Написання',
-          subtitle:
-              'Введення слова івритом без підказки для активного пригадування.',
+          subtitle: 'Написання слів івритом без підказок.',
           icon: Icons.edit_rounded,
           accent: const Color(0xFF2B5D4F),
           onTap: onOpenWriting,
@@ -121,8 +119,7 @@ class AppShellPracticeWorkspace extends StatelessWidget {
         ),
         WorkspaceShortcut(
           title: 'Повторення',
-          subtitle:
-              'Спокійний перегляд нових слів у вивченні та слів, де остання спроба була з помилкою.',
+          subtitle: 'Нові слова й останні помилки для спокійного повторення.',
           icon: Icons.refresh_rounded,
           accent: const Color(0xFF8C6A2A),
           onTap: onOpenRepetition,
@@ -219,7 +216,7 @@ class AppShellProfileWorkspace extends StatelessWidget {
     final shortcuts = [
       WorkspaceShortcut(
         title: 'Головна',
-        subtitle: 'Повернутися до dashboard з рекомендаціями і прогресом.',
+        subtitle: 'Повернутися на головну з рекомендаціями та прогресом.',
         icon: Icons.home_rounded,
         accent: const Color(0xFF2B5D4F),
         onTap: onSelectHome,
@@ -241,8 +238,7 @@ class AppShellProfileWorkspace extends StatelessWidget {
       ),
       WorkspaceShortcut(
         title: 'Повторення',
-        subtitle:
-            'Перегляд нових слів у вивченні та останніх помилок без таймера.',
+        subtitle: 'Нові слова й останні помилки без таймера.',
         icon: Icons.refresh_rounded,
         accent: const Color(0xFF8C6A2A),
         onTap: onOpenRepetition,
@@ -259,8 +255,7 @@ class AppShellProfileWorkspace extends StatelessWidget {
 
     return WorkspaceScreen(
       title: 'Профіль',
-      subtitle:
-          'Тут зібрані прогрес, налаштування та додаткові точки входу, які не повинні перевантажувати нижню навігацію.',
+      subtitle: 'Прогрес і налаштування зібрані в одному місці.',
       sections: const [
         WorkspaceSection(
           label: 'Огляд',

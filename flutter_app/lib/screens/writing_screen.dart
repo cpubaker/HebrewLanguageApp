@@ -330,7 +330,7 @@ class _WritingScreenState extends State<WritingScreen> {
                     if (_mode == WritingPracticeMode.typing) ...[
                       const SizedBox(height: 8),
                       Text(
-                        'Підказку не показуємо: тут працюємо саме на пригадування.',
+                        'Без підказок: спробуйте пригадати слово самостійно.',
                         textAlign: TextAlign.center,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: tokens.secondaryText,
@@ -713,7 +713,7 @@ class _PromptAudioButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton.filledTonal(
-      tooltip: 'Audio',
+      tooltip: 'Озвучка',
       onPressed: onPressed,
       icon: isBusy
           ? const SizedBox(
@@ -738,7 +738,7 @@ class _EmptyWritingState extends StatelessWidget {
       padding: tokens.pagePadding.copyWith(bottom: 32),
       children: [
         const PracticeHeader(
-          title: 'Писання',
+          title: 'Написання',
           subtitle:
               'Коли слова завантажаться, тут можна буде тренувати написання івритом або складати слова з блоків.',
         ),

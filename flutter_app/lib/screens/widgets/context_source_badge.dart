@@ -30,7 +30,7 @@ class ContextSourceBadge extends StatelessWidget {
           Icon(Icons.auto_awesome_rounded, size: 14, color: color),
           const SizedBox(width: 5),
           Text(
-            this.context.isNew ? 'Нове!' : 'AI',
+            this.context.isNew ? 'Нове!' : 'ШІ',
             style: theme.textTheme.labelMedium?.copyWith(
               color: color,
               fontWeight: FontWeight.w800,

@@ -7,14 +7,12 @@ import 'package:hebrew_language_flutter/models/learning_context.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/models/lesson_document.dart';
 import 'package:hebrew_language_flutter/screens/home_screen.dart';
-import 'package:hebrew_language_flutter/services/flashcard_session.dart';
 import 'package:hebrew_language_flutter/services/learning_audio_player.dart';
 import 'package:hebrew_language_flutter/services/lesson_document_loader.dart';
 import 'package:hebrew_language_flutter/theme/app_theme.dart';
 
 void main() {
   testWidgets('shows the word of the day on the home screen', (tester) async {
-    FlashcardDeckMode? openedDeckMode;
     final audioPlayer = _FakeLearningAudioPlayer();
 
     await tester.pumpWidget(
@@ -56,9 +54,7 @@ void main() {
             ),
             documentLoader: _FakeLessonDocumentLoader(),
             onOpenWords: () {},
-            onOpenFlashcards: (mode) {
-              openedDeckMode = mode;
-            },
+            onOpenFlashcards: (_) {},
             onOpenWriting: () {},
             onOpenSprint: () {},
             onOpenGuide: () {},
@@ -85,13 +81,7 @@ void main() {
 
     expect(audioPlayer.playedAssets, ['assets/learning/input/audio/dog.mp3']);
 
-    final flashcardsButton = find.widgetWithText(OutlinedButton, 'До карток');
-    await tester.ensureVisible(flashcardsButton);
-    await tester.pumpAndSettle();
-    await tester.tap(flashcardsButton);
-    await tester.pump();
-
-    expect(openedDeckMode, FlashcardDeckMode.withContexts);
+    expect(find.widgetWithText(OutlinedButton, 'До карток'), findsNothing);
   });
 }
 

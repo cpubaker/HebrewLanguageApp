@@ -92,7 +92,7 @@ class _SprintScreenState extends State<SprintScreen> {
     });
 
     if (firstPrompt == null) {
-      _finishSprint('Не вдалося зібрати перше питання для спринту.');
+      _finishSprint('Не вдалося підготувати перше завдання для спринту.');
       return;
     }
 
@@ -152,7 +152,7 @@ class _SprintScreenState extends State<SprintScreen> {
     unawaited(_syncPromptAudio(nextPrompt));
 
     if (nextPrompt == null) {
-      _finishSprint('Не вдалося зібрати наступне питання для спринту.');
+      _finishSprint('Не вдалося підготувати наступне завдання для спринту.');
     }
   }
 

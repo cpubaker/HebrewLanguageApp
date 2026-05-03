@@ -326,7 +326,7 @@ class _CompletedState extends StatelessWidget {
           accent: tokens.warningAccent,
         ),
         PracticeCompletionStat(
-          label: 'Щойно у вивченні',
+          label: 'Закріплення пройденого',
           value: queue.recentStartCount,
           icon: Icons.new_releases_outlined,
           accent: tokens.infoAccent,
@@ -507,7 +507,7 @@ class _ReasonChip extends StatelessWidget {
         Icons.error_outline_rounded,
       ),
       RepetitionKind.recentStart => (
-        'Нове слово у вивченні',
+        'Слово для закріплення',
         tokens.infoAccent,
         Icons.new_releases_outlined,
       ),

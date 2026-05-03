@@ -444,7 +444,7 @@ class _WordsScreenState extends State<WordsScreen> {
                           const AppPageHeader(
                             title: 'Слова',
                             subtitle:
-                                'Пошук за українською, англійською, транскрипцією, івритом або ID.',
+                                'Шукайте українською, англійською, івритом або за транскрипцією.',
                           ),
                           const SizedBox(height: 18),
                           AppSearchField(
@@ -1438,7 +1438,7 @@ class _EmptySearchState extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             filter == _WordsFilter.all
-                ? 'Спробуйте інший запит: слово українською чи англійською, форму івритом або ID.'
+                ? 'Спробуйте інший запит: слово українською чи англійською, форму івритом або транскрипцію.'
                 : 'У поточному зрізі «${filter.label.toLowerCase()}» поки немає результатів. Спробуйте інший фільтр або запит.',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
