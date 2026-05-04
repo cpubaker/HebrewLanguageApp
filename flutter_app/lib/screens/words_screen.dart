@@ -7,6 +7,7 @@ import '../models/learning_word.dart';
 import '../services/audio_playback_awareness.dart';
 import '../services/learning_audio_player.dart';
 import '../services/progress_snapshot.dart';
+import '../services/word_list_filter.dart';
 import '../theme/app_theme.dart';
 import 'audio_playback_feedback.dart';
 import 'widgets/app_action_wrap.dart';
@@ -49,9 +50,9 @@ class _WordsScreenState extends State<WordsScreen> {
   Timer? _searchDebounce;
   String _query = '';
   late List<LearningWord> _words;
-  late List<_IndexedWord> _indexedWords;
-  late List<_IndexedWord> _visibleWords;
-  _WordsFilter _selectedFilter = _WordsFilter.all;
+  late List<IndexedWord> _indexedWords;
+  late List<IndexedWord> _visibleWords;
+  WordsFilter _selectedFilter = WordsFilter.all;
   bool _showScrollToTop = false;
 
   @override
@@ -85,43 +86,10 @@ class _WordsScreenState extends State<WordsScreen> {
   }
 
   void _rebuildIndex() {
-    final indexedWords =
-        _words.map(_IndexedWord.fromWord).toList(growable: false)
-          ..sort((left, right) => left.sortKey.compareTo(right.sortKey));
+    final indexedWords = buildWordSearchIndex(_words);
 
     _indexedWords = indexedWords;
-    _visibleWords = _filterIndexedWords(indexedWords, _query, _selectedFilter);
-  }
-
-  List<_IndexedWord> _filterIndexedWords(
-    List<_IndexedWord> indexedWords,
-    String query,
-    _WordsFilter filter,
-  ) {
-    final normalizedQuery = query.trim().toLowerCase();
-    return indexedWords
-        .where((word) => _matchesFilter(word.word, filter))
-        .where(
-          (word) =>
-              normalizedQuery.isEmpty ||
-              word.searchText.contains(normalizedQuery),
-        )
-        .toList(growable: false);
-  }
-
-  bool _matchesFilter(LearningWord word, _WordsFilter filter) {
-    final learningState = classifyWordLearningState(word);
-
-    switch (filter) {
-      case _WordsFilter.all:
-        return true;
-      case _WordsFilter.newWords:
-        return learningState == WordLearningState.unseen;
-      case _WordsFilter.learned:
-        return learningState == WordLearningState.known;
-      case _WordsFilter.review:
-        return learningState == WordLearningState.needsReview;
-    }
+    _visibleWords = filterIndexedWords(indexedWords, _query, _selectedFilter);
   }
 
   void _handleSearchChanged(String value) {
@@ -133,7 +101,7 @@ class _WordsScreenState extends State<WordsScreen> {
 
       setState(() {
         _query = value;
-        _visibleWords = _filterIndexedWords(
+        _visibleWords = filterIndexedWords(
           _indexedWords,
           _query,
           _selectedFilter,
@@ -147,7 +115,7 @@ class _WordsScreenState extends State<WordsScreen> {
     _searchController.clear();
     setState(() {
       _query = '';
-      _visibleWords = _filterIndexedWords(
+      _visibleWords = filterIndexedWords(
         _indexedWords,
         _query,
         _selectedFilter,
@@ -155,14 +123,14 @@ class _WordsScreenState extends State<WordsScreen> {
     });
   }
 
-  void _selectFilter(_WordsFilter filter) {
+  void _selectFilter(WordsFilter filter) {
     if (_selectedFilter == filter) {
       return;
     }
 
     setState(() {
       _selectedFilter = filter;
-      _visibleWords = _filterIndexedWords(
+      _visibleWords = filterIndexedWords(
         _indexedWords,
         _query,
         _selectedFilter,
@@ -410,11 +378,11 @@ class _WordsScreenState extends State<WordsScreen> {
         ? tokens.heroText
         : Colors.white;
     final progress = StudyProgressSnapshot.fromWords(_words);
-    final filterSummaries = <_WordsFilter, int>{
-      _WordsFilter.all: progress.total,
-      _WordsFilter.newWords: progress.unseen,
-      _WordsFilter.learned: progress.known,
-      _WordsFilter.review: progress.needsReview,
+    final filterSummaries = <WordsFilter, int>{
+      WordsFilter.all: progress.total,
+      WordsFilter.newWords: progress.unseen,
+      WordsFilter.learned: progress.known,
+      WordsFilter.review: progress.needsReview,
     };
 
     return Stack(
@@ -460,7 +428,7 @@ class _WordsScreenState extends State<WordsScreen> {
                           const SizedBox(height: 16),
                           AppActionWrap(
                             children: [
-                              for (final filter in _WordsFilter.values)
+                              for (final filter in WordsFilter.values)
                                 _WordsFilterChip(
                                   label: filter.label,
                                   value: filterSummaries[filter] ?? 0,
@@ -692,46 +660,6 @@ class _WordContextTile extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class _IndexedWord {
-  const _IndexedWord({
-    required this.word,
-    required this.sortKey,
-    required this.searchText,
-  });
-
-  factory _IndexedWord.fromWord(LearningWord word) {
-    final normalizedTranslation = word.translation.trim().toLowerCase();
-    final normalizedEnglish = word.english.trim().toLowerCase();
-    final normalizedTranscription = word.transcription.trim().toLowerCase();
-    final normalizedHebrew = word.hebrew.trim();
-    final normalizedWordId = word.wordId.trim().toLowerCase();
-    final strippedHebrew = _stripHebrewDiacritics(normalizedHebrew);
-
-    return _IndexedWord(
-      word: word,
-      sortKey: normalizedTranslation,
-      searchText: [
-        normalizedTranslation,
-        normalizedEnglish,
-        normalizedTranscription,
-        normalizedHebrew,
-        strippedHebrew,
-        normalizedWordId,
-      ].where((part) => part.isNotEmpty).join('\n'),
-    );
-  }
-
-  static final RegExp _hebrewDiacritics = RegExp(r'[\u0591-\u05C7]');
-
-  final LearningWord word;
-  final String sortKey;
-  final String searchText;
-
-  static String _stripHebrewDiacritics(String value) {
-    return value.replaceAll(_hebrewDiacritics, '');
   }
 }
 
@@ -1352,17 +1280,6 @@ class _StatPill extends StatelessWidget {
   }
 }
 
-enum _WordsFilter {
-  all('Усі'),
-  newWords('Нові'),
-  learned('Вивчені'),
-  review('Повторити');
-
-  const _WordsFilter(this.label);
-
-  final String label;
-}
-
 class _WordsFilterChip extends StatelessWidget {
   const _WordsFilterChip({
     required this.label,
@@ -1416,7 +1333,7 @@ class _WordsFilterChip extends StatelessWidget {
 class _EmptySearchState extends StatelessWidget {
   const _EmptySearchState({required this.filter});
 
-  final _WordsFilter filter;
+  final WordsFilter filter;
 
   @override
   Widget build(BuildContext context) {
@@ -1437,7 +1354,7 @@ class _EmptySearchState extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            filter == _WordsFilter.all
+            filter == WordsFilter.all
                 ? 'Спробуйте інший запит: слово українською чи англійською, форму івритом або транскрипцію.'
                 : 'У поточному зрізі «${filter.label.toLowerCase()}» поки немає результатів. Спробуйте інший фільтр або запит.',
             textAlign: TextAlign.center,

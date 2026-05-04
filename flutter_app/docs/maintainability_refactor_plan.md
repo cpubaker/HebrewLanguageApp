@@ -88,6 +88,8 @@
   related-ID integrity.
 - Added reading level directory contract coverage so source and synced runtime
   assets stay aligned with the UI grouping and pubspec packaging contract.
+- Extracted words search/filter indexing into pure `word_list_filter` helpers
+  with unit coverage, keeping `WordsScreen` focused on state and presentation.
 
 ## Next Slices
 
