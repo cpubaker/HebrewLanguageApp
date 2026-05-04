@@ -93,6 +93,9 @@
 - Extracted `MarkdownLessonBody` markdown block parsing and inline glossary
   matching into pure services with focused unit coverage, preserving the public
   widget API for guide, reading, and verbs screens.
+- Extracted remaining `MarkdownLessonBody` text direction, script detection,
+  and bidirectional isolate preparation into a pure service with focused unit
+  coverage.
 
 ## Next Slices
 
@@ -109,8 +112,8 @@
    verbs, and word-status surfaces.
 5. Add more content contract tests only where a concrete content workflow needs
    a stronger guardrail.
-6. Review the remaining `MarkdownLessonBody` bidi/layout helpers only when a
-   concrete lesson rendering change touches that area.
+6. Leave `MarkdownLessonBody` alone unless a concrete lesson rendering feature
+   or bug touches its remaining widget layout.
 
 ## Current Large Files
 

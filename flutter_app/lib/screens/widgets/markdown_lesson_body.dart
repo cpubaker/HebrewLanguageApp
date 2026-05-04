@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../../services/lesson_glossary_matcher.dart';
+import '../../services/lesson_text_direction.dart';
 import '../../services/markdown_lesson_body_parser.dart';
 import '../../theme/app_theme.dart';
 
@@ -69,7 +70,7 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
   }
 
   Widget _buildHeading(BuildContext context, String title, int level) {
-    final textDirection = _resolveTextDirection(title);
+    final textDirection = resolveLessonTextDirection(title);
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: SizedBox(
@@ -85,11 +86,11 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
   }
 
   Widget _buildBullet(BuildContext context, String bulletText) {
-    final displayText = _prepareBidirectionalText(bulletText);
-    final textDirection = _preferredTextDirectionForDisplay(bulletText);
+    final displayText = prepareBidirectionalLessonText(bulletText);
+    final textDirection = preferredLessonTextDirectionForDisplay(bulletText);
     final bulletRowDirection =
         textDirection == TextDirection.rtl &&
-            !_hasMixedScriptContent(bulletText)
+            !hasMixedLessonScriptContent(bulletText)
         ? TextDirection.rtl
         : TextDirection.ltr;
     return Padding(
@@ -121,14 +122,14 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
   }
 
   Widget _buildParagraphBlock(BuildContext context, String text) {
-    final textDirection = _preferredTextDirectionForDisplay(text);
+    final textDirection = preferredLessonTextDirectionForDisplay(text);
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: SizedBox(
         width: double.infinity,
         child: _buildParagraph(
           context,
-          _prepareBidirectionalText(text),
+          prepareBidirectionalLessonText(text),
           textDirection,
         ),
       ),
@@ -147,36 +148,13 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
     ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700);
   }
 
-  TextDirection _resolveTextDirection(String text) {
-    for (final rune in text.runes) {
-      final character = String.fromCharCode(rune);
-      if (RegExp(r'[\u0590-\u05FF]').hasMatch(character)) {
-        return TextDirection.rtl;
-      }
-
-      if (RegExp(r'[A-Za-z\u0400-\u04FF]').hasMatch(character)) {
-        return TextDirection.ltr;
-      }
-    }
-
-    return TextDirection.ltr;
-  }
-
-  TextDirection _preferredTextDirectionForDisplay(String text) {
-    if (_hasMixedScriptContent(text)) {
-      return TextDirection.ltr;
-    }
-
-    return _resolveTextDirection(text);
-  }
-
   Widget _buildParagraph(
     BuildContext context,
     String text,
     TextDirection textDirection,
   ) {
     final style = Theme.of(context).textTheme.bodyLarge?.copyWith(height: 1.6);
-    if (widget.inlineGlossary.isEmpty || !_containsHebrew(text)) {
+    if (widget.inlineGlossary.isEmpty || !containsHebrewText(text)) {
       return SelectableText(
         text,
         style: style,
@@ -256,7 +234,7 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
     required String source,
     required String translation,
   }) {
-    final sourceDirection = _resolveTextDirection(source);
+    final sourceDirection = resolveLessonTextDirection(source);
     return showModalBottomSheet<void>(
       context: context,
       showDragHandle: true,
@@ -297,38 +275,6 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
     return textDirection == TextDirection.rtl
         ? TextAlign.right
         : TextAlign.left;
-  }
-
-  bool _containsHebrew(String text) {
-    return RegExp(r'[\u0590-\u05FF]').hasMatch(text);
-  }
-
-  bool _containsLatinOrCyrillic(String text) {
-    return RegExp(r'[A-Za-z\u0400-\u04FF]').hasMatch(text);
-  }
-
-  bool _hasMixedScriptContent(String text) {
-    return _containsHebrew(text) && _containsLatinOrCyrillic(text);
-  }
-
-  String _prepareBidirectionalText(String text) {
-    if (!_hasMixedScriptContent(text)) {
-      return text;
-    }
-
-    final separatorPattern = RegExp(r'\s+—\s+');
-    final segments = text.split(separatorPattern);
-    if (segments.length <= 1) {
-      return text;
-    }
-
-    return segments.map(_wrapWithDirectionalIsolate).join(' — ');
-  }
-
-  String _wrapWithDirectionalIsolate(String text) {
-    final direction = _resolveTextDirection(text);
-    final isolateStart = direction == TextDirection.rtl ? '\u2067' : '\u2066';
-    return '$isolateStart$text\u2069';
   }
 
   void _disposeRecognizers() {
