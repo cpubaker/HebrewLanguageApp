@@ -1,6 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+import '../../services/lesson_glossary_matcher.dart';
+import '../../services/markdown_lesson_body_parser.dart';
 import '../../theme/app_theme.dart';
 
 class MarkdownLessonBody extends StatefulWidget {
@@ -33,97 +35,10 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
     _disposeRecognizers();
     final tokens = Theme.of(context).appTokens;
 
-    final lines = widget.body.split('\n');
     final children = <Widget>[];
 
-    for (final rawLine in lines) {
-      final line = rawLine.trimRight();
-      if (line.trim().isEmpty) {
-        children.add(const SizedBox(height: 12));
-        continue;
-      }
-
-      final headingMatch = RegExp(r'^(#{1,6})\s+(.*)$').firstMatch(line.trim());
-      if (headingMatch != null) {
-        final level = headingMatch.group(1)!.length;
-        final title = headingMatch.group(2)!.trim();
-        final textDirection = _resolveTextDirection(title);
-        children.add(
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: SizedBox(
-              width: double.infinity,
-              child: Text(
-                title,
-                style: _headingStyleForLevel(context, level),
-                textAlign: _textAlignForDirection(textDirection),
-                textDirection: textDirection,
-              ),
-            ),
-          ),
-        );
-        continue;
-      }
-
-      if (line.trimLeft().startsWith('- ')) {
-        final bulletText = line.trimLeft().substring(2).trim();
-        final displayText = _prepareBidirectionalText(bulletText);
-        final textDirection = _preferredTextDirectionForDisplay(bulletText);
-        final bulletRowDirection =
-            textDirection == TextDirection.rtl &&
-                !_hasMixedScriptContent(bulletText)
-            ? TextDirection.rtl
-            : TextDirection.ltr;
-        children.add(
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Directionality(
-              textDirection: bulletRowDirection,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Icon(
-                      Icons.circle,
-                      size: 8,
-                      color: widget.accentColor,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: SelectableText(
-                      displayText,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodyLarge?.copyWith(height: 1.55),
-                      textAlign: _textAlignForDirection(textDirection),
-                      textDirection: textDirection,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-        continue;
-      }
-
-      final text = line.trim();
-      final textDirection = _preferredTextDirectionForDisplay(text);
-      children.add(
-        Padding(
-          padding: const EdgeInsets.only(bottom: 10),
-          child: SizedBox(
-            width: double.infinity,
-            child: _buildParagraph(
-              context,
-              _prepareBidirectionalText(text),
-              textDirection,
-            ),
-          ),
-        ),
-      );
+    for (final block in parseMarkdownLessonBody(widget.body)) {
+      children.add(_buildBlock(context, block));
     }
 
     return Container(
@@ -136,6 +51,86 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: children,
+      ),
+    );
+  }
+
+  Widget _buildBlock(BuildContext context, LessonBodyBlock block) {
+    switch (block.type) {
+      case LessonBodyBlockType.spacer:
+        return const SizedBox(height: 12);
+      case LessonBodyBlockType.heading:
+        return _buildHeading(context, block.text, block.headingLevel);
+      case LessonBodyBlockType.bullet:
+        return _buildBullet(context, block.text);
+      case LessonBodyBlockType.paragraph:
+        return _buildParagraphBlock(context, block.text);
+    }
+  }
+
+  Widget _buildHeading(BuildContext context, String title, int level) {
+    final textDirection = _resolveTextDirection(title);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: SizedBox(
+        width: double.infinity,
+        child: Text(
+          title,
+          style: _headingStyleForLevel(context, level),
+          textAlign: _textAlignForDirection(textDirection),
+          textDirection: textDirection,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBullet(BuildContext context, String bulletText) {
+    final displayText = _prepareBidirectionalText(bulletText);
+    final textDirection = _preferredTextDirectionForDisplay(bulletText);
+    final bulletRowDirection =
+        textDirection == TextDirection.rtl &&
+            !_hasMixedScriptContent(bulletText)
+        ? TextDirection.rtl
+        : TextDirection.ltr;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Directionality(
+        textDirection: bulletRowDirection,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Icon(Icons.circle, size: 8, color: widget.accentColor),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: SelectableText(
+                displayText,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyLarge?.copyWith(height: 1.55),
+                textAlign: _textAlignForDirection(textDirection),
+                textDirection: textDirection,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildParagraphBlock(BuildContext context, String text) {
+    final textDirection = _preferredTextDirectionForDisplay(text);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: SizedBox(
+        width: double.infinity,
+        child: _buildParagraph(
+          context,
+          _prepareBidirectionalText(text),
+          textDirection,
+        ),
       ),
     );
   }
@@ -212,112 +207,8 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
     String text,
     TextStyle? baseStyle,
   ) {
-    final rawTokens = RegExp(
-      r'\s+|[^\s]+',
-    ).allMatches(text).map((match) => match.group(0)!).toList(growable: false);
-    if (rawTokens.isEmpty) {
-      return null;
-    }
-
-    final glossaryEntries = widget.inlineGlossary.entries
-        .map(
-          (entry) => _GlossaryEntry(
-            source: entry.key,
-            translation: entry.value,
-            normalizedWords: _normalizeForLookup(entry.key)
-                .split(' ')
-                .where((part) => part.isNotEmpty)
-                .toList(growable: false),
-          ),
-        )
-        .where((entry) => entry.normalizedWords.isNotEmpty)
-        .toList(growable: false);
-    if (glossaryEntries.isEmpty) {
-      return null;
-    }
-
-    final entriesByFirstWord = <String, List<_GlossaryEntry>>{};
-    for (final entry in glossaryEntries) {
-      entriesByFirstWord
-          .putIfAbsent(entry.normalizedWords.first, () => <_GlossaryEntry>[])
-          .add(entry);
-    }
-    for (final entries in entriesByFirstWord.values) {
-      entries.sort(
-        (left, right) =>
-            right.normalizedWords.length.compareTo(left.normalizedWords.length),
-      );
-    }
-
-    final wordTokens = <_WordToken>[];
-    for (var rawIndex = 0; rawIndex < rawTokens.length; rawIndex++) {
-      final normalized = _normalizeForLookup(rawTokens[rawIndex]);
-      if (normalized.isEmpty || normalized.contains(' ')) {
-        continue;
-      }
-
-      wordTokens.add(
-        _WordToken(rawTokenIndex: rawIndex, normalized: normalized),
-      );
-    }
-
-    if (wordTokens.isEmpty) {
-      return null;
-    }
-
-    final matchesByStart = <int, _GlossaryMatch>{};
-    for (var wordIndex = 0; wordIndex < wordTokens.length; wordIndex++) {
-      final currentWord = wordTokens[wordIndex];
-      final candidates =
-          entriesByFirstWord[currentWord.normalized] ??
-          const <_GlossaryEntry>[];
-      if (candidates.isEmpty) {
-        continue;
-      }
-
-      _GlossaryEntry? matchedEntry;
-      var matchedWordEndIndex = wordIndex;
-
-      for (final candidate in candidates) {
-        final nextWordEndIndex =
-            wordIndex + candidate.normalizedWords.length - 1;
-        if (nextWordEndIndex >= wordTokens.length) {
-          continue;
-        }
-
-        var matches = true;
-        for (
-          var offset = 0;
-          offset < candidate.normalizedWords.length;
-          offset++
-        ) {
-          if (wordTokens[wordIndex + offset].normalized !=
-              candidate.normalizedWords[offset]) {
-            matches = false;
-            break;
-          }
-        }
-
-        if (matches) {
-          matchedEntry = candidate;
-          matchedWordEndIndex = nextWordEndIndex;
-          break;
-        }
-      }
-
-      if (matchedEntry == null) {
-        continue;
-      }
-
-      matchesByStart[currentWord.rawTokenIndex] = _GlossaryMatch(
-        rawTokenEndIndex: wordTokens[matchedWordEndIndex].rawTokenIndex,
-        source: matchedEntry.source,
-        translation: matchedEntry.translation,
-      );
-      wordIndex = matchedWordEndIndex;
-    }
-
-    if (matchesByStart.isEmpty) {
+    final segments = matchLessonGlossaryText(text, widget.inlineGlossary);
+    if (segments == null) {
       return null;
     }
 
@@ -329,17 +220,16 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
     );
 
     final spans = <InlineSpan>[];
-    for (var rawIndex = 0; rawIndex < rawTokens.length;) {
-      final match = matchesByStart[rawIndex];
+    for (final segment in segments) {
+      final match = segment.match;
       if (match == null) {
-        spans.add(TextSpan(text: rawTokens[rawIndex], style: baseStyle));
-        rawIndex++;
+        spans.add(TextSpan(text: segment.text, style: baseStyle));
         continue;
       }
 
       spans.add(
         TextSpan(
-          text: rawTokens.sublist(rawIndex, match.rawTokenEndIndex + 1).join(),
+          text: segment.text,
           style: tappableStyle,
           recognizer: _createTapRecognizer(() {
             _showGlossarySheet(
@@ -350,7 +240,6 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
           }),
         ),
       );
-      rawIndex = match.rawTokenEndIndex + 1;
     }
 
     return spans;
@@ -442,50 +331,10 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
     return '$isolateStart$text\u2069';
   }
 
-  String _normalizeForLookup(String text) {
-    final withoutNiqqud = text.replaceAll(RegExp(r'[\u0591-\u05C7]'), '');
-    final cleaned = withoutNiqqud.replaceAll(
-      RegExp(r'[^0-9A-Za-z\u0590-\u05FF]+'),
-      ' ',
-    );
-    return cleaned.trim().replaceAll(RegExp(r'\s+'), ' ');
-  }
-
   void _disposeRecognizers() {
     for (final recognizer in _recognizers) {
       recognizer.dispose();
     }
     _recognizers.clear();
   }
-}
-
-class _GlossaryEntry {
-  const _GlossaryEntry({
-    required this.source,
-    required this.translation,
-    required this.normalizedWords,
-  });
-
-  final String source;
-  final String translation;
-  final List<String> normalizedWords;
-}
-
-class _WordToken {
-  const _WordToken({required this.rawTokenIndex, required this.normalized});
-
-  final int rawTokenIndex;
-  final String normalized;
-}
-
-class _GlossaryMatch {
-  const _GlossaryMatch({
-    required this.rawTokenEndIndex,
-    required this.source,
-    required this.translation,
-  });
-
-  final int rawTokenEndIndex;
-  final String source;
-  final String translation;
 }

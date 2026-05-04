@@ -90,6 +90,9 @@
   assets stay aligned with the UI grouping and pubspec packaging contract.
 - Extracted words search/filter indexing into pure `word_list_filter` helpers
   with unit coverage, keeping `WordsScreen` focused on state and presentation.
+- Extracted `MarkdownLessonBody` markdown block parsing and inline glossary
+  matching into pure services with focused unit coverage, preserving the public
+  widget API for guide, reading, and verbs screens.
 
 ## Next Slices
 
@@ -106,8 +109,8 @@
    verbs, and word-status surfaces.
 5. Add more content contract tests only where a concrete content workflow needs
    a stronger guardrail.
-6. Review `MarkdownLessonBody` for separable parsing, layout, and glossary
-   behavior while keeping its public API stable.
+6. Review the remaining `MarkdownLessonBody` bidi/layout helpers only when a
+   concrete lesson rendering change touches that area.
 
 ## Current Large Files
 
