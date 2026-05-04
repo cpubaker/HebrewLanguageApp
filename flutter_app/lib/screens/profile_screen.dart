@@ -11,17 +11,60 @@ import 'widgets/app_metric_tile.dart';
 import 'widgets/app_page_header.dart';
 import 'widgets/app_section_card.dart';
 import 'widgets/app_stat_chip.dart';
-import 'workspace_screen.dart';
 
-class ProfileOverviewScreen extends StatelessWidget {
-  const ProfileOverviewScreen({
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({
     super.key,
     required this.bundle,
-    required this.shortcuts,
+    required this.guideLessonStatuses,
+    required this.readingLessonStatuses,
+    required this.autoHideBottomNavOnScroll,
+    required this.onAutoHideBottomNavOnScrollChanged,
+    required this.aiWordContextsEnabled,
+    required this.aiWordContextsAccess,
+    required this.onAiWordContextsEnabledChanged,
+    required this.aiPracticeTextsEnabled,
+    required this.aiPracticeTextsAccess,
+    required this.onAiPracticeTextsEnabledChanged,
+    required this.isDarkMode,
+    required this.nightModeAccess,
+    required this.onToggleThemeMode,
+    required this.preferWritingPractice,
+    required this.onPreferWritingPracticeChanged,
+    required this.preferredFlashcardDeckMode,
+    required this.onPreferredFlashcardDeckModeChanged,
+    required this.onOpenWords,
+    required this.onOpenFlashcards,
+    required this.onOpenWriting,
+    required this.onOpenSprint,
+    required this.onOpenGuide,
+    required this.onOpenReading,
   });
 
   final LearningBundle bundle;
-  final List<WorkspaceShortcut> shortcuts;
+  final Map<String, GuideLessonStatus> guideLessonStatuses;
+  final Map<String, GuideLessonStatus> readingLessonStatuses;
+  final bool autoHideBottomNavOnScroll;
+  final ValueChanged<bool> onAutoHideBottomNavOnScrollChanged;
+  final bool aiWordContextsEnabled;
+  final FeatureAccessDecision aiWordContextsAccess;
+  final ValueChanged<bool> onAiWordContextsEnabledChanged;
+  final bool aiPracticeTextsEnabled;
+  final FeatureAccessDecision aiPracticeTextsAccess;
+  final ValueChanged<bool> onAiPracticeTextsEnabledChanged;
+  final bool isDarkMode;
+  final FeatureAccessDecision nightModeAccess;
+  final VoidCallback onToggleThemeMode;
+  final bool preferWritingPractice;
+  final ValueChanged<bool> onPreferWritingPracticeChanged;
+  final FlashcardDeckMode preferredFlashcardDeckMode;
+  final ValueChanged<FlashcardDeckMode> onPreferredFlashcardDeckModeChanged;
+  final VoidCallback onOpenWords;
+  final ValueChanged<FlashcardDeckMode> onOpenFlashcards;
+  final VoidCallback onOpenWriting;
+  final VoidCallback onOpenSprint;
+  final VoidCallback onOpenGuide;
+  final VoidCallback onOpenReading;
 
   @override
   Widget build(BuildContext context) {
@@ -30,66 +73,43 @@ class ProfileOverviewScreen extends StatelessWidget {
     return ListView(
       padding: EdgeInsets.fromLTRB(
         tokens.pagePadding.left,
-        0,
+        tokens.pagePadding.top,
         tokens.pagePadding.right,
         32,
       ),
       children: [
         _ProfileSystemSummaryCard(bundle: bundle),
         const SizedBox(height: 16),
-        AppSectionCard(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const AppPageHeader(
-                title: 'Швидкі переходи',
-                subtitle:
-                    'Тут зібрані короткі маршрути до ключових зон застосунку.',
-              ),
-              const SizedBox(height: 18),
-              Column(
-                children: [
-                  for (var index = 0; index < shortcuts.length; index += 1)
-                    Padding(
-                      padding: EdgeInsets.only(
-                        bottom: index == shortcuts.length - 1 ? 0 : 12,
-                      ),
-                      child: _ProfileShortcutTile(shortcut: shortcuts[index]),
-                    ),
-                ],
-              ),
-            ],
-          ),
+        _ProfileProgressSection(
+          bundle: bundle,
+          guideLessonStatuses: guideLessonStatuses,
+          readingLessonStatuses: readingLessonStatuses,
+          onOpenWords: onOpenWords,
+          onOpenFlashcards: onOpenFlashcards,
+          onOpenWriting: onOpenWriting,
+          onOpenSprint: onOpenSprint,
+          onOpenGuide: onOpenGuide,
+          onOpenReading: onOpenReading,
         ),
         const SizedBox(height: 16),
-        AppSectionCard(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const AppPageHeader(
-                title: 'Що є в цій зоні',
-                subtitle:
-                    'Тут можна переглянути прогрес і налаштувати застосунок.',
-              ),
-              const SizedBox(height: 14),
-              AppActionWrap(
-                children: [
-                  AppStatChip(
-                    label: 'Маршрутів',
-                    value: shortcuts.length,
-                    accent: const Color(0xFF2B5D4F),
-                    icon: Icons.route_rounded,
-                  ),
-                  AppStatChip(
-                    label: 'Оглядових секцій',
-                    value: 3,
-                    accent: const Color(0xFFB45309),
-                    icon: Icons.insights_rounded,
-                  ),
-                ],
-              ),
-            ],
-          ),
+        _ProfileSettingsSection(
+          autoHideBottomNavOnScroll: autoHideBottomNavOnScroll,
+          onAutoHideBottomNavOnScrollChanged:
+              onAutoHideBottomNavOnScrollChanged,
+          aiWordContextsEnabled: aiWordContextsEnabled,
+          aiWordContextsAccess: aiWordContextsAccess,
+          onAiWordContextsEnabledChanged: onAiWordContextsEnabledChanged,
+          aiPracticeTextsEnabled: aiPracticeTextsEnabled,
+          aiPracticeTextsAccess: aiPracticeTextsAccess,
+          onAiPracticeTextsEnabledChanged: onAiPracticeTextsEnabledChanged,
+          isDarkMode: isDarkMode,
+          nightModeAccess: nightModeAccess,
+          onToggleThemeMode: onToggleThemeMode,
+          preferWritingPractice: preferWritingPractice,
+          onPreferWritingPracticeChanged: onPreferWritingPracticeChanged,
+          preferredFlashcardDeckMode: preferredFlashcardDeckMode,
+          onPreferredFlashcardDeckModeChanged:
+              onPreferredFlashcardDeckModeChanged,
         ),
       ],
     );
@@ -203,9 +223,8 @@ class _ProfileSystemSummaryCard extends StatelessWidget {
   }
 }
 
-class ProfileProgressScreen extends StatelessWidget {
-  const ProfileProgressScreen({
-    super.key,
+class _ProfileProgressSection extends StatelessWidget {
+  const _ProfileProgressSection({
     required this.bundle,
     required this.guideLessonStatuses,
     required this.readingLessonStatuses,
@@ -229,7 +248,6 @@ class ProfileProgressScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tokens = Theme.of(context).appTokens;
     final study = StudyProgressSnapshot.fromWords(bundle.words);
     final flashcards = FlashcardFocusSnapshot.fromWords(bundle.words);
     final writing = WritingProgressSnapshot.fromWords(bundle.words);
@@ -242,13 +260,8 @@ class ProfileProgressScreen extends StatelessWidget {
       lessonStatuses: readingLessonStatuses,
     );
 
-    return ListView(
-      padding: EdgeInsets.fromLTRB(
-        tokens.pagePadding.left,
-        0,
-        tokens.pagePadding.right,
-        32,
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         AppSectionCard(
           child: Column(
@@ -454,9 +467,8 @@ class ProfileProgressScreen extends StatelessWidget {
   }
 }
 
-class ProfileSettingsScreen extends StatelessWidget {
-  const ProfileSettingsScreen({
-    super.key,
+class _ProfileSettingsSection extends StatelessWidget {
+  const _ProfileSettingsSection({
     required this.autoHideBottomNavOnScroll,
     required this.onAutoHideBottomNavOnScrollChanged,
     required this.aiWordContextsEnabled,
@@ -492,15 +504,8 @@ class ProfileSettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tokens = Theme.of(context).appTokens;
-
-    return ListView(
-      padding: EdgeInsets.fromLTRB(
-        tokens.pagePadding.left,
-        0,
-        tokens.pagePadding.right,
-        32,
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         AppSectionCard(
           child: Column(
@@ -804,72 +809,6 @@ class _SettingsChoiceChip extends StatelessWidget {
                   : theme.colorScheme.primary,
               fontWeight: FontWeight.w700,
             ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ProfileShortcutTile extends StatelessWidget {
-  const _ProfileShortcutTile({required this.shortcut});
-
-  final WorkspaceShortcut shortcut;
-
-  @override
-  Widget build(BuildContext context) {
-    final tokens = Theme.of(context).appTokens;
-
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: shortcut.onTap,
-        borderRadius: BorderRadius.circular(20),
-        child: Ink(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: shortcut.accent.withValues(alpha: 0.08),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 42,
-                height: 42,
-                decoration: BoxDecoration(
-                  color: shortcut.accent.withValues(alpha: 0.14),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Icon(shortcut.icon, color: shortcut.accent),
-              ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      shortcut.title,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      shortcut.subtitle,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: tokens.mutedText,
-                        height: 1.35,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 16,
-                color: shortcut.accent,
-              ),
-            ],
           ),
         ),
       ),

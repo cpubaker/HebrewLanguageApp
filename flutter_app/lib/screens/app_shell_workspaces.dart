@@ -213,97 +213,31 @@ class AppShellProfileWorkspace extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final shortcuts = [
-      WorkspaceShortcut(
-        title: 'Головна',
-        subtitle: 'Повернутися на головну з рекомендаціями та прогресом.',
-        icon: Icons.home_rounded,
-        accent: const Color(0xFF2B5D4F),
-        onTap: onSelectHome,
-      ),
-      WorkspaceShortcut(
-        title: 'Вчитись',
-        subtitle:
-            'Слова, дієслова, довідник і читання в одному робочому просторі.',
-        icon: Icons.translate_rounded,
-        accent: const Color(0xFF0F766E),
-        onTap: onSelectLearn,
-      ),
-      WorkspaceShortcut(
-        title: 'Практика',
-        subtitle: 'Картки й письмо для активного тренування.',
-        icon: Icons.style_rounded,
-        accent: const Color(0xFF8C3E9F),
-        onTap: onOpenPreferredPractice,
-      ),
-      WorkspaceShortcut(
-        title: 'Повторення',
-        subtitle: 'Нові слова й останні помилки без таймера.',
-        icon: Icons.refresh_rounded,
-        accent: const Color(0xFF8C6A2A),
-        onTap: onOpenRepetition,
-      ),
-      WorkspaceShortcut(
-        title: 'Спринт',
-        subtitle:
-            'Хвилинна вправа з вибором правильного перекладу між двома варіантами.',
-        icon: Icons.timer_rounded,
-        accent: const Color(0xFFB91C1C),
-        onTap: onOpenSprint,
-      ),
-    ];
-
-    return WorkspaceScreen(
-      title: 'Профіль',
-      subtitle: 'Прогрес і налаштування зібрані в одному місці.',
-      sections: const [
-        WorkspaceSection(
-          label: 'Огляд',
-          icon: Icons.dashboard_customize_rounded,
-        ),
-        WorkspaceSection(label: 'Прогрес', icon: Icons.insights_rounded),
-        WorkspaceSection(label: 'Налаштування', icon: Icons.tune_rounded),
-      ],
-      selectedIndex: selectedSection.index,
-      onSectionSelected: (index) {
-        onSectionSelected(AppShellProfileSection.values[index]);
-      },
-      child: IndexedStack(
-        index: selectedSection.index,
-        children: [
-          ProfileOverviewScreen(bundle: bundle, shortcuts: shortcuts),
-          ProfileProgressScreen(
-            bundle: bundle,
-            guideLessonStatuses: guideLessonStatuses,
-            readingLessonStatuses: readingLessonStatuses,
-            onOpenWords: onOpenWords,
-            onOpenFlashcards: onOpenFlashcards,
-            onOpenWriting: onOpenWriting,
-            onOpenSprint: onOpenSprint,
-            onOpenGuide: onOpenGuide,
-            onOpenReading: onOpenReading,
-          ),
-          ProfileSettingsScreen(
-            autoHideBottomNavOnScroll: autoHideBottomNavOnScroll,
-            onAutoHideBottomNavOnScrollChanged:
-                onAutoHideBottomNavOnScrollChanged,
-            aiWordContextsEnabled: aiWordContextsEnabled,
-            aiWordContextsAccess: aiWordContextsAccess,
-            onAiWordContextsEnabledChanged: onAiWordContextsEnabledChanged,
-            aiPracticeTextsEnabled: aiPracticeTextsEnabled,
-            aiPracticeTextsAccess: aiPracticeTextsAccess,
-            onAiPracticeTextsEnabledChanged: onAiPracticeTextsEnabledChanged,
-            isDarkMode: isDarkMode,
-            nightModeAccess: nightModeAccess,
-            onToggleThemeMode: onToggleThemeMode,
-            preferWritingPractice: preferWritingPractice,
-            onPreferWritingPracticeChanged: onPreferWritingPracticeChanged,
-            preferredFlashcardDeckMode: preferredFlashcardDeckMode,
-            onPreferredFlashcardDeckModeChanged:
-                onPreferredFlashcardDeckModeChanged,
-          ),
-        ],
-      ),
+    return ProfileScreen(
+      bundle: bundle,
+      guideLessonStatuses: guideLessonStatuses,
+      readingLessonStatuses: readingLessonStatuses,
+      autoHideBottomNavOnScroll: autoHideBottomNavOnScroll,
+      onAutoHideBottomNavOnScrollChanged: onAutoHideBottomNavOnScrollChanged,
+      aiWordContextsEnabled: aiWordContextsEnabled,
+      aiWordContextsAccess: aiWordContextsAccess,
+      onAiWordContextsEnabledChanged: onAiWordContextsEnabledChanged,
+      aiPracticeTextsEnabled: aiPracticeTextsEnabled,
+      aiPracticeTextsAccess: aiPracticeTextsAccess,
+      onAiPracticeTextsEnabledChanged: onAiPracticeTextsEnabledChanged,
+      isDarkMode: isDarkMode,
+      nightModeAccess: nightModeAccess,
+      onToggleThemeMode: onToggleThemeMode,
+      preferWritingPractice: preferWritingPractice,
+      onPreferWritingPracticeChanged: onPreferWritingPracticeChanged,
+      preferredFlashcardDeckMode: preferredFlashcardDeckMode,
+      onPreferredFlashcardDeckModeChanged: onPreferredFlashcardDeckModeChanged,
+      onOpenWords: onOpenWords,
+      onOpenFlashcards: onOpenFlashcards,
+      onOpenWriting: onOpenWriting,
+      onOpenSprint: onOpenSprint,
+      onOpenGuide: onOpenGuide,
+      onOpenReading: onOpenReading,
     );
   }
 }

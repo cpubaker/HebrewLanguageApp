@@ -167,7 +167,7 @@ void main() {
 
     await tester.tap(find.byIcon(Icons.person_outline_rounded));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Налаштування'));
+    await tester.scrollUntilVisible(find.text('Нічний режим'), 500);
     await tester.pumpAndSettle();
 
     expect(find.text('Нічний режим'), findsOneWidget);
@@ -206,7 +206,7 @@ void main() {
 
     await tester.tap(find.byIcon(Icons.person_outline_rounded));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Налаштування'));
+    await tester.scrollUntilVisible(find.text('Нічний режим'), 500);
     await tester.pumpAndSettle();
 
     expect(find.text('Нічний режим'), findsOneWidget);
