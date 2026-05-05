@@ -22,6 +22,7 @@ import '../services/learning_bundle_word_updates.dart';
 import '../services/learning_progress_repository.dart';
 import '../services/learning_word_progress.dart';
 import '../services/sprint_stats_store.dart';
+import '../services/theme_mode_store.dart';
 import '../services/verb_audio_player.dart';
 import 'app_shell_navigation.dart';
 import 'app_shell_workspaces.dart';
@@ -54,8 +55,8 @@ class AppShellScreen extends StatefulWidget {
     required this.aiPracticeTextSettingsStore,
     required this.sprintStatsStore,
     required this.audioPlayerFactory,
-    required this.isDarkMode,
-    required this.onToggleThemeMode,
+    required this.themePreference,
+    required this.onThemePreferenceChanged,
     this.audioPlaybackAwarenessFactory = createAudioPlaybackAwareness,
   });
 
@@ -69,8 +70,8 @@ class AppShellScreen extends StatefulWidget {
   final SprintStatsStore sprintStatsStore;
   final CreateVerbAudioPlayer audioPlayerFactory;
   final CreateAudioPlaybackAwareness audioPlaybackAwarenessFactory;
-  final bool isDarkMode;
-  final VoidCallback onToggleThemeMode;
+  final AppThemePreference themePreference;
+  final ValueChanged<AppThemePreference> onThemePreferenceChanged;
 
   @override
   State<AppShellScreen> createState() => _AppShellScreenState();
@@ -185,16 +186,16 @@ class _AppShellScreenState extends State<AppShellScreen> {
     });
   }
 
-  void _handleThemeToggleRequested() {
+  void _handleThemePreferenceChangeRequested(AppThemePreference preference) {
     final decision = widget.featureAccessService.accessFor(
       AppFeature.nightMode,
     );
-    if (!decision.isEnabled) {
+    if (preference.requiresNightMode && !decision.isEnabled) {
       _showFeatureLocked(decision);
       return;
     }
 
-    widget.onToggleThemeMode();
+    widget.onThemePreferenceChanged(preference);
   }
 
   Future<LearningBundle> _ensureFullWordContextsLoaded() {
@@ -976,10 +977,11 @@ class _AppShellScreenState extends State<AppShellScreen> {
                               .accessFor(AppFeature.aiPracticeTexts),
                           onAiPracticeTextsEnabledChanged:
                               _setAiPracticeTextsEnabled,
-                          isDarkMode: widget.isDarkMode,
+                          themePreference: widget.themePreference,
                           nightModeAccess: widget.featureAccessService
                               .accessFor(AppFeature.nightMode),
-                          onToggleThemeMode: _handleThemeToggleRequested,
+                          onThemePreferenceChanged:
+                              _handleThemePreferenceChangeRequested,
                           preferWritingPractice: _preferWritingPractice,
                           onPreferWritingPracticeChanged:
                               _setPreferWritingPractice,

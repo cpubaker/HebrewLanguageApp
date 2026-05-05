@@ -5,6 +5,7 @@ import '../models/learning_bundle.dart';
 import '../services/feature_access_service.dart';
 import '../services/flashcard_session.dart';
 import '../services/progress_snapshot.dart';
+import '../services/theme_mode_store.dart';
 import '../theme/app_theme.dart';
 import 'widgets/app_action_wrap.dart';
 import 'widgets/app_metric_tile.dart';
@@ -26,9 +27,9 @@ class ProfileScreen extends StatelessWidget {
     required this.aiPracticeTextsEnabled,
     required this.aiPracticeTextsAccess,
     required this.onAiPracticeTextsEnabledChanged,
-    required this.isDarkMode,
+    required this.themePreference,
     required this.nightModeAccess,
-    required this.onToggleThemeMode,
+    required this.onThemePreferenceChanged,
     required this.preferWritingPractice,
     required this.onPreferWritingPracticeChanged,
     required this.preferredFlashcardDeckMode,
@@ -52,9 +53,9 @@ class ProfileScreen extends StatelessWidget {
   final bool aiPracticeTextsEnabled;
   final FeatureAccessDecision aiPracticeTextsAccess;
   final ValueChanged<bool> onAiPracticeTextsEnabledChanged;
-  final bool isDarkMode;
+  final AppThemePreference themePreference;
   final FeatureAccessDecision nightModeAccess;
-  final VoidCallback onToggleThemeMode;
+  final ValueChanged<AppThemePreference> onThemePreferenceChanged;
   final bool preferWritingPractice;
   final ValueChanged<bool> onPreferWritingPracticeChanged;
   final FlashcardDeckMode preferredFlashcardDeckMode;
@@ -102,9 +103,9 @@ class ProfileScreen extends StatelessWidget {
           aiPracticeTextsEnabled: aiPracticeTextsEnabled,
           aiPracticeTextsAccess: aiPracticeTextsAccess,
           onAiPracticeTextsEnabledChanged: onAiPracticeTextsEnabledChanged,
-          isDarkMode: isDarkMode,
+          themePreference: themePreference,
           nightModeAccess: nightModeAccess,
-          onToggleThemeMode: onToggleThemeMode,
+          onThemePreferenceChanged: onThemePreferenceChanged,
           preferWritingPractice: preferWritingPractice,
           onPreferWritingPracticeChanged: onPreferWritingPracticeChanged,
           preferredFlashcardDeckMode: preferredFlashcardDeckMode,
@@ -478,9 +479,9 @@ class _ProfileSettingsSection extends StatelessWidget {
     required this.aiPracticeTextsEnabled,
     required this.aiPracticeTextsAccess,
     required this.onAiPracticeTextsEnabledChanged,
-    required this.isDarkMode,
+    required this.themePreference,
     required this.nightModeAccess,
-    required this.onToggleThemeMode,
+    required this.onThemePreferenceChanged,
     required this.preferWritingPractice,
     required this.onPreferWritingPracticeChanged,
     required this.preferredFlashcardDeckMode,
@@ -495,9 +496,9 @@ class _ProfileSettingsSection extends StatelessWidget {
   final bool aiPracticeTextsEnabled;
   final FeatureAccessDecision aiPracticeTextsAccess;
   final ValueChanged<bool> onAiPracticeTextsEnabledChanged;
-  final bool isDarkMode;
+  final AppThemePreference themePreference;
   final FeatureAccessDecision nightModeAccess;
-  final VoidCallback onToggleThemeMode;
+  final ValueChanged<AppThemePreference> onThemePreferenceChanged;
   final bool preferWritingPractice;
   final ValueChanged<bool> onPreferWritingPracticeChanged;
   final FlashcardDeckMode preferredFlashcardDeckMode;
@@ -521,15 +522,54 @@ class _ProfileSettingsSection extends StatelessWidget {
                     'Ці параметри діють у поточній сесії. Тут можна змінити поведінку навігації та формат практики, який відкриватиметься за замовчуванням.',
               ),
               const SizedBox(height: 18),
-              _SettingsSwitchTile(
-                title: 'Нічний режим',
-                subtitle: nightModeAccess.isEnabled
-                    ? 'Перемикає застосунок на темну земляну палітру для вечірнього навчання.'
+              Text(
+                'Тема застосунку',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                nightModeAccess.isEnabled
+                    ? 'Оберіть світлу, темну, системну або автоматичну тему. Авто вмикає темну тему з 20:00 до 07:00.'
                     : nightModeAccess.description,
-                value: isDarkMode,
-                onChanged: (_) => onToggleThemeMode(),
-                isLocked: !nightModeAccess.isEnabled,
-                switchKey: const ValueKey('theme-toggle-switch'),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: tokens.secondaryText,
+                  height: 1.45,
+                ),
+              ),
+              const SizedBox(height: 12),
+              AppActionWrap(
+                children: [
+                  _SettingsChoiceChip(
+                    key: const ValueKey('theme-mode-light'),
+                    label: 'Світла',
+                    isSelected: themePreference == AppThemePreference.light,
+                    onTap: () =>
+                        onThemePreferenceChanged(AppThemePreference.light),
+                  ),
+                  _SettingsChoiceChip(
+                    key: const ValueKey('theme-mode-dark'),
+                    label: 'Темна',
+                    isSelected: themePreference == AppThemePreference.dark,
+                    onTap: () =>
+                        onThemePreferenceChanged(AppThemePreference.dark),
+                  ),
+                  _SettingsChoiceChip(
+                    key: const ValueKey('theme-mode-system'),
+                    label: 'Як у телефоні',
+                    isSelected: themePreference == AppThemePreference.system,
+                    onTap: () =>
+                        onThemePreferenceChanged(AppThemePreference.system),
+                  ),
+                  _SettingsChoiceChip(
+                    key: const ValueKey('theme-mode-automatic'),
+                    label: 'Авто',
+                    isSelected: themePreference == AppThemePreference.automatic,
+                    onTap: () =>
+                        onThemePreferenceChanged(AppThemePreference.automatic),
+                  ),
+                ],
               ),
               const SizedBox(height: 12),
               _SettingsSwitchTile(
@@ -711,7 +751,6 @@ class _SettingsSwitchTile extends StatelessWidget {
     required this.value,
     this.onChanged,
     this.isLocked = false,
-    this.switchKey,
   });
 
   final String title;
@@ -719,7 +758,6 @@ class _SettingsSwitchTile extends StatelessWidget {
   final bool value;
   final ValueChanged<bool>? onChanged;
   final bool isLocked;
-  final Key? switchKey;
 
   @override
   Widget build(BuildContext context) {
@@ -764,7 +802,7 @@ class _SettingsSwitchTile extends StatelessWidget {
             Icon(Icons.lock_rounded, color: tokens.mutedText, size: 20),
             const SizedBox(width: 8),
           ],
-          Switch.adaptive(key: switchKey, value: value, onChanged: onChanged),
+          Switch.adaptive(value: value, onChanged: onChanged),
         ],
       ),
     );
@@ -773,6 +811,7 @@ class _SettingsSwitchTile extends StatelessWidget {
 
 class _SettingsChoiceChip extends StatelessWidget {
   const _SettingsChoiceChip({
+    super.key,
     required this.label,
     required this.isSelected,
     required this.onTap,

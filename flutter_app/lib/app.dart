@@ -41,8 +41,15 @@ class HebrewFlutterApp extends StatefulWidget {
     CreateVerbAudioPlayer? audioPlayerFactory,
     CreateAudioPlaybackAwareness? audioPlaybackAwarenessFactory,
     ThemeModeStore? themeModeStore,
-    this.initialThemeMode = ThemeMode.light,
-  }) : dependencies = dependencies.withOverrides(
+    ThemeMode? initialThemeMode,
+    AppThemePreference? initialThemePreference,
+    this.currentDateTime,
+  }) : initialThemePreference =
+           initialThemePreference ??
+           AppThemePreference.fromThemeMode(
+             initialThemeMode ?? ThemeMode.light,
+           ),
+       dependencies = dependencies.withOverrides(
          loader: loader,
          documentLoader: documentLoader,
          progressStore: progressStore,
@@ -61,14 +68,18 @@ class HebrewFlutterApp extends StatefulWidget {
        );
 
   final AppDependencies dependencies;
-  final ThemeMode initialThemeMode;
+  final AppThemePreference initialThemePreference;
+  final DateTime Function()? currentDateTime;
 
   @override
   State<HebrewFlutterApp> createState() => _HebrewFlutterAppState();
 }
 
 class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
-  late ThemeMode _themeMode = widget.initialThemeMode;
+  late AppThemePreference _themePreference = widget.initialThemePreference;
+  late final DateTime Function() _currentDateTime =
+      widget.currentDateTime ?? DateTime.now;
+  Timer? _automaticThemeTimer;
   late final AppDependencies _dependencies = widget.dependencies;
   late final LearningProgressRepository _progressRepository = _dependencies
       .resolveProgressRepository();
@@ -98,41 +109,93 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
     if (store != null) {
       unawaited(_restoreThemeMode(store));
     }
+    _scheduleAutomaticThemeRefresh();
   }
 
   Future<void> _restoreThemeMode(ThemeModeStore store) async {
-    final restoredMode = await store.load();
-    if (restoredMode == ThemeMode.dark &&
+    final restoredPreference = await store.load();
+    if (restoredPreference.requiresNightMode &&
         !_featureAccessService.isEnabled(AppFeature.nightMode)) {
       return;
     }
 
-    if (!mounted || restoredMode == _themeMode) {
+    if (!mounted || restoredPreference == _themePreference) {
       return;
     }
 
     setState(() {
-      _themeMode = restoredMode;
+      _themePreference = restoredPreference;
     });
+    _scheduleAutomaticThemeRefresh();
   }
 
-  void _toggleThemeMode() {
-    final nextMode = _themeMode == ThemeMode.dark
-        ? ThemeMode.light
-        : ThemeMode.dark;
-    if (nextMode == ThemeMode.dark &&
+  void _setThemePreference(AppThemePreference preference) {
+    if (preference.requiresNightMode &&
         !_featureAccessService.isEnabled(AppFeature.nightMode)) {
       return;
     }
 
     setState(() {
-      _themeMode = nextMode;
+      _themePreference = preference;
     });
+    _scheduleAutomaticThemeRefresh();
 
     final store = _dependencies.themeModeStore;
     if (store != null) {
-      unawaited(store.save(nextMode));
+      unawaited(store.save(preference));
     }
+  }
+
+  ThemeMode _effectiveThemeMode() {
+    return switch (_themePreference) {
+      AppThemePreference.light => ThemeMode.light,
+      AppThemePreference.dark => ThemeMode.dark,
+      AppThemePreference.system => ThemeMode.system,
+      AppThemePreference.automatic => _automaticThemeMode(_currentDateTime()),
+    };
+  }
+
+  ThemeMode _automaticThemeMode(DateTime now) {
+    return now.hour >= 20 || now.hour < 7 ? ThemeMode.dark : ThemeMode.light;
+  }
+
+  void _scheduleAutomaticThemeRefresh() {
+    _automaticThemeTimer?.cancel();
+    if (_themePreference != AppThemePreference.automatic) {
+      return;
+    }
+
+    final now = _currentDateTime();
+    final transition = _nextAutomaticThemeTransition(now);
+    final delay = transition.difference(now);
+    _automaticThemeTimer = Timer(delay, () {
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {});
+      _scheduleAutomaticThemeRefresh();
+    });
+  }
+
+  DateTime _nextAutomaticThemeTransition(DateTime now) {
+    final morning = DateTime(now.year, now.month, now.day, 7);
+    final evening = DateTime(now.year, now.month, now.day, 20);
+
+    if (now.isBefore(morning)) {
+      return morning;
+    }
+    if (now.isBefore(evening)) {
+      return evening;
+    }
+
+    return DateTime(now.year, now.month, now.day + 1, 7);
+  }
+
+  @override
+  void dispose() {
+    _automaticThemeTimer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -145,7 +208,7 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
       theme: buildLightAppTheme(),
       darkTheme: buildDarkAppTheme(),
-      themeMode: _themeMode,
+      themeMode: _effectiveThemeMode(),
       home: AppShellScreen(
         progressRepository: _progressRepository,
         documentLoader: _documentLoader,
@@ -157,8 +220,8 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
         sprintStatsStore: _sprintStatsStore,
         audioPlayerFactory: _audioPlayerFactory,
         audioPlaybackAwarenessFactory: _audioPlaybackAwarenessFactory,
-        isDarkMode: _themeMode == ThemeMode.dark,
-        onToggleThemeMode: _toggleThemeMode,
+        themePreference: _themePreference,
+        onThemePreferenceChanged: _setThemePreference,
       ),
     );
   }

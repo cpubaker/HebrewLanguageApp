@@ -147,7 +147,7 @@ void main() {
     expect(find.text('Усього: 2'), findsOneWidget);
   });
 
-  testWidgets('toggles night mode from settings and persists it', (
+  testWidgets('selects dark theme from settings and persists it', (
     WidgetTester tester,
   ) async {
     await _useTallMobileViewport(tester);
@@ -167,17 +167,80 @@ void main() {
 
     await tester.tap(find.byIcon(Icons.person_outline_rounded));
     await tester.pumpAndSettle();
-    await tester.scrollUntilVisible(find.text('Нічний режим'), 500);
+    await tester.scrollUntilVisible(find.text('Тема застосунку'), 500);
     await tester.pumpAndSettle();
 
-    expect(find.text('Нічний режим'), findsOneWidget);
+    expect(find.text('Тема застосунку'), findsOneWidget);
 
-    await tester.tap(find.byKey(const ValueKey('theme-toggle-switch')));
+    await tester.tap(find.byKey(const ValueKey('theme-mode-dark')));
     await tester.pumpAndSettle();
 
     final app = tester.widget<MaterialApp>(find.byType(MaterialApp));
     expect(app.themeMode, ThemeMode.dark);
-    expect(themeModeStore.savedModes, [ThemeMode.dark]);
+    expect(themeModeStore.savedPreferences, [AppThemePreference.dark]);
+  });
+
+  testWidgets('selects system theme from settings and persists it', (
+    WidgetTester tester,
+  ) async {
+    await _useTallMobileViewport(tester);
+    final themeModeStore = FakeThemeModeStore();
+
+    await tester.pumpWidget(
+      HebrewFlutterApp(
+        loader: FakeLearningBundleLoader(),
+        documentLoader: FakeLessonDocumentLoader(),
+        progressStore: FakeWordProgressStore(),
+        guideProgressStore: FakeGuideProgressStore(),
+        readingProgressStore: FakeReadingProgressStore(),
+        themeModeStore: themeModeStore,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.person_outline_rounded));
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(find.text('Тема застосунку'), 500);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const ValueKey('theme-mode-system')));
+    await tester.pumpAndSettle();
+
+    final app = tester.widget<MaterialApp>(find.byType(MaterialApp));
+    expect(app.themeMode, ThemeMode.system);
+    expect(themeModeStore.savedPreferences, [AppThemePreference.system]);
+  });
+
+  testWidgets('selects automatic theme and resolves it from the current time', (
+    WidgetTester tester,
+  ) async {
+    await _useTallMobileViewport(tester);
+    final themeModeStore = FakeThemeModeStore();
+
+    await tester.pumpWidget(
+      HebrewFlutterApp(
+        loader: FakeLearningBundleLoader(),
+        documentLoader: FakeLessonDocumentLoader(),
+        progressStore: FakeWordProgressStore(),
+        guideProgressStore: FakeGuideProgressStore(),
+        readingProgressStore: FakeReadingProgressStore(),
+        themeModeStore: themeModeStore,
+        currentDateTime: () => DateTime(2026, 5, 5, 21),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.person_outline_rounded));
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(find.text('Тема застосунку'), 500);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const ValueKey('theme-mode-automatic')));
+    await tester.pumpAndSettle();
+
+    final app = tester.widget<MaterialApp>(find.byType(MaterialApp));
+    expect(app.themeMode, ThemeMode.dark);
+    expect(themeModeStore.savedPreferences, [AppThemePreference.automatic]);
   });
 
   testWidgets('shows locked state when night mode is not available', (
@@ -206,17 +269,17 @@ void main() {
 
     await tester.tap(find.byIcon(Icons.person_outline_rounded));
     await tester.pumpAndSettle();
-    await tester.scrollUntilVisible(find.text('Нічний режим'), 500);
+    await tester.scrollUntilVisible(find.text('Тема застосунку'), 500);
     await tester.pumpAndSettle();
 
-    expect(find.text('Нічний режим'), findsOneWidget);
+    expect(find.text('Тема застосунку'), findsOneWidget);
 
-    await tester.tap(find.byKey(const ValueKey('theme-toggle-switch')));
+    await tester.tap(find.byKey(const ValueKey('theme-mode-dark')));
     await tester.pumpAndSettle();
 
     final app = tester.widget<MaterialApp>(find.byType(MaterialApp));
     expect(app.themeMode, ThemeMode.light);
-    expect(themeModeStore.savedModes, isEmpty);
+    expect(themeModeStore.savedPreferences, isEmpty);
     expect(
       find.text('Нічний режим: Нічний режим доступний у Pro-версії.'),
       findsOneWidget,
@@ -1320,17 +1383,17 @@ class FakeVerbAudioPlayer implements VerbAudioPlayer {
 }
 
 class FakeThemeModeStore implements ThemeModeStore {
-  FakeThemeModeStore({this.initialMode = ThemeMode.light});
+  FakeThemeModeStore({this.initialPreference = AppThemePreference.light});
 
-  final ThemeMode initialMode;
-  final List<ThemeMode> savedModes = <ThemeMode>[];
-
-  @override
-  Future<ThemeMode> load() async => initialMode;
+  final AppThemePreference initialPreference;
+  final List<AppThemePreference> savedPreferences = <AppThemePreference>[];
 
   @override
-  Future<void> save(ThemeMode mode) async {
-    savedModes.add(mode);
+  Future<AppThemePreference> load() async => initialPreference;
+
+  @override
+  Future<void> save(AppThemePreference preference) async {
+    savedPreferences.add(preference);
   }
 }
 

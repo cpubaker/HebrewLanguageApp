@@ -4,6 +4,7 @@ import '../models/guide_lesson_status.dart';
 import '../models/learning_bundle.dart';
 import '../services/feature_access_service.dart';
 import '../services/flashcard_session.dart';
+import '../services/theme_mode_store.dart';
 import 'profile_screen.dart';
 import 'workspace_screen.dart';
 
@@ -161,9 +162,9 @@ class AppShellProfileWorkspace extends StatelessWidget {
     required this.aiPracticeTextsEnabled,
     required this.aiPracticeTextsAccess,
     required this.onAiPracticeTextsEnabledChanged,
-    required this.isDarkMode,
+    required this.themePreference,
     required this.nightModeAccess,
-    required this.onToggleThemeMode,
+    required this.onThemePreferenceChanged,
     required this.preferWritingPractice,
     required this.onPreferWritingPracticeChanged,
     required this.preferredFlashcardDeckMode,
@@ -193,9 +194,9 @@ class AppShellProfileWorkspace extends StatelessWidget {
   final bool aiPracticeTextsEnabled;
   final FeatureAccessDecision aiPracticeTextsAccess;
   final ValueChanged<bool> onAiPracticeTextsEnabledChanged;
-  final bool isDarkMode;
+  final AppThemePreference themePreference;
   final FeatureAccessDecision nightModeAccess;
-  final VoidCallback onToggleThemeMode;
+  final ValueChanged<AppThemePreference> onThemePreferenceChanged;
   final bool preferWritingPractice;
   final ValueChanged<bool> onPreferWritingPracticeChanged;
   final FlashcardDeckMode preferredFlashcardDeckMode;
@@ -225,9 +226,9 @@ class AppShellProfileWorkspace extends StatelessWidget {
       aiPracticeTextsEnabled: aiPracticeTextsEnabled,
       aiPracticeTextsAccess: aiPracticeTextsAccess,
       onAiPracticeTextsEnabledChanged: onAiPracticeTextsEnabledChanged,
-      isDarkMode: isDarkMode,
+      themePreference: themePreference,
       nightModeAccess: nightModeAccess,
-      onToggleThemeMode: onToggleThemeMode,
+      onThemePreferenceChanged: onThemePreferenceChanged,
       preferWritingPractice: preferWritingPractice,
       onPreferWritingPracticeChanged: onPreferWritingPracticeChanged,
       preferredFlashcardDeckMode: preferredFlashcardDeckMode,
