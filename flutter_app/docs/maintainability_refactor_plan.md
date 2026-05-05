@@ -99,6 +99,8 @@
 - Replaced `WordsScreen` local vocabulary, success, danger, and info accent
   literals with shared `AppThemeTokens`, including a dedicated night-mode
   `vocabularyAccent`.
+- Extracted `WordsScreen` dictionary status transitions and word progress field
+  updates into pure `word_learning_status_update` helpers with unit coverage.
 
 ## Next Slices
 

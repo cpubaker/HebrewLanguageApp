@@ -7,6 +7,7 @@ import '../models/learning_word.dart';
 import '../services/audio_playback_awareness.dart';
 import '../services/learning_audio_player.dart';
 import '../services/progress_snapshot.dart';
+import '../services/word_learning_status_update.dart';
 import '../services/word_list_filter.dart';
 import '../theme/app_theme.dart';
 import 'audio_playback_feedback.dart';
@@ -140,17 +141,13 @@ class _WordsScreenState extends State<WordsScreen> {
 
   void _cycleWordStatus(LearningWord word) {
     final currentState = classifyWordLearningState(_currentWordFor(word));
-    final nextState = switch (currentState) {
-      WordLearningState.unseen => WordLearningState.needsReview,
-      WordLearningState.needsReview => WordLearningState.known,
-      WordLearningState.known => WordLearningState.unseen,
-    };
+    final nextState = nextWordLearningState(currentState);
     _updateWordStatus(word, nextState);
   }
 
   void _updateWordStatus(LearningWord word, WordLearningState targetState) {
     final currentWord = _currentWordFor(word);
-    final updatedWord = _wordWithLearningState(currentWord, targetState);
+    final updatedWord = applyWordLearningState(currentWord, targetState);
 
     setState(() {
       _replaceWord(updatedWord);
@@ -180,46 +177,6 @@ class _WordsScreenState extends State<WordsScreen> {
     final updatedWords = List<LearningWord>.from(_words);
     updatedWords[wordIndex] = updatedWord;
     _words = updatedWords;
-  }
-
-  LearningWord _wordWithLearningState(
-    LearningWord word,
-    WordLearningState targetState,
-  ) {
-    final reviewedAt = DateTime.now().toIso8601String();
-
-    switch (targetState) {
-      case WordLearningState.known:
-        return word.copyWith(
-          correct: 0,
-          wrong: 0,
-          lastCorrect: reviewedAt,
-          lastReviewedAt: reviewedAt,
-          lastReviewCorrect: true,
-        );
-      case WordLearningState.needsReview:
-        return word.copyWith(
-          correct: 0,
-          wrong: 0,
-          lastReviewedAt: reviewedAt,
-          lastReviewCorrect: false,
-        );
-      case WordLearningState.unseen:
-        return LearningWord(
-          wordId: word.wordId,
-          hebrew: word.hebrew,
-          english: word.english,
-          ukrainian: word.ukrainian,
-          transcription: word.transcription,
-          audioAssetPath: word.audioAssetPath,
-          correct: 0,
-          wrong: 0,
-          writingCorrect: word.writingCorrect,
-          writingWrong: word.writingWrong,
-          writingLastCorrect: word.writingLastCorrect,
-          contexts: word.contexts,
-        );
-    }
   }
 
   void _handleScroll() {
