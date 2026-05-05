@@ -101,6 +101,9 @@
   `vocabularyAccent`.
 - Extracted `WordsScreen` dictionary status transitions and word progress field
   updates into pure `word_learning_status_update` helpers with unit coverage.
+- Replaced `ReadingScreen` local reading accent and nearby muted/secondary
+  literals with shared `AppThemeTokens`, including a dedicated night-mode
+  `readingAccent`.
 
 ## Next Slices
 

@@ -269,7 +269,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
               child: Text(
                 '\u0422\u0435\u043a\u0441\u0442\u0438 \u0434\u043b\u044f \u0447\u0438\u0442\u0430\u043d\u043d\u044f, \u0440\u043e\u0437\u043a\u043b\u0430\u0434\u0435\u043d\u0456 \u0437\u0430 \u0440\u0456\u0432\u043d\u044f\u043c\u0438.',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: const Color(0xFF5F5A52),
+                  color: tokens.mutedText,
                   height: 1.4,
                 ),
               ),
@@ -277,13 +277,10 @@ class _ReadingScreenState extends State<ReadingScreen> {
             const SizedBox(height: 18),
             AppSectionCard(
               padding: const EdgeInsets.all(16),
-              borderColor: const Color(0xFF1D4ED8).withValues(alpha: 0.16),
+              borderColor: tokens.readingAccent.withValues(alpha: 0.16),
               child: Row(
                 children: [
-                  const Icon(
-                    Icons.auto_stories_rounded,
-                    color: Color(0xFF1D4ED8),
-                  ),
+                  Icon(Icons.auto_stories_rounded, color: tokens.readingAccent),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(
@@ -301,7 +298,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
                           progress.completedLabel('уроків'),
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
-                                color: const Color(0xFF5F5A52),
+                                color: tokens.mutedText,
                                 fontWeight: FontWeight.w600,
                               ),
                         ),
@@ -347,7 +344,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
                         heroTag: 'readingScrollToTop',
                         onPressed: _scrollToTop,
                         backgroundColor: tokens.elevatedSurface,
-                        foregroundColor: const Color(0xFF1D4ED8),
+                        foregroundColor: tokens.readingAccent,
                         child: const Icon(Icons.vertical_align_top_rounded),
                       ),
                     ),
@@ -360,7 +357,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
                 tooltip: _selectedLevelKeys.isEmpty
                     ? 'Відкрити фільтр'
                     : 'Змінити фільтр',
-                backgroundColor: const Color(0xFF1D4ED8),
+                backgroundColor: tokens.readingAccent,
                 foregroundColor: accentForeground,
                 child: Icon(
                   _selectedLevelKeys.isEmpty
@@ -550,8 +547,8 @@ class _ReadingDetailScreenState extends State<ReadingDetailScreen> {
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(28),
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFF1E40AF), Color(0xFF1D4ED8)],
+                    gradient: LinearGradient(
+                      colors: [const Color(0xFF1E40AF), tokens.readingAccent],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
@@ -607,7 +604,7 @@ class _ReadingDetailScreenState extends State<ReadingDetailScreen> {
                 const SizedBox(height: 20),
                 MarkdownLessonBody(
                   body: document.body,
-                  accentColor: const Color(0xFF1D4ED8),
+                  accentColor: tokens.readingAccent,
                   inlineGlossary: document.glossary,
                 ),
               ],
@@ -737,10 +734,10 @@ class _ReadingLessonCard extends StatelessWidget {
                 },
               ),
               const SizedBox(width: 4),
-              const Icon(
+              Icon(
                 Icons.arrow_forward_ios_rounded,
                 size: 18,
-                color: Color(0xFF1D4ED8),
+                color: tokens.readingAccent,
               ),
             ],
           ),
@@ -768,6 +765,7 @@ class _ReadingLevelSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -784,9 +782,9 @@ class _ReadingLevelSection extends StatelessWidget {
               const SizedBox(width: 10),
               Text(
                 '${group.lessons.length}',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: const Color(0xFF6C665D),
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: tokens.secondaryText),
               ),
             ],
           ),
@@ -850,7 +848,7 @@ class ReadingLevelSelector extends StatelessWidget {
             color: tokens.elevatedSurface,
             borderRadius: BorderRadius.circular(22),
             border: Border.all(
-              color: const Color(0xFF1D4ED8).withValues(alpha: 0.12),
+              color: tokens.readingAccent.withValues(alpha: 0.12),
             ),
           ),
           child: Row(
@@ -859,10 +857,10 @@ class ReadingLevelSelector extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1D4ED8).withValues(alpha: 0.10),
+                  color: tokens.readingAccent.withValues(alpha: 0.10),
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: const Icon(Icons.tune_rounded, color: Color(0xFF1D4ED8)),
+                child: Icon(Icons.tune_rounded, color: tokens.readingAccent),
               ),
               const SizedBox(width: 14),
               Expanded(
@@ -886,9 +884,9 @@ class ReadingLevelSelector extends StatelessWidget {
                   ],
                 ),
               ),
-              const Icon(
+              Icon(
                 Icons.keyboard_arrow_down_rounded,
-                color: Color(0xFF1D4ED8),
+                color: tokens.readingAccent,
               ),
             ],
           ),
@@ -923,12 +921,12 @@ class _ReadingLevelOption extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: selected
-                ? const Color(0xFF1D4ED8).withValues(alpha: 0.08)
+                ? tokens.readingAccent.withValues(alpha: 0.08)
                 : tokens.subtleSurface,
             borderRadius: BorderRadius.circular(18),
             border: Border.all(
               color: selected
-                  ? const Color(0xFF1D4ED8).withValues(alpha: 0.30)
+                  ? tokens.readingAccent.withValues(alpha: 0.30)
                   : tokens.outlineSoft,
             ),
           ),
@@ -958,9 +956,7 @@ class _ReadingLevelOption extends StatelessWidget {
                 selected
                     ? Icons.check_circle_rounded
                     : Icons.chevron_right_rounded,
-                color: selected
-                    ? const Color(0xFF1D4ED8)
-                    : const Color(0xFF9CA3AF),
+                color: selected ? tokens.readingAccent : tokens.secondaryText,
               ),
             ],
           ),

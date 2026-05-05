@@ -27,6 +27,7 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
     required this.dangerAccent,
     required this.warningAccent,
     required this.vocabularyAccent,
+    required this.readingAccent,
     required this.infoAccent,
     required this.aiAccent,
   });
@@ -54,6 +55,7 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
       dangerAccent = const Color(0xFFB91C1C),
       warningAccent = const Color(0xFFB45309),
       vocabularyAccent = const Color(0xFF8C6A2A),
+      readingAccent = const Color(0xFF1D4ED8),
       infoAccent = const Color(0xFF1D4ED8),
       aiAccent = const Color(0xFF8C3E9F);
 
@@ -79,6 +81,7 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
   final Color dangerAccent;
   final Color warningAccent;
   final Color vocabularyAccent;
+  final Color readingAccent;
   final Color infoAccent;
   final Color aiAccent;
 
@@ -106,6 +109,7 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
     Color? dangerAccent,
     Color? warningAccent,
     Color? vocabularyAccent,
+    Color? readingAccent,
     Color? infoAccent,
     Color? aiAccent,
   }) {
@@ -132,6 +136,7 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
       dangerAccent: dangerAccent ?? this.dangerAccent,
       warningAccent: warningAccent ?? this.warningAccent,
       vocabularyAccent: vocabularyAccent ?? this.vocabularyAccent,
+      readingAccent: readingAccent ?? this.readingAccent,
       infoAccent: infoAccent ?? this.infoAccent,
       aiAccent: aiAccent ?? this.aiAccent,
     );
@@ -186,6 +191,7 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
         other.vocabularyAccent,
         t,
       )!,
+      readingAccent: Color.lerp(readingAccent, other.readingAccent, t)!,
       infoAccent: Color.lerp(infoAccent, other.infoAccent, t)!,
       aiAccent: Color.lerp(aiAccent, other.aiAccent, t)!,
     );
@@ -239,6 +245,7 @@ class _AppThemePalette {
         dangerAccent: Color(0xFFB91C1C),
         warningAccent: Color(0xFFB45309),
         vocabularyAccent: Color(0xFF8C6A2A),
+        readingAccent: Color(0xFF1D4ED8),
         infoAccent: Color(0xFF1D4ED8),
         aiAccent: Color(0xFF8C3E9F),
       ),
@@ -274,6 +281,7 @@ class _AppThemePalette {
         dangerAccent: Color(0xFFE06B65),
         warningAccent: Color(0xFFD6A451),
         vocabularyAccent: Color(0xFFC5965A),
+        readingAccent: Color(0xFF7EA4F4),
         infoAccent: Color(0xFF7EA4F4),
         aiAccent: Color(0xFFD08AE3),
       ),
