@@ -248,6 +248,7 @@ class _ProfileProgressSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
     final study = StudyProgressSnapshot.fromWords(bundle.words);
     final flashcards = FlashcardFocusSnapshot.fromWords(bundle.words);
     final writing = WritingProgressSnapshot.fromWords(bundle.words);
@@ -278,25 +279,25 @@ class _ProfileProgressSection extends StatelessWidget {
                   AppStatChip(
                     label: 'Слова відкрито',
                     value: study.seen,
-                    accent: const Color(0xFF0F766E),
+                    accent: tokens.successAccent,
                     icon: Icons.translate_rounded,
                   ),
                   AppStatChip(
                     label: 'На повторення',
                     value: study.needsReview,
-                    accent: const Color(0xFFB45309),
+                    accent: tokens.warningAccent,
                     icon: Icons.refresh_rounded,
                   ),
                   AppStatChip(
                     label: 'Тем прочитано',
                     value: guide.read,
-                    accent: const Color(0xFFB45309),
+                    accent: tokens.warningAccent,
                     icon: Icons.menu_book_rounded,
                   ),
                   AppStatChip(
                     label: 'Текстів прочитано',
                     value: reading.read,
-                    accent: const Color(0xFF1D4ED8),
+                    accent: tokens.readingAccent,
                     icon: Icons.auto_stories_rounded,
                   ),
                 ],
@@ -318,14 +319,14 @@ class _ProfileProgressSection extends StatelessWidget {
                 label: 'Слова відкрито',
                 completedLabel: '${study.seen} із ${study.total}',
                 ratio: study.completionRatio,
-                accent: const Color(0xFF0F766E),
+                accent: tokens.successAccent,
               ),
               const SizedBox(height: 12),
               _ProgressStrip(
                 label: 'Письмо відпрацьовано',
                 completedLabel: '${writing.practiced} із ${writing.total}',
                 ratio: writing.completionRatio,
-                accent: const Color(0xFF8C3E9F),
+                accent: tokens.aiAccent,
               ),
               const SizedBox(height: 16),
               AppActionWrap(
@@ -333,22 +334,22 @@ class _ProfileProgressSection extends StatelessWidget {
                   AppMetricTile(
                     label: 'Знайомі слова',
                     value: study.known,
-                    accent: const Color(0xFF0F766E),
+                    accent: tokens.successAccent,
                   ),
                   AppMetricTile(
                     label: 'Повторити',
                     value: study.needsReview,
-                    accent: const Color(0xFFB45309),
+                    accent: tokens.warningAccent,
                   ),
                   AppMetricTile(
                     label: 'Письмо ок',
                     value: writing.known,
-                    accent: const Color(0xFF8C3E9F),
+                    accent: tokens.aiAccent,
                   ),
                   AppMetricTile(
                     label: 'Контексти',
                     value: flashcards.withContexts,
-                    accent: const Color(0xFF1D4ED8),
+                    accent: tokens.infoAccent,
                   ),
                 ],
               ),
@@ -370,14 +371,14 @@ class _ProfileProgressSection extends StatelessWidget {
                 label: 'Довідник завершено',
                 completedLabel: '${guide.read} із ${guide.total}',
                 ratio: guide.completionRatio,
-                accent: const Color(0xFFB45309),
+                accent: tokens.warningAccent,
               ),
               const SizedBox(height: 12),
               _ProgressStrip(
                 label: 'Читання завершено',
                 completedLabel: '${reading.read} із ${reading.total}',
                 ratio: reading.completionRatio,
-                accent: const Color(0xFF1D4ED8),
+                accent: tokens.readingAccent,
               ),
               const SizedBox(height: 16),
               AppActionWrap(
@@ -385,22 +386,22 @@ class _ProfileProgressSection extends StatelessWidget {
                   AppMetricTile(
                     label: 'Теми в процесі',
                     value: guide.studying,
-                    accent: const Color(0xFFB45309),
+                    accent: tokens.warningAccent,
                   ),
                   AppMetricTile(
                     label: 'Теми прочитано',
                     value: guide.read,
-                    accent: const Color(0xFF2B5D4F),
+                    accent: tokens.successAccent,
                   ),
                   AppMetricTile(
                     label: 'Тексти в процесі',
                     value: reading.studying,
-                    accent: const Color(0xFF1D4ED8),
+                    accent: tokens.readingAccent,
                   ),
                   AppMetricTile(
                     label: 'Тексти прочитано',
                     value: reading.read,
-                    accent: const Color(0xFF2B5D4F),
+                    accent: tokens.successAccent,
                   ),
                 ],
               ),
@@ -504,6 +505,9 @@ class _ProfileSettingsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -556,15 +560,15 @@ class _ProfileSettingsSection extends StatelessWidget {
               const SizedBox(height: 18),
               Text(
                 'Формат практики за замовчуванням',
-                style: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
               ),
               const SizedBox(height: 6),
               Text(
                 'Оберіть, що відкриватиметься після натискання кнопки «Практика» в профілі.',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: const Color(0xFF6C665D),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: tokens.secondaryText,
                   height: 1.45,
                 ),
               ),
@@ -586,15 +590,15 @@ class _ProfileSettingsSection extends StatelessWidget {
               const SizedBox(height: 18),
               Text(
                 'Набір карток за замовчуванням',
-                style: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
               ),
               const SizedBox(height: 6),
               Text(
                 'Цей вибір застосовується, якщо за замовчуванням відкриваються картки.',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: const Color(0xFF6C665D),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: tokens.secondaryText,
                   height: 1.45,
                 ),
               ),

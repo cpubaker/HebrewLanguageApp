@@ -138,7 +138,7 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Р’С‡РёРјРѕ С–РІСЂРёС‚',
+      title: 'Вчимо іврит',
       debugShowCheckedModeBanner: false,
       locale: const Locale('uk'),
       supportedLocales: const [Locale('uk')],

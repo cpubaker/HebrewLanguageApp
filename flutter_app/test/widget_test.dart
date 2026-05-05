@@ -218,7 +218,7 @@ void main() {
     expect(app.themeMode, ThemeMode.light);
     expect(themeModeStore.savedModes, isEmpty);
     expect(
-      find.text('Night mode: Night mode is available in the Pro version.'),
+      find.text('Нічний режим: Нічний режим доступний у Pro-версії.'),
       findsOneWidget,
     );
   });

@@ -15,7 +15,7 @@ class FeatureAccessDecision {
     required this.isEnabled,
     required this.title,
     required this.description,
-    this.upgradeLabel = 'Upgrade to Pro',
+    this.upgradeLabel = 'Перейти на Pro',
   });
 
   final AppFeature feature;
@@ -63,24 +63,24 @@ class StaticFeatureAccessService implements FeatureAccessService {
   _FeatureAccessMetadata _metadataFor(AppFeature feature) {
     return switch (feature) {
       AppFeature.nightMode => const _FeatureAccessMetadata(
-        title: 'Night mode',
-        description: 'Night mode is available in the Pro version.',
+        title: 'Нічний режим',
+        description: 'Нічний режим доступний у Pro-версії.',
       ),
       AppFeature.advancedPractice => const _FeatureAccessMetadata(
-        title: 'Advanced practice',
-        description: 'Advanced practice modes are available in Pro.',
+        title: 'Розширена практика',
+        description: 'Розширені режими практики доступні у Pro-версії.',
       ),
       AppFeature.extraLessons => const _FeatureAccessMetadata(
-        title: 'Extra lessons',
-        description: 'Extra lesson packs are available in Pro.',
+        title: 'Додаткові уроки',
+        description: 'Додаткові набори уроків доступні у Pro-версії.',
       ),
       AppFeature.aiWordContexts => const _FeatureAccessMetadata(
-        title: 'AI word contexts',
-        description: 'AI-generated word contexts are available in Pro.',
+        title: 'ШІ-контексти слів',
+        description: 'ШІ-контексти для слів доступні у Pro-версії.',
       ),
       AppFeature.aiPracticeTexts => const _FeatureAccessMetadata(
-        title: 'AI practice texts',
-        description: 'AI-generated practice texts are available in Pro.',
+        title: 'ШІ-тексти для практики',
+        description: 'ШІ-тексти для практики доступні у Pro-версії.',
       ),
     };
   }
