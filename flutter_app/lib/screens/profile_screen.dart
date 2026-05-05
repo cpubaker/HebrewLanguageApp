@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../models/guide_lesson_status.dart';
 import '../models/learning_bundle.dart';
 import '../services/feature_access_service.dart';
-import '../services/flashcard_session.dart';
 import '../services/progress_snapshot.dart';
 import '../services/theme_mode_store.dart';
 import '../theme/app_theme.dart';
@@ -30,12 +29,6 @@ class ProfileScreen extends StatelessWidget {
     required this.themePreference,
     required this.nightModeAccess,
     required this.onThemePreferenceChanged,
-    required this.onOpenWords,
-    required this.onOpenFlashcards,
-    required this.onOpenWriting,
-    required this.onOpenSprint,
-    required this.onOpenGuide,
-    required this.onOpenReading,
   });
 
   final LearningBundle bundle;
@@ -52,12 +45,6 @@ class ProfileScreen extends StatelessWidget {
   final AppThemePreference themePreference;
   final FeatureAccessDecision nightModeAccess;
   final ValueChanged<AppThemePreference> onThemePreferenceChanged;
-  final VoidCallback onOpenWords;
-  final ValueChanged<FlashcardDeckMode> onOpenFlashcards;
-  final VoidCallback onOpenWriting;
-  final VoidCallback onOpenSprint;
-  final VoidCallback onOpenGuide;
-  final VoidCallback onOpenReading;
 
   @override
   Widget build(BuildContext context) {
@@ -71,20 +58,9 @@ class ProfileScreen extends StatelessWidget {
         32,
       ),
       children: [
-        _ProfileOverviewSection(bundle: bundle),
+        _ProfileSummarySection(bundle: bundle),
         const SizedBox(height: 16),
-        _ProfileNextActionsSection(
-          bundle: bundle,
-          guideLessonStatuses: guideLessonStatuses,
-          onOpenWords: onOpenWords,
-          onOpenFlashcards: onOpenFlashcards,
-          onOpenWriting: onOpenWriting,
-          onOpenSprint: onOpenSprint,
-          onOpenGuide: onOpenGuide,
-          onOpenReading: onOpenReading,
-        ),
-        const SizedBox(height: 16),
-        _ProfileProgressSection(
+        _ProfileMaterialsSection(
           bundle: bundle,
           guideLessonStatuses: guideLessonStatuses,
           readingLessonStatuses: readingLessonStatuses,
@@ -109,8 +85,8 @@ class ProfileScreen extends StatelessWidget {
   }
 }
 
-class _ProfileOverviewSection extends StatelessWidget {
-  const _ProfileOverviewSection({required this.bundle});
+class _ProfileSummarySection extends StatelessWidget {
+  const _ProfileSummarySection({required this.bundle});
 
   final LearningBundle bundle;
 
@@ -118,6 +94,9 @@ class _ProfileOverviewSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final tokens = theme.appTokens;
+    final study = StudyProgressSnapshot.fromWords(bundle.words);
+    final flashcards = FlashcardFocusSnapshot.fromWords(bundle.words);
+    final writing = WritingProgressSnapshot.fromWords(bundle.words);
 
     return AppSectionCard(
       child: Column(
@@ -126,17 +105,16 @@ class _ProfileOverviewSection extends StatelessWidget {
           const AppPageHeader(
             title: 'Профіль',
             subtitle:
-                'Вчимо іврит: слова, практика, довідник і читання в одному навчальному просторі.',
+                'Стислий огляд того, що є в системі, і як рухається прогрес у словах та практиці.',
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 18),
           Text(
-            '${bundle.words.length} слів доступні на цьому пристрої',
+            'У системі',
             style: theme.textTheme.titleMedium?.copyWith(
-              color: theme.colorScheme.onSurface,
               fontWeight: FontWeight.w700,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           AppActionWrap(
             spacing: 10,
             runSpacing: 10,
@@ -145,6 +123,11 @@ class _ProfileOverviewSection extends StatelessWidget {
                 label: 'Слова',
                 value: bundle.words.length,
                 accent: tokens.successAccent,
+              ),
+              AppStatChip(
+                label: 'Довідник',
+                value: bundle.guideLessons.length,
+                accent: tokens.warningAccent,
               ),
               AppStatChip(
                 label: 'Читання',
@@ -158,14 +141,62 @@ class _ProfileOverviewSection extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: 18),
+          Divider(color: tokens.outlineSoft),
+          const SizedBox(height: 16),
+          Text(
+            'Слова і практика',
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 12),
+          _ProgressStrip(
+            label: 'Слова відкрито',
+            completedLabel: '${study.seen} із ${study.total}',
+            ratio: study.completionRatio,
+            accent: tokens.successAccent,
+          ),
+          const SizedBox(height: 12),
+          _ProgressStrip(
+            label: 'Письмо відпрацьовано',
+            completedLabel: '${writing.practiced} із ${writing.total}',
+            ratio: writing.completionRatio,
+            accent: tokens.aiAccent,
+          ),
+          const SizedBox(height: 16),
+          AppActionWrap(
+            children: [
+              AppMetricTile(
+                label: 'Знайомі слова',
+                value: study.known,
+                accent: tokens.successAccent,
+              ),
+              AppMetricTile(
+                label: 'Повторити',
+                value: study.needsReview,
+                accent: tokens.warningAccent,
+              ),
+              AppMetricTile(
+                label: 'Письмо ок',
+                value: writing.known,
+                accent: tokens.aiAccent,
+              ),
+              AppMetricTile(
+                label: 'Контексти',
+                value: flashcards.withContexts,
+                accent: tokens.infoAccent,
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
 }
 
-class _ProfileProgressSection extends StatelessWidget {
-  const _ProfileProgressSection({
+class _ProfileMaterialsSection extends StatelessWidget {
+  const _ProfileMaterialsSection({
     required this.bundle,
     required this.guideLessonStatuses,
     required this.readingLessonStatuses,
@@ -178,9 +209,6 @@ class _ProfileProgressSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
-    final study = StudyProgressSnapshot.fromWords(bundle.words);
-    final flashcards = FlashcardFocusSnapshot.fromWords(bundle.words);
-    final writing = WritingProgressSnapshot.fromWords(bundle.words);
     final guide = LessonProgressSnapshot.fromLessons(
       lessons: bundle.guideLessons,
       lessonStatuses: guideLessonStatuses,
@@ -198,102 +226,9 @@ class _ProfileProgressSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const AppPageHeader(
-                title: 'Прогрес',
-                subtitle:
-                    'Короткий огляд слів, практики й матеріалів в одному місці.',
-              ),
-              const SizedBox(height: 14),
-              AppActionWrap(
-                children: [
-                  AppStatChip(
-                    label: 'Слова відкрито',
-                    value: study.seen,
-                    accent: tokens.successAccent,
-                    icon: Icons.translate_rounded,
-                  ),
-                  AppStatChip(
-                    label: 'На повторення',
-                    value: study.needsReview,
-                    accent: tokens.warningAccent,
-                    icon: Icons.refresh_rounded,
-                  ),
-                  AppStatChip(
-                    label: 'Тем прочитано',
-                    value: guide.read,
-                    accent: tokens.warningAccent,
-                    icon: Icons.menu_book_rounded,
-                  ),
-                  AppStatChip(
-                    label: 'Текстів прочитано',
-                    value: reading.read,
-                    accent: tokens.readingAccent,
-                    icon: Icons.auto_stories_rounded,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 16),
-        AppSectionCard(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const AppPageHeader(
-                title: 'Слова і практика',
-                subtitle: 'Загальний прогрес у словах, картках і письмі.',
-              ),
-              const SizedBox(height: 16),
-              _ProgressStrip(
-                label: 'Слова відкрито',
-                completedLabel: '${study.seen} із ${study.total}',
-                ratio: study.completionRatio,
-                accent: tokens.successAccent,
-              ),
-              const SizedBox(height: 12),
-              _ProgressStrip(
-                label: 'Письмо відпрацьовано',
-                completedLabel: '${writing.practiced} із ${writing.total}',
-                ratio: writing.completionRatio,
-                accent: tokens.aiAccent,
-              ),
-              const SizedBox(height: 16),
-              AppActionWrap(
-                children: [
-                  AppMetricTile(
-                    label: 'Знайомі слова',
-                    value: study.known,
-                    accent: tokens.successAccent,
-                  ),
-                  AppMetricTile(
-                    label: 'Повторити',
-                    value: study.needsReview,
-                    accent: tokens.warningAccent,
-                  ),
-                  AppMetricTile(
-                    label: 'Письмо ок',
-                    value: writing.known,
-                    accent: tokens.aiAccent,
-                  ),
-                  AppMetricTile(
-                    label: 'Контексти',
-                    value: flashcards.withContexts,
-                    accent: tokens.infoAccent,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 16),
-        AppSectionCard(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const AppPageHeader(
                 title: 'Матеріали',
                 subtitle:
-                    'Прогрес довідника та читання в одному місці, щоб було видно де є незавершені теми.',
+                    'Довідник і читання: що вже завершено, а що ще в процесі.',
               ),
               const SizedBox(height: 16),
               _ProgressStrip(
@@ -318,19 +253,9 @@ class _ProfileProgressSection extends StatelessWidget {
                     accent: tokens.warningAccent,
                   ),
                   AppMetricTile(
-                    label: 'Теми прочитано',
-                    value: guide.read,
-                    accent: tokens.successAccent,
-                  ),
-                  AppMetricTile(
                     label: 'Тексти в процесі',
                     value: reading.studying,
                     accent: tokens.readingAccent,
-                  ),
-                  AppMetricTile(
-                    label: 'Тексти прочитано',
-                    value: reading.read,
-                    accent: tokens.successAccent,
                   ),
                 ],
               ),
@@ -338,90 +263,6 @@ class _ProfileProgressSection extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _ProfileNextActionsSection extends StatelessWidget {
-  const _ProfileNextActionsSection({
-    required this.bundle,
-    required this.guideLessonStatuses,
-    required this.onOpenWords,
-    required this.onOpenFlashcards,
-    required this.onOpenWriting,
-    required this.onOpenSprint,
-    required this.onOpenGuide,
-    required this.onOpenReading,
-  });
-
-  final LearningBundle bundle;
-  final Map<String, GuideLessonStatus> guideLessonStatuses;
-  final VoidCallback onOpenWords;
-  final ValueChanged<FlashcardDeckMode> onOpenFlashcards;
-  final VoidCallback onOpenWriting;
-  final VoidCallback onOpenSprint;
-  final VoidCallback onOpenGuide;
-  final VoidCallback onOpenReading;
-
-  @override
-  Widget build(BuildContext context) {
-    final study = StudyProgressSnapshot.fromWords(bundle.words);
-    final guide = LessonProgressSnapshot.fromLessons(
-      lessons: bundle.guideLessons,
-      lessonStatuses: guideLessonStatuses,
-    );
-
-    return AppSectionCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const AppPageHeader(
-            title: 'Що далі',
-            subtitle: 'Рекомендації на основі вашого прогресу.',
-          ),
-          const SizedBox(height: 18),
-          AppActionWrap(
-            children: [
-              FilledButton.icon(
-                onPressed: study.needsReview > 0
-                    ? () => onOpenFlashcards(FlashcardDeckMode.needsReview)
-                    : onOpenWords,
-                icon: Icon(
-                  study.needsReview > 0
-                      ? Icons.refresh_rounded
-                      : Icons.translate_rounded,
-                ),
-                label: Text(
-                  study.needsReview > 0 ? 'Повторити слова' : 'Відкрити слова',
-                ),
-              ),
-              OutlinedButton.icon(
-                onPressed: onOpenWriting,
-                icon: const Icon(Icons.edit_rounded),
-                label: const Text('До письма'),
-              ),
-              OutlinedButton.icon(
-                onPressed: onOpenSprint,
-                icon: const Icon(Icons.timer_rounded),
-                label: const Text('Спринт'),
-              ),
-              OutlinedButton.icon(
-                onPressed: guide.studying > 0 ? onOpenGuide : onOpenReading,
-                icon: Icon(
-                  guide.studying > 0
-                      ? Icons.menu_book_rounded
-                      : Icons.auto_stories_rounded,
-                ),
-                label: Text(
-                  guide.studying > 0
-                      ? 'Продовжити довідник'
-                      : 'Продовжити читання',
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
     );
   }
 }

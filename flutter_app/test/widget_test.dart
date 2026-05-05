@@ -128,10 +128,12 @@ void main() {
     expect(find.text('Профіль'), findsWidgets);
     expect(
       find.text(
-        'Вчимо іврит: слова, практика, довідник і читання в одному навчальному просторі.',
+        'Стислий огляд того, що є в системі, і як рухається прогрес у словах та практиці.',
       ),
       findsOneWidget,
     );
+    expect(find.text('У системі'), findsOneWidget);
+    expect(find.text('Слова і практика'), findsOneWidget);
 
     await tester.tap(find.byIcon(Icons.school_outlined));
     await tester.pumpAndSettle();
