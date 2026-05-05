@@ -335,7 +335,7 @@ class _WordsScreenState extends State<WordsScreen> {
                           child: _StatPill(
                             label: 'Правильно',
                             value: detailWord.correct,
-                            accent: const Color(0xFF0F766E),
+                            accent: tokens.successAccent,
                           ),
                         ),
                         const SizedBox(width: 12),
@@ -343,7 +343,7 @@ class _WordsScreenState extends State<WordsScreen> {
                           child: _StatPill(
                             label: 'Помилки',
                             value: detailWord.wrong,
-                            accent: const Color(0xFFB91C1C),
+                            accent: tokens.dangerAccent,
                           ),
                         ),
                       ],
@@ -443,12 +443,12 @@ class _WordsScreenState extends State<WordsScreen> {
                               AppStatChip(
                                 label: 'Видимі',
                                 value: _visibleWords.length,
-                                accent: const Color(0xFF1D4ED8),
+                                accent: tokens.infoAccent,
                               ),
                               AppStatChip(
                                 label: 'Усього',
                                 value: _words.length,
-                                accent: const Color(0xFF8C6A2A),
+                                accent: tokens.vocabularyAccent,
                               ),
                             ],
                           ),
@@ -521,7 +521,7 @@ class _WordsScreenState extends State<WordsScreen> {
                         heroTag: 'wordsScrollToTop',
                         onPressed: _scrollToTop,
                         backgroundColor: tokens.elevatedSurface,
-                        foregroundColor: const Color(0xFF8C6A2A),
+                        foregroundColor: tokens.vocabularyAccent,
                         child: const Icon(Icons.vertical_align_top_rounded),
                       ),
                     ),
@@ -532,7 +532,7 @@ class _WordsScreenState extends State<WordsScreen> {
                 heroTag: 'wordsSearch',
                 tooltip: 'Пошук по словнику',
                 onPressed: _openSearch,
-                backgroundColor: const Color(0xFF8C6A2A),
+                backgroundColor: tokens.vocabularyAccent,
                 foregroundColor: accentForeground,
                 child: const Icon(Icons.search_rounded),
               ),
@@ -728,12 +728,12 @@ class _WordCard extends StatelessWidget {
                         _MiniProgress(
                           label: 'П',
                           value: word.correct,
-                          accent: const Color(0xFF0F766E),
+                          accent: tokens.successAccent,
                         ),
                         _MiniProgress(
                           label: 'Н',
                           value: word.wrong,
-                          accent: const Color(0xFFB91C1C),
+                          accent: tokens.dangerAccent,
                         ),
                         if (word.hasPlannedAudio)
                           _InlineWordAudioButton(
@@ -772,10 +772,10 @@ class _WordCard extends StatelessWidget {
                       width: 28,
                       height: 28,
                     ),
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.arrow_forward_ios_rounded,
                       size: 18,
-                      color: Color(0xFF8C6A2A),
+                      color: tokens.vocabularyAccent,
                     ),
                   ),
                 ],
@@ -796,7 +796,8 @@ class _WordStatusActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final presentation = _WordStatusPresentation.fromState(state);
+    final tokens = Theme.of(context).appTokens;
+    final presentation = _WordStatusPresentation.fromState(state, tokens);
     final foreground = presentation.accent;
     return Material(
       color: presentation.accent.withValues(alpha: 0.12),
@@ -842,22 +843,25 @@ class _WordStatusPresentation {
     required this.accent,
   });
 
-  factory _WordStatusPresentation.fromState(WordLearningState state) {
+  factory _WordStatusPresentation.fromState(
+    WordLearningState state,
+    AppThemeTokens tokens,
+  ) {
     return switch (state) {
-      WordLearningState.unseen => const _WordStatusPresentation(
+      WordLearningState.unseen => _WordStatusPresentation(
         label: 'Не знаю',
         icon: Icons.help_outline_rounded,
-        accent: Color(0xFF8C6A2A),
+        accent: tokens.vocabularyAccent,
       ),
-      WordLearningState.needsReview => const _WordStatusPresentation(
+      WordLearningState.needsReview => _WordStatusPresentation(
         label: 'Вчу',
         icon: Icons.school_rounded,
-        accent: Color(0xFF8C6A2A),
+        accent: tokens.vocabularyAccent,
       ),
-      WordLearningState.known => const _WordStatusPresentation(
+      WordLearningState.known => _WordStatusPresentation(
         label: 'Знаю',
         icon: Icons.check_rounded,
-        accent: Color(0xFF0F766E),
+        accent: tokens.successAccent,
       ),
     };
   }
@@ -976,6 +980,7 @@ class _InlineWordAudioButtonState extends State<_InlineWordAudioButton> {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
     final isEnabled = _hasAudio && !_isBusy;
     final tooltip = _isCheckingAvailability
         ? 'Перевіряємо аудіо слова'
@@ -984,7 +989,7 @@ class _InlineWordAudioButtonState extends State<_InlineWordAudioButton> {
         : 'Аудіо для слова ще недоступне';
 
     return Material(
-      color: const Color(0xFF8C6A2A).withValues(alpha: 0.12),
+      color: tokens.vocabularyAccent.withValues(alpha: 0.12),
       borderRadius: BorderRadius.circular(999),
       child: InkWell(
         onTap: isEnabled ? _togglePlayback : null,
@@ -997,12 +1002,12 @@ class _InlineWordAudioButtonState extends State<_InlineWordAudioButton> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 if (_isBusy)
-                  const SizedBox(
+                  SizedBox(
                     width: 14,
                     height: 14,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      color: Color(0xFF8C6A2A),
+                      color: tokens.vocabularyAccent,
                     ),
                   )
                 else
@@ -1012,16 +1017,16 @@ class _InlineWordAudioButtonState extends State<_InlineWordAudioButton> {
                         : Icons.volume_up_rounded,
                     size: 14,
                     color: _hasAudio
-                        ? const Color(0xFF8C6A2A)
-                        : const Color(0xFFB8AA93),
+                        ? tokens.vocabularyAccent
+                        : tokens.secondaryText,
                   ),
                 const SizedBox(width: 6),
                 Text(
                   'Аудіо',
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
                     color: _hasAudio
-                        ? const Color(0xFF8C6A2A)
-                        : const Color(0xFF9A907D),
+                        ? tokens.vocabularyAccent
+                        : tokens.secondaryText,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -1165,6 +1170,7 @@ class _WordDetailsAudioButtonState extends State<_WordDetailsAudioButton> {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
     final tooltip = _isCheckingAvailability
         ? 'Перевіряємо аудіо слова'
         : _hasAudio
@@ -1173,19 +1179,19 @@ class _WordDetailsAudioButtonState extends State<_WordDetailsAudioButton> {
 
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF8C6A2A).withValues(alpha: 0.12),
+        color: tokens.vocabularyAccent.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(18),
       ),
       child: IconButton(
         tooltip: tooltip,
         onPressed: _hasAudio && !_isBusy ? _togglePlayback : null,
         icon: _isBusy
-            ? const SizedBox(
+            ? SizedBox(
                 width: 18,
                 height: 18,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  color: Color(0xFF8C6A2A),
+                  color: tokens.vocabularyAccent,
                 ),
               )
             : Icon(
@@ -1193,8 +1199,8 @@ class _WordDetailsAudioButtonState extends State<_WordDetailsAudioButton> {
                     ? Icons.stop_circle_outlined
                     : Icons.volume_up_rounded,
                 color: _hasAudio
-                    ? const Color(0xFF8C6A2A)
-                    : const Color(0xFFB8AA93),
+                    ? tokens.vocabularyAccent
+                    : tokens.secondaryText,
               ),
       ),
     );
@@ -1337,13 +1343,14 @@ class _EmptySearchState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
     return AppSectionCard(
       child: Column(
         children: [
-          const Icon(
+          Icon(
             Icons.search_off_rounded,
             size: 32,
-            color: Color(0xFF8C6A2A),
+            color: tokens.vocabularyAccent,
           ),
           const SizedBox(height: 12),
           Text(
@@ -1358,9 +1365,9 @@ class _EmptySearchState extends StatelessWidget {
                 ? 'Спробуйте інший запит: слово українською чи англійською, форму івритом або транскрипцію.'
                 : 'У поточному зрізі «${filter.label.toLowerCase()}» поки немає результатів. Спробуйте інший фільтр або запит.',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Theme.of(context).appTokens.mutedText,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: tokens.mutedText),
           ),
         ],
       ),

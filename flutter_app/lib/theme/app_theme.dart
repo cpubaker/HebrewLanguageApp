@@ -26,6 +26,7 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
     required this.successAccent,
     required this.dangerAccent,
     required this.warningAccent,
+    required this.vocabularyAccent,
     required this.infoAccent,
     required this.aiAccent,
   });
@@ -52,6 +53,7 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
       successAccent = const Color(0xFF0F766E),
       dangerAccent = const Color(0xFFB91C1C),
       warningAccent = const Color(0xFFB45309),
+      vocabularyAccent = const Color(0xFF8C6A2A),
       infoAccent = const Color(0xFF1D4ED8),
       aiAccent = const Color(0xFF8C3E9F);
 
@@ -76,6 +78,7 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
   final Color successAccent;
   final Color dangerAccent;
   final Color warningAccent;
+  final Color vocabularyAccent;
   final Color infoAccent;
   final Color aiAccent;
 
@@ -102,6 +105,7 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
     Color? successAccent,
     Color? dangerAccent,
     Color? warningAccent,
+    Color? vocabularyAccent,
     Color? infoAccent,
     Color? aiAccent,
   }) {
@@ -127,6 +131,7 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
       successAccent: successAccent ?? this.successAccent,
       dangerAccent: dangerAccent ?? this.dangerAccent,
       warningAccent: warningAccent ?? this.warningAccent,
+      vocabularyAccent: vocabularyAccent ?? this.vocabularyAccent,
       infoAccent: infoAccent ?? this.infoAccent,
       aiAccent: aiAccent ?? this.aiAccent,
     );
@@ -176,6 +181,11 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
       successAccent: Color.lerp(successAccent, other.successAccent, t)!,
       dangerAccent: Color.lerp(dangerAccent, other.dangerAccent, t)!,
       warningAccent: Color.lerp(warningAccent, other.warningAccent, t)!,
+      vocabularyAccent: Color.lerp(
+        vocabularyAccent,
+        other.vocabularyAccent,
+        t,
+      )!,
       infoAccent: Color.lerp(infoAccent, other.infoAccent, t)!,
       aiAccent: Color.lerp(aiAccent, other.aiAccent, t)!,
     );
@@ -228,6 +238,7 @@ class _AppThemePalette {
         successAccent: Color(0xFF0F766E),
         dangerAccent: Color(0xFFB91C1C),
         warningAccent: Color(0xFFB45309),
+        vocabularyAccent: Color(0xFF8C6A2A),
         infoAccent: Color(0xFF1D4ED8),
         aiAccent: Color(0xFF8C3E9F),
       ),
@@ -262,6 +273,7 @@ class _AppThemePalette {
         successAccent: Color(0xFF38B2A5),
         dangerAccent: Color(0xFFE06B65),
         warningAccent: Color(0xFFD6A451),
+        vocabularyAccent: Color(0xFFC5965A),
         infoAccent: Color(0xFF7EA4F4),
         aiAccent: Color(0xFFD08AE3),
       ),

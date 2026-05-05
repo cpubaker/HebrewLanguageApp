@@ -96,6 +96,9 @@
 - Extracted remaining `MarkdownLessonBody` text direction, script detection,
   and bidirectional isolate preparation into a pure service with focused unit
   coverage.
+- Replaced `WordsScreen` local vocabulary, success, danger, and info accent
+  literals with shared `AppThemeTokens`, including a dedicated night-mode
+  `vocabularyAccent`.
 
 ## Next Slices
 
