@@ -9,6 +9,7 @@ import 'services/ai_context_service.dart';
 import 'services/ai_context_settings_store.dart';
 import 'services/ai_practice_text_service.dart';
 import 'services/ai_practice_text_settings_store.dart';
+import 'services/app_shell_settings_store.dart';
 import 'services/audio_playback_awareness.dart';
 import 'services/feature_access_service.dart';
 import 'services/guide_progress_store.dart';
@@ -38,6 +39,7 @@ class HebrewFlutterApp extends StatefulWidget {
     AiContextSettingsStore? aiContextSettingsStore,
     AiPracticeTextService? aiPracticeTextService,
     AiPracticeTextSettingsStore? aiPracticeTextSettingsStore,
+    AppShellSettingsStore? appShellSettingsStore,
     CreateVerbAudioPlayer? audioPlayerFactory,
     CreateAudioPlaybackAwareness? audioPlaybackAwarenessFactory,
     ThemeModeStore? themeModeStore,
@@ -62,6 +64,7 @@ class HebrewFlutterApp extends StatefulWidget {
          aiContextSettingsStore: aiContextSettingsStore,
          aiPracticeTextService: aiPracticeTextService,
          aiPracticeTextSettingsStore: aiPracticeTextSettingsStore,
+         appShellSettingsStore: appShellSettingsStore,
          audioPlayerFactory: audioPlayerFactory,
          audioPlaybackAwarenessFactory: audioPlaybackAwarenessFactory,
          themeModeStore: themeModeStore,
@@ -95,6 +98,8 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
       .resolveAiPracticeTextService();
   late final AiPracticeTextSettingsStore _aiPracticeTextSettingsStore =
       _dependencies.resolveAiPracticeTextSettingsStore();
+  late final AppShellSettingsStore _appShellSettingsStore = _dependencies
+      .resolveAppShellSettingsStore();
   late final SprintStatsStore _sprintStatsStore = _dependencies
       .resolveSprintStatsStore();
   late final CreateVerbAudioPlayer _audioPlayerFactory = _dependencies
@@ -217,6 +222,7 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
         aiContextSettingsStore: _aiContextSettingsStore,
         aiPracticeTextService: _aiPracticeTextService,
         aiPracticeTextSettingsStore: _aiPracticeTextSettingsStore,
+        appShellSettingsStore: _appShellSettingsStore,
         sprintStatsStore: _sprintStatsStore,
         audioPlayerFactory: _audioPlayerFactory,
         audioPlaybackAwarenessFactory: _audioPlaybackAwarenessFactory,

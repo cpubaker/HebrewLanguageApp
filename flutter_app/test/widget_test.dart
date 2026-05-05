@@ -12,6 +12,7 @@ import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/models/lesson_document.dart';
 import 'package:hebrew_language_flutter/screens/home_screen.dart';
 import 'package:hebrew_language_flutter/screens/sprint_screen.dart';
+import 'package:hebrew_language_flutter/services/app_shell_settings_store.dart';
 import 'package:hebrew_language_flutter/services/audio_playback_awareness.dart';
 import 'package:hebrew_language_flutter/services/feature_access_service.dart';
 import 'package:hebrew_language_flutter/services/guide_progress_store.dart';
@@ -124,8 +125,13 @@ void main() {
     await tester.tap(find.byIcon(Icons.person_outline_rounded));
     await tester.pumpAndSettle();
 
-    expect(find.text('Вчимо іврит'), findsOneWidget);
-    expect(find.text('Мобільна версія'), findsOneWidget);
+    expect(find.text('Профіль'), findsWidgets);
+    expect(
+      find.text(
+        'Вчимо іврит: слова, практика, довідник і читання в одному навчальному просторі.',
+      ),
+      findsOneWidget,
+    );
 
     await tester.tap(find.byIcon(Icons.school_outlined));
     await tester.pumpAndSettle();
@@ -284,6 +290,72 @@ void main() {
       find.text('Нічний режим: Нічний режим доступний у Pro-версії.'),
       findsOneWidget,
     );
+  });
+
+  testWidgets('persists bottom navigation auto-hide setting', (
+    WidgetTester tester,
+  ) async {
+    await _useTallMobileViewport(tester);
+    final appShellSettingsStore = FakeAppShellSettingsStore();
+
+    await tester.pumpWidget(
+      HebrewFlutterApp(
+        loader: FakeLearningBundleLoader(),
+        documentLoader: FakeLessonDocumentLoader(),
+        progressStore: FakeWordProgressStore(),
+        guideProgressStore: FakeGuideProgressStore(),
+        readingProgressStore: FakeReadingProgressStore(),
+        appShellSettingsStore: appShellSettingsStore,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.person_outline_rounded));
+    await tester.pumpAndSettle();
+
+    await tester.scrollUntilVisible(
+      find.byKey(const ValueKey('auto-hide-bottom-nav-switch')),
+      500,
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('auto-hide-bottom-nav-switch')));
+    await tester.pumpAndSettle();
+
+    expect(appShellSettingsStore.savedAutoHideBottomNavValues, [false]);
+  });
+
+  testWidgets('restores disabled bottom navigation auto-hide setting', (
+    WidgetTester tester,
+  ) async {
+    await _useTallMobileViewport(tester);
+
+    await tester.pumpWidget(
+      HebrewFlutterApp(
+        loader: FakeLearningBundleLoader(),
+        documentLoader: FakeLessonDocumentLoader(),
+        progressStore: FakeWordProgressStore(),
+        guideProgressStore: FakeGuideProgressStore(),
+        readingProgressStore: FakeReadingProgressStore(),
+        appShellSettingsStore: FakeAppShellSettingsStore(
+          initialAutoHideBottomNavOnScroll: false,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.drag(
+      find
+          .descendant(
+            of: find.byType(HomeScreen),
+            matching: find.byType(ListView),
+          )
+          .first,
+      const Offset(0, -500),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const ValueKey('app-shell-bottom-nav')), findsOneWidget);
+    expect(find.byKey(const ValueKey('app-shell-nav-handle')), findsNothing);
   });
 
   testWidgets(
@@ -1394,6 +1466,23 @@ class FakeThemeModeStore implements ThemeModeStore {
   @override
   Future<void> save(AppThemePreference preference) async {
     savedPreferences.add(preference);
+  }
+}
+
+class FakeAppShellSettingsStore implements AppShellSettingsStore {
+  FakeAppShellSettingsStore({this.initialAutoHideBottomNavOnScroll = true});
+
+  final bool initialAutoHideBottomNavOnScroll;
+  final List<bool> savedAutoHideBottomNavValues = <bool>[];
+
+  @override
+  Future<bool> loadAutoHideBottomNavOnScroll() async {
+    return initialAutoHideBottomNavOnScroll;
+  }
+
+  @override
+  Future<void> saveAutoHideBottomNavOnScroll(bool enabled) async {
+    savedAutoHideBottomNavValues.add(enabled);
   }
 }
 

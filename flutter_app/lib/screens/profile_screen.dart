@@ -30,10 +30,6 @@ class ProfileScreen extends StatelessWidget {
     required this.themePreference,
     required this.nightModeAccess,
     required this.onThemePreferenceChanged,
-    required this.preferWritingPractice,
-    required this.onPreferWritingPracticeChanged,
-    required this.preferredFlashcardDeckMode,
-    required this.onPreferredFlashcardDeckModeChanged,
     required this.onOpenWords,
     required this.onOpenFlashcards,
     required this.onOpenWriting,
@@ -56,10 +52,6 @@ class ProfileScreen extends StatelessWidget {
   final AppThemePreference themePreference;
   final FeatureAccessDecision nightModeAccess;
   final ValueChanged<AppThemePreference> onThemePreferenceChanged;
-  final bool preferWritingPractice;
-  final ValueChanged<bool> onPreferWritingPracticeChanged;
-  final FlashcardDeckMode preferredFlashcardDeckMode;
-  final ValueChanged<FlashcardDeckMode> onPreferredFlashcardDeckModeChanged;
   final VoidCallback onOpenWords;
   final ValueChanged<FlashcardDeckMode> onOpenFlashcards;
   final VoidCallback onOpenWriting;
@@ -79,18 +71,23 @@ class ProfileScreen extends StatelessWidget {
         32,
       ),
       children: [
-        _ProfileSystemSummaryCard(bundle: bundle),
+        _ProfileOverviewSection(bundle: bundle),
         const SizedBox(height: 16),
-        _ProfileProgressSection(
+        _ProfileNextActionsSection(
           bundle: bundle,
           guideLessonStatuses: guideLessonStatuses,
-          readingLessonStatuses: readingLessonStatuses,
           onOpenWords: onOpenWords,
           onOpenFlashcards: onOpenFlashcards,
           onOpenWriting: onOpenWriting,
           onOpenSprint: onOpenSprint,
           onOpenGuide: onOpenGuide,
           onOpenReading: onOpenReading,
+        ),
+        const SizedBox(height: 16),
+        _ProfileProgressSection(
+          bundle: bundle,
+          guideLessonStatuses: guideLessonStatuses,
+          readingLessonStatuses: readingLessonStatuses,
         ),
         const SizedBox(height: 16),
         _ProfileSettingsSection(
@@ -106,19 +103,14 @@ class ProfileScreen extends StatelessWidget {
           themePreference: themePreference,
           nightModeAccess: nightModeAccess,
           onThemePreferenceChanged: onThemePreferenceChanged,
-          preferWritingPractice: preferWritingPractice,
-          onPreferWritingPracticeChanged: onPreferWritingPracticeChanged,
-          preferredFlashcardDeckMode: preferredFlashcardDeckMode,
-          onPreferredFlashcardDeckModeChanged:
-              onPreferredFlashcardDeckModeChanged,
         ),
       ],
     );
   }
 }
 
-class _ProfileSystemSummaryCard extends StatelessWidget {
-  const _ProfileSystemSummaryCard({required this.bundle});
+class _ProfileOverviewSection extends StatelessWidget {
+  const _ProfileOverviewSection({required this.bundle});
 
   final LearningBundle bundle;
 
@@ -127,66 +119,20 @@ class _ProfileSystemSummaryCard extends StatelessWidget {
     final theme = Theme.of(context);
     final tokens = theme.appTokens;
 
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(28),
-        gradient: LinearGradient(
-          colors: [
-            tokens.heroGradientStart,
-            tokens.heroGradientMiddle,
-            tokens.heroGradientEnd,
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: tokens.heroShadowColor,
-            blurRadius: 28,
-            offset: const Offset(0, 14),
-          ),
-        ],
-      ),
+    return AppSectionCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-              color: tokens.heroChipBackground,
-              borderRadius: BorderRadius.circular(999),
-            ),
-            child: Text(
-              'Мобільна версія',
-              style: theme.textTheme.labelLarge?.copyWith(
-                color: tokens.heroText,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.3,
-              ),
-            ),
+          const AppPageHeader(
+            title: 'Профіль',
+            subtitle:
+                'Вчимо іврит: слова, практика, довідник і читання в одному навчальному просторі.',
           ),
           const SizedBox(height: 14),
           Text(
-            'Вчимо іврит',
-            style: theme.textTheme.headlineMedium?.copyWith(
-              color: tokens.heroText,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            'Слова, картки, довідник, дієслова й читання працюють з тією самою навчальною базою, що й десктопний застосунок.',
-            style: theme.textTheme.bodyLarge?.copyWith(
-              color: tokens.heroMutedText,
-              height: 1.45,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Text(
             '${bundle.words.length} слів доступні на цьому пристрої',
             style: theme.textTheme.titleMedium?.copyWith(
-              color: tokens.heroText,
+              color: theme.colorScheme.onSurface,
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -198,23 +144,17 @@ class _ProfileSystemSummaryCard extends StatelessWidget {
               AppStatChip(
                 label: 'Слова',
                 value: bundle.words.length,
-                accent: tokens.heroText,
-                backgroundColor: tokens.heroChipBackground,
-                textColor: tokens.heroText,
+                accent: tokens.successAccent,
               ),
               AppStatChip(
                 label: 'Читання',
                 value: bundle.readingLessons.length,
-                accent: tokens.heroText,
-                backgroundColor: tokens.heroChipBackground,
-                textColor: tokens.heroText,
+                accent: tokens.readingAccent,
               ),
               AppStatChip(
                 label: 'Дієслова',
                 value: bundle.verbLessons.length,
-                accent: tokens.heroText,
-                backgroundColor: tokens.heroChipBackground,
-                textColor: tokens.heroText,
+                accent: tokens.vocabularyAccent,
               ),
             ],
           ),
@@ -229,23 +169,11 @@ class _ProfileProgressSection extends StatelessWidget {
     required this.bundle,
     required this.guideLessonStatuses,
     required this.readingLessonStatuses,
-    required this.onOpenWords,
-    required this.onOpenFlashcards,
-    required this.onOpenWriting,
-    required this.onOpenSprint,
-    required this.onOpenGuide,
-    required this.onOpenReading,
   });
 
   final LearningBundle bundle;
   final Map<String, GuideLessonStatus> guideLessonStatuses;
   final Map<String, GuideLessonStatus> readingLessonStatuses;
-  final VoidCallback onOpenWords;
-  final ValueChanged<FlashcardDeckMode> onOpenFlashcards;
-  final VoidCallback onOpenWriting;
-  final VoidCallback onOpenSprint;
-  final VoidCallback onOpenGuide;
-  final VoidCallback onOpenReading;
 
   @override
   Widget build(BuildContext context) {
@@ -409,62 +337,91 @@ class _ProfileProgressSection extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 16),
-        AppSectionCard(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+      ],
+    );
+  }
+}
+
+class _ProfileNextActionsSection extends StatelessWidget {
+  const _ProfileNextActionsSection({
+    required this.bundle,
+    required this.guideLessonStatuses,
+    required this.onOpenWords,
+    required this.onOpenFlashcards,
+    required this.onOpenWriting,
+    required this.onOpenSprint,
+    required this.onOpenGuide,
+    required this.onOpenReading,
+  });
+
+  final LearningBundle bundle;
+  final Map<String, GuideLessonStatus> guideLessonStatuses;
+  final VoidCallback onOpenWords;
+  final ValueChanged<FlashcardDeckMode> onOpenFlashcards;
+  final VoidCallback onOpenWriting;
+  final VoidCallback onOpenSprint;
+  final VoidCallback onOpenGuide;
+  final VoidCallback onOpenReading;
+
+  @override
+  Widget build(BuildContext context) {
+    final study = StudyProgressSnapshot.fromWords(bundle.words);
+    final guide = LessonProgressSnapshot.fromLessons(
+      lessons: bundle.guideLessons,
+      lessonStatuses: guideLessonStatuses,
+    );
+
+    return AppSectionCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const AppPageHeader(
+            title: 'Що далі',
+            subtitle: 'Рекомендації на основі вашого прогресу.',
+          ),
+          const SizedBox(height: 18),
+          AppActionWrap(
             children: [
-              const AppPageHeader(
-                title: 'Що далі',
-                subtitle: 'Рекомендації на основі вашого прогресу.',
+              FilledButton.icon(
+                onPressed: study.needsReview > 0
+                    ? () => onOpenFlashcards(FlashcardDeckMode.needsReview)
+                    : onOpenWords,
+                icon: Icon(
+                  study.needsReview > 0
+                      ? Icons.refresh_rounded
+                      : Icons.translate_rounded,
+                ),
+                label: Text(
+                  study.needsReview > 0 ? 'Повторити слова' : 'Відкрити слова',
+                ),
               ),
-              const SizedBox(height: 18),
-              AppActionWrap(
-                children: [
-                  FilledButton.icon(
-                    onPressed: study.needsReview > 0
-                        ? () => onOpenFlashcards(FlashcardDeckMode.needsReview)
-                        : onOpenWords,
-                    icon: Icon(
-                      study.needsReview > 0
-                          ? Icons.refresh_rounded
-                          : Icons.translate_rounded,
-                    ),
-                    label: Text(
-                      study.needsReview > 0
-                          ? 'Повторити слова'
-                          : 'Відкрити слова',
-                    ),
-                  ),
-                  OutlinedButton.icon(
-                    onPressed: onOpenWriting,
-                    icon: const Icon(Icons.edit_rounded),
-                    label: const Text('До письма'),
-                  ),
-                  OutlinedButton.icon(
-                    onPressed: onOpenSprint,
-                    icon: const Icon(Icons.timer_rounded),
-                    label: const Text('Спринт'),
-                  ),
-                  OutlinedButton.icon(
-                    onPressed: guide.studying > 0 ? onOpenGuide : onOpenReading,
-                    icon: Icon(
-                      guide.studying > 0
-                          ? Icons.menu_book_rounded
-                          : Icons.auto_stories_rounded,
-                    ),
-                    label: Text(
-                      guide.studying > 0
-                          ? 'Продовжити довідник'
-                          : 'Продовжити читання',
-                    ),
-                  ),
-                ],
+              OutlinedButton.icon(
+                onPressed: onOpenWriting,
+                icon: const Icon(Icons.edit_rounded),
+                label: const Text('До письма'),
+              ),
+              OutlinedButton.icon(
+                onPressed: onOpenSprint,
+                icon: const Icon(Icons.timer_rounded),
+                label: const Text('Спринт'),
+              ),
+              OutlinedButton.icon(
+                onPressed: guide.studying > 0 ? onOpenGuide : onOpenReading,
+                icon: Icon(
+                  guide.studying > 0
+                      ? Icons.menu_book_rounded
+                      : Icons.auto_stories_rounded,
+                ),
+                label: Text(
+                  guide.studying > 0
+                      ? 'Продовжити довідник'
+                      : 'Продовжити читання',
+                ),
               ),
             ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -482,10 +439,6 @@ class _ProfileSettingsSection extends StatelessWidget {
     required this.themePreference,
     required this.nightModeAccess,
     required this.onThemePreferenceChanged,
-    required this.preferWritingPractice,
-    required this.onPreferWritingPracticeChanged,
-    required this.preferredFlashcardDeckMode,
-    required this.onPreferredFlashcardDeckModeChanged,
   });
 
   final bool autoHideBottomNavOnScroll;
@@ -499,10 +452,6 @@ class _ProfileSettingsSection extends StatelessWidget {
   final AppThemePreference themePreference;
   final FeatureAccessDecision nightModeAccess;
   final ValueChanged<AppThemePreference> onThemePreferenceChanged;
-  final bool preferWritingPractice;
-  final ValueChanged<bool> onPreferWritingPracticeChanged;
-  final FlashcardDeckMode preferredFlashcardDeckMode;
-  final ValueChanged<FlashcardDeckMode> onPreferredFlashcardDeckModeChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -519,7 +468,7 @@ class _ProfileSettingsSection extends StatelessWidget {
               const AppPageHeader(
                 title: 'Налаштування',
                 subtitle:
-                    'Ці параметри діють у поточній сесії. Тут можна змінити поведінку навігації та формат практики, який відкриватиметься за замовчуванням.',
+                    'Поведінка інтерфейсу та AI-функції застосовуються до всього застосунку.',
               ),
               const SizedBox(height: 18),
               Text(
@@ -578,6 +527,7 @@ class _ProfileSettingsSection extends StatelessWidget {
                     'Під час довгого перегляду сторінки вниз нижня панель тимчасово ховається, щоб звільнити більше місця на екрані.',
                 value: autoHideBottomNavOnScroll,
                 onChanged: onAutoHideBottomNavOnScrollChanged,
+                switchKey: const ValueKey('auto-hide-bottom-nav-switch'),
               ),
               const SizedBox(height: 12),
               _SettingsSwitchTile(
@@ -596,83 +546,6 @@ class _ProfileSettingsSection extends StatelessWidget {
                 value: aiPracticeTextsEnabled,
                 onChanged: onAiPracticeTextsEnabledChanged,
                 isLocked: !aiPracticeTextsAccess.isEnabled,
-              ),
-              const SizedBox(height: 18),
-              Text(
-                'Формат практики за замовчуванням',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                'Оберіть, що відкриватиметься після натискання кнопки «Практика» в профілі.',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: tokens.secondaryText,
-                  height: 1.45,
-                ),
-              ),
-              const SizedBox(height: 12),
-              AppActionWrap(
-                children: [
-                  _SettingsChoiceChip(
-                    label: 'Картки',
-                    isSelected: !preferWritingPractice,
-                    onTap: () => onPreferWritingPracticeChanged(false),
-                  ),
-                  _SettingsChoiceChip(
-                    label: 'Письмо',
-                    isSelected: preferWritingPractice,
-                    onTap: () => onPreferWritingPracticeChanged(true),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 18),
-              Text(
-                'Набір карток за замовчуванням',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                'Цей вибір застосовується, якщо за замовчуванням відкриваються картки.',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: tokens.secondaryText,
-                  height: 1.45,
-                ),
-              ),
-              const SizedBox(height: 12),
-              AppActionWrap(
-                children: [
-                  _SettingsChoiceChip(
-                    label: 'Усі слова',
-                    isSelected:
-                        preferredFlashcardDeckMode ==
-                        FlashcardDeckMode.allWords,
-                    onTap: () => onPreferredFlashcardDeckModeChanged(
-                      FlashcardDeckMode.allWords,
-                    ),
-                  ),
-                  _SettingsChoiceChip(
-                    label: 'У контексті',
-                    isSelected:
-                        preferredFlashcardDeckMode ==
-                        FlashcardDeckMode.withContexts,
-                    onTap: () => onPreferredFlashcardDeckModeChanged(
-                      FlashcardDeckMode.withContexts,
-                    ),
-                  ),
-                  _SettingsChoiceChip(
-                    label: 'На повторення',
-                    isSelected:
-                        preferredFlashcardDeckMode ==
-                        FlashcardDeckMode.needsReview,
-                    onTap: () => onPreferredFlashcardDeckModeChanged(
-                      FlashcardDeckMode.needsReview,
-                    ),
-                  ),
-                ],
               ),
             ],
           ),
@@ -751,6 +624,7 @@ class _SettingsSwitchTile extends StatelessWidget {
     required this.value,
     this.onChanged,
     this.isLocked = false,
+    this.switchKey,
   });
 
   final String title;
@@ -758,6 +632,7 @@ class _SettingsSwitchTile extends StatelessWidget {
   final bool value;
   final ValueChanged<bool>? onChanged;
   final bool isLocked;
+  final Key? switchKey;
 
   @override
   Widget build(BuildContext context) {
@@ -802,7 +677,7 @@ class _SettingsSwitchTile extends StatelessWidget {
             Icon(Icons.lock_rounded, color: tokens.mutedText, size: 20),
             const SizedBox(width: 8),
           ],
-          Switch.adaptive(value: value, onChanged: onChanged),
+          Switch.adaptive(key: switchKey, value: value, onChanged: onChanged),
         ],
       ),
     );

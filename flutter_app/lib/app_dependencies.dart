@@ -5,6 +5,7 @@ import 'services/ai_context_service.dart';
 import 'services/ai_context_settings_store.dart';
 import 'services/ai_practice_text_service.dart';
 import 'services/ai_practice_text_settings_store.dart';
+import 'services/app_shell_settings_store.dart';
 import 'services/audio_playback_awareness.dart';
 import 'services/feature_access_service.dart';
 import 'services/guide_progress_store.dart';
@@ -32,6 +33,7 @@ class AppDependencies {
     this.aiContextSettingsStore,
     this.aiPracticeTextService,
     this.aiPracticeTextSettingsStore,
+    this.appShellSettingsStore,
     this.audioPlayerFactory,
     this.audioPlaybackAwarenessFactory,
     this.themeModeStore,
@@ -49,6 +51,7 @@ class AppDependencies {
   final AiContextSettingsStore? aiContextSettingsStore;
   final AiPracticeTextService? aiPracticeTextService;
   final AiPracticeTextSettingsStore? aiPracticeTextSettingsStore;
+  final AppShellSettingsStore? appShellSettingsStore;
   final CreateVerbAudioPlayer? audioPlayerFactory;
   final CreateAudioPlaybackAwareness? audioPlaybackAwarenessFactory;
   final ThemeModeStore? themeModeStore;
@@ -96,6 +99,11 @@ class AppDependencies {
         const SharedPreferencesAiPracticeTextSettingsStore();
   }
 
+  AppShellSettingsStore resolveAppShellSettingsStore() {
+    return appShellSettingsStore ??
+        const SharedPreferencesAppShellSettingsStore();
+  }
+
   CreateVerbAudioPlayer resolveAudioPlayerFactory() {
     return audioPlayerFactory ?? createAssetVerbAudioPlayer;
   }
@@ -117,6 +125,7 @@ class AppDependencies {
     AiContextSettingsStore? aiContextSettingsStore,
     AiPracticeTextService? aiPracticeTextService,
     AiPracticeTextSettingsStore? aiPracticeTextSettingsStore,
+    AppShellSettingsStore? appShellSettingsStore,
     CreateVerbAudioPlayer? audioPlayerFactory,
     CreateAudioPlaybackAwareness? audioPlaybackAwarenessFactory,
     ThemeModeStore? themeModeStore,
@@ -137,6 +146,8 @@ class AppDependencies {
           aiPracticeTextService ?? this.aiPracticeTextService,
       aiPracticeTextSettingsStore:
           aiPracticeTextSettingsStore ?? this.aiPracticeTextSettingsStore,
+      appShellSettingsStore:
+          appShellSettingsStore ?? this.appShellSettingsStore,
       audioPlayerFactory: audioPlayerFactory ?? this.audioPlayerFactory,
       audioPlaybackAwarenessFactory:
           audioPlaybackAwarenessFactory ?? this.audioPlaybackAwarenessFactory,

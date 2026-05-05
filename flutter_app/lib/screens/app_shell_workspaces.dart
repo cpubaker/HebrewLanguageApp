@@ -8,8 +8,6 @@ import '../services/theme_mode_store.dart';
 import 'profile_screen.dart';
 import 'workspace_screen.dart';
 
-enum AppShellProfileSection { overview, progress, settings }
-
 class AppShellLearnWorkspace extends StatelessWidget {
   const AppShellLearnWorkspace({
     super.key,
@@ -72,7 +70,6 @@ class AppShellLearnWorkspace extends StatelessWidget {
 class AppShellPracticeWorkspace extends StatelessWidget {
   const AppShellPracticeWorkspace({
     super.key,
-    required this.preferredFlashcardDeckMode,
     required this.onOpenFlashcards,
     required this.onOpenWriting,
     required this.onOpenWritingConstructor,
@@ -81,7 +78,6 @@ class AppShellPracticeWorkspace extends StatelessWidget {
     required this.onOpenAiPracticeText,
   });
 
-  final FlashcardDeckMode preferredFlashcardDeckMode;
   final ValueChanged<FlashcardDeckMode> onOpenFlashcards;
   final VoidCallback onOpenWriting;
   final VoidCallback onOpenWritingConstructor;
@@ -102,7 +98,7 @@ class AppShellPracticeWorkspace extends StatelessWidget {
               'Швидке повторення перекладу, контексту і наборів на повторення.',
           icon: Icons.style_rounded,
           accent: const Color(0xFF0F766E),
-          onTap: () => onOpenFlashcards(preferredFlashcardDeckMode),
+          onTap: () => onOpenFlashcards(FlashcardDeckMode.allWords),
         ),
         WorkspaceShortcut(
           title: 'Написання',
@@ -150,8 +146,6 @@ class AppShellProfileWorkspace extends StatelessWidget {
   const AppShellProfileWorkspace({
     super.key,
     required this.bundle,
-    required this.selectedSection,
-    required this.onSectionSelected,
     required this.guideLessonStatuses,
     required this.readingLessonStatuses,
     required this.autoHideBottomNavOnScroll,
@@ -165,14 +159,6 @@ class AppShellProfileWorkspace extends StatelessWidget {
     required this.themePreference,
     required this.nightModeAccess,
     required this.onThemePreferenceChanged,
-    required this.preferWritingPractice,
-    required this.onPreferWritingPracticeChanged,
-    required this.preferredFlashcardDeckMode,
-    required this.onPreferredFlashcardDeckModeChanged,
-    required this.onSelectHome,
-    required this.onSelectLearn,
-    required this.onOpenPreferredPractice,
-    required this.onOpenRepetition,
     required this.onOpenSprint,
     required this.onOpenWords,
     required this.onOpenFlashcards,
@@ -182,8 +168,6 @@ class AppShellProfileWorkspace extends StatelessWidget {
   });
 
   final LearningBundle bundle;
-  final AppShellProfileSection selectedSection;
-  final ValueChanged<AppShellProfileSection> onSectionSelected;
   final Map<String, GuideLessonStatus> guideLessonStatuses;
   final Map<String, GuideLessonStatus> readingLessonStatuses;
   final bool autoHideBottomNavOnScroll;
@@ -197,14 +181,6 @@ class AppShellProfileWorkspace extends StatelessWidget {
   final AppThemePreference themePreference;
   final FeatureAccessDecision nightModeAccess;
   final ValueChanged<AppThemePreference> onThemePreferenceChanged;
-  final bool preferWritingPractice;
-  final ValueChanged<bool> onPreferWritingPracticeChanged;
-  final FlashcardDeckMode preferredFlashcardDeckMode;
-  final ValueChanged<FlashcardDeckMode> onPreferredFlashcardDeckModeChanged;
-  final VoidCallback onSelectHome;
-  final VoidCallback onSelectLearn;
-  final VoidCallback onOpenPreferredPractice;
-  final VoidCallback onOpenRepetition;
   final VoidCallback onOpenSprint;
   final VoidCallback onOpenWords;
   final ValueChanged<FlashcardDeckMode> onOpenFlashcards;
@@ -229,10 +205,6 @@ class AppShellProfileWorkspace extends StatelessWidget {
       themePreference: themePreference,
       nightModeAccess: nightModeAccess,
       onThemePreferenceChanged: onThemePreferenceChanged,
-      preferWritingPractice: preferWritingPractice,
-      onPreferWritingPracticeChanged: onPreferWritingPracticeChanged,
-      preferredFlashcardDeckMode: preferredFlashcardDeckMode,
-      onPreferredFlashcardDeckModeChanged: onPreferredFlashcardDeckModeChanged,
       onOpenWords: onOpenWords,
       onOpenFlashcards: onOpenFlashcards,
       onOpenWriting: onOpenWriting,

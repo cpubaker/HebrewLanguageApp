@@ -12,6 +12,7 @@ import '../services/ai_context_settings_store.dart';
 import '../services/ai_practice_text_service.dart';
 import '../services/ai_practice_text_settings_store.dart';
 import '../services/ai_learning_helpers.dart';
+import '../services/app_shell_settings_store.dart';
 import '../services/audio_playback_awareness.dart';
 import '../services/feature_access_service.dart';
 import '../services/flashcard_session.dart';
@@ -53,6 +54,7 @@ class AppShellScreen extends StatefulWidget {
     required this.aiContextSettingsStore,
     required this.aiPracticeTextService,
     required this.aiPracticeTextSettingsStore,
+    required this.appShellSettingsStore,
     required this.sprintStatsStore,
     required this.audioPlayerFactory,
     required this.themePreference,
@@ -67,6 +69,7 @@ class AppShellScreen extends StatefulWidget {
   final AiContextSettingsStore aiContextSettingsStore;
   final AiPracticeTextService aiPracticeTextService;
   final AiPracticeTextSettingsStore aiPracticeTextSettingsStore;
+  final AppShellSettingsStore appShellSettingsStore;
   final SprintStatsStore sprintStatsStore;
   final CreateVerbAudioPlayer audioPlayerFactory;
   final CreateAudioPlaybackAwareness audioPlaybackAwarenessFactory;
@@ -101,12 +104,9 @@ class _AppShellScreenState extends State<AppShellScreen> {
       LatestRequestTracker();
   final LatestRequestTracker _wordPersistenceRequests = LatestRequestTracker();
   AppRootArea _selectedArea = AppRootArea.home;
-  AppShellProfileSection _profileSection = AppShellProfileSection.overview;
   bool _autoHideBottomNavOnScroll = true;
   bool _aiWordContextsEnabled = false;
   bool _aiPracticeTextsEnabled = false;
-  bool _preferWritingPractice = false;
-  FlashcardDeckMode _preferredFlashcardDeckMode = FlashcardDeckMode.allWords;
   bool _isBottomNavVisible = true;
   bool? _pendingBottomNavVisibility;
 
@@ -114,8 +114,24 @@ class _AppShellScreenState extends State<AppShellScreen> {
   void initState() {
     super.initState();
     _bundleFuture = _loadBundle();
+    unawaited(_restoreAutoHideBottomNavOnScroll());
     unawaited(_restoreAiWordContextsEnabled());
     unawaited(_restoreAiPracticeTextsEnabled());
+  }
+
+  Future<void> _restoreAutoHideBottomNavOnScroll() async {
+    final enabled = await widget.appShellSettingsStore
+        .loadAutoHideBottomNavOnScroll();
+    if (!mounted || enabled == _autoHideBottomNavOnScroll) {
+      return;
+    }
+
+    setState(() {
+      _autoHideBottomNavOnScroll = enabled;
+      if (!enabled) {
+        _isBottomNavVisible = true;
+      }
+    });
   }
 
   Future<void> _restoreAiWordContextsEnabled() async {
@@ -668,14 +684,6 @@ class _AppShellScreenState extends State<AppShellScreen> {
     );
   }
 
-  void _openProfileSection(AppShellProfileSection section) {
-    setState(() {
-      _profileSection = section;
-      _selectedArea = AppRootArea.profile;
-      _isBottomNavVisible = true;
-    });
-  }
-
   void _setBottomNavVisibility(bool isVisible) {
     if (_isBottomNavVisible == isVisible || !mounted) {
       return;
@@ -755,6 +763,9 @@ class _AppShellScreenState extends State<AppShellScreen> {
         _isBottomNavVisible = true;
       }
     });
+    unawaited(
+      widget.appShellSettingsStore.saveAutoHideBottomNavOnScroll(value),
+    );
   }
 
   void _setAiWordContextsEnabled(bool value) {
@@ -785,18 +796,6 @@ class _AppShellScreenState extends State<AppShellScreen> {
       _aiPracticeTextsEnabled = value;
     });
     unawaited(widget.aiPracticeTextSettingsStore.saveEnabled(value));
-  }
-
-  void _setPreferWritingPractice(bool value) {
-    setState(() {
-      _preferWritingPractice = value;
-    });
-  }
-
-  void _setPreferredFlashcardDeckMode(FlashcardDeckMode mode) {
-    setState(() {
-      _preferredFlashcardDeckMode = mode;
-    });
   }
 
   Future<void> _persistWordProgress({
@@ -947,8 +946,6 @@ class _AppShellScreenState extends State<AppShellScreen> {
                           onOpenReading: _openReading,
                         ),
                         AppShellPracticeWorkspace(
-                          preferredFlashcardDeckMode:
-                              _preferredFlashcardDeckMode,
                           onOpenFlashcards: _openFlashcards,
                           onOpenWriting: () => _openWritingPractice(),
                           onOpenWritingConstructor: () => _openWritingPractice(
@@ -960,8 +957,6 @@ class _AppShellScreenState extends State<AppShellScreen> {
                         ),
                         AppShellProfileWorkspace(
                           bundle: bundle,
-                          selectedSection: _profileSection,
-                          onSectionSelected: _openProfileSection,
                           guideLessonStatuses: _guideLessonStatuses,
                           readingLessonStatuses: _readingLessonStatuses,
                           autoHideBottomNavOnScroll: _autoHideBottomNavOnScroll,
@@ -982,29 +977,10 @@ class _AppShellScreenState extends State<AppShellScreen> {
                               .accessFor(AppFeature.nightMode),
                           onThemePreferenceChanged:
                               _handleThemePreferenceChangeRequested,
-                          preferWritingPractice: _preferWritingPractice,
-                          onPreferWritingPracticeChanged:
-                              _setPreferWritingPractice,
-                          preferredFlashcardDeckMode:
-                              _preferredFlashcardDeckMode,
-                          onPreferredFlashcardDeckModeChanged:
-                              _setPreferredFlashcardDeckMode,
-                          onSelectHome: () =>
-                              _selectArea(AppRootArea.home.index),
-                          onSelectLearn: () =>
-                              _selectArea(AppRootArea.learn.index),
-                          onOpenPreferredPractice: () {
-                            if (_preferWritingPractice) {
-                              _openWritingPractice();
-                            } else {
-                              _openFlashcards(_preferredFlashcardDeckMode);
-                            }
-                          },
-                          onOpenRepetition: _openRepetition,
-                          onOpenSprint: _openSprint,
                           onOpenWords: _openLearnWords,
                           onOpenFlashcards: _openFlashcards,
                           onOpenWriting: () => _openWritingPractice(),
+                          onOpenSprint: _openSprint,
                           onOpenGuide: _openGuide,
                           onOpenReading: _openReading,
                         ),
