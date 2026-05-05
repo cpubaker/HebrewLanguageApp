@@ -828,30 +828,40 @@ class _WordStatusPresentation {
   final Color accent;
 }
 
-class _InlineWordAudioButton extends StatefulWidget {
-  const _InlineWordAudioButton({
-    required this.word,
-    required this.audioPlayerFactory,
-    required this.audioPlaybackAwareness,
-  });
-
-  final LearningWord word;
-  final CreateLearningAudioPlayer audioPlayerFactory;
-  final AudioPlaybackAwareness audioPlaybackAwareness;
-
-  @override
-  State<_InlineWordAudioButton> createState() => _InlineWordAudioButtonState();
-}
-
-class _InlineWordAudioButtonState extends State<_InlineWordAudioButton> {
-  late final LearningAudioPlayer _audioPlayer = widget.audioPlayerFactory();
+abstract class _WordAudioButtonState<T extends StatefulWidget>
+    extends State<T> {
+  late final LearningAudioPlayer _audioPlayer = audioPlayerFactory();
   StreamSubscription<bool>? _playbackSubscription;
   bool _isCheckingAvailability = true;
   bool _hasAudio = false;
   bool _isPlaying = false;
   bool _isBusy = false;
 
-  String get _audioAssetPath => widget.word.audioAssetPath ?? '';
+  AudioPlaybackAwareness get audioPlaybackAwareness;
+
+  CreateLearningAudioPlayer get audioPlayerFactory;
+
+  LearningWord get word;
+
+  bool get clearPlayingAfterStop => false;
+
+  bool get prepareAudioBeforeEnable => false;
+
+  bool get _isAudioEnabled => _hasAudio && !_isBusy;
+
+  String get _audioAssetPath => word.audioAssetPath ?? '';
+
+  String get _audioTooltip {
+    if (_isCheckingAvailability) {
+      return 'Перевіряємо аудіо слова';
+    }
+
+    if (!_hasAudio) {
+      return 'Аудіо для слова ще недоступне';
+    }
+
+    return _isPlaying ? 'Зупинити вимову слова' : 'Увімкнути вимову слова';
+  }
 
   @override
   void initState() {
@@ -869,7 +879,7 @@ class _InlineWordAudioButtonState extends State<_InlineWordAudioButton> {
   }
 
   Future<void> _checkAudioAvailability() async {
-    final audioAssetPath = widget.word.audioAssetPath;
+    final audioAssetPath = word.audioAssetPath;
     if (audioAssetPath == null || audioAssetPath.trim().isEmpty) {
       if (!mounted) {
         return;
@@ -882,7 +892,15 @@ class _InlineWordAudioButtonState extends State<_InlineWordAudioButton> {
       return;
     }
 
-    final hasAudio = await _audioPlayer.assetExists(audioAssetPath);
+    var hasAudio = await _audioPlayer.assetExists(audioAssetPath);
+    if (hasAudio && prepareAudioBeforeEnable) {
+      try {
+        hasAudio = await _audioPlayer.prepareAsset(audioAssetPath);
+      } catch (_) {
+        hasAudio = false;
+      }
+    }
+
     if (!mounted) {
       return;
     }
@@ -906,18 +924,29 @@ class _InlineWordAudioButtonState extends State<_InlineWordAudioButton> {
       } else {
         await showAudioPlaybackHintIfNeeded(
           context: context,
-          awareness: widget.audioPlaybackAwareness,
+          awareness: audioPlaybackAwareness,
         );
         await _audioPlayer.playAsset(_audioAssetPath);
       }
-    } catch (_) {
+
+      if (!mounted) {
+        return;
+      }
+
+      if (wasPlaying && clearPlayingAfterStop) {
+        setState(() {
+          _isPlaying = false;
+        });
+      }
+    } catch (error) {
       if (!mounted) {
         return;
       }
 
       setState(() {
-        _hasAudio = false;
+        updatePlaybackErrorState(error);
       });
+      showPlaybackErrorFeedback(error);
     } finally {
       if (mounted) {
         setState(() {
@@ -927,6 +956,10 @@ class _InlineWordAudioButtonState extends State<_InlineWordAudioButton> {
     }
   }
 
+  void updatePlaybackErrorState(Object error) {}
+
+  void showPlaybackErrorFeedback(Object error) {}
+
   @override
   void dispose() {
     unawaited(_playbackSubscription?.cancel());
@@ -934,25 +967,52 @@ class _InlineWordAudioButtonState extends State<_InlineWordAudioButton> {
     unawaited(_audioPlayer.dispose());
     super.dispose();
   }
+}
+
+class _InlineWordAudioButton extends StatefulWidget {
+  const _InlineWordAudioButton({
+    required this.word,
+    required this.audioPlayerFactory,
+    required this.audioPlaybackAwareness,
+  });
+
+  final LearningWord word;
+  final CreateLearningAudioPlayer audioPlayerFactory;
+  final AudioPlaybackAwareness audioPlaybackAwareness;
+
+  @override
+  State<_InlineWordAudioButton> createState() => _InlineWordAudioButtonState();
+}
+
+class _InlineWordAudioButtonState
+    extends _WordAudioButtonState<_InlineWordAudioButton> {
+  @override
+  AudioPlaybackAwareness get audioPlaybackAwareness =>
+      widget.audioPlaybackAwareness;
+
+  @override
+  CreateLearningAudioPlayer get audioPlayerFactory => widget.audioPlayerFactory;
+
+  @override
+  LearningWord get word => widget.word;
+
+  @override
+  void updatePlaybackErrorState(Object error) {
+    _hasAudio = false;
+  }
 
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
-    final isEnabled = _hasAudio && !_isBusy;
-    final tooltip = _isCheckingAvailability
-        ? 'Перевіряємо аудіо слова'
-        : _hasAudio
-        ? (_isPlaying ? 'Зупинити вимову слова' : 'Увімкнути вимову слова')
-        : 'Аудіо для слова ще недоступне';
 
     return Material(
       color: tokens.vocabularyAccent.withValues(alpha: 0.12),
       borderRadius: BorderRadius.circular(999),
       child: InkWell(
-        onTap: isEnabled ? _togglePlayback : null,
+        onTap: _isAudioEnabled ? _togglePlayback : null,
         borderRadius: BorderRadius.circular(999),
         child: Tooltip(
-          message: tooltip,
+          message: _audioTooltip,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             child: Row(
@@ -1012,127 +1072,39 @@ class _WordDetailsAudioButton extends StatefulWidget {
       _WordDetailsAudioButtonState();
 }
 
-class _WordDetailsAudioButtonState extends State<_WordDetailsAudioButton> {
-  late final LearningAudioPlayer _audioPlayer = widget.audioPlayerFactory();
-  StreamSubscription<bool>? _playbackSubscription;
-  bool _isCheckingAvailability = true;
-  bool _hasAudio = false;
-  bool _isPlaying = false;
-  bool _isBusy = false;
-
-  String get _audioAssetPath => widget.word.audioAssetPath ?? '';
+class _WordDetailsAudioButtonState
+    extends _WordAudioButtonState<_WordDetailsAudioButton> {
+  @override
+  AudioPlaybackAwareness get audioPlaybackAwareness =>
+      widget.audioPlaybackAwareness;
 
   @override
-  void initState() {
-    super.initState();
-    _playbackSubscription = _audioPlayer.isPlayingStream.listen((isPlaying) {
-      if (!mounted) {
-        return;
-      }
+  CreateLearningAudioPlayer get audioPlayerFactory => widget.audioPlayerFactory;
 
-      setState(() {
-        _isPlaying = isPlaying;
-      });
-    });
-    unawaited(_checkAudioAvailability());
-  }
+  @override
+  bool get clearPlayingAfterStop => true;
 
-  Future<void> _checkAudioAvailability() async {
-    final audioAssetPath = widget.word.audioAssetPath;
-    if (audioAssetPath == null || audioAssetPath.trim().isEmpty) {
-      if (!mounted) {
-        return;
-      }
+  @override
+  bool get prepareAudioBeforeEnable => true;
 
-      setState(() {
-        _hasAudio = false;
-        _isCheckingAvailability = false;
-      });
-      return;
-    }
+  @override
+  LearningWord get word => widget.word;
 
-    var hasAudio = await _audioPlayer.assetExists(audioAssetPath);
-    if (hasAudio) {
-      try {
-        hasAudio = await _audioPlayer.prepareAsset(audioAssetPath);
-      } catch (_) {
-        hasAudio = false;
-      }
-    }
-
-    if (!mounted) {
-      return;
-    }
-
-    setState(() {
-      _hasAudio = hasAudio;
-      _isCheckingAvailability = false;
-    });
-  }
-
-  Future<void> _togglePlayback() async {
-    final wasPlaying = _isPlaying;
-
-    setState(() {
-      _isBusy = true;
-    });
-
-    try {
-      if (wasPlaying) {
-        await _audioPlayer.stop();
-      } else {
-        await showAudioPlaybackHintIfNeeded(
-          context: context,
-          awareness: widget.audioPlaybackAwareness,
-        );
-        await _audioPlayer.playAsset(_audioAssetPath);
-      }
-
-      if (!mounted) {
-        return;
-      }
-
-      setState(() {
-        if (wasPlaying) {
-          _isPlaying = false;
-        }
-      });
-    } catch (_) {
-      if (!mounted) {
-        return;
-      }
-
-      setState(() {
-        _isPlaying = false;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Не вдалося відтворити вимову слова.')),
-      );
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isBusy = false;
-        });
-      }
-    }
+  @override
+  void updatePlaybackErrorState(Object error) {
+    _isPlaying = false;
   }
 
   @override
-  void dispose() {
-    unawaited(_playbackSubscription?.cancel());
-    unawaited(_audioPlayer.stop());
-    unawaited(_audioPlayer.dispose());
-    super.dispose();
+  void showPlaybackErrorFeedback(Object error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Не вдалося відтворити вимову слова.')),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
-    final tooltip = _isCheckingAvailability
-        ? 'Перевіряємо аудіо слова'
-        : _hasAudio
-        ? (_isPlaying ? 'Зупинити вимову слова' : 'Увімкнути вимову слова')
-        : 'Аудіо для слова ще недоступне';
 
     return Container(
       decoration: BoxDecoration(
@@ -1140,8 +1112,8 @@ class _WordDetailsAudioButtonState extends State<_WordDetailsAudioButton> {
         borderRadius: BorderRadius.circular(18),
       ),
       child: IconButton(
-        tooltip: tooltip,
-        onPressed: _hasAudio && !_isBusy ? _togglePlayback : null,
+        tooltip: _audioTooltip,
+        onPressed: _isAudioEnabled ? _togglePlayback : null,
         icon: _isBusy
             ? SizedBox(
                 width: 18,

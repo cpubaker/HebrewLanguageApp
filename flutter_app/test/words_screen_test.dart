@@ -45,6 +45,7 @@ void main() {
     expect(audioPlayer.playedAssets, [
       'assets/learning/input/audio/words/word_man.mp3',
     ]);
+    expect(audioPlayer.preparedAssets, isEmpty);
     expect(find.text('Вимова'), findsNothing);
   });
 
@@ -170,6 +171,54 @@ void main() {
     expect(find.text('Вимова'), findsNothing);
     expect(find.text('чоловік'), findsWidgets);
     expect(find.text('ID: word_man'), findsOneWidget);
+  });
+
+  testWidgets('prepares detail word audio before playback', (
+    WidgetTester tester,
+  ) async {
+    final audioPlayer = _FakeLearningAudioPlayer(assetExistsResult: true);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: WordsScreen(
+            words: const [
+              LearningWord(
+                wordId: 'word_man',
+                hebrew: 'איש',
+                english: 'man',
+                ukrainian: 'чоловік',
+                transcription: 'ish',
+                audioAssetPath:
+                    'assets/learning/input/audio/words/word_man.mp3',
+                correct: 0,
+                wrong: 0,
+              ),
+            ],
+            audioPlayerFactory: () => audioPlayer,
+          ),
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Відкрити слово'));
+    await tester.pumpAndSettle();
+
+    final detailAudioButton = find.byWidgetPredicate(
+      (widget) =>
+          widget is IconButton && widget.tooltip == 'Увімкнути вимову слова',
+    );
+
+    await tester.tap(detailAudioButton);
+    await tester.pumpAndSettle();
+
+    expect(audioPlayer.preparedAssets, [
+      'assets/learning/input/audio/words/word_man.mp3',
+    ]);
+    expect(audioPlayer.playedAssets, [
+      'assets/learning/input/audio/words/word_man.mp3',
+    ]);
   });
 
   testWidgets('cycles a new dictionary word through learning statuses', (
@@ -347,10 +396,15 @@ void main() {
 }
 
 class _FakeLearningAudioPlayer implements LearningAudioPlayer {
-  _FakeLearningAudioPlayer({required this.assetExistsResult});
+  _FakeLearningAudioPlayer({
+    required this.assetExistsResult,
+    bool? prepareAssetResult,
+  }) : prepareAssetResult = prepareAssetResult ?? assetExistsResult;
 
   final bool assetExistsResult;
+  final bool prepareAssetResult;
   final List<String> playedAssets = <String>[];
+  final List<String> preparedAssets = <String>[];
 
   @override
   Stream<bool> get isPlayingStream => const Stream<bool>.empty();
@@ -359,7 +413,10 @@ class _FakeLearningAudioPlayer implements LearningAudioPlayer {
   Future<bool> assetExists(String assetPath) async => assetExistsResult;
 
   @override
-  Future<bool> prepareAsset(String assetPath) async => assetExistsResult;
+  Future<bool> prepareAsset(String assetPath) async {
+    preparedAssets.add(assetPath);
+    return prepareAssetResult;
+  }
 
   @override
   Future<void> dispose() async {}

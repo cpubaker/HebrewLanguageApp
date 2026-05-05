@@ -104,6 +104,9 @@
 - Replaced `ReadingScreen` local reading accent and nearby muted/secondary
   literals with shared `AppThemeTokens`, including a dedicated night-mode
   `readingAccent`.
+- Collapsed duplicate `WordsScreen` inline/detail audio button lifecycle and
+  playback state into one private base state while preserving their different
+  rendering and preparation behavior.
 
 ## Next Slices
 
