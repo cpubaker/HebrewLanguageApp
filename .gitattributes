@@ -1,0 +1,14 @@
+* text=auto
+
+# Binary learning/media assets should not produce textual diffs.
+*.mp3 binary -diff
+*.png binary -diff
+*.jpg binary -diff
+*.jpeg binary -diff
+*.webp binary -diff
+*.ico binary -diff
+*.jar binary -diff
+*.jks binary -diff
+
+# The catalog is derived from markdown lesson filenames.
+flutter_app/assets/learning/input/lesson_catalog.json linguist-generated=true

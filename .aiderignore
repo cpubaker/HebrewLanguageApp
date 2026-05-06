@@ -1,0 +1,17 @@
+.git/
+.cache/
+.dart_tool/
+.pub-cache/
+.android-home/
+.android-sdk-home/
+.tool-home/
+
+flutter_app/.dart_tool/
+flutter_app/build/
+flutter_app/android/.gradle/
+
+*.log
+
+# Keep canonical markdown/json learning content available, but skip binary media.
+flutter_app/assets/learning/input/audio/
+flutter_app/assets/learning/input/images/
