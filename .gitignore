@@ -14,7 +14,6 @@ env/
 # Generated/local data artifacts
 data/output/
 data/runtime/
-flutter_app/assets/learning/input/**/AGENTS.md
 flutter_app/assets/learning/input/**/rewrite_candidates.md
 
 flutter_app/.dart_tool/

@@ -1,0 +1,73 @@
+# Input Content Instructions
+
+## Purpose
+- This folder contains the canonical learning content packaged by the Flutter
+  client.
+- For vocabulary work, treat `hebrew_words.json` plus `contexts/` as one
+  connected content set.
+- `data/input/` may still exist temporarily during migration, but new durable
+  learning-content edits belong here.
+
+## Vocabulary Scope
+- The active vocabulary source file is `hebrew_words.json`.
+- Shared example sentences live in `contexts/sentences.json`.
+- Word-to-context mapping lives in `contexts/word_context_links.json`.
+- The current vocabulary deck is intentionally mixed:
+  - concrete nouns and everyday words;
+  - functional words such as prepositions and particles;
+  - some grammar-facing entries whose gloss is explanatory rather than
+    dictionary-short.
+- Do not assume every entry is a simple one-word translation pair.
+
+## Working Rules
+- Inspect adjacent entries before changing vocabulary structure or style.
+- Keep `word_id` values stable unless the task explicitly requires a migration
+  and the linked context data is updated in the same change.
+- Preserve UTF-8 encoding for Hebrew and Ukrainian text.
+- Keep Hebrew spelling, Ukrainian gloss style, English fallback gloss style,
+  and transliteration style consistent with neighboring entries unless the task
+  is a deliberate normalization pass.
+- When editing or adding words, update context links and context sentences
+  together when needed so the deck stays internally consistent.
+- Prefer durable content edits over embedding personal study progress in source
+  files.
+
+## Data Shape
+- Vocabulary entries are source content and currently include:
+  - `word_id`
+  - `hebrew`
+  - `english`
+  - `ukrainian`
+  - `transcription`
+  - optional `audio_file` relative to `audio/`
+- Do not add runtime progress fields such as `correct`, `wrong`,
+  `last_correct`, `last_reviewed_at`, `last_review_correct`,
+  `writing_correct`, `writing_wrong`, or `writing_last_correct`.
+- User study progress belongs in Flutter runtime storage, not in learning
+  content files.
+
+## Context Rules
+- `sentences.json` is the canonical registry of reusable context sentences.
+- `word_context_links.json` should reference sentence IDs that exist in
+  `sentences.json`.
+- Prefer linking one sentence to multiple relevant words rather than duplicating
+  near-identical sentences.
+- Missing or partial context coverage should not break the loaders, but new
+  vocabulary work should preserve valid links whenever possible.
+
+## Editorial Guidance
+- Keep Ukrainian glosses concise when the entry is plain vocabulary.
+- Keep `english` as a compatibility fallback unless the task explicitly
+  migrates all consumers that still read it.
+- For function words or grammar-facing entries, a longer explanatory gloss is
+  acceptable when it clarifies usage.
+- Avoid creating accidental duplicates where the Hebrew form, transliteration,
+  and meaning overlap with an existing entry unless the distinction is
+  intentional and documented by the gloss.
+- If a change materially affects search, flashcards, or deck composition,
+  inspect the Flutter loaders and screens before finalizing the content update.
+
+## Validation
+- After changing shared vocabulary or contexts, run Flutter tests from
+  `flutter_app/`.
+- If the change affects loading or presentation, also run `flutter analyze`.
