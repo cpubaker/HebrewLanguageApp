@@ -23,6 +23,7 @@
 
 ## Where To Start
 - AI navigation map: `docs/ai_map.md`
+- Generated content index: `docs/content_index.json`
 - Flutter app entry: `flutter_app/lib/main.dart`
 - Flutter app root: `flutter_app/lib/app.dart`
 - Learning catalog generation: `flutter_app/tool/generate_learning_catalog.ps1`
@@ -40,7 +41,9 @@
 - After shared content changes:
   - `cd flutter_app`
   - `powershell -ExecutionPolicy Bypass -File .\\tool\\generate_learning_catalog.ps1`
-  - `flutter test`
+  - `cd ..`
+  - `python scripts\\generate_content_index.py`
+  - `python -m unittest discover -s tests -v`
 - After Python tooling, backend, or content validation changes:
   - `python -m unittest discover -s tests -v`
 

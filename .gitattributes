@@ -12,3 +12,4 @@
 
 # The catalog is derived from markdown lesson filenames.
 flutter_app/assets/learning/input/lesson_catalog.json linguist-generated=true
+docs/content_index.json linguist-generated=true

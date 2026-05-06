@@ -97,6 +97,7 @@ then open only the files needed for the task.
 
 ## Content Map
 
+- Compact generated index: `docs/content_index.json`.
 - Vocabulary source:
   `flutter_app/assets/learning/input/hebrew_words.json`.
 - Reusable context sentences:
@@ -134,14 +135,15 @@ then open only the files needed for the task.
 - Find asset paths: `rg -n "assets/learning|rootBundle|loadString" flutter_app/lib flutter_app/test`.
 - Find SharedPreferences stores:
   `rg -n "SharedPreferences|getString|setString" flutter_app/lib`.
-- Find content IDs: search `flutter_app/assets/learning/input/` first.
+- Find content IDs/titles: search `docs/content_index.json` first, then
+  `flutter_app/assets/learning/input/`.
 
 ## Validation Routes
 
 - After Flutter code changes:
   `cd flutter_app; flutter analyze; flutter test`.
 - After shared content changes:
-  `cd flutter_app; powershell -ExecutionPolicy Bypass -File .\tool\generate_learning_catalog.ps1; flutter test`.
+  `cd flutter_app; powershell -ExecutionPolicy Bypass -File .\tool\generate_learning_catalog.ps1; cd ..; python scripts\generate_content_index.py; python -m unittest discover -s tests -v`.
 - After asset packaging changes: also run `flutter test`.
 - After Python backend/tooling/content validation changes:
   `python -m unittest discover -s tests -v`.

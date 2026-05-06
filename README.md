@@ -18,6 +18,8 @@ regenerate the Flutter lesson catalog:
 ```powershell
 cd flutter_app
 powershell -ExecutionPolicy Bypass -File .\tool\generate_learning_catalog.ps1
+cd ..
+python scripts\generate_content_index.py
 ```
 
 ## Run The Flutter App

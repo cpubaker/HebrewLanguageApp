@@ -3,9 +3,12 @@ import re
 import unittest
 from pathlib import Path
 
+from scripts.generate_content_index import build_content_index
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 INPUT_ROOT = PROJECT_ROOT / "flutter_app" / "assets" / "learning" / "input"
+CONTENT_INDEX_PATH = PROJECT_ROOT / "docs" / "content_index.json"
 READING_LEVELS = {
     "beginner",
     "pre-intermediate",
@@ -153,6 +156,12 @@ class ContentIntegrityTests(unittest.TestCase):
                     sentence_ids,
                     f"Unknown context id {context_id} linked from {word_id}",
                 )
+
+    def test_content_index_is_current(self):
+        with CONTENT_INDEX_PATH.open("r", encoding="utf-8") as file:
+            content_index = json.load(file)
+
+        self.assertEqual(content_index, build_content_index(INPUT_ROOT))
 
 
 def _is_text_section_file(path):
