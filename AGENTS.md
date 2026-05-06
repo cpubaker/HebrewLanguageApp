@@ -23,6 +23,7 @@
 - In Flutter night mode, avoid pure white text; use shared warm muted theme tokens for foreground colors.
 
 ## Where To Start
+- AI navigation map: `docs/ai_map.md`
 - Flutter app entry: `flutter_app/lib/main.dart`
 - Flutter app root: `flutter_app/lib/app.dart`
 - Flutter asset sync: `flutter_app/tool/sync_learning_assets.ps1`
