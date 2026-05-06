@@ -237,7 +237,7 @@ class _WorkspaceShortcutTile extends StatelessWidget {
         child: Ink(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: shortcut.accent.withValues(alpha: 0.08),
+            color: tokens.accentSubtleSurface(shortcut.accent),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Row(
@@ -246,7 +246,7 @@ class _WorkspaceShortcutTile extends StatelessWidget {
                 width: 42,
                 height: 42,
                 decoration: BoxDecoration(
-                  color: shortcut.accent.withValues(alpha: 0.14),
+                  color: tokens.accentMediumSurface(shortcut.accent),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: Icon(shortcut.icon, color: shortcut.accent),

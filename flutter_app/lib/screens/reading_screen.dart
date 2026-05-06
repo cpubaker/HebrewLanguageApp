@@ -275,7 +275,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
             const SizedBox(height: 18),
             AppSectionCard(
               padding: const EdgeInsets.all(16),
-              borderColor: tokens.readingAccent.withValues(alpha: 0.16),
+              borderColor: tokens.accentSoftBorder(tokens.readingAccent),
               child: Row(
                 children: [
                   Icon(Icons.auto_stories_rounded, color: tokens.readingAccent),
@@ -562,7 +562,9 @@ class _ReadingDetailScreenState extends State<ReadingDetailScreen> {
                                 vertical: 6,
                               ),
                               decoration: BoxDecoration(
-                                color: heroForeground.withValues(alpha: 0.18),
+                                color: tokens.heroControlSurface(
+                                  heroForeground,
+                                ),
                                 borderRadius: BorderRadius.circular(999),
                               ),
                               child: Text(
@@ -591,7 +593,9 @@ class _ReadingDetailScreenState extends State<ReadingDetailScreen> {
                           _updateStatus(nextLessonProgressStatus(_status));
                         },
                         foregroundColor: heroForeground,
-                        backgroundColor: heroForeground.withValues(alpha: 0.18),
+                        backgroundColor: tokens.heroControlSurface(
+                          heroForeground,
+                        ),
                       ),
                     ],
                   ),
@@ -659,7 +663,7 @@ class _ReadingLessonCard extends StatelessWidget {
                 height: 44,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: statusTheme.color.withValues(alpha: 0.14),
+                  color: tokens.accentMediumSurface(statusTheme.color),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: Text(
@@ -842,7 +846,7 @@ class ReadingLevelSelector extends StatelessWidget {
             color: tokens.elevatedSurface,
             borderRadius: BorderRadius.circular(22),
             border: Border.all(
-              color: tokens.readingAccent.withValues(alpha: 0.12),
+              color: tokens.accentSurface(tokens.readingAccent),
             ),
           ),
           child: Row(
@@ -851,7 +855,7 @@ class ReadingLevelSelector extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: tokens.readingAccent.withValues(alpha: 0.10),
+                  color: tokens.accentMutedSurface(tokens.readingAccent),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: Icon(Icons.tune_rounded, color: tokens.readingAccent),
@@ -915,12 +919,12 @@ class _ReadingLevelOption extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: selected
-                ? tokens.readingAccent.withValues(alpha: 0.08)
+                ? tokens.accentSubtleSurface(tokens.readingAccent)
                 : tokens.subtleSurface,
             borderRadius: BorderRadius.circular(18),
             border: Border.all(
               color: selected
-                  ? tokens.readingAccent.withValues(alpha: 0.30)
+                  ? tokens.accentSelectedBorder(tokens.readingAccent)
                   : tokens.outlineSoft,
             ),
           ),

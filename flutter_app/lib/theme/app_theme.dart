@@ -166,11 +166,32 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
   final Color wordKnownSurface;
   final Color wordReviewSurface;
 
-  Color get guideBorder => guideAccent.withValues(alpha: 0.16);
-  Color get guideIconSurface => guideAccent.withValues(alpha: 0.10);
-  Color get guideSelectedSurface => guideAccent.withValues(alpha: 0.08);
-  Color get guideSelectedBorder => guideAccent.withValues(alpha: 0.30);
-  Color get verbSurface => verbAccent.withValues(alpha: 0.12);
+  Color accentSubtleSurface(Color accent) => accent.withValues(alpha: 0.08);
+  Color accentMutedSurface(Color accent) => accent.withValues(alpha: 0.10);
+  Color accentSurface(Color accent) => accent.withValues(alpha: 0.12);
+  Color accentMediumSurface(Color accent) => accent.withValues(alpha: 0.14);
+  Color accentSoftBorder(Color accent) => accent.withValues(alpha: 0.16);
+  Color accentBorder(Color accent) => accent.withValues(alpha: 0.18);
+  Color accentStrongBorder(Color accent) => accent.withValues(alpha: 0.24);
+  Color accentSelectedBorder(Color accent) => accent.withValues(alpha: 0.30);
+  Color accentHandle(Color accent) => accent.withValues(alpha: 0.35);
+  Color accentDecoration(Color accent) => accent.withValues(alpha: 0.40);
+  Color disabledForeground(Color foreground) =>
+      foreground.withValues(alpha: 0.75);
+  Color inactiveForeground(Color foreground) =>
+      foreground.withValues(alpha: 0.80);
+  Color disabledHeroForeground(Color foreground) =>
+      foreground.withValues(alpha: 0.65);
+  Color heroButtonSurface(Color foreground) =>
+      foreground.withValues(alpha: 0.16);
+  Color heroControlSurface(Color foreground) =>
+      foreground.withValues(alpha: 0.18);
+
+  Color get guideBorder => accentSoftBorder(guideAccent);
+  Color get guideIconSurface => accentMutedSurface(guideAccent);
+  Color get guideSelectedSurface => accentSubtleSurface(guideAccent);
+  Color get guideSelectedBorder => accentSelectedBorder(guideAccent);
+  Color get verbSurface => accentSurface(verbAccent);
 
   @override
   AppThemeTokens copyWith({

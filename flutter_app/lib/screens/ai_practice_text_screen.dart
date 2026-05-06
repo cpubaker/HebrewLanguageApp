@@ -278,11 +278,12 @@ class _NewTextBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = Theme.of(context).appTokens.warningAccent;
+    final tokens = Theme.of(context).appTokens;
+    final color = tokens.warningAccent;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.12),
+        color: tokens.accentSurface(color),
         borderRadius: BorderRadius.circular(999),
       ),
       child: Row(

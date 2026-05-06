@@ -50,14 +50,14 @@ class GuideDetailHeader extends StatelessWidget {
                 GuideSectionPill(
                   label: lesson.sectionLabel!,
                   foregroundColor: heroForeground,
-                  backgroundColor: heroForeground.withValues(alpha: 0.18),
+                  backgroundColor: tokens.heroControlSurface(heroForeground),
                 ),
               const Spacer(),
               LessonStatusToggleButton(
                 status: status,
                 onPressed: onStatusPressed,
                 foregroundColor: heroForeground,
-                backgroundColor: heroForeground.withValues(alpha: 0.18),
+                backgroundColor: tokens.heroControlSurface(heroForeground),
               ),
             ],
           ),

@@ -21,7 +21,7 @@ class ContextSourceBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.12),
+        color: tokens.accentSurface(color),
         borderRadius: BorderRadius.circular(999),
       ),
       child: Row(

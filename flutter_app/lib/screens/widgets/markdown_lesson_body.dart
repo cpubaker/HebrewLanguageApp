@@ -194,7 +194,9 @@ class _MarkdownLessonBodyState extends State<MarkdownLessonBody> {
       color: widget.accentColor,
       fontWeight: FontWeight.w700,
       decoration: TextDecoration.underline,
-      decorationColor: widget.accentColor.withValues(alpha: 0.4),
+      decorationColor: Theme.of(
+        context,
+      ).appTokens.accentDecoration(widget.accentColor),
     );
 
     final spans = <InlineSpan>[];

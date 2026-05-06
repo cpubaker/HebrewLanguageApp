@@ -755,7 +755,7 @@ class _WordStatusActionButton extends StatelessWidget {
     final presentation = _WordStatusPresentation.fromState(state, tokens);
     final foreground = presentation.accent;
     return Material(
-      color: presentation.accent.withValues(alpha: 0.12),
+      color: tokens.accentSurface(presentation.accent),
       borderRadius: BorderRadius.circular(999),
       child: InkWell(
         onTap: onTap,
@@ -767,7 +767,7 @@ class _WordStatusActionButton extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(999),
               border: Border.all(
-                color: presentation.accent.withValues(alpha: 0.24),
+                color: tokens.accentStrongBorder(presentation.accent),
               ),
             ),
             child: Row(
@@ -1004,7 +1004,7 @@ class _InlineWordAudioButtonState
     final tokens = Theme.of(context).appTokens;
 
     return Material(
-      color: tokens.vocabularyAccent.withValues(alpha: 0.12),
+      color: tokens.accentSurface(tokens.vocabularyAccent),
       borderRadius: BorderRadius.circular(999),
       child: InkWell(
         onTap: _isAudioEnabled ? _togglePlayback : null,
@@ -1106,7 +1106,7 @@ class _WordDetailsAudioButtonState
 
     return Container(
       decoration: BoxDecoration(
-        color: tokens.vocabularyAccent.withValues(alpha: 0.12),
+        color: tokens.accentSurface(tokens.vocabularyAccent),
         borderRadius: BorderRadius.circular(18),
       ),
       child: IconButton(
@@ -1147,10 +1147,12 @@ class _MiniProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: accent.withValues(alpha: 0.10),
+        color: tokens.accentMutedSurface(accent),
         borderRadius: BorderRadius.circular(999),
       ),
       child: Text(
@@ -1183,7 +1185,7 @@ class _StatPill extends StatelessWidget {
       decoration: BoxDecoration(
         color: tokens.elevatedSurface,
         borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: accent.withValues(alpha: 0.18)),
+        border: Border.all(color: tokens.accentBorder(accent)),
       ),
       child: FittedBox(
         fit: BoxFit.scaleDown,

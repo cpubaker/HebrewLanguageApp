@@ -506,7 +506,7 @@ class _SettingsSwitchTile extends StatelessWidget {
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: isEnabled
                         ? tokens.mutedText
-                        : tokens.mutedText.withValues(alpha: 0.8),
+                        : tokens.inactiveForeground(tokens.mutedText),
                     height: 1.45,
                   ),
                 ),

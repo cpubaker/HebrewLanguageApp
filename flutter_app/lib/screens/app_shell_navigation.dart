@@ -139,6 +139,7 @@ class _BottomNavigationDestinationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final tokens = theme.appTokens;
     final navigationBarTheme = theme.navigationBarTheme;
     final colorScheme = theme.colorScheme;
     final states = isSelected
@@ -147,9 +148,7 @@ class _BottomNavigationDestinationButton extends StatelessWidget {
     final iconTheme =
         navigationBarTheme.iconTheme?.resolve(states) ??
         IconThemeData(
-          color: isSelected
-              ? colorScheme.primary
-              : theme.appTokens.secondaryText,
+          color: isSelected ? colorScheme.primary : tokens.secondaryText,
         );
     final labelStyle =
         navigationBarTheme.labelTextStyle?.resolve(states) ??
@@ -159,7 +158,7 @@ class _BottomNavigationDestinationButton extends StatelessWidget {
         );
     final indicatorColor =
         navigationBarTheme.indicatorColor ??
-        colorScheme.primary.withValues(alpha: 0.16);
+        tokens.accentSoftBorder(colorScheme.primary);
 
     return Semantics(
       button: true,
@@ -252,7 +251,7 @@ class _CollapsedBottomNavigationHandle extends StatelessWidget {
                     width: 28,
                     height: 4,
                     decoration: BoxDecoration(
-                      color: colorScheme.primary.withValues(alpha: 0.35),
+                      color: tokens.accentHandle(colorScheme.primary),
                       borderRadius: BorderRadius.circular(999),
                     ),
                   ),

@@ -30,7 +30,7 @@ class AppStatChip extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor ?? tokens.elevatedSurface,
         borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: accent.withValues(alpha: 0.18)),
+        border: Border.all(color: tokens.accentBorder(accent)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

@@ -538,12 +538,14 @@ class _MetaChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     return ConstrainedBox(
       constraints: BoxConstraints(maxWidth: maxWidth ?? double.infinity),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
         decoration: BoxDecoration(
-          color: accent.withValues(alpha: 0.10),
+          color: tokens.accentMutedSurface(accent),
           borderRadius: BorderRadius.circular(999),
         ),
         child: Row(
@@ -785,7 +787,7 @@ class _RepetitionAudioButtonState extends State<_RepetitionAudioButton> {
 
     return Container(
       decoration: BoxDecoration(
-        color: tokens.vocabularyAccent.withValues(alpha: 0.12),
+        color: tokens.accentSurface(tokens.vocabularyAccent),
         borderRadius: BorderRadius.circular(18),
       ),
       child: IconButton(

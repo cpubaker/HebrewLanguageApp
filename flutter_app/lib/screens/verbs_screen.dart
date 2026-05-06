@@ -715,7 +715,9 @@ class _VerbHeroCardState extends State<_VerbHeroCard> {
     final theme = Theme.of(context);
     final tokens = theme.appTokens;
     final heroForeground = tokens.heroText;
-    final disabledHeroForeground = heroForeground.withValues(alpha: 0.65);
+    final disabledHeroForeground = tokens.disabledHeroForeground(
+      heroForeground,
+    );
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -749,7 +751,7 @@ class _VerbHeroCardState extends State<_VerbHeroCard> {
           const SizedBox(width: 12),
           Container(
             decoration: BoxDecoration(
-              color: heroForeground.withValues(alpha: 0.16),
+              color: tokens.heroButtonSurface(heroForeground),
               borderRadius: BorderRadius.circular(18),
             ),
             child: IconButton(

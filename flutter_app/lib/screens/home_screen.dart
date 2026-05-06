@@ -730,7 +730,7 @@ class _SummaryCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: tokens.elevatedSurface,
         borderRadius: BorderRadius.circular(tokens.panelRadius + 2),
-        border: Border.all(color: accent.withValues(alpha: 0.16)),
+        border: Border.all(color: tokens.accentSoftBorder(accent)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -856,6 +856,8 @@ class _DashboardPrimaryActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     return AppSectionCard(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -864,7 +866,7 @@ class _DashboardPrimaryActionCard extends StatelessWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: action.accent.withValues(alpha: 0.12),
+              color: tokens.accentSurface(action.accent),
               borderRadius: BorderRadius.circular(16),
             ),
             child: Icon(action.icon, color: action.accent),
@@ -944,10 +946,12 @@ class _DashboardRecommendationTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Theme.of(context).appTokens.subtleSurface,
+        color: tokens.subtleSurface,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -957,7 +961,7 @@ class _DashboardRecommendationTile extends StatelessWidget {
             width: 42,
             height: 42,
             decoration: BoxDecoration(
-              color: action.accent.withValues(alpha: 0.12),
+              color: tokens.accentSurface(action.accent),
               borderRadius: BorderRadius.circular(14),
             ),
             child: Icon(action.icon, color: action.accent, size: 20),
@@ -1192,7 +1196,7 @@ class _StudyStreakCard extends StatelessWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: tokens.warningAccent.withValues(alpha: 0.14),
+              color: tokens.accentMediumSurface(tokens.warningAccent),
               borderRadius: BorderRadius.circular(16),
             ),
             child: Icon(
@@ -1470,7 +1474,7 @@ class _ReadingLessonTile extends StatelessWidget {
                   width: 38,
                   height: 38,
                   decoration: BoxDecoration(
-                    color: tokens.contextAccent.withValues(alpha: 0.14),
+                    color: tokens.accentMediumSurface(tokens.contextAccent),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(

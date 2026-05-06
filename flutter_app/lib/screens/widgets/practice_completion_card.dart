@@ -78,7 +78,7 @@ class PracticeCompletionCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: BoxDecoration(
-              color: tokens.successAccent.withValues(alpha: 0.10),
+              color: tokens.accentMutedSurface(tokens.successAccent),
               borderRadius: BorderRadius.circular(999),
             ),
             child: Text(

@@ -58,7 +58,7 @@ class GuideLessonCard extends StatelessWidget {
                 height: 44,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: statusTheme.color.withValues(alpha: 0.14),
+                  color: tokens.accentMediumSurface(statusTheme.color),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: Text(

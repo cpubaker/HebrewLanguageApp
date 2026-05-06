@@ -795,8 +795,8 @@ class _SwipeHintCard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           decoration: BoxDecoration(
             color: Theme.of(context).brightness == Brightness.dark
-                ? accent.withValues(alpha: 0.18)
-                : accent.withValues(alpha: 0.08),
+                ? tokens.accentBorder(accent)
+                : tokens.accentSubtleSurface(accent),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Column(

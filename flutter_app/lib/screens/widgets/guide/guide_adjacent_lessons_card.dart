@@ -102,7 +102,7 @@ class GuideNavigationButton extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: onPressed == null
-                            ? tokens.mutedText.withValues(alpha: 0.75)
+                            ? tokens.disabledForeground(tokens.mutedText)
                             : tokens.secondaryText,
                         fontWeight: FontWeight.w600,
                         height: 1.35,
