@@ -29,6 +29,15 @@ then open only the files needed for the task.
 
 ## Flutter Map
 
+- Local Flutter SDK: `C:\src\Flutter\flutter`.
+- Prefer explicit Flutter command path in automation:
+  `C:\src\Flutter\flutter\bin\flutter.bat`.
+- Codex sandbox note: Flutter writes SDK cache/lock files outside the repo,
+  especially `C:\src\Flutter\flutter\bin\cache\lockfile`; Flutter commands may
+  need elevated permission. A timeout on `flutter --version` usually means SDK
+  cache access is blocked, not that the app is broken.
+- Android emulator often runs in parallel. `flutter devices` should usually see
+  `emulator-5554` when the emulator is active.
 - App bootstrap: `flutter_app/lib/main.dart`.
 - App root and dependencies: `flutter_app/lib/app.dart`,
   `flutter_app/lib/app_dependencies.dart`.
@@ -141,15 +150,21 @@ then open only the files needed for the task.
 ## Validation Routes
 
 - After Flutter code changes:
-  `cd flutter_app; flutter analyze; flutter test`.
+  `cd flutter_app; C:\src\Flutter\flutter\bin\flutter.bat analyze; C:\src\Flutter\flutter\bin\flutter.bat test`.
 - After shared content changes:
   `cd flutter_app; powershell -ExecutionPolicy Bypass -File .\tool\generate_learning_catalog.ps1; cd ..; python scripts\generate_content_index.py; python -m unittest discover -s tests -v`.
-- After asset packaging changes: also run `flutter test`.
+- After asset packaging changes: also run
+  `cd flutter_app; C:\src\Flutter\flutter\bin\flutter.bat test`.
 - After Python backend/tooling/content validation changes:
   `python -m unittest discover -s tests -v`.
 - After verb content changes:
   `python scripts/audit_verb_templates.py`, then regenerate the lesson catalog
   if lesson files changed.
+- Last known Flutter validation on 2026-05-06: Flutter 3.41.6, Dart 3.11.4,
+  `flutter analyze` passed, `flutter test` passed with 198 tests.
+- `flutter doctor -v` still reports Android `cmdline-tools`/license warnings
+  and missing Visual Studio C++ workload; these are not blockers for
+  `flutter analyze` or `flutter test`.
 
 ## Editing Rules For AI Agents
 

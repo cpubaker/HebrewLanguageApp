@@ -28,6 +28,17 @@
 - Flutter app root: `flutter_app/lib/app.dart`
 - Learning catalog generation: `flutter_app/tool/generate_learning_catalog.ps1`
 
+## Local Flutter Environment
+- On this workstation, Flutter SDK lives at `C:\src\Flutter\flutter`.
+- Prefer the explicit Flutter command path when automation might have a different PATH:
+  `C:\src\Flutter\flutter\bin\flutter.bat`.
+- In Codex, Flutter commands may need elevated permission because Flutter writes to
+  SDK cache/lock files outside the repo, especially
+  `C:\src\Flutter\flutter\bin\cache\lockfile`.
+- If `flutter --version`, `flutter analyze`, or `flutter test` time out inside
+  Codex, first suspect sandbox access to the SDK cache, not a project failure.
+- An Android emulator is often already running locally; that is expected.
+
 ## Task Routing
 - Flutter UI or app flow: inspect `flutter_app/AGENTS.md` and then the relevant files under `flutter_app/lib/`.
 - Shared content, lessons, vocabulary, verbs, reading, contexts, media: inspect `flutter_app/assets/learning/input/` first.
@@ -36,8 +47,8 @@
 ## Validation
 - After Flutter code changes:
   - `cd flutter_app`
-  - `flutter analyze`
-  - `flutter test`
+  - `C:\src\Flutter\flutter\bin\flutter.bat analyze`
+  - `C:\src\Flutter\flutter\bin\flutter.bat test`
 - After shared content changes:
   - `cd flutter_app`
   - `powershell -ExecutionPolicy Bypass -File .\\tool\\generate_learning_catalog.ps1`
