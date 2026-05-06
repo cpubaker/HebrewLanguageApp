@@ -386,9 +386,10 @@ class _RepetitionCard extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: theme.brightness == Brightness.dark
-                        ? <Color>[tokens.elevatedSurface, tokens.subtleSurface]
-                        : const <Color>[Color(0xFFF1F6F2), Color(0xFFF7F3E8)],
+                    colors: [
+                      tokens.practicePromptGradientStart,
+                      tokens.practicePromptGradientEnd,
+                    ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -460,7 +461,7 @@ class _RepetitionCard extends StatelessWidget {
                     _MetaChip(
                       icon: Icons.schedule_rounded,
                       label: reviewedAtLabel,
-                      accent: const Color(0xFF8C6A2A),
+                      accent: tokens.vocabularyAccent,
                       maxWidth: chipMaxWidth,
                     ),
                 ],
@@ -601,9 +602,7 @@ class _ContextPanel extends StatelessWidget {
     );
 
     return PracticePanel(
-      backgroundColor: theme.brightness == Brightness.dark
-          ? theme.colorScheme.primary.withValues(alpha: 0.22)
-          : const Color(0xFF163832).withValues(alpha: 0.06),
+      backgroundColor: tokens.contextPanelSurface,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -777,6 +776,7 @@ class _RepetitionAudioButtonState extends State<_RepetitionAudioButton> {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
     final tooltip = _isCheckingAvailability
         ? 'Перевіряємо озвучку'
         : _hasAudio
@@ -785,19 +785,19 @@ class _RepetitionAudioButtonState extends State<_RepetitionAudioButton> {
 
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF8C6A2A).withValues(alpha: 0.12),
+        color: tokens.vocabularyAccent.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(18),
       ),
       child: IconButton(
         tooltip: tooltip,
         onPressed: _hasAudio && !_isBusy ? _togglePlayback : null,
         icon: _isBusy
-            ? const SizedBox(
+            ? SizedBox(
                 width: 18,
                 height: 18,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  color: Color(0xFF8C6A2A),
+                  color: tokens.vocabularyAccent,
                 ),
               )
             : Icon(
@@ -805,8 +805,8 @@ class _RepetitionAudioButtonState extends State<_RepetitionAudioButton> {
                     ? Icons.stop_circle_outlined
                     : Icons.volume_up_rounded,
                 color: _hasAudio
-                    ? const Color(0xFF8C6A2A)
-                    : const Color(0xFFB8AA93),
+                    ? tokens.vocabularyAccent
+                    : tokens.disabledAccent,
               ),
       ),
     );

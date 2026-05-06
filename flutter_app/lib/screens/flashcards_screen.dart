@@ -567,9 +567,10 @@ class _PromptPanel extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: theme.brightness == Brightness.dark
-              ? <Color>[tokens.elevatedSurface, tokens.subtleSurface]
-              : const <Color>[Color(0xFFF1F6F2), Color(0xFFF7F3E8)],
+          colors: [
+            tokens.practicePromptGradientStart,
+            tokens.practicePromptGradientEnd,
+          ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -659,12 +660,8 @@ class _AnswerRevealCard extends StatelessWidget {
     final theme = Theme.of(context);
     final tokens = theme.appTokens;
     final background = isKnownAnswer
-        ? (theme.brightness == Brightness.dark
-              ? const Color(0xFF17352F)
-              : const Color(0xFFEAF6F2))
-        : (theme.brightness == Brightness.dark
-              ? const Color(0xFF3A2A1F)
-              : const Color(0xFFF9EFE4));
+        ? tokens.successSurface
+        : tokens.warningSurface;
     final accent = isKnownAnswer ? tokens.successAccent : tokens.warningAccent;
     final icon = isKnownAnswer
         ? Icons.check_circle_rounded
@@ -961,9 +958,7 @@ class _FlashcardContextPanel extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: theme.brightness == Brightness.dark
-            ? theme.colorScheme.primary.withValues(alpha: 0.22)
-            : const Color(0xFF163832).withValues(alpha: 0.06),
+        color: tokens.contextPanelSurface,
         borderRadius: BorderRadius.circular(24),
       ),
       child: Column(

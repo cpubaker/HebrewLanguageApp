@@ -230,9 +230,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final tokens = theme.appTokens;
-    final accentForeground = theme.brightness == Brightness.dark
-        ? tokens.heroText
-        : Colors.white;
+    final accentForeground = tokens.heroText;
     final progress = LessonProgressSnapshot.fromLessons(
       lessons: widget.lessons,
       lessonStatuses: widget.lessonStatuses,
@@ -510,9 +508,7 @@ class _ReadingDetailScreenState extends State<ReadingDetailScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final tokens = theme.appTokens;
-    final heroForeground = theme.brightness == Brightness.dark
-        ? tokens.heroText
-        : Colors.white;
+    final heroForeground = tokens.heroText;
     final level = readingLevelLabelFromAssetPath(widget.lesson.assetPath);
 
     return Scaffold(
@@ -548,7 +544,7 @@ class _ReadingDetailScreenState extends State<ReadingDetailScreen> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(28),
                     gradient: LinearGradient(
-                      colors: [const Color(0xFF1E40AF), tokens.readingAccent],
+                      colors: [tokens.primaryAccent, tokens.readingAccent],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
@@ -683,9 +679,7 @@ class _ReadingLessonCard extends StatelessWidget {
                       resolvedTitle,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w700,
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? const Color(0xFFE2D0A3)
-                            : null,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                     const SizedBox(height: 4),

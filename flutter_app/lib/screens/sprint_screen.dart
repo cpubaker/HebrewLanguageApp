@@ -395,10 +395,8 @@ class _ActiveSprintCard extends StatelessWidget {
               _SprintMetaChip(
                 icon: Icons.bolt_rounded,
                 label: '$attempts відповідей',
-                background: theme.brightness == Brightness.dark
-                    ? const Color(0xFF4B3A22)
-                    : const Color(0xFFF3E8D2),
-                foreground: const Color(0xFF8C6A2A),
+                background: tokens.warningSurface,
+                foreground: tokens.warningAccent,
               ),
               IconButton(
                 tooltip: 'Почати спочатку',
@@ -412,9 +410,10 @@ class _ActiveSprintCard extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: theme.brightness == Brightness.dark
-                    ? <Color>[tokens.subtleSurface, tokens.elevatedSurface]
-                    : const <Color>[Color(0xFFF6EFE1), Color(0xFFEAF4EF)],
+                colors: [
+                  tokens.practiceChoiceGradientStart,
+                  tokens.practiceChoiceGradientEnd,
+                ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),

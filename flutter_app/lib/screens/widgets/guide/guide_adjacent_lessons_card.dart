@@ -79,7 +79,7 @@ class GuideNavigationButton extends StatelessWidget {
               Text(
                 label,
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: const Color(0xFF8C6A2A),
+                  color: tokens.guideSecondaryAccent,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -91,8 +91,8 @@ class GuideNavigationButton extends StatelessWidget {
                       icon,
                       size: 18,
                       color: onPressed == null
-                          ? const Color(0xFFB7ADA1)
-                          : const Color(0xFFB45309),
+                          ? tokens.disabledAccent
+                          : tokens.guideAccent,
                     ),
                   if (!iconTrailing) const SizedBox(width: 8),
                   Expanded(
@@ -115,8 +115,8 @@ class GuideNavigationButton extends StatelessWidget {
                       icon,
                       size: 18,
                       color: onPressed == null
-                          ? const Color(0xFFB7ADA1)
-                          : const Color(0xFFB45309),
+                          ? tokens.disabledAccent
+                          : tokens.guideAccent,
                     ),
                 ],
               ),

@@ -258,6 +258,8 @@ class _GuideScreenState extends State<GuideScreen> {
       context: context,
       showDragHandle: true,
       builder: (context) {
+        final tokens = Theme.of(context).appTokens;
+
         return StatefulBuilder(
           builder: (context, bottomSheetSetState) => SafeArea(
             child: SingleChildScrollView(
@@ -276,7 +278,7 @@ class _GuideScreenState extends State<GuideScreen> {
                   Text(
                     'Можна лишити весь каталог або вибрати кілька секцій.',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: const Color(0xFF5F5A52),
+                      color: tokens.mutedText,
                       height: 1.45,
                     ),
                   ),
@@ -528,7 +530,7 @@ class _GuideScreenState extends State<GuideScreen> {
                         heroTag: 'guideScrollToTop',
                         onPressed: _scrollToTop,
                         backgroundColor: tokens.elevatedSurface,
-                        foregroundColor: const Color(0xFFB45309),
+                        foregroundColor: tokens.guideAccent,
                         child: const Icon(Icons.vertical_align_top_rounded),
                       ),
                     ),
@@ -653,6 +655,8 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
@@ -695,7 +699,7 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
                   const SizedBox(height: 20),
                   MarkdownLessonBody(
                     body: document.body,
-                    accentColor: const Color(0xFF8C6A2A),
+                    accentColor: tokens.guideSecondaryAccent,
                   ),
                   if (document.headings.isNotEmpty) ...[
                     const SizedBox(height: 18),

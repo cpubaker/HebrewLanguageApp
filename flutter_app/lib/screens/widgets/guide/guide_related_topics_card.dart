@@ -19,12 +19,12 @@ class GuideRelatedTopicsLoadingCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const SizedBox(
+          SizedBox(
             width: 16,
             height: 16,
             child: CircularProgressIndicator(
               strokeWidth: 2,
-              color: Color(0xFFB45309),
+              color: tokens.guideAccent,
             ),
           ),
           const SizedBox(width: 12),
@@ -86,18 +86,18 @@ class GuideRelatedTopicsCard extends StatelessWidget {
               children: [
                 ...resolution.resolvedTopics.map(
                   (topic) => ActionChip(
-                    avatar: const Icon(
+                    avatar: Icon(
                       Icons.link_rounded,
                       size: 18,
-                      color: Color(0xFFB45309),
+                      color: tokens.guideAccent,
                     ),
                     label: Text(topic.label),
                     labelStyle: Theme.of(context).textTheme.labelLarge
                         ?.copyWith(
-                          color: const Color(0xFF8C6A2A),
+                          color: tokens.guideSecondaryAccent,
                           fontWeight: FontWeight.w700,
                         ),
-                    backgroundColor: const Color(0xFFFDE7D4),
+                    backgroundColor: tokens.guideChipBackground,
                     onPressed: () => onOpenLesson(topic.lesson),
                   ),
                 ),

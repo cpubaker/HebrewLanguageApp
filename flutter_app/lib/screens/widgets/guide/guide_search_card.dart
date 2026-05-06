@@ -58,9 +58,7 @@ class GuideSearchCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: tokens.elevatedSurface,
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(
-          color: const Color(0xFFB45309).withValues(alpha: 0.16),
-        ),
+        border: Border.all(color: tokens.guideBorder),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,13 +70,10 @@ class GuideSearchCard extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFB45309).withValues(alpha: 0.10),
+                  color: tokens.guideIconSurface,
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: const Icon(
-                  Icons.menu_book_rounded,
-                  color: Color(0xFFB45309),
-                ),
+                child: Icon(Icons.menu_book_rounded, color: tokens.guideAccent),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -114,7 +109,7 @@ class GuideSearchCard extends StatelessWidget {
                         !hasSectionFilter
                             ? Icons.tune_rounded
                             : Icons.filter_alt_rounded,
-                        color: const Color(0xFFB45309),
+                        color: tokens.guideAccent,
                       ),
                     ),
                   IconButton(
@@ -126,7 +121,7 @@ class GuideSearchCard extends StatelessWidget {
                       isSearchVisible
                           ? Icons.close_rounded
                           : Icons.search_rounded,
-                      color: const Color(0xFFB45309),
+                      color: tokens.guideAccent,
                     ),
                   ),
                 ],
@@ -146,14 +141,14 @@ class GuideSearchCard extends StatelessWidget {
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFFDE7D4),
+                        color: tokens.guideChipBackground,
                         borderRadius: BorderRadius.circular(999),
                       ),
                       child: Text(
                         label,
                         style: Theme.of(context).textTheme.labelLarge?.copyWith(
                           fontWeight: FontWeight.w700,
-                          color: const Color(0xFF8C6A2A),
+                          color: tokens.guideSecondaryAccent,
                         ),
                       ),
                     ),
@@ -187,21 +182,21 @@ class GuideSearchCard extends StatelessWidget {
             const SizedBox(height: 10),
             Row(
               children: [
-                const SizedBox(
+                SizedBox(
                   width: 14,
                   height: 14,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    color: Color(0xFFB45309),
+                    color: tokens.guideAccent,
                   ),
                 ),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
                     'Підтягуємо короткі описи та заголовки для точнішого пошуку.',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: const Color(0xFF5F5A52),
-                    ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.copyWith(color: tokens.mutedText),
                   ),
                 ),
               ],
@@ -230,6 +225,8 @@ class _GuideSearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     return TextField(
       controller: controller,
       focusNode: focusNode,
@@ -246,7 +243,7 @@ class _GuideSearchField extends StatelessWidget {
                 icon: const Icon(Icons.close_rounded),
               ),
         filled: true,
-        fillColor: Theme.of(context).appTokens.elevatedSurface,
+        fillColor: tokens.elevatedSurface,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 18,
           vertical: 16,
@@ -257,11 +254,11 @@ class _GuideSearchField extends StatelessWidget {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
-          borderSide: const BorderSide(color: Color(0x1FB45309)),
+          borderSide: BorderSide(color: tokens.guideBorder),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
-          borderSide: const BorderSide(color: Color(0xFFB45309), width: 1.5),
+          borderSide: BorderSide(color: tokens.guideAccent, width: 1.5),
         ),
       ),
     );
@@ -294,13 +291,11 @@ class GuideSectionOptionTile extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: selected
-                ? const Color(0xFFB45309).withValues(alpha: 0.08)
+                ? tokens.guideSelectedSurface
                 : tokens.subtleSurface,
             borderRadius: BorderRadius.circular(18),
             border: Border.all(
-              color: selected
-                  ? const Color(0xFFB45309).withValues(alpha: 0.30)
-                  : tokens.outlineSoft,
+              color: selected ? tokens.guideSelectedBorder : tokens.outlineSoft,
             ),
           ),
           child: Row(
@@ -318,9 +313,9 @@ class GuideSectionOptionTile extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       '$count тем',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: const Color(0xFF5F5A52),
-                      ),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(color: tokens.mutedText),
                     ),
                   ],
                 ),
@@ -329,9 +324,7 @@ class GuideSectionOptionTile extends StatelessWidget {
                 selected
                     ? Icons.check_circle_rounded
                     : Icons.chevron_right_rounded,
-                color: selected
-                    ? const Color(0xFFB45309)
-                    : const Color(0xFF9CA3AF),
+                color: selected ? tokens.guideAccent : tokens.disabledAccent,
               ),
             ],
           ),

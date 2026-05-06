@@ -33,12 +33,12 @@ class GuideOutlineCard extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 7),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 7),
                     child: Icon(
                       Icons.circle,
                       size: 6,
-                      color: Color(0xFFB45309),
+                      color: tokens.guideAccent,
                     ),
                   ),
                   const SizedBox(width: 10),

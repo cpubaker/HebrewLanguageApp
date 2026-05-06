@@ -331,9 +331,7 @@ class _WordsScreenState extends State<WordsScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final tokens = theme.appTokens;
-    final accentForeground = theme.brightness == Brightness.dark
-        ? tokens.heroText
-        : Colors.white;
+    final accentForeground = tokens.heroText;
     final progress = StudyProgressSnapshot.fromWords(_words);
     final filterSummaries = <WordsFilter, int>{
       WordsFilter.all: progress.total,

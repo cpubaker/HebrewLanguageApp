@@ -20,13 +20,6 @@ import 'widgets/app_page_header.dart';
 import 'widgets/app_section_card.dart';
 import 'widgets/app_stat_chip.dart';
 
-const _homeAccentForest = Color(0xFF2B5D4F);
-const _homeAccentTeal = Color(0xFF0F766E);
-const _homeAccentOlive = Color(0xFF5F6B2D);
-const _homeAccentMoss = Color(0xFF708244);
-const _homeAccentBronze = Color(0xFF8C6A2A);
-const _homeAccentAmber = Color(0xFFB45309);
-
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
     super.key,
@@ -61,7 +54,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pagePadding = Theme.of(context).appTokens.pagePadding;
+    final tokens = Theme.of(context).appTokens;
+    final pagePadding = tokens.pagePadding;
     final progress = StudyProgressSnapshot.fromWords(bundle.words);
     final streak = StudyStreakSnapshot.fromWords(bundle.words);
     final flashcards = FlashcardFocusSnapshot.fromWords(bundle.words);
@@ -69,10 +63,12 @@ class HomeScreen extends StatelessWidget {
       bundle.readingLessons,
     ).take(3);
     final continueAction = _buildContinueAction(
+      tokens: tokens,
       progress: progress,
       flashcards: flashcards,
     );
     final recommendedActions = _buildRecommendedActions(
+      tokens: tokens,
       progress: progress,
       flashcards: flashcards,
     );
@@ -190,6 +186,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   _DashboardAction _buildContinueAction({
+    required AppThemeTokens tokens,
     required StudyProgressSnapshot progress,
     required FlashcardFocusSnapshot flashcards,
   }) {
@@ -200,7 +197,7 @@ class HomeScreen extends StatelessWidget {
             '${flashcards.needsReview} слів чекають у картках на повторення.',
         buttonLabel: 'До повторення',
         icon: Icons.refresh_rounded,
-        accent: _homeAccentAmber,
+        accent: tokens.warningAccent,
         onTap: () => onOpenFlashcards(FlashcardDeckMode.needsReview),
       );
     }
@@ -211,7 +208,7 @@ class HomeScreen extends StatelessWidget {
         subtitle: '${progress.unseen} слів ще не відкривали в тренуванні.',
         buttonLabel: 'До карток',
         icon: Icons.style_rounded,
-        accent: _homeAccentTeal,
+        accent: tokens.successAccent,
         onTap: () => onOpenFlashcards(FlashcardDeckMode.allWords),
       );
     }
@@ -222,7 +219,7 @@ class HomeScreen extends StatelessWidget {
         subtitle: 'У бібліотеці вже є тексти, з яких можна продовжити.',
         buttonLabel: 'До читання',
         icon: Icons.auto_stories_rounded,
-        accent: _homeAccentOlive,
+        accent: tokens.newContentAccent,
         onTap: onOpenReading,
       );
     }
@@ -232,12 +229,13 @@ class HomeScreen extends StatelessWidget {
       subtitle: 'Перегляньте слова, щоб обрати наступний напрям навчання.',
       buttonLabel: 'До слів',
       icon: Icons.translate_rounded,
-      accent: _homeAccentForest,
+      accent: tokens.primaryAccent,
       onTap: onOpenWords,
     );
   }
 
   List<_DashboardAction> _buildRecommendedActions({
+    required AppThemeTokens tokens,
     required StudyProgressSnapshot progress,
     required FlashcardFocusSnapshot flashcards,
   }) {
@@ -249,7 +247,7 @@ class HomeScreen extends StatelessWidget {
             : 'Контекстні картки з’являтимуться, коли для слів буде більше прикладів.',
         buttonLabel: 'Відкрити',
         icon: Icons.chat_bubble_outline_rounded,
-        accent: _homeAccentMoss,
+        accent: tokens.contextAccent,
         onTap: () => onOpenFlashcards(FlashcardDeckMode.withContexts),
       ),
       _DashboardAction(
@@ -259,7 +257,7 @@ class HomeScreen extends StatelessWidget {
             : 'Спочатку відкрийте кілька слів у картках, а потім тренуйте їхнє написання тут.',
         buttonLabel: 'Тренувати',
         icon: Icons.edit_rounded,
-        accent: _homeAccentOlive,
+        accent: tokens.newContentAccent,
         onTap: onOpenWriting,
       ),
       _DashboardAction(
@@ -269,7 +267,7 @@ class HomeScreen extends StatelessWidget {
             : 'Матеріали з’являться тут, коли їх буде завантажено.',
         buttonLabel: 'Відкрити',
         icon: Icons.menu_book_rounded,
-        accent: _homeAccentBronze,
+        accent: tokens.vocabularyAccent,
         onTap: onOpenGuide,
       ),
     ];
@@ -1018,17 +1016,19 @@ class _InventoryOverviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     final summaryCards = [
       _SummaryCard(
         label: 'Слова',
         value: bundle.words.length,
-        accent: _homeAccentTeal,
+        accent: tokens.successAccent,
         onTap: onOpenWords,
       ),
       _SummaryCard(
         label: 'Картки',
         value: bundle.words.where((word) => word.contexts.isNotEmpty).length,
-        accent: _homeAccentAmber,
+        accent: tokens.warningAccent,
         onTap: onOpenFlashcards,
       ),
       _SummaryCard(
@@ -1036,25 +1036,25 @@ class _InventoryOverviewCard extends StatelessWidget {
         value: bundle.words
             .where((word) => word.writingCorrect > 0 || word.writingWrong > 0)
             .length,
-        accent: _homeAccentOlive,
+        accent: tokens.newContentAccent,
         onTap: onOpenWriting,
       ),
       _SummaryCard(
         label: 'Довідник',
         value: bundle.guideLessons.length,
-        accent: _homeAccentBronze,
+        accent: tokens.vocabularyAccent,
         onTap: onOpenGuide,
       ),
       _SummaryCard(
         label: 'Дієслова',
         value: bundle.verbLessons.length,
-        accent: _homeAccentMoss,
+        accent: tokens.verbAccent,
         onTap: onOpenVerbs,
       ),
       _SummaryCard(
         label: 'Читання',
         value: bundle.readingLessons.length,
-        accent: _homeAccentForest,
+        accent: tokens.readingAccent,
         onTap: onOpenReading,
       ),
     ];
@@ -1106,6 +1106,8 @@ class _FlashcardFocusCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     return AppSectionCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1124,22 +1126,22 @@ class _FlashcardFocusCard extends StatelessWidget {
               AppMetricTile(
                 label: 'Усі',
                 value: snapshot.total,
-                accent: _homeAccentForest,
+                accent: tokens.primaryAccent,
               ),
               AppMetricTile(
                 label: 'З прикладами',
                 value: snapshot.withContexts,
-                accent: _homeAccentMoss,
+                accent: tokens.contextAccent,
               ),
               AppMetricTile(
                 label: 'На повторенні',
                 value: snapshot.needsReview,
-                accent: _homeAccentAmber,
+                accent: tokens.warningAccent,
               ),
               AppMetricTile(
                 label: 'Вивчені',
                 value: snapshot.known,
-                accent: _homeAccentTeal,
+                accent: tokens.successAccent,
               ),
             ],
           ),
@@ -1190,12 +1192,12 @@ class _StudyStreakCard extends StatelessWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: _homeAccentAmber.withValues(alpha: 0.14),
+              color: tokens.warningAccent.withValues(alpha: 0.14),
               borderRadius: BorderRadius.circular(16),
             ),
-            child: const Icon(
+            child: Icon(
               Icons.local_fire_department_rounded,
-              color: _homeAccentAmber,
+              color: tokens.warningAccent,
             ),
           ),
           const SizedBox(width: 14),
@@ -1232,7 +1234,7 @@ class _StudyStreakCard extends StatelessWidget {
                   AppStatChip(
                     label: 'Активні дні',
                     value: streak.activityDays,
-                    accent: _homeAccentForest,
+                    accent: tokens.primaryAccent,
                     backgroundColor: tokens.subtleSurface,
                     textColor: theme.colorScheme.onSurface,
                   ),
@@ -1283,6 +1285,8 @@ class _StudyProgressCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     return AppSectionCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1299,7 +1303,7 @@ class _StudyProgressCard extends StatelessWidget {
               minHeight: 10,
               value: progress.completionRatio,
               backgroundColor: Theme.of(context).appTokens.progressTrack,
-              valueColor: const AlwaysStoppedAnimation<Color>(_homeAccentTeal),
+              valueColor: AlwaysStoppedAnimation<Color>(tokens.successAccent),
             ),
           ),
           const SizedBox(height: 10),
@@ -1317,22 +1321,22 @@ class _StudyProgressCard extends StatelessWidget {
               AppMetricTile(
                 label: 'Опрацьовані',
                 value: progress.seen,
-                accent: _homeAccentForest,
+                accent: tokens.primaryAccent,
               ),
               AppMetricTile(
                 label: 'Вивчені',
                 value: progress.known,
-                accent: _homeAccentTeal,
+                accent: tokens.successAccent,
               ),
               AppMetricTile(
                 label: 'Повторити',
                 value: progress.needsReview,
-                accent: _homeAccentAmber,
+                accent: tokens.warningAccent,
               ),
               AppMetricTile(
                 label: 'Нові',
                 value: progress.unseen,
-                accent: _homeAccentOlive,
+                accent: tokens.newContentAccent,
               ),
             ],
           ),
@@ -1350,22 +1354,23 @@ class _WordTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final tokens = theme.appTokens;
     final learningState = classifyWordLearningState(word);
     final status = switch (learningState) {
       WordLearningState.unseen => (
         label: 'Нове',
-        color: _homeAccentOlive,
-        background: const Color(0xFFE6E7D6),
+        color: tokens.newContentAccent,
+        background: tokens.wordNewSurface,
       ),
       WordLearningState.known => (
         label: 'Вивчене',
-        color: _homeAccentTeal,
-        background: const Color(0xFFE7F8F2),
+        color: tokens.successAccent,
+        background: tokens.wordKnownSurface,
       ),
       WordLearningState.needsReview => (
         label: 'Повторити',
-        color: _homeAccentAmber,
-        background: const Color(0xFFFFF1E6),
+        color: tokens.warningAccent,
+        background: tokens.wordReviewSurface,
       ),
     };
 
@@ -1445,6 +1450,7 @@ class _ReadingLessonTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
     final level = readingLevelLabelFromAssetPath(lesson.assetPath);
     final fallbackTitle = readingLessonTitle(lesson);
 
@@ -1464,12 +1470,12 @@ class _ReadingLessonTile extends StatelessWidget {
                   width: 38,
                   height: 38,
                   decoration: BoxDecoration(
-                    color: _homeAccentMoss.withValues(alpha: 0.14),
+                    color: tokens.contextAccent.withValues(alpha: 0.14),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.auto_stories_rounded,
-                    color: _homeAccentMoss,
+                    color: tokens.contextAccent,
                   ),
                 ),
                 const SizedBox(width: 12),

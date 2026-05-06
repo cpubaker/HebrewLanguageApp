@@ -288,9 +288,10 @@ class _WritingScreenState extends State<WritingScreen> {
                 padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: theme.brightness == Brightness.dark
-                        ? <Color>[tokens.elevatedSurface, tokens.subtleSurface]
-                        : const <Color>[Color(0xFFF1F6F2), Color(0xFFF7F3E8)],
+                    colors: [
+                      tokens.practicePromptGradientStart,
+                      tokens.practicePromptGradientEnd,
+                    ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -365,12 +366,12 @@ class _WritingScreenState extends State<WritingScreen> {
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
-                      borderSide: const BorderSide(color: Color(0x1F8C6A2A)),
+                      borderSide: BorderSide(color: tokens.outlineSoft),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
-                      borderSide: const BorderSide(
-                        color: Color(0xFF8C6A2A),
+                      borderSide: BorderSide(
+                        color: tokens.vocabularyAccent,
                         width: 1.5,
                       ),
                     ),
@@ -861,8 +862,8 @@ class _ConstructorComposer extends StatelessWidget {
                   borderRadius: BorderRadius.circular(24),
                   border: Border.all(
                     color: candidateData.isNotEmpty
-                        ? const Color(0xFF8C6A2A)
-                        : const Color(0x1F8C6A2A),
+                        ? tokens.vocabularyAccent
+                        : tokens.outlineSoft,
                     width: candidateData.isNotEmpty ? 1.5 : 1,
                   ),
                 ),
@@ -938,25 +939,21 @@ class _ConstructorSlot extends StatelessWidget {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: isActive
-                    ? (Theme.of(context).brightness == Brightness.dark
-                          ? const Color(0xFF5B4824)
-                          : const Color(0xFFEEDDBA))
-                    : (Theme.of(context).brightness == Brightness.dark
-                          ? tokens.elevatedSurface
-                          : const Color(0xFFFFFBF4)),
+                    ? tokens.constructorActiveSurface
+                    : tokens.constructorIdleSurface,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                   color: isActive
-                      ? const Color(0xFF8C6A2A)
-                      : const Color(0x338C6A2A),
+                      ? tokens.vocabularyAccent
+                      : tokens.outlineSoft,
                   width: isActive ? 1.5 : 1,
                 ),
               ),
               child: Icon(
                 Icons.add_rounded,
                 color: isActive
-                    ? const Color(0xFF8C6A2A)
-                    : const Color(0xFFBCA67B),
+                    ? tokens.vocabularyAccent
+                    : tokens.constructorIdleAccent,
               ),
             ),
           );
@@ -999,7 +996,7 @@ class _ConstructorBlockChip extends StatelessWidget {
           decoration: BoxDecoration(
             color: tokens.elevatedSurface,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: const Color(0x1F8C6A2A)),
+            border: Border.all(color: tokens.outlineSoft),
             boxShadow: [
               BoxShadow(
                 color: tokens.shadowColor,

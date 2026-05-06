@@ -82,9 +82,7 @@ class GuideLessonCard extends StatelessWidget {
                       resolvedTitle,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w700,
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? const Color(0xFFE2D0A3)
-                            : null,
+                        color: tokens.guideTitleText,
                       ),
                     ),
                     if (resolvedSummary.isNotEmpty) ...[
@@ -132,10 +130,10 @@ class GuideLessonCard extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 18),
-                  const Icon(
+                  Icon(
                     Icons.arrow_forward_ios_rounded,
                     size: 18,
-                    color: Color(0xFF8C6A2A),
+                    color: tokens.guideSecondaryAccent,
                   ),
                 ],
               ),

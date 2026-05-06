@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../theme/app_theme.dart';
 import '../app_section_card.dart';
 
 class GuideEmptySearchState extends StatelessWidget {
@@ -7,15 +8,13 @@ class GuideEmptySearchState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     return AppSectionCard(
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-          const Icon(
-            Icons.search_off_rounded,
-            size: 32,
-            color: Color(0xFFB45309),
-          ),
+          Icon(Icons.search_off_rounded, size: 32, color: tokens.guideAccent),
           const SizedBox(height: 12),
           Text(
             'Нічого не знайдено.',
@@ -29,7 +28,7 @@ class GuideEmptySearchState extends StatelessWidget {
             textAlign: TextAlign.center,
             style: Theme.of(
               context,
-            ).textTheme.bodyMedium?.copyWith(color: const Color(0xFF5F5A52)),
+            ).textTheme.bodyMedium?.copyWith(color: tokens.mutedText),
           ),
         ],
       ),

@@ -278,7 +278,7 @@ class _NewTextBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const color = Color(0xFFB45309);
+    final color = Theme.of(context).appTokens.warningAccent;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
       decoration: BoxDecoration(
@@ -288,7 +288,7 @@ class _NewTextBadge extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.auto_awesome_rounded, size: 14, color: color),
+          Icon(Icons.auto_awesome_rounded, size: 14, color: color),
           const SizedBox(width: 5),
           Text(
             'Нове!',

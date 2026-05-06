@@ -219,9 +219,7 @@ class _VerbsScreenState extends State<VerbsScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final tokens = theme.appTokens;
-    final accentForeground = theme.brightness == Brightness.dark
-        ? tokens.heroText
-        : Colors.white;
+    final accentForeground = tokens.heroText;
     final filteredLessons = _filteredLessons;
     final hasResults = filteredLessons.isNotEmpty;
 
@@ -310,7 +308,7 @@ class _VerbsScreenState extends State<VerbsScreen> {
                         heroTag: 'verbsScrollToTop',
                         onPressed: _scrollToTop,
                         backgroundColor: tokens.elevatedSurface,
-                        foregroundColor: const Color(0xFF7C3AED),
+                        foregroundColor: tokens.verbAccent,
                         child: const Icon(Icons.vertical_align_top_rounded),
                       ),
                     ),
@@ -321,7 +319,7 @@ class _VerbsScreenState extends State<VerbsScreen> {
                 heroTag: 'verbsSearch',
                 onPressed: _openSearch,
                 tooltip: 'Показати пошук',
-                backgroundColor: const Color(0xFF7C3AED),
+                backgroundColor: tokens.verbAccent,
                 foregroundColor: accentForeground,
                 child: const Icon(Icons.search_rounded),
               ),
@@ -388,7 +386,7 @@ class VerbDetailScreen extends StatelessWidget {
               const SizedBox(height: 18),
               MarkdownLessonBody(
                 body: document.body,
-                accentColor: const Color(0xFF7C3AED),
+                accentColor: Theme.of(context).appTokens.verbAccent,
               ),
             ],
           );
@@ -442,12 +440,12 @@ class _VerbSearchCard extends StatelessWidget {
             AppStatChip(
               label: hasQuery ? 'Знайдено' : 'Уроків',
               value: hasQuery ? visibleCount : totalCount,
-              accent: const Color(0xFF7C3AED),
+              accent: Theme.of(context).appTokens.verbAccent,
             ),
             AppStatChip(
               label: 'Усього',
               value: totalCount,
-              accent: const Color(0xFF8C6A2A),
+              accent: Theme.of(context).appTokens.vocabularyAccent,
             ),
             if (isLoadingLessonTitles) const _LoadingTitlesChip(),
           ],
@@ -469,26 +467,24 @@ class _LoadingTitlesChip extends StatelessWidget {
       decoration: BoxDecoration(
         color: tokens.subtleSurface,
         borderRadius: BorderRadius.circular(999),
-        border: Border.all(
-          color: const Color(0xFF7C3AED).withValues(alpha: 0.12),
-        ),
+        border: Border.all(color: tokens.verbSurface),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(
+          SizedBox(
             width: 14,
             height: 14,
             child: CircularProgressIndicator(
               strokeWidth: 2,
-              color: Color(0xFF7C3AED),
+              color: tokens.verbAccent,
             ),
           ),
           const SizedBox(width: 10),
           Text(
             'Оновлюємо назви',
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: const Color(0xFF7C3AED),
+              color: tokens.verbAccent,
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -540,14 +536,14 @@ class _VerbLessonCard extends StatelessWidget {
                 height: 44,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF7C3AED).withValues(alpha: 0.12),
+                  color: tokens.verbSurface,
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: Text(
                   orderLabel,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w800,
-                    color: const Color(0xFF7C3AED),
+                    color: tokens.verbAccent,
                   ),
                 ),
               ),
@@ -560,10 +556,10 @@ class _VerbLessonCard extends StatelessWidget {
                   ),
                 ),
               ),
-              const Icon(
+              Icon(
                 Icons.arrow_forward_ios_rounded,
                 size: 18,
-                color: Color(0xFF7C3AED),
+                color: tokens.verbAccent,
               ),
             ],
           ),
@@ -583,11 +579,7 @@ class _EmptyVerbSearchState extends StatelessWidget {
     return AppSectionCard(
       child: Column(
         children: [
-          const Icon(
-            Icons.search_off_rounded,
-            size: 32,
-            color: Color(0xFF7C3AED),
-          ),
+          Icon(Icons.search_off_rounded, size: 32, color: tokens.verbAccent),
           const SizedBox(height: 12),
           Text(
             'Нічого не знайдено.',
@@ -722,25 +714,23 @@ class _VerbHeroCardState extends State<_VerbHeroCard> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final tokens = theme.appTokens;
-    final heroForeground = theme.brightness == Brightness.dark
-        ? tokens.heroText
-        : Colors.white;
+    final heroForeground = tokens.heroText;
     final disabledHeroForeground = heroForeground.withValues(alpha: 0.65);
 
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(28),
-        gradient: const LinearGradient(
-          colors: [Color(0xFF5B21B6), Color(0xFF7C3AED)],
+        gradient: LinearGradient(
+          colors: [tokens.verbAccentStrong, tokens.verbAccent],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
-            color: Color(0x22000000),
+            color: tokens.heroShadowColor,
             blurRadius: 22,
-            offset: Offset(0, 12),
+            offset: const Offset(0, 12),
           ),
         ],
       ),
@@ -827,17 +817,11 @@ class _VerbImageCard extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(22),
                 gradient: LinearGradient(
-                  colors: theme.brightness == Brightness.dark
-                      ? <Color>[
-                          const Color(0xFF23153A),
-                          const Color(0xFF2A1E46),
-                          tokens.subtleSurface,
-                        ]
-                      : const <Color>[
-                          Color(0xFFF7F1FF),
-                          Color(0xFFF3ECFF),
-                          Color(0xFFF9F6ED),
-                        ],
+                  colors: [
+                    tokens.verbImageGradientStart,
+                    tokens.verbImageGradientMiddle,
+                    tokens.verbImageGradientEnd,
+                  ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -854,10 +838,10 @@ class _VerbImageCard extends StatelessWidget {
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.image_not_supported_outlined,
                             size: 36,
-                            color: Color(0xFF7C3AED),
+                            color: tokens.verbAccent,
                           ),
                           const SizedBox(height: 12),
                           Text(

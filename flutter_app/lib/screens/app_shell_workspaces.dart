@@ -5,6 +5,7 @@ import '../models/learning_bundle.dart';
 import '../services/feature_access_service.dart';
 import '../services/flashcard_session.dart';
 import '../services/theme_mode_store.dart';
+import '../theme/app_theme.dart';
 import 'profile_screen.dart';
 import 'workspace_screen.dart';
 
@@ -26,6 +27,8 @@ class AppShellLearnWorkspace extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     return WorkspaceHubScreen(
       title: 'Вчитись',
       subtitle: 'Оберіть, з чого продовжити навчання.',
@@ -35,7 +38,7 @@ class AppShellLearnWorkspace extends StatelessWidget {
           subtitle:
               'Усі слова в одному місці: пошук, фільтри й прогрес. Доступно: ${bundle.words.length} слів.',
           icon: Icons.translate_rounded,
-          accent: const Color(0xFF2B5D4F),
+          accent: tokens.primaryAccent,
           onTap: onOpenWords,
         ),
         WorkspaceShortcut(
@@ -43,7 +46,7 @@ class AppShellLearnWorkspace extends StatelessWidget {
           subtitle:
               'Добірка уроків про дієслова з поясненнями, озвученням і прикладами. Доступно: ${bundle.verbLessons.length} уроків.',
           icon: Icons.play_lesson_rounded,
-          accent: const Color(0xFF8C6A2A),
+          accent: tokens.verbAccent,
           onTap: onOpenVerbs,
         ),
         WorkspaceShortcut(
@@ -51,7 +54,7 @@ class AppShellLearnWorkspace extends StatelessWidget {
           subtitle:
               'Теми з поясненнями, пошуком і прогресом по матеріалах. Доступно: ${bundle.guideLessons.length} уроків.',
           icon: Icons.menu_book_rounded,
-          accent: const Color(0xFFB45309),
+          accent: tokens.guideAccent,
           onTap: onOpenGuide,
         ),
         WorkspaceShortcut(
@@ -59,7 +62,7 @@ class AppShellLearnWorkspace extends StatelessWidget {
           subtitle:
               'Тексти за рівнями складності з відмітками прочитаного. Доступно: ${bundle.readingLessons.length} уроків.',
           icon: Icons.auto_stories_rounded,
-          accent: const Color(0xFF0F766E),
+          accent: tokens.readingAccent,
           onTap: onOpenReading,
         ),
       ],
@@ -87,6 +90,8 @@ class AppShellPracticeWorkspace extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+
     return WorkspaceHubScreen(
       title: 'Практика',
       subtitle:
@@ -97,28 +102,28 @@ class AppShellPracticeWorkspace extends StatelessWidget {
           subtitle:
               'Швидке повторення перекладу, контексту і наборів на повторення.',
           icon: Icons.style_rounded,
-          accent: const Color(0xFF0F766E),
+          accent: tokens.successAccent,
           onTap: () => onOpenFlashcards(FlashcardDeckMode.allWords),
         ),
         WorkspaceShortcut(
           title: 'Написання',
           subtitle: 'Написання слів івритом без підказок.',
           icon: Icons.edit_rounded,
-          accent: const Color(0xFF2B5D4F),
+          accent: tokens.primaryAccent,
           onTap: onOpenWriting,
         ),
         WorkspaceShortcut(
           title: 'Конструктор',
           subtitle: 'Складання слова з блоків у правильному порядку.',
           icon: Icons.extension_rounded,
-          accent: const Color(0xFFB45309),
+          accent: tokens.guideAccent,
           onTap: onOpenWritingConstructor,
         ),
         WorkspaceShortcut(
           title: 'Повторення',
           subtitle: 'Нові слова й останні помилки для спокійного повторення.',
           icon: Icons.refresh_rounded,
-          accent: const Color(0xFF8C6A2A),
+          accent: tokens.vocabularyAccent,
           onTap: onOpenRepetition,
         ),
         WorkspaceShortcut(
@@ -126,7 +131,7 @@ class AppShellPracticeWorkspace extends StatelessWidget {
           subtitle:
               'Хвилинний режим на швидкість: для кожного слова є два варіанти перекладу.',
           icon: Icons.timer_rounded,
-          accent: const Color(0xFFB91C1C),
+          accent: tokens.dangerAccent,
           onTap: onOpenSprint,
         ),
         WorkspaceShortcut(
@@ -134,7 +139,7 @@ class AppShellPracticeWorkspace extends StatelessWidget {
           subtitle:
               'Короткий ШІ-текст з вашими словами, перекладом і швидким переходом до практики.',
           icon: Icons.auto_awesome_rounded,
-          accent: const Color(0xFF7C3AED),
+          accent: tokens.aiAccent,
           onTap: onOpenAiPracticeText,
         ),
       ],

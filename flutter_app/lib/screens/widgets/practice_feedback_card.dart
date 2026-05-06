@@ -32,9 +32,10 @@ class PracticeFeedbackCard extends StatelessWidget {
     final tokens = theme.appTokens;
     final visuals = _PracticeFeedbackVisuals.resolve(
       tone: tone,
-      brightness: theme.brightness,
       neutralBackground: tokens.subtleSurface,
       neutralForeground: tokens.secondaryText,
+      successBackground: tokens.successSurface,
+      errorBackground: tokens.dangerSurface,
       successAccent: tokens.successAccent,
       dangerAccent: tokens.dangerAccent,
     );
@@ -197,24 +198,21 @@ class _PracticeFeedbackVisuals {
 
   static _PracticeFeedbackVisuals resolve({
     required PracticeFeedbackTone tone,
-    required Brightness brightness,
     required Color neutralBackground,
     required Color neutralForeground,
+    required Color successBackground,
+    required Color errorBackground,
     required Color successAccent,
     required Color dangerAccent,
   }) {
     return switch (tone) {
       PracticeFeedbackTone.success => _PracticeFeedbackVisuals(
-        background: brightness == Brightness.dark
-            ? const Color(0xFF17352F)
-            : const Color(0xFFEAF6F2),
+        background: successBackground,
         accent: successAccent,
         icon: Icons.check_circle_rounded,
       ),
       PracticeFeedbackTone.error => _PracticeFeedbackVisuals(
-        background: brightness == Brightness.dark
-            ? const Color(0xFF3A2323)
-            : const Color(0xFFFCECE8),
+        background: errorBackground,
         accent: dangerAccent,
         icon: Icons.cancel_rounded,
       ),

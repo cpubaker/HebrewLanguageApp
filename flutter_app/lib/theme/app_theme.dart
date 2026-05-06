@@ -16,6 +16,7 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
     required this.outlineSoft,
     required this.shadowColor,
     required this.progressTrack,
+    required this.primaryAccent,
     required this.heroGradientStart,
     required this.heroGradientMiddle,
     required this.heroGradientEnd,
@@ -30,6 +31,32 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
     required this.readingAccent,
     required this.infoAccent,
     required this.aiAccent,
+    required this.newContentAccent,
+    required this.contextAccent,
+    required this.guideAccent,
+    required this.guideSecondaryAccent,
+    required this.guideChipBackground,
+    required this.guideTitleText,
+    required this.disabledAccent,
+    required this.verbAccent,
+    required this.verbAccentStrong,
+    required this.verbImageGradientStart,
+    required this.verbImageGradientMiddle,
+    required this.verbImageGradientEnd,
+    required this.practicePromptGradientStart,
+    required this.practicePromptGradientEnd,
+    required this.practiceChoiceGradientStart,
+    required this.practiceChoiceGradientEnd,
+    required this.successSurface,
+    required this.dangerSurface,
+    required this.warningSurface,
+    required this.contextPanelSurface,
+    required this.constructorActiveSurface,
+    required this.constructorIdleSurface,
+    required this.constructorIdleAccent,
+    required this.wordNewSurface,
+    required this.wordKnownSurface,
+    required this.wordReviewSurface,
   });
 
   const AppThemeTokens.fallback()
@@ -44,6 +71,7 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
       outlineSoft = const Color(0x1F8C6A2A),
       shadowColor = const Color(0x14000000),
       progressTrack = const Color(0xFFEAE2D2),
+      primaryAccent = const Color(0xFF2B5D4F),
       heroGradientStart = const Color(0xFF163832),
       heroGradientMiddle = const Color(0xFF2B5D4F),
       heroGradientEnd = const Color(0xFF8C6A2A),
@@ -57,7 +85,33 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
       vocabularyAccent = const Color(0xFF8C6A2A),
       readingAccent = const Color(0xFF1D4ED8),
       infoAccent = const Color(0xFF1D4ED8),
-      aiAccent = const Color(0xFF8C3E9F);
+      aiAccent = const Color(0xFF8C3E9F),
+      newContentAccent = const Color(0xFF5F6B2D),
+      contextAccent = const Color(0xFF708244),
+      guideAccent = const Color(0xFFB45309),
+      guideSecondaryAccent = const Color(0xFF8C6A2A),
+      guideChipBackground = const Color(0xFFFDE7D4),
+      guideTitleText = const Color(0xFF2D2A24),
+      disabledAccent = const Color(0xFFB7ADA1),
+      verbAccent = const Color(0xFF7C3AED),
+      verbAccentStrong = const Color(0xFF5B21B6),
+      verbImageGradientStart = const Color(0xFFF7F1FF),
+      verbImageGradientMiddle = const Color(0xFFF3ECFF),
+      verbImageGradientEnd = const Color(0xFFF9F6ED),
+      practicePromptGradientStart = const Color(0xFFF1F6F2),
+      practicePromptGradientEnd = const Color(0xFFF7F3E8),
+      practiceChoiceGradientStart = const Color(0xFFF6EFE1),
+      practiceChoiceGradientEnd = const Color(0xFFEAF4EF),
+      successSurface = const Color(0xFFEAF6F2),
+      dangerSurface = const Color(0xFFFCECE8),
+      warningSurface = const Color(0xFFF9EFE4),
+      contextPanelSurface = const Color(0x0F163832),
+      constructorActiveSurface = const Color(0xFFEEDDBA),
+      constructorIdleSurface = const Color(0xFFFFFBF4),
+      constructorIdleAccent = const Color(0xFFBCA67B),
+      wordNewSurface = const Color(0xFFE6E7D6),
+      wordKnownSurface = const Color(0xFFE7F8F2),
+      wordReviewSurface = const Color(0xFFFFF1E6);
 
   final EdgeInsets pagePadding;
   final double sectionRadius;
@@ -70,6 +124,7 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
   final Color outlineSoft;
   final Color shadowColor;
   final Color progressTrack;
+  final Color primaryAccent;
   final Color heroGradientStart;
   final Color heroGradientMiddle;
   final Color heroGradientEnd;
@@ -84,6 +139,38 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
   final Color readingAccent;
   final Color infoAccent;
   final Color aiAccent;
+  final Color newContentAccent;
+  final Color contextAccent;
+  final Color guideAccent;
+  final Color guideSecondaryAccent;
+  final Color guideChipBackground;
+  final Color guideTitleText;
+  final Color disabledAccent;
+  final Color verbAccent;
+  final Color verbAccentStrong;
+  final Color verbImageGradientStart;
+  final Color verbImageGradientMiddle;
+  final Color verbImageGradientEnd;
+  final Color practicePromptGradientStart;
+  final Color practicePromptGradientEnd;
+  final Color practiceChoiceGradientStart;
+  final Color practiceChoiceGradientEnd;
+  final Color successSurface;
+  final Color dangerSurface;
+  final Color warningSurface;
+  final Color contextPanelSurface;
+  final Color constructorActiveSurface;
+  final Color constructorIdleSurface;
+  final Color constructorIdleAccent;
+  final Color wordNewSurface;
+  final Color wordKnownSurface;
+  final Color wordReviewSurface;
+
+  Color get guideBorder => guideAccent.withValues(alpha: 0.16);
+  Color get guideIconSurface => guideAccent.withValues(alpha: 0.10);
+  Color get guideSelectedSurface => guideAccent.withValues(alpha: 0.08);
+  Color get guideSelectedBorder => guideAccent.withValues(alpha: 0.30);
+  Color get verbSurface => verbAccent.withValues(alpha: 0.12);
 
   @override
   AppThemeTokens copyWith({
@@ -98,6 +185,7 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
     Color? outlineSoft,
     Color? shadowColor,
     Color? progressTrack,
+    Color? primaryAccent,
     Color? heroGradientStart,
     Color? heroGradientMiddle,
     Color? heroGradientEnd,
@@ -112,6 +200,32 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
     Color? readingAccent,
     Color? infoAccent,
     Color? aiAccent,
+    Color? newContentAccent,
+    Color? contextAccent,
+    Color? guideAccent,
+    Color? guideSecondaryAccent,
+    Color? guideChipBackground,
+    Color? guideTitleText,
+    Color? disabledAccent,
+    Color? verbAccent,
+    Color? verbAccentStrong,
+    Color? verbImageGradientStart,
+    Color? verbImageGradientMiddle,
+    Color? verbImageGradientEnd,
+    Color? practicePromptGradientStart,
+    Color? practicePromptGradientEnd,
+    Color? practiceChoiceGradientStart,
+    Color? practiceChoiceGradientEnd,
+    Color? successSurface,
+    Color? dangerSurface,
+    Color? warningSurface,
+    Color? contextPanelSurface,
+    Color? constructorActiveSurface,
+    Color? constructorIdleSurface,
+    Color? constructorIdleAccent,
+    Color? wordNewSurface,
+    Color? wordKnownSurface,
+    Color? wordReviewSurface,
   }) {
     return AppThemeTokens(
       pagePadding: pagePadding ?? this.pagePadding,
@@ -125,6 +239,7 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
       outlineSoft: outlineSoft ?? this.outlineSoft,
       shadowColor: shadowColor ?? this.shadowColor,
       progressTrack: progressTrack ?? this.progressTrack,
+      primaryAccent: primaryAccent ?? this.primaryAccent,
       heroGradientStart: heroGradientStart ?? this.heroGradientStart,
       heroGradientMiddle: heroGradientMiddle ?? this.heroGradientMiddle,
       heroGradientEnd: heroGradientEnd ?? this.heroGradientEnd,
@@ -139,6 +254,41 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
       readingAccent: readingAccent ?? this.readingAccent,
       infoAccent: infoAccent ?? this.infoAccent,
       aiAccent: aiAccent ?? this.aiAccent,
+      newContentAccent: newContentAccent ?? this.newContentAccent,
+      contextAccent: contextAccent ?? this.contextAccent,
+      guideAccent: guideAccent ?? this.guideAccent,
+      guideSecondaryAccent: guideSecondaryAccent ?? this.guideSecondaryAccent,
+      guideChipBackground: guideChipBackground ?? this.guideChipBackground,
+      guideTitleText: guideTitleText ?? this.guideTitleText,
+      disabledAccent: disabledAccent ?? this.disabledAccent,
+      verbAccent: verbAccent ?? this.verbAccent,
+      verbAccentStrong: verbAccentStrong ?? this.verbAccentStrong,
+      verbImageGradientStart:
+          verbImageGradientStart ?? this.verbImageGradientStart,
+      verbImageGradientMiddle:
+          verbImageGradientMiddle ?? this.verbImageGradientMiddle,
+      verbImageGradientEnd: verbImageGradientEnd ?? this.verbImageGradientEnd,
+      practicePromptGradientStart:
+          practicePromptGradientStart ?? this.practicePromptGradientStart,
+      practicePromptGradientEnd:
+          practicePromptGradientEnd ?? this.practicePromptGradientEnd,
+      practiceChoiceGradientStart:
+          practiceChoiceGradientStart ?? this.practiceChoiceGradientStart,
+      practiceChoiceGradientEnd:
+          practiceChoiceGradientEnd ?? this.practiceChoiceGradientEnd,
+      successSurface: successSurface ?? this.successSurface,
+      dangerSurface: dangerSurface ?? this.dangerSurface,
+      warningSurface: warningSurface ?? this.warningSurface,
+      contextPanelSurface: contextPanelSurface ?? this.contextPanelSurface,
+      constructorActiveSurface:
+          constructorActiveSurface ?? this.constructorActiveSurface,
+      constructorIdleSurface:
+          constructorIdleSurface ?? this.constructorIdleSurface,
+      constructorIdleAccent:
+          constructorIdleAccent ?? this.constructorIdleAccent,
+      wordNewSurface: wordNewSurface ?? this.wordNewSurface,
+      wordKnownSurface: wordKnownSurface ?? this.wordKnownSurface,
+      wordReviewSurface: wordReviewSurface ?? this.wordReviewSurface,
     );
   }
 
@@ -164,6 +314,7 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
       outlineSoft: Color.lerp(outlineSoft, other.outlineSoft, t)!,
       shadowColor: Color.lerp(shadowColor, other.shadowColor, t)!,
       progressTrack: Color.lerp(progressTrack, other.progressTrack, t)!,
+      primaryAccent: Color.lerp(primaryAccent, other.primaryAccent, t)!,
       heroGradientStart: Color.lerp(
         heroGradientStart,
         other.heroGradientStart,
@@ -194,6 +345,100 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
       readingAccent: Color.lerp(readingAccent, other.readingAccent, t)!,
       infoAccent: Color.lerp(infoAccent, other.infoAccent, t)!,
       aiAccent: Color.lerp(aiAccent, other.aiAccent, t)!,
+      newContentAccent: Color.lerp(
+        newContentAccent,
+        other.newContentAccent,
+        t,
+      )!,
+      contextAccent: Color.lerp(contextAccent, other.contextAccent, t)!,
+      guideAccent: Color.lerp(guideAccent, other.guideAccent, t)!,
+      guideSecondaryAccent: Color.lerp(
+        guideSecondaryAccent,
+        other.guideSecondaryAccent,
+        t,
+      )!,
+      guideChipBackground: Color.lerp(
+        guideChipBackground,
+        other.guideChipBackground,
+        t,
+      )!,
+      guideTitleText: Color.lerp(guideTitleText, other.guideTitleText, t)!,
+      disabledAccent: Color.lerp(disabledAccent, other.disabledAccent, t)!,
+      verbAccent: Color.lerp(verbAccent, other.verbAccent, t)!,
+      verbAccentStrong: Color.lerp(
+        verbAccentStrong,
+        other.verbAccentStrong,
+        t,
+      )!,
+      verbImageGradientStart: Color.lerp(
+        verbImageGradientStart,
+        other.verbImageGradientStart,
+        t,
+      )!,
+      verbImageGradientMiddle: Color.lerp(
+        verbImageGradientMiddle,
+        other.verbImageGradientMiddle,
+        t,
+      )!,
+      verbImageGradientEnd: Color.lerp(
+        verbImageGradientEnd,
+        other.verbImageGradientEnd,
+        t,
+      )!,
+      practicePromptGradientStart: Color.lerp(
+        practicePromptGradientStart,
+        other.practicePromptGradientStart,
+        t,
+      )!,
+      practicePromptGradientEnd: Color.lerp(
+        practicePromptGradientEnd,
+        other.practicePromptGradientEnd,
+        t,
+      )!,
+      practiceChoiceGradientStart: Color.lerp(
+        practiceChoiceGradientStart,
+        other.practiceChoiceGradientStart,
+        t,
+      )!,
+      practiceChoiceGradientEnd: Color.lerp(
+        practiceChoiceGradientEnd,
+        other.practiceChoiceGradientEnd,
+        t,
+      )!,
+      successSurface: Color.lerp(successSurface, other.successSurface, t)!,
+      dangerSurface: Color.lerp(dangerSurface, other.dangerSurface, t)!,
+      warningSurface: Color.lerp(warningSurface, other.warningSurface, t)!,
+      contextPanelSurface: Color.lerp(
+        contextPanelSurface,
+        other.contextPanelSurface,
+        t,
+      )!,
+      constructorActiveSurface: Color.lerp(
+        constructorActiveSurface,
+        other.constructorActiveSurface,
+        t,
+      )!,
+      constructorIdleSurface: Color.lerp(
+        constructorIdleSurface,
+        other.constructorIdleSurface,
+        t,
+      )!,
+      constructorIdleAccent: Color.lerp(
+        constructorIdleAccent,
+        other.constructorIdleAccent,
+        t,
+      )!,
+      wordNewSurface: Color.lerp(wordNewSurface, other.wordNewSurface, t)!,
+      wordKnownSurface: Color.lerp(
+        wordKnownSurface,
+        other.wordKnownSurface,
+        t,
+      )!,
+      wordReviewSurface: Color.lerp(
+        wordReviewSurface,
+        other.wordReviewSurface,
+        t,
+      )!,
     );
   }
 }
@@ -234,6 +479,7 @@ class _AppThemePalette {
         outlineSoft: Color(0x1F8C6A2A),
         shadowColor: Color(0x14000000),
         progressTrack: Color(0xFFEAE2D2),
+        primaryAccent: Color(0xFF2B5D4F),
         heroGradientStart: Color(0xFF163832),
         heroGradientMiddle: Color(0xFF2B5D4F),
         heroGradientEnd: Color(0xFF8C6A2A),
@@ -248,6 +494,32 @@ class _AppThemePalette {
         readingAccent: Color(0xFF1D4ED8),
         infoAccent: Color(0xFF1D4ED8),
         aiAccent: Color(0xFF8C3E9F),
+        newContentAccent: Color(0xFF5F6B2D),
+        contextAccent: Color(0xFF708244),
+        guideAccent: Color(0xFFB45309),
+        guideSecondaryAccent: Color(0xFF8C6A2A),
+        guideChipBackground: Color(0xFFFDE7D4),
+        guideTitleText: Color(0xFF2D2A24),
+        disabledAccent: Color(0xFFB7ADA1),
+        verbAccent: Color(0xFF7C3AED),
+        verbAccentStrong: Color(0xFF5B21B6),
+        verbImageGradientStart: Color(0xFFF7F1FF),
+        verbImageGradientMiddle: Color(0xFFF3ECFF),
+        verbImageGradientEnd: Color(0xFFF9F6ED),
+        practicePromptGradientStart: Color(0xFFF1F6F2),
+        practicePromptGradientEnd: Color(0xFFF7F3E8),
+        practiceChoiceGradientStart: Color(0xFFF6EFE1),
+        practiceChoiceGradientEnd: Color(0xFFEAF4EF),
+        successSurface: Color(0xFFEAF6F2),
+        dangerSurface: Color(0xFFFCECE8),
+        warningSurface: Color(0xFFF9EFE4),
+        contextPanelSurface: Color(0x0F163832),
+        constructorActiveSurface: Color(0xFFEEDDBA),
+        constructorIdleSurface: Color(0xFFFFFBF4),
+        constructorIdleAccent: Color(0xFFBCA67B),
+        wordNewSurface: Color(0xFFE6E7D6),
+        wordKnownSurface: Color(0xFFE7F8F2),
+        wordReviewSurface: Color(0xFFFFF1E6),
       ),
     );
   }
@@ -270,6 +542,7 @@ class _AppThemePalette {
         outlineSoft: Color(0x335A6C64),
         shadowColor: Color(0x42000000),
         progressTrack: Color(0xFF2B3833),
+        primaryAccent: Color(0xFF77BFAF),
         heroGradientStart: Color(0xFF081411),
         heroGradientMiddle: Color(0xFF18352C),
         heroGradientEnd: Color(0xFF5B4824),
@@ -284,6 +557,32 @@ class _AppThemePalette {
         readingAccent: Color(0xFF7EA4F4),
         infoAccent: Color(0xFF7EA4F4),
         aiAccent: Color(0xFFD08AE3),
+        newContentAccent: Color(0xFFB6C36F),
+        contextAccent: Color(0xFFA8BB70),
+        guideAccent: Color(0xFFD6A451),
+        guideSecondaryAccent: Color(0xFFC5965A),
+        guideChipBackground: Color(0xFF4C3924),
+        guideTitleText: Color(0xFFE2D0A3),
+        disabledAccent: Color(0xFFB7ADA1),
+        verbAccent: Color(0xFFD08AE3),
+        verbAccentStrong: Color(0xFF8C65D8),
+        verbImageGradientStart: Color(0xFF23153A),
+        verbImageGradientMiddle: Color(0xFF2A1E46),
+        verbImageGradientEnd: Color(0xFF212D28),
+        practicePromptGradientStart: Color(0xFF17201D),
+        practicePromptGradientEnd: Color(0xFF212D28),
+        practiceChoiceGradientStart: Color(0xFF212D28),
+        practiceChoiceGradientEnd: Color(0xFF17201D),
+        successSurface: Color(0xFF17352F),
+        dangerSurface: Color(0xFF3A2323),
+        warningSurface: Color(0xFF3A2A1F),
+        contextPanelSurface: Color(0x382B5D4F),
+        constructorActiveSurface: Color(0xFF5B4824),
+        constructorIdleSurface: Color(0xFF17201D),
+        constructorIdleAccent: Color(0xFFC5965A),
+        wordNewSurface: Color(0xFF303820),
+        wordKnownSurface: Color(0xFF17352F),
+        wordReviewSurface: Color(0xFF3A2A1F),
       ),
     );
   }

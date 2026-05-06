@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../theme/app_theme.dart';
+
 class GuideSectionPill extends StatelessWidget {
   const GuideSectionPill({
     super.key,
@@ -14,13 +16,11 @@ class GuideSectionPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final tokens = Theme.of(context).appTokens;
     final resolvedForegroundColor =
-        foregroundColor ??
-        (isDark ? const Color(0xFFD6B16B) : const Color(0xFF8C6A2A));
+        foregroundColor ?? tokens.guideSecondaryAccent;
     final resolvedBackgroundColor =
-        backgroundColor ??
-        (isDark ? const Color(0xFF4C3924) : const Color(0xFFFDE7D4));
+        backgroundColor ?? tokens.guideChipBackground;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),

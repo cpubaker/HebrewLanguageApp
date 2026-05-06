@@ -26,20 +26,16 @@ class GuideDetailHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final tokens = theme.appTokens;
-    final heroForeground = theme.brightness == Brightness.dark
-        ? tokens.heroText
-        : Colors.white;
-    final heroMutedForeground = theme.brightness == Brightness.dark
-        ? tokens.heroMutedText
-        : Colors.white.withValues(alpha: 0.92);
+    final heroForeground = tokens.heroText;
+    final heroMutedForeground = tokens.heroMutedText;
     final trimmedSummary = summary.trim();
 
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(28),
-        gradient: const LinearGradient(
-          colors: [Color(0xFF8C6A2A), Color(0xFFB45309)],
+        gradient: LinearGradient(
+          colors: [tokens.guideSecondaryAccent, tokens.guideAccent],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
