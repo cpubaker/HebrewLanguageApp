@@ -13,13 +13,10 @@ New user-facing work should target Flutter.
 ## Learning Catalog
 
 After adding, removing, or renaming guide, verb, or reading lesson files,
-regenerate the Flutter lesson catalog:
+regenerate the Flutter lesson catalog and compact content index:
 
 ```powershell
-cd flutter_app
-powershell -ExecutionPolicy Bypass -File .\tool\generate_learning_catalog.ps1
-cd ..
-python scripts\generate_content_index.py
+powershell -ExecutionPolicy Bypass -File .\scripts\validate.ps1 content
 ```
 
 ## Run The Flutter App
@@ -34,15 +31,25 @@ flutter run
 After Flutter code changes:
 
 ```powershell
-cd flutter_app
-flutter analyze
-flutter test
+powershell -ExecutionPolicy Bypass -File .\scripts\validate.ps1 flutter
 ```
 
-After backend, content tooling, or content validation changes:
+After shared content changes:
 
 ```powershell
-python -m unittest discover -s tests -v
+powershell -ExecutionPolicy Bypass -File .\scripts\validate.ps1 content
+```
+
+After backend, Python tooling, or content validation changes:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\validate.ps1 python
+```
+
+Before a broad handoff or PR:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\validate.ps1 all
 ```
 
 ## OpenAI API Key

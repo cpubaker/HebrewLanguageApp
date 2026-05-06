@@ -133,6 +133,7 @@ then open only the files needed for the task.
 - AI disk cache: `backend/ai_api/cache.py`.
 - Content integrity tests: `tests/test_content_integrity.py`.
 - AI API tests: `tests/test_ai_api.py`.
+- Validation entrypoint: `scripts/validate.ps1`.
 - Verb audits: `scripts/audit_verb_templates.py`,
   `scripts/audit_verb_duplicates.py`,
   `scripts/audit_verb_transliterations.py`.
@@ -149,14 +150,20 @@ then open only the files needed for the task.
 
 ## Validation Routes
 
+- Preferred validation entrypoint:
+  `powershell -ExecutionPolicy Bypass -File .\scripts\validate.ps1 <mode>`.
+- Modes:
+  `flutter` for Flutter analyze/tests, `content` for generated content files
+  plus Python tests, `python` for Python tests only, `all` for content then
+  Flutter validation.
 - After Flutter code changes:
-  `cd flutter_app; C:\src\Flutter\flutter\bin\flutter.bat analyze; C:\src\Flutter\flutter\bin\flutter.bat test`.
+  `powershell -ExecutionPolicy Bypass -File .\scripts\validate.ps1 flutter`.
 - After shared content changes:
-  `cd flutter_app; powershell -ExecutionPolicy Bypass -File .\tool\generate_learning_catalog.ps1; cd ..; python scripts\generate_content_index.py; python -m unittest discover -s tests -v`.
+  `powershell -ExecutionPolicy Bypass -File .\scripts\validate.ps1 content`.
 - After asset packaging changes: also run
-  `cd flutter_app; C:\src\Flutter\flutter\bin\flutter.bat test`.
+  `powershell -ExecutionPolicy Bypass -File .\scripts\validate.ps1 flutter`.
 - After Python backend/tooling/content validation changes:
-  `python -m unittest discover -s tests -v`.
+  `powershell -ExecutionPolicy Bypass -File .\scripts\validate.ps1 python`.
 - After verb content changes:
   `python scripts/audit_verb_templates.py`, then regenerate the lesson catalog
   if lesson files changed.

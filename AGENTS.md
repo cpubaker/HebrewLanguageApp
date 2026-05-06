@@ -24,6 +24,7 @@
 ## Where To Start
 - AI navigation map: `docs/ai_map.md`
 - Generated content index: `docs/content_index.json`
+- Validation entrypoint: `scripts/validate.ps1`
 - Flutter app entry: `flutter_app/lib/main.dart`
 - Flutter app root: `flutter_app/lib/app.dart`
 - Learning catalog generation: `flutter_app/tool/generate_learning_catalog.ps1`
@@ -45,18 +46,21 @@
 - Backend/API work: inspect `backend/` first.
 
 ## Validation
+- Preferred entrypoint:
+  - `powershell -ExecutionPolicy Bypass -File .\\scripts\\validate.ps1 <mode>`
+- Validation modes:
+  - `flutter`: Flutter analyze and tests.
+  - `content`: regenerate lesson catalog, regenerate content index, run Python tests.
+  - `python`: Python unittest suite only.
+  - `all`: content validation, then Flutter validation.
 - After Flutter code changes:
-  - `cd flutter_app`
-  - `C:\src\Flutter\flutter\bin\flutter.bat analyze`
-  - `C:\src\Flutter\flutter\bin\flutter.bat test`
+  - `powershell -ExecutionPolicy Bypass -File .\\scripts\\validate.ps1 flutter`
 - After shared content changes:
-  - `cd flutter_app`
-  - `powershell -ExecutionPolicy Bypass -File .\\tool\\generate_learning_catalog.ps1`
-  - `cd ..`
-  - `python scripts\\generate_content_index.py`
-  - `python -m unittest discover -s tests -v`
+  - `powershell -ExecutionPolicy Bypass -File .\\scripts\\validate.ps1 content`
 - After Python tooling, backend, or content validation changes:
-  - `python -m unittest discover -s tests -v`
+  - `powershell -ExecutionPolicy Bypass -File .\\scripts\\validate.ps1 python`
+- Before a broad handoff or PR:
+  - `powershell -ExecutionPolicy Bypass -File .\\scripts\\validate.ps1 all`
 
 ## Notes
 - Use the Flutter client as the main product surface.
