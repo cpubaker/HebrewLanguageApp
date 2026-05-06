@@ -6,11 +6,10 @@
 - Use Flutter as the implementation target for product behavior.
 
 ## Source Of Truth
-- Runtime assets under `assets/learning/` are generated copies.
-- Durable shared content still lives in the repo root under `data/input/`.
-- For lesson, vocabulary, verbs, reading, contexts, images, or audio, edit `data/input/` first unless the task is specifically about Flutter asset packaging.
-- After source content changes, run:
-  - `powershell -ExecutionPolicy Bypass -File .\\tool\\sync_learning_assets.ps1`
+- Durable shared content lives under `assets/learning/input/`.
+- For lesson, vocabulary, verbs, reading, contexts, images, or audio, edit `assets/learning/input/`.
+- After lesson file additions, removals, or renames, run:
+  - `powershell -ExecutionPolicy Bypass -File .\\tool\\generate_learning_catalog.ps1`
 
 ## Entry Points
 - App bootstrap: `lib/main.dart`
@@ -23,7 +22,6 @@
 ## Working Rules
 - Prefer narrow vertical slices over broad refactors.
 - Keep UI concerns in `lib/screens/` and `lib/theme/`; keep loading/parsing in `lib/services/`.
-- Do not hand-edit synced files under `assets/learning/input/` for permanent changes.
 - When adding loadable assets, update `pubspec.yaml` if needed.
 - Prefer extending existing models/services before adding a new architectural layer or state-management package.
 - Favor touch-friendly mobile patterns over desktop-style UI.
@@ -37,7 +35,7 @@
   - `flutter analyze`
   - `flutter test`
 - If asset loading behavior changed, also run:
-  - `powershell -ExecutionPolicy Bypass -File .\\tool\\sync_learning_assets.ps1`
+  - `powershell -ExecutionPolicy Bypass -File .\\tool\\generate_learning_catalog.ps1`
 - If device/emulator behavior matters, also run:
   - `flutter run`
 

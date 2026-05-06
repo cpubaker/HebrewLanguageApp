@@ -5,7 +5,7 @@ import re
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-VERBS_DIR = ROOT / "data" / "input" / "verbs"
+VERBS_DIR = ROOT / "flutter_app" / "assets" / "learning" / "input" / "verbs"
 TRANSLIT_RE = re.compile(r"\(([^\n()]+)\)")
 SUSPICIOUS_APOSTROPHE_RE = re.compile(r"(^|[ -]).'[^ ]")
 

@@ -5,13 +5,12 @@
 - Python code in the repo is backend, content tooling, validation, or generation code.
 
 ## Source Of Truth
-- Durable learning content lives in `data/input/`.
-- `flutter_app/assets/learning/input/` is a synced runtime copy. Do not hand-edit it for permanent changes.
-- For content work, prefer the matching source folder under `data/input/` and follow its local `AGENTS.md`:
-  - `data/input/AGENTS.md`
-  - `data/input/guide/AGENTS.md`
-  - `data/input/reading/AGENTS.md`
-  - `data/input/verbs/AGENTS.md`
+- Durable learning content lives in `flutter_app/assets/learning/input/`.
+- For content work, follow the matching local `AGENTS.md`:
+  - `flutter_app/assets/learning/input/AGENTS.md`
+  - `flutter_app/assets/learning/input/guide/AGENTS.md`
+  - `flutter_app/assets/learning/input/reading/AGENTS.md`
+  - `flutter_app/assets/learning/input/verbs/AGENTS.md`
 
 ## Working Defaults
 - Read the smallest relevant part of the codebase first.
@@ -26,11 +25,11 @@
 - AI navigation map: `docs/ai_map.md`
 - Flutter app entry: `flutter_app/lib/main.dart`
 - Flutter app root: `flutter_app/lib/app.dart`
-- Flutter asset sync: `flutter_app/tool/sync_learning_assets.ps1`
+- Learning catalog generation: `flutter_app/tool/generate_learning_catalog.ps1`
 
 ## Task Routing
 - Flutter UI or app flow: inspect `flutter_app/AGENTS.md` and then the relevant files under `flutter_app/lib/`.
-- Shared content, lessons, vocabulary, verbs, reading, contexts, media: inspect `data/input/` first.
+- Shared content, lessons, vocabulary, verbs, reading, contexts, media: inspect `flutter_app/assets/learning/input/` first.
 - Backend/API work: inspect `backend/` first.
 
 ## Validation
@@ -40,7 +39,8 @@
   - `flutter test`
 - After shared content changes:
   - `cd flutter_app`
-  - `powershell -ExecutionPolicy Bypass -File .\\tool\\sync_learning_assets.ps1`
+  - `powershell -ExecutionPolicy Bypass -File .\\tool\\generate_learning_catalog.ps1`
+  - `flutter test`
 - After Python tooling, backend, or content validation changes:
   - `python -m unittest discover -s tests -v`
 

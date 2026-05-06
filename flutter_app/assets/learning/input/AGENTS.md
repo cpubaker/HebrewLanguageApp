@@ -5,8 +5,7 @@
   client.
 - For vocabulary work, treat `hebrew_words.json` plus `contexts/` as one
   connected content set.
-- `data/input/` may still exist temporarily during migration, but new durable
-  learning-content edits belong here.
+- Durable learning-content edits belong here.
 
 ## Vocabulary Scope
 - The active vocabulary source file is `hebrew_words.json`.

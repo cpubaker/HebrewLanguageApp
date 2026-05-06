@@ -6,23 +6,20 @@ then open only the files needed for the task.
 ## Product Shape
 
 - Active product: Flutter client in `flutter_app/`.
-- Durable learning content: `data/input/`.
-- Synced runtime content: `flutter_app/assets/learning/input/`.
+- Durable learning content: `flutter_app/assets/learning/input/`.
 - Python code: backend API, content tooling, validation, and generation scripts.
 
 ## First Reads
 
 - Flutter app work: read `flutter_app/AGENTS.md`, then the relevant file under
   `flutter_app/lib/`.
-- Content work: read `data/input/AGENTS.md`, then the local `AGENTS.md` in
-  `guide/`, `reading/`, or `verbs/` if applicable.
+- Content work: read `flutter_app/assets/learning/input/AGENTS.md`, then the
+  local `AGENTS.md` in `guide/`, `reading/`, or `verbs/` if applicable.
 - Backend/API work: start in `backend/ai_api/`.
 - Repo-wide rules: root `AGENTS.md`.
 
 ## Do Not Read First
 
-- Do not inspect `flutter_app/assets/learning/input/` for durable content
-  changes. It is a synced runtime copy.
 - Do not read all lesson Markdown files to answer a narrow content question.
   Use filenames, local `AGENTS.md`, and adjacent examples first.
 - Do not inspect audio/image assets unless the task is specifically about media
@@ -100,16 +97,21 @@ then open only the files needed for the task.
 
 ## Content Map
 
-- Vocabulary source: `data/input/hebrew_words.json`.
-- Reusable context sentences: `data/input/contexts/sentences.json`.
-- Word-to-context links: `data/input/contexts/word_context_links.json`.
-- Guide lessons: `data/input/guide/`.
-- Guide metadata: `data/input/guide_metadata.json`.
-- Reading lessons by level: `data/input/reading/`.
-- Verb lessons: `data/input/verbs/`.
-- Source audio/images: `data/input/audio/`, `data/input/images/`.
-- Runtime sync script:
-  `flutter_app/tool/sync_learning_assets.ps1`.
+- Vocabulary source:
+  `flutter_app/assets/learning/input/hebrew_words.json`.
+- Reusable context sentences:
+  `flutter_app/assets/learning/input/contexts/sentences.json`.
+- Word-to-context links:
+  `flutter_app/assets/learning/input/contexts/word_context_links.json`.
+- Guide lessons: `flutter_app/assets/learning/input/guide/`.
+- Guide metadata:
+  `flutter_app/assets/learning/input/guide_metadata.json`.
+- Reading lessons by level: `flutter_app/assets/learning/input/reading/`.
+- Verb lessons: `flutter_app/assets/learning/input/verbs/`.
+- Source audio/images: `flutter_app/assets/learning/input/audio/`,
+  `flutter_app/assets/learning/input/images/`.
+- Lesson catalog generator:
+  `flutter_app/tool/generate_learning_catalog.ps1`.
 
 ## Backend And Tooling Map
 
@@ -132,26 +134,27 @@ then open only the files needed for the task.
 - Find asset paths: `rg -n "assets/learning|rootBundle|loadString" flutter_app/lib flutter_app/test`.
 - Find SharedPreferences stores:
   `rg -n "SharedPreferences|getString|setString" flutter_app/lib`.
-- Find content IDs: search `data/input/` first, not synced assets.
+- Find content IDs: search `flutter_app/assets/learning/input/` first.
 
 ## Validation Routes
 
 - After Flutter code changes:
   `cd flutter_app; flutter analyze; flutter test`.
 - After shared content changes:
-  `cd flutter_app; powershell -ExecutionPolicy Bypass -File .\tool\sync_learning_assets.ps1`.
-- After content sync or asset packaging changes: also run `flutter test`.
+  `cd flutter_app; powershell -ExecutionPolicy Bypass -File .\tool\generate_learning_catalog.ps1; flutter test`.
+- After asset packaging changes: also run `flutter test`.
 - After Python backend/tooling/content validation changes:
   `python -m unittest discover -s tests -v`.
 - After verb content changes:
-  `python scripts/audit_verb_templates.py`, then sync assets.
+  `python scripts/audit_verb_templates.py`, then regenerate the lesson catalog
+  if lesson files changed.
 
 ## Editing Rules For AI Agents
 
 - Prefer narrow vertical slices and existing local patterns.
 - Keep stable filenames, media filenames, lesson numbers, and IDs unchanged
   unless the task explicitly requires migration.
-- For durable learning content, edit `data/input/` first.
+- For durable learning content, edit `flutter_app/assets/learning/input/`.
 - For Flutter colors and surfaces, prefer shared theme tokens in
   `flutter_app/lib/theme/app_theme.dart`.
 - Treat light and night mode as required states for UI changes.

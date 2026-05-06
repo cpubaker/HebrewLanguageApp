@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 
+const _learningInputRoot = 'assets/learning/input';
+
 void main() {
   test('pubspec declares only approved learning asset roots', () async {
     final pubspec = await File('pubspec.yaml').readAsString();
@@ -28,37 +30,31 @@ void main() {
     ]);
   });
 
-  test(
-    'lesson catalog mirrors synced lesson assets and source content',
-    () async {
-      final lessonCatalog = await _readJsonObject(
-        File('assets/learning/input/lesson_catalog.json'),
-      );
+  test('lesson catalog mirrors canonical lesson assets', () async {
+    final lessonCatalog = await _readJsonObject(
+      File('$_learningInputRoot/lesson_catalog.json'),
+    );
 
-      _expectCatalogSectionMatches(
-        lessonCatalog: lessonCatalog,
-        sectionName: 'guide',
-        sourceDirectory: Directory('../data/input/guide'),
-        syncedDirectory: Directory('assets/learning/input/guide'),
-      );
-      _expectCatalogSectionMatches(
-        lessonCatalog: lessonCatalog,
-        sectionName: 'verbs',
-        sourceDirectory: Directory('../data/input/verbs'),
-        syncedDirectory: Directory('assets/learning/input/verbs'),
-      );
-      _expectCatalogSectionMatches(
-        lessonCatalog: lessonCatalog,
-        sectionName: 'reading',
-        sourceDirectory: Directory('../data/input/reading'),
-        syncedDirectory: Directory('assets/learning/input/reading'),
-      );
-    },
-  );
+    _expectCatalogSectionMatches(
+      lessonCatalog: lessonCatalog,
+      sectionName: 'guide',
+      lessonDirectory: Directory('$_learningInputRoot/guide'),
+    );
+    _expectCatalogSectionMatches(
+      lessonCatalog: lessonCatalog,
+      sectionName: 'verbs',
+      lessonDirectory: Directory('$_learningInputRoot/verbs'),
+    );
+    _expectCatalogSectionMatches(
+      lessonCatalog: lessonCatalog,
+      sectionName: 'reading',
+      lessonDirectory: Directory('$_learningInputRoot/reading'),
+    );
+  });
 
   test('lesson catalog output uses a normalized schema', () async {
     final lessonCatalog = await _readJsonObject(
-      File('assets/learning/input/lesson_catalog.json'),
+      File('$_learningInputRoot/lesson_catalog.json'),
     );
 
     expect(
@@ -96,7 +92,7 @@ void main() {
           entry,
           isNot(contains('..')),
           reason:
-              '$sectionName catalog paths must stay within the source root.',
+              '$sectionName catalog paths must stay within the content root.',
         );
         expect(
           _basename(entry).toLowerCase(),
@@ -107,149 +103,159 @@ void main() {
     }
   });
 
-  test(
-    'guide metadata references existing lessons and valid lesson IDs',
-    () async {
-      final metadata = await _readJsonObject(
-        File('../data/input/guide_metadata.json'),
-      );
-      final sections = _stringMap(metadata['sections']);
-      final lessons = _objectMap(metadata['lessons']);
-      final guideLessonFilenames = _collectRelativeLessonPaths(
-        Directory('../data/input/guide'),
-      );
-
-      expect(sections, isNotEmpty);
-      for (final section in sections.entries) {
-        expect(
-          section.key,
-          matches(RegExp(r'^[a-z0-9_]+$')),
-          reason: 'Guide section ids should stay stable.',
-        );
-        expect(
-          section.value,
-          section.value.trim(),
-          reason: '${section.key} section label should be trimmed.',
-        );
-        expect(
-          section.value,
-          isNotEmpty,
-          reason: '${section.key} section label should not be empty.',
-        );
-      }
-      expect(
-        lessons.keys,
-        unorderedEquals(guideLessonFilenames),
-        reason: 'Every guide lesson needs exactly one metadata entry.',
-      );
-
-      final lessonIdsByFilename = <String, String>{};
-      final sortOrders = <int>{};
-      final duplicateLessonIds = <String>{};
-      final duplicateSortOrders = <int>{};
-
-      for (final entry in lessons.entries) {
-        final filename = entry.key;
-        final value = entry.value;
-        final lessonId = _requiredTrimmedString(value, 'id', owner: filename);
-        final sectionId = _requiredTrimmedString(
-          value,
-          'section',
-          owner: filename,
-        );
-        final sortOrder = value['order'];
-
-        expect(
-          lessonId,
-          matches(RegExp(r'^[a-z0-9_]+$')),
-          reason: '$filename has an unstable lesson id.',
-        );
-        if (lessonIdsByFilename.containsValue(lessonId)) {
-          duplicateLessonIds.add(lessonId);
-        }
-        lessonIdsByFilename[filename] = lessonId;
-
-        expect(
-          sections.keys,
-          contains(sectionId),
-          reason: '$filename references an unknown guide section.',
-        );
-        expect(
-          sortOrder,
-          isA<int>(),
-          reason: '$filename order must be an int.',
-        );
-        expect(
-          sortOrder as int,
-          greaterThan(0),
-          reason: '$filename order must be positive.',
-        );
-        if (!sortOrders.add(sortOrder)) {
-          duplicateSortOrders.add(sortOrder);
-        }
-
-        _expectStringListContract(
-          value['aliases'],
-          owner: filename,
-          field: 'aliases',
-        );
-        _expectStringListContract(
-          value['related_ids'],
-          owner: filename,
-          field: 'related_ids',
-        );
-      }
-
-      expect(
-        duplicateLessonIds,
-        isEmpty,
-        reason: 'Guide lesson ids must be unique.',
-      );
-      expect(
-        duplicateSortOrders,
-        isEmpty,
-        reason: 'Guide lesson sort orders must be unique.',
-      );
-
-      final knownLessonIds = lessonIdsByFilename.values.toSet();
-      for (final entry in lessons.entries) {
-        final filename = entry.key;
-        final lessonId = lessonIdsByFilename[filename]!;
-        final relatedIds = _stringList(entry.value['related_ids']);
-        final missingRelatedIds = relatedIds
-            .where((relatedId) => !knownLessonIds.contains(relatedId))
-            .toList();
-
-        expect(
-          relatedIds,
-          isNot(contains(lessonId)),
-          reason: '$filename should not list itself as a related lesson.',
-        );
-        expect(
-          missingRelatedIds,
-          isEmpty,
-          reason: '$filename references unknown related guide lesson ids.',
-        );
-      }
-    },
-  );
-
-  test('core synced JSON assets mirror source content', () async {
-    await _expectFilesMatch(
-      sourceFile: File('../data/input/hebrew_words.json'),
-      assetFile: File('assets/learning/input/hebrew_words.json'),
+  test('guide metadata references existing lessons and valid lesson IDs', () async {
+    final metadata = await _readJsonObject(
+      File('$_learningInputRoot/guide_metadata.json'),
     );
-    await _expectFilesMatch(
-      sourceFile: File('../data/input/guide_metadata.json'),
-      assetFile: File('assets/learning/input/guide_metadata.json'),
+    final sections = _stringMap(metadata['sections']);
+    final lessons = _objectMap(metadata['lessons']);
+    final guideLessonFilenames = _collectRelativeLessonPaths(
+      Directory('$_learningInputRoot/guide'),
     );
+
+    expect(sections, isNotEmpty);
+    for (final section in sections.entries) {
+      expect(
+        section.key,
+        matches(RegExp(r'^[a-z0-9_]+$')),
+        reason: 'Guide section ids should stay stable.',
+      );
+      expect(
+        section.value,
+        section.value.trim(),
+        reason: '${section.key} section label should be trimmed.',
+      );
+      expect(
+        section.value,
+        isNotEmpty,
+        reason: '${section.key} section label should not be empty.',
+      );
+    }
+    expect(
+      lessons.keys,
+      unorderedEquals(guideLessonFilenames),
+      reason: 'Every guide lesson needs exactly one metadata entry.',
+    );
+
+    final lessonIdsByFilename = <String, String>{};
+    final sortOrders = <int>{};
+    final duplicateLessonIds = <String>{};
+    final duplicateSortOrders = <int>{};
+
+    for (final entry in lessons.entries) {
+      final filename = entry.key;
+      final value = entry.value;
+      final lessonId = _requiredTrimmedString(value, 'id', owner: filename);
+      final sectionId = _requiredTrimmedString(
+        value,
+        'section',
+        owner: filename,
+      );
+      final sortOrder = value['order'];
+
+      expect(
+        lessonId,
+        matches(RegExp(r'^[a-z0-9_]+$')),
+        reason: '$filename has an unstable lesson id.',
+      );
+      if (lessonIdsByFilename.containsValue(lessonId)) {
+        duplicateLessonIds.add(lessonId);
+      }
+      lessonIdsByFilename[filename] = lessonId;
+
+      expect(
+        sections.keys,
+        contains(sectionId),
+        reason: '$filename references an unknown guide section.',
+      );
+      expect(
+        sortOrder,
+        isA<int>(),
+        reason: '$filename order must be an int.',
+      );
+      expect(
+        sortOrder as int,
+        greaterThan(0),
+        reason: '$filename order must be positive.',
+      );
+      if (!sortOrders.add(sortOrder)) {
+        duplicateSortOrders.add(sortOrder);
+      }
+
+      _expectStringListContract(
+        value['aliases'],
+        owner: filename,
+        field: 'aliases',
+      );
+      _expectStringListContract(
+        value['related_ids'],
+        owner: filename,
+        field: 'related_ids',
+      );
+    }
+
+    expect(
+      duplicateLessonIds,
+      isEmpty,
+      reason: 'Guide lesson ids must be unique.',
+    );
+    expect(
+      duplicateSortOrders,
+      isEmpty,
+      reason: 'Guide lesson sort orders must be unique.',
+    );
+
+    final knownLessonIds = lessonIdsByFilename.values.toSet();
+    for (final entry in lessons.entries) {
+      final filename = entry.key;
+      final lessonId = lessonIdsByFilename[filename]!;
+      final relatedIds = _stringList(entry.value['related_ids']);
+      final missingRelatedIds = relatedIds
+          .where((relatedId) => !knownLessonIds.contains(relatedId))
+          .toList();
+
+      expect(
+        relatedIds,
+        isNot(contains(lessonId)),
+        reason: '$filename should not list itself as a related lesson.',
+      );
+      expect(
+        missingRelatedIds,
+        isEmpty,
+        reason: '$filename references unknown related guide lesson ids.',
+      );
+    }
   });
 
-  test('context assets mirror source content', () {
-    expect(
-      _collectRelativeFilePaths(Directory('assets/learning/input/contexts')),
-      _collectRelativeFilePaths(Directory('../data/input/contexts')),
+  test('canonical core content assets use expected top-level shapes', () async {
+    final wordsJson =
+        jsonDecode(
+              await File('$_learningInputRoot/hebrew_words.json').readAsString(),
+            )
+            as List<dynamic>;
+    final guideMetadata = await _readJsonObject(
+      File('$_learningInputRoot/guide_metadata.json'),
     );
+
+    expect(wordsJson, isNotEmpty);
+    expect(guideMetadata['sections'], isA<Map<String, dynamic>>());
+    expect(guideMetadata['lessons'], isA<Map<String, dynamic>>());
+  });
+
+  test('context assets use expected top-level shapes', () async {
+    final sentences =
+        jsonDecode(
+              await File(
+                '$_learningInputRoot/contexts/sentences.json',
+              ).readAsString(),
+            )
+            as List<dynamic>;
+    final wordContextLinks = await _readJsonObject(
+      File('$_learningInputRoot/contexts/word_context_links.json'),
+    );
+
+    expect(sentences, isNotEmpty);
+    expect(wordContextLinks, isNotEmpty);
   });
 
   test('reading lesson directories use known level keys', () {
@@ -263,23 +269,18 @@ void main() {
     ];
 
     expect(
-      _collectDirectoryNames(Directory('../data/input/reading')),
+      _collectDirectoryNames(Directory('$_learningInputRoot/reading')),
       expectedLevelDirectories,
       reason:
           'Reading source levels must match the UI grouping contract. Update '
           'reading_lesson_catalog.dart and pubspec.yaml before adding a new '
           'level.',
     );
-    expect(
-      _collectDirectoryNames(Directory('assets/learning/input/reading')),
-      expectedLevelDirectories,
-      reason: 'Synced reading assets should expose the same known levels.',
-    );
   });
 
-  test('synced runtime assets do not include hidden placeholder files', () {
+  test('learning content assets do not include hidden placeholder files', () {
     final hiddenFiles =
-        Directory('assets/learning/input')
+        Directory(_learningInputRoot)
             .listSync(recursive: true)
             .whereType<File>()
             .map((file) => file.path.replaceAll('\\', '/'))
@@ -290,32 +291,23 @@ void main() {
     expect(hiddenFiles, isEmpty);
   });
 
-  test(
-    'synced runtime assets do not include repo instruction or audit files',
-    () {
-      final runtimeNoise =
-          Directory('assets/learning/input')
-              .listSync(recursive: true)
-              .whereType<File>()
-              .map((file) => file.path.replaceAll('\\', '/'))
-              .where((path) {
-                final basename = _basename(path).toLowerCase();
-                return basename == 'agents.md' ||
-                    basename == 'rewrite_candidates.md';
-              })
-              .toList()
-            ..sort();
+  test('learning content assets do not include audit files', () {
+    final runtimeNoise =
+        Directory(_learningInputRoot)
+            .listSync(recursive: true)
+            .whereType<File>()
+            .map((file) => file.path.replaceAll('\\', '/'))
+            .where((path) => _basename(path).toLowerCase() == 'rewrite_candidates.md')
+            .toList()
+          ..sort();
 
-      expect(runtimeNoise, isEmpty);
-    },
-  );
+    expect(runtimeNoise, isEmpty);
+  });
 
   test('packaged word audio is referenced by the vocabulary source', () async {
     final wordsJson =
         jsonDecode(
-              await File(
-                'assets/learning/input/hebrew_words.json',
-              ).readAsString(),
+              await File('$_learningInputRoot/hebrew_words.json').readAsString(),
             )
             as List<dynamic>;
     final referencedAudio = wordsJson
@@ -327,7 +319,7 @@ void main() {
         .toSet();
 
     final packagedAudio = _collectMediaFilenames(
-      Directory('assets/learning/input/audio/words'),
+      Directory('$_learningInputRoot/audio/words'),
       extension: '.mp3',
     ).map((filename) => 'words/$filename').toList();
 
@@ -341,15 +333,15 @@ void main() {
 
   test('packaged verb media is referenced by verb lessons', () {
     final expectedVerbMediaStems = _collectRelativeLessonPaths(
-      Directory('assets/learning/input/verbs'),
+      Directory('$_learningInputRoot/verbs'),
     ).map(_mediaStemForLessonPath).toSet();
 
     final packagedVerbAudio = _collectMediaFilenames(
-      Directory('assets/learning/input/audio/verbs'),
+      Directory('$_learningInputRoot/audio/verbs'),
       extension: '.mp3',
     );
     final packagedVerbImages = _collectMediaFilenames(
-      Directory('assets/learning/input/images/verbs'),
+      Directory('$_learningInputRoot/images/verbs'),
       extension: '.png',
     );
 
@@ -413,23 +405,12 @@ List<String> _catalogEntries(
   return entries.cast<String>().toList(growable: false);
 }
 
-Future<void> _expectFilesMatch({
-  required File sourceFile,
-  required File assetFile,
-}) async {
-  expect(await sourceFile.exists(), isTrue);
-  expect(await assetFile.exists(), isTrue);
-  expect(await assetFile.readAsString(), await sourceFile.readAsString());
-}
-
 void _expectCatalogSectionMatches({
   required Map<String, dynamic> lessonCatalog,
   required String sectionName,
-  required Directory sourceDirectory,
-  required Directory syncedDirectory,
+  required Directory lessonDirectory,
 }) {
-  final sourceLessonPaths = _collectRelativeLessonPaths(sourceDirectory);
-  final syncedLessonPaths = _collectRelativeLessonPaths(syncedDirectory);
+  final lessonPaths = _collectRelativeLessonPaths(lessonDirectory);
   final catalogLessonPaths =
       ((lessonCatalog[sectionName] as List<dynamic>?) ?? const [])
           .whereType<String>()
@@ -437,14 +418,9 @@ void _expectCatalogSectionMatches({
         ..sort();
 
   expect(
-    syncedLessonPaths,
-    sourceLessonPaths,
-    reason: 'Synced Flutter assets for $sectionName are out of date.',
-  );
-  expect(
     catalogLessonPaths,
-    sourceLessonPaths,
-    reason: 'Lesson catalog for $sectionName does not match source content.',
+    lessonPaths,
+    reason: 'Lesson catalog for $sectionName does not match canonical content.',
   );
 }
 
@@ -527,20 +503,6 @@ List<String> _collectRelativeLessonPaths(Directory directory) {
     ..sort();
 }
 
-List<String> _collectRelativeFilePaths(Directory directory) {
-  return directory
-      .listSync(recursive: true)
-      .whereType<File>()
-      .where((file) => !_isIgnoredSourceFile(file.path))
-      .map(
-        (file) => file.path
-            .substring(directory.path.length + 1)
-            .replaceAll('\\', '/'),
-      )
-      .toList()
-    ..sort();
-}
-
 List<String> _collectDirectoryNames(Directory directory) {
   return directory
       .listSync()
@@ -581,9 +543,4 @@ String _normalizeAssetPath(String path) {
 String _basename(String path) {
   final normalizedPath = path.replaceAll('\\', '/');
   return normalizedPath.split('/').last;
-}
-
-bool _isIgnoredSourceFile(String path) {
-  final basename = _basename(path).toLowerCase();
-  return basename == 'agents.md' || basename == '.gitkeep';
 }

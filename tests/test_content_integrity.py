@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-INPUT_ROOT = PROJECT_ROOT / "data" / "input"
+INPUT_ROOT = PROJECT_ROOT / "flutter_app" / "assets" / "learning" / "input"
 READING_LEVELS = {
     "beginner",
     "pre-intermediate",

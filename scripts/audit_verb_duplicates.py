@@ -8,7 +8,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERBS_DIR = ROOT / "data" / "input" / "verbs"
+VERBS_DIR = ROOT / "flutter_app" / "assets" / "learning" / "input" / "verbs"
 
 
 def iter_verb_files() -> list[Path]:
@@ -73,7 +73,7 @@ def collect_duplicates() -> tuple[dict[str, list[str]], dict[str, list[str]]]:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Audit duplicate verb titles and infinitives under data/input/verbs.",
+        description="Audit duplicate verb titles and infinitives under flutter_app/assets/learning/input/verbs.",
     )
     parser.add_argument(
         "--strict",

@@ -6,7 +6,7 @@ from pathlib import Path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-VERBS_DIR = PROJECT_ROOT / "data" / "input" / "verbs"
+VERBS_DIR = PROJECT_ROOT / "flutter_app" / "assets" / "learning" / "input" / "verbs"
 
 FULL_TEMPLATE_HEADINGS = (
     "## Інфінітив",
@@ -52,7 +52,7 @@ def audit_templates(verbs_dir: Path) -> dict[str, list[str]]:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Audit verb lesson templates under data/input/verbs.",
+        description="Audit verb lesson templates under flutter_app/assets/learning/input/verbs.",
     )
     parser.add_argument(
         "--strict",

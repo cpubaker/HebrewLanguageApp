@@ -28,18 +28,19 @@ class WordAudioJob:
 
 def build_parser() -> argparse.ArgumentParser:
     repo_root = Path(__file__).resolve().parents[1]
+    learning_input_root = repo_root / "flutter_app" / "assets" / "learning" / "input"
 
     parser = argparse.ArgumentParser(
         description=(
             "Generate word pronunciation audio with the ElevenLabs Text-to-Speech API. "
-            "By default, the script reads data/input/hebrew_words.json and writes "
-            "matching MP3 files into data/input/audio/words for entries that define audio_file."
+            "By default, the script reads flutter_app/assets/learning/input/hebrew_words.json and writes "
+            "matching MP3 files into flutter_app/assets/learning/input/audio/words for entries that define audio_file."
         )
     )
     parser.add_argument(
         "--words-file",
         type=Path,
-        default=repo_root / "data" / "input" / "hebrew_words.json",
+        default=learning_input_root / "hebrew_words.json",
         help="Path to the shared vocabulary JSON file.",
     )
     parser.add_argument(
@@ -212,7 +213,7 @@ def collect_jobs(
     jobs: list[WordAudioJob] = []
     skipped_existing = 0
     skipped_without_audio = 0
-    repo_root = words_file.parents[2]
+    learning_input_root = words_file.parent
 
     for entry in words:
         if not isinstance(entry, dict):
@@ -234,7 +235,7 @@ def collect_jobs(
         if not text:
             continue
 
-        output_path = repo_root / "data" / "input" / "audio" / Path(audio_file)
+        output_path = learning_input_root / "audio" / Path(audio_file)
         if output_path.exists() and not force:
             skipped_existing += 1
             continue

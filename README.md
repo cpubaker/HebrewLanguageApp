@@ -5,19 +5,19 @@ This repository contains a Hebrew learning app for individual study.
 ## Product Surface
 
 - `flutter_app/` is the active Flutter Android client.
-- `data/input/` contains the durable learning content.
-- `flutter_app/assets/learning/input/` contains generated runtime copies of that content.
+- `flutter_app/assets/learning/input/` contains the durable learning content.
 - `backend/ai_api/` contains optional backend/API support code.
 
 New user-facing work should target Flutter.
 
-## Content Sync
+## Learning Catalog
 
-After changing source learning content under `data/input/`, refresh Flutter assets:
+After adding, removing, or renaming guide, verb, or reading lesson files,
+regenerate the Flutter lesson catalog:
 
 ```powershell
 cd flutter_app
-powershell -ExecutionPolicy Bypass -File .\tool\sync_learning_assets.ps1
+powershell -ExecutionPolicy Bypass -File .\tool\generate_learning_catalog.ps1
 ```
 
 ## Run The Flutter App

@@ -29,24 +29,25 @@ class VerbAudioJob:
 
 def build_parser() -> argparse.ArgumentParser:
     repo_root = Path(__file__).resolve().parents[1]
+    learning_input_root = repo_root / "flutter_app" / "assets" / "learning" / "input"
 
     parser = argparse.ArgumentParser(
         description=(
             "Generate verb pronunciation audio with the ElevenLabs Text-to-Speech API. "
             "By default, the script extracts the infinitive from each verb lesson and "
-            "writes matching MP3 files into data/input/audio/verbs."
+            "writes matching MP3 files into flutter_app/assets/learning/input/audio/verbs."
         )
     )
     parser.add_argument(
         "--verbs-dir",
         type=Path,
-        default=repo_root / "data" / "input" / "verbs",
+        default=learning_input_root / "verbs",
         help="Directory with numbered verb lesson markdown files.",
     )
     parser.add_argument(
         "--audio-dir",
         type=Path,
-        default=repo_root / "data" / "input" / "audio" / "verbs",
+        default=learning_input_root / "audio" / "verbs",
         help="Directory where generated MP3 files will be written.",
     )
     parser.add_argument(

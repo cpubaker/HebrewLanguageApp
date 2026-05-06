@@ -83,11 +83,11 @@
 - Routed shared lesson status visuals through semantic `AppThemeTokens` colors
   so guide and reading status UI no longer owns hardcoded unread, studying, and
   read accents.
-- Added catalog and asset sync contract coverage for normalized lesson catalog
+- Added catalog and asset packaging contract coverage for normalized lesson catalog
   output plus guide metadata filename, section, lesson ID, order, alias, and
   related-ID integrity.
-- Added reading level directory contract coverage so source and synced runtime
-  assets stay aligned with the UI grouping and pubspec packaging contract.
+- Added reading level directory contract coverage so canonical learning assets
+  stay aligned with the UI grouping and pubspec packaging contract.
 - Extracted words search/filter indexing into pure `word_list_filter` helpers
   with unit coverage, keeping `WordsScreen` focused on state and presentation.
 - Extracted `MarkdownLessonBody` markdown block parsing and inline glossary
@@ -144,5 +144,5 @@
   - `flutter analyze`
   - focused tests for the touched flow
   - `flutter test`
-- After content source changes:
-  - `powershell -ExecutionPolicy Bypass -File .\tool\sync_learning_assets.ps1`
+- After lesson file additions, removals, or renames:
+  - `powershell -ExecutionPolicy Bypass -File .\tool\generate_learning_catalog.ps1`
