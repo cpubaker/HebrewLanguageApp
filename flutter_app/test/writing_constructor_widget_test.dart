@@ -38,6 +38,8 @@ void main() {
       );
       await tester.pumpAndSettle();
 
+      expect(find.text('Поточна сесія'), findsNothing);
+
       await tester.tap(find.text('של').first);
       await tester.pumpAndSettle();
       await tester.tap(find.text('ום').first);

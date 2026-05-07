@@ -320,7 +320,7 @@ class WritingSession {
 
     final desiredCount = min(
       clusters.length,
-      max(1, _estimateSyllableCount(word.transcription)),
+      max(2, _estimateSyllableCount(word.transcription)),
     );
     final niqqudBlocks = _splitUsingNiqqud(clusters);
 

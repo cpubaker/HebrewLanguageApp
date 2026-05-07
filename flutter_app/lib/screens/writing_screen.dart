@@ -477,14 +477,16 @@ class _WritingScreenState extends State<WritingScreen> {
                 onUnknown: _submitUnknownAnswer,
                 onNext: _moveToNextPrompt,
               ),
-              const SizedBox(height: 16),
-              PracticeSessionSummary(
-                title: 'Поточна сесія',
-                lines: [
-                  'Перевірено відповідей: ${_session.answeredCount}',
-                  '${widget.words.length} слів доступні для письма на цьому пристрої',
-                ],
-              ),
+              if (_mode == WritingPracticeMode.typing) ...[
+                const SizedBox(height: 16),
+                PracticeSessionSummary(
+                  title: 'Поточна сесія',
+                  lines: [
+                    'Перевірено відповідей: ${_session.answeredCount}',
+                    '${widget.words.length} слів доступні для письма на цьому пристрої',
+                  ],
+                ),
+              ],
             ],
           ),
         ),

@@ -110,6 +110,33 @@ void main() {
     },
   );
 
+  test('constructor puzzle splits short one-syllable words into blocks', () {
+    const shortWord = '\u05d0\u05d5\u05e8';
+    final session = WritingSession(const [
+      LearningWord(
+        wordId: 'word_light',
+        hebrew: shortWord,
+        english: 'light',
+        ukrainian: 'світло',
+        transcription: 'or',
+        correct: 0,
+        wrong: 0,
+      ),
+    ], rng: Random(9));
+
+    final prompt = session.nextPrompt();
+
+    expect(prompt, isNotNull);
+    expect(prompt!.constructorPuzzle.solution.length, 2);
+    expect(prompt.constructorPuzzle.solution.join(), shortWord);
+    expect(
+      prompt.constructorPuzzle.availableBlocks.where(
+        (block) => block.isCorrect,
+      ),
+      hasLength(2),
+    );
+  });
+
   test('submitAnswer updates writing stats and tolerates missing niqqud', () {
     final session = WritingSession(
       const [
@@ -207,23 +234,20 @@ void main() {
   });
 
   test('currentWordStats returns the active writing progress snapshot', () {
-    final session = WritingSession(
-      const [
-        LearningWord(
-          wordId: 'word_peace',
-          hebrew: 'shalom',
-          english: 'peace',
-          ukrainian: 'mir',
-          transcription: 'shalom',
-          correct: 0,
-          wrong: 0,
-          writingCorrect: 3,
-          writingWrong: 2,
-          writingLastCorrect: '2026-03-25T11:30:00Z',
-        ),
-      ],
-      rng: Random(8),
-    );
+    final session = WritingSession(const [
+      LearningWord(
+        wordId: 'word_peace',
+        hebrew: 'shalom',
+        english: 'peace',
+        ukrainian: 'mir',
+        transcription: 'shalom',
+        correct: 0,
+        wrong: 0,
+        writingCorrect: 3,
+        writingWrong: 2,
+        writingLastCorrect: '2026-03-25T11:30:00Z',
+      ),
+    ], rng: Random(8));
 
     session.nextPrompt();
     final stats = session.currentWordStats();
