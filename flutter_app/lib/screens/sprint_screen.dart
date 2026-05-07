@@ -350,6 +350,8 @@ class _ActiveSprintCard extends StatelessWidget {
     required this.onRestart,
   });
 
+  static const double _swipeVelocityThreshold = 325;
+
   final int remainingSeconds;
   final SprintPrompt prompt;
   final int correctCount;
@@ -360,148 +362,167 @@ class _ActiveSprintCard extends StatelessWidget {
   final ValueChanged<String> onAnswer;
   final VoidCallback onRestart;
 
+  void _handleSwipe(DragEndDetails details) {
+    if (prompt.options.length < 2) {
+      return;
+    }
+
+    final velocity = details.primaryVelocity ?? 0;
+    if (velocity.abs() < _swipeVelocityThreshold) {
+      return;
+    }
+
+    onAnswer(velocity < 0 ? prompt.options.first : prompt.options[1]);
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final tokens = theme.appTokens;
 
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: tokens.elevatedSurface,
-        borderRadius: BorderRadius.circular(28),
-        boxShadow: [
-          BoxShadow(
-            color: tokens.shadowColor,
-            blurRadius: 22,
-            offset: Offset(0, 12),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: [
-              _SprintMetaChip(
-                icon: Icons.timer_rounded,
-                label: _formatDuration(remainingSeconds),
-                background: theme.colorScheme.primary,
-                foreground: theme.colorScheme.onPrimary,
-              ),
-              _SprintMetaChip(
-                icon: Icons.bolt_rounded,
-                label: '$attempts відповідей',
-                background: tokens.warningSurface,
-                foreground: tokens.warningAccent,
-              ),
-              IconButton(
-                tooltip: 'Почати спочатку',
-                onPressed: onRestart,
-                icon: const Icon(Icons.replay_rounded),
-              ),
-            ],
-          ),
-          const SizedBox(height: 18),
-          Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  tokens.practiceChoiceGradientStart,
-                  tokens.practiceChoiceGradientEnd,
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(24),
+    return GestureDetector(
+      key: const ValueKey('sprint-active-card'),
+      onHorizontalDragEnd: _handleSwipe,
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: tokens.elevatedSurface,
+          borderRadius: BorderRadius.circular(28),
+          boxShadow: [
+            BoxShadow(
+              color: tokens.shadowColor,
+              blurRadius: 22,
+              offset: Offset(0, 12),
             ),
-            child: Column(
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                Text(
-                  'Оберіть правильний переклад',
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    color: tokens.mutedText,
+                _SprintMetaChip(
+                  icon: Icons.timer_rounded,
+                  label: _formatDuration(remainingSeconds),
+                  background: theme.colorScheme.primary,
+                  foreground: theme.colorScheme.onPrimary,
+                ),
+                _SprintMetaChip(
+                  icon: Icons.bolt_rounded,
+                  label: '$attempts відповідей',
+                  background: tokens.warningSurface,
+                  foreground: tokens.warningAccent,
+                ),
+                IconButton(
+                  tooltip: 'Почати спочатку',
+                  onPressed: onRestart,
+                  icon: const Icon(Icons.replay_rounded),
+                ),
+              ],
+            ),
+            const SizedBox(height: 18),
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    tokens.practiceChoiceGradientStart,
+                    tokens.practiceChoiceGradientEnd,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(24),
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    'Оберіть правильний переклад',
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      color: tokens.mutedText,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  Text(
+                    prompt.word.hebrew,
+                    textDirection: TextDirection.rtl,
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.w800,
+                      color: theme.colorScheme.onSurface,
+                    ),
+                  ),
+                  if (prompt.word.transcription.trim().isNotEmpty) ...[
+                    const SizedBox(height: 8),
+                    Text(
+                      prompt.word.transcription,
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: tokens.secondaryText,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            const SizedBox(height: 18),
+            for (var index = 0; index < prompt.options.length; index += 1) ...[
+              FilledButton(
+                key: ValueKey('sprint-option-$index'),
+                onPressed: () => onAnswer(prompt.options[index]),
+                style: FilledButton.styleFrom(
+                  backgroundColor: tokens.subtleSurface,
+                  foregroundColor: theme.colorScheme.onSurface,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 18,
+                    vertical: 18,
+                  ),
+                  textStyle: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                const SizedBox(height: 14),
-                Text(
-                  prompt.word.hebrew,
-                  textDirection: TextDirection.rtl,
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    color: theme.colorScheme.onSurface,
-                  ),
+                child: Text(prompt.options[index], textAlign: TextAlign.center),
+              ),
+              if (index != prompt.options.length - 1)
+                const SizedBox(height: 12),
+            ],
+            const SizedBox(height: 18),
+            PracticeFeedbackCard(
+              message:
+                  feedbackMessage ??
+                  'Після відповіді тут одразу з’явиться короткий результат.',
+              tone: switch (lastAnswerCorrect) {
+                true => PracticeFeedbackTone.success,
+                false => PracticeFeedbackTone.error,
+                null => PracticeFeedbackTone.neutral,
+              },
+              compact: true,
+            ),
+            const SizedBox(height: 18),
+            PracticeStatsRow(
+              stats: [
+                PracticeStatItem(
+                  label: 'Правильно',
+                  value: correctCount,
+                  icon: Icons.check_rounded,
+                  accent: tokens.successAccent,
                 ),
-                if (prompt.word.transcription.trim().isNotEmpty) ...[
-                  const SizedBox(height: 8),
-                  Text(
-                    prompt.word.transcription,
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: tokens.secondaryText,
-                    ),
-                  ),
-                ],
+                PracticeStatItem(
+                  label: 'Помилки',
+                  value: wrongCount,
+                  icon: Icons.close_rounded,
+                  accent: tokens.dangerAccent,
+                ),
               ],
             ),
-          ),
-          const SizedBox(height: 18),
-          for (var index = 0; index < prompt.options.length; index += 1) ...[
-            FilledButton(
-              key: ValueKey('sprint-option-$index'),
-              onPressed: () => onAnswer(prompt.options[index]),
-              style: FilledButton.styleFrom(
-                backgroundColor: tokens.subtleSurface,
-                foregroundColor: theme.colorScheme.onSurface,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 18,
-                  vertical: 18,
-                ),
-                textStyle: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              child: Text(prompt.options[index], textAlign: TextAlign.center),
-            ),
-            if (index != prompt.options.length - 1) const SizedBox(height: 12),
           ],
-          const SizedBox(height: 18),
-          PracticeFeedbackCard(
-            message:
-                feedbackMessage ??
-                'Після відповіді тут одразу з’явиться короткий результат.',
-            tone: switch (lastAnswerCorrect) {
-              true => PracticeFeedbackTone.success,
-              false => PracticeFeedbackTone.error,
-              null => PracticeFeedbackTone.neutral,
-            },
-            compact: true,
-          ),
-          const SizedBox(height: 18),
-          PracticeStatsRow(
-            stats: [
-              PracticeStatItem(
-                label: 'Правильно',
-                value: correctCount,
-                icon: Icons.check_rounded,
-                accent: tokens.successAccent,
-              ),
-              PracticeStatItem(
-                label: 'Помилки',
-                value: wrongCount,
-                icon: Icons.close_rounded,
-                accent: tokens.dangerAccent,
-              ),
-            ],
-          ),
-        ],
+        ),
       ),
     );
   }

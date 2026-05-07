@@ -667,6 +667,70 @@ void main() {
     expect(store.savedWordIds, isNotEmpty);
   });
 
+  testWidgets(
+    'sprint swipes select first option left and second option right',
+    (WidgetTester tester) async {
+      await _useTallMobileViewport(tester);
+      final updatedWords = <LearningWord>[];
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SprintScreen(
+              words: const [
+                LearningWord(
+                  wordId: 'word_alpha',
+                  hebrew: 'alpha',
+                  english: 'alpha',
+                  transcription: 'alpha',
+                  correct: 0,
+                  wrong: 0,
+                ),
+                LearningWord(
+                  wordId: 'word_beta',
+                  hebrew: 'beta',
+                  english: 'beta',
+                  transcription: 'beta',
+                  correct: 0,
+                  wrong: 0,
+                ),
+              ],
+              onWordProgressChanged: updatedWords.add,
+              audioPlayerFactory: FakeVerbAudioPlayer.new,
+              statsStore: FakeSprintStatsStore(),
+              rng: _FixedRandom(),
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+
+      await tester.fling(
+        find.byKey(const ValueKey('sprint-active-card')),
+        const Offset(-420, 0),
+        1000,
+      );
+      await tester.pump();
+
+      expect(updatedWords, hasLength(1));
+      expect(updatedWords.single.wordId, 'word_alpha');
+      expect(updatedWords.single.correct, 0);
+      expect(updatedWords.single.wrong, 1);
+
+      await tester.fling(
+        find.byKey(const ValueKey('sprint-active-card')),
+        const Offset(420, 0),
+        1000,
+      );
+      await tester.pump();
+
+      expect(updatedWords, hasLength(2));
+      expect(updatedWords.last.wordId, 'word_beta');
+      expect(updatedWords.last.correct, 1);
+      expect(updatedWords.last.wrong, 0);
+    },
+  );
+
   testWidgets('sprint timeout summary does not duplicate the expired label', (
     WidgetTester tester,
   ) async {
