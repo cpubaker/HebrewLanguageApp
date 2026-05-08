@@ -3,14 +3,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hebrew_language_flutter/models/learning_context.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/screens/repetition_screen.dart';
-import 'package:hebrew_language_flutter/services/learning_audio_player.dart';
 import 'package:hebrew_language_flutter/theme/app_theme.dart';
+
+import 'support/fakes.dart';
 
 void main() {
   testWidgets('autoplays audio and advances one repetition card at a time', (
     tester,
   ) async {
-    final audioFactory = _FakeLearningAudioPlayerFactory();
+    final audioFactory = FakeLearningAudioPlayerFactory();
 
     await tester.pumpWidget(
       MaterialApp(
@@ -89,40 +90,4 @@ void main() {
     expect(find.text('2 слів переглянуто'), findsOneWidget);
     expect(find.text('Почати ще раз'), findsOneWidget);
   });
-}
-
-class _FakeLearningAudioPlayerFactory {
-  final List<_FakeLearningAudioPlayer> _players = <_FakeLearningAudioPlayer>[];
-
-  _FakeLearningAudioPlayer create() {
-    final player = _FakeLearningAudioPlayer();
-    _players.add(player);
-    return player;
-  }
-
-  _FakeLearningAudioPlayer get primaryPlayer => _players.first;
-}
-
-class _FakeLearningAudioPlayer implements LearningAudioPlayer {
-  final List<String> playedAssets = <String>[];
-
-  @override
-  Stream<bool> get isPlayingStream => const Stream<bool>.empty();
-
-  @override
-  Future<bool> assetExists(String assetPath) async => true;
-
-  @override
-  Future<bool> prepareAsset(String assetPath) async => true;
-
-  @override
-  Future<void> dispose() async {}
-
-  @override
-  Future<void> playAsset(String assetPath) async {
-    playedAssets.add(assetPath);
-  }
-
-  @override
-  Future<void> stop() async {}
 }

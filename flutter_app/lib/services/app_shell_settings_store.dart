@@ -1,4 +1,4 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import 'bool_setting_store.dart';
 
 abstract interface class AppShellSettingsStore {
   Future<bool> loadAutoHideBottomNavOnScroll();
@@ -14,14 +14,15 @@ class SharedPreferencesAppShellSettingsStore implements AppShellSettingsStore {
   final String autoHideBottomNavKey;
 
   @override
-  Future<bool> loadAutoHideBottomNavOnScroll() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(autoHideBottomNavKey) ?? true;
-  }
+  Future<bool> loadAutoHideBottomNavOnScroll() => _store.load();
 
   @override
-  Future<void> saveAutoHideBottomNavOnScroll(bool enabled) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(autoHideBottomNavKey, enabled);
-  }
+  Future<void> saveAutoHideBottomNavOnScroll(bool enabled) =>
+      _store.save(enabled);
+
+  SharedPreferencesBoolSettingStore get _store =>
+      SharedPreferencesBoolSettingStore(
+        key: autoHideBottomNavKey,
+        defaultValue: true,
+      );
 }

@@ -1,28 +1,24 @@
-import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:hebrew_language_flutter/app.dart';
-import 'package:hebrew_language_flutter/models/guide_lesson_status.dart';
 import 'package:hebrew_language_flutter/models/learning_bundle.dart';
 import 'package:hebrew_language_flutter/models/learning_context.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/models/lesson_document.dart';
 import 'package:hebrew_language_flutter/screens/home_screen.dart';
 import 'package:hebrew_language_flutter/screens/sprint_screen.dart';
-import 'package:hebrew_language_flutter/services/app_shell_settings_store.dart';
 import 'package:hebrew_language_flutter/services/audio_playback_awareness.dart';
 import 'package:hebrew_language_flutter/services/feature_access_service.dart';
-import 'package:hebrew_language_flutter/services/guide_progress_store.dart';
 import 'package:hebrew_language_flutter/services/lesson_document_loader.dart';
 import 'package:hebrew_language_flutter/services/learning_bundle_loader.dart';
-import 'package:hebrew_language_flutter/services/reading_progress_store.dart';
 import 'package:hebrew_language_flutter/services/sprint_stats_store.dart';
 import 'package:hebrew_language_flutter/services/theme_mode_store.dart';
-import 'package:hebrew_language_flutter/services/verb_audio_player.dart';
 import 'package:hebrew_language_flutter/services/word_progress_store.dart';
+
+import 'support/fakes.dart';
 
 class FakeLearningBundleLoader implements LearningBundleLoader {
   @override
@@ -1381,178 +1377,6 @@ class _WritingOnlyBundleLoader implements LearningBundleLoader {
       verbLessons: const [],
       readingLessons: const [],
     );
-  }
-}
-
-class FakeWordProgressStore implements WordProgressStore {
-  FakeWordProgressStore({Map<String, StoredWordProgress>? initialProgress})
-    : savedByWordId = <String, StoredWordProgress>{...?initialProgress};
-
-  final Map<String, StoredWordProgress> savedByWordId;
-  final List<String> savedWordIds = <String>[];
-
-  @override
-  Future<Map<String, StoredWordProgress>> load() async {
-    return Map<String, StoredWordProgress>.from(savedByWordId);
-  }
-
-  @override
-  Future<void> saveWord(LearningWord word) async {
-    savedWordIds.add(word.wordId);
-    savedByWordId[word.wordId] = StoredWordProgress(
-      wordId: word.wordId,
-      correct: word.correct,
-      wrong: word.wrong,
-      lastCorrect: word.lastCorrect,
-      writingCorrect: word.writingCorrect,
-      writingWrong: word.writingWrong,
-      writingLastCorrect: word.writingLastCorrect,
-    );
-  }
-}
-
-class FakeGuideProgressStore implements GuideProgressStore {
-  FakeGuideProgressStore({Map<String, GuideLessonStatus>? initialStatuses})
-    : lessonStatuses = <String, GuideLessonStatus>{...?initialStatuses};
-
-  final Map<String, GuideLessonStatus> lessonStatuses;
-
-  @override
-  Future<Map<String, GuideLessonStatus>> loadLessonStatuses() async {
-    return Map<String, GuideLessonStatus>.from(lessonStatuses);
-  }
-
-  @override
-  Future<void> setLessonStatus(
-    String assetPath,
-    GuideLessonStatus status,
-  ) async {
-    if (status == GuideLessonStatus.unread) {
-      lessonStatuses.remove(assetPath);
-    } else {
-      lessonStatuses[assetPath] = status;
-    }
-  }
-}
-
-class FakeReadingProgressStore implements ReadingProgressStore {
-  FakeReadingProgressStore({Map<String, GuideLessonStatus>? initialStatuses})
-    : lessonStatuses = <String, GuideLessonStatus>{...?initialStatuses};
-
-  final Map<String, GuideLessonStatus> lessonStatuses;
-
-  @override
-  Future<Map<String, GuideLessonStatus>> loadLessonStatuses() async {
-    return Map<String, GuideLessonStatus>.from(lessonStatuses);
-  }
-
-  @override
-  Future<void> setLessonStatus(
-    String assetPath,
-    GuideLessonStatus status,
-  ) async {
-    if (status == GuideLessonStatus.unread) {
-      lessonStatuses.remove(assetPath);
-    } else {
-      lessonStatuses[assetPath] = status;
-    }
-  }
-}
-
-class FakeSprintStatsStore implements SprintStatsStore {
-  FakeSprintStatsStore([this.stats = const SprintStats.empty()]);
-
-  SprintStats stats;
-  final List<SprintStats> savedStats = <SprintStats>[];
-
-  @override
-  Future<SprintStats> load() async => stats;
-
-  @override
-  Future<void> save(SprintStats stats) async {
-    this.stats = stats;
-    savedStats.add(stats);
-  }
-}
-
-class FakeVerbAudioPlayer implements VerbAudioPlayer {
-  FakeVerbAudioPlayer({
-    this.availableAssets = const {'assets/learning/input/audio/verbs/walk.mp3'},
-  });
-
-  final Set<String> availableAssets;
-  final List<String> playedAssets = <String>[];
-  final List<String> preparedAssets = <String>[];
-  final StreamController<bool> _isPlayingController =
-      StreamController<bool>.broadcast();
-  bool stopped = false;
-  bool disposed = false;
-
-  @override
-  Stream<bool> get isPlayingStream => _isPlayingController.stream;
-
-  @override
-  Future<bool> assetExists(String assetPath) async {
-    return availableAssets.contains(assetPath);
-  }
-
-  @override
-  Future<bool> prepareAsset(String assetPath) async {
-    if (!availableAssets.contains(assetPath)) {
-      return false;
-    }
-    preparedAssets.add(assetPath);
-    return true;
-  }
-
-  @override
-  Future<void> dispose() async {
-    disposed = true;
-    await _isPlayingController.close();
-  }
-
-  @override
-  Future<void> playAsset(String assetPath) async {
-    playedAssets.add(assetPath);
-    _isPlayingController.add(true);
-  }
-
-  @override
-  Future<void> stop() async {
-    stopped = true;
-    _isPlayingController.add(false);
-  }
-}
-
-class FakeThemeModeStore implements ThemeModeStore {
-  FakeThemeModeStore({this.initialPreference = AppThemePreference.light});
-
-  final AppThemePreference initialPreference;
-  final List<AppThemePreference> savedPreferences = <AppThemePreference>[];
-
-  @override
-  Future<AppThemePreference> load() async => initialPreference;
-
-  @override
-  Future<void> save(AppThemePreference preference) async {
-    savedPreferences.add(preference);
-  }
-}
-
-class FakeAppShellSettingsStore implements AppShellSettingsStore {
-  FakeAppShellSettingsStore({this.initialAutoHideBottomNavOnScroll = true});
-
-  final bool initialAutoHideBottomNavOnScroll;
-  final List<bool> savedAutoHideBottomNavValues = <bool>[];
-
-  @override
-  Future<bool> loadAutoHideBottomNavOnScroll() async {
-    return initialAutoHideBottomNavOnScroll;
-  }
-
-  @override
-  Future<void> saveAutoHideBottomNavOnScroll(bool enabled) async {
-    savedAutoHideBottomNavValues.add(enabled);
   }
 }
 

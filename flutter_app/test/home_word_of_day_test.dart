@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hebrew_language_flutter/models/learning_bundle.dart';
@@ -7,13 +5,14 @@ import 'package:hebrew_language_flutter/models/learning_context.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/models/lesson_document.dart';
 import 'package:hebrew_language_flutter/screens/home_screen.dart';
-import 'package:hebrew_language_flutter/services/learning_audio_player.dart';
 import 'package:hebrew_language_flutter/services/lesson_document_loader.dart';
 import 'package:hebrew_language_flutter/theme/app_theme.dart';
 
+import 'support/fakes.dart';
+
 void main() {
   testWidgets('shows the word of the day on the home screen', (tester) async {
-    final audioPlayer = _FakeLearningAudioPlayer();
+    final audioPlayer = FakeLearningAudioPlayer();
 
     await tester.pumpWidget(
       MaterialApp(
@@ -83,36 +82,6 @@ void main() {
 
     expect(find.widgetWithText(OutlinedButton, 'До карток'), findsNothing);
   });
-}
-
-class _FakeLearningAudioPlayer implements LearningAudioPlayer {
-  final List<String> playedAssets = <String>[];
-  final _isPlayingController = StreamController<bool>.broadcast();
-
-  @override
-  Stream<bool> get isPlayingStream => _isPlayingController.stream;
-
-  @override
-  Future<bool> assetExists(String assetPath) async => true;
-
-  @override
-  Future<bool> prepareAsset(String assetPath) async => true;
-
-  @override
-  Future<void> playAsset(String assetPath) async {
-    playedAssets.add(assetPath);
-    _isPlayingController.add(true);
-  }
-
-  @override
-  Future<void> stop() async {
-    _isPlayingController.add(false);
-  }
-
-  @override
-  Future<void> dispose() async {
-    await _isPlayingController.close();
-  }
 }
 
 class _FakeLessonDocumentLoader implements LessonDocumentLoader {

@@ -1,17 +1,16 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/screens/words_screen.dart';
 import 'package:hebrew_language_flutter/services/audio_playback_awareness.dart';
-import 'package:hebrew_language_flutter/services/learning_audio_player.dart';
+
+import 'support/fakes.dart';
 
 void main() {
   testWidgets('plays word audio from the list without opening details', (
     WidgetTester tester,
   ) async {
-    final audioPlayer = _FakeLearningAudioPlayer(assetExistsResult: true);
+    final audioPlayer = FakeLearningAudioPlayer(assetExistsResult: true);
 
     await tester.pumpWidget(
       MaterialApp(
@@ -52,7 +51,7 @@ void main() {
   testWidgets('keeps word audio disabled until mp3 exists', (
     WidgetTester tester,
   ) async {
-    final audioPlayer = _FakeLearningAudioPlayer(assetExistsResult: false);
+    final audioPlayer = FakeLearningAudioPlayer(assetExistsResult: false);
 
     await tester.pumpWidget(
       MaterialApp(
@@ -95,7 +94,7 @@ void main() {
   testWidgets(
     'shows a muted-volume hint before playback when awareness requests it',
     (WidgetTester tester) async {
-      final audioPlayer = _FakeLearningAudioPlayer(assetExistsResult: true);
+      final audioPlayer = FakeLearningAudioPlayer(assetExistsResult: true);
 
       await tester.pumpWidget(
         MaterialApp(
@@ -114,7 +113,7 @@ void main() {
                 ),
               ],
               audioPlayerFactory: () => audioPlayer,
-              audioPlaybackAwareness: _FakeAudioPlaybackAwareness(
+              audioPlaybackAwareness: FakeAudioPlaybackAwareness(
                 hint: AudioPlaybackHint.mediaVolumeMuted,
               ),
             ),
@@ -155,7 +154,7 @@ void main() {
               ),
             ],
             audioPlayerFactory: () =>
-                _FakeLearningAudioPlayer(assetExistsResult: false),
+                FakeLearningAudioPlayer(assetExistsResult: false),
           ),
         ),
       ),
@@ -176,7 +175,7 @@ void main() {
   testWidgets('prepares detail word audio before playback', (
     WidgetTester tester,
   ) async {
-    final audioPlayer = _FakeLearningAudioPlayer(assetExistsResult: true);
+    final audioPlayer = FakeLearningAudioPlayer(assetExistsResult: true);
 
     await tester.pumpWidget(
       MaterialApp(
@@ -242,7 +241,7 @@ void main() {
               ),
             ],
             audioPlayerFactory: () =>
-                _FakeLearningAudioPlayer(assetExistsResult: false),
+                FakeLearningAudioPlayer(assetExistsResult: false),
             onWordProgressChanged: (word) {
               changedWord = word;
             },
@@ -309,7 +308,7 @@ void main() {
               ),
             ],
             audioPlayerFactory: () =>
-                _FakeLearningAudioPlayer(assetExistsResult: false),
+                FakeLearningAudioPlayer(assetExistsResult: false),
             onWordProgressChanged: (word) {
               changedWord = word;
             },
@@ -358,7 +357,7 @@ void main() {
             body: WordsScreen(
               words: words,
               audioPlayerFactory: () =>
-                  _FakeLearningAudioPlayer(assetExistsResult: false),
+                  FakeLearningAudioPlayer(assetExistsResult: false),
             ),
           ),
         ),
@@ -393,48 +392,4 @@ void main() {
       );
     },
   );
-}
-
-class _FakeLearningAudioPlayer implements LearningAudioPlayer {
-  _FakeLearningAudioPlayer({
-    required this.assetExistsResult,
-    bool? prepareAssetResult,
-  }) : prepareAssetResult = prepareAssetResult ?? assetExistsResult;
-
-  final bool assetExistsResult;
-  final bool prepareAssetResult;
-  final List<String> playedAssets = <String>[];
-  final List<String> preparedAssets = <String>[];
-
-  @override
-  Stream<bool> get isPlayingStream => const Stream<bool>.empty();
-
-  @override
-  Future<bool> assetExists(String assetPath) async => assetExistsResult;
-
-  @override
-  Future<bool> prepareAsset(String assetPath) async {
-    preparedAssets.add(assetPath);
-    return prepareAssetResult;
-  }
-
-  @override
-  Future<void> dispose() async {}
-
-  @override
-  Future<void> playAsset(String assetPath) async {
-    playedAssets.add(assetPath);
-  }
-
-  @override
-  Future<void> stop() async {}
-}
-
-class _FakeAudioPlaybackAwareness implements AudioPlaybackAwareness {
-  _FakeAudioPlaybackAwareness({this.hint});
-
-  final AudioPlaybackHint? hint;
-
-  @override
-  Future<AudioPlaybackHint?> checkBeforePlayback() async => hint;
 }

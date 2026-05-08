@@ -14,8 +14,9 @@ import 'package:hebrew_language_flutter/services/lesson_document_loader.dart';
 import 'package:hebrew_language_flutter/services/learning_bundle_loader.dart';
 import 'package:hebrew_language_flutter/services/reading_progress_store.dart';
 import 'package:hebrew_language_flutter/services/sprint_stats_store.dart';
-import 'package:hebrew_language_flutter/services/verb_audio_player.dart';
 import 'package:hebrew_language_flutter/services/word_progress_store.dart';
+
+import 'support/fakes.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -259,16 +260,16 @@ void main() {
   testWidgets('guide progress rolls back when persistence fails', (
     WidgetTester tester,
   ) async {
-    final guideStore = _ThrowingGuideProgressStore();
+    final guideStore = ThrowingGuideProgressStore();
 
     await tester.pumpWidget(
       HebrewFlutterApp(
         loader: _GuideOnlyBundleLoader(),
         documentLoader: _GuideDocumentLoader(),
-        progressStore: _FakeWordProgressStore(),
+        progressStore: FakeWordProgressStore(),
         guideProgressStore: guideStore,
-        readingProgressStore: _FakeReadingProgressStore(),
-        audioPlayerFactory: () => _FakeVerbAudioPlayer(),
+        readingProgressStore: FakeReadingProgressStore(),
+        audioPlayerFactory: () => FakeVerbAudioPlayer(),
       ),
     );
     await tester.pumpAndSettle();
@@ -292,16 +293,16 @@ void main() {
   testWidgets('reading progress rolls back when persistence fails', (
     WidgetTester tester,
   ) async {
-    final readingStore = _ThrowingReadingProgressStore();
+    final readingStore = ThrowingReadingProgressStore();
 
     await tester.pumpWidget(
       HebrewFlutterApp(
         loader: _ReadingOnlyBundleLoader(),
         documentLoader: _ReadingDocumentLoader(),
-        progressStore: _FakeWordProgressStore(),
-        guideProgressStore: _FakeGuideProgressStore(),
+        progressStore: FakeWordProgressStore(),
+        guideProgressStore: FakeGuideProgressStore(),
         readingProgressStore: readingStore,
-        audioPlayerFactory: () => _FakeVerbAudioPlayer(),
+        audioPlayerFactory: () => FakeVerbAudioPlayer(),
       ),
     );
     await tester.pumpAndSettle();
@@ -379,96 +380,4 @@ class _ReadingDocumentLoader implements LessonDocumentLoader {
       body: '## Key words\n\n- yosi\n- school',
     );
   }
-}
-
-class _FakeWordProgressStore implements WordProgressStore {
-  @override
-  Future<Map<String, StoredWordProgress>> load() async {
-    return <String, StoredWordProgress>{};
-  }
-
-  @override
-  Future<void> saveWord(LearningWord word) async {}
-}
-
-class _ThrowingGuideProgressStore implements GuideProgressStore {
-  int attemptedWrites = 0;
-
-  @override
-  Future<Map<String, GuideLessonStatus>> loadLessonStatuses() async {
-    return <String, GuideLessonStatus>{};
-  }
-
-  @override
-  Future<void> setLessonStatus(
-    String assetPath,
-    GuideLessonStatus status,
-  ) async {
-    attemptedWrites += 1;
-    throw StateError('Simulated persistence failure');
-  }
-}
-
-class _FakeGuideProgressStore implements GuideProgressStore {
-  @override
-  Future<Map<String, GuideLessonStatus>> loadLessonStatuses() async {
-    return <String, GuideLessonStatus>{};
-  }
-
-  @override
-  Future<void> setLessonStatus(
-    String assetPath,
-    GuideLessonStatus status,
-  ) async {}
-}
-
-class _ThrowingReadingProgressStore implements ReadingProgressStore {
-  int attemptedWrites = 0;
-
-  @override
-  Future<Map<String, GuideLessonStatus>> loadLessonStatuses() async {
-    return <String, GuideLessonStatus>{};
-  }
-
-  @override
-  Future<void> setLessonStatus(
-    String assetPath,
-    GuideLessonStatus status,
-  ) async {
-    attemptedWrites += 1;
-    throw StateError('Simulated persistence failure');
-  }
-}
-
-class _FakeReadingProgressStore implements ReadingProgressStore {
-  @override
-  Future<Map<String, GuideLessonStatus>> loadLessonStatuses() async {
-    return <String, GuideLessonStatus>{};
-  }
-
-  @override
-  Future<void> setLessonStatus(
-    String assetPath,
-    GuideLessonStatus status,
-  ) async {}
-}
-
-class _FakeVerbAudioPlayer implements VerbAudioPlayer {
-  @override
-  Stream<bool> get isPlayingStream => const Stream<bool>.empty();
-
-  @override
-  Future<bool> assetExists(String assetPath) async => false;
-
-  @override
-  Future<bool> prepareAsset(String assetPath) async => false;
-
-  @override
-  Future<void> dispose() async {}
-
-  @override
-  Future<void> playAsset(String assetPath) async {}
-
-  @override
-  Future<void> stop() async {}
 }

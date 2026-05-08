@@ -1,4 +1,4 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import 'bool_setting_store.dart';
 
 abstract interface class AiPracticeTextSettingsStore {
   Future<bool> loadEnabled();
@@ -15,14 +15,11 @@ class SharedPreferencesAiPracticeTextSettingsStore
   final String enabledKey;
 
   @override
-  Future<bool> loadEnabled() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(enabledKey) ?? false;
-  }
+  Future<bool> loadEnabled() => _store.load();
 
   @override
-  Future<void> saveEnabled(bool enabled) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(enabledKey, enabled);
-  }
+  Future<void> saveEnabled(bool enabled) => _store.save(enabled);
+
+  SharedPreferencesBoolSettingStore get _store =>
+      SharedPreferencesBoolSettingStore(key: enabledKey);
 }

@@ -3,12 +3,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/screens/flashcards_screen.dart';
 import 'package:hebrew_language_flutter/screens/writing_screen.dart';
-import 'package:hebrew_language_flutter/services/learning_audio_player.dart';
 import 'package:hebrew_language_flutter/theme/app_theme.dart';
+
+import 'support/fakes.dart';
 
 void main() {
   testWidgets('flashcards autoplay and replay word audio', (tester) async {
-    final audioPlayer = _FakeLearningAudioPlayer();
+    final audioPlayer = FakeLearningAudioPlayer();
 
     await tester.pumpWidget(
       MaterialApp(
@@ -51,7 +52,7 @@ void main() {
   testWidgets('writing practice autoplay and replay word audio', (
     tester,
   ) async {
-    final audioPlayer = _FakeLearningAudioPlayer();
+    final audioPlayer = FakeLearningAudioPlayer();
 
     await tester.pumpWidget(
       MaterialApp(
@@ -94,7 +95,7 @@ void main() {
   testWidgets('constructor audio starts after checking the answer', (
     tester,
   ) async {
-    final audioPlayer = _FakeLearningAudioPlayer();
+    final audioPlayer = FakeLearningAudioPlayer();
     tester.view.physicalSize = const Size(430, 1400);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
@@ -156,28 +157,4 @@ void main() {
       'assets/audio/shalom.mp3',
     ]);
   });
-}
-
-class _FakeLearningAudioPlayer implements LearningAudioPlayer {
-  final List<String> playedAssets = <String>[];
-
-  @override
-  Stream<bool> get isPlayingStream => const Stream<bool>.empty();
-
-  @override
-  Future<bool> assetExists(String assetPath) async => true;
-
-  @override
-  Future<bool> prepareAsset(String assetPath) async => true;
-
-  @override
-  Future<void> dispose() async {}
-
-  @override
-  Future<void> playAsset(String assetPath) async {
-    playedAssets.add(assetPath);
-  }
-
-  @override
-  Future<void> stop() async {}
 }

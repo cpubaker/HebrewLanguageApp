@@ -3,17 +3,17 @@ import 'package:hebrew_language_flutter/models/guide_lesson_status.dart';
 import 'package:hebrew_language_flutter/models/learning_context.dart';
 import 'package:hebrew_language_flutter/models/learning_bundle.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
-import 'package:hebrew_language_flutter/services/guide_progress_store.dart';
 import 'package:hebrew_language_flutter/services/learning_bundle_loader.dart';
 import 'package:hebrew_language_flutter/services/learning_progress_repository.dart';
-import 'package:hebrew_language_flutter/services/reading_progress_store.dart';
 import 'package:hebrew_language_flutter/services/word_progress_store.dart';
+
+import 'support/fakes.dart';
 
 void main() {
   test('loads a hydrated progress state from the backing stores', () async {
     final repository = StoreBackedLearningProgressRepository(
       loader: const _FakeBundleLoader(),
-      wordProgressStore: _FakeWordProgressStore(
+      wordProgressStore: FakeWordProgressStore(
         initialProgress: const {
           'word_man': StoredWordProgress(
             wordId: 'word_man',
@@ -28,10 +28,10 @@ void main() {
           ),
         },
       ),
-      guideProgressStore: _FakeGuideProgressStore(
+      guideProgressStore: FakeGuideProgressStore(
         initialStatuses: const {'intro_alphabet': GuideLessonStatus.read},
       ),
-      readingProgressStore: _FakeReadingProgressStore(
+      readingProgressStore: FakeReadingProgressStore(
         initialStatuses: const {
           'yosi_goes_to_school': GuideLessonStatus.studying,
         },
@@ -59,9 +59,9 @@ void main() {
   });
 
   test('saves word and lesson progress through the backing stores', () async {
-    final wordStore = _FakeWordProgressStore();
-    final guideStore = _FakeGuideProgressStore();
-    final readingStore = _FakeReadingProgressStore();
+    final wordStore = FakeWordProgressStore();
+    final guideStore = FakeGuideProgressStore();
+    final readingStore = FakeReadingProgressStore();
     final repository = StoreBackedLearningProgressRepository(
       loader: const _FakeBundleLoader(),
       wordProgressStore: wordStore,
@@ -101,7 +101,7 @@ void main() {
     final loader = _FakeLazyBundleLoader();
     final repository = StoreBackedLearningProgressRepository(
       loader: loader,
-      wordProgressStore: _FakeWordProgressStore(
+      wordProgressStore: FakeWordProgressStore(
         initialProgress: const {
           'word_man': StoredWordProgress(
             wordId: 'word_man',
@@ -111,8 +111,8 @@ void main() {
           ),
         },
       ),
-      guideProgressStore: _FakeGuideProgressStore(),
-      readingProgressStore: _FakeReadingProgressStore(),
+      guideProgressStore: FakeGuideProgressStore(),
+      readingProgressStore: FakeReadingProgressStore(),
     );
 
     final summaryState = await repository.load();
@@ -228,63 +228,5 @@ class _FakeLazyBundleLoader
       readingLessons: const <LessonEntry>[],
       hasFullWordContexts: hasFullWordContexts,
     );
-  }
-}
-
-class _FakeWordProgressStore implements WordProgressStore {
-  _FakeWordProgressStore({Map<String, StoredWordProgress>? initialProgress})
-    : progress = <String, StoredWordProgress>{...?initialProgress};
-
-  final Map<String, StoredWordProgress> progress;
-  final List<String> savedWordIds = <String>[];
-
-  @override
-  Future<Map<String, StoredWordProgress>> load() async {
-    return Map<String, StoredWordProgress>.from(progress);
-  }
-
-  @override
-  Future<void> saveWord(LearningWord word) async {
-    savedWordIds.add(word.wordId);
-  }
-}
-
-class _FakeGuideProgressStore implements GuideProgressStore {
-  _FakeGuideProgressStore({Map<String, GuideLessonStatus>? initialStatuses})
-    : lessonStatuses = <String, GuideLessonStatus>{...?initialStatuses};
-
-  final Map<String, GuideLessonStatus> lessonStatuses;
-
-  @override
-  Future<Map<String, GuideLessonStatus>> loadLessonStatuses() async {
-    return Map<String, GuideLessonStatus>.from(lessonStatuses);
-  }
-
-  @override
-  Future<void> setLessonStatus(
-    String lessonKey,
-    GuideLessonStatus status,
-  ) async {
-    lessonStatuses[lessonKey] = status;
-  }
-}
-
-class _FakeReadingProgressStore implements ReadingProgressStore {
-  _FakeReadingProgressStore({Map<String, GuideLessonStatus>? initialStatuses})
-    : lessonStatuses = <String, GuideLessonStatus>{...?initialStatuses};
-
-  final Map<String, GuideLessonStatus> lessonStatuses;
-
-  @override
-  Future<Map<String, GuideLessonStatus>> loadLessonStatuses() async {
-    return Map<String, GuideLessonStatus>.from(lessonStatuses);
-  }
-
-  @override
-  Future<void> setLessonStatus(
-    String lessonKey,
-    GuideLessonStatus status,
-  ) async {
-    lessonStatuses[lessonKey] = status;
   }
 }

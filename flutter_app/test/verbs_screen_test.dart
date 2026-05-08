@@ -1,12 +1,11 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hebrew_language_flutter/models/learning_bundle.dart';
 import 'package:hebrew_language_flutter/models/lesson_document.dart';
 import 'package:hebrew_language_flutter/screens/verbs_screen.dart';
 import 'package:hebrew_language_flutter/services/lesson_document_loader.dart';
-import 'package:hebrew_language_flutter/services/verb_audio_player.dart';
+
+import 'support/fakes.dart';
 
 void main() {
   testWidgets('filters verb lessons by loaded lesson title', (
@@ -27,7 +26,7 @@ void main() {
               ),
             ],
             documentLoader: _FakeLessonDocumentLoader(),
-            audioPlayerFactory: () => _FakeVerbAudioPlayer(),
+            audioPlayerFactory: () => FakeVerbAudioPlayer(),
           ),
         ),
       ),
@@ -65,24 +64,4 @@ class _FakeLessonDocumentLoader implements LessonDocumentLoader {
 
     return const LessonDocument(title: 'Stub', body: 'Stub');
   }
-}
-
-class _FakeVerbAudioPlayer implements VerbAudioPlayer {
-  @override
-  Stream<bool> get isPlayingStream => const Stream<bool>.empty();
-
-  @override
-  Future<bool> assetExists(String assetPath) async => false;
-
-  @override
-  Future<bool> prepareAsset(String assetPath) async => false;
-
-  @override
-  Future<void> dispose() async {}
-
-  @override
-  Future<void> playAsset(String assetPath) async {}
-
-  @override
-  Future<void> stop() async {}
 }
