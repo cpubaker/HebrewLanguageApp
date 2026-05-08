@@ -7,6 +7,7 @@ import '../models/learning_word.dart';
 import '../services/audio_playback_awareness.dart';
 import '../services/flashcard_session.dart';
 import '../services/learning_audio_player.dart';
+import '../services/practice_time_format.dart';
 import '../theme/app_theme.dart';
 import 'audio_playback_feedback.dart';
 import 'widgets/context_source_badge.dart';
@@ -310,7 +311,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                     translation: word.translation,
                     lastCorrect: stats.lastCorrect == null
                         ? null
-                        : _formatLastCorrect(stats.lastCorrect!),
+                        : formatPracticeTimestamp(stats.lastCorrect!),
                   )
                 else
                   _SwipeHintStrip(
@@ -391,20 +392,6 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
       case FlashcardDeckMode.needsReview:
         return 'На повторення';
     }
-  }
-
-  String _formatLastCorrect(String value) {
-    final parsed = DateTime.tryParse(value);
-    if (parsed == null) {
-      return value;
-    }
-
-    final local = parsed.toLocal();
-    final month = local.month.toString().padLeft(2, '0');
-    final day = local.day.toString().padLeft(2, '0');
-    final hour = local.hour.toString().padLeft(2, '0');
-    final minute = local.minute.toString().padLeft(2, '0');
-    return '$day.$month.${local.year} $hour:$minute';
   }
 }
 

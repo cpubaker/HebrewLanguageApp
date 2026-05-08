@@ -2,19 +2,13 @@ import 'dart:math';
 
 import '../models/learning_context.dart';
 import '../models/learning_word.dart';
+import 'practice_word_stats.dart';
 import 'progress_snapshot.dart';
 
-enum FlashcardDeckMode {
-  allWords,
-  withContexts,
-  needsReview,
-}
+enum FlashcardDeckMode { allWords, withContexts, needsReview }
 
 class FlashcardCard {
-  const FlashcardCard({
-    required this.word,
-    required this.context,
-  });
+  const FlashcardCard({required this.word, required this.context});
 
   final LearningWord word;
   final LearningContext? context;
@@ -34,29 +28,15 @@ class FlashcardAnswerResult {
 
 typedef WordProgressCallback = void Function(LearningWord word);
 
-class FlashcardStats {
-  const FlashcardStats({
-    required this.correct,
-    required this.wrong,
-    required this.total,
-    required this.lastCorrect,
-  });
-
-  final int correct;
-  final int wrong;
-  final int total;
-  final String? lastCorrect;
-}
-
 class FlashcardSession {
   FlashcardSession(
     List<LearningWord> words, {
     Random? rng,
     DateTime Function()? now,
     this.deckMode = FlashcardDeckMode.allWords,
-  })  : _sourceWords = List<LearningWord>.from(words),
-        _rng = rng ?? Random(),
-        _now = now ?? DateTime.now {
+  }) : _sourceWords = List<LearningWord>.from(words),
+       _rng = rng ?? Random(),
+       _now = now ?? DateTime.now {
     _rebuildDeck();
   }
 
@@ -89,8 +69,8 @@ class FlashcardSession {
   int get reviewWordCount {
     return _sourceWords
         .where(
-          (word) => classifyWordLearningState(word) ==
-              WordLearningState.needsReview,
+          (word) =>
+              classifyWordLearningState(word) == WordLearningState.needsReview,
         )
         .length;
   }
@@ -104,9 +84,7 @@ class FlashcardSession {
     _rebuildDeck();
   }
 
-  void resetDeck({
-    FlashcardDeckMode? mode,
-  }) {
+  void resetDeck({FlashcardDeckMode? mode}) {
     if (mode != null) {
       deckMode = mode;
     }
@@ -130,10 +108,7 @@ class FlashcardSession {
     lastAnswerKnown = null;
     _seenWordIds.add(currentWord!.wordId);
 
-    return FlashcardCard(
-      word: currentWord!,
-      context: currentContext,
-    );
+    return FlashcardCard(word: currentWord!, context: currentContext);
   }
 
   FlashcardAnswerResult? answerCard(bool known) {
@@ -171,18 +146,13 @@ class FlashcardSession {
     );
   }
 
-  FlashcardStats currentWordStats() {
+  PracticeWordStats currentWordStats() {
     final activeWord = currentWord;
     if (activeWord == null) {
-      return const FlashcardStats(
-        correct: 0,
-        wrong: 0,
-        total: 0,
-        lastCorrect: null,
-      );
+      return PracticeWordStats.empty;
     }
 
-    return FlashcardStats(
+    return PracticeWordStats(
       correct: activeWord.correct,
       wrong: activeWord.wrong,
       total: activeWord.correct + activeWord.wrong,
@@ -241,7 +211,8 @@ class FlashcardSession {
       case FlashcardDeckMode.needsReview:
         final reviewWords = words
             .where(
-              (word) => classifyWordLearningState(word) ==
+              (word) =>
+                  classifyWordLearningState(word) ==
                   WordLearningState.needsReview,
             )
             .toList(growable: false);

@@ -6,6 +6,7 @@ import '../models/learning_word.dart';
 import '../services/audio_playback_awareness.dart';
 import '../services/flashcard_session.dart';
 import '../services/learning_audio_player.dart';
+import '../services/practice_time_format.dart';
 import '../services/writing_session.dart';
 import '../theme/app_theme.dart';
 import 'audio_playback_feedback.dart';
@@ -391,7 +392,7 @@ class _WritingScreenState extends State<WritingScreen> {
                               currentWord.hebrew,
                           lastCorrect: stats.lastCorrect == null
                               ? null
-                              : _formatTimestamp(stats.lastCorrect!),
+                              : formatPracticeTimestamp(stats.lastCorrect!),
                           audioButton: _hasCurrentAudio
                               ? PracticeAudioButton(
                                   key: const ValueKey(
@@ -430,7 +431,7 @@ class _WritingScreenState extends State<WritingScreen> {
                       _currentAnswer?.correctAnswer ?? currentWord.hebrew,
                   lastCorrect: stats.lastCorrect == null
                       ? null
-                      : _formatTimestamp(stats.lastCorrect!),
+                      : formatPracticeTimestamp(stats.lastCorrect!),
                 ),
                 const SizedBox(height: 18),
               ] else if (_mode == WritingPracticeMode.typing) ...[
@@ -493,20 +494,6 @@ class _WritingScreenState extends State<WritingScreen> {
         ),
       ],
     );
-  }
-
-  String _formatTimestamp(String value) {
-    final parsed = DateTime.tryParse(value);
-    if (parsed == null) {
-      return value;
-    }
-
-    final local = parsed.toLocal();
-    final month = local.month.toString().padLeft(2, '0');
-    final day = local.day.toString().padLeft(2, '0');
-    final hour = local.hour.toString().padLeft(2, '0');
-    final minute = local.minute.toString().padLeft(2, '0');
-    return '$day.$month.${local.year} $hour:$minute';
   }
 
   Widget _buildWritingFeedbackCard({

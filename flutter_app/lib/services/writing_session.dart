@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import '../models/learning_word.dart';
+import 'practice_word_stats.dart';
 
 class ConstructorBlock {
   const ConstructorBlock({
@@ -65,20 +66,6 @@ class WritingAnswerResult {
 }
 
 enum WritingAnswerStatus { empty, submitted }
-
-class WritingStats {
-  const WritingStats({
-    required this.correct,
-    required this.wrong,
-    required this.total,
-    required this.lastCorrect,
-  });
-
-  final int correct;
-  final int wrong;
-  final int total;
-  final String? lastCorrect;
-}
 
 class WritingSession {
   WritingSession(
@@ -167,18 +154,13 @@ class WritingSession {
     );
   }
 
-  WritingStats currentWordStats() {
+  PracticeWordStats currentWordStats() {
     final activeWord = currentWord;
     if (activeWord == null) {
-      return const WritingStats(
-        correct: 0,
-        wrong: 0,
-        total: 0,
-        lastCorrect: null,
-      );
+      return PracticeWordStats.empty;
     }
 
-    return WritingStats(
+    return PracticeWordStats(
       correct: activeWord.writingCorrect,
       wrong: activeWord.writingWrong,
       total: activeWord.writingCorrect + activeWord.writingWrong,
