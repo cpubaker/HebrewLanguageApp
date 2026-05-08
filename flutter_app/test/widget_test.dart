@@ -566,6 +566,10 @@ void main() {
 
     expect(find.text('האיש הולך ברחוב.'), findsOneWidget);
     expect(find.text('чоловік'), findsNothing);
+    expect(find.text('Ще раз'), findsOneWidget);
+    expect(find.text('Знаю'), findsOneWidget);
+    expect(find.text('Ліворуч'), findsNothing);
+    expect(find.text('Праворуч'), findsNothing);
 
     await tester.tap(find.byIcon(Icons.arrow_forward_rounded).first);
     await tester.pumpAndSettle();

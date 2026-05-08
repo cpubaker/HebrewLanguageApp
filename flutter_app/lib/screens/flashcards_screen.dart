@@ -743,8 +743,7 @@ class _SwipeHintStrip extends StatelessWidget {
           child: _SwipeHintCard(
             alignment: CrossAxisAlignment.start,
             icon: Icons.arrow_back_rounded,
-            title: 'Ліворуч',
-            subtitle: 'Ще раз',
+            label: 'Ще раз',
             accent: tokens.warningAccent,
             onTap: onRepeatTap,
           ),
@@ -754,8 +753,7 @@ class _SwipeHintStrip extends StatelessWidget {
           child: _SwipeHintCard(
             alignment: CrossAxisAlignment.end,
             icon: Icons.arrow_forward_rounded,
-            title: 'Праворуч',
-            subtitle: 'Знаю',
+            label: 'Знаю',
             accent: tokens.successAccent,
             onTap: onKnowTap,
           ),
@@ -769,22 +767,44 @@ class _SwipeHintCard extends StatelessWidget {
   const _SwipeHintCard({
     required this.alignment,
     required this.icon,
-    required this.title,
-    required this.subtitle,
+    required this.label,
     required this.accent,
     required this.onTap,
   });
 
   final CrossAxisAlignment alignment;
   final IconData icon;
-  final String title;
-  final String subtitle;
+  final String label;
   final Color accent;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final tokens = Theme.of(context).appTokens;
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+    final isTrailing = alignment == CrossAxisAlignment.end;
+    final iconBadge = Container(
+      width: 34,
+      height: 34,
+      decoration: BoxDecoration(
+        color: tokens.accentMutedSurface(accent),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: tokens.accentStrongBorder(accent)),
+      ),
+      child: Icon(icon, color: accent, size: 21),
+    );
+    final labelText = Flexible(
+      child: Text(
+        label,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        textAlign: isTrailing ? TextAlign.right : TextAlign.left,
+        style: theme.textTheme.titleSmall?.copyWith(
+          color: accent,
+          fontWeight: FontWeight.w800,
+        ),
+      ),
+    );
 
     return Material(
       color: Colors.transparent,
@@ -792,33 +812,22 @@ class _SwipeHintCard extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(20),
         child: Ink(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
           decoration: BoxDecoration(
-            color: Theme.of(context).brightness == Brightness.dark
+            color: theme.brightness == Brightness.dark
                 ? tokens.accentBorder(accent)
                 : tokens.accentSubtleSurface(accent),
             borderRadius: BorderRadius.circular(20),
           ),
-          child: Column(
-            crossAxisAlignment: alignment,
+          child: Row(
+            mainAxisAlignment: isTrailing
+                ? MainAxisAlignment.end
+                : MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
             children: [
-              Icon(icon, color: accent, size: 20),
-              const SizedBox(height: 6),
-              Text(
-                title,
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: tokens.mutedText,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                subtitle,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: accent,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
+              if (!isTrailing) ...[iconBadge, const SizedBox(width: 10)],
+              labelText,
+              if (isTrailing) ...[const SizedBox(width: 10), iconBadge],
             ],
           ),
         ),

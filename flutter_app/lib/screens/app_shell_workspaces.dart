@@ -98,6 +98,13 @@ class AppShellPracticeWorkspace extends StatelessWidget {
           'Оберіть формат тренування і відкрийте його окремим повноекранним сеансом.',
       shortcuts: [
         WorkspaceShortcut(
+          title: 'Повторення',
+          subtitle: 'Нові слова й останні помилки для спокійного повторення.',
+          icon: Icons.refresh_rounded,
+          accent: tokens.vocabularyAccent,
+          onTap: onOpenRepetition,
+        ),
+        WorkspaceShortcut(
           title: 'Картки',
           subtitle:
               'Швидке повторення перекладу, контексту і наборів на повторення.',
@@ -118,13 +125,6 @@ class AppShellPracticeWorkspace extends StatelessWidget {
           icon: Icons.extension_rounded,
           accent: tokens.guideAccent,
           onTap: onOpenWritingConstructor,
-        ),
-        WorkspaceShortcut(
-          title: 'Повторення',
-          subtitle: 'Нові слова й останні помилки для спокійного повторення.',
-          icon: Icons.refresh_rounded,
-          accent: tokens.vocabularyAccent,
-          onTap: onOpenRepetition,
         ),
         WorkspaceShortcut(
           title: 'Спринт',
