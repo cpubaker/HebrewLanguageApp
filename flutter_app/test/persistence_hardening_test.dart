@@ -164,6 +164,23 @@ void main() {
     });
   });
 
+  test('guide progress store merges duplicate canonical keys', () async {
+    SharedPreferences.setMockInitialValues(<String, Object>{
+      'guide_lesson_statuses': jsonEncode(<String, Object?>{
+        'assets/learning/input/guide/01_intro_alphabet.md': 'studying',
+        'intro_alphabet': 'read',
+      }),
+    });
+
+    final store = SharedPreferencesGuideProgressStore();
+
+    final loadedStatuses = await store.loadLessonStatuses();
+
+    expect(loadedStatuses, <String, GuideLessonStatus>{
+      'intro_alphabet': GuideLessonStatus.read,
+    });
+  });
+
   test('reading progress store sanitizes malformed status payloads', () async {
     SharedPreferences.setMockInitialValues(<String, Object>{
       'reading_lesson_statuses': jsonEncode(<String, Object?>{

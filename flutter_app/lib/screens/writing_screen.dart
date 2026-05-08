@@ -9,6 +9,7 @@ import '../services/learning_audio_player.dart';
 import '../services/writing_session.dart';
 import '../theme/app_theme.dart';
 import 'audio_playback_feedback.dart';
+import 'widgets/practice_audio_button.dart';
 import 'widgets/practice_feedback_card.dart';
 import 'widgets/practice_header.dart';
 import 'widgets/practice_session_summary.dart';
@@ -319,7 +320,7 @@ class _WritingScreenState extends State<WritingScreen> {
                     if (_mode == WritingPracticeMode.typing &&
                         _hasCurrentAudio) ...[
                       const SizedBox(height: 12),
-                      _PromptAudioButton(
+                      PracticeAudioButton(
                         key: const ValueKey('writing_audio_button'),
                         isBusy: _isAudioBusy,
                         isPlaying: _isAudioPlaying,
@@ -392,7 +393,7 @@ class _WritingScreenState extends State<WritingScreen> {
                               ? null
                               : _formatTimestamp(stats.lastCorrect!),
                           audioButton: _hasCurrentAudio
-                              ? _PromptAudioButton(
+                              ? PracticeAudioButton(
                                   key: const ValueKey(
                                     'constructor_result_audio_button',
                                   ),
@@ -697,36 +698,6 @@ class _WritingActionButtons extends StatelessWidget {
           label: const Text('Далі'),
         ),
       ],
-    );
-  }
-}
-
-class _PromptAudioButton extends StatelessWidget {
-  const _PromptAudioButton({
-    super.key,
-    required this.isBusy,
-    required this.isPlaying,
-    required this.onPressed,
-  });
-
-  final bool isBusy;
-  final bool isPlaying;
-  final VoidCallback? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton.filledTonal(
-      tooltip: 'Озвучка',
-      onPressed: onPressed,
-      icon: isBusy
-          ? const SizedBox(
-              width: 18,
-              height: 18,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            )
-          : Icon(
-              isPlaying ? Icons.stop_circle_outlined : Icons.volume_up_rounded,
-            ),
     );
   }
 }

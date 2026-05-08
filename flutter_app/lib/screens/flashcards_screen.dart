@@ -11,6 +11,7 @@ import '../theme/app_theme.dart';
 import 'audio_playback_feedback.dart';
 import 'widgets/context_source_badge.dart';
 import 'widgets/practice_completion_card.dart';
+import 'widgets/practice_audio_button.dart';
 import 'widgets/practice_header.dart';
 import 'widgets/practice_panel.dart';
 import 'widgets/practice_stat_pill.dart';
@@ -287,7 +288,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                   hebrew: word.hebrew,
                   transcription: word.transcription,
                   audioButton: _hasCurrentAudio
-                      ? _PromptAudioButton(
+                      ? PracticeAudioButton(
                           key: const ValueKey('flashcards_audio_button'),
                           isBusy: _isAudioBusy,
                           isPlaying: _isAudioPlaying,
@@ -610,36 +611,6 @@ class _PromptPanel extends StatelessWidget {
           ],
         ],
       ),
-    );
-  }
-}
-
-class _PromptAudioButton extends StatelessWidget {
-  const _PromptAudioButton({
-    super.key,
-    required this.isBusy,
-    required this.isPlaying,
-    required this.onPressed,
-  });
-
-  final bool isBusy;
-  final bool isPlaying;
-  final VoidCallback? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton.filledTonal(
-      tooltip: 'Озвучка',
-      onPressed: onPressed,
-      icon: isBusy
-          ? const SizedBox(
-              width: 18,
-              height: 18,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            )
-          : Icon(
-              isPlaying ? Icons.stop_circle_outlined : Icons.volume_up_rounded,
-            ),
     );
   }
 }
