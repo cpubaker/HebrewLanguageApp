@@ -16,6 +16,7 @@
 - App root: `lib/app.dart`
 - Shared shell: `lib/screens/app_shell_screen.dart`
 - Home screen: `lib/screens/home_screen.dart`
+- Home dashboard sections/cards: `lib/screens/widgets/home/`
 - Sprint practice: `lib/screens/sprint_screen.dart`
 - Learning bundle loader: `lib/services/learning_bundle_loader.dart`
 

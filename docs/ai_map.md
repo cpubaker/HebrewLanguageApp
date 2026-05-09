@@ -47,10 +47,13 @@ then open only the files needed for the task.
   `flutter_app/lib/screens/app_shell_workspaces.dart`.
 - Theme tokens: `flutter_app/lib/theme/app_theme.dart`.
 - Shared UI widgets: `flutter_app/lib/screens/widgets/`.
+- Home dashboard widgets:
+  `flutter_app/lib/screens/widgets/home/`.
 
 ## Main Screens
 
-- Home: `flutter_app/lib/screens/home_screen.dart`.
+- Home: `flutter_app/lib/screens/home_screen.dart` composes the dashboard;
+  home sections/cards live in `flutter_app/lib/screens/widgets/home/`.
 - Words/vocabulary: `flutter_app/lib/screens/words_screen.dart`.
 - Flashcards: `flutter_app/lib/screens/flashcards_screen.dart`.
 - Writing/constructor: `flutter_app/lib/screens/writing_screen.dart`.
