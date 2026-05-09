@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../models/learning_word.dart';
 import '../services/flashcard_session.dart';
+import '../services/learning_audio_controller.dart';
 import '../services/learning_audio_player.dart';
 import '../services/sprint_session.dart';
 import '../services/sprint_stats_store.dart';
@@ -42,7 +43,9 @@ class SprintScreen extends StatefulWidget {
 class _SprintScreenState extends State<SprintScreen> {
   Timer? _timer;
   late SprintSession _session;
-  late final LearningAudioPlayer _audioPlayer = widget.audioPlayerFactory();
+  late final LearningAudioController _audioController = LearningAudioController(
+    audioPlayerFactory: widget.audioPlayerFactory,
+  );
 
   SprintPrompt? _currentPrompt;
   String? _feedbackMessage;
@@ -53,7 +56,6 @@ class _SprintScreenState extends State<SprintScreen> {
   _SprintRunFeedback? _lastRunFeedback;
   int _remainingSeconds = 0;
   bool _isActive = false;
-  int _audioRequestToken = 0;
   int _runToken = 0;
 
   @override
@@ -66,8 +68,7 @@ class _SprintScreenState extends State<SprintScreen> {
   @override
   void dispose() {
     _timer?.cancel();
-    unawaited(_audioPlayer.stop());
-    unawaited(_audioPlayer.dispose());
+    _audioController.dispose();
     super.dispose();
   }
 
@@ -227,29 +228,7 @@ class _SprintScreenState extends State<SprintScreen> {
   }
 
   Future<void> _syncPromptAudio(SprintPrompt? prompt) async {
-    final requestToken = ++_audioRequestToken;
-
-    try {
-      await _audioPlayer.stop();
-    } catch (_) {}
-
-    if (!mounted || _audioRequestToken != requestToken) {
-      return;
-    }
-
-    final audioAssetPath = prompt?.word.audioAssetPath;
-    if (audioAssetPath == null || audioAssetPath.trim().isEmpty) {
-      return;
-    }
-
-    final hasAudio = await _audioPlayer.assetExists(audioAssetPath);
-    if (!mounted || _audioRequestToken != requestToken || !hasAudio) {
-      return;
-    }
-
-    try {
-      await _audioPlayer.playAsset(audioAssetPath);
-    } catch (_) {}
+    await _audioController.autoplay(prompt?.word.audioAssetPath);
   }
 
   @override

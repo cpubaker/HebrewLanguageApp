@@ -2,12 +2,9 @@ part of '../../words_screen.dart';
 
 abstract class _WordAudioButtonState<T extends StatefulWidget>
     extends State<T> {
-  late final LearningAudioPlayer _audioPlayer = audioPlayerFactory();
-  StreamSubscription<bool>? _playbackSubscription;
-  bool _isCheckingAvailability = true;
-  bool _hasAudio = false;
-  bool _isPlaying = false;
-  bool _isBusy = false;
+  late final LearningAudioController _audioController = LearningAudioController(
+    audioPlayerFactory: audioPlayerFactory,
+  )..addListener(_handleAudioStateChanged);
 
   AudioPlaybackAwareness get audioPlaybackAwareness;
 
@@ -19,112 +16,54 @@ abstract class _WordAudioButtonState<T extends StatefulWidget>
 
   bool get prepareAudioBeforeEnable => false;
 
-  bool get _isAudioEnabled => _hasAudio && !_isBusy;
+  bool get _isAudioEnabled => _audioController.canToggle;
 
   String get _audioAssetPath => word.audioAssetPath ?? '';
 
   String get _audioTooltip {
-    if (_isCheckingAvailability) {
+    if (_audioController.isCheckingAvailability) {
       return 'Перевіряємо аудіо слова';
     }
 
-    if (!_hasAudio) {
+    if (!_audioController.hasAudio) {
       return 'Аудіо для слова ще недоступне';
     }
 
-    return _isPlaying ? 'Зупинити вимову слова' : 'Увімкнути вимову слова';
+    return _audioController.isPlaying
+        ? 'Зупинити вимову слова'
+        : 'Увімкнути вимову слова';
   }
 
   @override
   void initState() {
     super.initState();
-    _playbackSubscription = _audioPlayer.isPlayingStream.listen((isPlaying) {
-      if (!mounted) {
-        return;
-      }
-
-      setState(() {
-        _isPlaying = isPlaying;
-      });
-    });
     unawaited(_checkAudioAvailability());
   }
 
   Future<void> _checkAudioAvailability() async {
-    final audioAssetPath = word.audioAssetPath;
-    if (audioAssetPath == null || audioAssetPath.trim().isEmpty) {
-      if (!mounted) {
-        return;
-      }
-
-      setState(() {
-        _hasAudio = false;
-        _isCheckingAvailability = false;
-      });
-      return;
-    }
-
-    var hasAudio = await _audioPlayer.assetExists(audioAssetPath);
-    if (hasAudio && prepareAudioBeforeEnable) {
-      try {
-        hasAudio = await _audioPlayer.prepareAsset(audioAssetPath);
-      } catch (_) {
-        hasAudio = false;
-      }
-    }
-
-    if (!mounted) {
-      return;
-    }
-
-    setState(() {
-      _hasAudio = hasAudio;
-      _isCheckingAvailability = false;
-    });
+    await _audioController.checkAvailability(
+      word.audioAssetPath,
+      prepare: prepareAudioBeforeEnable,
+    );
   }
 
   Future<void> _togglePlayback() async {
-    final wasPlaying = _isPlaying;
-
-    setState(() {
-      _isBusy = true;
-    });
-
     try {
-      if (wasPlaying) {
-        await _audioPlayer.stop();
-      } else {
-        await showAudioPlaybackHintIfNeeded(
+      await _audioController.toggle(
+        _audioAssetPath,
+        beforePlay: () => showAudioPlaybackHintIfNeeded(
           context: context,
           awareness: audioPlaybackAwareness,
-        );
-        await _audioPlayer.playAsset(_audioAssetPath);
-      }
-
-      if (!mounted) {
-        return;
-      }
-
-      if (wasPlaying && clearPlayingAfterStop) {
-        setState(() {
-          _isPlaying = false;
-        });
-      }
+        ),
+        clearPlayingAfterStop: clearPlayingAfterStop,
+      );
     } catch (error) {
       if (!mounted) {
         return;
       }
 
-      setState(() {
-        updatePlaybackErrorState(error);
-      });
+      updatePlaybackErrorState(error);
       showPlaybackErrorFeedback(error);
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isBusy = false;
-        });
-      }
     }
   }
 
@@ -134,10 +73,18 @@ abstract class _WordAudioButtonState<T extends StatefulWidget>
 
   @override
   void dispose() {
-    unawaited(_playbackSubscription?.cancel());
-    unawaited(_audioPlayer.stop());
-    unawaited(_audioPlayer.dispose());
+    _audioController
+      ..removeListener(_handleAudioStateChanged)
+      ..dispose();
     super.dispose();
+  }
+
+  void _handleAudioStateChanged() {
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {});
   }
 }
 
@@ -170,7 +117,7 @@ class _InlineWordAudioButtonState
 
   @override
   void updatePlaybackErrorState(Object error) {
-    _hasAudio = false;
+    _audioController.markUnavailable();
   }
 
   @override
@@ -190,7 +137,7 @@ class _InlineWordAudioButtonState
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (_isBusy)
+                if (_audioController.isBusy)
                   SizedBox(
                     width: 14,
                     height: 14,
@@ -201,11 +148,11 @@ class _InlineWordAudioButtonState
                   )
                 else
                   Icon(
-                    _isPlaying
+                    _audioController.isPlaying
                         ? Icons.stop_circle_outlined
                         : Icons.volume_up_rounded,
                     size: 14,
-                    color: _hasAudio
+                    color: _audioController.hasAudio
                         ? tokens.vocabularyAccent
                         : tokens.secondaryText,
                   ),
@@ -213,7 +160,7 @@ class _InlineWordAudioButtonState
                 Text(
                   'Аудіо',
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: _hasAudio
+                    color: _audioController.hasAudio
                         ? tokens.vocabularyAccent
                         : tokens.secondaryText,
                     fontWeight: FontWeight.w700,
@@ -264,7 +211,7 @@ class _WordDetailsAudioButtonState
 
   @override
   void updatePlaybackErrorState(Object error) {
-    _isPlaying = false;
+    _audioController.clearPlaying();
   }
 
   @override
@@ -286,7 +233,7 @@ class _WordDetailsAudioButtonState
       child: IconButton(
         tooltip: _audioTooltip,
         onPressed: _isAudioEnabled ? _togglePlayback : null,
-        icon: _isBusy
+        icon: _audioController.isBusy
             ? SizedBox(
                 width: 18,
                 height: 18,
@@ -296,10 +243,10 @@ class _WordDetailsAudioButtonState
                 ),
               )
             : Icon(
-                _isPlaying
+                _audioController.isPlaying
                     ? Icons.stop_circle_outlined
                     : Icons.volume_up_rounded,
-                color: _hasAudio
+                color: _audioController.hasAudio
                     ? tokens.vocabularyAccent
                     : tokens.secondaryText,
               ),

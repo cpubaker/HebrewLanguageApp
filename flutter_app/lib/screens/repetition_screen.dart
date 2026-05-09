@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../models/learning_context.dart';
 import '../models/learning_word.dart';
 import '../services/audio_playback_awareness.dart';
+import '../services/learning_audio_controller.dart';
 import '../services/learning_audio_player.dart';
 import '../services/repetition_queue.dart';
 import '../theme/app_theme.dart';
@@ -31,9 +32,10 @@ class RepetitionScreen extends StatefulWidget {
 
 class _RepetitionScreenState extends State<RepetitionScreen> {
   late RepetitionQueue _queue;
-  late final LearningAudioPlayer _audioPlayer = widget.audioPlayerFactory();
+  late final LearningAudioController _audioController = LearningAudioController(
+    audioPlayerFactory: widget.audioPlayerFactory,
+  );
   int _currentIndex = 0;
-  int _audioRequestToken = 0;
 
   @override
   void initState() {
@@ -53,8 +55,7 @@ class _RepetitionScreenState extends State<RepetitionScreen> {
 
   @override
   void dispose() {
-    unawaited(_audioPlayer.stop());
-    unawaited(_audioPlayer.dispose());
+    _audioController.dispose();
     super.dispose();
   }
 
@@ -92,29 +93,7 @@ class _RepetitionScreenState extends State<RepetitionScreen> {
   }
 
   Future<void> _syncCurrentEntryAudio(RepetitionEntry? entry) async {
-    final requestToken = ++_audioRequestToken;
-
-    try {
-      await _audioPlayer.stop();
-    } catch (_) {}
-
-    if (!mounted || _audioRequestToken != requestToken) {
-      return;
-    }
-
-    final audioAssetPath = entry?.word.audioAssetPath;
-    if (audioAssetPath == null || audioAssetPath.trim().isEmpty) {
-      return;
-    }
-
-    final hasAudio = await _audioPlayer.assetExists(audioAssetPath);
-    if (!mounted || _audioRequestToken != requestToken || !hasAudio) {
-      return;
-    }
-
-    try {
-      await _audioPlayer.playAsset(audioAssetPath);
-    } catch (_) {}
+    await _audioController.autoplay(entry?.word.audioAssetPath);
   }
 
   @override
@@ -677,80 +656,34 @@ class _RepetitionAudioButton extends StatefulWidget {
 }
 
 class _RepetitionAudioButtonState extends State<_RepetitionAudioButton> {
-  late final LearningAudioPlayer _audioPlayer = widget.audioPlayerFactory();
-  StreamSubscription<bool>? _playbackSubscription;
-  bool _isCheckingAvailability = true;
-  bool _hasAudio = false;
-  bool _isPlaying = false;
-  bool _isBusy = false;
+  late final LearningAudioController _audioController = LearningAudioController(
+    audioPlayerFactory: widget.audioPlayerFactory,
+  )..addListener(_handleAudioStateChanged);
 
   String get _audioAssetPath => widget.word.audioAssetPath ?? '';
 
   @override
   void initState() {
     super.initState();
-    _playbackSubscription = _audioPlayer.isPlayingStream.listen((isPlaying) {
-      if (!mounted) {
-        return;
-      }
-
-      setState(() {
-        _isPlaying = isPlaying;
-      });
-    });
     unawaited(_checkAudioAvailability());
   }
 
   Future<void> _checkAudioAvailability() async {
-    final audioAssetPath = widget.word.audioAssetPath;
-    if (audioAssetPath == null || audioAssetPath.trim().isEmpty) {
-      if (!mounted) {
-        return;
-      }
-
-      setState(() {
-        _hasAudio = false;
-        _isCheckingAvailability = false;
-      });
-      return;
-    }
-
-    var hasAudio = await _audioPlayer.assetExists(audioAssetPath);
-    if (hasAudio) {
-      try {
-        hasAudio = await _audioPlayer.prepareAsset(audioAssetPath);
-      } catch (_) {
-        hasAudio = false;
-      }
-    }
-
-    if (!mounted) {
-      return;
-    }
-
-    setState(() {
-      _hasAudio = hasAudio;
-      _isCheckingAvailability = false;
-    });
+    await _audioController.checkAvailability(
+      widget.word.audioAssetPath,
+      prepare: true,
+    );
   }
 
   Future<void> _togglePlayback() async {
-    final wasPlaying = _isPlaying;
-
-    setState(() {
-      _isBusy = true;
-    });
-
     try {
-      if (wasPlaying) {
-        await _audioPlayer.stop();
-      } else {
-        await showAudioPlaybackHintIfNeeded(
+      await _audioController.toggle(
+        _audioAssetPath,
+        beforePlay: () => showAudioPlaybackHintIfNeeded(
           context: context,
           awareness: widget.audioPlaybackAwareness,
-        );
-        await _audioPlayer.playAsset(_audioAssetPath);
-      }
+        ),
+      );
     } catch (_) {
       if (!mounted) {
         return;
@@ -759,30 +692,34 @@ class _RepetitionAudioButtonState extends State<_RepetitionAudioButton> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Не вдалося відтворити озвучку слова.')),
       );
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isBusy = false;
-        });
-      }
     }
   }
 
   @override
   void dispose() {
-    unawaited(_playbackSubscription?.cancel());
-    unawaited(_audioPlayer.stop());
-    unawaited(_audioPlayer.dispose());
+    _audioController
+      ..removeListener(_handleAudioStateChanged)
+      ..dispose();
     super.dispose();
+  }
+
+  void _handleAudioStateChanged() {
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
-    final tooltip = _isCheckingAvailability
+    final tooltip = _audioController.isCheckingAvailability
         ? 'Перевіряємо озвучку'
-        : _hasAudio
-        ? (_isPlaying ? 'Зупинити озвучку' : 'Увімкнути озвучку')
+        : _audioController.hasAudio
+        ? (_audioController.isPlaying
+              ? 'Зупинити озвучку'
+              : 'Увімкнути озвучку')
         : 'Озвучка ще недоступна';
 
     return Container(
@@ -792,8 +729,8 @@ class _RepetitionAudioButtonState extends State<_RepetitionAudioButton> {
       ),
       child: IconButton(
         tooltip: tooltip,
-        onPressed: _hasAudio && !_isBusy ? _togglePlayback : null,
-        icon: _isBusy
+        onPressed: _audioController.canToggle ? _togglePlayback : null,
+        icon: _audioController.isBusy
             ? SizedBox(
                 width: 18,
                 height: 18,
@@ -803,10 +740,10 @@ class _RepetitionAudioButtonState extends State<_RepetitionAudioButton> {
                 ),
               )
             : Icon(
-                _isPlaying
+                _audioController.isPlaying
                     ? Icons.stop_circle_outlined
                     : Icons.volume_up_rounded,
-                color: _hasAudio
+                color: _audioController.hasAudio
                     ? tokens.vocabularyAccent
                     : tokens.disabledAccent,
               ),

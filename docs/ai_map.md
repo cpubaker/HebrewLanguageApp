@@ -97,6 +97,7 @@ then open only the files needed for the task.
   `flutter_app/lib/services/ai_practice_text_service.dart`,
   `flutter_app/lib/services/ai_learning_helpers.dart`.
 - Audio: `flutter_app/lib/services/learning_audio_player.dart`,
+  `flutter_app/lib/services/learning_audio_controller.dart`,
   `flutter_app/lib/services/verb_audio_player.dart`,
   `flutter_app/lib/services/audio_playback_awareness.dart`.
 

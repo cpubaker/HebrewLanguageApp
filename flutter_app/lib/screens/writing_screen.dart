@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../models/learning_word.dart';
 import '../services/audio_playback_awareness.dart';
 import '../services/flashcard_session.dart';
+import '../services/learning_audio_controller.dart';
 import '../services/learning_audio_player.dart';
 import '../services/practice_time_format.dart';
 import '../services/writing_session.dart';
@@ -41,21 +42,18 @@ class WritingScreen extends StatefulWidget {
 class _WritingScreenState extends State<WritingScreen> {
   late final WritingSession _session;
   late final TextEditingController _answerController;
-  late final LearningAudioPlayer _audioPlayer =
-      (widget.audioPlayerFactory ?? createAssetLearningAudioPlayer)();
+  late final LearningAudioController _audioController = LearningAudioController(
+    audioPlayerFactory:
+        widget.audioPlayerFactory ?? createAssetLearningAudioPlayer,
+  )..addListener(_handleAudioStateChanged);
 
   late WritingPracticeMode _mode;
   WritingPrompt? _currentPrompt;
   WritingAnswerResult? _currentAnswer;
-  StreamSubscription<bool>? _playbackSubscription;
   String? _inlineMessage;
   List<ConstructorBlock> _availableBlocks = const <ConstructorBlock>[];
   List<ConstructorBlock?> _selectedBlocks = const <ConstructorBlock?>[];
   Map<String, int> _constructorBlockOrder = const <String, int>{};
-  bool _isAudioBusy = false;
-  bool _isAudioPlaying = false;
-  bool _hasCurrentAudio = false;
-  int _audioRequestToken = 0;
 
   @override
   void initState() {
@@ -63,23 +61,14 @@ class _WritingScreenState extends State<WritingScreen> {
     _session = WritingSession(widget.words);
     _answerController = TextEditingController();
     _mode = widget.initialMode;
-    _playbackSubscription = _audioPlayer.isPlayingStream.listen((isPlaying) {
-      if (!mounted) {
-        return;
-      }
-
-      setState(() {
-        _isAudioPlaying = isPlaying;
-      });
-    });
     _moveToNextPrompt();
   }
 
   @override
   void dispose() {
-    unawaited(_playbackSubscription?.cancel());
-    unawaited(_audioPlayer.stop());
-    unawaited(_audioPlayer.dispose());
+    _audioController
+      ..removeListener(_handleAudioStateChanged)
+      ..dispose();
     _answerController.dispose();
     super.dispose();
   }
@@ -91,7 +80,6 @@ class _WritingScreenState extends State<WritingScreen> {
       _currentAnswer = null;
       _inlineMessage = null;
       _answerController.clear();
-      _hasCurrentAudio = false;
       _resetConstructorState(_currentPrompt?.constructorPuzzle);
     });
     if (_mode == WritingPracticeMode.typing) {
@@ -159,40 +147,11 @@ class _WritingScreenState extends State<WritingScreen> {
   }
 
   Future<void> _stopWordAudio() async {
-    ++_audioRequestToken;
-
-    try {
-      await _audioPlayer.stop();
-    } catch (_) {}
+    await _audioController.stop(clearAvailability: true);
   }
 
   Future<void> _syncWordAudio(LearningWord? word) async {
-    final requestToken = ++_audioRequestToken;
-
-    try {
-      await _audioPlayer.stop();
-    } catch (_) {}
-
-    if (!mounted || _audioRequestToken != requestToken) {
-      return;
-    }
-
-    final audioAssetPath = word?.audioAssetPath;
-    if (audioAssetPath == null || audioAssetPath.trim().isEmpty) {
-      return;
-    }
-
-    final hasAudio = await _audioPlayer.assetExists(audioAssetPath);
-    if (!mounted || _audioRequestToken != requestToken || !hasAudio) {
-      return;
-    }
-
-    try {
-      setState(() {
-        _hasCurrentAudio = true;
-      });
-      await _audioPlayer.playAsset(audioAssetPath);
-    } catch (_) {}
+    await _audioController.autoplay(word?.audioAssetPath);
   }
 
   Future<void> _replayCurrentWordAudio() async {
@@ -201,41 +160,19 @@ class _WritingScreenState extends State<WritingScreen> {
     if (audioAssetPath == null || audioAssetPath.trim().isEmpty) {
       return;
     }
-    if (!_hasCurrentAudio) {
+    if (!_audioController.hasAudio) {
       return;
     }
 
-    final requestToken = ++_audioRequestToken;
-
-    setState(() {
-      _isAudioBusy = true;
-    });
-
     try {
-      if (_isAudioPlaying) {
-        await _audioPlayer.stop();
-        return;
-      }
-
-      await _audioPlayer.stop();
-      if (!mounted || _audioRequestToken != requestToken) {
-        return;
-      }
-
-      final hasAudio = await _audioPlayer.assetExists(audioAssetPath);
-      if (!mounted || _audioRequestToken != requestToken || !hasAudio) {
-        return;
-      }
-
-      await showAudioPlaybackHintIfNeeded(
-        context: context,
-        awareness: widget.audioPlaybackAwareness,
+      await _audioController.toggle(
+        audioAssetPath,
+        beforePlay: () => showAudioPlaybackHintIfNeeded(
+          context: context,
+          awareness: widget.audioPlaybackAwareness,
+        ),
+        recheckBeforePlay: true,
       );
-      if (!mounted || _audioRequestToken != requestToken) {
-        return;
-      }
-
-      await _audioPlayer.playAsset(audioAssetPath);
     } catch (_) {
       if (!mounted) {
         return;
@@ -244,13 +181,15 @@ class _WritingScreenState extends State<WritingScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Не вдалося відтворити озвучку слова.')),
       );
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isAudioBusy = false;
-        });
-      }
     }
+  }
+
+  void _handleAudioStateChanged() {
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {});
   }
 
   @override
@@ -319,13 +258,13 @@ class _WritingScreenState extends State<WritingScreen> {
                       ),
                     ),
                     if (_mode == WritingPracticeMode.typing &&
-                        _hasCurrentAudio) ...[
+                        _audioController.hasAudio) ...[
                       const SizedBox(height: 12),
                       PracticeAudioButton(
                         key: const ValueKey('writing_audio_button'),
-                        isBusy: _isAudioBusy,
-                        isPlaying: _isAudioPlaying,
-                        onPressed: _isAudioBusy
+                        isBusy: _audioController.isBusy,
+                        isPlaying: _audioController.isPlaying,
+                        onPressed: _audioController.isBusy
                             ? null
                             : _replayCurrentWordAudio,
                       ),
@@ -393,14 +332,14 @@ class _WritingScreenState extends State<WritingScreen> {
                           lastCorrect: stats.lastCorrect == null
                               ? null
                               : formatPracticeTimestamp(stats.lastCorrect!),
-                          audioButton: _hasCurrentAudio
+                          audioButton: _audioController.hasAudio
                               ? PracticeAudioButton(
                                   key: const ValueKey(
                                     'constructor_result_audio_button',
                                   ),
-                                  isBusy: _isAudioBusy,
-                                  isPlaying: _isAudioPlaying,
-                                  onPressed: _isAudioBusy
+                                  isBusy: _audioController.isBusy,
+                                  isPlaying: _audioController.isPlaying,
+                                  onPressed: _audioController.isBusy
                                       ? null
                                       : _replayCurrentWordAudio,
                                 )

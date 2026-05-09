@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../models/learning_context.dart';
 import '../models/learning_word.dart';
 import '../services/audio_playback_awareness.dart';
+import '../services/learning_audio_controller.dart';
 import '../services/learning_audio_player.dart';
 import '../services/progress_snapshot.dart';
 import '../services/word_learning_status_update.dart';

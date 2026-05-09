@@ -6,6 +6,7 @@ import '../models/learning_context.dart';
 import '../models/learning_word.dart';
 import '../services/audio_playback_awareness.dart';
 import '../services/flashcard_session.dart';
+import '../services/learning_audio_controller.dart';
 import '../services/learning_audio_player.dart';
 import '../services/practice_time_format.dart';
 import '../theme/app_theme.dart';
@@ -43,31 +44,19 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
   static const double _swipeVelocityThreshold = 325;
 
   late final FlashcardSession _session;
-  late final LearningAudioPlayer _audioPlayer =
-      (widget.audioPlayerFactory ?? createAssetLearningAudioPlayer)();
+  late final LearningAudioController _audioController = LearningAudioController(
+    audioPlayerFactory:
+        widget.audioPlayerFactory ?? createAssetLearningAudioPlayer,
+  )..addListener(_handleAudioStateChanged);
 
   FlashcardCard? _currentCard;
   FlashcardAnswerResult? _currentAnswer;
-  StreamSubscription<bool>? _playbackSubscription;
   bool _showSessionDetails = false;
-  bool _isAudioBusy = false;
-  bool _isAudioPlaying = false;
-  bool _hasCurrentAudio = false;
-  int _audioRequestToken = 0;
 
   @override
   void initState() {
     super.initState();
     _session = FlashcardSession(widget.words, deckMode: widget.initialDeckMode);
-    _playbackSubscription = _audioPlayer.isPlayingStream.listen((isPlaying) {
-      if (!mounted) {
-        return;
-      }
-
-      setState(() {
-        _isAudioPlaying = isPlaying;
-      });
-    });
     _moveToNextCard();
   }
 
@@ -82,9 +71,9 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
 
   @override
   void dispose() {
-    unawaited(_playbackSubscription?.cancel());
-    unawaited(_audioPlayer.stop());
-    unawaited(_audioPlayer.dispose());
+    _audioController
+      ..removeListener(_handleAudioStateChanged)
+      ..dispose();
     super.dispose();
   }
 
@@ -94,7 +83,6 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
       _currentCard = nextCard;
       _currentAnswer = null;
       _showSessionDetails = false;
-      _hasCurrentAudio = false;
     });
     unawaited(_syncWordAudio(nextCard?.word));
   }
@@ -117,7 +105,6 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
       _currentCard = nextCard;
       _currentAnswer = null;
       _showSessionDetails = false;
-      _hasCurrentAudio = false;
     });
     unawaited(_syncWordAudio(nextCard?.word));
   }
@@ -142,38 +129,12 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
       _currentCard = nextCard;
       _currentAnswer = null;
       _showSessionDetails = false;
-      _hasCurrentAudio = false;
     });
     unawaited(_syncWordAudio(nextCard?.word));
   }
 
   Future<void> _syncWordAudio(LearningWord? word) async {
-    final requestToken = ++_audioRequestToken;
-
-    try {
-      await _audioPlayer.stop();
-    } catch (_) {}
-
-    if (!mounted || _audioRequestToken != requestToken) {
-      return;
-    }
-
-    final audioAssetPath = word?.audioAssetPath;
-    if (audioAssetPath == null || audioAssetPath.trim().isEmpty) {
-      return;
-    }
-
-    final hasAudio = await _audioPlayer.assetExists(audioAssetPath);
-    if (!mounted || _audioRequestToken != requestToken || !hasAudio) {
-      return;
-    }
-
-    try {
-      setState(() {
-        _hasCurrentAudio = true;
-      });
-      await _audioPlayer.playAsset(audioAssetPath);
-    } catch (_) {}
+    await _audioController.autoplay(word?.audioAssetPath);
   }
 
   Future<void> _replayCurrentWordAudio() async {
@@ -182,41 +143,19 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
     if (audioAssetPath == null || audioAssetPath.trim().isEmpty) {
       return;
     }
-    if (!_hasCurrentAudio) {
+    if (!_audioController.hasAudio) {
       return;
     }
 
-    final requestToken = ++_audioRequestToken;
-
-    setState(() {
-      _isAudioBusy = true;
-    });
-
     try {
-      if (_isAudioPlaying) {
-        await _audioPlayer.stop();
-        return;
-      }
-
-      await _audioPlayer.stop();
-      if (!mounted || _audioRequestToken != requestToken) {
-        return;
-      }
-
-      final hasAudio = await _audioPlayer.assetExists(audioAssetPath);
-      if (!mounted || _audioRequestToken != requestToken || !hasAudio) {
-        return;
-      }
-
-      await showAudioPlaybackHintIfNeeded(
-        context: context,
-        awareness: widget.audioPlaybackAwareness,
+      await _audioController.toggle(
+        audioAssetPath,
+        beforePlay: () => showAudioPlaybackHintIfNeeded(
+          context: context,
+          awareness: widget.audioPlaybackAwareness,
+        ),
+        recheckBeforePlay: true,
       );
-      if (!mounted || _audioRequestToken != requestToken) {
-        return;
-      }
-
-      await _audioPlayer.playAsset(audioAssetPath);
     } catch (_) {
       if (!mounted) {
         return;
@@ -225,13 +164,15 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Не вдалося відтворити озвучку слова.')),
       );
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isAudioBusy = false;
-        });
-      }
     }
+  }
+
+  void _handleAudioStateChanged() {
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {});
   }
 
   @override
@@ -288,12 +229,12 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                 _PromptPanel(
                   hebrew: word.hebrew,
                   transcription: word.transcription,
-                  audioButton: _hasCurrentAudio
+                  audioButton: _audioController.hasAudio
                       ? PracticeAudioButton(
                           key: const ValueKey('flashcards_audio_button'),
-                          isBusy: _isAudioBusy,
-                          isPlaying: _isAudioPlaying,
-                          onPressed: _isAudioBusy
+                          isBusy: _audioController.isBusy,
+                          isPlaying: _audioController.isPlaying,
+                          onPressed: _audioController.isBusy
                               ? null
                               : _replayCurrentWordAudio,
                         )
