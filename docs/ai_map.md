@@ -128,6 +128,7 @@ then open only the files needed for the task.
 - Verb lessons: `flutter_app/assets/learning/input/verbs/`.
 - Source audio/images: `flutter_app/assets/learning/input/audio/`,
   `flutter_app/assets/learning/input/images/`.
+- Audio generation notes: `docs/audio_generation.md`.
 - Lesson catalog generator:
   `flutter_app/tool/generate_learning_catalog.ps1`.
 

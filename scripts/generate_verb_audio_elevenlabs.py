@@ -6,6 +6,7 @@ import os
 import re
 import sys
 import time
+import unicodedata
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -17,6 +18,8 @@ DEFAULT_MODEL = "eleven_v3"
 DEFAULT_LANGUAGE_CODE = "he"
 DEFAULT_OUTPUT_FORMAT = "mp3_44100_128"
 DEFAULT_TIMEOUT_SECONDS = 90
+DEFAULT_VOICE_ID = "EXAVITQu4vr4xnSDxMaL"
+DEFAULT_VOICE_NAME = "Sarah - Mature, Reassuring, Confident"
 
 
 @dataclass(frozen=True)
@@ -57,8 +60,11 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--voice-id",
-        default=os.environ.get("ELEVENLABS_VOICE_ID", ""),
-        help="ElevenLabs voice ID. Defaults to ELEVENLABS_VOICE_ID.",
+        default=os.environ.get("ELEVENLABS_VOICE_ID", DEFAULT_VOICE_ID),
+        help=(
+            "ElevenLabs voice ID. Defaults to ELEVENLABS_VOICE_ID, "
+            f"then {DEFAULT_VOICE_NAME} ({DEFAULT_VOICE_ID})."
+        ),
     )
     parser.add_argument(
         "--model",
@@ -184,6 +190,8 @@ def main() -> int:
                 output_format=args.output_format,
                 timeout_seconds=args.timeout_seconds,
             )
+            if not audio_bytes:
+                raise RuntimeError("Empty audio response from ElevenLabs.")
             job.output_path.write_bytes(audio_bytes)
             success_count += 1
         except RuntimeError as error:
@@ -221,7 +229,10 @@ def collect_jobs(
             skipped_existing += 1
             continue
 
-        text = extract_infinitive_text(source_path.read_text(encoding="utf-8"))
+        text = unicodedata.normalize(
+            "NFC",
+            extract_infinitive_text(source_path.read_text(encoding="utf-8")),
+        )
         if not text:
             parse_failures.append(source_path)
             continue

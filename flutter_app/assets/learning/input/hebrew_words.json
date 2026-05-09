@@ -6004,3632 +6004,4159 @@
         "hebrew": "הִתְנַצְּלוּת",
         "english": "apology",
         "ukrainian": "вибачення",
-        "transcription": "hitnatslut"
+        "transcription": "hitnatslut",
+        "audio_file": "words/word_apology.mp3"
     },
     {
         "word_id": "word_complaint",
         "hebrew": "תְּלוּנָה",
         "english": "complaint",
         "ukrainian": "скарга",
-        "transcription": "tluna"
+        "transcription": "tluna",
+        "audio_file": "words/word_complaint.mp3"
     },
     {
         "word_id": "word_compliment",
         "hebrew": "מַחֲמָאָה",
         "english": "compliment",
         "ukrainian": "комплімент",
-        "transcription": "machma'a"
+        "transcription": "machma'a",
+        "audio_file": "words/word_compliment.mp3"
     },
     {
         "word_id": "word_joke",
         "hebrew": "בְּדִיחָה",
         "english": "joke",
         "ukrainian": "жарт",
-        "transcription": "bdikha"
+        "transcription": "bdikha",
+        "audio_file": "words/word_joke.mp3"
     },
     {
         "word_id": "word_laughter",
         "hebrew": "צְחוֹק",
         "english": "laughter",
         "ukrainian": "сміх",
-        "transcription": "tskhok"
+        "transcription": "tskhok",
+        "audio_file": "words/word_laughter.mp3"
     },
     {
         "word_id": "word_cry_noun",
         "hebrew": "בְּכִי",
         "english": "crying",
         "ukrainian": "плач",
-        "transcription": "bekhi"
+        "transcription": "bekhi",
+        "audio_file": "words/word_cry_noun.mp3"
     },
     {
         "word_id": "word_kiss",
         "hebrew": "נְשִׁיקָה",
         "english": "kiss",
         "ukrainian": "поцілунок",
-        "transcription": "neshika"
+        "transcription": "neshika",
+        "audio_file": "words/word_kiss.mp3"
     },
     {
         "word_id": "word_hug",
         "hebrew": "חִבּוּק",
         "english": "hug",
         "ukrainian": "обійми",
-        "transcription": "chibuk"
+        "transcription": "chibuk",
+        "audio_file": "words/word_hug.mp3"
     },
     {
         "word_id": "word_greeting",
         "hebrew": "בְּרָכָה",
         "english": "greeting",
         "ukrainian": "вітання",
-        "transcription": "brakha"
+        "transcription": "brakha",
+        "audio_file": "words/word_greeting.mp3"
     },
     {
         "word_id": "word_farewell",
         "hebrew": "פְּרֵדָה",
         "english": "farewell",
         "ukrainian": "прощання",
-        "transcription": "preda"
+        "transcription": "preda",
+        "audio_file": "words/word_farewell.mp3"
     },
     {
         "word_id": "word_rumor",
         "hebrew": "שְׁמוּעָה",
         "english": "rumor",
         "ukrainian": "чутка",
-        "transcription": "shmua"
+        "transcription": "shmua",
+        "audio_file": "words/word_rumor.mp3"
     },
     {
         "word_id": "word_carrot",
         "hebrew": "גֶּזֶר",
         "english": "carrot",
         "ukrainian": "морква",
-        "transcription": "gezer"
+        "transcription": "gezer",
+        "audio_file": "words/word_carrot.mp3"
     },
     {
         "word_id": "word_grape",
         "hebrew": "עֲנָבָה",
         "english": "grape",
         "ukrainian": "виноград",
-        "transcription": "anava"
+        "transcription": "anava",
+        "audio_file": "words/word_grape.mp3"
     },
     {
         "word_id": "word_peach",
         "hebrew": "אֲפַרְסֵק",
         "english": "peach",
         "ukrainian": "персик",
-        "transcription": "afarsek"
+        "transcription": "afarsek",
+        "audio_file": "words/word_peach.mp3"
     },
     {
         "word_id": "word_pear",
         "hebrew": "אַגָּס",
         "english": "pear",
         "ukrainian": "груша",
-        "transcription": "agas"
+        "transcription": "agas",
+        "audio_file": "words/word_pear.mp3"
     },
     {
         "word_id": "word_strawberry",
         "hebrew": "תּוּת שָׂדֶה",
         "english": "strawberry",
         "ukrainian": "полуниця",
-        "transcription": "tut sade"
+        "transcription": "tut sade",
+        "audio_file": "words/word_strawberry.mp3"
     },
     {
         "word_id": "word_butter",
         "hebrew": "חֶמְאָה",
         "english": "butter",
         "ukrainian": "масло",
-        "transcription": "chem'a"
+        "transcription": "chem'a",
+        "audio_file": "words/word_butter.mp3"
     },
     {
         "word_id": "word_jam",
         "hebrew": "רִבָּה",
         "english": "jam",
         "ukrainian": "джем",
-        "transcription": "riba"
+        "transcription": "riba",
+        "audio_file": "words/word_jam.mp3"
     },
     {
         "word_id": "word_honey",
         "hebrew": "דְּבַשׁ",
         "english": "honey",
         "ukrainian": "мед",
-        "transcription": "dvash"
+        "transcription": "dvash",
+        "audio_file": "words/word_honey.mp3"
     },
     {
         "word_id": "word_oil",
         "hebrew": "שֶׁמֶן",
         "english": "oil",
         "ukrainian": "олія",
-        "transcription": "shemen"
+        "transcription": "shemen",
+        "audio_file": "words/word_oil.mp3"
     },
     {
         "word_id": "word_vinegar",
         "hebrew": "חֹמֶץ",
         "english": "vinegar",
         "ukrainian": "оцет",
-        "transcription": "chomets"
+        "transcription": "chomets",
+        "audio_file": "words/word_vinegar.mp3"
     },
     {
         "word_id": "word_sauce",
         "hebrew": "רוֹטֶב",
         "english": "sauce",
         "ukrainian": "соус",
-        "transcription": "rotev"
+        "transcription": "rotev",
+        "audio_file": "words/word_sauce.mp3"
     },
     {
         "word_id": "word_sandwich",
         "hebrew": "כָּרִיךְ",
         "english": "sandwich",
         "ukrainian": "сендвіч",
-        "transcription": "karikh"
+        "transcription": "karikh",
+        "audio_file": "words/word_sandwich.mp3"
     },
     {
         "word_id": "word_pizza",
         "hebrew": "פִּיצָה",
         "english": "pizza",
         "ukrainian": "піца",
-        "transcription": "pitsa"
+        "transcription": "pitsa",
+        "audio_file": "words/word_pizza.mp3"
     },
     {
         "word_id": "word_pasta",
         "hebrew": "פַּסְטָה",
         "english": "pasta",
         "ukrainian": "паста",
-        "transcription": "pasta"
+        "transcription": "pasta",
+        "audio_file": "words/word_pasta.mp3"
     },
     {
         "word_id": "word_candy",
         "hebrew": "סוּכַּרְיָה",
         "english": "candy",
         "ukrainian": "цукерка",
-        "transcription": "sukhariya"
+        "transcription": "sukhariya",
+        "audio_file": "words/word_candy.mp3"
     },
     {
         "word_id": "word_chewing_gum",
         "hebrew": "מַסְטִיק",
         "english": "chewing gum",
         "ukrainian": "жувальна гумка",
-        "transcription": "mastik"
+        "transcription": "mastik",
+        "audio_file": "words/word_chewing_gum.mp3"
     },
     {
         "word_id": "word_pepper",
         "hebrew": "פִּלְפֵּל",
         "english": "pepper",
         "ukrainian": "перець",
-        "transcription": "pilpel"
+        "transcription": "pilpel",
+        "audio_file": "words/word_pepper.mp3"
     },
     {
         "word_id": "word_flour",
         "hebrew": "קֶמַח",
         "english": "flour",
         "ukrainian": "борошно",
-        "transcription": "kemach"
+        "transcription": "kemach",
+        "audio_file": "words/word_flour.mp3"
     },
     {
         "word_id": "word_dough",
         "hebrew": "בָּצֵק",
         "english": "dough",
         "ukrainian": "тісто",
-        "transcription": "batsek"
+        "transcription": "batsek",
+        "audio_file": "words/word_dough.mp3"
     },
     {
         "word_id": "word_noodle",
         "hebrew": "אַטְרִיָּה",
         "english": "noodle",
         "ukrainian": "локшина",
-        "transcription": "atriya"
+        "transcription": "atriya",
+        "audio_file": "words/word_noodle.mp3"
     },
     {
         "word_id": "word_brave",
         "hebrew": "אַמִּיץ",
         "english": "brave",
         "ukrainian": "сміливий",
-        "transcription": "amits"
+        "transcription": "amits",
+        "audio_file": "words/word_brave.mp3"
     },
     {
         "word_id": "word_generous",
         "hebrew": "נָדִיב",
         "english": "generous",
         "ukrainian": "щедрий",
-        "transcription": "nadiv"
+        "transcription": "nadiv",
+        "audio_file": "words/word_generous.mp3"
     },
     {
         "word_id": "word_tolerant",
         "hebrew": "סַבְלָנִי",
         "english": "tolerant",
         "ukrainian": "терплячий",
-        "transcription": "savlani"
+        "transcription": "savlani",
+        "audio_file": "words/word_tolerant.mp3"
     },
     {
         "word_id": "word_loyal",
         "hebrew": "נֶאֱמָן",
         "english": "loyal",
         "ukrainian": "вірний",
-        "transcription": "ne'eman"
+        "transcription": "ne'eman",
+        "audio_file": "words/word_loyal.mp3"
     },
     {
         "word_id": "word_clever",
         "hebrew": "פִּקֵּחַ",
         "english": "clever",
         "ukrainian": "кмітливий",
-        "transcription": "pikeach"
+        "transcription": "pikeach",
+        "audio_file": "words/word_clever.mp3"
     },
     {
         "word_id": "word_stupid",
         "hebrew": "טִפֵּשׁ",
         "english": "stupid",
         "ukrainian": "дурний",
-        "transcription": "tipesh"
+        "transcription": "tipesh",
+        "audio_file": "words/word_stupid.mp3"
     },
     {
         "word_id": "word_married",
         "hebrew": "נָשׂוּי",
         "english": "married",
         "ukrainian": "одружений",
-        "transcription": "nasui"
+        "transcription": "nasui",
+        "audio_file": "words/word_married.mp3"
     },
     {
         "word_id": "word_single",
         "hebrew": "רַוָּק",
         "english": "single",
         "ukrainian": "неодружений",
-        "transcription": "ravak"
+        "transcription": "ravak",
+        "audio_file": "words/word_single.mp3"
     },
     {
         "word_id": "word_pregnant",
         "hebrew": "הָרָה",
         "english": "pregnant",
         "ukrainian": "вагітна",
-        "transcription": "hara"
+        "transcription": "hara",
+        "audio_file": "words/word_pregnant.mp3"
     },
     {
         "word_id": "word_crowded",
         "hebrew": "צָפוּף",
         "english": "crowded",
         "ukrainian": "людний",
-        "transcription": "tsafuf"
+        "transcription": "tsafuf",
+        "audio_file": "words/word_crowded.mp3"
     },
     {
         "word_id": "word_lonely",
         "hebrew": "בּוֹדֵד",
         "english": "lonely",
         "ukrainian": "самотній",
-        "transcription": "boded"
+        "transcription": "boded",
+        "audio_file": "words/word_lonely.mp3"
     },
     {
         "word_id": "word_rare",
         "hebrew": "נָדִיר",
         "english": "rare",
         "ukrainian": "рідкісний",
-        "transcription": "nadir"
+        "transcription": "nadir",
+        "audio_file": "words/word_rare.mp3"
     },
     {
         "word_id": "word_common",
         "hebrew": "שָׁכִיחַ",
         "english": "common",
         "ukrainian": "поширений",
-        "transcription": "shakhiach"
+        "transcription": "shakhiach",
+        "audio_file": "words/word_common.mp3"
     },
     {
         "word_id": "word_usual",
         "hebrew": "רָגִיל",
         "english": "usual",
         "ukrainian": "звичний",
-        "transcription": "ragil"
+        "transcription": "ragil",
+        "audio_file": "words/word_usual.mp3"
     },
     {
         "word_id": "word_strict",
         "hebrew": "קַפְּדָנִי",
         "english": "strict",
         "ukrainian": "суворий",
-        "transcription": "kapdani"
+        "transcription": "kapdani",
+        "audio_file": "words/word_strict.mp3"
     },
     {
         "word_id": "word_gentle",
         "hebrew": "עָדִין",
         "english": "gentle",
         "ukrainian": "лагідний",
-        "transcription": "adin"
+        "transcription": "adin",
+        "audio_file": "words/word_gentle.mp3"
     },
     {
         "word_id": "word_rough",
         "hebrew": "מְחֻסְפָּס",
         "english": "rough",
         "ukrainian": "шорсткий",
-        "transcription": "mechuspas"
+        "transcription": "mechuspas",
+        "audio_file": "words/word_rough.mp3"
     },
     {
         "word_id": "word_smooth",
         "hebrew": "חָלָק",
         "english": "smooth",
         "ukrainian": "гладкий",
-        "transcription": "chalak"
+        "transcription": "chalak",
+        "audio_file": "words/word_smooth.mp3"
     },
     {
         "word_id": "word_sour",
         "hebrew": "חָמוּץ",
         "english": "sour",
         "ukrainian": "кислий",
-        "transcription": "chamuts"
+        "transcription": "chamuts",
+        "audio_file": "words/word_sour.mp3"
     },
     {
         "word_id": "word_crispy",
         "hebrew": "פָּרִיךְ",
         "english": "crispy",
         "ukrainian": "хрусткий",
-        "transcription": "parikh"
+        "transcription": "parikh",
+        "audio_file": "words/word_crispy.mp3"
     },
     {
         "word_id": "word_transparent",
         "hebrew": "שָׁקוּף",
         "english": "transparent",
         "ukrainian": "прозорий",
-        "transcription": "shakuf"
+        "transcription": "shakuf",
+        "audio_file": "words/word_transparent.mp3"
     },
     {
         "word_id": "word_festival",
         "hebrew": "פֶסְטִיבָל",
         "english": "festival",
         "ukrainian": "фестиваль",
-        "transcription": "festival"
+        "transcription": "festival",
+        "audio_file": "words/word_festival.mp3"
     },
     {
         "word_id": "word_concert",
         "hebrew": "קוֹנְצֶרְט",
         "english": "concert",
         "ukrainian": "концерт",
-        "transcription": "kontsert"
+        "transcription": "kontsert",
+        "audio_file": "words/word_concert.mp3"
     },
     {
         "word_id": "word_exhibition",
         "hebrew": "תַּעֲרוּכָה",
         "english": "exhibition",
         "ukrainian": "виставка",
-        "transcription": "ta'arukha"
+        "transcription": "ta'arukha",
+        "audio_file": "words/word_exhibition.mp3"
     },
     {
         "word_id": "word_competition",
         "hebrew": "תַּחֲרוּת",
         "english": "competition",
         "ukrainian": "змагання",
-        "transcription": "tacharut"
+        "transcription": "tacharut",
+        "audio_file": "words/word_competition.mp3"
     },
     {
         "word_id": "word_championship",
         "hebrew": "אַלִּיפוּת",
         "english": "championship",
         "ukrainian": "чемпіонат",
-        "transcription": "alifut"
+        "transcription": "alifut",
+        "audio_file": "words/word_championship.mp3"
     },
     {
         "word_id": "word_medal",
         "hebrew": "מֵדַלְיָה",
         "english": "medal",
         "ukrainian": "медаль",
-        "transcription": "medalya"
+        "transcription": "medalya",
+        "audio_file": "words/word_medal.mp3"
     },
     {
         "word_id": "word_trophy",
         "hebrew": "גָּבִיעַ",
         "english": "trophy",
         "ukrainian": "трофей",
-        "transcription": "gavia"
+        "transcription": "gavia",
+        "audio_file": "words/word_trophy.mp3"
     },
     {
         "word_id": "word_prize",
         "hebrew": "פְּרָס",
         "english": "prize",
         "ukrainian": "приз",
-        "transcription": "pras"
+        "transcription": "pras",
+        "audio_file": "words/word_prize.mp3"
     },
     {
         "word_id": "word_victory",
         "hebrew": "נִצָּחוֹן",
         "english": "victory",
         "ukrainian": "перемога",
-        "transcription": "nitsachon"
+        "transcription": "nitsachon",
+        "audio_file": "words/word_victory.mp3"
     },
     {
         "word_id": "word_defeat",
         "hebrew": "תְּבוּסָה",
         "english": "defeat",
         "ukrainian": "поразка",
-        "transcription": "tvusa"
+        "transcription": "tvusa",
+        "audio_file": "words/word_defeat.mp3"
     },
     {
         "word_id": "word_enemy",
         "hebrew": "אוֹיֵב",
         "english": "enemy",
         "ukrainian": "ворог",
-        "transcription": "oyev"
+        "transcription": "oyev",
+        "audio_file": "words/word_enemy.mp3"
     },
     {
         "word_id": "word_citizen",
         "hebrew": "אֶזְרָח",
         "english": "citizen",
         "ukrainian": "громадянин",
-        "transcription": "ezrakh"
+        "transcription": "ezrakh",
+        "audio_file": "words/word_citizen.mp3"
     },
     {
         "word_id": "word_crowd",
         "hebrew": "הָמוֹן",
         "english": "crowd",
         "ukrainian": "натовп",
-        "transcription": "hamon"
+        "transcription": "hamon",
+        "audio_file": "words/word_crowd.mp3"
     },
     {
         "word_id": "word_audience",
         "hebrew": "קָהָל",
         "english": "audience",
         "ukrainian": "аудиторія",
-        "transcription": "kahal"
+        "transcription": "kahal",
+        "audio_file": "words/word_audience.mp3"
     },
     {
         "word_id": "word_buyer",
         "hebrew": "קוֹנֶה",
         "english": "buyer",
         "ukrainian": "покупець",
-        "transcription": "kone"
+        "transcription": "kone",
+        "audio_file": "words/word_buyer.mp3"
     },
     {
         "word_id": "word_seller",
         "hebrew": "מוֹכֵר",
         "english": "seller",
         "ukrainian": "продавець",
-        "transcription": "mokher"
+        "transcription": "mokher",
+        "audio_file": "words/word_seller.mp3"
     },
     {
         "word_id": "word_tenant",
         "hebrew": "דַּיָּר",
         "english": "tenant",
         "ukrainian": "орендар",
-        "transcription": "dayar"
+        "transcription": "dayar",
+        "audio_file": "words/word_tenant.mp3"
     },
     {
         "word_id": "word_accent",
         "hebrew": "מִבְטָא",
         "english": "accent",
         "ukrainian": "акцент",
-        "transcription": "mivta"
+        "transcription": "mivta",
+        "audio_file": "words/word_accent.mp3"
     },
     {
         "word_id": "word_dialect",
         "hebrew": "נִיב",
         "english": "dialect",
         "ukrainian": "діалект",
-        "transcription": "niv"
+        "transcription": "niv",
+        "audio_file": "words/word_dialect.mp3"
     },
     {
         "word_id": "word_symbol",
         "hebrew": "סֵמֶל",
         "english": "symbol",
         "ukrainian": "символ",
-        "transcription": "semel"
+        "transcription": "semel",
+        "audio_file": "words/word_symbol.mp3"
     },
     {
         "word_id": "word_sign",
         "hebrew": "שֶׁלֶט",
         "english": "sign",
         "ukrainian": "знак",
-        "transcription": "shelet"
+        "transcription": "shelet",
+        "audio_file": "words/word_sign.mp3"
     },
     {
         "word_id": "word_signal",
         "hebrew": "אוֹת",
         "english": "signal",
         "ukrainian": "сигнал",
-        "transcription": "ot"
+        "transcription": "ot",
+        "audio_file": "words/word_signal.mp3"
     },
     {
         "word_id": "word_visa",
         "hebrew": "וִיזָה",
         "english": "visa",
         "ukrainian": "віза",
-        "transcription": "viza"
+        "transcription": "viza",
+        "audio_file": "words/word_visa.mp3"
     },
     {
         "word_id": "word_embassy",
         "hebrew": "שַׁגְרִירוּת",
         "english": "embassy",
         "ukrainian": "посольство",
-        "transcription": "shagrirut"
+        "transcription": "shagrirut",
+        "audio_file": "words/word_embassy.mp3"
     },
     {
         "word_id": "word_consulate",
         "hebrew": "קוֹנְסוּלְיָה",
         "english": "consulate",
         "ukrainian": "консульство",
-        "transcription": "konsuliya"
+        "transcription": "konsuliya",
+        "audio_file": "words/word_consulate.mp3"
     },
     {
         "word_id": "word_meadow",
         "hebrew": "אָחוּ",
         "english": "meadow",
         "ukrainian": "луг",
-        "transcription": "achu"
+        "transcription": "achu",
+        "audio_file": "words/word_meadow.mp3"
     },
     {
         "word_id": "word_waterfall",
         "hebrew": "מַפָּל",
         "english": "waterfall",
         "ukrainian": "водоспад",
-        "transcription": "mapal"
+        "transcription": "mapal",
+        "audio_file": "words/word_waterfall.mp3"
     },
     {
         "word_id": "word_stream",
         "hebrew": "נַחַל",
         "english": "stream",
         "ukrainian": "струмок",
-        "transcription": "nachal"
+        "transcription": "nachal",
+        "audio_file": "words/word_stream.mp3"
     },
     {
         "word_id": "word_bush",
         "hebrew": "שִׂיחַ",
         "english": "bush",
         "ukrainian": "кущ",
-        "transcription": "siach"
+        "transcription": "siach",
+        "audio_file": "words/word_bush.mp3"
     },
     {
         "word_id": "word_grass",
         "hebrew": "דֶּשֶׁא",
         "english": "grass",
         "ukrainian": "трава",
-        "transcription": "deshe"
+        "transcription": "deshe",
+        "audio_file": "words/word_grass.mp3"
     },
     {
         "word_id": "word_bay",
         "hebrew": "מִפְרָץ",
         "english": "bay",
         "ukrainian": "затока",
-        "transcription": "mifrats"
+        "transcription": "mifrats",
+        "audio_file": "words/word_bay.mp3"
     },
     {
         "word_id": "word_anchor",
         "hebrew": "עוֹגֶן",
         "english": "anchor",
         "ukrainian": "якір",
-        "transcription": "ogen"
+        "transcription": "ogen",
+        "audio_file": "words/word_anchor.mp3"
     },
     {
         "word_id": "word_broom",
         "hebrew": "מְטַאטֵא",
         "english": "broom",
         "ukrainian": "віник",
-        "transcription": "meta'te"
+        "transcription": "meta'te",
+        "audio_file": "words/word_broom.mp3"
     },
     {
         "word_id": "word_mop",
         "hebrew": "מַגָּב",
         "english": "mop",
         "ukrainian": "швабра",
-        "transcription": "magav"
+        "transcription": "magav",
+        "audio_file": "words/word_mop.mp3"
     },
     {
         "word_id": "word_sponge",
         "hebrew": "סְפוֹג",
         "english": "sponge",
         "ukrainian": "губка",
-        "transcription": "sfog"
+        "transcription": "sfog",
+        "audio_file": "words/word_sponge.mp3"
     },
     {
         "word_id": "word_freezer",
         "hebrew": "מַקְפִּיא",
         "english": "freezer",
         "ukrainian": "морозильник",
-        "transcription": "makpi"
+        "transcription": "makpi",
+        "audio_file": "words/word_freezer.mp3"
     },
     {
         "word_id": "word_heater",
         "hebrew": "מְחַמֵּם",
         "english": "heater",
         "ukrainian": "обігрівач",
-        "transcription": "mechamem"
+        "transcription": "mechamem",
+        "audio_file": "words/word_heater.mp3"
     },
     {
         "word_id": "word_fan",
         "hebrew": "מְאַוְרֵר",
         "english": "fan",
         "ukrainian": "вентилятор",
-        "transcription": "me'avrer"
+        "transcription": "me'avrer",
+        "audio_file": "words/word_fan.mp3"
     },
     {
         "word_id": "word_air_conditioner",
         "hebrew": "מַזְגָּן",
         "english": "air conditioner",
         "ukrainian": "кондиціонер",
-        "transcription": "mazgan"
+        "transcription": "mazgan",
+        "audio_file": "words/word_air_conditioner.mp3"
     },
     {
         "word_id": "word_vacuum_cleaner",
         "hebrew": "שׁוֹאֵב אָבָק",
         "english": "vacuum cleaner",
         "ukrainian": "пилосос",
-        "transcription": "sho'ev avak"
+        "transcription": "sho'ev avak",
+        "audio_file": "words/word_vacuum_cleaner.mp3"
     },
     {
         "word_id": "word_detergent",
         "hebrew": "חוֹמֶר נִיקּוּי",
         "english": "detergent",
         "ukrainian": "мийний засіб",
-        "transcription": "chomer nikui"
+        "transcription": "chomer nikui",
+        "audio_file": "words/word_detergent.mp3"
     },
     {
         "word_id": "word_shampoo",
         "hebrew": "שַׁמְפּוֹ",
         "english": "shampoo",
         "ukrainian": "шампунь",
-        "transcription": "shampoo"
+        "transcription": "shampoo",
+        "audio_file": "words/word_shampoo.mp3"
     },
     {
         "word_id": "word_perfume",
         "hebrew": "בֹּשֶׂם",
         "english": "perfume",
         "ukrainian": "парфуми",
-        "transcription": "bosem"
+        "transcription": "bosem",
+        "audio_file": "words/word_perfume.mp3"
     },
     {
         "word_id": "word_lipstick",
         "hebrew": "שִׂפְתוֹן",
         "english": "lipstick",
         "ukrainian": "помада",
-        "transcription": "sifton"
+        "transcription": "sifton",
+        "audio_file": "words/word_lipstick.mp3"
     },
     {
         "word_id": "word_cream",
         "hebrew": "קְרֶם",
         "english": "cream",
         "ukrainian": "крем",
-        "transcription": "krem"
+        "transcription": "krem",
+        "audio_file": "words/word_cream.mp3"
     },
     {
         "word_id": "word_yogurt",
         "hebrew": "יוֹגוּרְט",
         "english": "yogurt",
         "ukrainian": "йогурт",
-        "transcription": "yogurt"
+        "transcription": "yogurt",
+        "audio_file": "words/word_yogurt.mp3"
     },
     {
         "word_id": "word_cereal",
         "hebrew": "דְּגָנִים",
         "english": "cereal",
         "ukrainian": "пластівці",
-        "transcription": "deganim"
+        "transcription": "deganim",
+        "audio_file": "words/word_cereal.mp3"
     },
     {
         "word_id": "word_shrimp",
         "hebrew": "חֲסִילוֹן",
         "english": "shrimp",
         "ukrainian": "креветка",
-        "transcription": "chasilon"
+        "transcription": "chasilon",
+        "audio_file": "words/word_shrimp.mp3"
     },
     {
         "word_id": "word_mushroom",
         "hebrew": "פִּטְרִיָּה",
         "english": "mushroom",
         "ukrainian": "гриб",
-        "transcription": "pitriya"
+        "transcription": "pitriya",
+        "audio_file": "words/word_mushroom.mp3"
     },
     {
         "word_id": "word_bean",
         "hebrew": "שְׁעוּעִית",
         "english": "bean",
         "ukrainian": "квасоля",
-        "transcription": "shu'it"
+        "transcription": "shu'it",
+        "audio_file": "words/word_bean.mp3"
     },
     {
         "word_id": "word_pea",
         "hebrew": "אֲפוּנָה",
         "english": "pea",
         "ukrainian": "горох",
-        "transcription": "afuna"
+        "transcription": "afuna",
+        "audio_file": "words/word_pea.mp3"
     },
     {
         "word_id": "word_cabbage",
         "hebrew": "כְּרוּב",
         "english": "cabbage",
         "ukrainian": "капуста",
-        "transcription": "kruv"
+        "transcription": "kruv",
+        "audio_file": "words/word_cabbage.mp3"
     },
     {
         "word_id": "word_pumpkin",
         "hebrew": "דְּלַעַת",
         "english": "pumpkin",
         "ukrainian": "гарбуз",
-        "transcription": "dela'at"
+        "transcription": "dela'at",
+        "audio_file": "words/word_pumpkin.mp3"
     },
     {
         "word_id": "word_cherry",
         "hebrew": "דּוּבְדְּבָן",
         "english": "cherry",
         "ukrainian": "вишня",
-        "transcription": "duvdevan"
+        "transcription": "duvdevan",
+        "audio_file": "words/word_cherry.mp3"
     },
     {
         "word_id": "word_watermelon",
         "hebrew": "אֲבַטִּיחַ",
         "english": "watermelon",
         "ukrainian": "кавун",
-        "transcription": "avati'ach"
+        "transcription": "avati'ach",
+        "audio_file": "words/word_watermelon.mp3"
     },
     {
         "word_id": "word_melon",
         "hebrew": "מֶלוֹן",
         "english": "melon",
         "ukrainian": "диня",
-        "transcription": "melon"
+        "transcription": "melon",
+        "audio_file": "words/word_melon.mp3"
     },
     {
         "word_id": "word_juice",
         "hebrew": "מִיץ",
         "english": "juice",
         "ukrainian": "сік",
-        "transcription": "mits"
+        "transcription": "mits",
+        "audio_file": "words/word_juice.mp3"
     },
     {
         "word_id": "word_legend",
         "hebrew": "אַגָּדָה",
         "english": "legend",
         "ukrainian": "легенда",
-        "transcription": "agada"
+        "transcription": "agada",
+        "audio_file": "words/word_legend.mp3"
     },
     {
         "word_id": "word_myth",
         "hebrew": "מִיתוֹס",
         "english": "myth",
         "ukrainian": "міф",
-        "transcription": "mitos"
+        "transcription": "mitos",
+        "audio_file": "words/word_myth.mp3"
     },
     {
         "word_id": "word_tale",
         "hebrew": "מַעֲשִׂיָּה",
         "english": "tale",
         "ukrainian": "казка",
-        "transcription": "ma'asiya"
+        "transcription": "ma'asiya",
+        "audio_file": "words/word_tale.mp3"
     },
     {
         "word_id": "word_poetry",
         "hebrew": "שִׁירָה",
         "english": "poetry",
         "ukrainian": "поезія",
-        "transcription": "shira"
+        "transcription": "shira",
+        "audio_file": "words/word_poetry.mp3"
     },
     {
         "word_id": "word_novel",
         "hebrew": "רוֹמָן",
         "english": "novel",
         "ukrainian": "роман",
-        "transcription": "roman"
+        "transcription": "roman",
+        "audio_file": "words/word_novel.mp3"
     },
     {
         "word_id": "word_essay",
         "hebrew": "מַסָּה",
         "english": "essay",
         "ukrainian": "есе",
-        "transcription": "masa"
+        "transcription": "masa",
+        "audio_file": "words/word_essay.mp3"
     },
     {
         "word_id": "word_interview",
         "hebrew": "רֵאָיוֹן",
         "english": "interview",
         "ukrainian": "інтерв'ю",
-        "transcription": "re'ayon"
+        "transcription": "re'ayon",
+        "audio_file": "words/word_interview.mp3"
     },
     {
         "word_id": "word_profession",
         "hebrew": "מִקְצוֹעַ",
         "english": "profession",
         "ukrainian": "професія",
-        "transcription": "miktsoa"
+        "transcription": "miktsoa",
+        "audio_file": "words/word_profession.mp3"
     },
     {
         "word_id": "word_department",
         "hebrew": "מַחְלָקָה",
         "english": "department",
         "ukrainian": "відділ",
-        "transcription": "machlaka"
+        "transcription": "machlaka",
+        "audio_file": "words/word_department.mp3"
     },
     {
         "word_id": "word_employer",
         "hebrew": "מַעֲסִיק",
         "english": "employer",
         "ukrainian": "роботодавець",
-        "transcription": "ma'asik"
+        "transcription": "ma'asik",
+        "audio_file": "words/word_employer.mp3"
     },
     {
         "word_id": "word_crew",
         "hebrew": "צֶוֶת",
         "english": "crew",
         "ukrainian": "екіпаж",
-        "transcription": "tsevet"
+        "transcription": "tsevet",
+        "audio_file": "words/word_crew.mp3"
     },
     {
         "word_id": "word_researcher",
         "hebrew": "חוֹקֵר",
         "english": "researcher",
         "ukrainian": "дослідник",
-        "transcription": "choker"
+        "transcription": "choker",
+        "audio_file": "words/word_researcher.mp3"
     },
     {
         "word_id": "word_scientist",
         "hebrew": "מַדְעָן",
         "english": "scientist",
         "ukrainian": "науковець",
-        "transcription": "mad'an"
+        "transcription": "mad'an",
+        "audio_file": "words/word_scientist.mp3"
     },
     {
         "word_id": "word_architect",
         "hebrew": "אַדְרִיכָל",
         "english": "architect",
         "ukrainian": "архітектор",
-        "transcription": "adrikhal"
+        "transcription": "adrikhal",
+        "audio_file": "words/word_architect.mp3"
     },
     {
         "word_id": "word_designer",
         "hebrew": "מְעַצֵּב",
         "english": "designer",
         "ukrainian": "дизайнер",
-        "transcription": "me'atsev"
+        "transcription": "me'atsev",
+        "audio_file": "words/word_designer.mp3"
     },
     {
         "word_id": "word_photographer",
         "hebrew": "צַלָּם",
         "english": "photographer",
         "ukrainian": "фотограф",
-        "transcription": "tsalam"
+        "transcription": "tsalam",
+        "audio_file": "words/word_photographer.mp3"
     },
     {
         "word_id": "word_journalist",
         "hebrew": "עִתּוֹנָאִי",
         "english": "journalist",
         "ukrainian": "журналіст",
-        "transcription": "itona'i"
+        "transcription": "itona'i",
+        "audio_file": "words/word_journalist.mp3"
     },
     {
         "word_id": "word_cashier",
         "hebrew": "קוּפָּאִי",
         "english": "cashier",
         "ukrainian": "касир",
-        "transcription": "kupa'i"
+        "transcription": "kupa'i",
+        "audio_file": "words/word_cashier.mp3"
     },
     {
         "word_id": "word_mechanic",
         "hebrew": "מֶכָּנַאי",
         "english": "mechanic",
         "ukrainian": "механік",
-        "transcription": "mekana'i"
+        "transcription": "mekana'i",
+        "audio_file": "words/word_mechanic.mp3"
     },
     {
         "word_id": "word_electrician",
         "hebrew": "חַשְׁמַלַּאי",
         "english": "electrician",
         "ukrainian": "електрик",
-        "transcription": "chashmala'i"
+        "transcription": "chashmala'i",
+        "audio_file": "words/word_electrician.mp3"
     },
     {
         "word_id": "word_plumber",
         "hebrew": "אִינְסְטַלָּטוֹר",
         "english": "plumber",
         "ukrainian": "сантехнік",
-        "transcription": "instalator"
+        "transcription": "instalator",
+        "audio_file": "words/word_plumber.mp3"
     },
     {
         "word_id": "word_dentist",
         "hebrew": "רוֹפֵא שִׁנַּיִם",
         "english": "dentist",
         "ukrainian": "стоматолог",
-        "transcription": "rofe shinayim"
+        "transcription": "rofe shinayim",
+        "audio_file": "words/word_dentist.mp3"
     },
     {
         "word_id": "word_pharmacist",
         "hebrew": "רוֹקֵחַ",
         "english": "pharmacist",
         "ukrainian": "фармацевт",
-        "transcription": "rokeach"
+        "transcription": "rokeach",
+        "audio_file": "words/word_pharmacist.mp3"
     },
     {
         "word_id": "word_ancient",
         "hebrew": "עַתִּיק",
         "english": "ancient",
         "ukrainian": "давній",
-        "transcription": "atik"
+        "transcription": "atik",
+        "audio_file": "words/word_ancient.mp3"
     },
     {
         "word_id": "word_contemporary",
         "hebrew": "עַכְשָׁוִי",
         "english": "contemporary",
         "ukrainian": "сучасний",
-        "transcription": "akhshavi"
+        "transcription": "akhshavi",
+        "audio_file": "words/word_contemporary.mp3"
     },
     {
         "word_id": "word_elegant",
         "hebrew": "אֵלֵגַנְטִי",
         "english": "elegant",
         "ukrainian": "елегантний",
-        "transcription": "eleganti"
+        "transcription": "eleganti",
+        "audio_file": "words/word_elegant.mp3"
     },
     {
         "word_id": "word_ugly",
         "hebrew": "מְכֹעָר",
         "english": "ugly",
         "ukrainian": "потворний",
-        "transcription": "mekho'ar"
+        "transcription": "mekho'ar",
+        "audio_file": "words/word_ugly.mp3"
     },
     {
         "word_id": "word_handsome",
         "hebrew": "נָאֶה",
         "english": "handsome",
         "ukrainian": "вродливий",
-        "transcription": "na'e"
+        "transcription": "na'e",
+        "audio_file": "words/word_handsome.mp3"
     },
     {
         "word_id": "word_cute",
         "hebrew": "חָמוּד",
         "english": "cute",
         "ukrainian": "милий",
-        "transcription": "chamud"
+        "transcription": "chamud",
+        "audio_file": "words/word_cute.mp3"
     },
     {
         "word_id": "word_excellent",
         "hebrew": "מְעוּלֶה",
         "english": "excellent",
         "ukrainian": "відмінний",
-        "transcription": "me'ule"
+        "transcription": "me'ule",
+        "audio_file": "words/word_excellent.mp3"
     },
     {
         "word_id": "word_awful",
         "hebrew": "נוֹרָא",
         "english": "awful",
         "ukrainian": "жахливий",
-        "transcription": "nora"
+        "transcription": "nora",
+        "audio_file": "words/word_awful.mp3"
     },
     {
         "word_id": "word_perfect",
         "hebrew": "מֻשְׁלָם",
         "english": "perfect",
         "ukrainian": "ідеальний",
-        "transcription": "mushlam"
+        "transcription": "mushlam",
+        "audio_file": "words/word_perfect.mp3"
     },
     {
         "word_id": "word_ideal",
         "hebrew": "אִידֵאָלִי",
         "english": "ideal",
         "ukrainian": "ідеальний",
-        "transcription": "ideali"
+        "transcription": "ideali",
+        "audio_file": "words/word_ideal.mp3"
     },
     {
         "word_id": "word_lucky",
         "hebrew": "בַּר־מַזָּל",
         "english": "lucky",
         "ukrainian": "щасливий",
-        "transcription": "bar-mazal"
+        "transcription": "bar-mazal",
+        "audio_file": "words/word_lucky.mp3"
     },
     {
         "word_id": "word_unlucky",
         "hebrew": "חֲסַר מַזָּל",
         "english": "unlucky",
         "ukrainian": "невдачливий",
-        "transcription": "chasar mazal"
+        "transcription": "chasar mazal",
+        "audio_file": "words/word_unlucky.mp3"
     },
     {
         "word_id": "word_unknown",
         "hebrew": "לֹא יָדוּעַ",
         "english": "unknown",
         "ukrainian": "невідомий",
-        "transcription": "lo yadu'a"
+        "transcription": "lo yadu'a",
+        "audio_file": "words/word_unknown.mp3"
     },
     {
         "word_id": "word_global",
         "hebrew": "גְּלוֹבָּלִי",
         "english": "global",
         "ukrainian": "глобальний",
-        "transcription": "globali"
+        "transcription": "globali",
+        "audio_file": "words/word_global.mp3"
     },
     {
         "word_id": "word_national",
         "hebrew": "לְאוּמִי",
         "english": "national",
         "ukrainian": "національний",
-        "transcription": "leumi"
+        "transcription": "leumi",
+        "audio_file": "words/word_national.mp3"
     },
     {
         "word_id": "word_international",
         "hebrew": "בֵּין־לְאוּמִי",
         "english": "international",
         "ukrainian": "міжнародний",
-        "transcription": "beyn-leumi"
+        "transcription": "beyn-leumi",
+        "audio_file": "words/word_international.mp3"
     },
     {
         "word_id": "word_temporary",
         "hebrew": "זְמַנִּי",
         "english": "temporary",
         "ukrainian": "тимчасовий",
-        "transcription": "zmanni"
+        "transcription": "zmanni",
+        "audio_file": "words/word_temporary.mp3"
     },
     {
         "word_id": "word_permanent",
         "hebrew": "קָבוּעַ",
         "english": "permanent",
         "ukrainian": "постійний",
-        "transcription": "kavua"
+        "transcription": "kavua",
+        "audio_file": "words/word_permanent.mp3"
     },
     {
         "word_id": "word_frozen",
         "hebrew": "קָפוּא",
         "english": "frozen",
         "ukrainian": "заморожений",
-        "transcription": "kafu"
+        "transcription": "kafu",
+        "audio_file": "words/word_frozen.mp3"
     },
     {
         "word_id": "word_comfortable",
         "hebrew": "נוֹחַ",
         "english": "comfortable",
         "ukrainian": "зручний",
-        "transcription": "noach"
+        "transcription": "noach",
+        "audio_file": "words/word_comfortable.mp3"
     },
     {
         "word_id": "word_plaza",
         "hebrew": "כִּכָּר",
         "english": "plaza",
         "ukrainian": "площа",
-        "transcription": "kikar"
+        "transcription": "kikar",
+        "audio_file": "words/word_plaza.mp3"
     },
     {
         "word_id": "word_monument",
         "hebrew": "אַנְדַּרְטָה",
         "english": "monument",
         "ukrainian": "пам'ятник",
-        "transcription": "andarta"
+        "transcription": "andarta",
+        "audio_file": "words/word_monument.mp3"
     },
     {
         "word_id": "word_castle",
         "hebrew": "טִירָה",
         "english": "castle",
         "ukrainian": "замок",
-        "transcription": "tira"
+        "transcription": "tira",
+        "audio_file": "words/word_castle.mp3"
     },
     {
         "word_id": "word_tower",
         "hebrew": "מִגְדָּל",
         "english": "tower",
         "ukrainian": "вежа",
-        "transcription": "migdal"
+        "transcription": "migdal",
+        "audio_file": "words/word_tower.mp3"
     },
     {
         "word_id": "word_shore",
         "hebrew": "חוֹף יָם",
         "english": "shore",
         "ukrainian": "узбережжя",
-        "transcription": "chof yam"
+        "transcription": "chof yam",
+        "audio_file": "words/word_shore.mp3"
     },
     {
         "word_id": "word_path",
         "hebrew": "שְׁבִיל",
         "english": "path",
         "ukrainian": "стежка",
-        "transcription": "shvil"
+        "transcription": "shvil",
+        "audio_file": "words/word_path.mp3"
     },
     {
         "word_id": "word_camp",
         "hebrew": "מַחֲנֶה",
         "english": "camp",
         "ukrainian": "табір",
-        "transcription": "machane"
+        "transcription": "machane",
+        "audio_file": "words/word_camp.mp3"
     },
     {
         "word_id": "word_tent",
         "hebrew": "אוֹהֶל",
         "english": "tent",
         "ukrainian": "намет",
-        "transcription": "ohel"
+        "transcription": "ohel",
+        "audio_file": "words/word_tent.mp3"
     },
     {
         "word_id": "word_bench",
         "hebrew": "סַפְסָל",
         "english": "bench",
         "ukrainian": "лава",
-        "transcription": "safsal"
+        "transcription": "safsal",
+        "audio_file": "words/word_bench.mp3"
     },
     {
         "word_id": "word_statue",
         "hebrew": "פֶּסֶל",
         "english": "statue",
         "ukrainian": "статуя",
-        "transcription": "pesel"
+        "transcription": "pesel",
+        "audio_file": "words/word_statue.mp3"
     },
     {
         "word_id": "word_rope_bridge",
         "hebrew": "גֶּשֶׁר חֲבָלִים",
         "english": "rope bridge",
         "ukrainian": "підвісний міст",
-        "transcription": "gesher chavalim"
+        "transcription": "gesher chavalim",
+        "audio_file": "words/word_rope_bridge.mp3"
     },
     {
         "word_id": "word_bonfire",
         "hebrew": "מְדוּרָה",
         "english": "bonfire",
         "ukrainian": "багаття",
-        "transcription": "medura"
+        "transcription": "medura",
+        "audio_file": "words/word_bonfire.mp3"
     },
     {
         "word_id": "word_flashlight",
         "hebrew": "פַּנָּס",
         "english": "flashlight",
         "ukrainian": "ліхтарик",
-        "transcription": "panas"
+        "transcription": "panas",
+        "audio_file": "words/word_flashlight.mp3"
     },
     {
         "word_id": "word_match",
         "hebrew": "גַּפְרוּר",
         "english": "match",
         "ukrainian": "сірник",
-        "transcription": "gafrur"
+        "transcription": "gafrur",
+        "audio_file": "words/word_match.mp3"
     },
     {
         "word_id": "word_map_book",
         "hebrew": "אַטְלָס",
         "english": "atlas",
         "ukrainian": "атлас",
-        "transcription": "atlas"
+        "transcription": "atlas",
+        "audio_file": "words/word_map_book.mp3"
     },
     {
         "word_id": "word_compass",
         "hebrew": "מַצְפֵּן",
         "english": "compass",
         "ukrainian": "компас",
-        "transcription": "matspen"
+        "transcription": "matspen",
+        "audio_file": "words/word_compass.mp3"
     },
     {
         "word_id": "word_sticker",
         "hebrew": "מַדְבֵּקָה",
         "english": "sticker",
         "ukrainian": "наліпка",
-        "transcription": "madbeka"
+        "transcription": "madbeka",
+        "audio_file": "words/word_sticker.mp3"
     },
     {
         "word_id": "word_bookmark",
         "hebrew": "סִימְנִיָּה",
         "english": "bookmark",
         "ukrainian": "закладка",
-        "transcription": "simniya"
+        "transcription": "simniya",
+        "audio_file": "words/word_bookmark.mp3"
     },
     {
         "word_id": "word_clip",
         "hebrew": "אַטָב",
         "english": "paper clip",
         "ukrainian": "скріпка",
-        "transcription": "atav"
+        "transcription": "atav",
+        "audio_file": "words/word_clip.mp3"
     },
     {
         "word_id": "word_glue",
         "hebrew": "דֶּבֶק",
         "english": "glue",
         "ukrainian": "клей",
-        "transcription": "devek"
+        "transcription": "devek",
+        "audio_file": "words/word_glue.mp3"
     },
     {
         "word_id": "word_scissors",
         "hebrew": "מִסְפָּרַיִם",
         "english": "scissors",
         "ukrainian": "ножиці",
-        "transcription": "misparayim"
+        "transcription": "misparayim",
+        "audio_file": "words/word_scissors.mp3"
     },
     {
         "word_id": "word_ruler",
         "hebrew": "סַרְגֵּל",
         "english": "ruler",
         "ukrainian": "лінійка",
-        "transcription": "sargel"
+        "transcription": "sargel",
+        "audio_file": "words/word_ruler.mp3"
     },
     {
         "word_id": "word_calculator",
         "hebrew": "מַחְשְׁבוֹן",
         "english": "calculator",
         "ukrainian": "калькулятор",
-        "transcription": "machshvon"
+        "transcription": "machshvon",
+        "audio_file": "words/word_calculator.mp3"
     },
     {
         "word_id": "word_headphones",
         "hebrew": "אֹזְנִיּוֹת",
         "english": "headphones",
         "ukrainian": "навушники",
-        "transcription": "ozniyot"
+        "transcription": "ozniyot",
+        "audio_file": "words/word_headphones.mp3"
     },
     {
         "word_id": "word_microphone",
         "hebrew": "מִיקְרוֹפוֹן",
         "english": "microphone",
         "ukrainian": "мікрофон",
-        "transcription": "mikrofon"
+        "transcription": "mikrofon",
+        "audio_file": "words/word_microphone.mp3"
     },
     {
         "word_id": "word_remote",
         "hebrew": "שַׁלָּט",
         "english": "remote control",
         "ukrainian": "пульт",
-        "transcription": "shalat"
+        "transcription": "shalat",
+        "audio_file": "words/word_remote.mp3"
     },
     {
         "word_id": "word_router",
         "hebrew": "נָתָב",
         "english": "router",
         "ukrainian": "роутер",
-        "transcription": "natav"
+        "transcription": "natav",
+        "audio_file": "words/word_router.mp3"
     },
     {
         "word_id": "word_browser",
         "hebrew": "דַּפְדְּפָן",
         "english": "browser",
         "ukrainian": "браузер",
-        "transcription": "dafdefan"
+        "transcription": "dafdefan",
+        "audio_file": "words/word_browser.mp3"
     },
     {
         "word_id": "word_download",
         "hebrew": "הוֹרָדָה",
         "english": "download",
         "ukrainian": "завантаження",
-        "transcription": "horada"
+        "transcription": "horada",
+        "audio_file": "words/word_download.mp3"
     },
     {
         "word_id": "word_upload",
         "hebrew": "הַעֲלָאָה",
         "english": "upload",
         "ukrainian": "вивантаження",
-        "transcription": "ha'ala'a"
+        "transcription": "ha'ala'a",
+        "audio_file": "words/word_upload.mp3"
     },
     {
         "word_id": "word_notification",
         "hebrew": "הַתְרָעָה",
         "english": "notification",
         "ukrainian": "сповіщення",
-        "transcription": "hatra'a"
+        "transcription": "hatra'a",
+        "audio_file": "words/word_notification.mp3"
     },
     {
         "word_id": "word_permission_slip",
         "hebrew": "אִשּׁוּר",
         "english": "approval",
         "ukrainian": "схвалення",
-        "transcription": "ishur"
+        "transcription": "ishur",
+        "audio_file": "words/word_permission_slip.mp3"
     },
     {
         "word_id": "word_brilliant",
         "hebrew": "מַבְרִיק",
         "english": "brilliant",
         "ukrainian": "блискучий",
-        "transcription": "mavrik"
+        "transcription": "mavrik",
+        "audio_file": "words/word_brilliant.mp3"
     },
     {
         "word_id": "word_neat",
         "hebrew": "מְסֻדָּר",
         "english": "neat",
         "ukrainian": "охайний",
-        "transcription": "mesudar"
+        "transcription": "mesudar",
+        "audio_file": "words/word_neat.mp3"
     },
     {
         "word_id": "word_precise",
         "hebrew": "מְדוּיָּק",
         "english": "precise",
         "ukrainian": "точний",
-        "transcription": "meduyak"
+        "transcription": "meduyak",
+        "audio_file": "words/word_precise.mp3"
     },
     {
         "word_id": "word_flexible",
         "hebrew": "גָּמִישׁ",
         "english": "flexible",
         "ukrainian": "гнучкий",
-        "transcription": "gamish"
+        "transcription": "gamish",
+        "audio_file": "words/word_flexible.mp3"
     },
     {
         "word_id": "word_solid",
         "hebrew": "מוּצָק",
         "english": "solid",
         "ukrainian": "твердий",
-        "transcription": "mutsak"
+        "transcription": "mutsak",
+        "audio_file": "words/word_solid.mp3"
     },
     {
         "word_id": "word_liquid",
         "hebrew": "נוֹזְלִי",
         "english": "liquid",
         "ukrainian": "рідкий",
-        "transcription": "nozli"
+        "transcription": "nozli",
+        "audio_file": "words/word_liquid.mp3"
     },
     {
         "word_id": "word_hollow",
         "hebrew": "חָלוּל",
         "english": "hollow",
         "ukrainian": "порожнистий",
-        "transcription": "chalul"
+        "transcription": "chalul",
+        "audio_file": "words/word_hollow.mp3"
     },
     {
         "word_id": "word_massive",
         "hebrew": "עָצוּם",
         "english": "massive",
         "ukrainian": "масивний",
-        "transcription": "atsum"
+        "transcription": "atsum",
+        "audio_file": "words/word_massive.mp3"
     },
     {
         "word_id": "word_about_with_regard_to_concerning",
         "hebrew": "אוֹדוֹת",
         "english": "about, with regard to, concerning",
         "ukrainian": "про; щодо, стосовно",
-        "transcription": "odot"
+        "transcription": "odot",
+        "audio_file": "words/word_about_with_regard_to_concerning.mp3"
     },
     {
         "word_id": "word_after",
         "hebrew": "אַחַר",
         "english": "after",
         "ukrainian": "після",
-        "transcription": "achar"
+        "transcription": "achar",
+        "audio_file": "words/word_after.mp3"
     },
     {
         "word_id": "word_behind",
         "hebrew": "מֵאֲחוֹרֵי",
         "english": "behind",
         "ukrainian": "позаду, за",
-        "transcription": "me'achorei"
+        "transcription": "me'achorei",
+        "audio_file": "words/word_behind.mp3"
     },
     {
         "word_id": "word_to_towards_into",
         "hebrew": "אֶל",
         "english": "to, towards, into",
         "ukrainian": "до, у напрямку, в",
-        "transcription": "el"
+        "transcription": "el",
+        "audio_file": "words/word_to_towards_into.mp3"
     },
     {
         "word_id": "word_at_in_the_possession_of_near",
         "hebrew": "אֵצֶל",
         "english": "at, in the possession of; near",
         "ukrainian": "у, при; в когось, біля",
-        "transcription": "etzel"
+        "transcription": "etzel",
+        "audio_file": "words/word_at_in_the_possession_of_near.mp3"
     },
     {
         "word_id": "word_used_before_a_definite_direct_object",
         "hebrew": "אֶת",
         "english": "(used before a definite direct object)",
         "ukrainian": "вживається перед означеним прямим додатком",
-        "transcription": "et"
+        "transcription": "et",
+        "audio_file": "words/word_used_before_a_definite_direct_object.mp3"
     },
     {
         "word_id": "word_in_by",
         "hebrew": "בְּ",
         "english": "in; by",
         "ukrainian": "у; за допомогою",
-        "transcription": "be"
+        "transcription": "be",
+        "audio_file": "words/word_in_by.mp3"
     },
     {
         "word_id": "word_by_means_of_using",
         "hebrew": "בְּאֶמְצָעוּת",
         "english": "by means of, using",
         "ukrainian": "за допомогою, використовуючи",
-        "transcription": "be'emtza'ut"
+        "transcription": "be'emtza'ut",
+        "audio_file": "words/word_by_means_of_using.mp3"
     },
     {
         "word_id": "word_because_of_due_to",
         "hebrew": "בִּגְלַל",
         "english": "because of, due to",
         "ukrainian": "через, внаслідок",
-        "transcription": "biglal"
+        "transcription": "biglal",
+        "audio_file": "words/word_because_of_due_to.mp3"
     },
     {
         "word_id": "word_thanks_to_due_to_in_favour_of",
         "hebrew": "בִּזְכוּת",
         "english": "thanks to, due to; in favour of",
         "ukrainian": "завдяки; на користь",
-        "transcription": "bizchut"
+        "transcription": "bizchut",
+        "audio_file": "words/word_thanks_to_due_to_in_favour_of.mp3"
     },
     {
         "word_id": "word_between_amongst",
         "hebrew": "בֵּין",
         "english": "between, amongst",
         "ukrainian": "між, серед",
-        "transcription": "ben"
+        "transcription": "ben",
+        "audio_file": "words/word_between_amongst.mp3"
     },
     {
         "word_id": "word_without",
         "hebrew": "בְּלִי",
         "english": "without",
         "ukrainian": "без",
-        "transcription": "bli"
+        "transcription": "bli",
+        "audio_file": "words/word_without.mp3"
     },
     {
         "word_id": "word_during_over_the_course_of",
         "hebrew": "בְּמַהֲלַךְ",
         "english": "during, over the course of",
         "ukrainian": "протягом, упродовж",
-        "transcription": "bemahalach"
+        "transcription": "bemahalach",
+        "audio_file": "words/word_during_over_the_course_of.mp3"
     },
     {
         "word_id": "word_in_the_presence_of_somebody",
         "hebrew": "בְּמַעֲמַד",
         "english": "in the presence of (somebody)",
         "ukrainian": "у присутності (когось)",
-        "transcription": "bema'amad"
+        "transcription": "bema'amad",
+        "audio_file": "words/word_in_the_presence_of_somebody.mp3"
     },
     {
         "word_id": "word_instead_of",
         "hebrew": "בִּמְקוֹם",
         "english": "instead of",
         "ukrainian": "замість",
-        "transcription": "bimkom"
+        "transcription": "bimkom",
+        "audio_file": "words/word_instead_of.mp3"
     },
     {
         "word_id": "word_for_in_favour_of_in_exchange_for_through_via_lit",
         "hebrew": "בַּעַד",
         "english": "for, in favour of; in exchange for; through, via (lit.)",
         "ukrainian": "за, на користь; в обмін на; через, за допомогою (книжн.)",
-        "transcription": "ba'ad"
+        "transcription": "ba'ad",
+        "audio_file": "words/word_for_in_favour_of_in_exchange_for_through_via_lit.mp3"
     },
     {
         "word_id": "word_following_as_a_result_of",
         "hebrew": "בְּעִקְבוֹת",
         "english": "following; in the wake of; as a result of, because of",
         "ukrainian": "слідом за; внаслідок, через",
-        "transcription": "be'ikvot"
+        "transcription": "be'ikvot",
+        "audio_file": "words/word_following_as_a_result_of.mp3"
     },
     {
         "word_id": "word_facing_someone_in_the_face_of",
         "hebrew": "בִּפְנֵי",
         "english": "facing (someone); in the face of",
         "ukrainian": "перед (кимось); віч-на-віч з",
-        "transcription": "bifnei"
+        "transcription": "bifnei",
+        "audio_file": "words/word_facing_someone_in_the_face_of.mp3"
     },
     {
         "word_id": "word_among_amidst_internally_on_the_inside",
         "hebrew": "בְּקֶרֶב",
         "english": "among, amidst; internally, on the inside",
         "ukrainian": "серед; усередині, всередині",
-        "transcription": "bekerev"
+        "transcription": "bekerev",
+        "audio_file": "words/word_among_amidst_internally_on_the_inside.mp3"
     },
     {
         "word_id": "word_for_for_the_sake_of",
         "hebrew": "בִּשְׁבִיל",
         "english": "for, for the sake of",
         "ukrainian": "для, заради",
-        "transcription": "bishvil"
+        "transcription": "bishvil",
+        "audio_file": "words/word_for_for_the_sake_of.mp3"
     },
     {
         "word_id": "word_on_behalf_of_in_the_name_of",
         "hebrew": "בְּשֵׁם",
         "english": "on behalf of, in the name of",
         "ukrainian": "від імені, в ім'я",
-        "transcription": "beshem"
+        "transcription": "beshem",
+        "audio_file": "words/word_on_behalf_of_in_the_name_of.mp3"
     },
     {
         "word_id": "word_inside",
         "hebrew": "בְּתוֹךְ",
         "english": "inside",
         "ukrainian": "всередині",
-        "transcription": "betoch"
+        "transcription": "betoch",
+        "audio_file": "words/word_inside.mp3"
     },
     {
         "word_id": "word_apart_from_other_than_beside",
         "hebrew": "זוּלַת",
         "english": "apart from, other than, beside",
         "ukrainian": "крім, окрім",
-        "transcription": "zulat"
+        "transcription": "zulat",
+        "audio_file": "words/word_apart_from_other_than_beside.mp3"
     },
     {
         "word_id": "word_as_like_in_the_role_of_about_approximately",
         "hebrew": "כְּ",
         "english": "as, like, in the role of; about, approximately",
         "ukrainian": "як, у ролі; приблизно, близько",
-        "transcription": "ke"
+        "transcription": "ke",
+        "audio_file": "words/word_as_like_in_the_role_of_about_approximately.mp3"
     },
     {
         "word_id": "word_in_relation_to_vis_a_vis_towards",
         "hebrew": "כְּלַפֵּי",
         "english": "in relation to, vis-a-vis; towards",
         "ukrainian": "стосовно, щодо; до",
-        "transcription": "klapei"
+        "transcription": "klapei",
+        "audio_file": "words/word_in_relation_to_vis_a_vis_towards.mp3"
     },
     {
         "word_id": "word_like_as_similarly_to",
         "hebrew": "כְּמוֹ",
         "english": "like, as, similarly to",
         "ukrainian": "як, подібно до",
-        "transcription": "kmo"
+        "transcription": "kmo",
+        "audio_file": "words/word_like_as_similarly_to.mp3"
     },
     {
         "word_id": "word_like_as_literary",
         "hebrew": "כְּמוֹת",
         "english": "like, as (literary)",
         "ukrainian": "як (книжн.)",
-        "transcription": "kmot"
+        "transcription": "kmot",
+        "audio_file": "words/word_like_as_literary.mp3"
     },
     {
         "word_id": "word_against_compared_to_as_opposed_to_in_exchange_for",
         "hebrew": "כְּנֶגֶד",
         "english": "against; compared to, as opposed to; in exchange for",
         "ukrainian": "проти; порівняно з, на відміну від; в обмін на",
-        "transcription": "keneged"
+        "transcription": "keneged",
+        "audio_file": "words/word_against_compared_to_as_opposed_to_in_exchange_for.mp3"
     },
     {
         "word_id": "word_to_for_of_indicating_possession_with",
         "hebrew": "לְ",
         "english": "to; for; of (indicating possession, with יש/אין)",
         "ukrainian": "до; для; у, в (позначення належності з יש/אין)",
-        "transcription": "le"
+        "transcription": "le",
+        "audio_file": "words/word_to_for_of_indicating_possession_with.mp3"
     },
     {
         "word_id": "word_along_throughout",
         "hebrew": "לְאוֹרֶךְ",
         "english": "along, throughout",
         "ukrainian": "уздовж, протягом",
-        "transcription": "le'orech"
+        "transcription": "le'orech",
+        "audio_file": "words/word_along_throughout.mp3"
     },
     {
         "word_id": "word_regarding_concerning",
         "hebrew": "לְגַבֵּי",
         "english": "regarding, concerning",
         "ukrainian": "щодо, стосовно",
-        "transcription": "legabei"
+        "transcription": "legabei",
+        "audio_file": "words/word_regarding_concerning.mp3"
     },
     {
         "word_id": "word_according_to_also",
         "hebrew": "לְדִבְרֵי",
         "english": "according to (also לדבריו/ה של...)",
         "ukrainian": "за словами, згідно з (також לדבריו/ה של...)",
-        "transcription": "ledivrei"
+        "transcription": "ledivrei",
+        "audio_file": "words/word_according_to_also.mp3"
     },
     {
         "word_id": "word_near_next_to",
         "hebrew": "לְיַד",
         "english": "near, next to",
         "ukrainian": "біля, поруч із",
-        "transcription": "leyad"
+        "transcription": "leyad",
+        "audio_file": "words/word_near_next_to.mp3"
     },
     {
         "word_id": "word_into_the_hands_of_to_over_to_for_to_the_attention_of",
         "hebrew": "לִידֵי",
         "english": "into the hands of; to, over to, for, to the attention of",
         "ukrainian": "до рук; до, комусь, на розгляд",
-        "transcription": "lidei"
+        "transcription": "lidei",
+        "audio_file": "words/word_into_the_hands_of_to_over_to_for_to_the_attention_of.mp3"
     },
     {
         "word_id": "word_for_the_sake_of_for_the_benefit_of_in_order_to_so_that_lit",
         "hebrew": "לְמַעַן",
         "english": "for the sake of, for the benefit of; in order to, so that (lit.)",
         "ukrainian": "заради, на благо; щоб, аби (книжн.)",
-        "transcription": "lema'an"
+        "transcription": "lema'an",
+        "audio_file": "words/word_for_the_sake_of_for_the_benefit_of_in_order_to_so_that_lit.mp3"
     },
     {
         "word_id": "word_according_to",
         "hebrew": "לְפִי",
         "english": "according to",
         "ukrainian": "згідно з, за",
-        "transcription": "lefi"
+        "transcription": "lefi",
+        "audio_file": "words/word_according_to.mp3"
     },
     {
         "word_id": "word_before_in_front_of",
         "hebrew": "לִפְנֵי",
         "english": "before, in front of",
         "ukrainian": "перед, попереду",
-        "transcription": "lifnei"
+        "transcription": "lifnei",
+        "audio_file": "words/word_before_in_front_of.mp3"
     },
     {
         "word_id": "word_towards_forward_to_for_in_preparation_to",
         "hebrew": "לִקְרַאת",
         "english": "towards, forward to, for, in preparation to",
         "ukrainian": "до, назустріч; для, напередодні",
-        "transcription": "likrat"
+        "transcription": "likrat",
+        "audio_file": "words/word_towards_forward_to_for_in_preparation_to.mp3"
     },
     {
         "word_id": "word_across",
         "hebrew": "לְרוֹחַב",
         "english": "across",
         "ukrainian": "впоперек, через",
-        "transcription": "lerochav"
+        "transcription": "lerochav",
+        "audio_file": "words/word_across.mp3"
     },
     {
         "word_id": "word_against_opposite_in_front_of",
         "hebrew": "מוּל",
         "english": "against; opposite, in front of",
         "ukrainian": "навпроти; проти, перед",
-        "transcription": "mul"
+        "transcription": "mul",
+        "audio_file": "words/word_against_opposite_in_front_of.mp3"
     },
     {
         "word_id": "word_from_of_than_compared_to",
         "hebrew": "מִן",
         "english": "from, of; than, compared to",
         "ukrainian": "з, від; ніж, порівняно з",
-        "transcription": "min"
+        "transcription": "min",
+        "audio_file": "words/word_from_of_than_compared_to.mp3"
     },
     {
         "word_id": "word_above_over_on_top_of",
         "hebrew": "מֵעַל",
         "english": "above, over; on top of",
         "ukrainian": "над, зверху на",
-        "transcription": "me'al"
+        "transcription": "me'al",
+        "audio_file": "words/word_above_over_on_top_of.mp3"
     },
     {
         "word_id": "word_from_away_from_because_with",
         "hebrew": "מִפְּנֵי",
         "english": "from, away from; because (with ש־)",
         "ukrainian": "від, з; тому що (з ש־)",
-        "transcription": "mipnei"
+        "transcription": "mipnei",
+        "audio_file": "words/word_from_away_from_because_with.mp3"
     },
     {
         "word_id": "word_under_below",
         "hebrew": "מִתַּחַת",
         "english": "under, below",
         "ukrainian": "під, нижче",
-        "transcription": "mitachat"
+        "transcription": "mitachat",
+        "audio_file": "words/word_under_below.mp3"
     },
     {
         "word_id": "word_against",
         "hebrew": "נֶגֶד",
         "english": "against",
         "ukrainian": "проти",
-        "transcription": "neged"
+        "transcription": "neged",
+        "audio_file": "words/word_against.mp3"
     },
     {
         "word_id": "word_for",
         "hebrew": "עֲבוּר",
         "english": "for",
         "ukrainian": "для, заради",
-        "transcription": "avur"
+        "transcription": "avur",
+        "audio_file": "words/word_for.mp3"
     },
     {
         "word_id": "word_until_up_to",
         "hebrew": "עַד",
         "english": "until, up to",
         "ukrainian": "до, аж до",
-        "transcription": "ad"
+        "transcription": "ad",
+        "audio_file": "words/word_until_up_to.mp3"
     },
     {
         "word_id": "word_on_upon_over_about_regarding",
         "hebrew": "עַל",
         "english": "on, upon; over; about, regarding",
         "ukrainian": "на; над; про, щодо",
-        "transcription": "al"
+        "transcription": "al",
+        "audio_file": "words/word_on_upon_over_about_regarding.mp3"
     },
     {
         "word_id": "word_on_upon",
         "hebrew": "עַל גַּב",
         "english": "on the back of",
         "ukrainian": "на спинці, на задній частині",
-        "transcription": "al gav"
+        "transcription": "al gav",
+        "audio_file": "words/word_on_upon.mp3"
     },
     {
         "word_id": "word_on_upon_al_gabei",
         "hebrew": "עַל גַּבֵּי",
         "english": "on, atop; on top of",
         "ukrainian": "на, зверху на",
-        "transcription": "al gabei"
+        "transcription": "al gabei",
+        "audio_file": "words/word_on_upon_al_gabei.mp3"
     },
     {
         "word_id": "word_next_to",
         "hebrew": "עַל יַד",
         "english": "next to",
         "ukrainian": "поруч із, біля",
-        "transcription": "al yad"
+        "transcription": "al yad",
+        "audio_file": "words/word_next_to.mp3"
     },
     {
         "word_id": "word_by_via_in_a_passive_construction_by_means_of",
         "hebrew": "עַל יְדֵי",
         "english": "by, via (in a passive construction); by means of",
         "ukrainian": "кимось, через (у пасивній конструкції); за допомогою",
-        "transcription": "al yedei"
+        "transcription": "al yedei",
+        "audio_file": "words/word_by_via_in_a_passive_construction_by_means_of.mp3"
     },
     {
         "word_id": "word_according_to_in_accordance_with",
         "hebrew": "עַל פִּי",
         "english": "according to, in accordance with",
         "ukrainian": "згідно з, відповідно до",
-        "transcription": "al pi"
+        "transcription": "al pi",
+        "audio_file": "words/word_according_to_in_accordance_with.mp3"
     },
     {
         "word_id": "word_over_on_the_surface_of_above",
         "hebrew": "עַל פְּנֵי",
         "english": "over, on the surface of; above",
         "ukrainian": "над, по поверхні; поверх",
-        "transcription": "al pnei"
+        "transcription": "al pnei",
+        "audio_file": "words/word_over_on_the_surface_of_above.mp3"
     },
     {
         "word_id": "word_with_forms_etc_are_literary",
         "hebrew": "עִם",
         "english": "with (forms עימי, עימו etc. are literary)",
         "ukrainian": "з (форми עימי, עימו тощо є книжними)",
-        "transcription": "im"
+        "transcription": "im",
+        "audio_file": "words/word_with_forms_etc_are_literary.mp3"
     },
     {
         "word_id": "word_compared_with",
         "hebrew": "לְעוּמַּת",
         "english": "compared with",
         "ukrainian": "порівняно з",
-        "transcription": "le'umat"
+        "transcription": "le'umat",
+        "audio_file": "words/word_compared_with.mp3"
     },
     {
         "word_id": "word_of_belonging_to",
         "hebrew": "שֶׁל",
         "english": "of, belonging to",
         "ukrainian": "чий, належний",
-        "transcription": "shel"
+        "transcription": "shel",
+        "audio_file": "words/word_of_belonging_to.mp3"
     },
     {
         "word_id": "word_under_below_beneath_in_exchange_for",
         "hebrew": "תַּחַת",
         "english": "under, below, beneath; in exchange for",
         "ukrainian": "під, нижче, під самим; в обмін на",
-        "transcription": "tachat"
+        "transcription": "tachat",
+        "audio_file": "words/word_under_below_beneath_in_exchange_for.mp3"
     },
     {
         "hebrew": "חֲסִידָה",
         "english": "stork",
         "ukrainian": "лелека",
         "transcription": "chasida",
-        "word_id": "word_unknown_2"
+        "word_id": "word_unknown_2",
+        "audio_file": "words/word_unknown_2.mp3"
     },
     {
         "hebrew": "אַקְוַרְיוּם",
         "english": "aquarium",
         "ukrainian": "акваріум",
         "transcription": "akvariyum",
-        "word_id": "word_unknown_3"
+        "word_id": "word_unknown_3",
+        "audio_file": "words/word_unknown_3.mp3"
     },
     {
         "hebrew": "אַקוֹרְדְיוֹן",
         "english": "accordion",
         "ukrainian": "акордеон",
         "transcription": "akordiyon",
-        "word_id": "word_unknown_4"
+        "word_id": "word_unknown_4",
+        "audio_file": "words/word_unknown_4.mp3"
     },
     {
         "hebrew": "כַּלָּנִית",
         "english": "anemone",
         "ukrainian": "анемона",
         "transcription": "kalanit",
-        "word_id": "word_unknown_5"
+        "word_id": "word_unknown_5",
+        "audio_file": "words/word_unknown_5.mp3"
     },
     {
         "hebrew": "תֵּאָבוֹן",
         "english": "appetite",
         "ukrainian": "апетит",
         "transcription": "te'avon",
-        "word_id": "word_unknown_6"
+        "word_id": "word_unknown_6",
+        "audio_file": "words/word_unknown_6.mp3"
     },
     {
         "hebrew": "בֵּית-מִרְקַחַת",
         "english": "pharmacy",
         "ukrainian": "аптека",
         "transcription": "beit mirkachat",
-        "word_id": "word_unknown_7"
+        "word_id": "word_unknown_7",
+        "audio_file": "words/word_unknown_7.mp3"
     },
     {
         "hebrew": "צַהַ״ל",
         "english": "IDF, Israel Defense Forces",
         "ukrainian": "ЦАХАЛ, Армія оборони Ізраїлю",
         "transcription": "tsahal",
-        "word_id": "word_unknown_8"
+        "word_id": "word_unknown_8",
+        "audio_file": "words/word_unknown_8.mp3"
     },
     {
         "hebrew": "פַּרְפַּר",
         "english": "butterfly",
         "ukrainian": "метелик",
         "transcription": "parpar",
-        "word_id": "word_unknown_9"
+        "word_id": "word_unknown_9",
+        "audio_file": "words/word_unknown_9.mp3"
     },
     {
         "hebrew": "חָצִיל",
         "english": "eggplant",
         "ukrainian": "баклажан",
         "transcription": "chatsil",
-        "word_id": "word_unknown_10"
+        "word_id": "word_unknown_10",
+        "audio_file": "words/word_unknown_10.mp3"
     },
     {
         "hebrew": "אַיִל",
         "english": "ram",
         "ukrainian": "баран",
         "transcription": "ayil",
-        "word_id": "word_unknown_11"
+        "word_id": "word_unknown_11",
+        "audio_file": "words/word_unknown_11.mp3"
     },
     {
         "hebrew": "יָרֵךְ",
         "english": "thigh",
         "ukrainian": "стегно",
         "transcription": "yarekh",
-        "word_id": "word_unknown_12"
+        "word_id": "word_unknown_12",
+        "audio_file": "words/word_unknown_12.mp3"
     },
     {
         "hebrew": "אֲפוּדָה",
         "english": "vest",
         "ukrainian": "безрукавка",
         "transcription": "afuda",
-        "word_id": "word_unknown_13"
+        "word_id": "word_unknown_13",
+        "audio_file": "words/word_unknown_13.mp3"
     },
     {
         "hebrew": "קְמִיצָה",
         "english": "ring finger",
         "ukrainian": "безіменний палець",
         "transcription": "kmitsa",
-        "word_id": "word_unknown_14"
+        "word_id": "word_unknown_14",
+        "audio_file": "words/word_unknown_14.mp3"
     },
     {
         "hebrew": "סְנָאִי",
         "english": "squirrel",
         "ukrainian": "білка",
         "transcription": "sna'i",
-        "word_id": "word_unknown_15"
+        "word_id": "word_unknown_15",
+        "audio_file": "words/word_unknown_15.mp3"
     },
     {
         "hebrew": "חֲבַצֶּלֶת-הַחוֹף",
         "english": "sea lily",
         "ukrainian": "берегова лілія",
         "transcription": "chavatselet hachof",
-        "word_id": "word_unknown_16"
+        "word_id": "word_unknown_16",
+        "audio_file": "words/word_unknown_16.mp3"
     },
     {
         "hebrew": "סַפְרָן",
         "english": "librarian",
         "ukrainian": "бібліотекар",
         "transcription": "safran",
-        "word_id": "word_unknown_17"
+        "word_id": "word_unknown_17",
+        "audio_file": "words/word_unknown_17.mp3"
     },
     {
         "hebrew": "סַדְרָן",
         "english": "usher",
         "ukrainian": "білетер",
         "transcription": "sadran",
-        "word_id": "word_unknown_18"
+        "word_id": "word_unknown_18",
+        "audio_file": "words/word_unknown_18.mp3"
     },
     {
         "hebrew": "מִשְׁקֶפֶת",
         "english": "binoculars",
         "ukrainian": "бінокль",
         "transcription": "mishkefet",
-        "word_id": "word_unknown_19"
+        "word_id": "word_unknown_19",
+        "audio_file": "words/word_unknown_19.mp3"
     },
     {
         "hebrew": "תַּחְבֹּשֶׁת",
         "english": "bandage",
         "ukrainian": "бинт",
         "transcription": "tachboshet",
-        "word_id": "word_unknown_20"
+        "word_id": "word_unknown_20",
+        "audio_file": "words/word_unknown_20.mp3"
     },
     {
         "hebrew": "קִידּוּשׁ",
         "english": "kiddush, blessing over wine",
         "ukrainian": "кідуш, благословення над вином",
         "transcription": "kidush",
-        "word_id": "word_unknown_21"
+        "word_id": "word_unknown_21",
+        "audio_file": "words/word_unknown_21.mp3"
     },
     {
         "hebrew": "תְּאוֹמִים",
         "english": "twins",
         "ukrainian": "близнюки",
         "transcription": "te'omim",
-        "word_id": "word_unknown_22"
+        "word_id": "word_unknown_22",
+        "audio_file": "words/word_unknown_22.mp3"
     },
     {
         "hebrew": "פָּרַת-מֹשֶׁה-רַבֵּנוּ",
         "english": "ladybug",
         "ukrainian": "сонечко",
         "transcription": "parat moshe rabenu",
-        "word_id": "word_unknown_23"
+        "word_id": "word_unknown_23",
+        "audio_file": "words/word_unknown_23.mp3"
     },
     {
         "hebrew": "אֲגוּדָל",
         "english": "thumb",
         "ukrainian": "великий палець",
         "transcription": "agudal",
-        "word_id": "word_unknown_24"
+        "word_id": "word_unknown_24",
+        "audio_file": "words/word_unknown_24.mp3"
     },
     {
         "hebrew": "גַּבּוֹת",
         "english": "eyebrows",
         "ukrainian": "брови",
         "transcription": "gabot",
-        "word_id": "word_unknown_25"
+        "word_id": "word_unknown_25",
+        "audio_file": "words/word_unknown_25.mp3"
     },
     {
         "hebrew": "תֹּף מִרְיָם",
         "english": "drum",
         "ukrainian": "бубон",
         "transcription": "tof miriam",
-        "word_id": "word_unknown_26"
+        "word_id": "word_unknown_26",
+        "audio_file": "words/word_unknown_26.mp3"
     },
     {
         "hebrew": "לַחְמָנִיָּה",
         "english": "bun",
         "ukrainian": "булка",
         "transcription": "lachmaniya",
-        "word_id": "word_unknown_27"
+        "word_id": "word_unknown_27",
+        "audio_file": "words/word_unknown_27.mp3"
     },
     {
         "hebrew": "חָרוּז",
         "english": "bead",
         "ukrainian": "намистина",
         "transcription": "charuz",
-        "word_id": "word_unknown_28"
+        "word_id": "word_unknown_28",
+        "audio_file": "words/word_unknown_28.mp3"
     },
     {
         "hebrew": "אַמְבַּטְיָה",
         "english": "bathtub",
         "ukrainian": "ванна",
         "transcription": "ambatya",
-        "word_id": "word_unknown_29"
+        "word_id": "word_unknown_29",
+        "audio_file": "words/word_unknown_29.mp3"
     },
     {
         "hebrew": "כַּפָּפוֹת",
         "english": "gloves",
         "ukrainian": "рукавиці",
         "transcription": "kfafot",
-        "word_id": "word_unknown_30"
+        "word_id": "word_unknown_30",
+        "audio_file": "words/word_unknown_30.mp3"
     },
     {
         "hebrew": "רִיבָה",
         "english": "jam",
         "ukrainian": "варення",
         "transcription": "riba",
-        "word_id": "word_unknown_31"
+        "word_id": "word_unknown_31",
+        "audio_file": "words/word_unknown_31.mp3"
     },
     {
         "hebrew": "עֲנָק",
         "english": "giant",
         "ukrainian": "велетень",
         "transcription": "anak",
-        "word_id": "word_unknown_32"
+        "word_id": "word_unknown_32",
+        "audio_file": "words/word_unknown_32.mp3"
     },
     {
         "hebrew": "וְרִיד",
         "english": "vein",
         "ukrainian": "вена",
         "transcription": "verid",
-        "word_id": "word_unknown_33"
+        "word_id": "word_unknown_33",
+        "audio_file": "words/word_unknown_33.mp3"
     },
     {
         "hebrew": "גָּמָל",
         "english": "camel",
         "ukrainian": "верблюд",
         "transcription": "gamal",
-        "word_id": "word_unknown_34"
+        "word_id": "word_unknown_34",
+        "audio_file": "words/word_unknown_34.mp3"
     },
     {
         "hebrew": "מָסוֹק",
         "english": "helicopter",
         "ukrainian": "вертоліт",
         "transcription": "masok",
-        "word_id": "word_unknown_35"
+        "word_id": "word_unknown_35",
+        "audio_file": "words/word_unknown_35.mp3"
     },
     {
         "hebrew": "מַמְטֵרָה",
         "english": "sprinkler",
         "ukrainian": "дощувалка",
         "transcription": "mamtera",
-        "word_id": "word_unknown_36"
+        "word_id": "word_unknown_36",
+        "audio_file": "words/word_unknown_36.mp3"
     },
     {
         "hebrew": "גֶּפֶן",
         "english": "grapevine",
         "ukrainian": "виноградна лоза",
         "transcription": "gefen",
-        "word_id": "word_unknown_37"
+        "word_id": "word_unknown_37",
+        "audio_file": "words/word_unknown_37.mp3"
     },
     {
         "hebrew": "כֶּרֶם",
         "english": "vineyard",
         "ukrainian": "виноградник",
         "transcription": "kerem",
-        "word_id": "word_unknown_38"
+        "word_id": "word_unknown_38",
+        "audio_file": "words/word_unknown_38.mp3"
     },
     {
         "hebrew": "דְּרוֹר",
         "english": "sparrow",
         "ukrainian": "горобець",
         "transcription": "dror",
-        "word_id": "word_unknown_39"
+        "word_id": "word_unknown_39",
+        "audio_file": "words/word_unknown_39.mp3"
     },
     {
         "hebrew": "מַשְׁפֵּךְ",
         "english": "watering can",
         "ukrainian": "лійка",
         "transcription": "mashpekh",
-        "word_id": "word_unknown_40"
+        "word_id": "word_unknown_40",
+        "audio_file": "words/word_unknown_40.mp3"
     },
     {
         "hebrew": "גַּנֶּנֶת",
         "english": "kindergarten teacher",
         "ukrainian": "вихователька",
         "transcription": "ganenet",
-        "word_id": "word_unknown_41"
+        "word_id": "word_unknown_41",
+        "audio_file": "words/word_unknown_41.mp3"
     },
     {
         "hebrew": "עוֹנוֹת הַשָּׁנָה",
         "english": "seasons",
         "ukrainian": "пори року",
         "transcription": "onot hashana",
-        "word_id": "word_unknown_42"
+        "word_id": "word_unknown_42",
+        "audio_file": "words/word_unknown_42.mp3"
     },
     {
         "hebrew": "קֵן",
         "english": "nest",
         "ukrainian": "гніздо",
         "transcription": "ken",
-        "word_id": "word_unknown_43"
+        "word_id": "word_unknown_43",
+        "audio_file": "words/word_unknown_43.mp3"
     },
     {
         "hebrew": "תְּכֵלֶת",
         "english": "light blue",
         "ukrainian": "блакитний",
         "transcription": "tkhelet",
-        "word_id": "word_unknown_44"
+        "word_id": "word_unknown_44",
+        "audio_file": "words/word_unknown_44.mp3"
     },
     {
         "hebrew": "יוֹנָה",
         "english": "pigeon",
         "ukrainian": "голуб",
         "transcription": "yona",
-        "word_id": "word_unknown_45"
+        "word_id": "word_unknown_45",
+        "audio_file": "words/word_unknown_45.mp3"
     },
     {
         "hebrew": "שׁוֹבָךְ",
         "english": "pigeon loft",
         "ukrainian": "голубник",
         "transcription": "shovakh",
-        "word_id": "word_unknown_46"
+        "word_id": "word_unknown_46",
+        "audio_file": "words/word_unknown_46.mp3"
     },
     {
         "hebrew": "תּוֹר",
         "english": "turtledove",
         "ukrainian": "горлиця",
         "transcription": "tor",
-        "word_id": "word_unknown_47"
+        "word_id": "word_unknown_47",
+        "audio_file": "words/word_unknown_47.mp3"
     },
     {
         "hebrew": "מַגְרֵפָה",
         "english": "rake",
         "ukrainian": "граблі",
         "transcription": "magrefa",
-        "word_id": "word_unknown_48"
+        "word_id": "word_unknown_48",
+        "audio_file": "words/word_unknown_48.mp3"
     },
     {
         "hebrew": "מַדְחוֹם",
         "english": "thermometer",
         "ukrainian": "термометр",
         "transcription": "madchom",
-        "word_id": "word_unknown_49"
+        "word_id": "word_unknown_49",
+        "audio_file": "words/word_unknown_49.mp3"
     },
     {
         "hebrew": "רִמּוֹן",
         "english": "pomegranate",
         "ukrainian": "гранат",
         "transcription": "rimon",
-        "word_id": "word_unknown_50"
+        "word_id": "word_unknown_50",
+        "audio_file": "words/word_unknown_50.mp3"
     },
     {
         "hebrew": "אַשְׁכּוֹלִית",
         "english": "grapefruit",
         "ukrainian": "грейпфрут",
         "transcription": "eshkolit",
-        "word_id": "word_unknown_51"
+        "word_id": "word_unknown_51",
+        "audio_file": "words/word_unknown_51.mp3"
     },
     {
         "hebrew": "סַבָּל",
         "english": "porter",
         "ukrainian": "вантажник",
         "transcription": "sabal",
-        "word_id": "word_unknown_52"
+        "word_id": "word_unknown_52",
+        "audio_file": "words/word_unknown_52.mp3"
     },
     {
         "hebrew": "עֲרוּגָה",
         "english": "garden bed",
         "ukrainian": "грядка",
         "transcription": "aruga",
-        "word_id": "word_unknown_53"
+        "word_id": "word_unknown_53",
+        "audio_file": "words/word_unknown_53.mp3"
     },
     {
         "hebrew": "זַחַל",
         "english": "caterpillar",
         "ukrainian": "гусінь",
         "transcription": "zachal",
-        "word_id": "word_unknown_54"
+        "word_id": "word_unknown_54",
+        "audio_file": "words/word_unknown_54.mp3"
     },
     {
         "hebrew": "אַוָּז",
         "english": "gander",
         "ukrainian": "гусак",
         "transcription": "avaz",
-        "word_id": "word_unknown_55"
+        "word_id": "word_unknown_55",
+        "audio_file": "words/word_unknown_55.mp3"
     },
     {
         "hebrew": "בַּת-דּוֹדָה",
         "english": "female cousin",
         "ukrainian": "двоюрідна сестра",
         "transcription": "bat doda",
-        "word_id": "word_unknown_56"
+        "word_id": "word_unknown_56",
+        "audio_file": "words/word_unknown_56.mp3"
     },
     {
         "hebrew": "בֶּן-דּוֹד",
         "english": "male cousin",
         "ukrainian": "двоюрідний брат",
         "transcription": "ben dod",
-        "word_id": "word_unknown_57"
+        "word_id": "word_unknown_57",
+        "audio_file": "words/word_unknown_57.mp3"
     },
     {
         "hebrew": "תּוֹרָן",
         "english": "on-duty person",
         "ukrainian": "черговий",
         "transcription": "toran",
-        "word_id": "word_unknown_58"
+        "word_id": "word_unknown_58",
+        "audio_file": "words/word_unknown_58.mp3"
     },
     {
         "hebrew": "יוֹם-הָעַצְמָאוּת",
         "english": "Independence Day",
         "ukrainian": "День Незалежності",
         "transcription": "yom ha'atsma'ut",
-        "word_id": "word_unknown_59"
+        "word_id": "word_unknown_59",
+        "audio_file": "words/word_unknown_59.mp3"
     },
     {
         "hebrew": "דָּרְבָּן",
         "english": "porcupine",
         "ukrainian": "дикобраз",
         "transcription": "dorban",
-        "word_id": "word_unknown_60"
+        "word_id": "word_unknown_60",
+        "audio_file": "words/word_unknown_60.mp3"
     },
     {
         "hebrew": "יְמֵי הַשָּׁבוּעַ",
         "english": "days of the week",
         "ukrainian": "дні тижня",
         "transcription": "yemei hashavua",
-        "word_id": "word_unknown_61"
+        "word_id": "word_unknown_61",
+        "audio_file": "words/word_unknown_61.mp3"
     },
     {
         "hebrew": "תַּרְמִיל",
         "english": "travel bag",
         "ukrainian": "дорожня сумка",
         "transcription": "tarmil",
-        "word_id": "word_unknown_62"
+        "word_id": "word_unknown_62",
+        "audio_file": "words/word_unknown_62.mp3"
     },
     {
         "hebrew": "תַּמְרוּר",
         "english": "road sign",
         "ukrainian": "дорожній знак",
         "transcription": "tamrur",
-        "word_id": "word_unknown_63"
+        "word_id": "word_unknown_63",
+        "audio_file": "words/word_unknown_63.mp3"
     },
     {
         "hebrew": "מַקְדֵּחָה",
         "english": "drill",
         "ukrainian": "дриль",
         "transcription": "makdecha",
-        "word_id": "word_unknown_64"
+        "word_id": "word_unknown_64",
+        "audio_file": "words/word_unknown_64.mp3"
     },
     {
         "hebrew": "אַלּוֹן",
         "english": "oak",
         "ukrainian": "дуб",
         "transcription": "alon",
-        "word_id": "word_unknown_65"
+        "word_id": "word_unknown_65",
+        "audio_file": "words/word_unknown_65.mp3"
     },
     {
         "hebrew": "חֲלִילִית",
         "english": "flute",
         "ukrainian": "сопілка",
         "transcription": "chalilit",
-        "word_id": "word_unknown_66"
+        "word_id": "word_unknown_66",
+        "audio_file": "words/word_unknown_66.mp3"
     },
     {
         "hebrew": "מְסַנֶּנֶת",
         "english": "colander",
         "ukrainian": "друшляк",
         "transcription": "mesanenet",
-        "word_id": "word_unknown_67"
+        "word_id": "word_unknown_67",
+        "audio_file": "words/word_unknown_67.mp3"
     },
     {
         "hebrew": "בַּעֲלֵי-חַיִּים",
         "english": "animals",
         "ukrainian": "тварини",
         "transcription": "ba'alei chayim",
-        "word_id": "word_unknown_68"
+        "word_id": "word_unknown_68",
+        "audio_file": "words/word_unknown_68.mp3"
     },
     {
         "hebrew": "גִ'ירָפָה",
         "english": "giraffe",
         "ukrainian": "жирафа",
         "transcription": "jirafa",
-        "word_id": "word_unknown_69"
+        "word_id": "word_unknown_69",
+        "audio_file": "words/word_unknown_69.mp3"
     },
     {
         "hebrew": "קִפּוֹד",
         "english": "hedgehog",
         "ukrainian": "їжак",
         "transcription": "kipod",
-        "word_id": "word_unknown_70"
+        "word_id": "word_unknown_70",
+        "audio_file": "words/word_unknown_70.mp3"
     },
     {
         "hebrew": "מְסִלַּת-בַּרְזֶל",
         "english": "railway",
         "ukrainian": "залізниця",
         "transcription": "mesilat barzel",
-        "word_id": "word_unknown_71"
+        "word_id": "word_unknown_71",
+        "audio_file": "words/word_unknown_71.mp3"
     },
     {
         "hebrew": "חִידָה",
         "english": "riddle",
         "ukrainian": "загадка",
         "transcription": "chida",
-        "word_id": "word_unknown_72"
+        "word_id": "word_unknown_72",
+        "audio_file": "words/word_unknown_72.mp3"
     },
     {
         "hebrew": "אַרְנֶבֶת",
         "english": "hare",
         "ukrainian": "заєць",
         "transcription": "arnevet",
-        "word_id": "word_unknown_73"
+        "word_id": "word_unknown_73",
+        "audio_file": "words/word_unknown_73.mp3"
     },
     {
         "hebrew": "דַּרְגָּה",
         "english": "rank",
         "ukrainian": "звання",
         "transcription": "darga",
-        "word_id": "word_unknown_74"
+        "word_id": "word_unknown_74",
+        "audio_file": "words/word_unknown_74.mp3"
     },
     {
         "hebrew": "תְּבוּאָה",
         "english": "grain",
         "ukrainian": "зерно",
         "transcription": "tvua",
-        "word_id": "word_unknown_75"
+        "word_id": "word_unknown_75",
+        "audio_file": "words/word_unknown_75.mp3"
     },
     {
         "hebrew": "שַׁלְדָּג",
         "english": "kingfisher",
         "ukrainian": "зимородок",
         "transcription": "shaldag",
-        "word_id": "word_unknown_76"
+        "word_id": "word_unknown_76",
+        "audio_file": "words/word_unknown_76.mp3"
     },
     {
         "hebrew": "גַּן-חַיּוֹת",
         "english": "zoo",
         "ukrainian": "зоопарк",
         "transcription": "gan chayot",
-        "word_id": "word_unknown_77"
+        "word_id": "word_unknown_77",
+        "audio_file": "words/word_unknown_77.mp3"
     },
     {
         "hebrew": "עִבְרִית",
         "english": "Hebrew",
         "ukrainian": "іврит",
         "transcription": "ivrit",
-        "word_id": "word_unknown_78"
+        "word_id": "word_unknown_78",
+        "audio_file": "words/word_unknown_78.mp3"
     },
     {
         "hebrew": "תַּרְנְגוֹל-הוֹדּוּ",
         "english": "turkey",
         "ukrainian": "індик",
         "transcription": "tarnegol hodu",
-        "word_id": "word_unknown_79"
+        "word_id": "word_unknown_79",
+        "audio_file": "words/word_unknown_79.mp3"
     },
     {
         "hebrew": "תְּאֵנָה",
         "english": "fig",
         "ukrainian": "інжир",
         "transcription": "te'ena",
-        "word_id": "word_unknown_80"
+        "word_id": "word_unknown_80",
+        "audio_file": "words/word_unknown_80.mp3"
     },
     {
         "hebrew": "כְּלֵי-עֲבוֹדָה",
         "english": "tools",
         "ukrainian": "інструменти",
         "transcription": "klei avoda",
-        "word_id": "word_unknown_81"
+        "word_id": "word_unknown_81",
+        "audio_file": "words/word_unknown_81.mp3"
     },
     {
         "hebrew": "קִישּׁוּא",
         "english": "zucchini",
         "ukrainian": "кабачок",
         "transcription": "kishu",
-        "word_id": "word_unknown_82"
+        "word_id": "word_unknown_82",
+        "audio_file": "words/word_unknown_82.mp3"
     },
     {
         "hebrew": "מַכְבֵּשׁ",
         "english": "roller",
         "ukrainian": "коток",
         "transcription": "makhbesh",
-        "word_id": "word_unknown_83"
+        "word_id": "word_unknown_83",
+        "audio_file": "words/word_unknown_83.mp3"
     },
     {
         "hebrew": "נַדְנֵדָה",
         "english": "swing",
         "ukrainian": "гойдалка",
         "transcription": "nadneda",
-        "word_id": "word_unknown_84"
+        "word_id": "word_unknown_84",
+        "audio_file": "words/word_unknown_84.mp3"
     },
     {
         "hebrew": "בְּרוֹשׁ",
         "english": "cypress",
         "ukrainian": "кипарис",
         "transcription": "brosh",
-        "word_id": "word_unknown_85"
+        "word_id": "word_unknown_85",
+        "audio_file": "words/word_unknown_85.mp3"
     },
     {
         "hebrew": "מַכּוֹשׁ",
         "english": "pickaxe",
         "ukrainian": "кирка",
         "transcription": "makosh",
-        "word_id": "word_unknown_86"
+        "word_id": "word_unknown_86",
+        "audio_file": "words/word_unknown_86.mp3"
     },
     {
         "hebrew": "מִכְחוֹל",
         "english": "paintbrush",
         "ukrainian": "пензлик",
         "transcription": "mikhchol",
-        "word_id": "word_unknown_87"
+        "word_id": "word_unknown_87",
+        "audio_file": "words/word_unknown_87.mp3"
     },
     {
         "hebrew": "לִוְיָתָן",
         "english": "whale",
         "ukrainian": "кит",
         "transcription": "livyatan",
-        "word_id": "word_unknown_88"
+        "word_id": "word_unknown_88",
+        "audio_file": "words/word_unknown_88.mp3"
     },
     {
         "hebrew": "קְלֶמֶנְטִינָה",
         "english": "clementine",
         "ukrainian": "клементин",
         "transcription": "klementina",
-        "word_id": "word_unknown_89"
+        "word_id": "word_unknown_89",
+        "audio_file": "words/word_unknown_89.mp3"
     },
     {
         "hebrew": "כְּלוּב",
         "english": "cage",
         "ukrainian": "клітка",
         "transcription": "kluv",
-        "word_id": "word_unknown_90"
+        "word_id": "word_unknown_90",
+        "audio_file": "words/word_unknown_90.mp3"
     },
     {
         "hebrew": "לֵיצָן",
         "english": "clown",
         "ukrainian": "клоун",
         "transcription": "leitsan",
-        "word_id": "word_unknown_91"
+        "word_id": "word_unknown_91",
+        "audio_file": "words/word_unknown_91.mp3"
     },
     {
         "hebrew": "צִפּוֹרֶן",
         "english": "claw",
         "ukrainian": "кіготь",
         "transcription": "tsiporen",
-        "word_id": "word_unknown_92"
+        "word_id": "word_unknown_92",
+        "audio_file": "words/word_unknown_92.mp3"
     },
     {
         "hebrew": "תַּיִשׁ",
         "english": "billy goat",
         "ukrainian": "цап",
         "transcription": "tayish",
-        "word_id": "word_unknown_93"
+        "word_id": "word_unknown_93",
+        "audio_file": "words/word_unknown_93.mp3"
     },
     {
         "hebrew": "שִׁבֹּלֶת",
         "english": "ear of grain",
         "ukrainian": "колос",
         "transcription": "shibolet",
-        "word_id": "word_unknown_94"
+        "word_id": "word_unknown_94",
+        "audio_file": "words/word_unknown_94.mp3"
     },
     {
         "hebrew": "מְלוּנָה",
         "english": "kennel",
         "ukrainian": "буда",
         "transcription": "meluna",
-        "word_id": "word_unknown_95"
+        "word_id": "word_unknown_95",
+        "audio_file": "words/word_unknown_95.mp3"
     },
     {
         "hebrew": "אוּרְוָה",
         "english": "stable",
         "ukrainian": "стайня",
         "transcription": "urva",
-        "word_id": "word_unknown_96"
+        "word_id": "word_unknown_96",
+        "audio_file": "words/word_unknown_96.mp3"
     },
     {
         "hebrew": "חֲלָלִית",
         "english": "spaceship",
         "ukrainian": "космічний корабель",
         "transcription": "chalalit",
-        "word_id": "word_unknown_97"
+        "word_id": "word_unknown_97",
+        "audio_file": "words/word_unknown_97.mp3"
     },
     {
         "hebrew": "גַּלְעִין",
         "english": "fruit pit",
         "ukrainian": "кісточка",
         "transcription": "gal'in",
-        "word_id": "word_unknown_98"
+        "word_id": "word_unknown_98",
+        "audio_file": "words/word_unknown_98.mp3"
     },
     {
         "hebrew": "חֲתוּלָה",
         "english": "cat",
         "ukrainian": "кішка",
         "transcription": "chatula",
-        "word_id": "word_unknown_99"
+        "word_id": "word_unknown_99",
+        "audio_file": "words/word_unknown_99.mp3"
     },
     {
         "hebrew": "בַּרְז",
         "english": "faucet",
         "ukrainian": "кран",
         "transcription": "berez",
-        "word_id": "word_unknown_100"
+        "word_id": "word_unknown_100",
+        "audio_file": "words/word_unknown_100.mp3"
     },
     {
         "hebrew": "כּוּרְסָה",
         "english": "armchair",
         "ukrainian": "крісло",
         "transcription": "kursa",
-        "word_id": "word_unknown_101"
+        "word_id": "word_unknown_101",
+        "audio_file": "words/word_unknown_101.mp3"
     },
     {
         "hebrew": "תַּנִּין",
         "english": "crocodile",
         "ukrainian": "крокодил",
         "transcription": "tanin",
-        "word_id": "word_unknown_102"
+        "word_id": "word_unknown_102",
+        "audio_file": "words/word_unknown_102.mp3"
     },
     {
         "hebrew": "כַּרְכֹּם",
         "english": "crocus",
         "ukrainian": "крокус",
         "transcription": "karkom",
-        "word_id": "word_unknown_103"
+        "word_id": "word_unknown_103",
+        "audio_file": "words/word_unknown_103.mp3"
     },
     {
         "hebrew": "סֵפֶל",
         "english": "mug",
         "ukrainian": "кружка",
         "transcription": "sefel",
-        "word_id": "word_unknown_104"
+        "word_id": "word_unknown_104",
+        "audio_file": "words/word_unknown_104.mp3"
     },
     {
         "hebrew": "כָּנָף",
         "english": "wing",
         "ukrainian": "крило",
         "transcription": "kanaf",
-        "word_id": "word_unknown_105"
+        "word_id": "word_unknown_105",
+        "audio_file": "words/word_unknown_105.mp3"
     },
     {
         "hebrew": "וָו",
         "english": "hook",
         "ukrainian": "гачок",
         "transcription": "vav",
-        "word_id": "word_unknown_106"
+        "word_id": "word_unknown_106",
+        "audio_file": "words/word_unknown_106.mp3"
     },
     {
         "hebrew": "קוּבִיָּה",
         "english": "cube",
         "ukrainian": "кубик",
         "transcription": "kubiya",
-        "word_id": "word_unknown_107"
+        "word_id": "word_unknown_107",
+        "audio_file": "words/word_unknown_107.mp3"
     },
     {
         "hebrew": "קַנְקַן",
         "english": "pitcher",
         "ukrainian": "глечик",
         "transcription": "kankan",
-        "word_id": "word_unknown_108"
+        "word_id": "word_unknown_108",
+        "audio_file": "words/word_unknown_108.mp3"
     },
     {
         "hebrew": "תִּירָס",
         "english": "corn",
         "ukrainian": "кукурудза",
         "transcription": "tiras",
-        "word_id": "word_unknown_109"
+        "word_id": "word_unknown_109",
+        "audio_file": "words/word_unknown_109.mp3"
     },
     {
         "hebrew": "בֶּגֶד-יָם",
         "english": "swimsuit",
         "ukrainian": "купальник",
         "transcription": "beged yam",
-        "word_id": "word_unknown_110"
+        "word_id": "word_unknown_110",
+        "audio_file": "words/word_unknown_110.mp3"
     },
     {
         "hebrew": "בּוּבָּה",
         "english": "doll",
         "ukrainian": "лялька",
         "transcription": "buba",
-        "word_id": "word_unknown_111"
+        "word_id": "word_unknown_111",
+        "audio_file": "words/word_unknown_111.mp3"
     },
     {
         "hebrew": "לוּל",
         "english": "chicken coop",
         "ukrainian": "курник",
         "transcription": "lul",
-        "word_id": "word_unknown_112"
+        "word_id": "word_unknown_112",
+        "audio_file": "words/word_unknown_112.mp3"
     },
     {
         "hebrew": "מַכֹּלֶת",
         "english": "shop",
         "ukrainian": "крамниця",
         "transcription": "makolet",
-        "word_id": "word_unknown_113"
+        "word_id": "word_unknown_113",
+        "audio_file": "words/word_unknown_113.mp3"
     },
     {
         "hebrew": "ל״ג בָּעוֹמֶר",
         "english": "Lag BaOmer",
         "ukrainian": "Лаг ба-Омер",
         "transcription": "lag ba'omer",
-        "word_id": "word_unknown_114"
+        "word_id": "word_unknown_114",
+        "audio_file": "words/word_unknown_114.mp3"
     },
     {
         "hebrew": "אַיָּלָה",
         "english": "doe",
         "ukrainian": "лань",
         "transcription": "ayala",
-        "word_id": "word_unknown_115"
+        "word_id": "word_unknown_115",
+        "audio_file": "words/word_unknown_115.mp3"
     },
     {
         "hebrew": "סְנוּנִית",
         "english": "swallow",
         "ukrainian": "ластівка",
         "transcription": "snunit",
-        "word_id": "word_unknown_116"
+        "word_id": "word_unknown_116",
+        "audio_file": "words/word_unknown_116.mp3"
     },
     {
         "hebrew": "בַּרְבּוּר",
         "english": "swan",
         "ukrainian": "лебідь",
         "transcription": "barbur",
-        "word_id": "word_unknown_117"
+        "word_id": "word_unknown_117",
+        "audio_file": "words/word_unknown_117.mp3"
     },
     {
         "hebrew": "סוּלָּם",
         "english": "ladder",
         "ukrainian": "драбина",
         "transcription": "sulam",
-        "word_id": "word_unknown_118"
+        "word_id": "word_unknown_118",
+        "audio_file": "words/word_unknown_118.mp3"
     },
     {
         "hebrew": "קַיְטָנָה",
         "english": "summer camp",
         "ukrainian": "літній табір",
         "transcription": "kaytana",
-        "word_id": "word_unknown_119"
+        "word_id": "word_unknown_119",
+        "audio_file": "words/word_unknown_119.mp3"
     },
     {
         "hebrew": "טַיָּס",
         "english": "pilot",
         "ukrainian": "льотчик",
         "transcription": "tayas",
-        "word_id": "word_unknown_120"
+        "word_id": "word_unknown_120",
+        "audio_file": "words/word_unknown_120.mp3"
     },
     {
         "hebrew": "שַׁלֶּכֶת",
         "english": "November",
         "ukrainian": "листопад",
         "transcription": "shalechet",
-        "word_id": "word_unknown_121"
+        "word_id": "word_unknown_121",
+        "audio_file": "words/word_unknown_121.mp3"
     },
     {
         "hebrew": "מֵצַח",
         "english": "forehead",
         "ukrainian": "лоб",
         "transcription": "metsach",
-        "word_id": "word_unknown_122"
+        "word_id": "word_unknown_122",
+        "audio_file": "words/word_unknown_122.mp3"
     },
     {
         "hebrew": "צְפַרְדֵּעַ",
         "english": "frog",
         "ukrainian": "жаба",
         "transcription": "tsfardea",
-        "word_id": "word_unknown_123"
+        "word_id": "word_unknown_123",
+        "audio_file": "words/word_unknown_123.mp3"
     },
     {
         "hebrew": "גּוּפִיָּה",
         "english": "T-shirt",
         "ukrainian": "майка",
         "transcription": "gufiya",
-        "word_id": "word_unknown_124"
+        "word_id": "word_unknown_124",
+        "audio_file": "words/word_unknown_124.mp3"
     },
     {
         "hebrew": "פָּרָג",
         "english": "poppy",
         "ukrainian": "мак",
         "transcription": "parag",
-        "word_id": "word_unknown_125"
+        "word_id": "word_unknown_125",
+        "audio_file": "words/word_unknown_125.mp3"
     },
     {
         "hebrew": "מַסֵּכָה",
         "english": "mask",
         "ukrainian": "маска",
         "transcription": "masekha",
-        "word_id": "word_unknown_126"
+        "word_id": "word_unknown_126",
+        "audio_file": "words/word_unknown_126.mp3"
     },
     {
         "hebrew": "מִזְרוֹן",
         "english": "mattress",
         "ukrainian": "матрац",
         "transcription": "mizron",
-        "word_id": "word_unknown_127"
+        "word_id": "word_unknown_127",
+        "audio_file": "words/word_unknown_127.mp3"
     },
     {
         "hebrew": "מַצָּה",
         "english": "matzah",
         "ukrainian": "маца",
         "transcription": "matsa",
-        "word_id": "word_unknown_128"
+        "word_id": "word_unknown_128",
+        "audio_file": "words/word_unknown_128.mp3"
     },
     {
         "hebrew": "רֶגַע",
         "english": "moment",
         "ukrainian": "мить",
         "transcription": "rega",
-        "word_id": "word_unknown_129"
+        "word_id": "word_unknown_129",
+        "audio_file": "words/word_unknown_129.mp3"
     },
     {
         "hebrew": "רְהִיטִים",
         "english": "furniture",
         "ukrainian": "меблі",
         "transcription": "rehitim",
-        "word_id": "word_unknown_130"
+        "word_id": "word_unknown_130",
+        "audio_file": "words/word_unknown_130.mp3"
     },
     {
         "hebrew": "גִּיר",
         "english": "chalk",
         "ukrainian": "крейда",
         "transcription": "gir",
-        "word_id": "word_unknown_131"
+        "word_id": "word_unknown_131",
+        "audio_file": "words/word_unknown_131.mp3"
     },
     {
         "hebrew": "מַנְגִּינָה",
         "english": "melody",
         "ukrainian": "мелодія",
         "transcription": "mangina",
-        "word_id": "word_unknown_132"
+        "word_id": "word_unknown_132",
+        "audio_file": "words/word_unknown_132.mp3"
     },
     {
         "hebrew": "פַּרְוָה",
         "english": "fur",
         "ukrainian": "хутро",
         "transcription": "parva",
-        "word_id": "word_unknown_133"
+        "word_id": "word_unknown_133",
+        "audio_file": "words/word_unknown_133.mp3"
     },
     {
         "hebrew": "זֶרֶת",
         "english": "little finger",
         "ukrainian": "мізинець",
         "transcription": "zeret",
-        "word_id": "word_unknown_134"
+        "word_id": "word_unknown_134",
+        "audio_file": "words/word_unknown_134.mp3"
     },
     {
         "hebrew": "שָׁקֵד",
         "english": "almond",
         "ukrainian": "мигдаль",
         "transcription": "shaked",
-        "word_id": "word_unknown_135"
+        "word_id": "word_unknown_135",
+        "audio_file": "words/word_unknown_135.mp3"
     },
     {
         "hebrew": "סִידּוּר",
         "english": "prayer book",
         "ukrainian": "молитовник",
         "transcription": "sidur",
-        "word_id": "word_unknown_136"
+        "word_id": "word_unknown_136",
+        "audio_file": "words/word_unknown_136.mp3"
     },
     {
         "hebrew": "גְּלִידָה",
         "english": "ice cream",
         "ukrainian": "морозиво",
         "transcription": "glida",
-        "word_id": "word_unknown_137"
+        "word_id": "word_unknown_137",
+        "audio_file": "words/word_unknown_137.mp3"
     },
     {
         "hebrew": "טוּרִיָּה",
         "english": "hoe",
         "ukrainian": "мотика",
         "transcription": "turiya",
-        "word_id": "word_unknown_138"
+        "word_id": "word_unknown_138",
+        "audio_file": "words/word_unknown_138.mp3"
     },
     {
         "hebrew": "פֶּרֶד",
         "english": "mule",
         "ukrainian": "мул",
         "transcription": "pered",
-        "word_id": "word_unknown_139"
+        "word_id": "word_unknown_139",
+        "audio_file": "words/word_unknown_139.mp3"
     },
     {
         "hebrew": "נְמָלָה",
         "english": "ant",
         "ukrainian": "мураха",
         "transcription": "nemala",
-        "word_id": "word_unknown_140"
+        "word_id": "word_unknown_140",
+        "audio_file": "words/word_unknown_140.mp3"
     },
     {
         "hebrew": "אַשְׁפָּה",
         "english": "trash",
         "ukrainian": "сміття",
         "transcription": "ashpa",
-        "word_id": "word_unknown_141"
+        "word_id": "word_unknown_141",
+        "audio_file": "words/word_unknown_141.mp3"
     },
     {
         "hebrew": "קַצָּב",
         "english": "butcher",
         "ukrainian": "м'ясник",
         "transcription": "katsav",
-        "word_id": "word_unknown_142"
+        "word_id": "word_unknown_142",
+        "audio_file": "words/word_unknown_142.mp3"
     },
     {
         "hebrew": "מְלָפְפוֹן",
         "english": "cucumber",
         "ukrainian": "огірок",
         "transcription": "melafefon",
-        "word_id": "word_unknown_143"
+        "word_id": "word_unknown_143",
+        "audio_file": "words/word_unknown_143.mp3"
     },
     {
         "hebrew": "בְּגָדִים",
         "english": "clothes",
         "ukrainian": "одяг",
         "transcription": "bgadim",
-        "word_id": "word_unknown_144"
+        "word_id": "word_unknown_144",
+        "audio_file": "words/word_unknown_144.mp3"
     },
     {
         "hebrew": "אֱגוֹז",
         "english": "nut",
         "ukrainian": "горіх",
         "transcription": "egoz",
-        "word_id": "word_unknown_145"
+        "word_id": "word_unknown_145",
+        "audio_file": "words/word_unknown_145.mp3"
     },
     {
         "hebrew": "מִשְׁקָפַיִם",
         "english": "glasses",
         "ukrainian": "окуляри",
         "transcription": "mishkafayim",
-        "word_id": "word_unknown_146"
+        "word_id": "word_unknown_146",
+        "audio_file": "words/word_unknown_146.mp3"
     },
     {
         "hebrew": "שְׁגִיאָה",
         "english": "mistake",
         "ukrainian": "помилка",
         "transcription": "shgi'a",
-        "word_id": "word_unknown_147"
+        "word_id": "word_unknown_147",
+        "audio_file": "words/word_unknown_147.mp3"
     },
     {
         "hebrew": "דֶּקֶל",
         "english": "palm tree",
         "ukrainian": "пальма",
         "transcription": "dekel",
-        "word_id": "word_unknown_148"
+        "word_id": "word_unknown_148",
+        "audio_file": "words/word_unknown_148.mp3"
     },
     {
         "hebrew": "זוּג",
         "english": "pair",
         "ukrainian": "пара",
         "transcription": "zug",
-        "word_id": "word_unknown_149"
+        "word_id": "word_unknown_149",
+        "audio_file": "words/word_unknown_149.mp3"
     },
     {
         "hebrew": "קַלְמָר",
         "english": "pencil case",
         "ukrainian": "пенал",
         "transcription": "kalmar",
-        "word_id": "word_unknown_150"
+        "word_id": "word_unknown_150",
+        "audio_file": "words/word_unknown_150.mp3"
     },
     {
         "hebrew": "פְּסַנְתֵּר",
         "english": "piano",
         "ukrainian": "піаніно",
         "transcription": "psanter",
-        "word_id": "word_unknown_151"
+        "word_id": "word_unknown_151",
+        "audio_file": "words/word_unknown_151.mp3"
     },
     {
         "hebrew": "צוֹלֶלֶת",
         "english": "submarine",
         "ukrainian": "підводний човен",
         "transcription": "tsolelet",
-        "word_id": "word_unknown_152"
+        "word_id": "word_unknown_152",
+        "audio_file": "words/word_unknown_152.mp3"
     },
     {
         "hebrew": "כַּבַּאי",
         "english": "firefighter",
         "ukrainian": "пожежник",
         "transcription": "kabai",
-        "word_id": "word_unknown_153"
+        "word_id": "word_unknown_153",
+        "audio_file": "words/word_unknown_153.mp3"
     },
     {
         "hebrew": "דַּוָּר",
         "english": "mailman",
         "ukrainian": "листоноша",
         "transcription": "davar",
-        "word_id": "word_unknown_154"
+        "word_id": "word_unknown_154",
+        "audio_file": "words/word_unknown_154.mp3"
     },
     {
         "hebrew": "וֶרֶד",
         "english": "rose",
         "ukrainian": "троянда",
         "transcription": "vered",
-        "word_id": "word_unknown_155"
+        "word_id": "word_unknown_155",
+        "audio_file": "words/word_unknown_155.mp3"
     },
     {
         "hebrew": "וָרוֹד",
         "english": "pink",
         "ukrainian": "рожевий",
         "transcription": "varod",
-        "word_id": "word_unknown_156"
+        "word_id": "word_unknown_156",
+        "audio_file": "words/word_unknown_156.mp3"
     },
     {
         "hebrew": "הֶגֶה",
         "english": "steering wheel",
         "ukrainian": "кермо",
         "transcription": "hege",
-        "word_id": "word_unknown_157"
+        "word_id": "word_unknown_157",
+        "audio_file": "words/word_unknown_157.mp3"
     },
     {
         "hebrew": "דַּיָּג",
         "english": "fisherman",
         "ukrainian": "рибалка",
         "transcription": "dayag",
-        "word_id": "word_unknown_158"
+        "word_id": "word_unknown_158",
+        "audio_file": "words/word_unknown_158.mp3"
     },
     {
         "hebrew": "שׁוּרָה",
         "english": "row",
         "ukrainian": "ряд",
         "transcription": "shura",
-        "word_id": "word_unknown_159"
+        "word_id": "word_unknown_159",
+        "audio_file": "words/word_unknown_159.mp3"
     },
     {
         "hebrew": "יַלְקוּט",
         "english": "backpack",
         "ukrainian": "ранець",
         "transcription": "yalkut",
-        "word_id": "word_unknown_160"
+        "word_id": "word_unknown_160",
+        "audio_file": "words/word_unknown_160.mp3"
     },
     {
         "hebrew": "צֶמַח",
         "english": "plant",
         "ukrainian": "рослина",
         "transcription": "tsemach",
-        "word_id": "word_unknown_161"
+        "word_id": "word_unknown_161",
+        "audio_file": "words/word_unknown_161.mp3"
     },
     {
         "hebrew": "צְנוֹנִית",
         "english": "radish",
         "ukrainian": "редиска",
         "transcription": "tsnonit",
-        "word_id": "word_unknown_162"
+        "word_id": "word_unknown_162",
+        "audio_file": "words/word_unknown_162.mp3"
     },
     {
         "hebrew": "דְּבוֹרָה",
         "english": "bee",
         "ukrainian": "бджола",
         "transcription": "dvora",
-        "word_id": "word_unknown_163"
+        "word_id": "word_unknown_163",
+        "audio_file": "words/word_unknown_163.mp3"
     },
     {
         "hebrew": "חִטָּה",
         "english": "wheat",
         "ukrainian": "пшениця",
         "transcription": "chita",
-        "word_id": "word_unknown_164"
+        "word_id": "word_unknown_164",
+        "audio_file": "words/word_unknown_164.mp3"
     },
     {
         "hebrew": "גּוֹזָל",
         "english": "nestling",
         "ukrainian": "пташеня",
         "transcription": "gozal",
-        "word_id": "word_unknown_165"
+        "word_id": "word_unknown_165",
+        "audio_file": "words/word_unknown_165.mp3"
     },
     {
         "hebrew": "נַעַר",
         "english": "teenager",
         "ukrainian": "підліток",
         "transcription": "na'ar",
-        "word_id": "word_unknown_166"
+        "word_id": "word_unknown_166",
+        "audio_file": "words/word_unknown_166.mp3"
     },
     {
         "hebrew": "חַמָּנִית",
         "english": "sunflower",
         "ukrainian": "соняшник",
         "transcription": "chamanit",
-        "word_id": "word_unknown_167"
+        "word_id": "word_unknown_167",
+        "audio_file": "words/word_unknown_167.mp3"
     },
     {
         "hebrew": "גַּנָּן",
         "english": "gardener",
         "ukrainian": "садівник",
         "transcription": "ganan",
-        "word_id": "word_unknown_168"
+        "word_id": "word_unknown_168",
+        "audio_file": "words/word_unknown_168.mp3"
     },
     {
         "hebrew": "מַזְמֵרָה",
         "english": "garden shears",
         "ukrainian": "садові ножиці",
         "transcription": "mazmera",
-        "word_id": "word_unknown_169"
+        "word_id": "word_unknown_169",
+        "audio_file": "words/word_unknown_169.mp3"
     },
     {
         "hebrew": "שְׁתִיל",
         "english": "seedling",
         "ukrainian": "саджанець",
         "transcription": "shtil",
-        "word_id": "word_unknown_170"
+        "word_id": "word_unknown_170",
+        "audio_file": "words/word_unknown_170.mp3"
     },
     {
         "hebrew": "סַנְדָּל",
         "english": "sandal",
         "ukrainian": "сандалія",
         "transcription": "sandal",
-        "word_id": "word_unknown_171"
+        "word_id": "word_unknown_171",
+        "audio_file": "words/word_unknown_171.mp3"
     },
     {
         "hebrew": "סַנְדְלָר",
         "english": "shoemaker",
         "ukrainian": "швець",
         "transcription": "sandlar",
-        "word_id": "word_unknown_172"
+        "word_id": "word_unknown_172",
+        "audio_file": "words/word_unknown_172.mp3"
     },
     {
         "hebrew": "בָּצִיר",
         "english": "grape harvest",
         "ukrainian": "збір винограду",
         "transcription": "batsir",
-        "word_id": "word_unknown_173"
+        "word_id": "word_unknown_173",
+        "audio_file": "words/word_unknown_173.mp3"
     },
     {
         "hebrew": "צְרָצַר",
         "english": "cricket",
         "ukrainian": "цвіркун",
         "transcription": "tsratsar",
-        "word_id": "word_unknown_174"
+        "word_id": "word_unknown_174",
+        "audio_file": "words/word_unknown_174.mp3"
     },
     {
         "hebrew": "סְוֶדֶר",
         "english": "sweater",
         "ukrainian": "светр",
         "transcription": "sveder",
-        "word_id": "word_unknown_175"
+        "word_id": "word_unknown_175",
+        "audio_file": "words/word_unknown_175.mp3"
     },
     {
         "hebrew": "בֵּית-כְּנֶסֶת",
         "english": "synagogue",
         "ukrainian": "синагога",
         "transcription": "beit kneset",
-        "word_id": "word_unknown_176"
+        "word_id": "word_unknown_176",
+        "audio_file": "words/word_unknown_176.mp3"
     },
     {
         "hebrew": "יָתוֹם",
         "english": "orphan",
         "ukrainian": "сирота",
         "transcription": "yatom",
-        "word_id": "word_unknown_177"
+        "word_id": "word_unknown_177",
+        "audio_file": "words/word_unknown_177.mp3"
     },
     {
         "hebrew": "זַרְזִיר",
         "english": "starling",
         "ukrainian": "шпак",
         "transcription": "zarzir",
-        "word_id": "word_unknown_178"
+        "word_id": "word_unknown_178",
+        "audio_file": "words/word_unknown_178.mp3"
     },
     {
         "hebrew": "אַמְבּוּלַנְס",
         "english": "ambulance",
         "ukrainian": "швидка допомога",
         "transcription": "ambulans",
-        "word_id": "word_unknown_179"
+        "word_id": "word_unknown_179",
+        "audio_file": "words/word_unknown_179.mp3"
     },
     {
         "hebrew": "מַמְתָּק",
         "english": "sweets",
         "ukrainian": "солодощі",
         "transcription": "mamtak",
-        "word_id": "word_unknown_180"
+        "word_id": "word_unknown_180",
+        "audio_file": "words/word_unknown_180.mp3"
     },
     {
         "hebrew": "מַסְגֵּר",
         "english": "locksmith",
         "ukrainian": "слюсар",
         "transcription": "masger",
-        "word_id": "word_unknown_181"
+        "word_id": "word_unknown_181",
+        "audio_file": "words/word_unknown_181.mp3"
     },
     {
         "hebrew": "שָׁזִיף",
         "english": "plum",
         "ukrainian": "слива",
         "transcription": "shazif",
-        "word_id": "word_unknown_182"
+        "word_id": "word_unknown_182",
+        "audio_file": "words/word_unknown_182.mp3"
     },
     {
         "hebrew": "שַׁבְּלוּל",
         "english": "snail",
         "ukrainian": "слимак",
         "transcription": "shablul",
-        "word_id": "word_unknown_183"
+        "word_id": "word_unknown_183",
+        "audio_file": "words/word_unknown_183.mp3"
     },
     {
         "hebrew": "יַנְשׁוּף",
         "english": "owl",
         "ukrainian": "сова",
         "transcription": "yanshuf",
-        "word_id": "word_unknown_184"
+        "word_id": "word_unknown_184",
+        "audio_file": "words/word_unknown_184.mp3"
     },
     {
         "hebrew": "מַלְחִיָּה",
         "english": "salt shaker",
         "ukrainian": "сільничка",
         "transcription": "malchiya",
-        "word_id": "word_unknown_185"
+        "word_id": "word_unknown_185",
+        "audio_file": "words/word_unknown_185.mp3"
     },
     {
         "hebrew": "סְפִירָה",
         "english": "counting",
         "ukrainian": "рахунок",
         "transcription": "sfira",
-        "word_id": "word_unknown_186"
+        "word_id": "word_unknown_186",
+        "audio_file": "words/word_unknown_186.mp3"
     },
     {
         "hebrew": "הַפְתָּעָה",
         "english": "surprise",
         "ukrainian": "сюрприз",
         "transcription": "hafta'a",
-        "word_id": "word_unknown_187"
+        "word_id": "word_unknown_187",
+        "audio_file": "words/word_unknown_187.mp3"
     },
     {
         "hebrew": "שַׁרְפְּרַף",
         "english": "stool",
         "ukrainian": "табурет",
         "transcription": "shrafraf",
-        "word_id": "word_unknown_188"
+        "word_id": "word_unknown_188",
+        "audio_file": "words/word_unknown_188.mp3"
     },
     {
         "hebrew": "טַמְבּוּרִין",
         "english": "tambourine",
         "ukrainian": "тамбурин",
         "transcription": "tamburin",
-        "word_id": "word_unknown_189"
+        "word_id": "word_unknown_189",
+        "audio_file": "words/word_unknown_189.mp3"
     },
     {
         "hebrew": "רַקְדָנִית",
         "english": "dancer",
         "ukrainian": "танцівниця",
         "transcription": "rakdanit",
-        "word_id": "word_unknown_190"
+        "word_id": "word_unknown_190",
+        "audio_file": "words/word_unknown_190.mp3"
     },
     {
         "hebrew": "תַּקָּן",
         "english": "cockroach",
         "ukrainian": "тарган",
         "transcription": "takan",
-        "word_id": "word_unknown_191"
+        "word_id": "word_unknown_191",
+        "audio_file": "words/word_unknown_191.mp3"
     },
     {
         "hebrew": "מְצִלְתַּיִם",
         "english": "cymbals",
         "ukrainian": "тарілки (муз.)",
         "transcription": "metsiltayim",
-        "word_id": "word_unknown_192"
+        "word_id": "word_unknown_192",
+        "audio_file": "words/word_unknown_192.mp3"
     },
     {
         "hebrew": "מְרִיצָה",
         "english": "wheelbarrow",
         "ukrainian": "тачка",
         "transcription": "meritsa",
-        "word_id": "word_unknown_193"
+        "word_id": "word_unknown_193",
+        "audio_file": "words/word_unknown_193.mp3"
     },
     {
         "hebrew": "עֵגֶל",
         "english": "calf",
         "ukrainian": "теля",
         "transcription": "egel",
-        "word_id": "word_unknown_194"
+        "word_id": "word_unknown_194",
+        "audio_file": "words/word_unknown_194.mp3"
     },
     {
         "hebrew": "מַגְרֵדָה",
         "english": "grater",
         "ukrainian": "тертка",
         "transcription": "magreda",
-        "word_id": "word_unknown_195"
+        "word_id": "word_unknown_195",
+        "audio_file": "words/word_unknown_195.mp3"
     },
     {
         "hebrew": "בֵּית-דְּפוּס",
         "english": "printing house",
         "ukrainian": "друкарня",
         "transcription": "beit dfus",
-        "word_id": "word_unknown_196"
+        "word_id": "word_unknown_196",
+        "audio_file": "words/word_unknown_196.mp3"
     },
     {
         "hebrew": "בַּד",
         "english": "fabric",
         "ukrainian": "тканина",
         "transcription": "bad",
-        "word_id": "word_unknown_197"
+        "word_id": "word_unknown_197",
+        "audio_file": "words/word_unknown_197.mp3"
     },
     {
         "hebrew": "גַּרְזֶן",
         "english": "axe",
         "ukrainian": "сокира",
         "transcription": "garzen",
-        "word_id": "word_unknown_198"
+        "word_id": "word_unknown_198",
+        "audio_file": "words/word_unknown_198.mp3"
     },
     {
         "hebrew": "מַחְדֵּד",
         "english": "sharpener",
         "ukrainian": "точилка",
         "transcription": "machded",
-        "word_id": "word_unknown_199"
+        "word_id": "word_unknown_199",
+        "audio_file": "words/word_unknown_199.mp3"
     },
     {
         "hebrew": "טְרַקְטוֹר",
         "english": "tractor",
         "ukrainian": "трактор",
         "transcription": "traktor",
-        "word_id": "word_unknown_200"
+        "word_id": "word_unknown_200",
+        "audio_file": "words/word_unknown_200.mp3"
     },
     {
         "hebrew": "כְּלֵי-רֶכֶב",
         "english": "vehicles",
         "ukrainian": "транспортні засоби",
         "transcription": "klei rechev",
-        "word_id": "word_unknown_201"
+        "word_id": "word_unknown_201",
+        "audio_file": "words/word_unknown_201.mp3"
     },
     {
         "hebrew": "רַעֲשָׁן",
         "english": "rattle",
         "ukrainian": "тріскачка",
         "transcription": "ra'ashan",
-        "word_id": "word_unknown_202"
+        "word_id": "word_unknown_202",
+        "audio_file": "words/word_unknown_202.mp3"
     },
     {
         "hebrew": "חֲצוֹצְרָה",
         "english": "trumpet",
         "ukrainian": "труба (муз.)",
         "transcription": "chatsotsra",
-        "word_id": "word_unknown_203"
+        "word_id": "word_unknown_203",
+        "audio_file": "words/word_unknown_203.mp3"
     },
     {
         "hebrew": "אֲרוּבָּה",
         "english": "chimney",
         "ukrainian": "димар",
         "transcription": "aruba",
-        "word_id": "word_unknown_204"
+        "word_id": "word_unknown_204",
+        "audio_file": "words/word_unknown_204.mp3"
     },
     {
         "hebrew": "תַּחְתּוֹנִים",
         "english": "underpants",
         "ukrainian": "труси",
         "transcription": "tachtonim",
-        "word_id": "word_unknown_205"
+        "word_id": "word_unknown_205",
+        "audio_file": "words/word_unknown_205.mp3"
     },
     {
         "hebrew": "מַטְלִית",
         "english": "rag",
         "ukrainian": "ганчірка",
         "transcription": "matlit",
-        "word_id": "word_unknown_206"
+        "word_id": "word_unknown_206",
+        "audio_file": "words/word_unknown_206.mp3"
     },
     {
         "hebrew": "ט״ו בִּשְׁבָט",
         "english": "Tu BiShvat",
         "ukrainian": "Ту бі-Шват",
         "transcription": "tu bishvat",
-        "word_id": "word_unknown_207"
+        "word_id": "word_unknown_207",
+        "audio_file": "words/word_unknown_207.mp3"
     },
     {
         "hebrew": "צִבְעוֹנִי",
         "english": "tulip",
         "ukrainian": "тюльпан",
         "transcription": "tsiv'oni",
-        "word_id": "word_unknown_208"
+        "word_id": "word_unknown_208",
+        "audio_file": "words/word_unknown_208.mp3"
     },
     {
         "hebrew": "מִקְלָט",
         "english": "bomb shelter",
         "ukrainian": "бомбосховище",
         "transcription": "miklat",
-        "word_id": "word_unknown_209"
+        "word_id": "word_unknown_209",
+        "audio_file": "words/word_unknown_209.mp3"
     },
     {
         "hebrew": "חַכָּה",
         "english": "fishing rod",
         "ukrainian": "вудка",
         "transcription": "chaka",
-        "word_id": "word_unknown_210"
+        "word_id": "word_unknown_210",
+        "audio_file": "words/word_unknown_210.mp3"
     },
     {
         "hebrew": "זְרִיקָה",
         "english": "injection",
         "ukrainian": "укол",
         "transcription": "zrika",
-        "word_id": "word_unknown_211"
+        "word_id": "word_unknown_211",
+        "audio_file": "words/word_unknown_211.mp3"
     },
     {
         "hebrew": "כַּוֶּרֶת",
         "english": "beehive",
         "ukrainian": "вулик",
         "transcription": "kaveret",
-        "word_id": "word_unknown_212"
+        "word_id": "word_unknown_212",
+        "audio_file": "words/word_unknown_212.mp3"
     },
     {
         "hebrew": "חִלָּזוֹן",
         "english": "snail",
         "ukrainian": "равлик",
         "transcription": "chilazon",
-        "word_id": "word_unknown_213"
+        "word_id": "word_unknown_213",
+        "audio_file": "words/word_unknown_213.mp3"
     },
     {
         "hebrew": "בַּרְוָז",
         "english": "duck",
         "ukrainian": "качка",
         "transcription": "barvaz",
-        "word_id": "word_unknown_214"
+        "word_id": "word_unknown_214",
+        "audio_file": "words/word_unknown_214.mp3"
     },
     {
         "hebrew": "מַגְהֵץ",
         "english": "iron",
         "ukrainian": "праска",
         "transcription": "maghets",
-        "word_id": "word_unknown_215"
+        "word_id": "word_unknown_215",
+        "audio_file": "words/word_unknown_215.mp3"
     },
     {
         "hebrew": "אָזְנַיִם",
         "english": "ears",
         "ukrainian": "вуха",
         "transcription": "oznayim",
-        "word_id": "word_unknown_216"
+        "word_id": "word_unknown_216",
+        "audio_file": "words/word_unknown_216.mp3"
     },
     {
         "hebrew": "אׇזְנֵי הָמָן",
         "english": "hamantaschen",
         "ukrainian": "вушка Амана",
         "transcription": "oznei haman",
-        "word_id": "word_unknown_217"
+        "word_id": "word_unknown_217",
+        "audio_file": "words/word_unknown_217.mp3"
     },
     {
         "hebrew": "סִינָר",
         "english": "apron",
         "ukrainian": "фартух",
         "transcription": "sinar",
-        "word_id": "word_unknown_218"
+        "word_id": "word_unknown_218",
+        "audio_file": "words/word_unknown_218.mp3"
     },
     {
         "hebrew": "פִּסְטוּקִים",
         "english": "pistachios",
         "ukrainian": "фісташки",
         "transcription": "pistukim",
-        "word_id": "word_unknown_219"
+        "word_id": "word_unknown_219",
+        "audio_file": "words/word_unknown_219.mp3"
     },
     {
         "hebrew": "זִיקִית",
         "english": "chameleon",
         "ukrainian": "хамелеон",
         "transcription": "zikit",
-        "word_id": "word_unknown_220"
+        "word_id": "word_unknown_220",
+        "audio_file": "words/word_unknown_220.mp3"
     },
     {
         "hebrew": "חֲנֻכָּה",
         "english": "Hanukkah",
         "ukrainian": "Ханука",
         "transcription": "chanuka",
-        "word_id": "word_unknown_221"
+        "word_id": "word_unknown_221",
+        "audio_file": "words/word_unknown_221.mp3"
     },
     {
         "hebrew": "סְבִיבוֹן",
         "english": "spinning top",
         "ukrainian": "дзиґа",
         "transcription": "svivon",
-        "word_id": "word_unknown_222"
+        "word_id": "word_unknown_222",
+        "audio_file": "words/word_unknown_222.mp3"
     },
     {
         "hebrew": "חֲנֻכִּיָּה",
         "english": "hanukkiah",
         "ukrainian": "ханукія",
         "transcription": "chanukiya",
-        "word_id": "word_unknown_223"
+        "word_id": "word_unknown_223",
+        "audio_file": "words/word_unknown_223.mp3"
     },
     {
         "hebrew": "אוֹגֵר",
         "english": "hamster",
         "ukrainian": "хомʼяк",
         "transcription": "oger",
-        "word_id": "word_unknown_224"
+        "word_id": "word_unknown_224",
+        "audio_file": "words/word_unknown_224.mp3"
     },
     {
         "hebrew": "חַרְצִית",
         "english": "chrysanthemum",
         "ukrainian": "хризантема",
         "transcription": "chartsit",
-        "word_id": "word_unknown_225"
+        "word_id": "word_unknown_225",
+        "audio_file": "words/word_unknown_225.mp3"
     },
     {
         "hebrew": "צַיָּר",
         "english": "artist",
         "ukrainian": "художник",
         "transcription": "tsayar",
-        "word_id": "word_unknown_226"
+        "word_id": "word_unknown_226",
+        "audio_file": "words/word_unknown_226.mp3"
     },
     {
         "hebrew": "צְבָעִים",
         "english": "colors",
         "ukrainian": "кольори",
         "transcription": "tsva'im",
-        "word_id": "word_unknown_227"
+        "word_id": "word_unknown_227",
+        "audio_file": "words/word_unknown_227.mp3"
     },
     {
         "hebrew": "כְּרוּבִית",
         "english": "cauliflower",
         "ukrainian": "цвітна капуста",
         "transcription": "kruvit",
-        "word_id": "word_unknown_228"
+        "word_id": "word_unknown_228",
+        "audio_file": "words/word_unknown_228.mp3"
     },
     {
         "hebrew": "עָצִיץ",
         "english": "flower pot",
         "ukrainian": "квітковий горщик",
         "transcription": "atsits",
-        "word_id": "word_unknown_229"
+        "word_id": "word_unknown_229",
+        "audio_file": "words/word_unknown_229.mp3"
     },
     {
         "hebrew": "פְּרָחִים",
         "english": "flowers",
         "ukrainian": "квіти",
         "transcription": "prachim",
-        "word_id": "word_unknown_230"
+        "word_id": "word_unknown_230",
+        "audio_file": "words/word_unknown_230.mp3"
     },
     {
         "hebrew": "חָרְגּוֹל",
         "english": "grasshopper",
         "ukrainian": "коник",
         "transcription": "chargol",
-        "word_id": "word_unknown_231"
+        "word_id": "word_unknown_231",
+        "audio_file": "words/word_unknown_231.mp3"
     },
     {
         "hebrew": "אֶתְרוֹג",
         "english": "etrog",
         "ukrainian": "етрог",
         "transcription": "etrog",
-        "word_id": "word_unknown_232"
+        "word_id": "word_unknown_232",
+        "audio_file": "words/word_unknown_232.mp3"
     },
     {
         "hebrew": "פַּרְדֵּס",
         "english": "citrus plantation",
         "ukrainian": "цитрусова плантація",
         "transcription": "pardes",
-        "word_id": "word_unknown_233"
+        "word_id": "word_unknown_233",
+        "audio_file": "words/word_unknown_233.mp3"
     },
     {
         "hebrew": "הָדָר",
         "english": "citrus fruits",
         "ukrainian": "цитрусові",
         "transcription": "hadar",
-        "word_id": "word_unknown_234"
+        "word_id": "word_unknown_234",
+        "audio_file": "words/word_unknown_234.mp3"
     },
     {
         "hebrew": "אֶפְרוֹחַ",
         "english": "chick",
         "ukrainian": "курча",
         "transcription": "efroach",
-        "word_id": "word_unknown_235"
+        "word_id": "word_unknown_235",
+        "audio_file": "words/word_unknown_235.mp3"
     },
     {
         "hebrew": "תּוֹלַעַת",
         "english": "worm",
         "ukrainian": "червʼяк",
         "transcription": "tola'at",
-        "word_id": "word_unknown_236"
+        "word_id": "word_unknown_236",
+        "audio_file": "words/word_unknown_236.mp3"
     },
     {
         "hebrew": "חוֹחִית",
         "english": "goldfinch",
         "ukrainian": "щиглик",
         "transcription": "chochit",
-        "word_id": "word_unknown_237"
+        "word_id": "word_unknown_237",
+        "audio_file": "words/word_unknown_237.mp3"
     },
     {
         "hebrew": "לְחָיַיִם",
         "english": "cheeks",
         "ukrainian": "щоки",
         "transcription": "lechayayim",
-        "word_id": "word_unknown_238"
+        "word_id": "word_unknown_238",
+        "audio_file": "words/word_unknown_238.mp3"
     },
     {
         "hebrew": "שָׁבוּעוֹת",
         "english": "Shavuot",
         "ukrainian": "Шавуот",
         "transcription": "shavuot",
-        "word_id": "word_unknown_239"
+        "word_id": "word_unknown_239",
+        "audio_file": "words/word_unknown_239.mp3"
     },
     {
         "hebrew": "תַּן",
         "english": "jackal",
         "ukrainian": "шакал",
         "transcription": "tan",
-        "word_id": "word_unknown_240"
+        "word_id": "word_unknown_240",
+        "audio_file": "words/word_unknown_240.mp3"
     },
     {
         "hebrew": "סֻכָּה",
         "english": "sukkah",
         "ukrainian": "сукка",
         "transcription": "suka",
-        "word_id": "word_unknown_241"
+        "word_id": "word_unknown_241",
+        "audio_file": "words/word_unknown_241.mp3"
     },
     {
         "hebrew": "צָעִיף",
         "english": "scarf",
         "ukrainian": "шарф",
         "transcription": "tsa'if",
-        "word_id": "word_unknown_242"
+        "word_id": "word_unknown_242",
+        "audio_file": "words/word_unknown_242.mp3"
     },
     {
         "hebrew": "מְכוֹנַת-תְּפִירָה",
         "english": "sewing machine",
         "ukrainian": "швейна машина",
         "transcription": "mekhonat tfira",
-        "word_id": "word_unknown_243"
+        "word_id": "word_unknown_243",
+        "audio_file": "words/word_unknown_243.mp3"
     },
     {
         "hebrew": "כְּלֵי-תְּפִירָה",
         "english": "sewing supplies",
         "ukrainian": "швейне приладдя",
         "transcription": "klei tfira",
-        "word_id": "word_unknown_244"
+        "word_id": "word_unknown_244",
+        "audio_file": "words/word_unknown_244.mp3"
     },
     {
         "hebrew": "כִּסֵּא-נַח",
         "english": "deck chair",
         "ukrainian": "шезлонг",
         "transcription": "kise noach",
-        "word_id": "word_unknown_245"
+        "word_id": "word_unknown_245",
+        "audio_file": "words/word_unknown_245.mp3"
     },
     {
         "hebrew": "צַוָּאר",
         "english": "neck",
         "ukrainian": "шия",
         "transcription": "tsavar",
-        "word_id": "word_unknown_246"
+        "word_id": "word_unknown_246",
+        "audio_file": "words/word_unknown_246.mp3"
     },
     {
         "hebrew": "שִׁימְפַּנְזֶה",
         "english": "chimpanzee",
         "ukrainian": "шимпанзе",
         "transcription": "shimpanze",
-        "word_id": "word_unknown_247"
+        "word_id": "word_unknown_247",
+        "audio_file": "words/word_unknown_247.mp3"
     },
     {
         "hebrew": "אֲרוֹן קֹדֶשׁ",
         "english": "Torah ark",
         "ukrainian": "шафа для сувоїв Тори",
         "transcription": "aron kodesh",
-        "word_id": "word_unknown_248"
+        "word_id": "word_unknown_248",
+        "audio_file": "words/word_unknown_248.mp3"
     },
     {
         "hebrew": "צִנּוֹר",
         "english": "hose",
         "ukrainian": "шланг",
         "transcription": "tsinor",
-        "word_id": "word_unknown_249"
+        "word_id": "word_unknown_249",
+        "audio_file": "words/word_unknown_249.mp3"
     },
     {
         "hebrew": "שְׂרוֹךְ",
         "english": "shoelace",
         "ukrainian": "шнурок",
         "transcription": "sroch",
-        "word_id": "word_unknown_250"
+        "word_id": "word_unknown_250",
+        "audio_file": "words/word_unknown_250.mp3"
     },
     {
         "hebrew": "תַּרְד",
         "english": "spinach",
         "ukrainian": "шпинат",
         "transcription": "tered",
-        "word_id": "word_unknown_251"
+        "word_id": "word_unknown_251",
+        "audio_file": "words/word_unknown_251.mp3"
     },
     {
         "hebrew": "נוּרָה",
         "english": "light bulb",
         "ukrainian": "електрична лампочка",
         "transcription": "nura",
-        "word_id": "word_unknown_252"
+        "word_id": "word_unknown_252",
+        "audio_file": "words/word_unknown_252.mp3"
     },
     {
         "hebrew": "מַכְשִׁירֵי חַשְׁמַל",
         "english": "electrical appliances",
         "ukrainian": "електроприлади",
         "transcription": "makhshirei chashmal",
-        "word_id": "word_unknown_253"
+        "word_id": "word_unknown_253",
+        "audio_file": "words/word_unknown_253.mp3"
     },
     {
         "hebrew": "קוּמְקוּם חַשְׁמַלִּי",
         "english": "electric kettle",
         "ukrainian": "електричний чайник",
         "transcription": "kumkum chashmali",
-        "word_id": "word_unknown_254"
+        "word_id": "word_unknown_254",
+        "audio_file": "words/word_unknown_254.mp3"
     },
     {
         "hebrew": "כּוֹנָנִית",
         "english": "shelving unit",
         "ukrainian": "етажерка",
         "transcription": "konanit",
-        "word_id": "word_unknown_255"
+        "word_id": "word_unknown_255",
+        "audio_file": "words/word_unknown_255.mp3"
     },
     {
         "hebrew": "טָלֶה",
         "english": "lamb",
         "ukrainian": "ягня",
         "transcription": "tale",
-        "word_id": "word_unknown_256"
+        "word_id": "word_unknown_256",
+        "audio_file": "words/word_unknown_256.mp3"
     },
     {
         "hebrew": "בּוֹר",
         "english": "pit",
         "ukrainian": "яма",
         "transcription": "bor",
-        "word_id": "word_unknown_257"
+        "word_id": "word_unknown_257",
+        "audio_file": "words/word_unknown_257.mp3"
     },
     {
         "hebrew": "לְטָאָה",
         "english": "lizard",
         "ukrainian": "ящірка",
         "transcription": "leta'a",
-        "word_id": "word_unknown_258"
+        "word_id": "word_unknown_258",
+        "audio_file": "words/word_unknown_258.mp3"
     },
     {
         "hebrew": "פודקאסט",
         "english": "podcast",
         "ukrainian": "подкаст",
         "transcription": "podkast",
-        "word_id": "word_podcast"
+        "word_id": "word_podcast",
+        "audio_file": "words/word_podcast.mp3"
     },
     {
         "hebrew": "תור",
         "english": "appointment",
         "ukrainian": "запис на прийом",
         "transcription": "tor",
-        "word_id": "word_appointment"
+        "word_id": "word_appointment",
+        "audio_file": "words/word_appointment.mp3"
     },
     {
         "hebrew": "מנוי",
         "english": "subscription",
         "ukrainian": "підписка",
         "transcription": "manui",
-        "word_id": "word_subscription"
+        "word_id": "word_subscription",
+        "audio_file": "words/word_subscription.mp3"
     },
     {
         "hebrew": "החזר",
         "english": "refund",
         "ukrainian": "повернення коштів",
         "transcription": "hekhzer",
-        "word_id": "word_refund"
+        "word_id": "word_refund",
+        "audio_file": "words/word_refund.mp3"
     },
     {
         "hebrew": "פרטיות",
         "english": "privacy",
         "ukrainian": "конфіденційність",
         "transcription": "pratiyut",
-        "word_id": "word_privacy"
+        "word_id": "word_privacy",
+        "audio_file": "words/word_privacy.mp3"
     },
     {
         "hebrew": "מועד אחרון",
         "english": "deadline",
         "ukrainian": "кінцевий термін",
         "transcription": "moed akharon",
-        "word_id": "word_deadline"
+        "word_id": "word_deadline",
+        "audio_file": "words/word_deadline.mp3"
     },
     {
         "hebrew": "מחווה",
         "english": "gesture",
         "ukrainian": "жест",
         "transcription": "machava",
-        "word_id": "word_gesture"
+        "word_id": "word_gesture",
+        "audio_file": "words/word_gesture.mp3"
     },
     {
         "hebrew": "ציון דרך",
         "english": "landmark",
         "ukrainian": "орієнтир",
         "transcription": "tsiyun derekh",
-        "word_id": "word_landmark"
+        "word_id": "word_landmark",
+        "audio_file": "words/word_landmark.mp3"
     },
     {
         "hebrew": "חשמלית",
         "english": "tram",
         "ukrainian": "трамвай",
         "transcription": "khashmalit",
-        "word_id": "word_tram"
+        "word_id": "word_tram",
+        "audio_file": "words/word_tram.mp3"
     },
     {
         "hebrew": "מטרו",
         "english": "metro",
         "ukrainian": "метро",
         "transcription": "metro",
-        "word_id": "word_metro"
+        "word_id": "word_metro",
+        "audio_file": "words/word_metro.mp3"
     },
     {
         "hebrew": "מעבורת",
         "english": "ferry",
         "ukrainian": "паром",
         "transcription": "maborret",
-        "word_id": "word_ferry"
+        "word_id": "word_ferry",
+        "audio_file": "words/word_ferry.mp3"
     },
     {
         "hebrew": "מיחזור",
         "english": "recycling",
         "ukrainian": "переробка",
         "transcription": "michzur",
-        "word_id": "word_recycling"
+        "word_id": "word_recycling",
+        "audio_file": "words/word_recycling.mp3"
+    },
+    {
+        "hebrew": "אָלֶף־בֵּית",
+        "english": "alphabet",
+        "ukrainian": "абетка",
+        "transcription": "alef-bet",
+        "word_id": "word_alphabet",
+        "audio_file": "words/word_alphabet.mp3"
     }
 ]

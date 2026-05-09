@@ -2,7 +2,7 @@
   "schema_version": 1,
   "source_root": "flutter_app/assets/learning/input",
   "counts": {
-    "vocabulary": 1269,
+    "vocabulary": 1270,
     "context_sentences": 1245,
     "guide_lessons": 76,
     "reading_lessons": 502,
@@ -15108,6 +15108,12 @@
       "hebrew": "מיחזור",
       "ukrainian": "переробка",
       "transcription": "michzur"
+    },
+    {
+      "word_id": "word_alphabet",
+      "hebrew": "אָלֶף־בֵּית",
+      "ukrainian": "абетка",
+      "transcription": "alef-bet"
     }
   ]
 }
