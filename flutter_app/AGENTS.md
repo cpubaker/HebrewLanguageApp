@@ -17,6 +17,8 @@
 - Shared shell: `lib/screens/app_shell_screen.dart`
 - Home screen: `lib/screens/home_screen.dart`
 - Home dashboard sections/cards: `lib/screens/widgets/home/`
+- Words screen: `lib/screens/words_screen.dart`
+- Words cards/filters/details/audio widgets: `lib/screens/widgets/words/`
 - Sprint practice: `lib/screens/sprint_screen.dart`
 - Learning bundle loader: `lib/services/learning_bundle_loader.dart`
 

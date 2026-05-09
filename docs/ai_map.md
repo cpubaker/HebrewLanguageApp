@@ -49,12 +49,16 @@ then open only the files needed for the task.
 - Shared UI widgets: `flutter_app/lib/screens/widgets/`.
 - Home dashboard widgets:
   `flutter_app/lib/screens/widgets/home/`.
+- Words/vocabulary widgets:
+  `flutter_app/lib/screens/widgets/words/`.
 
 ## Main Screens
 
 - Home: `flutter_app/lib/screens/home_screen.dart` composes the dashboard;
   home sections/cards live in `flutter_app/lib/screens/widgets/home/`.
 - Words/vocabulary: `flutter_app/lib/screens/words_screen.dart`.
+  Word cards, filters, details sheet, and audio buttons live in
+  `flutter_app/lib/screens/widgets/words/`.
 - Flashcards: `flutter_app/lib/screens/flashcards_screen.dart`.
 - Writing/constructor: `flutter_app/lib/screens/writing_screen.dart`.
 - Repetition queue: `flutter_app/lib/screens/repetition_screen.dart`.
