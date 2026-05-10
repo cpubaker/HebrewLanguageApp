@@ -572,6 +572,8 @@ void main() {
 
     expect(find.text('чоловік'), findsOneWidget);
     expect(find.text('Чоловік іде вулицею.'), findsOneWidget);
+    expect(find.text('Добре. Це слово зараховано як знайоме.'), findsNothing);
+    expect(find.textContaining('Востаннє правильно:'), findsNothing);
     expect(
       find.widgetWithIcon(FilledButton, Icons.arrow_forward_rounded),
       findsOneWidget,
@@ -632,6 +634,12 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(store.savedByWordId['word_peace']?.writingCorrect, 1);
+    expect(find.text('Правильно'), findsOneWidget);
+    expect(
+      find.text('Слово записано правильно. Можна переходити далі.'),
+      findsNothing,
+    );
+    expect(find.textContaining('Востаннє правильно:'), findsNothing);
   });
 
   testWidgets('opens sprint from practice hub and persists an answer', (

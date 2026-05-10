@@ -15,6 +15,7 @@ class PracticeFeedbackCard extends StatelessWidget {
     this.footerText,
     this.extraContent,
     this.compact = false,
+    this.showMessage = true,
   });
 
   final PracticeFeedbackTone tone;
@@ -25,6 +26,7 @@ class PracticeFeedbackCard extends StatelessWidget {
   final String? footerText;
   final Widget? extraContent;
   final bool compact;
+  final bool showMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +59,7 @@ class PracticeFeedbackCard extends StatelessWidget {
               accent: visuals.accent,
               title: title,
               message: message,
+              showMessage: showMessage,
               primaryText: primaryText,
               primaryTextDirection: primaryTextDirection,
               footerText: footerText,
@@ -103,6 +106,7 @@ class _DetailedPracticeFeedback extends StatelessWidget {
     required this.icon,
     required this.accent,
     required this.message,
+    required this.showMessage,
     this.title,
     this.primaryText,
     this.primaryTextDirection,
@@ -113,6 +117,7 @@ class _DetailedPracticeFeedback extends StatelessWidget {
   final IconData icon;
   final Color accent;
   final String message;
+  final bool showMessage;
   final String? title;
   final String? primaryText;
   final TextDirection? primaryTextDirection;
@@ -160,18 +165,19 @@ class _DetailedPracticeFeedback extends StatelessWidget {
             const SizedBox(height: 10),
             extraContent!,
           ],
-          const SizedBox(height: 8),
+          if (showMessage || footerText != null) const SizedBox(height: 8),
         ],
-        Text(
-          message,
-          textAlign: TextAlign.center,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: tokens.secondaryText,
-            height: 1.45,
+        if (showMessage)
+          Text(
+            message,
+            textAlign: TextAlign.center,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: tokens.secondaryText,
+              height: 1.45,
+            ),
           ),
-        ),
         if (footerText != null) ...[
-          const SizedBox(height: 10),
+          if (showMessage) const SizedBox(height: 10),
           Text(
             footerText!,
             textAlign: TextAlign.center,

@@ -67,6 +67,11 @@ void main() {
       expect(find.text('Доступні блоки'), findsNothing);
       expect(find.text('Правильно'), findsOneWidget);
       expect(find.text('שלום'), findsOneWidget);
+      expect(
+        find.text('Слово записано правильно. Можна переходити далі.'),
+        findsNothing,
+      );
+      expect(find.textContaining('Востаннє правильно:'), findsNothing);
 
       await tester.tap(find.widgetWithText(OutlinedButton, 'Далі'));
       await tester.pumpAndSettle();

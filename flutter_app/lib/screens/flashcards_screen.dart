@@ -8,7 +8,6 @@ import '../services/audio_playback_awareness.dart';
 import '../services/flashcard_session.dart';
 import '../services/learning_audio_controller.dart';
 import '../services/learning_audio_player.dart';
-import '../services/practice_time_format.dart';
 import '../theme/app_theme.dart';
 import 'audio_playback_feedback.dart';
 import 'widgets/context_source_badge.dart';
@@ -250,9 +249,6 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                   _AnswerRevealCard(
                     isKnownAnswer: isKnownAnswer,
                     translation: word.translation,
-                    lastCorrect: stats.lastCorrect == null
-                        ? null
-                        : formatPracticeTimestamp(stats.lastCorrect!),
                   )
                 else
                   _SwipeHintStrip(
@@ -547,12 +543,10 @@ class _AnswerRevealCard extends StatelessWidget {
   const _AnswerRevealCard({
     required this.isKnownAnswer,
     required this.translation,
-    this.lastCorrect,
   });
 
   final bool isKnownAnswer;
   final String translation;
-  final String? lastCorrect;
 
   @override
   Widget build(BuildContext context) {
@@ -599,24 +593,14 @@ class _AnswerRevealCard extends StatelessWidget {
               color: theme.colorScheme.onSurface,
             ),
           ),
-          const SizedBox(height: 8),
-          Text(
-            isKnownAnswer
-                ? 'Добре. Це слово зараховано як знайоме.'
-                : 'Нічого, повернемося до нього ще раз трохи пізніше.',
-            textAlign: TextAlign.center,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: tokens.secondaryText,
-              height: 1.45,
-            ),
-          ),
-          if (lastCorrect != null) ...[
-            const SizedBox(height: 10),
+          if (!isKnownAnswer) ...[
+            const SizedBox(height: 8),
             Text(
-              'Востаннє правильно: $lastCorrect',
+              'Нічого, повернемося до нього ще раз трохи пізніше.',
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: tokens.secondaryText,
+                height: 1.45,
               ),
             ),
           ],

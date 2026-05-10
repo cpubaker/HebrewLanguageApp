@@ -7,7 +7,6 @@ import '../services/audio_playback_awareness.dart';
 import '../services/flashcard_session.dart';
 import '../services/learning_audio_controller.dart';
 import '../services/learning_audio_player.dart';
-import '../services/practice_time_format.dart';
 import '../services/writing_session.dart';
 import '../theme/app_theme.dart';
 import 'audio_playback_feedback.dart';
@@ -329,9 +328,6 @@ class _WritingScreenState extends State<WritingScreen> {
                           correctAnswer:
                               _currentAnswer?.correctAnswer ??
                               currentWord.hebrew,
-                          lastCorrect: stats.lastCorrect == null
-                              ? null
-                              : formatPracticeTimestamp(stats.lastCorrect!),
                           audioButton: _audioController.hasAudio
                               ? PracticeAudioButton(
                                   key: const ValueKey(
@@ -368,9 +364,6 @@ class _WritingScreenState extends State<WritingScreen> {
                   isCorrect: isCorrect,
                   correctAnswer:
                       _currentAnswer?.correctAnswer ?? currentWord.hebrew,
-                  lastCorrect: stats.lastCorrect == null
-                      ? null
-                      : formatPracticeTimestamp(stats.lastCorrect!),
                 ),
                 const SizedBox(height: 18),
               ] else if (_mode == WritingPracticeMode.typing) ...[
@@ -438,7 +431,6 @@ class _WritingScreenState extends State<WritingScreen> {
   Widget _buildWritingFeedbackCard({
     required bool isCorrect,
     required String correctAnswer,
-    String? lastCorrect,
     Widget? audioButton,
   }) {
     return PracticeFeedbackCard(
@@ -452,9 +444,7 @@ class _WritingScreenState extends State<WritingScreen> {
       message: isCorrect
           ? 'Слово записано правильно. Можна переходити далі.'
           : 'Нічого страшного. Повернемось до цього слова пізніше.',
-      footerText: lastCorrect == null
-          ? null
-          : 'Востаннє правильно: $lastCorrect',
+      showMessage: !isCorrect,
     );
   }
 
