@@ -731,6 +731,58 @@ void main() {
     },
   );
 
+  testWidgets('sprint hides current session until summary', (
+    WidgetTester tester,
+  ) async {
+    await _useTallMobileViewport(tester);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: SprintScreen(
+            words: const [
+              LearningWord(
+                wordId: 'word_peace',
+                hebrew: 'שלום',
+                english: 'peace',
+                ukrainian: 'мир',
+                transcription: 'shalom',
+                correct: 0,
+                wrong: 0,
+              ),
+              LearningWord(
+                wordId: 'word_house',
+                hebrew: 'בית',
+                english: 'house',
+                ukrainian: 'будинок',
+                transcription: 'bayit',
+                correct: 0,
+                wrong: 0,
+              ),
+            ],
+            onWordProgressChanged: (_) {},
+            audioPlayerFactory: FakeVerbAudioPlayer.new,
+            statsStore: FakeSprintStatsStore(),
+            duration: const Duration(seconds: 1),
+            rng: _FixedRandom(),
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    expect(find.text('Поточна сесія'), findsNothing);
+
+    await tester.pump(const Duration(seconds: 1));
+    await tester.pump();
+
+    expect(find.text('Поточна сесія'), findsOneWidget);
+    expect(find.text('Вірно:'), findsOneWidget);
+    expect(find.text('Всього:'), findsOneWidget);
+    expect(find.text('Правильно:'), findsNothing);
+    expect(find.text('Відповіді:'), findsNothing);
+  });
+
   testWidgets('sprint timeout summary does not duplicate the expired label', (
     WidgetTester tester,
   ) async {

@@ -284,16 +284,18 @@ class _SprintScreenState extends State<SprintScreen> {
             runFeedback: _lastRunFeedback,
             onRestart: _startSprint,
           ),
-        const SizedBox(height: 16),
-        PracticeSessionSummary(
-          title: 'Поточна сесія',
-          lines: [
-            'Слів на вивченні для спринту: ${_session.availableWordCount}',
-            'Правильних відповідей: ${_session.correctCount}',
-            'Неправильних відповідей: ${_session.wrongCount}',
-            ..._sprintHistoryLines(_stats, _statsLoaded),
-          ],
-        ),
+        if (!_isActive) ...[
+          const SizedBox(height: 16),
+          PracticeSessionSummary(
+            title: 'Поточна сесія',
+            lines: [
+              'Слів на вивченні для спринту: ${_session.availableWordCount}',
+              'Правильних відповідей: ${_session.correctCount}',
+              'Неправильних відповідей: ${_session.wrongCount}',
+              ..._sprintHistoryLines(_stats, _statsLoaded),
+            ],
+          ),
+        ],
       ],
     );
   }
@@ -550,7 +552,7 @@ class _SprintCompletedCard extends StatelessWidget {
       body: body,
       stats: [
         PracticeCompletionStat(
-          label: 'Правильно',
+          label: 'Вірно',
           value: correctCount,
           icon: Icons.check_rounded,
           accent: tokens.successAccent,
@@ -562,7 +564,7 @@ class _SprintCompletedCard extends StatelessWidget {
           accent: tokens.dangerAccent,
         ),
         PracticeCompletionStat(
-          label: 'Відповіді',
+          label: 'Всього',
           value: attempts,
           icon: Icons.bolt_rounded,
           accent: tokens.infoAccent,
