@@ -660,7 +660,7 @@ class _SprintRunFeedback {
     final recordLine = _recordLine;
     return <String>[
       ?recordLine,
-      if (aboveAverageBy >= 0.05)
+      if (aboveAverageBy >= 0.5)
         'Це на ${_formatSprintScore(aboveAverageBy)} вище вашого середнього.',
     ];
   }
@@ -718,12 +718,7 @@ class _SprintUnavailableCard extends StatelessWidget {
 }
 
 String _formatSprintScore(double value) {
-  final roundedValue = value.roundToDouble();
-  if ((value - roundedValue).abs() < 0.05) {
-    return roundedValue.toInt().toString();
-  }
-
-  return value.toStringAsFixed(1).replaceAll('.', ',');
+  return value.round().toString();
 }
 
 class _SprintMetaChip extends StatelessWidget {

@@ -885,6 +885,10 @@ void main() {
     );
     expect(
       find.textContaining('Це на 0,3 вище вашого середнього.'),
+      findsNothing,
+    );
+    expect(
+      find.textContaining('Середній результат: 1 вірних відповідей.'),
       findsOneWidget,
     );
     expect(statsStore.savedStats.last.bestCorrect, 1);
