@@ -123,54 +123,40 @@ class _InlineWordAudioButtonState
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
+    final isLoading =
+        _audioController.isBusy || _audioController.isCheckingAvailability;
 
-    return Material(
-      color: tokens.accentSurface(tokens.vocabularyAccent),
-      borderRadius: BorderRadius.circular(999),
-      child: InkWell(
-        onTap: _isAudioEnabled ? _togglePlayback : null,
-        borderRadius: BorderRadius.circular(999),
-        child: Tooltip(
-          message: _audioTooltip,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (_audioController.isBusy)
-                  SizedBox(
-                    width: 14,
-                    height: 14,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: tokens.vocabularyAccent,
-                    ),
-                  )
-                else
-                  Icon(
-                    _audioController.isPlaying
-                        ? Icons.stop_circle_outlined
-                        : Icons.volume_up_rounded,
-                    size: 14,
-                    color: _audioController.hasAudio
-                        ? tokens.vocabularyAccent
-                        : tokens.secondaryText,
-                  ),
-                const SizedBox(width: 6),
-                Text(
-                  'Аудіо',
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: _audioController.hasAudio
-                        ? tokens.vocabularyAccent
-                        : tokens.secondaryText,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ],
-            ),
-          ),
+    return IconButton.filledTonal(
+      key: ValueKey<String>('word-list-audio-button-${word.wordId}'),
+      tooltip: _audioTooltip,
+      onPressed: _isAudioEnabled ? _togglePlayback : null,
+      iconSize: 18,
+      style: IconButton.styleFrom(
+        fixedSize: const Size.square(36),
+        minimumSize: const Size.square(36),
+        padding: EdgeInsets.zero,
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        backgroundColor: tokens.accentSurface(tokens.vocabularyAccent),
+        disabledBackgroundColor: tokens.accentMutedSurface(
+          tokens.vocabularyAccent,
         ),
+        foregroundColor: tokens.vocabularyAccent,
+        disabledForegroundColor: tokens.secondaryText,
       ),
+      icon: isLoading
+          ? SizedBox(
+              width: 18,
+              height: 18,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: tokens.vocabularyAccent,
+              ),
+            )
+          : Icon(
+              _audioController.isPlaying
+                  ? Icons.stop_circle_outlined
+                  : Icons.volume_up_rounded,
+            ),
     );
   }
 }
@@ -231,6 +217,7 @@ class _WordDetailsAudioButtonState
         borderRadius: BorderRadius.circular(18),
       ),
       child: IconButton(
+        key: ValueKey<String>('word-detail-audio-button-${word.wordId}'),
         tooltip: _audioTooltip,
         onPressed: _isAudioEnabled ? _togglePlayback : null,
         icon: _audioController.isBusy

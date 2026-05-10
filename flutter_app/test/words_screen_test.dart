@@ -36,9 +36,13 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.byTooltip('Увімкнути вимову слова'), findsOneWidget);
+    final listAudioButton = find.byKey(
+      const ValueKey('word-list-audio-button-word_man'),
+    );
 
-    await tester.tap(find.byTooltip('Увімкнути вимову слова'));
+    expect(listAudioButton, findsOneWidget);
+
+    await tester.tap(listAudioButton);
     await tester.pumpAndSettle();
 
     expect(audioPlayer.playedAssets, [
@@ -81,11 +85,7 @@ void main() {
     expect(find.text('Вимова'), findsNothing);
 
     final disabledButton = tester.widget<IconButton>(
-      find.byWidgetPredicate(
-        (widget) =>
-            widget is IconButton &&
-            widget.tooltip == 'Аудіо для слова ще недоступне',
-      ),
+      find.byKey(const ValueKey('word-detail-audio-button-word_man')),
     );
     expect(disabledButton.onPressed, isNull);
     expect(audioPlayer.playedAssets, isEmpty);
@@ -122,7 +122,9 @@ void main() {
       );
 
       await tester.pumpAndSettle();
-      await tester.tap(find.byTooltip('Увімкнути вимову слова'));
+      await tester.tap(
+        find.byKey(const ValueKey('word-list-audio-button-word_man')),
+      );
       await tester.pump();
 
       expect(
@@ -204,9 +206,8 @@ void main() {
     await tester.tap(find.byTooltip('Відкрити слово'));
     await tester.pumpAndSettle();
 
-    final detailAudioButton = find.byWidgetPredicate(
-      (widget) =>
-          widget is IconButton && widget.tooltip == 'Увімкнути вимову слова',
+    final detailAudioButton = find.byKey(
+      const ValueKey('word-detail-audio-button-word_man'),
     );
 
     await tester.tap(detailAudioButton);

@@ -38,82 +38,97 @@ class _WordCard extends StatelessWidget {
               ),
             ],
           ),
-          child: Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text(
                       word.translation,
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w800,
                       ),
                     ),
-                    const SizedBox(height: 2),
-                    Text(
-                      word.transcription,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: tokens.mutedText,
-                      ),
+                  ),
+                  if (word.hasPlannedAudio) ...[
+                    const SizedBox(width: 12),
+                    _InlineWordAudioButton(
+                      word: word,
+                      audioPlayerFactory: audioPlayerFactory,
+                      audioPlaybackAwareness: audioPlaybackAwareness,
                     ),
-                    const SizedBox(height: 10),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
+                  ],
+                ],
+              ),
+              const SizedBox(height: 2),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _MiniProgress(
-                          label: 'П',
-                          value: word.correct,
-                          accent: tokens.successAccent,
-                        ),
-                        _MiniProgress(
-                          label: 'Н',
-                          value: word.wrong,
-                          accent: tokens.dangerAccent,
-                        ),
-                        if (word.hasPlannedAudio)
-                          _InlineWordAudioButton(
-                            word: word,
-                            audioPlayerFactory: audioPlayerFactory,
-                            audioPlaybackAwareness: audioPlaybackAwareness,
+                        Text(
+                          word.transcription,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: tokens.mutedText,
                           ),
-                        _WordStatusActionButton(
-                          state: learningState,
-                          onTap: onCycleStatus,
+                        ),
+                        const SizedBox(height: 10),
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: [
+                            _MiniProgress(
+                              label: 'П',
+                              value: word.correct,
+                              accent: tokens.successAccent,
+                            ),
+                            _MiniProgress(
+                              label: 'Н',
+                              value: word.wrong,
+                              accent: tokens.dangerAccent,
+                            ),
+                            _WordStatusActionButton(
+                              state: learningState,
+                              onTap: onCycleStatus,
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 14),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    word.hebrew,
-                    textDirection: TextDirection.rtl,
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      color: theme.colorScheme.primary,
-                      fontWeight: FontWeight.w800,
-                    ),
                   ),
-                  const SizedBox(height: 8),
-                  IconButton(
-                    tooltip: 'Відкрити слово',
-                    onPressed: onOpenDetails,
-                    visualDensity: VisualDensity.compact,
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints.tightFor(
-                      width: 28,
-                      height: 28,
-                    ),
-                    icon: Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      size: 18,
-                      color: tokens.vocabularyAccent,
-                    ),
+                  const SizedBox(width: 14),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        word.hebrew,
+                        textDirection: TextDirection.rtl,
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          color: theme.colorScheme.primary,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      IconButton(
+                        tooltip: 'Відкрити слово',
+                        onPressed: onOpenDetails,
+                        visualDensity: VisualDensity.compact,
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints.tightFor(
+                          width: 28,
+                          height: 28,
+                        ),
+                        icon: Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          size: 18,
+                          color: tokens.vocabularyAccent,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
