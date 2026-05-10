@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hebrew_language_flutter/models/learning_context.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/screens/words_screen.dart';
 import 'package:hebrew_language_flutter/services/audio_playback_awareness.dart';
@@ -172,6 +173,55 @@ void main() {
     expect(find.text('Вимова'), findsNothing);
     expect(find.text('чоловік'), findsWidgets);
     expect(find.text('ID: word_man'), findsOneWidget);
+  });
+
+  testWidgets('word details sheet expands for context-heavy entries', (
+    WidgetTester tester,
+  ) async {
+    tester.view.physicalSize = const Size(393, 852);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    final contexts = List<LearningContext>.generate(
+      5,
+      (index) => LearningContext(
+        contextId: 'ctx_$index',
+        hebrew: 'המכונית עומדת מול הבית מספר $index.',
+        translation:
+            'The car is parked on a narrow street near the shop, context $index.',
+      ),
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: WordsScreen(
+            words: [
+              LearningWord(
+                wordId: 'word_car',
+                hebrew: 'מכונית',
+                english: 'car',
+                ukrainian: 'car',
+                transcription: 'mekhonit',
+                correct: 0,
+                wrong: 0,
+                contexts: contexts,
+              ),
+            ],
+            audioPlayerFactory: () =>
+                FakeLearningAudioPlayer(assetExistsResult: false),
+          ),
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.arrow_forward_ios_rounded));
+    await tester.pumpAndSettle();
+
+    final sheetRect = tester.getRect(find.byType(BottomSheet));
+    expect(sheetRect.height, greaterThan(600));
   });
 
   testWidgets('prepares detail word audio before playback', (

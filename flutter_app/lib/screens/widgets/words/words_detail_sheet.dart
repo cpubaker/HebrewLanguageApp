@@ -9,105 +9,113 @@ void _showWordDetailsSheet({
 }) {
   showModalBottomSheet<void>(
     context: context,
+    isScrollControlled: true,
+    useSafeArea: true,
     showDragHandle: true,
     backgroundColor: Theme.of(context).appTokens.elevatedSurface,
     builder: (context) {
       final theme = Theme.of(context);
       final tokens = theme.appTokens;
-      return FutureBuilder<LearningWord>(
-        future: wordFuture,
-        initialData: initialWord,
-        builder: (context, snapshot) {
-          final detailWord = snapshot.data ?? initialWord;
-          final isLoadingContexts =
-              snapshot.connectionState != ConnectionState.done;
+      return SafeArea(
+        top: false,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.sizeOf(context).height * 0.88,
+          ),
+          child: FutureBuilder<LearningWord>(
+            future: wordFuture,
+            initialData: initialWord,
+            builder: (context, snapshot) {
+              final detailWord = snapshot.data ?? initialWord;
+              final isLoadingContexts =
+                  snapshot.connectionState != ConnectionState.done;
 
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              detailWord.hebrew,
-                              textDirection: TextDirection.rtl,
-                              style: theme.textTheme.headlineMedium?.copyWith(
-                                fontWeight: FontWeight.w800,
-                                color: theme.colorScheme.primary,
+              return SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                detailWord.hebrew,
+                                textDirection: TextDirection.rtl,
+                                style: theme.textTheme.headlineMedium?.copyWith(
+                                  fontWeight: FontWeight.w800,
+                                  color: theme.colorScheme.primary,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              detailWord.translation,
-                              style: theme.textTheme.titleLarge?.copyWith(
-                                fontWeight: FontWeight.w800,
+                              const SizedBox(height: 8),
+                              Text(
+                                detailWord.translation,
+                                style: theme.textTheme.titleLarge?.copyWith(
+                                  fontWeight: FontWeight.w800,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              detailWord.transcription,
-                              style: theme.textTheme.bodyLarge?.copyWith(
-                                color: tokens.mutedText,
+                              const SizedBox(height: 4),
+                              Text(
+                                detailWord.transcription,
+                                style: theme.textTheme.bodyLarge?.copyWith(
+                                  color: tokens.mutedText,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      if (detailWord.hasPlannedAudio) ...[
-                        const SizedBox(width: 16),
-                        _WordDetailsAudioButton(
-                          word: detailWord,
-                          audioPlayerFactory: audioPlayerFactory,
-                          audioPlaybackAwareness: audioPlaybackAwareness,
+                        if (detailWord.hasPlannedAudio) ...[
+                          const SizedBox(width: 16),
+                          _WordDetailsAudioButton(
+                            word: detailWord,
+                            audioPlayerFactory: audioPlayerFactory,
+                            audioPlaybackAwareness: audioPlaybackAwareness,
+                          ),
+                        ],
+                      ],
+                    ),
+                    const SizedBox(height: 18),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _StatPill(
+                            label: 'Правильно',
+                            value: detailWord.correct,
+                            accent: tokens.successAccent,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: _StatPill(
+                            label: 'Помилки',
+                            value: detailWord.wrong,
+                            accent: tokens.dangerAccent,
+                          ),
                         ),
                       ],
-                    ],
-                  ),
-                  const SizedBox(height: 18),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _StatPill(
-                          label: 'Правильно',
-                          value: detailWord.correct,
-                          accent: tokens.successAccent,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _StatPill(
-                          label: 'Помилки',
-                          value: detailWord.wrong,
-                          accent: tokens.dangerAccent,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 14),
-                  Text(
-                    'ID: ${detailWord.wordId}',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: tokens.secondaryText,
                     ),
-                  ),
-                  const SizedBox(height: 18),
-                  _WordContextsSection(
-                    contexts: detailWord.contexts,
-                    isLoading: isLoadingContexts,
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
+                    const SizedBox(height: 14),
+                    Text(
+                      'ID: ${detailWord.wordId}',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: tokens.secondaryText,
+                      ),
+                    ),
+                    const SizedBox(height: 18),
+                    _WordContextsSection(
+                      contexts: detailWord.contexts,
+                      isLoading: isLoadingContexts,
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
       );
     },
   );
