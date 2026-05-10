@@ -26,4 +26,21 @@ void main() {
     expect(tokens.infoAccent, const Color(0xFF7EA4F4));
     expect(tokens.aiAccent, const Color(0xFFD08AE3));
   });
+
+  test('dark theme keeps verb image gradients legible behind black art', () {
+    final tokens = buildDarkAppTheme().appTokens;
+    final verbImageGradientColors = [
+      tokens.verbImageGradientStart,
+      tokens.verbImageGradientMiddle,
+      tokens.verbImageGradientEnd,
+    ];
+
+    for (final color in verbImageGradientColors) {
+      expect(_contrastWithBlack(color), greaterThanOrEqualTo(7));
+    }
+  });
+}
+
+double _contrastWithBlack(Color color) {
+  return (color.computeLuminance() + 0.05) / 0.05;
 }
