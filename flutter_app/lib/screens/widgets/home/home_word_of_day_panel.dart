@@ -16,13 +16,9 @@ class _WordOfDayHeroPanel extends StatefulWidget {
 }
 
 class _WordOfDayHeroPanelState extends State<_WordOfDayHeroPanel> {
-  StreamSubscription<bool>? _playbackSubscription;
-  LearningAudioPlayer? _audioPlayer;
-  bool _isCheckingAudio = false;
-  bool _hasAudio = false;
-  bool _isAudioBusy = false;
-  bool _isAudioPlaying = false;
-  int _audioRequestToken = 0;
+  late final LearningAudioController _audioController = LearningAudioController(
+    audioPlayerFactory: widget.audioPlayerFactory,
+  )..addListener(_handleAudioStateChanged);
 
   String? get _audioAssetPath {
     final path = widget.entry.word.audioAssetPath?.trim();
@@ -41,100 +37,34 @@ class _WordOfDayHeroPanelState extends State<_WordOfDayHeroPanel> {
     if (oldWidget.entry.word.wordId != widget.entry.word.wordId ||
         oldWidget.entry.word.audioAssetPath !=
             widget.entry.word.audioAssetPath) {
-      unawaited(_stopAudio());
+      unawaited(_audioController.stop(clearAvailability: true));
       unawaited(_checkAudioAvailability());
     }
   }
 
-  LearningAudioPlayer _ensureAudioPlayer() {
-    final existingPlayer = _audioPlayer;
-    if (existingPlayer != null) {
-      return existingPlayer;
-    }
-
-    final player = widget.audioPlayerFactory();
-    _playbackSubscription = player.isPlayingStream.listen((isPlaying) {
-      if (!mounted) {
-        return;
-      }
-
-      setState(() {
-        _isAudioPlaying = isPlaying;
-      });
-    });
-    _audioPlayer = player;
-    return player;
-  }
-
   Future<void> _checkAudioAvailability() async {
-    final requestToken = ++_audioRequestToken;
-    final audioAssetPath = _audioAssetPath;
-    if (audioAssetPath == null) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {
-        _isCheckingAudio = false;
-        _hasAudio = false;
-      });
-      return;
-    }
-
-    setState(() {
-      _isCheckingAudio = true;
-      _hasAudio = false;
-    });
-
-    var hasAudio = false;
-    try {
-      final player = _ensureAudioPlayer();
-      hasAudio = await player.assetExists(audioAssetPath);
-      if (hasAudio) {
-        hasAudio = await player.prepareAsset(audioAssetPath);
-      }
-    } catch (error) {
-      debugPrint('Failed to prepare word of day audio: $error');
-      hasAudio = false;
-    }
-
-    if (!mounted || _audioRequestToken != requestToken) {
-      return;
-    }
-
-    setState(() {
-      _isCheckingAudio = false;
-      _hasAudio = hasAudio;
-    });
+    await _audioController.checkAvailability(_audioAssetPath, prepare: true);
   }
 
   Future<void> _toggleAudio() async {
-    if (_isAudioBusy) {
-      return;
-    }
-
     final audioAssetPath = _audioAssetPath;
-    final player = _audioPlayer;
-    if (audioAssetPath == null || player == null || !_hasAudio) {
+    if (audioAssetPath == null || !_audioController.canToggle) {
       return;
     }
-
-    setState(() {
-      _isAudioBusy = true;
-    });
 
     try {
-      if (_isAudioPlaying) {
-        await player.stop();
-      } else {
-        await showAudioPlaybackHintIfNeeded(
+      await _audioController.toggle(
+        audioAssetPath,
+        beforePlay: () => showAudioPlaybackHintIfNeeded(
           context: context,
           awareness: widget.audioPlaybackAwareness,
-        );
-        await player.playAsset(audioAssetPath);
-      }
+        ),
+        clearPlayingAfterStop: true,
+      );
     } catch (error) {
       debugPrint('Failed to play word of day audio: $error');
       if (mounted) {
+        _audioController.clearPlaying();
         final messenger = ScaffoldMessenger.maybeOf(context);
         messenger
           ?..hideCurrentSnackBar()
@@ -144,43 +74,22 @@ class _WordOfDayHeroPanelState extends State<_WordOfDayHeroPanel> {
             ),
           );
       }
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isAudioBusy = false;
-        });
-      }
     }
   }
 
-  Future<void> _stopAudio() async {
-    _audioRequestToken += 1;
-    final player = _audioPlayer;
-    if (player == null) {
+  void _handleAudioStateChanged() {
+    if (!mounted) {
       return;
     }
 
-    try {
-      await player.stop();
-    } catch (error) {
-      debugPrint('Failed to stop word of day audio: $error');
-    }
-
-    if (mounted) {
-      setState(() {
-        _isAudioPlaying = false;
-      });
-    }
+    setState(() {});
   }
 
   @override
   void dispose() {
-    unawaited(_playbackSubscription?.cancel());
-    final player = _audioPlayer;
-    if (player != null) {
-      unawaited(player.stop());
-      unawaited(player.dispose());
-    }
+    _audioController
+      ..removeListener(_handleAudioStateChanged)
+      ..dispose();
     super.dispose();
   }
 
@@ -189,7 +98,11 @@ class _WordOfDayHeroPanelState extends State<_WordOfDayHeroPanel> {
     final theme = Theme.of(context);
     final tokens = theme.appTokens;
     final contextSentence = widget.entry.context;
-    final audioEnabled = _hasAudio && !_isAudioBusy && !_isCheckingAudio;
+    final isCheckingAudio = _audioController.isCheckingAvailability;
+    final hasAudio = _audioController.hasAudio;
+    final isAudioBusy = _audioController.isBusy;
+    final isAudioPlaying = _audioController.isPlaying;
+    final audioEnabled = _audioController.canToggle && !isCheckingAudio;
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -237,10 +150,10 @@ class _WordOfDayHeroPanelState extends State<_WordOfDayHeroPanel> {
               ),
               const Spacer(),
               Tooltip(
-                message: _isCheckingAudio
+                message: isCheckingAudio
                     ? 'Перевіряємо озвучку'
-                    : _hasAudio
-                    ? (_isAudioPlaying
+                    : hasAudio
+                    ? (isAudioPlaying
                           ? 'Зупинити озвучку'
                           : 'Увімкнути озвучку')
                     : 'Озвучка ще недоступна',
@@ -255,7 +168,7 @@ class _WordOfDayHeroPanelState extends State<_WordOfDayHeroPanel> {
                       width: 44,
                       height: 44,
                       child: Center(
-                        child: _isCheckingAudio || _isAudioBusy
+                        child: isCheckingAudio || isAudioBusy
                             ? SizedBox(
                                 width: 18,
                                 height: 18,
@@ -267,12 +180,12 @@ class _WordOfDayHeroPanelState extends State<_WordOfDayHeroPanel> {
                                 ),
                               )
                             : Icon(
-                                _hasAudio
-                                    ? (_isAudioPlaying
+                                hasAudio
+                                    ? (isAudioPlaying
                                           ? Icons.stop_rounded
                                           : Icons.volume_up_rounded)
                                     : Icons.volume_off_rounded,
-                                color: _hasAudio
+                                color: hasAudio
                                     ? tokens.heroText
                                     : tokens.heroMutedText,
                                 size: 22,

@@ -7,6 +7,7 @@ import '../models/lesson_document.dart';
 import '../models/learning_word.dart';
 import '../services/audio_playback_awareness.dart';
 import '../services/flashcard_session.dart';
+import '../services/learning_audio_controller.dart';
 import '../services/learning_audio_player.dart';
 import '../services/lesson_document_loader.dart';
 import '../services/progress_snapshot.dart';
