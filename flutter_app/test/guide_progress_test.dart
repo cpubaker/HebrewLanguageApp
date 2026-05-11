@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hebrew_language_flutter/models/guide_lesson_status.dart';
 import 'package:hebrew_language_flutter/models/learning_bundle.dart';
-import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/models/lesson_document.dart';
 import 'package:hebrew_language_flutter/screens/guide_screen.dart';
 import 'package:hebrew_language_flutter/services/lesson_document_loader.dart';
-import 'package:hebrew_language_flutter/services/learning_bundle_loader.dart';
 
 import 'support/app_test_harness.dart';
 import 'support/fakes.dart';
@@ -31,14 +29,133 @@ const _showSearchTooltip =
 const _introAssetPath = 'assets/learning/input/guide/01_intro_alphabet.md';
 const _readingRulesAssetPath =
     'assets/learning/input/guide/02_reading_rules.md';
-const _smixutAssetPath = 'assets/learning/input/guide/07_smixut.md';
 const _wholeAlphabetAssetPath =
     'assets/learning/input/guide/03_whole_alphabet.md';
+const _smixutAssetPath = 'assets/learning/input/guide/07_smixut.md';
+const _infinitiveAssetPath =
+    'assets/learning/input/guide/34_infinitive_constructions.md';
+const _registerAssetPath =
+    'assets/learning/input/guide/59_register_formal_vs_spoken.md';
 
 const _introTitle = 'Alphabet Basics';
 const _readingRulesTitle = 'Reading Rules';
-const _smixutTitle = 'Smikhut';
 const _wholeAlphabetTitle = 'Whole Alphabet';
+const _smixutTitle = 'Smikhut';
+
+final _introLesson = _lesson(_introAssetPath, '01 Intro Alphabet');
+final _introRelatedLesson = _lesson(
+  _introAssetPath,
+  '01 Intro Alphabet',
+  relatedIds: ['reading_rules'],
+);
+final _readingRulesLesson = _lesson(
+  _readingRulesAssetPath,
+  '02 Reading Rules',
+  lessonId: 'reading_rules',
+);
+final _wholeAlphabetLesson = _lesson(
+  _wholeAlphabetAssetPath,
+  '03 Whole Alphabet',
+);
+final _smixutLesson = _lesson(_smixutAssetPath, '07 Smixut');
+final _infinitiveLesson = _lesson(
+  _infinitiveAssetPath,
+  '34 Infinitive Constructions',
+  sectionId: 'verbs',
+  sectionLabel: 'Verbs',
+);
+final _registerLesson = _lesson(
+  _registerAssetPath,
+  '59 Register Formal Vs Spoken',
+  sectionId: 'spoken',
+  sectionLabel: 'Spoken',
+);
+
+final _searchDocuments = <String, LessonDocument>{
+  _infinitiveAssetPath: _doc(
+    'Infinitive Constructions',
+    '## Main pattern\n\nPattern with infinitive.',
+    summary: 'How to build patterns like want to do and started to say.',
+    headings: ['Main pattern'],
+  ),
+  _registerAssetPath: _doc(
+    'Formal vs Spoken',
+    '## Natural alternatives\n\nThis lesson shows more natural phrasing.',
+    summary: 'How to sound natural instead of overly formal.',
+    headings: ['Natural alternatives'],
+  ),
+  _introAssetPath: _doc(
+    'Alphabet',
+    '## First letters\n\nWe start with the alphabet.',
+    summary: 'A basic entry point into letters and sounds.',
+    headings: ['First letters'],
+  ),
+};
+
+final _relatedCleanupDocuments = <String, LessonDocument>{
+  _introAssetPath: _doc(
+    _introTitle,
+    '## Core idea\n\n- We learn the basic letters.',
+    headings: ['Core idea'],
+    relatedTopics: [_readingRulesTitle, 'Missing Topic'],
+  ),
+  _readingRulesAssetPath: _navigationDocuments[_readingRulesAssetPath]!,
+};
+
+final _navigationDocuments = <String, LessonDocument>{
+  _introAssetPath: _doc(
+    _introTitle,
+    '## Core idea\n\n- We see the basic letters.',
+    summary: 'The first pass over the letters.',
+    headings: ['Core idea'],
+  ),
+  _readingRulesAssetPath: _doc(
+    _readingRulesTitle,
+    '## Core idea\n\n- We look at niqqud.',
+    summary: 'How to read niqqud and basic patterns.',
+    headings: ['Core idea'],
+  ),
+  _wholeAlphabetAssetPath: _doc(
+    _wholeAlphabetTitle,
+    '## Core idea\n\n- We gather the whole alphabet.',
+    summary: 'All letters in one place.',
+    headings: ['Core idea'],
+  ),
+  _smixutAssetPath: _doc(
+    _smixutTitle,
+    '## Core idea\n\n- We look at noun linkage.',
+  ),
+};
+
+LessonEntry _lesson(
+  String assetPath,
+  String displayName, {
+  String? lessonId,
+  String sectionId = 'basics',
+  String sectionLabel = 'Basics',
+  List<String> relatedIds = const <String>[],
+}) => LessonEntry(
+  assetPath: assetPath,
+  displayName: displayName,
+  lessonId: lessonId,
+  sectionId: sectionId,
+  sectionLabel: sectionLabel,
+  relatedIds: relatedIds,
+);
+
+LessonDocument _doc(
+  String title,
+  String body, {
+  String summary = '',
+  List<String> headings = const <String>[],
+  List<String> relatedTopics = const <String>[],
+}) => LessonDocument(
+  title: title,
+  summary: summary,
+  headings: headings,
+  relatedTopics: relatedTopics,
+  body: body,
+);
 
 void main() {
   testWidgets('guide list allows cycling lesson status manually', (
@@ -48,26 +165,19 @@ void main() {
 
     await pumpHebrewTestApp(
       tester,
-      loader: _GuideOnlyBundleLoader(),
-      documentLoader: _GuideDocumentLoader(),
       guideProgressStore: guideStore,
       audioPlayerFactory: () => FakeVerbAudioPlayer(),
     );
 
-    await tester.tap(find.byIcon(Icons.school_outlined));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(Icons.menu_book_rounded).first);
-    await tester.pumpAndSettle();
+    await _openFirstGuideLesson(tester);
 
     expect(find.text(_unreadLabel), findsOneWidget);
 
-    await tester.tap(find.byTooltip(_changeStatusTooltip));
-    await tester.pumpAndSettle();
+    await _cycleLessonStatus(tester);
 
     expect(find.text(_studyingLabel), findsWidgets);
 
-    await tester.tap(find.byTooltip(_changeStatusTooltip));
-    await tester.pumpAndSettle();
+    await _cycleLessonStatus(tester);
 
     expect(guideStore.lessonStatuses['intro_alphabet'], GuideLessonStatus.read);
     expect(find.text(_readLabel), findsWidgets);
@@ -76,43 +186,11 @@ void main() {
   testWidgets('guide screen filters lessons by section and summary search', (
     WidgetTester tester,
   ) async {
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: GuideScreen(
-            lessons: const [
-              LessonEntry(
-                assetPath:
-                    'assets/learning/input/guide/34_infinitive_constructions.md',
-                displayName: '34 Infinitive Constructions',
-                lessonId: 'infinitive_constructions',
-                sectionId: 'verbs',
-                sectionLabel: 'Verbs',
-              ),
-              LessonEntry(
-                assetPath:
-                    'assets/learning/input/guide/59_register_formal_vs_spoken.md',
-                displayName: '59 Register Formal Vs Spoken',
-                lessonId: 'register_formal_spoken',
-                sectionId: 'spoken',
-                sectionLabel: 'Spoken',
-              ),
-              LessonEntry(
-                assetPath: _introAssetPath,
-                displayName: '01 Intro Alphabet',
-                lessonId: 'intro_alphabet',
-                sectionId: 'basics',
-                sectionLabel: 'Basics',
-              ),
-            ],
-            documentLoader: _GuideSearchDocumentLoader(),
-            lessonStatuses: const <String, GuideLessonStatus>{},
-            onStatusChanged: (_, _) => true,
-          ),
-        ),
-      ),
+    await _pumpGuideScreen(
+      tester,
+      lessons: [_infinitiveLesson, _registerLesson, _introLesson],
+      documentLoader: _MapGuideDocumentLoader(_searchDocuments),
     );
-    await tester.pumpAndSettle();
 
     expect(find.text('Infinitive Constructions'), findsOneWidget);
     expect(find.text('Formal vs Spoken'), findsOneWidget);
@@ -121,15 +199,12 @@ void main() {
     await tester.tap(find.byTooltip(_openSectionFilterTooltip));
     await tester.pumpAndSettle();
 
-    final verbsOption = find.text('Verbs').last;
-    await tester.ensureVisible(verbsOption);
-    await tester.tap(verbsOption);
-    await tester.pumpAndSettle();
-
-    final spokenOption = find.text('Spoken').last;
-    await tester.ensureVisible(spokenOption);
-    await tester.tap(spokenOption);
-    await tester.pumpAndSettle();
+    for (final section in ['Verbs', 'Spoken']) {
+      final option = find.text(section).last;
+      await tester.ensureVisible(option);
+      await tester.tap(option);
+      await tester.pumpAndSettle();
+    }
     await tester.tapAt(const Offset(20, 20));
     await tester.pumpAndSettle();
 
@@ -153,44 +228,17 @@ void main() {
   ) async {
     GuideLessonStatus? latestStatus;
 
-    await tester.pumpWidget(
-      MaterialApp(
-        home: GuideDetailScreen(
-          lesson: const LessonEntry(
-            assetPath: _introAssetPath,
-            displayName: '01 Intro Alphabet',
-            lessonId: 'intro_alphabet',
-            sectionId: 'basics',
-            sectionLabel: 'Basics',
-            relatedIds: ['reading_rules'],
-          ),
-          allLessons: const [
-            LessonEntry(
-              assetPath: _introAssetPath,
-              displayName: '01 Intro Alphabet',
-              lessonId: 'intro_alphabet',
-              sectionId: 'basics',
-              sectionLabel: 'Basics',
-              relatedIds: ['reading_rules'],
-            ),
-            LessonEntry(
-              assetPath: _readingRulesAssetPath,
-              displayName: '02 Reading Rules',
-              lessonId: 'reading_rules',
-              sectionId: 'basics',
-              sectionLabel: 'Basics',
-            ),
-          ],
-          documentLoader: _GuideDocumentLoader(),
-          initialStatus: GuideLessonStatus.unread,
-          onStatusChanged: (status) {
-            latestStatus = status;
-            return true;
-          },
-        ),
-      ),
+    await _pumpGuideDetail(
+      tester,
+      lesson: _introRelatedLesson,
+      allLessons: [_introRelatedLesson, _readingRulesLesson],
+      documentLoader: _MapGuideDocumentLoader(_relatedCleanupDocuments),
+      initialStatus: GuideLessonStatus.unread,
+      onStatusChanged: (status) {
+        latestStatus = status;
+        return true;
+      },
     );
-    await tester.pumpAndSettle();
 
     expect(latestStatus, GuideLessonStatus.studying);
     expect(find.text(_studyingLabel), findsWidgets);
@@ -204,23 +252,16 @@ void main() {
   ) async {
     GuideLessonStatus? latestStatus;
 
-    await tester.pumpWidget(
-      MaterialApp(
-        home: GuideDetailScreen(
-          lesson: const LessonEntry(
-            assetPath: _introAssetPath,
-            displayName: '01 Intro Alphabet',
-          ),
-          documentLoader: _LongGuideDocumentLoader(),
-          initialStatus: GuideLessonStatus.studying,
-          onStatusChanged: (status) {
-            latestStatus = status;
-            return true;
-          },
-        ),
-      ),
+    await _pumpGuideDetail(
+      tester,
+      lesson: _introLesson,
+      documentLoader: const _LongGuideDocumentLoader(),
+      initialStatus: GuideLessonStatus.studying,
+      onStatusChanged: (status) {
+        latestStatus = status;
+        return true;
+      },
     );
-    await tester.pumpAndSettle();
 
     await tester.scrollUntilVisible(
       find.text('Paragraph 80 about Hebrew grammar.'),
@@ -244,46 +285,12 @@ void main() {
   testWidgets(
     'guide adjacent navigation uses lesson titles instead of file labels',
     (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: GuideDetailScreen(
-            lesson: const LessonEntry(
-              assetPath: _readingRulesAssetPath,
-              displayName: '02 Reading Rules',
-              lessonId: 'reading_rules',
-              sectionId: 'basics',
-              sectionLabel: 'Basics',
-            ),
-            allLessons: const [
-              LessonEntry(
-                assetPath: _introAssetPath,
-                displayName: '01 Intro Alphabet',
-                lessonId: 'intro_alphabet',
-                sectionId: 'basics',
-                sectionLabel: 'Basics',
-              ),
-              LessonEntry(
-                assetPath: _readingRulesAssetPath,
-                displayName: '02 Reading Rules',
-                lessonId: 'reading_rules',
-                sectionId: 'basics',
-                sectionLabel: 'Basics',
-              ),
-              LessonEntry(
-                assetPath: _smixutAssetPath,
-                displayName: '07 Smixut',
-                lessonId: 'smixut',
-                sectionId: 'basics',
-                sectionLabel: 'Basics',
-              ),
-            ],
-            documentLoader: _GuideAdjacentTitlesDocumentLoader(),
-            initialStatus: GuideLessonStatus.studying,
-            onStatusChanged: (_) => true,
-          ),
-        ),
+      await _pumpGuideDetail(
+        tester,
+        lesson: _readingRulesLesson,
+        allLessons: [_introLesson, _readingRulesLesson, _smixutLesson],
+        documentLoader: _MapGuideDocumentLoader(_navigationDocuments),
       );
-      await tester.pumpAndSettle();
 
       expect(find.text(_introTitle), findsOneWidget);
       expect(find.text(_smixutTitle), findsOneWidget);
@@ -295,41 +302,12 @@ void main() {
   testWidgets(
     'guide related topics deduplicate metadata and markdown matches',
     (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: GuideDetailScreen(
-            lesson: const LessonEntry(
-              assetPath: _introAssetPath,
-              displayName: '01 Intro Alphabet',
-              lessonId: 'intro_alphabet',
-              sectionId: 'basics',
-              sectionLabel: 'Basics',
-              relatedIds: ['reading_rules'],
-            ),
-            allLessons: const [
-              LessonEntry(
-                assetPath: _introAssetPath,
-                displayName: '01 Intro Alphabet',
-                lessonId: 'intro_alphabet',
-                sectionId: 'basics',
-                sectionLabel: 'Basics',
-                relatedIds: ['reading_rules'],
-              ),
-              LessonEntry(
-                assetPath: _readingRulesAssetPath,
-                displayName: '02 Reading Rules',
-                lessonId: 'reading_rules',
-                sectionId: 'basics',
-                sectionLabel: 'Basics',
-              ),
-            ],
-            documentLoader: _GuideRelatedTopicsCleanupLoader(),
-            initialStatus: GuideLessonStatus.studying,
-            onStatusChanged: (_) => true,
-          ),
-        ),
+      await _pumpGuideDetail(
+        tester,
+        lesson: _introRelatedLesson,
+        allLessons: [_introRelatedLesson, _readingRulesLesson],
+        documentLoader: _MapGuideDocumentLoader(_relatedCleanupDocuments),
       );
-      await tester.pumpAndSettle();
 
       expect(find.text(_readingRulesTitle), findsOneWidget);
       expect(find.text('Missing Topic'), findsNothing);
@@ -339,41 +317,11 @@ void main() {
   testWidgets(
     'guide back button returns to guide list after opening adjacent lesson',
     (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: GuideScreen(
-              lessons: const [
-                LessonEntry(
-                  assetPath: _introAssetPath,
-                  displayName: '01 Intro Alphabet',
-                  lessonId: 'intro_alphabet',
-                  sectionId: 'basics',
-                  sectionLabel: 'Basics',
-                ),
-                LessonEntry(
-                  assetPath: _readingRulesAssetPath,
-                  displayName: '02 Reading Rules',
-                  lessonId: 'reading_rules',
-                  sectionId: 'basics',
-                  sectionLabel: 'Basics',
-                ),
-                LessonEntry(
-                  assetPath: _wholeAlphabetAssetPath,
-                  displayName: '03 Whole Alphabet',
-                  lessonId: 'whole_alphabet',
-                  sectionId: 'basics',
-                  sectionLabel: 'Basics',
-                ),
-              ],
-              documentLoader: _GuideNavigationFlowDocumentLoader(),
-              lessonStatuses: const <String, GuideLessonStatus>{},
-              onStatusChanged: (_, _) => true,
-            ),
-          ),
-        ),
+      await _pumpGuideScreen(
+        tester,
+        lessons: [_introLesson, _readingRulesLesson, _wholeAlphabetLesson],
+        documentLoader: _MapGuideDocumentLoader(_navigationDocuments),
       );
-      await tester.pumpAndSettle();
 
       await tester.tap(find.text(_readingRulesTitle));
       await tester.pumpAndSettle();
@@ -394,79 +342,90 @@ void main() {
   );
 }
 
-class _GuideOnlyBundleLoader implements LearningBundleLoader {
-  @override
-  Future<LearningBundle> load() async {
-    return const LearningBundle(
-      words: <LearningWord>[],
-      guideLessons: [
-        LessonEntry(
-          assetPath: _introAssetPath,
-          displayName: '01 Intro Alphabet',
-          sectionId: 'basics',
-          sectionLabel: 'Basics',
+Future<void> _pumpGuideScreen(
+  WidgetTester tester, {
+  required List<LessonEntry> lessons,
+  required LessonDocumentLoader documentLoader,
+  Map<String, GuideLessonStatus> lessonStatuses =
+      const <String, GuideLessonStatus>{},
+  bool Function(String, GuideLessonStatus) onStatusChanged =
+      _acceptListStatusChange,
+}) async {
+  await tester.pumpWidget(
+    MaterialApp(
+      home: Scaffold(
+        body: GuideScreen(
+          lessons: lessons,
+          documentLoader: documentLoader,
+          lessonStatuses: lessonStatuses,
+          onStatusChanged: onStatusChanged,
         ),
-      ],
-      verbLessons: <LessonEntry>[],
-      readingLessons: <LessonEntry>[],
-    );
-  }
+      ),
+    ),
+  );
+  await tester.pumpAndSettle();
 }
 
-class _GuideDocumentLoader implements LessonDocumentLoader {
-  @override
-  Future<LessonDocument> load(String assetPath) async {
-    if (assetPath.contains('02_reading_rules')) {
-      return const LessonDocument(
-        title: _readingRulesTitle,
-        summary: 'How letters and vowels behave in real reading.',
-        headings: ['Core idea'],
-        body: '## Core idea\n\n- We look at the common reading pattern.',
-      );
-    }
-
-    return const LessonDocument(
-      title: _introTitle,
-      summary: 'A short overview of writing direction and basic reading logic.',
-      headings: ['First concept'],
-      relatedTopics: [_readingRulesTitle],
-      body: '## First concept\n\n- Hebrew is read from right to left.',
-    );
-  }
+Future<void> _pumpGuideDetail(
+  WidgetTester tester, {
+  required LessonEntry lesson,
+  List<LessonEntry> allLessons = const <LessonEntry>[],
+  required LessonDocumentLoader documentLoader,
+  GuideLessonStatus initialStatus = GuideLessonStatus.studying,
+  bool Function(GuideLessonStatus) onStatusChanged = _acceptDetailStatusChange,
+}) async {
+  await tester.pumpWidget(
+    MaterialApp(
+      home: GuideDetailScreen(
+        lesson: lesson,
+        allLessons: allLessons,
+        documentLoader: documentLoader,
+        initialStatus: initialStatus,
+        onStatusChanged: onStatusChanged,
+      ),
+    ),
+  );
+  await tester.pumpAndSettle();
 }
 
-class _GuideSearchDocumentLoader implements LessonDocumentLoader {
+Future<void> _openFirstGuideLesson(WidgetTester tester) async {
+  await tester.tap(find.byIcon(Icons.school_outlined));
+  await tester.pumpAndSettle();
+  await tester.tap(find.byIcon(Icons.menu_book_rounded).first);
+  await tester.pumpAndSettle();
+}
+
+Future<void> _cycleLessonStatus(WidgetTester tester) async {
+  await tester.tap(find.byTooltip(_changeStatusTooltip));
+  await tester.pumpAndSettle();
+}
+
+bool _acceptListStatusChange(String lessonKey, GuideLessonStatus status) {
+  return true;
+}
+
+bool _acceptDetailStatusChange(GuideLessonStatus status) {
+  return true;
+}
+
+class _MapGuideDocumentLoader implements LessonDocumentLoader {
+  const _MapGuideDocumentLoader(this.documents);
+
+  final Map<String, LessonDocument> documents;
+
   @override
   Future<LessonDocument> load(String assetPath) async {
-    if (assetPath.contains('34_infinitive')) {
-      return const LessonDocument(
-        title: 'Infinitive Constructions',
-        summary: 'How to build patterns like want to do and started to say.',
-        headings: ['Main pattern'],
-        body: '## Main pattern\n\nPattern with infinitive.',
-      );
+    final document = documents[assetPath];
+    if (document == null) {
+      throw StateError('No test document for $assetPath');
     }
-
-    if (assetPath.contains('01_intro_alphabet')) {
-      return const LessonDocument(
-        title: 'Alphabet',
-        summary: 'A basic entry point into letters and sounds.',
-        headings: ['First letters'],
-        body: '## First letters\n\nWe start with the alphabet.',
-      );
-    }
-
-    return const LessonDocument(
-      title: 'Formal vs Spoken',
-      summary: 'How to sound natural instead of overly formal.',
-      headings: ['Natural alternatives'],
-      body:
-          '## Natural alternatives\n\nThis lesson shows more natural phrasing.',
-    );
+    return document;
   }
 }
 
 class _LongGuideDocumentLoader implements LessonDocumentLoader {
+  const _LongGuideDocumentLoader();
+
   @override
   Future<LessonDocument> load(String assetPath) async {
     final body = List<String>.generate(
@@ -475,78 +434,5 @@ class _LongGuideDocumentLoader implements LessonDocumentLoader {
     ).join('\n\n');
 
     return LessonDocument(title: 'Long Lesson', body: body);
-  }
-}
-
-class _GuideAdjacentTitlesDocumentLoader implements LessonDocumentLoader {
-  @override
-  Future<LessonDocument> load(String assetPath) async {
-    if (assetPath.contains('01_intro_alphabet')) {
-      return const LessonDocument(
-        title: _introTitle,
-        body: '## Core idea\n\n- We start with the letters.',
-      );
-    }
-
-    if (assetPath.contains('07_smixut')) {
-      return const LessonDocument(
-        title: _smixutTitle,
-        body: '## Core idea\n\n- We look at noun linkage.',
-      );
-    }
-
-    return const LessonDocument(
-      title: _readingRulesTitle,
-      body: '## Core idea\n\n- We look at the common reading pattern.',
-    );
-  }
-}
-
-class _GuideRelatedTopicsCleanupLoader implements LessonDocumentLoader {
-  @override
-  Future<LessonDocument> load(String assetPath) async {
-    if (assetPath.contains('02_reading_rules')) {
-      return const LessonDocument(
-        title: _readingRulesTitle,
-        body: '## Core idea\n\n- We look at vowels and patterns.',
-      );
-    }
-
-    return const LessonDocument(
-      title: _introTitle,
-      headings: ['Core idea'],
-      relatedTopics: [_readingRulesTitle, 'Missing Topic'],
-      body: '## Core idea\n\n- We learn the basic letters.',
-    );
-  }
-}
-
-class _GuideNavigationFlowDocumentLoader implements LessonDocumentLoader {
-  @override
-  Future<LessonDocument> load(String assetPath) async {
-    if (assetPath.contains('01_intro_alphabet')) {
-      return const LessonDocument(
-        title: _introTitle,
-        summary: 'The first pass over the letters.',
-        headings: ['Core idea'],
-        body: '## Core idea\n\n- We see the basic letters.',
-      );
-    }
-
-    if (assetPath.contains('03_whole_alphabet')) {
-      return const LessonDocument(
-        title: _wholeAlphabetTitle,
-        summary: 'All letters in one place.',
-        headings: ['Core idea'],
-        body: '## Core idea\n\n- We gather the whole alphabet.',
-      );
-    }
-
-    return const LessonDocument(
-      title: _readingRulesTitle,
-      summary: 'How to read niqqud and basic patterns.',
-      headings: ['Core idea'],
-      body: '## Core idea\n\n- We look at niqqud.',
-    );
   }
 }
