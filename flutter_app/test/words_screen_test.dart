@@ -4,8 +4,11 @@ import 'package:hebrew_language_flutter/models/learning_context.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/screens/words_screen.dart';
 import 'package:hebrew_language_flutter/services/audio_playback_awareness.dart';
+import 'package:hebrew_language_flutter/services/learning_audio_player.dart';
 
 import 'support/fakes.dart';
+
+const _wordAudioAsset = 'assets/learning/input/audio/words/word_man.mp3';
 
 void main() {
   testWidgets('plays word audio from the list without opening details', (
@@ -13,29 +16,11 @@ void main() {
   ) async {
     final audioPlayer = FakeLearningAudioPlayer(assetExistsResult: true);
 
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: WordsScreen(
-            words: const [
-              LearningWord(
-                wordId: 'word_man',
-                hebrew: 'איש',
-                english: 'man',
-                transcription: 'ish',
-                audioAssetPath:
-                    'assets/learning/input/audio/words/word_man.mp3',
-                correct: 0,
-                wrong: 0,
-              ),
-            ],
-            audioPlayerFactory: () => audioPlayer,
-          ),
-        ),
-      ),
+    await _pumpWordsScreen(
+      tester,
+      words: [_wordMan(audioAssetPath: _wordAudioAsset)],
+      audioPlayerFactory: () => audioPlayer,
     );
-
-    await tester.pumpAndSettle();
 
     final listAudioButton = find.byKey(
       const ValueKey('word-list-audio-button-word_man'),
@@ -46,9 +31,7 @@ void main() {
     await tester.tap(listAudioButton);
     await tester.pumpAndSettle();
 
-    expect(audioPlayer.playedAssets, [
-      'assets/learning/input/audio/words/word_man.mp3',
-    ]);
+    expect(audioPlayer.playedAssets, [_wordAudioAsset]);
     expect(audioPlayer.preparedAssets, isEmpty);
     expect(find.text('Вимова'), findsNothing);
   });
@@ -58,30 +41,13 @@ void main() {
   ) async {
     final audioPlayer = FakeLearningAudioPlayer(assetExistsResult: false);
 
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: WordsScreen(
-            words: const [
-              LearningWord(
-                wordId: 'word_man',
-                hebrew: 'איש',
-                english: 'man',
-                transcription: 'ish',
-                audioAssetPath:
-                    'assets/learning/input/audio/words/word_man.mp3',
-                correct: 0,
-                wrong: 0,
-              ),
-            ],
-            audioPlayerFactory: () => audioPlayer,
-          ),
-        ),
-      ),
+    await _pumpWordsScreen(
+      tester,
+      words: [_wordMan(audioAssetPath: _wordAudioAsset)],
+      audioPlayerFactory: () => audioPlayer,
     );
 
-    await tester.tap(find.byTooltip('Відкрити слово'));
-    await tester.pumpAndSettle();
+    await _openWordDetails(tester);
 
     expect(find.text('Вимова'), findsNothing);
 
@@ -97,32 +63,15 @@ void main() {
     (WidgetTester tester) async {
       final audioPlayer = FakeLearningAudioPlayer(assetExistsResult: true);
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: WordsScreen(
-              words: const [
-                LearningWord(
-                  wordId: 'word_man',
-                  hebrew: 'איש',
-                  english: 'man',
-                  transcription: 'ish',
-                  audioAssetPath:
-                      'assets/learning/input/audio/words/word_man.mp3',
-                  correct: 0,
-                  wrong: 0,
-                ),
-              ],
-              audioPlayerFactory: () => audioPlayer,
-              audioPlaybackAwareness: FakeAudioPlaybackAwareness(
-                hint: AudioPlaybackHint.mediaVolumeMuted,
-              ),
-            ),
-          ),
+      await _pumpWordsScreen(
+        tester,
+        words: [_wordMan(audioAssetPath: _wordAudioAsset)],
+        audioPlayerFactory: () => audioPlayer,
+        audioPlaybackAwareness: FakeAudioPlaybackAwareness(
+          hint: AudioPlaybackHint.mediaVolumeMuted,
         ),
       );
 
-      await tester.pumpAndSettle();
       await tester.tap(
         find.byKey(const ValueKey('word-list-audio-button-word_man')),
       );
@@ -132,43 +81,18 @@ void main() {
         find.text(AudioPlaybackHint.mediaVolumeMuted.message),
         findsOneWidget,
       );
-      expect(audioPlayer.playedAssets, [
-        'assets/learning/input/audio/words/word_man.mp3',
-      ]);
+      expect(audioPlayer.playedAssets, [_wordAudioAsset]);
     },
   );
 
   testWidgets('opens word details from the trailing arrow', (
     WidgetTester tester,
   ) async {
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: WordsScreen(
-            words: const [
-              LearningWord(
-                wordId: 'word_man',
-                hebrew: 'איש',
-                english: 'man',
-                ukrainian: 'чоловік',
-                transcription: 'ish',
-                correct: 0,
-                wrong: 0,
-              ),
-            ],
-            audioPlayerFactory: () =>
-                FakeLearningAudioPlayer(assetExistsResult: false),
-          ),
-        ),
-      ),
-    );
-
-    await tester.pumpAndSettle();
+    await _pumpWordsScreen(tester, words: [_wordMan(ukrainian: 'чоловік')]);
 
     expect(find.text('Вимова'), findsNothing);
 
-    await tester.tap(find.byTooltip('Відкрити слово'));
-    await tester.pumpAndSettle();
+    await _openWordDetails(tester);
 
     expect(find.text('Вимова'), findsNothing);
     expect(find.text('чоловік'), findsWidgets);
@@ -193,30 +117,8 @@ void main() {
       ),
     );
 
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: WordsScreen(
-            words: [
-              LearningWord(
-                wordId: 'word_car',
-                hebrew: 'מכונית',
-                english: 'car',
-                ukrainian: 'car',
-                transcription: 'mekhonit',
-                correct: 0,
-                wrong: 0,
-                contexts: contexts,
-              ),
-            ],
-            audioPlayerFactory: () =>
-                FakeLearningAudioPlayer(assetExistsResult: false),
-          ),
-        ),
-      ),
-    );
+    await _pumpWordsScreen(tester, words: [_wordCar(contexts: contexts)]);
 
-    await tester.pumpAndSettle();
     await tester.tap(find.byIcon(Icons.arrow_forward_ios_rounded));
     await tester.pumpAndSettle();
 
@@ -229,46 +131,21 @@ void main() {
   ) async {
     final audioPlayer = FakeLearningAudioPlayer(assetExistsResult: true);
 
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: WordsScreen(
-            words: const [
-              LearningWord(
-                wordId: 'word_man',
-                hebrew: 'איש',
-                english: 'man',
-                ukrainian: 'чоловік',
-                transcription: 'ish',
-                audioAssetPath:
-                    'assets/learning/input/audio/words/word_man.mp3',
-                correct: 0,
-                wrong: 0,
-              ),
-            ],
-            audioPlayerFactory: () => audioPlayer,
-          ),
-        ),
-      ),
+    await _pumpWordsScreen(
+      tester,
+      words: [_wordMan(ukrainian: 'чоловік', audioAssetPath: _wordAudioAsset)],
+      audioPlayerFactory: () => audioPlayer,
     );
 
-    await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('Відкрити слово'));
-    await tester.pumpAndSettle();
+    await _openWordDetails(tester);
 
-    final detailAudioButton = find.byKey(
-      const ValueKey('word-detail-audio-button-word_man'),
+    await tester.tap(
+      find.byKey(const ValueKey('word-detail-audio-button-word_man')),
     );
-
-    await tester.tap(detailAudioButton);
     await tester.pumpAndSettle();
 
-    expect(audioPlayer.preparedAssets, [
-      'assets/learning/input/audio/words/word_man.mp3',
-    ]);
-    expect(audioPlayer.playedAssets, [
-      'assets/learning/input/audio/words/word_man.mp3',
-    ]);
+    expect(audioPlayer.preparedAssets, [_wordAudioAsset]);
+    expect(audioPlayer.playedAssets, [_wordAudioAsset]);
   });
 
   testWidgets('cycles a new dictionary word through learning statuses', (
@@ -276,32 +153,13 @@ void main() {
   ) async {
     LearningWord? changedWord;
 
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: WordsScreen(
-            words: const [
-              LearningWord(
-                wordId: 'word_man',
-                hebrew: 'איש',
-                english: 'man',
-                ukrainian: 'чоловік',
-                transcription: 'ish',
-                correct: 0,
-                wrong: 0,
-              ),
-            ],
-            audioPlayerFactory: () =>
-                FakeLearningAudioPlayer(assetExistsResult: false),
-            onWordProgressChanged: (word) {
-              changedWord = word;
-            },
-          ),
-        ),
-      ),
+    await _pumpWordsScreen(
+      tester,
+      words: [_wordMan(ukrainian: 'чоловік')],
+      onWordProgressChanged: (word) {
+        changedWord = word;
+      },
     );
-
-    await tester.pumpAndSettle();
     expect(find.text('Не знаю'), findsOneWidget);
 
     await tester.tap(find.text('Не знаю'));
@@ -342,33 +200,15 @@ void main() {
   ) async {
     LearningWord? changedWord;
 
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: WordsScreen(
-            words: const [
-              LearningWord(
-                wordId: 'word_man',
-                hebrew: 'איש',
-                english: 'man',
-                ukrainian: 'чоловік',
-                transcription: 'ish',
-                correct: 4,
-                wrong: 0,
-                lastReviewCorrect: true,
-              ),
-            ],
-            audioPlayerFactory: () =>
-                FakeLearningAudioPlayer(assetExistsResult: false),
-            onWordProgressChanged: (word) {
-              changedWord = word;
-            },
-          ),
-        ),
-      ),
+    await _pumpWordsScreen(
+      tester,
+      words: [
+        _wordMan(ukrainian: 'чоловік', correct: 4, lastReviewCorrect: true),
+      ],
+      onWordProgressChanged: (word) {
+        changedWord = word;
+      },
     );
-
-    await tester.pumpAndSettle();
     expect(find.text('Знаю'), findsOneWidget);
 
     await tester.tap(find.text('Знаю'));
@@ -389,32 +229,7 @@ void main() {
   testWidgets(
     'shows scroll-to-top action after scrolling the vocabulary list',
     (WidgetTester tester) async {
-      final words = List<LearningWord>.generate(
-        30,
-        (index) => LearningWord(
-          wordId: 'word_$index',
-          hebrew: 'מילה $index',
-          english: 'Word $index',
-          ukrainian: 'Слово $index',
-          transcription: 'word $index',
-          correct: 0,
-          wrong: 0,
-        ),
-      );
-
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: WordsScreen(
-              words: words,
-              audioPlayerFactory: () =>
-                  FakeLearningAudioPlayer(assetExistsResult: false),
-            ),
-          ),
-        ),
-      );
-
-      await tester.pumpAndSettle();
+      await _pumpWordsScreen(tester, words: _manyWords());
 
       Finder scrollToTopOpacity() => find.ancestor(
         of: find.byIcon(Icons.vertical_align_top_rounded),
@@ -442,5 +257,83 @@ void main() {
         equals(0),
       );
     },
+  );
+}
+
+Future<void> _pumpWordsScreen(
+  WidgetTester tester, {
+  required List<LearningWord> words,
+  CreateLearningAudioPlayer? audioPlayerFactory,
+  AudioPlaybackAwareness audioPlaybackAwareness =
+      const NoopAudioPlaybackAwareness(),
+  ValueChanged<LearningWord>? onWordProgressChanged,
+}) async {
+  await tester.pumpWidget(
+    MaterialApp(
+      home: Scaffold(
+        body: WordsScreen(
+          words: words,
+          audioPlayerFactory:
+              audioPlayerFactory ??
+              () => FakeLearningAudioPlayer(assetExistsResult: false),
+          audioPlaybackAwareness: audioPlaybackAwareness,
+          onWordProgressChanged: onWordProgressChanged,
+        ),
+      ),
+    ),
+  );
+  await tester.pumpAndSettle();
+}
+
+Future<void> _openWordDetails(WidgetTester tester) async {
+  await tester.tap(find.byTooltip('Відкрити слово'));
+  await tester.pumpAndSettle();
+}
+
+LearningWord _wordMan({
+  String ukrainian = '',
+  String? audioAssetPath,
+  int correct = 0,
+  int wrong = 0,
+  bool? lastReviewCorrect,
+}) {
+  return LearningWord(
+    wordId: 'word_man',
+    hebrew: 'איש',
+    english: 'man',
+    ukrainian: ukrainian,
+    transcription: 'ish',
+    audioAssetPath: audioAssetPath,
+    correct: correct,
+    wrong: wrong,
+    lastReviewCorrect: lastReviewCorrect,
+  );
+}
+
+LearningWord _wordCar({required List<LearningContext> contexts}) {
+  return LearningWord(
+    wordId: 'word_car',
+    hebrew: 'מכונית',
+    english: 'car',
+    ukrainian: 'car',
+    transcription: 'mekhonit',
+    correct: 0,
+    wrong: 0,
+    contexts: contexts,
+  );
+}
+
+List<LearningWord> _manyWords() {
+  return List<LearningWord>.generate(
+    30,
+    (index) => LearningWord(
+      wordId: 'word_$index',
+      hebrew: 'מילה $index',
+      english: 'Word $index',
+      ukrainian: 'Слово $index',
+      transcription: 'word $index',
+      correct: 0,
+      wrong: 0,
+    ),
   );
 }
