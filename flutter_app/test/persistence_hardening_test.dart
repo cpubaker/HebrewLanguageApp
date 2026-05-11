@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:hebrew_language_flutter/app.dart';
 import 'package:hebrew_language_flutter/models/guide_lesson_status.dart';
 import 'package:hebrew_language_flutter/models/learning_bundle.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
@@ -16,6 +15,7 @@ import 'package:hebrew_language_flutter/services/reading_progress_store.dart';
 import 'package:hebrew_language_flutter/services/sprint_stats_store.dart';
 import 'package:hebrew_language_flutter/services/word_progress_store.dart';
 
+import 'support/app_test_harness.dart';
 import 'support/fakes.dart';
 
 void main() {
@@ -279,17 +279,13 @@ void main() {
   ) async {
     final guideStore = ThrowingGuideProgressStore();
 
-    await tester.pumpWidget(
-      HebrewFlutterApp(
-        loader: _GuideOnlyBundleLoader(),
-        documentLoader: _GuideDocumentLoader(),
-        progressStore: FakeWordProgressStore(),
-        guideProgressStore: guideStore,
-        readingProgressStore: FakeReadingProgressStore(),
-        audioPlayerFactory: () => FakeVerbAudioPlayer(),
-      ),
+    await pumpHebrewTestApp(
+      tester,
+      loader: _GuideOnlyBundleLoader(),
+      documentLoader: _GuideDocumentLoader(),
+      guideProgressStore: guideStore,
+      audioPlayerFactory: () => FakeVerbAudioPlayer(),
     );
-    await tester.pumpAndSettle();
 
     await tester.tap(find.byIcon(Icons.school_outlined));
     await tester.pumpAndSettle();
@@ -312,17 +308,13 @@ void main() {
   ) async {
     final readingStore = ThrowingReadingProgressStore();
 
-    await tester.pumpWidget(
-      HebrewFlutterApp(
-        loader: _ReadingOnlyBundleLoader(),
-        documentLoader: _ReadingDocumentLoader(),
-        progressStore: FakeWordProgressStore(),
-        guideProgressStore: FakeGuideProgressStore(),
-        readingProgressStore: readingStore,
-        audioPlayerFactory: () => FakeVerbAudioPlayer(),
-      ),
+    await pumpHebrewTestApp(
+      tester,
+      loader: _ReadingOnlyBundleLoader(),
+      documentLoader: _ReadingDocumentLoader(),
+      readingProgressStore: readingStore,
+      audioPlayerFactory: () => FakeVerbAudioPlayer(),
     );
-    await tester.pumpAndSettle();
 
     await tester.tap(find.byIcon(Icons.school_outlined));
     await tester.pumpAndSettle();

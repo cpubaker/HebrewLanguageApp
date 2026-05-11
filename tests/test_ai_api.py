@@ -15,10 +15,7 @@ class AiApiApplicationTests(unittest.TestCase):
     def test_word_contexts_are_generated_and_cached(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             fake_client = FakeOpenAIClient()
-            app = AiApiApplication(
-                cache=JsonDiskCache(Path(temp_dir) / "cache.json"),
-                openai_client=fake_client,
-            )
+            app = _make_application(temp_dir, fake_client)
 
             payload = {
                 "words": [
@@ -44,10 +41,7 @@ class AiApiApplicationTests(unittest.TestCase):
     def test_practice_texts_are_generated_and_cached(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             fake_client = FakeOpenAIClient()
-            app = AiApiApplication(
-                cache=JsonDiskCache(Path(temp_dir) / "cache.json"),
-                openai_client=fake_client,
-            )
+            app = _make_application(temp_dir, fake_client)
 
             payload = {
                 "mode": "reading_practice",
@@ -122,6 +116,12 @@ class FakeOpenAIClient:
         }
 
 
+def _make_application(temp_dir, fake_client):
+    return AiApiApplication(
+        cache=JsonDiskCache(Path(temp_dir) / "cache.json"),
+        openai_client=fake_client,
+    )
+
+
 if __name__ == "__main__":
     unittest.main()
-

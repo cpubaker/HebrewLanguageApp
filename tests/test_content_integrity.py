@@ -31,10 +31,7 @@ RUNTIME_PROGRESS_FIELDS = {
 
 class ContentIntegrityTests(unittest.TestCase):
     def test_words_json_contains_required_fields(self):
-        words_path = INPUT_ROOT / "hebrew_words.json"
-
-        with words_path.open("r", encoding="utf-8") as file:
-            words = json.load(file)
+        words = _load_json(INPUT_ROOT / "hebrew_words.json")
 
         self.assertIsInstance(words, list)
         self.assertGreater(len(words), 0)
@@ -63,10 +60,7 @@ class ContentIntegrityTests(unittest.TestCase):
             )
 
     def test_words_json_does_not_embed_runtime_progress(self):
-        words_path = INPUT_ROOT / "hebrew_words.json"
-
-        with words_path.open("r", encoding="utf-8") as file:
-            words = json.load(file)
+        words = _load_json(INPUT_ROOT / "hebrew_words.json")
 
         for index, word in enumerate(words):
             word_id = str(word.get("word_id", f"item {index}")).strip()
@@ -124,18 +118,11 @@ class ContentIntegrityTests(unittest.TestCase):
             self.assertTrue(section["filename"].endswith((".md", ".txt")))
 
     def test_context_links_reference_existing_words_and_sentences(self):
-        with (INPUT_ROOT / "hebrew_words.json").open("r", encoding="utf-8") as file:
-            words = json.load(file)
-        with (INPUT_ROOT / "contexts" / "sentences.json").open(
-            "r",
-            encoding="utf-8",
-        ) as file:
-            sentences = json.load(file)
-        with (INPUT_ROOT / "contexts" / "word_context_links.json").open(
-            "r",
-            encoding="utf-8",
-        ) as file:
-            word_context_links = json.load(file)
+        words = _load_json(INPUT_ROOT / "hebrew_words.json")
+        sentences = _load_json(INPUT_ROOT / "contexts" / "sentences.json")
+        word_context_links = _load_json(
+            INPUT_ROOT / "contexts" / "word_context_links.json"
+        )
 
         word_ids = {str(word.get("word_id", "")).strip() for word in words}
         sentence_ids = {
@@ -158,10 +145,14 @@ class ContentIntegrityTests(unittest.TestCase):
                 )
 
     def test_content_index_is_current(self):
-        with CONTENT_INDEX_PATH.open("r", encoding="utf-8") as file:
-            content_index = json.load(file)
+        content_index = _load_json(CONTENT_INDEX_PATH)
 
         self.assertEqual(content_index, build_content_index(INPUT_ROOT))
+
+
+def _load_json(path):
+    with path.open("r", encoding="utf-8") as file:
+        return json.load(file)
 
 
 def _is_text_section_file(path):

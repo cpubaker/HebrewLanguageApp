@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hebrew_language_flutter/app.dart';
 import 'package:hebrew_language_flutter/models/guide_lesson_status.dart';
 import 'package:hebrew_language_flutter/models/learning_bundle.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
@@ -8,6 +7,7 @@ import 'package:hebrew_language_flutter/models/lesson_document.dart';
 import 'package:hebrew_language_flutter/services/lesson_document_loader.dart';
 import 'package:hebrew_language_flutter/services/learning_bundle_loader.dart';
 
+import 'support/app_test_harness.dart';
 import 'support/fakes.dart';
 
 void main() {
@@ -16,17 +16,13 @@ void main() {
   ) async {
     final readingStore = FakeReadingProgressStore();
 
-    await tester.pumpWidget(
-      HebrewFlutterApp(
-        loader: _ReadingOnlyBundleLoader(),
-        documentLoader: _ReadingDocumentLoader(),
-        progressStore: FakeWordProgressStore(),
-        guideProgressStore: FakeGuideProgressStore(),
-        readingProgressStore: readingStore,
-        audioPlayerFactory: () => FakeVerbAudioPlayer(),
-      ),
+    await pumpHebrewTestApp(
+      tester,
+      loader: _ReadingOnlyBundleLoader(),
+      documentLoader: _ReadingDocumentLoader(),
+      readingProgressStore: readingStore,
+      audioPlayerFactory: () => FakeVerbAudioPlayer(),
     );
-    await tester.pumpAndSettle();
 
     await tester.tap(find.byIcon(Icons.school_outlined));
     await tester.pumpAndSettle();
