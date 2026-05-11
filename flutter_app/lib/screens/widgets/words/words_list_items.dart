@@ -81,16 +81,6 @@ class _WordCard extends StatelessWidget {
                           spacing: 8,
                           runSpacing: 8,
                           children: [
-                            _MiniProgress(
-                              label: 'П',
-                              value: word.correct,
-                              accent: tokens.successAccent,
-                            ),
-                            _MiniProgress(
-                              label: 'Н',
-                              value: word.wrong,
-                              accent: tokens.dangerAccent,
-                            ),
                             _WordStatusActionButton(
                               state: learningState,
                               onTap: onCycleStatus,
@@ -221,36 +211,4 @@ class _WordStatusPresentation {
   final String label;
   final IconData icon;
   final Color accent;
-}
-
-class _MiniProgress extends StatelessWidget {
-  const _MiniProgress({
-    required this.label,
-    required this.value,
-    required this.accent,
-  });
-
-  final String label;
-  final int value;
-  final Color accent;
-
-  @override
-  Widget build(BuildContext context) {
-    final tokens = Theme.of(context).appTokens;
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: tokens.accentMutedSurface(accent),
-        borderRadius: BorderRadius.circular(999),
-      ),
-      child: Text(
-        '$label $value',
-        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-          color: accent,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
-    );
-  }
 }
