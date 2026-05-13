@@ -6,7 +6,7 @@
     "context_sentences": 1524,
     "guide_lessons": 76,
     "reading_lessons": 502,
-    "verb_lessons": 511
+    "verb_lessons": 519
   },
   "guide_sections": {
     "script": "Письмо і читання",
@@ -7156,6 +7156,62 @@
       "title": "Помирати",
       "infinitive": "לָמוּת",
       "transcription": "ламýт"
+    },
+    {
+      "path": "verbs/512_fly.md",
+      "id": "fly",
+      "title": "Летіти літаком",
+      "infinitive": "לָטוּס",
+      "transcription": "латýс"
+    },
+    {
+      "path": "verbs/513_kill.md",
+      "id": "kill",
+      "title": "Вбивати",
+      "infinitive": "לַהֲרֹג",
+      "transcription": "лагарóг"
+    },
+    {
+      "path": "verbs/514_shoot.md",
+      "id": "shoot",
+      "title": "Стріляти",
+      "infinitive": "לִירוֹת",
+      "transcription": "лірóт"
+    },
+    {
+      "path": "verbs/515_listen_audio.md",
+      "id": "listen_audio",
+      "title": "Слухати аудіо",
+      "infinitive": "לְהַאֲזִין",
+      "transcription": "легаазíн"
+    },
+    {
+      "path": "verbs/516_explode.md",
+      "id": "explode",
+      "title": "Вибухати",
+      "infinitive": "לְהִתְפּוֹצֵץ",
+      "transcription": "легітпоцéц"
+    },
+    {
+      "path": "verbs/517_cut_off.md",
+      "id": "cut_off",
+      "title": "Відрізати",
+      "infinitive": "לִגְזֹר",
+      "transcription": "лігзóр"
+    },
+    {
+      "path": "verbs/518_bend.md",
+      "id": "bend",
+      "title": "Згинати",
+      "infinitive": "לְכוֹפֵף",
+      "transcription": "лехофéф"
+    },
+    {
+      "path": "verbs/519_beat.md",
+      "id": "beat",
+      "title": "Бити",
+      "infinitive": "לְהַרְבִּיץ",
+      "transcription": "легарбíц"
     },
     {
       "path": "verbs/52_wait.md",
