@@ -1,67 +1,26 @@
 # AGENTS.md
 
 ## Scope
-- This repo is a Hebrew learning app whose active product is the Flutter client in `flutter_app/`.
-- Python code in the repo is backend, content tooling, validation, or generation code.
-
-## Source Of Truth
+- Active product: Flutter client in `flutter_app/`.
+- Python code is backend, content tooling, validation, or generation.
 - Durable learning content lives in `flutter_app/assets/learning/input/`.
-- For content work, follow the matching local `AGENTS.md`:
-  - `flutter_app/assets/learning/input/AGENTS.md`
-  - `flutter_app/assets/learning/input/guide/AGENTS.md`
-  - `flutter_app/assets/learning/input/reading/AGENTS.md`
-  - `flutter_app/assets/learning/input/verbs/AGENTS.md`
 
-## Working Defaults
-- Read the smallest relevant part of the codebase first.
-- Keep numbered lesson filenames, media filenames, and stable IDs unchanged unless the task explicitly requires coordinated renaming or migration.
-- Preserve UTF-8 for Hebrew content files.
-- Do not introduce a second source of truth for learning content unless the task explicitly defines the sync strategy.
-- Treat light and night mode as first-class app states for Flutter UI work.
-- For theme-related Flutter changes, prefer shared theme tokens and `ThemeData` over screen-local hardcoded light colors.
-- In Flutter night mode, avoid pure white text; use shared warm muted theme tokens for foreground colors.
+## Routing
+- Flutter UI/app flow: read `flutter_app/AGENTS.md`, then relevant files under `flutter_app/lib/`.
+- Learning content: read `flutter_app/assets/learning/input/AGENTS.md`, then local `guide/`, `reading/`, or `verbs/` `AGENTS.md` only when editing that area.
+- Backend/API: start in `backend/`.
+- Navigation aids: `docs/ai_map.md`, `docs/content_index.json`.
 
-## Where To Start
-- AI navigation map: `docs/ai_map.md`
-- Generated content index: `docs/content_index.json`
-- Validation entrypoint: `scripts/validate.ps1`
-- Flutter app entry: `flutter_app/lib/main.dart`
-- Flutter app root: `flutter_app/lib/app.dart`
-- Learning catalog generation: `flutter_app/tool/generate_learning_catalog.ps1`
-
-## Local Flutter Environment
-- On this workstation, Flutter SDK lives at `C:\src\Flutter\flutter`.
-- Prefer the explicit Flutter command path when automation might have a different PATH:
-  `C:\src\Flutter\flutter\bin\flutter.bat`.
-- In Codex, Flutter commands may need elevated permission because Flutter writes to
-  SDK cache/lock files outside the repo, especially
-  `C:\src\Flutter\flutter\bin\cache\lockfile`.
-- If `flutter --version`, `flutter analyze`, or `flutter test` time out inside
-  Codex, first suspect sandbox access to the SDK cache, not a project failure.
-- An Android emulator is often already running locally; that is expected.
-
-## Task Routing
-- Flutter UI or app flow: inspect `flutter_app/AGENTS.md` and then the relevant files under `flutter_app/lib/`.
-- Shared content, lessons, vocabulary, verbs, reading, contexts, media: inspect `flutter_app/assets/learning/input/` first.
-- Backend/API work: inspect `backend/` first.
+## Defaults
+- Read the smallest relevant slice first.
+- Keep numbered lesson filenames, media filenames, and stable IDs unchanged unless migration is explicit.
+- Preserve UTF-8 for Hebrew/Ukrainian content.
+- Do not add a second source of truth for learning content without a sync strategy.
+- Treat light and night mode as first-class Flutter states; use shared theme tokens/`ThemeData`, not screen-local hardcoded light colors.
+- In night mode, avoid pure white text; use shared warm muted foreground tokens.
 
 ## Validation
-- Preferred entrypoint:
-  - `powershell -ExecutionPolicy Bypass -File .\\scripts\\validate.ps1 <mode>`
-- Validation modes:
-  - `flutter`: Flutter analyze and tests.
-  - `content`: regenerate lesson catalog, regenerate content index, run Python tests.
-  - `python`: Python unittest suite only.
-  - `all`: content validation, then Flutter validation.
-- After Flutter code changes:
-  - `powershell -ExecutionPolicy Bypass -File .\\scripts\\validate.ps1 flutter`
-- After shared content changes:
-  - `powershell -ExecutionPolicy Bypass -File .\\scripts\\validate.ps1 content`
-- After Python tooling, backend, or content validation changes:
-  - `powershell -ExecutionPolicy Bypass -File .\\scripts\\validate.ps1 python`
-- Before a broad handoff or PR:
-  - `powershell -ExecutionPolicy Bypass -File .\\scripts\\validate.ps1 all`
-
-## Notes
-- Use the Flutter client as the main product surface.
-- Night mode uses a dark earthy palette around deep green, teal, olive, and brown accents; preserve that direction unless the task explicitly redefines the visual system.
+- Preferred entrypoint: `powershell -ExecutionPolicy Bypass -File .\scripts\validate.ps1 <flutter|content|python|all>`.
+- After Flutter, content, or Python/backend changes, run the matching mode when feasible.
+- Flutter SDK: `C:\src\Flutter\flutter`; prefer `C:\src\Flutter\flutter\bin\flutter.bat` in automation.
+- Flutter commands in Codex may need elevated permission because SDK cache/lock files live outside the repo.
