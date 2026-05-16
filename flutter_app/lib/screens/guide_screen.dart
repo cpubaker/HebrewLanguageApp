@@ -7,9 +7,10 @@ import '../models/learning_bundle.dart';
 import '../models/lesson_document.dart';
 import '../services/guide_detail_links.dart';
 import '../services/lesson_document_loader.dart';
-import '../services/lesson_status_updates.dart';
 import '../services/progress_snapshot.dart';
 import '../theme/app_theme.dart';
+import 'mixins/lesson_scroll_mixin.dart';
+import 'mixins/lesson_status_handler_mixin.dart';
 import 'widgets/app_section_card.dart';
 import 'widgets/guide/guide_adjacent_lessons_card.dart';
 import 'widgets/guide/guide_detail_header.dart';
@@ -40,41 +41,39 @@ class GuideScreen extends StatefulWidget {
   State<GuideScreen> createState() => _GuideScreenState();
 }
 
-class _GuideScreenState extends State<GuideScreen> {
+class _GuideScreenState extends State<GuideScreen>
+    with
+        LessonScrollMixin<GuideScreen>,
+        LessonStatusHandlerMixin<GuideScreen> {
   late final TextEditingController _searchController;
-  late final ScrollController _scrollController;
   late final FocusNode _searchFocusNode;
 
   final Map<String, LessonDocument> _lessonDocuments =
       <String, LessonDocument>{};
-  late Map<String, GuideLessonStatus> _lessonStatuses;
 
   String _query = '';
   final Set<String> _selectedSectionIds = <String>{};
   bool _searchVisible = false;
-  bool _showScrollToTop = false;
   bool _isLoadingLessonDocuments = false;
+
+  @override
+  Map<String, GuideLessonStatus> get widgetLessonStatuses =>
+      widget.lessonStatuses;
+
+  @override
+  LessonStatusChangeHandler get widgetOnStatusChanged => widget.onStatusChanged;
 
   @override
   void initState() {
     super.initState();
     _searchController = TextEditingController();
-    _scrollController = ScrollController()..addListener(_handleScroll);
     _searchFocusNode = FocusNode();
-    _lessonStatuses = Map<String, GuideLessonStatus>.from(
-      widget.lessonStatuses,
-    );
     unawaited(_primeLessonDocuments());
   }
 
   @override
   void didUpdateWidget(covariant GuideScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.lessonStatuses != widget.lessonStatuses) {
-      _lessonStatuses = Map<String, GuideLessonStatus>.from(
-        widget.lessonStatuses,
-      );
-    }
     if (oldWidget.lessons != widget.lessons) {
       final availableSectionIds = _availableSections
           .map((section) => section.id)
@@ -92,41 +91,8 @@ class _GuideScreenState extends State<GuideScreen> {
   @override
   void dispose() {
     _searchController.dispose();
-    _scrollController
-      ..removeListener(_handleScroll)
-      ..dispose();
     _searchFocusNode.dispose();
     super.dispose();
-  }
-
-  GuideLessonStatus _statusFor(LessonEntry lesson) {
-    return _lessonStatuses[lesson.progressKey] ?? GuideLessonStatus.unread;
-  }
-
-  Future<void> _handleLessonStatusSelected(
-    LessonEntry lesson,
-    GuideLessonStatus status,
-  ) async {
-    final lessonKey = lesson.progressKey;
-    final previousStatus = _lessonStatuses[lessonKey];
-    setState(() {
-      _lessonStatuses = applyLessonStatus(
-        _lessonStatuses,
-        lessonKey: lessonKey,
-        status: status,
-      );
-    });
-
-    final saved = await widget.onStatusChanged(lessonKey, status);
-    if (!saved && mounted) {
-      setState(() {
-        _lessonStatuses = restoreLessonStatus(
-          _lessonStatuses,
-          lessonKey: lessonKey,
-          previousStatus: previousStatus,
-        );
-      });
-    }
   }
 
   Future<void> _primeLessonDocuments() async {
@@ -207,33 +173,6 @@ class _GuideScreenState extends State<GuideScreen> {
     }
   }
 
-  void _handleScroll() {
-    if (!_scrollController.hasClients) {
-      return;
-    }
-
-    final shouldShow = _scrollController.offset > 240;
-    if (shouldShow == _showScrollToTop) {
-      return;
-    }
-
-    setState(() {
-      _showScrollToTop = shouldShow;
-    });
-  }
-
-  Future<void> _scrollToTop() async {
-    if (!_scrollController.hasClients) {
-      return;
-    }
-
-    await _scrollController.animateTo(
-      0,
-      duration: const Duration(milliseconds: 320),
-      curve: Curves.easeOutCubic,
-    );
-  }
-
   Future<void> _openSearch() async {
     if (!_searchVisible) {
       setState(() {
@@ -241,7 +180,7 @@ class _GuideScreenState extends State<GuideScreen> {
       });
     }
 
-    await _scrollToTop();
+    await scrollToTop();
     if (!mounted) {
       return;
     }
@@ -431,7 +370,7 @@ class _GuideScreenState extends State<GuideScreen> {
     return Stack(
       children: [
         ListView(
-          controller: _scrollController,
+          controller: scrollController,
           padding: tokens.pagePadding.copyWith(bottom: 108),
           children: [
             if (widget.topContent != null) ...[
@@ -479,11 +418,11 @@ class _GuideScreenState extends State<GuideScreen> {
                   padding: const EdgeInsets.only(bottom: 12),
                   child: GuideLessonCard(
                     lesson: lesson,
-                    status: _statusFor(lesson),
+                    status: statusFor(lesson),
                     resolvedTitle: _resolvedLessonTitle(lesson),
                     resolvedSummary: _resolvedLessonSummary(lesson),
                     onStatusSelected: (status) {
-                      unawaited(_handleLessonStatusSelected(lesson, status));
+                      unawaited(handleLessonStatusSelected(lesson, status));
                     },
                     onTap: () {
                       Navigator.of(context).push(
@@ -493,7 +432,7 @@ class _GuideScreenState extends State<GuideScreen> {
                             allLessons: widget.lessons,
                             documentLoader: widget.documentLoader,
                             lessonStatuses: widget.lessonStatuses,
-                            initialStatus: _statusFor(lesson),
+                            initialStatus: statusFor(lesson),
                             onStatusChanged: (status) {
                               return widget.onStatusChanged(
                                 lesson.progressKey,
@@ -518,17 +457,17 @@ class _GuideScreenState extends State<GuideScreen> {
             children: [
               AnimatedSlide(
                 duration: const Duration(milliseconds: 220),
-                offset: _showScrollToTop ? Offset.zero : const Offset(0, 0.25),
+                offset: showScrollToTop ? Offset.zero : const Offset(0, 0.25),
                 child: AnimatedOpacity(
                   duration: const Duration(milliseconds: 220),
-                  opacity: _showScrollToTop ? 1 : 0,
+                  opacity: showScrollToTop ? 1 : 0,
                   child: IgnorePointer(
-                    ignoring: !_showScrollToTop,
+                    ignoring: !showScrollToTop,
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 12),
                       child: FloatingActionButton.small(
                         heroTag: 'guideScrollToTop',
-                        onPressed: _scrollToTop,
+                        onPressed: scrollToTop,
                         backgroundColor: tokens.elevatedSurface,
                         foregroundColor: tokens.guideAccent,
                         child: const Icon(Icons.vertical_align_top_rounded),

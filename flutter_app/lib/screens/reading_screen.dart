@@ -6,9 +6,10 @@ import '../models/guide_lesson_status.dart';
 import '../models/learning_bundle.dart';
 import '../models/lesson_document.dart';
 import '../services/lesson_document_loader.dart';
-import '../services/lesson_status_updates.dart';
 import '../services/progress_snapshot.dart';
 import '../theme/app_theme.dart';
+import 'mixins/lesson_scroll_mixin.dart';
+import 'mixins/lesson_status_handler_mixin.dart';
 import 'reading_lesson_catalog.dart';
 import 'widgets/app_section_card.dart';
 import 'widgets/lesson_status_controls.dart';
@@ -34,45 +35,34 @@ class ReadingScreen extends StatefulWidget {
   State<ReadingScreen> createState() => _ReadingScreenState();
 }
 
-class _ReadingScreenState extends State<ReadingScreen> {
-  late final ScrollController _scrollController;
-
+class _ReadingScreenState extends State<ReadingScreen>
+    with
+        LessonScrollMixin<ReadingScreen>,
+        LessonStatusHandlerMixin<ReadingScreen> {
   final Map<String, String> _lessonTitles = <String, String>{};
-  late Map<String, GuideLessonStatus> _lessonStatuses;
 
   final Set<String> _selectedLevelKeys = <String>{};
   bool _isLoadingLessonTitles = false;
-  bool _showScrollToTop = false;
+
+  @override
+  Map<String, GuideLessonStatus> get widgetLessonStatuses =>
+      widget.lessonStatuses;
+
+  @override
+  LessonStatusChangeHandler get widgetOnStatusChanged => widget.onStatusChanged;
 
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController()..addListener(_handleScroll);
-    _lessonStatuses = Map<String, GuideLessonStatus>.from(
-      widget.lessonStatuses,
-    );
     unawaited(_primeLessonTitles());
   }
 
   @override
   void didUpdateWidget(covariant ReadingScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.lessonStatuses != widget.lessonStatuses) {
-      _lessonStatuses = Map<String, GuideLessonStatus>.from(
-        widget.lessonStatuses,
-      );
-    }
     if (oldWidget.lessons != widget.lessons) {
       unawaited(_primeLessonTitles());
     }
-  }
-
-  @override
-  void dispose() {
-    _scrollController
-      ..removeListener(_handleScroll)
-      ..dispose();
-    super.dispose();
   }
 
   Future<void> _primeLessonTitles() async {
@@ -138,33 +128,6 @@ class _ReadingScreenState extends State<ReadingScreen> {
     }
   }
 
-  void _handleScroll() {
-    if (!_scrollController.hasClients) {
-      return;
-    }
-
-    final shouldShow = _scrollController.offset > 240;
-    if (shouldShow == _showScrollToTop) {
-      return;
-    }
-
-    setState(() {
-      _showScrollToTop = shouldShow;
-    });
-  }
-
-  Future<void> _scrollToTop() async {
-    if (!_scrollController.hasClients) {
-      return;
-    }
-
-    await _scrollController.animateTo(
-      0,
-      duration: const Duration(milliseconds: 320),
-      curve: Curves.easeOutCubic,
-    );
-  }
-
   String _resolvedLessonTitle(LessonEntry lesson) {
     final cachedTitle = _lessonTitles[lesson.assetPath];
     if (cachedTitle != null && cachedTitle.trim().isNotEmpty) {
@@ -196,36 +159,6 @@ class _ReadingScreenState extends State<ReadingScreen> {
     });
   }
 
-  GuideLessonStatus _statusFor(LessonEntry lesson) {
-    return _lessonStatuses[lesson.progressKey] ?? GuideLessonStatus.unread;
-  }
-
-  Future<void> _handleLessonStatusSelected(
-    LessonEntry lesson,
-    GuideLessonStatus status,
-  ) async {
-    final lessonKey = lesson.progressKey;
-    final previousStatus = _lessonStatuses[lessonKey];
-    setState(() {
-      _lessonStatuses = applyLessonStatus(
-        _lessonStatuses,
-        lessonKey: lessonKey,
-        status: status,
-      );
-    });
-
-    final saved = await widget.onStatusChanged(lessonKey, status);
-    if (!saved && mounted) {
-      setState(() {
-        _lessonStatuses = restoreLessonStatus(
-          _lessonStatuses,
-          lessonKey: lessonKey,
-          previousStatus: previousStatus,
-        );
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -249,7 +182,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
     return Stack(
       children: [
         ListView(
-          controller: _scrollController,
+          controller: scrollController,
           padding: tokens.pagePadding.copyWith(bottom: 108),
           children: [
             if (widget.topContent != null) ...[
@@ -313,8 +246,8 @@ class _ReadingScreenState extends State<ReadingScreen> {
                 child: _ReadingLevelSection(
                   group: group,
                   documentLoader: widget.documentLoader,
-                  statusFor: _statusFor,
-                  onStatusChanged: _handleLessonStatusSelected,
+                  statusFor: statusFor,
+                  onStatusChanged: handleLessonStatusSelected,
                   titleResolver: _resolvedLessonTitle,
                 ),
               ),
@@ -330,17 +263,17 @@ class _ReadingScreenState extends State<ReadingScreen> {
             children: [
               AnimatedSlide(
                 duration: const Duration(milliseconds: 220),
-                offset: _showScrollToTop ? Offset.zero : const Offset(0, 0.25),
+                offset: showScrollToTop ? Offset.zero : const Offset(0, 0.25),
                 child: AnimatedOpacity(
                   duration: const Duration(milliseconds: 220),
-                  opacity: _showScrollToTop ? 1 : 0,
+                  opacity: showScrollToTop ? 1 : 0,
                   child: IgnorePointer(
-                    ignoring: !_showScrollToTop,
+                    ignoring: !showScrollToTop,
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 12),
                       child: FloatingActionButton.small(
                         heroTag: 'readingScrollToTop',
-                        onPressed: _scrollToTop,
+                        onPressed: scrollToTop,
                         backgroundColor: tokens.elevatedSurface,
                         foregroundColor: tokens.readingAccent,
                         child: const Icon(Icons.vertical_align_top_rounded),
