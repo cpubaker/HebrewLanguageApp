@@ -29,5 +29,6 @@
 - Favor full morphology over compact summaries.
 
 ## Validation
-- After verb content changes, run `python scripts/audit_verb_templates.py`.
+- After verb content changes, run `python scripts/verb_audit.py templates`
+  (use `verb_audit.py all` to also check duplicates and transliterations).
 - If generated lesson catalogs are affected, regenerate them before Flutter tests.
