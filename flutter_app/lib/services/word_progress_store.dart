@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/learning_word.dart';
+import 'json_value_readers.dart';
 
 class StoredWordProgress {
   const StoredWordProgress({
@@ -24,14 +25,14 @@ class StoredWordProgress {
   ) {
     return StoredWordProgress(
       wordId: wordId,
-      correct: _readNonNegativeInt(json['correct']),
-      wrong: _readNonNegativeInt(json['wrong']),
-      lastCorrect: _readOptionalString(json['last_correct']),
-      lastReviewedAt: _readOptionalString(json['last_reviewed_at']),
-      lastReviewCorrect: _readOptionalBool(json['last_review_correct']),
-      writingCorrect: _readNonNegativeInt(json['writing_correct']),
-      writingWrong: _readNonNegativeInt(json['writing_wrong']),
-      writingLastCorrect: _readOptionalString(json['writing_last_correct']),
+      correct: readNonNegativeInt(json['correct']),
+      wrong: readNonNegativeInt(json['wrong']),
+      lastCorrect: readOptionalString(json['last_correct']),
+      lastReviewedAt: readOptionalString(json['last_reviewed_at']),
+      lastReviewCorrect: readOptionalBool(json['last_review_correct']),
+      writingCorrect: readNonNegativeInt(json['writing_correct']),
+      writingWrong: readNonNegativeInt(json['writing_wrong']),
+      writingLastCorrect: readOptionalString(json['writing_last_correct']),
     );
   }
 
@@ -58,44 +59,6 @@ class StoredWordProgress {
       'writing_wrong': writingWrong,
       if (writingLastCorrect != null && writingLastCorrect!.trim().isNotEmpty)
         'writing_last_correct': writingLastCorrect,
-    };
-  }
-
-  static int _readNonNegativeInt(Object? value) {
-    final parsedValue = switch (value) {
-      final num numericValue => numericValue.toInt(),
-      final String textValue => int.tryParse(textValue.trim()),
-      _ => null,
-    };
-
-    if (parsedValue == null || parsedValue < 0) {
-      return 0;
-    }
-
-    return parsedValue;
-  }
-
-  static String? _readOptionalString(Object? value) {
-    if (value is! String) {
-      return null;
-    }
-
-    final trimmedValue = value.trim();
-    return trimmedValue.isEmpty ? null : trimmedValue;
-  }
-
-  static bool? _readOptionalBool(Object? value) {
-    return switch (value) {
-      final bool booleanValue => booleanValue,
-      final num numericValue => numericValue != 0,
-      final String textValue => switch (textValue.trim().toLowerCase()) {
-        'true' => true,
-        'false' => false,
-        '1' => true,
-        '0' => false,
-        _ => null,
-      },
-      _ => null,
     };
   }
 }

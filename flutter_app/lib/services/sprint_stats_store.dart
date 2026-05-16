@@ -4,6 +4,8 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'json_value_readers.dart';
+
 @immutable
 class SprintStats {
   const SprintStats({
@@ -15,14 +17,14 @@ class SprintStats {
   const SprintStats.empty() : sessions = 0, bestCorrect = 0, totalCorrect = 0;
 
   factory SprintStats.fromJson(Map<String, dynamic> json) {
-    final sessions = _readNonNegativeInt(json['sessions']);
+    final sessions = readNonNegativeInt(json['sessions']);
     if (sessions == 0) {
       return const SprintStats.empty();
     }
 
-    final bestCorrect = _readNonNegativeInt(json['best_correct']);
+    final bestCorrect = readNonNegativeInt(json['best_correct']);
     final totalCorrect = max(
-      _readNonNegativeInt(json['total_correct']),
+      readNonNegativeInt(json['total_correct']),
       bestCorrect,
     );
 
@@ -56,20 +58,6 @@ class SprintStats {
       'best_correct': bestCorrect,
       'total_correct': totalCorrect,
     };
-  }
-
-  static int _readNonNegativeInt(Object? value) {
-    final parsedValue = switch (value) {
-      final num numericValue => numericValue.toInt(),
-      final String textValue => int.tryParse(textValue.trim()),
-      _ => null,
-    };
-
-    if (parsedValue == null || parsedValue < 0) {
-      return 0;
-    }
-
-    return parsedValue;
   }
 }
 

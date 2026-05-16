@@ -1,11 +1,9 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../models/generated_practice_text.dart';
 import '../models/learning_word.dart';
 import 'ai_context_transport.dart';
+import 'shared_preferences_json_map_store.dart';
 
 class AiPracticeTextRequest {
   const AiPracticeTextRequest({
@@ -92,56 +90,25 @@ abstract interface class AiPracticeTextCacheStore {
 
 class SharedPreferencesAiPracticeTextCacheStore
     implements AiPracticeTextCacheStore {
-  const SharedPreferencesAiPracticeTextCacheStore({
-    this.cacheKey = 'ai_practice_texts_cache_v1',
-  });
+  SharedPreferencesAiPracticeTextCacheStore({
+    String cacheKey = 'ai_practice_texts_cache_v1',
+  }) : _store = SharedPreferencesJsonMapStore<GeneratedPracticeText>(
+         preferencesKey: cacheKey,
+         fromJson: GeneratedPracticeText.fromJson,
+         toJson: (text) => text.toJson(),
+         isUsable: _isUsableText,
+         debugLabel: 'AI practice text cache',
+       );
 
-  final String cacheKey;
+  final SharedPreferencesJsonMapStore<GeneratedPracticeText> _store;
 
   @override
-  Future<Map<String, List<GeneratedPracticeText>>> load() async {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString(cacheKey);
-    if (raw == null || raw.trim().isEmpty) {
-      return const <String, List<GeneratedPracticeText>>{};
-    }
-
-    try {
-      final decoded = jsonDecode(raw) as Map<String, dynamic>;
-      return decoded.map(
-        (requestKey, value) => MapEntry(
-          requestKey,
-          (value as List<dynamic>? ?? const <dynamic>[])
-              .whereType<Map<String, dynamic>>()
-              .map(GeneratedPracticeText.fromJson)
-              .where(_isUsableText)
-              .toList(growable: false),
-        ),
-      );
-    } on Object catch (error) {
-      debugPrint('Failed to load AI practice text cache: $error');
-      return const <String, List<GeneratedPracticeText>>{};
-    }
-  }
+  Future<Map<String, List<GeneratedPracticeText>>> load() => _store.load();
 
   @override
   Future<void> save(
     Map<String, List<GeneratedPracticeText>> textsByRequestKey,
-  ) async {
-    final prefs = await SharedPreferences.getInstance();
-    final encoded = jsonEncode(
-      textsByRequestKey.map(
-        (requestKey, texts) => MapEntry(
-          requestKey,
-          texts
-              .where(_isUsableText)
-              .map((text) => text.toJson())
-              .toList(growable: false),
-        ),
-      ),
-    );
-    await prefs.setString(cacheKey, encoded);
-  }
+  ) => _store.save(textsByRequestKey);
 }
 
 abstract interface class AiPracticeTextBackendClient {
@@ -261,14 +228,14 @@ AiPracticeTextService createDefaultAiPracticeTextService() {
   const endpointValue = String.fromEnvironment('AI_PRACTICE_TEXTS_ENDPOINT');
   final endpoint = Uri.tryParse(endpointValue);
   if (endpoint == null || !endpoint.hasScheme || !endpoint.hasAuthority) {
-    return const CachedAiPracticeTextService(
+    return CachedAiPracticeTextService(
       cacheStore: SharedPreferencesAiPracticeTextCacheStore(),
-      backendClient: NoopAiPracticeTextBackendClient(),
+      backendClient: const NoopAiPracticeTextBackendClient(),
     );
   }
 
   return CachedAiPracticeTextService(
-    cacheStore: const SharedPreferencesAiPracticeTextCacheStore(),
+    cacheStore: SharedPreferencesAiPracticeTextCacheStore(),
     backendClient: EndpointAiPracticeTextBackendClient(endpoint: endpoint),
   );
 }

@@ -1,11 +1,9 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../models/learning_context.dart';
 import '../models/learning_word.dart';
 import 'ai_context_transport.dart';
+import 'shared_preferences_json_map_store.dart';
 
 abstract interface class AiContextService {
   Future<Map<String, List<LearningContext>>> contextsForWords(
@@ -83,56 +81,24 @@ abstract interface class AiContextCacheStore {
 }
 
 class SharedPreferencesAiContextCacheStore implements AiContextCacheStore {
-  const SharedPreferencesAiContextCacheStore({
-    this.cacheKey = 'ai_word_contexts_cache_v1',
-  });
+  SharedPreferencesAiContextCacheStore({
+    String cacheKey = 'ai_word_contexts_cache_v1',
+  }) : _store = SharedPreferencesJsonMapStore<LearningContext>(
+         preferencesKey: cacheKey,
+         fromJson: LearningContext.fromJson,
+         toJson: (context) => context.toJson(),
+         isUsable: _isUsableContext,
+         debugLabel: 'AI context cache',
+       );
 
-  final String cacheKey;
-
-  @override
-  Future<Map<String, List<LearningContext>>> load() async {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString(cacheKey);
-    if (raw == null || raw.trim().isEmpty) {
-      return const <String, List<LearningContext>>{};
-    }
-
-    try {
-      final decoded = jsonDecode(raw) as Map<String, dynamic>;
-      return decoded.map(
-        (wordId, value) => MapEntry(
-          wordId,
-          (value as List<dynamic>? ?? const <dynamic>[])
-              .whereType<Map<String, dynamic>>()
-              .map(LearningContext.fromJson)
-              .where(_isUsableContext)
-              .toList(growable: false),
-        ),
-      );
-    } on Object catch (error) {
-      debugPrint('Failed to load AI context cache: $error');
-      return const <String, List<LearningContext>>{};
-    }
-  }
+  final SharedPreferencesJsonMapStore<LearningContext> _store;
 
   @override
-  Future<void> save(Map<String, List<LearningContext>> contextsByWordId) async {
-    final prefs = await SharedPreferences.getInstance();
-    final encoded = jsonEncode(
-      contextsByWordId.map(
-        (wordId, contexts) => MapEntry(
-          wordId,
-          contexts
-              .where(_isUsableContext)
-              .map((context) {
-                return context.toJson();
-              })
-              .toList(growable: false),
-        ),
-      ),
-    );
-    await prefs.setString(cacheKey, encoded);
-  }
+  Future<Map<String, List<LearningContext>>> load() => _store.load();
+
+  @override
+  Future<void> save(Map<String, List<LearningContext>> contextsByWordId) =>
+      _store.save(contextsByWordId);
 }
 
 abstract interface class AiContextBackendClient {
@@ -253,14 +219,14 @@ AiContextService createDefaultAiContextService() {
   const endpointValue = String.fromEnvironment('AI_CONTEXTS_ENDPOINT');
   final endpoint = Uri.tryParse(endpointValue);
   if (endpoint == null || !endpoint.hasScheme || !endpoint.hasAuthority) {
-    return const CachedAiContextService(
+    return CachedAiContextService(
       cacheStore: SharedPreferencesAiContextCacheStore(),
-      backendClient: NoopAiContextBackendClient(),
+      backendClient: const NoopAiContextBackendClient(),
     );
   }
 
   return CachedAiContextService(
-    cacheStore: const SharedPreferencesAiContextCacheStore(),
+    cacheStore: SharedPreferencesAiContextCacheStore(),
     backendClient: EndpointAiContextBackendClient(endpoint: endpoint),
   );
 }
