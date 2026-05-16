@@ -143,9 +143,8 @@ then open only the files needed for the task.
 - Content integrity tests: `tests/test_content_integrity.py`.
 - AI API tests: `tests/test_ai_api.py`.
 - Validation entrypoint: `scripts/validate.ps1`.
-- Verb audits: `scripts/audit_verb_templates.py`,
-  `scripts/audit_verb_duplicates.py`,
-  `scripts/audit_verb_transliterations.py`.
+- Verb audits: `scripts/verb_audit.py` with subcommands
+  `templates`, `duplicates`, `transliterations`, or `all`.
 
 ## Search Recipes
 
@@ -174,8 +173,8 @@ then open only the files needed for the task.
 - After Python backend/tooling/content validation changes:
   `powershell -ExecutionPolicy Bypass -File .\scripts\validate.ps1 python`.
 - After verb content changes:
-  `python scripts/audit_verb_templates.py`, then regenerate the lesson catalog
-  if lesson files changed.
+  `python scripts/verb_audit.py templates` (or `verb_audit.py all` for a
+  full sweep), then regenerate the lesson catalog if lesson files changed.
 - Last known Flutter validation on 2026-05-06: Flutter 3.41.6, Dart 3.11.4,
   `flutter analyze` passed, `flutter test` passed with 198 tests.
 - `flutter doctor -v` still reports Android `cmdline-tools`/license warnings
