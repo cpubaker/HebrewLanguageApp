@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import sys
 import time
 import unicodedata
@@ -246,7 +247,7 @@ def collect_jobs(
             continue
 
         raw_text = TTS_TEXT_OVERRIDES.get(word_id, entry.get("hebrew", ""))
-        text = unicodedata.normalize("NFC", str(raw_text).strip())
+        text = unicodedata.normalize("NFC", normalize_tts_text(str(raw_text)))
         if not text:
             continue
 
@@ -265,6 +266,10 @@ def collect_jobs(
         )
 
     return jobs, skipped_existing, skipped_without_audio
+
+
+def normalize_tts_text(text: str) -> str:
+    return re.sub(r"\s*/\s*", ", ", text.strip())
 
 
 def synthesize_speech(
