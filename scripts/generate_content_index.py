@@ -10,6 +10,7 @@ from typing import Any
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_INPUT_ROOT = PROJECT_ROOT / "flutter_app" / "assets" / "learning" / "input"
 DEFAULT_OUTPUT_PATH = PROJECT_ROOT / "docs" / "content_index.json"
+DEFAULT_COMPACT_OUTPUT_PATH = PROJECT_ROOT / "docs" / "content_index.compact.json"
 SCHEMA_VERSION = 1
 
 
@@ -58,6 +59,7 @@ def write_content_index(
     *,
     input_root: Path = DEFAULT_INPUT_ROOT,
     output_path: Path = DEFAULT_OUTPUT_PATH,
+    compact_output_path: Path | None = DEFAULT_COMPACT_OUTPUT_PATH,
 ) -> None:
     content_index = build_content_index(input_root)
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -65,6 +67,84 @@ def write_content_index(
         json.dumps(content_index, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
+
+    if compact_output_path is not None:
+        compact_output_path.parent.mkdir(parents=True, exist_ok=True)
+        compact_output_path.write_text(
+            _serialize_compact(build_compact_content_index(content_index)),
+            encoding="utf-8",
+        )
+
+
+def build_compact_content_index(content_index: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "schema_version": content_index.get("schema_version", SCHEMA_VERSION),
+        "source_root": content_index.get("source_root", ""),
+        "counts": content_index.get("counts", {}),
+        "guide_sections": content_index.get("guide_sections", {}),
+        "guide_lessons": [
+            _compact_guide_lesson(lesson)
+            for lesson in content_index.get("guide_lessons", [])
+        ],
+        "reading_lessons": [
+            _compact_reading_lesson(lesson)
+            for lesson in content_index.get("reading_lessons", [])
+        ],
+        "verb_lessons": [
+            _compact_verb_lesson(lesson)
+            for lesson in content_index.get("verb_lessons", [])
+        ],
+    }
+
+
+def _compact_guide_lesson(lesson: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "id": lesson.get("id", ""),
+        "path": lesson.get("path", ""),
+        "title": lesson.get("title", ""),
+        "section": lesson.get("section", ""),
+    }
+
+
+def _compact_reading_lesson(lesson: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "path": lesson.get("path", ""),
+        "level": lesson.get("level", ""),
+        "title": lesson.get("title", ""),
+    }
+
+
+def _compact_verb_lesson(lesson: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "id": lesson.get("id", ""),
+        "path": lesson.get("path", ""),
+        "title": lesson.get("title", ""),
+        "infinitive": lesson.get("infinitive", ""),
+    }
+
+
+def _serialize_compact(payload: dict[str, Any]) -> str:
+    lines: list[str] = ["{"]
+    items = list(payload.items())
+    for index, (key, value) in enumerate(items):
+        trailing = "," if index < len(items) - 1 else ""
+        key_repr = json.dumps(key, ensure_ascii=False)
+        if isinstance(value, list) and value and isinstance(value[0], dict):
+            lines.append(f"  {key_repr}: [")
+            for item_index, item in enumerate(value):
+                item_trailing = "," if item_index < len(value) - 1 else ""
+                item_repr = json.dumps(
+                    item, ensure_ascii=False, separators=(",", ":")
+                )
+                lines.append(f"    {item_repr}{item_trailing}")
+            lines.append(f"  ]{trailing}")
+        else:
+            value_repr = json.dumps(
+                value, ensure_ascii=False, separators=(",", ":")
+            )
+            lines.append(f"  {key_repr}: {value_repr}{trailing}")
+    lines.append("}")
+    return "\n".join(lines) + "\n"
 
 
 def _guide_lessons(
@@ -249,13 +329,24 @@ def build_parser() -> argparse.ArgumentParser:
         default=DEFAULT_OUTPUT_PATH,
         help="Output JSON path.",
     )
+    parser.add_argument(
+        "--compact-output",
+        type=Path,
+        default=DEFAULT_COMPACT_OUTPUT_PATH,
+        help="Compact lookup JSON path (cheap to read for AI agents).",
+    )
     return parser
 
 
 def main() -> int:
     args = build_parser().parse_args()
-    write_content_index(input_root=args.input_root, output_path=args.output)
+    write_content_index(
+        input_root=args.input_root,
+        output_path=args.output,
+        compact_output_path=args.compact_output,
+    )
     print(f"Generated content index at {args.output}")
+    print(f"Generated compact index at {args.compact_output}")
     return 0
 
 

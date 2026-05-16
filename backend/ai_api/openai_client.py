@@ -12,7 +12,16 @@ OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses"
 
 
 class OpenAIClientError(RuntimeError):
-    pass
+    def __init__(
+        self,
+        message: str,
+        *,
+        upstream_status: int | None = None,
+        upstream_body: str | None = None,
+    ) -> None:
+        super().__init__(message)
+        self.upstream_status = upstream_status
+        self.upstream_body = upstream_body
 
 
 class OpenAIResponsesClient:
@@ -99,12 +108,14 @@ class OpenAIResponsesClient:
             ) as response:
                 raw_body = response.read().decode("utf-8")
         except urllib.error.HTTPError as error:
-            error_body = error.read().decode("utf-8", errors="replace")
+            upstream_body = error.read().decode("utf-8", errors="replace")
             raise OpenAIClientError(
-                f"OpenAI API returned {error.code}: {error_body}"
+                f"OpenAI API returned status {error.code}.",
+                upstream_status=error.code,
+                upstream_body=upstream_body,
             ) from error
         except urllib.error.URLError as error:
-            raise OpenAIClientError(f"OpenAI API request failed: {error}") from error
+            raise OpenAIClientError("OpenAI API request failed.") from error
 
         try:
             response_payload = json.loads(raw_body)
