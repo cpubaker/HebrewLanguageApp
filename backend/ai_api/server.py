@@ -18,9 +18,11 @@ from .content import (
     normalize_word_context_request,
 )
 from .openai_client import DEFAULT_MODEL, OpenAIClientError, OpenAIResponsesClient
+from .rate_limiter import RateLimiter
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CACHE_PATH = PROJECT_ROOT / ".cache" / "ai_api_cache.json"
+DEFAULT_RATE_LIMIT_PER_MINUTE = 30
 
 
 class AiApiApplication:
@@ -70,7 +72,14 @@ class AiApiApplication:
         return response_payload
 
 
-def create_handler(application: AiApiApplication) -> type[BaseHTTPRequestHandler]:
+def create_handler(
+    application: AiApiApplication,
+    *,
+    allowed_origins: frozenset[str] = frozenset(),
+    rate_limiter: RateLimiter | None = None,
+) -> type[BaseHTTPRequestHandler]:
+    limiter = rate_limiter or RateLimiter(max_requests=0, window_seconds=60.0)
+
     class AiApiRequestHandler(BaseHTTPRequestHandler):
         routes: dict[str, Callable[[dict[str, Any]], dict[str, Any]]] = {
             "/ai/word-contexts": application.handle_word_contexts,
@@ -93,6 +102,13 @@ def create_handler(application: AiApiApplication) -> type[BaseHTTPRequestHandler
                 self._send_error(HTTPStatus.NOT_FOUND, "Unknown endpoint.")
                 return
 
+            client_id = self._client_id()
+            if not limiter.allow(client_id):
+                self._send_error(
+                    HTTPStatus.TOO_MANY_REQUESTS, "Rate limit exceeded."
+                )
+                return
+
             try:
                 payload = self._read_json_body()
                 response_payload = route(payload)
@@ -100,7 +116,13 @@ def create_handler(application: AiApiApplication) -> type[BaseHTTPRequestHandler
                 self._send_error(HTTPStatus.BAD_REQUEST, str(error))
                 return
             except OpenAIClientError as error:
-                self._send_error(HTTPStatus.BAD_GATEWAY, str(error))
+                self.log_error(
+                    "OpenAI upstream error: %s (status=%s) body=%s",
+                    error,
+                    error.upstream_status,
+                    (error.upstream_body or "")[:500],
+                )
+                self._send_error(HTTPStatus.BAD_GATEWAY, "AI upstream error.")
                 return
             except ValueError as error:
                 self._send_error(HTTPStatus.BAD_REQUEST, str(error))
@@ -112,6 +134,11 @@ def create_handler(application: AiApiApplication) -> type[BaseHTTPRequestHandler
             if os.getenv("AI_API_QUIET_LOGS") == "1":
                 return
             super().log_message(format, *args)
+
+        def _client_id(self) -> str:
+            if self.client_address:
+                return self.client_address[0]
+            return "unknown"
 
         def _read_json_body(self) -> dict[str, Any]:
             content_length = int(self.headers.get("Content-Length", "0"))
@@ -149,10 +176,19 @@ def create_handler(application: AiApiApplication) -> type[BaseHTTPRequestHandler
             self._send_json({"error": message}, status=status)
 
         def _send_common_headers(self) -> None:
-            self.send_header("Access-Control-Allow-Origin", "*")
+            self._send_cors_headers()
+            self.send_header("Cache-Control", "no-store")
+
+        def _send_cors_headers(self) -> None:
+            if not allowed_origins:
+                return
+            origin = self.headers.get("Origin", "").strip()
+            if not origin or origin not in allowed_origins:
+                return
+            self.send_header("Access-Control-Allow-Origin", origin)
             self.send_header("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
             self.send_header("Access-Control-Allow-Headers", "Content-Type")
-            self.send_header("Cache-Control", "no-store")
+            self.send_header("Vary", "Origin")
 
     return AiApiRequestHandler
 
@@ -165,6 +201,12 @@ def build_application(
     return AiApiApplication(
         cache=JsonDiskCache(cache_path or DEFAULT_CACHE_PATH),
         openai_client=OpenAIResponsesClient(model=model or DEFAULT_MODEL),
+    )
+
+
+def _parse_allowed_origins(raw: str) -> frozenset[str]:
+    return frozenset(
+        origin.strip() for origin in raw.split(",") if origin.strip()
     )
 
 
@@ -182,17 +224,42 @@ def main() -> None:
         default=Path(os.getenv("AI_API_CACHE_PATH", DEFAULT_CACHE_PATH)),
     )
     parser.add_argument("--model", default=os.getenv("OPENAI_MODEL", DEFAULT_MODEL))
+    parser.add_argument(
+        "--allowed-origins",
+        default=os.getenv("AI_API_CORS_ALLOWED_ORIGINS", ""),
+        help="Comma-separated list of allowed CORS origins. Empty disables CORS.",
+    )
+    parser.add_argument(
+        "--rate-limit-per-minute",
+        type=int,
+        default=int(
+            os.getenv(
+                "AI_API_RATE_LIMIT_PER_MINUTE", str(DEFAULT_RATE_LIMIT_PER_MINUTE)
+            )
+        ),
+        help="Per-IP request budget per minute on AI endpoints. 0 disables limiting.",
+    )
     args = parser.parse_args()
 
     application = build_application(cache_path=args.cache_path, model=args.model)
-    handler = create_handler(application)
+    handler = create_handler(
+        application,
+        allowed_origins=_parse_allowed_origins(args.allowed_origins),
+        rate_limiter=RateLimiter(
+            max_requests=args.rate_limit_per_minute, window_seconds=60.0
+        ),
+    )
     server = ThreadingHTTPServer((args.host, args.port), handler)
     print(f"AI API listening on http://{args.host}:{args.port}")
     print(f"Cache: {args.cache_path}")
     print(f"Model: {args.model}")
+    print(f"Rate limit: {args.rate_limit_per_minute}/min per IP")
+    print(
+        "Allowed CORS origins: "
+        + (args.allowed_origins if args.allowed_origins else "(none)")
+    )
     server.serve_forever()
 
 
 if __name__ == "__main__":
     main()
-

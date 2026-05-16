@@ -3,12 +3,16 @@ import re
 import unittest
 from pathlib import Path
 
-from scripts.generate_content_index import build_content_index
+from scripts.generate_content_index import (
+    build_compact_content_index,
+    build_content_index,
+)
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 INPUT_ROOT = PROJECT_ROOT / "flutter_app" / "assets" / "learning" / "input"
 CONTENT_INDEX_PATH = PROJECT_ROOT / "docs" / "content_index.json"
+COMPACT_CONTENT_INDEX_PATH = PROJECT_ROOT / "docs" / "content_index.compact.json"
 READING_LEVELS = {
     "beginner",
     "pre-intermediate",
@@ -148,6 +152,12 @@ class ContentIntegrityTests(unittest.TestCase):
         content_index = _load_json(CONTENT_INDEX_PATH)
 
         self.assertEqual(content_index, build_content_index(INPUT_ROOT))
+
+    def test_compact_content_index_is_current(self):
+        compact_index = _load_json(COMPACT_CONTENT_INDEX_PATH)
+        expected = build_compact_content_index(build_content_index(INPUT_ROOT))
+
+        self.assertEqual(compact_index, expected)
 
 
 def _load_json(path):

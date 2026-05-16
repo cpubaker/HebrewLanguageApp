@@ -9,7 +9,14 @@
 - Flutter UI/app flow: read `flutter_app/AGENTS.md`, then relevant files under `flutter_app/lib/`.
 - Learning content: read `flutter_app/assets/learning/input/AGENTS.md`, then local `guide/`, `reading/`, or `verbs/` `AGENTS.md` only when editing that area.
 - Backend/API: start in `backend/`.
-- Navigation aids: `docs/ai_map.md`, `docs/content_index.json`.
+- Navigation aids: `docs/ai_map.md` for code paths; `docs/content_index.compact.json` for content lookups.
+
+## Read order
+1. This file (root rules).
+2. For content lookups (find a lesson, word, or section): `docs/content_index.compact.json` (≈1100 lines). Open the full `docs/content_index.json` only when you need per-record metadata absent from the compact index (aliases, related_ids, full vocabulary, transcription).
+3. For code navigation: `docs/ai_map.md`.
+4. Then the scope-specific `AGENTS.md` (Flutter, content area, etc.).
+5. Open only the file(s) you will actually edit. Do not preload the full `docs/content_index.json` by default.
 
 ## Defaults
 - Read the smallest relevant slice first.
