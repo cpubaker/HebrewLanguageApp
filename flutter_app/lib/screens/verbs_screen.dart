@@ -9,6 +9,7 @@ import '../services/lesson_document_loader.dart';
 import '../services/verb_audio_player.dart';
 import '../theme/app_theme.dart';
 import 'audio_playback_feedback.dart';
+import 'mixins/lesson_scroll_mixin.dart';
 import 'widgets/app_action_wrap.dart';
 import 'widgets/app_page_header.dart';
 import 'widgets/app_search_field.dart';
@@ -36,22 +37,20 @@ class VerbsScreen extends StatefulWidget {
   State<VerbsScreen> createState() => _VerbsScreenState();
 }
 
-class _VerbsScreenState extends State<VerbsScreen> {
+class _VerbsScreenState extends State<VerbsScreen>
+    with LessonScrollMixin<VerbsScreen> {
   late final TextEditingController _searchController;
-  late final ScrollController _scrollController;
   late final FocusNode _searchFocusNode;
 
   final Map<String, String> _lessonTitles = <String, String>{};
 
   String _query = '';
-  bool _showScrollToTop = false;
   bool _isLoadingLessonTitles = false;
 
   @override
   void initState() {
     super.initState();
     _searchController = TextEditingController();
-    _scrollController = ScrollController()..addListener(_handleScroll);
     _searchFocusNode = FocusNode();
     unawaited(_primeLessonTitles());
   }
@@ -67,9 +66,6 @@ class _VerbsScreenState extends State<VerbsScreen> {
   @override
   void dispose() {
     _searchController.dispose();
-    _scrollController
-      ..removeListener(_handleScroll)
-      ..dispose();
     _searchFocusNode.dispose();
     super.dispose();
   }
@@ -150,35 +146,8 @@ class _VerbsScreenState extends State<VerbsScreen> {
     }
   }
 
-  void _handleScroll() {
-    if (!_scrollController.hasClients) {
-      return;
-    }
-
-    final shouldShow = _scrollController.offset > 240;
-    if (shouldShow == _showScrollToTop) {
-      return;
-    }
-
-    setState(() {
-      _showScrollToTop = shouldShow;
-    });
-  }
-
-  Future<void> _scrollToTop() async {
-    if (!_scrollController.hasClients) {
-      return;
-    }
-
-    await _scrollController.animateTo(
-      0,
-      duration: const Duration(milliseconds: 320),
-      curve: Curves.easeOutCubic,
-    );
-  }
-
   Future<void> _openSearch() async {
-    await _scrollToTop();
+    await scrollToTop();
     if (!mounted) {
       return;
     }
@@ -226,7 +195,7 @@ class _VerbsScreenState extends State<VerbsScreen> {
     return Stack(
       children: [
         ListView(
-          controller: _scrollController,
+          controller: scrollController,
           padding: tokens.pagePadding.copyWith(bottom: 108),
           children: [
             if (widget.topContent != null) ...[
@@ -296,17 +265,17 @@ class _VerbsScreenState extends State<VerbsScreen> {
             children: [
               AnimatedSlide(
                 duration: const Duration(milliseconds: 220),
-                offset: _showScrollToTop ? Offset.zero : const Offset(0, 0.25),
+                offset: showScrollToTop ? Offset.zero : const Offset(0, 0.25),
                 child: AnimatedOpacity(
                   duration: const Duration(milliseconds: 220),
-                  opacity: _showScrollToTop ? 1 : 0,
+                  opacity: showScrollToTop ? 1 : 0,
                   child: IgnorePointer(
-                    ignoring: !_showScrollToTop,
+                    ignoring: !showScrollToTop,
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 12),
                       child: FloatingActionButton.small(
                         heroTag: 'verbsScrollToTop',
-                        onPressed: _scrollToTop,
+                        onPressed: scrollToTop,
                         backgroundColor: tokens.elevatedSurface,
                         foregroundColor: tokens.verbAccent,
                         child: const Icon(Icons.vertical_align_top_rounded),
