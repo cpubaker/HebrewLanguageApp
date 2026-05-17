@@ -121,18 +121,20 @@ class WorkspaceHeaderCard extends StatelessWidget {
 class WorkspaceHubScreen extends StatelessWidget {
   const WorkspaceHubScreen({
     super.key,
-    required this.title,
+    this.title,
     required this.subtitle,
     required this.shortcuts,
   });
 
-  final String title;
+  final String? title;
   final String subtitle;
   final List<WorkspaceShortcut> shortcuts;
 
   @override
   Widget build(BuildContext context) {
-    final tokens = Theme.of(context).appTokens;
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+    final resolvedTitle = title;
 
     return ListView(
       padding: tokens.pagePadding.copyWith(bottom: 32),
@@ -141,7 +143,16 @@ class WorkspaceHubScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppPageHeader(title: title, subtitle: subtitle),
+              if (resolvedTitle != null)
+                AppPageHeader(title: resolvedTitle, subtitle: subtitle)
+              else
+                Text(
+                  subtitle,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: tokens.mutedText,
+                    height: 1.45,
+                  ),
+                ),
               if (shortcuts.isNotEmpty) ...[
                 const SizedBox(height: 18),
                 Column(
@@ -272,11 +283,6 @@ class _WorkspaceShortcutTile extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
-              Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 16,
-                color: shortcut.accent,
               ),
             ],
           ),

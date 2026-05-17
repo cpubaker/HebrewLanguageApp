@@ -12,14 +12,12 @@ import 'workspace_screen.dart';
 class AppShellLearnWorkspace extends StatelessWidget {
   const AppShellLearnWorkspace({
     super.key,
-    required this.bundle,
     required this.onOpenWords,
     required this.onOpenVerbs,
     required this.onOpenGuide,
     required this.onOpenReading,
   });
 
-  final LearningBundle bundle;
   final VoidCallback onOpenWords;
   final VoidCallback onOpenVerbs;
   final VoidCallback onOpenGuide;
@@ -30,37 +28,32 @@ class AppShellLearnWorkspace extends StatelessWidget {
     final tokens = Theme.of(context).appTokens;
 
     return WorkspaceHubScreen(
-      title: 'Вчитись',
       subtitle: 'Оберіть, з чого продовжити навчання.',
       shortcuts: [
         WorkspaceShortcut(
           title: 'Слова',
-          subtitle:
-              'Усі слова в одному місці: пошук, фільтри й прогрес. Доступно: ${bundle.words.length} слів.',
+          subtitle: 'Словник з пошуком, фільтрами й прогресом.',
           icon: Icons.translate_rounded,
           accent: tokens.primaryAccent,
           onTap: onOpenWords,
         ),
         WorkspaceShortcut(
           title: 'Дієслова',
-          subtitle:
-              'Добірка уроків про дієслова з поясненнями, озвученням і прикладами. Доступно: ${bundle.verbLessons.length} уроків.',
+          subtitle: 'Уроки з поясненнями та озвученням.',
           icon: Icons.play_lesson_rounded,
           accent: tokens.verbAccent,
           onTap: onOpenVerbs,
         ),
         WorkspaceShortcut(
           title: 'Довідник',
-          subtitle:
-              'Теми з поясненнями, пошуком і прогресом по матеріалах. Доступно: ${bundle.guideLessons.length} уроків.',
+          subtitle: 'Граматика з поясненнями та прикладами.',
           icon: Icons.menu_book_rounded,
           accent: tokens.guideAccent,
           onTap: onOpenGuide,
         ),
         WorkspaceShortcut(
           title: 'Читання',
-          subtitle:
-              'Тексти за рівнями складності з відмітками прочитаного. Доступно: ${bundle.readingLessons.length} уроків.',
+          subtitle: 'Тексти за рівнями складності.',
           icon: Icons.auto_stories_rounded,
           accent: tokens.readingAccent,
           onTap: onOpenReading,
