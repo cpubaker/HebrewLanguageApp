@@ -50,6 +50,7 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
     required this.successSurface,
     required this.dangerSurface,
     required this.warningSurface,
+    required this.flashcardWrongSurface,
     required this.contextPanelSurface,
     required this.constructorActiveSurface,
     required this.constructorIdleSurface,
@@ -105,6 +106,7 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
       successSurface = const Color(0xFFEAF6F2),
       dangerSurface = const Color(0xFFFCECE8),
       warningSurface = const Color(0xFFF9EFE4),
+      flashcardWrongSurface = const Color(0xFFEFD7CC),
       contextPanelSurface = const Color(0x0F163832),
       constructorActiveSurface = const Color(0xFFEEDDBA),
       constructorIdleSurface = const Color(0xFFFFFBF4),
@@ -158,6 +160,7 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
   final Color successSurface;
   final Color dangerSurface;
   final Color warningSurface;
+  final Color flashcardWrongSurface;
   final Color contextPanelSurface;
   final Color constructorActiveSurface;
   final Color constructorIdleSurface;
@@ -240,6 +243,7 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
     Color? successSurface,
     Color? dangerSurface,
     Color? warningSurface,
+    Color? flashcardWrongSurface,
     Color? contextPanelSurface,
     Color? constructorActiveSurface,
     Color? constructorIdleSurface,
@@ -300,6 +304,8 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
       successSurface: successSurface ?? this.successSurface,
       dangerSurface: dangerSurface ?? this.dangerSurface,
       warningSurface: warningSurface ?? this.warningSurface,
+      flashcardWrongSurface:
+          flashcardWrongSurface ?? this.flashcardWrongSurface,
       contextPanelSurface: contextPanelSurface ?? this.contextPanelSurface,
       constructorActiveSurface:
           constructorActiveSurface ?? this.constructorActiveSurface,
@@ -429,6 +435,11 @@ class AppThemeTokens extends ThemeExtension<AppThemeTokens> {
       successSurface: Color.lerp(successSurface, other.successSurface, t)!,
       dangerSurface: Color.lerp(dangerSurface, other.dangerSurface, t)!,
       warningSurface: Color.lerp(warningSurface, other.warningSurface, t)!,
+      flashcardWrongSurface: Color.lerp(
+        flashcardWrongSurface,
+        other.flashcardWrongSurface,
+        t,
+      )!,
       contextPanelSurface: Color.lerp(
         contextPanelSurface,
         other.contextPanelSurface,
@@ -534,6 +545,7 @@ class _AppThemePalette {
         successSurface: Color(0xFFEAF6F2),
         dangerSurface: Color(0xFFFCECE8),
         warningSurface: Color(0xFFF9EFE4),
+        flashcardWrongSurface: Color(0xFFEFD7CC),
         contextPanelSurface: Color(0x0F163832),
         constructorActiveSurface: Color(0xFFEEDDBA),
         constructorIdleSurface: Color(0xFFFFFBF4),
@@ -597,6 +609,7 @@ class _AppThemePalette {
         successSurface: Color(0xFF17352F),
         dangerSurface: Color(0xFF3A2323),
         warningSurface: Color(0xFF3A2A1F),
+        flashcardWrongSurface: Color(0xFF3F2620),
         contextPanelSurface: Color(0x382B5D4F),
         constructorActiveSurface: Color(0xFF5B4824),
         constructorIdleSurface: Color(0xFF17201D),

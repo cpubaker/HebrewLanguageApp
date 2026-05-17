@@ -70,7 +70,6 @@ void main() {
 
       expect(find.byType(FlashcardAnswerRevealCard), findsOneWidget);
       expect(find.text('мир'), findsOneWidget);
-      expect(find.widgetWithText(FilledButton, 'До підсумку'), findsOneWidget);
       expect(find.byType(FlashcardSwipeHintStrip), findsNothing);
     },
   );
@@ -143,7 +142,7 @@ void main() {
     await tester.tap(find.text('Знаю'));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.widgetWithText(FilledButton, 'До підсумку'));
+    await tester.tap(find.byType(FlashcardAnswerRevealCard));
     await tester.pumpAndSettle();
 
     expect(find.byType(FlashcardCompletedState), findsOneWidget);

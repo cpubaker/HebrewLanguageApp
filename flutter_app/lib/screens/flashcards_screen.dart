@@ -11,11 +11,10 @@ import '../theme/app_theme.dart';
 import 'audio_playback_feedback.dart';
 import 'widgets/flashcards/flashcard_answer_reveal.dart';
 import 'widgets/flashcards/flashcard_context_panel.dart';
+import 'widgets/flashcards/flashcard_progress_strip.dart';
 import 'widgets/flashcards/flashcard_prompt_panel.dart';
-import 'widgets/flashcards/flashcard_session_details_section.dart';
 import 'widgets/flashcards/flashcard_states.dart';
 import 'widgets/practice_audio_button.dart';
-import 'widgets/practice_stat_pill.dart';
 
 class FlashcardsScreen extends StatefulWidget {
   const FlashcardsScreen({
@@ -50,7 +49,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
 
   FlashcardCard? _currentCard;
   FlashcardAnswerResult? _currentAnswer;
-  bool _showSessionDetails = false;
+  double _slideDirection = 1;
 
   @override
   void initState() {
@@ -81,7 +80,6 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
     setState(() {
       _currentCard = nextCard;
       _currentAnswer = null;
-      _showSessionDetails = false;
     });
     unawaited(_syncWordAudio(nextCard?.word));
   }
@@ -89,6 +87,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
   void _answerCard(bool known) {
     setState(() {
       _currentAnswer = _session.answerCard(known);
+      _slideDirection = known ? 1 : -1;
     });
 
     final answer = _currentAnswer;
@@ -103,7 +102,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
     setState(() {
       _currentCard = nextCard;
       _currentAnswer = null;
-      _showSessionDetails = false;
+      _slideDirection = 1;
     });
     unawaited(_syncWordAudio(nextCard?.word));
   }
@@ -127,7 +126,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
     setState(() {
       _currentCard = nextCard;
       _currentAnswer = null;
-      _showSessionDetails = false;
+      _slideDirection = 1;
     });
     unawaited(_syncWordAudio(nextCard?.word));
   }
@@ -177,7 +176,6 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
-    final theme = Theme.of(context);
     final currentCard = _currentCard;
     if (currentCard == null) {
       if (_session.wordCount > 0 && _session.answeredCount > 0) {
@@ -203,131 +201,131 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
     final stats = _session.currentWordStats();
     final hasAnswered = _currentAnswer != null;
     final isKnownAnswer = _currentAnswer?.known == true;
-    return ListView(
-      padding: tokens.pagePadding.copyWith(bottom: 32),
-      children: [
-        GestureDetector(
-          onHorizontalDragEnd: hasAnswered ? null : _handleCardSwipe,
-          behavior: HitTestBehavior.opaque,
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: tokens.elevatedSurface,
-              borderRadius: BorderRadius.circular(28),
-              boxShadow: [
-                BoxShadow(
-                  color: tokens.shadowColor,
-                  blurRadius: 22,
-                  offset: Offset(0, 12),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                FlashcardPromptPanel(
-                  hebrew: word.hebrew,
-                  transcription: word.transcription,
-                  audioButton: _audioController.hasAudio
-                      ? PracticeAudioButton(
-                          key: const ValueKey('flashcards_audio_button'),
-                          isBusy: _audioController.isBusy,
-                          isPlaying: _audioController.isPlaying,
-                          onPressed: _audioController.isBusy
-                              ? null
-                              : _replayCurrentWordAudio,
-                        )
-                      : null,
-                ),
-                const SizedBox(height: 20),
-                FlashcardContextPanel(
-                  context: currentContext,
-                  isAnswerRevealed: hasAnswered,
-                ),
-                const SizedBox(height: 18),
-                if (hasAnswered)
-                  FlashcardAnswerRevealCard(
-                    isKnownAnswer: isKnownAnswer,
-                    translation: word.translation,
-                  )
-                else
-                  FlashcardSwipeHintStrip(
-                    onRepeatTap: () => _answerCard(false),
-                    onKnowTap: () => _answerCard(true),
-                  ),
-                const SizedBox(height: 18),
-                if (hasAnswered)
-                  FilledButton.icon(
-                    onPressed: _moveToNextCard,
-                    icon: const Icon(Icons.arrow_forward_rounded),
-                    label: Text(
-                      _session.seenCount == _session.wordCount
-                          ? 'До підсумку'
-                          : 'Далі',
-                    ),
-                  )
-                else
-                  Text(
-                    'Змахніть картку або натисніть потрібний варіант.',
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: tokens.secondaryText,
-                    ),
-                  ),
-                const SizedBox(height: 14),
-                Row(
-                  children: [
-                    Expanded(
-                      child: PracticeStatPill(
-                        label: 'Вірно',
-                        value: stats.correct,
-                        icon: Icons.check_rounded,
-                        accent: tokens.successAccent,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: PracticeStatPill(
-                        label: 'Помилки',
-                        value: stats.wrong,
-                        icon: Icons.close_rounded,
-                        accent: tokens.dangerAccent,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 14),
-                FlashcardSessionDetailsSection(
-                  isExpanded: _showSessionDetails,
-                  deckLabel: _deckLabel(_session.deckMode),
-                  currentCardNumber: _session.currentCardNumber,
-                  wordCount: _session.wordCount,
-                  remainingCount: _session.remainingCount,
-                  sessionProgress: _session.sessionProgress,
-                  correctCount: stats.correct,
-                  wrongCount: stats.wrong,
-                  onToggle: () {
-                    setState(() {
-                      _showSessionDetails = !_showSessionDetails;
-                    });
-                  },
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+    final isLastCard = _session.seenCount == _session.wordCount;
+    final wordId = currentCard.word.wordId;
 
-  String _deckLabel(FlashcardDeckMode mode) {
-    switch (mode) {
-      case FlashcardDeckMode.allWords:
-        return 'Усі слова';
-      case FlashcardDeckMode.withContexts:
-        return 'З прикладами';
-      case FlashcardDeckMode.needsReview:
-        return 'На повторення';
+    final topCard = Container(
+      key: ValueKey('prompt_$wordId'),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: tokens.elevatedSurface,
+        borderRadius: BorderRadius.circular(28),
+        boxShadow: [
+          BoxShadow(
+            color: tokens.shadowColor,
+            blurRadius: 22,
+            offset: const Offset(0, 12),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          FlashcardPromptPanel(
+            hebrew: word.hebrew,
+            transcription: word.transcription,
+            audioButton: _audioController.hasAudio
+                ? PracticeAudioButton(
+                    key: const ValueKey('flashcards_audio_button'),
+                    isBusy: _audioController.isBusy,
+                    isPlaying: _audioController.isPlaying,
+                    onPressed: _audioController.isBusy
+                        ? null
+                        : _replayCurrentWordAudio,
+                  )
+                : null,
+          ),
+          const SizedBox(height: 16),
+          FlashcardContextPanel(
+            context: currentContext,
+            isAnswerRevealed: hasAnswered,
+          ),
+        ],
+      ),
+    );
+
+    final Widget actionArea = hasAnswered
+        ? FlashcardAnswerRevealCard(
+            key: ValueKey('action_${wordId}_a'),
+            isKnownAnswer: isKnownAnswer,
+            translation: word.translation,
+            onTap: _moveToNextCard,
+            isLastCard: isLastCard,
+          )
+        : FlashcardSwipeHintStrip(
+            key: ValueKey('action_${wordId}_q'),
+            onRepeatTap: () => _answerCard(false),
+            onKnowTap: () => _answerCard(true),
+          );
+
+    Widget slideTransitionBuilder(
+      Widget child,
+      Animation<double> animation,
+    ) {
+      final slide = Tween<Offset>(
+        begin: Offset(_slideDirection * 0.18, 0),
+        end: Offset.zero,
+      ).animate(animation);
+      return SlideTransition(
+        position: slide,
+        child: FadeTransition(opacity: animation, child: child),
+      );
     }
+
+    return GestureDetector(
+      onHorizontalDragEnd: hasAnswered ? null : _handleCardSwipe,
+      behavior: HitTestBehavior.opaque,
+      child: Padding(
+        padding: tokens.pagePadding.copyWith(bottom: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 260),
+              switchInCurve: Curves.easeOutCubic,
+              switchOutCurve: Curves.easeInCubic,
+              transitionBuilder: slideTransitionBuilder,
+              layoutBuilder:
+                  (Widget? currentChild, List<Widget> previousChildren) {
+                    return Stack(
+                      alignment: Alignment.topCenter,
+                      children: <Widget>[
+                        ...previousChildren,
+                        ?currentChild,
+                      ],
+                    );
+                  },
+              child: topCard,
+            ),
+            const Spacer(),
+            FlashcardProgressStrip(
+              correctCount: stats.correct,
+              wrongCount: stats.wrong,
+              currentCardNumber: _session.currentCardNumber,
+              wordCount: _session.wordCount,
+              sessionProgress: _session.sessionProgress,
+            ),
+            const SizedBox(height: 14),
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 240),
+              switchInCurve: Curves.easeOutCubic,
+              switchOutCurve: Curves.easeInCubic,
+              transitionBuilder: slideTransitionBuilder,
+              layoutBuilder:
+                  (Widget? currentChild, List<Widget> previousChildren) {
+                    return Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: <Widget>[
+                        ...previousChildren,
+                        ?currentChild,
+                      ],
+                    );
+                  },
+              child: actionArea,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
