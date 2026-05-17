@@ -256,6 +256,25 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                     onKnowTap: () => _answerCard(true),
                   ),
                 const SizedBox(height: 18),
+                if (hasAnswered)
+                  FilledButton.icon(
+                    onPressed: _moveToNextCard,
+                    icon: const Icon(Icons.arrow_forward_rounded),
+                    label: Text(
+                      _session.seenCount == _session.wordCount
+                          ? 'До підсумку'
+                          : 'Далі',
+                    ),
+                  )
+                else
+                  Text(
+                    'Змахніть картку або натисніть потрібний варіант.',
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: tokens.secondaryText,
+                    ),
+                  ),
+                const SizedBox(height: 14),
                 Row(
                   children: [
                     Expanded(
@@ -277,25 +296,6 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 18),
-                if (hasAnswered)
-                  FilledButton.icon(
-                    onPressed: _moveToNextCard,
-                    icon: const Icon(Icons.arrow_forward_rounded),
-                    label: Text(
-                      _session.seenCount == _session.wordCount
-                          ? 'До підсумку'
-                          : 'Далі',
-                    ),
-                  )
-                else
-                  Text(
-                    'Змахніть картку або натисніть потрібний варіант.',
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: tokens.secondaryText,
-                    ),
-                  ),
                 const SizedBox(height: 14),
                 _SessionDetailsSection(
                   isExpanded: _showSessionDetails,
@@ -555,10 +555,6 @@ class _AnswerRevealCard extends StatelessWidget {
     final background = isKnownAnswer
         ? tokens.successSurface
         : tokens.warningSurface;
-    final accent = isKnownAnswer ? tokens.successAccent : tokens.warningAccent;
-    final icon = isKnownAnswer
-        ? Icons.check_circle_rounded
-        : Icons.refresh_rounded;
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 180),
@@ -569,22 +565,6 @@ class _AnswerRevealCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, color: accent, size: 22),
-              const SizedBox(width: 8),
-              Text(
-                isKnownAnswer ? 'Зараховано' : 'На повторення',
-                textAlign: TextAlign.center,
-                style: theme.textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: tokens.mutedText,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
           Text(
             translation,
             textAlign: TextAlign.center,
