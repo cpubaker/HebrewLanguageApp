@@ -7,10 +7,14 @@ class FlashcardAnswerRevealCard extends StatelessWidget {
     super.key,
     required this.isKnownAnswer,
     required this.translation,
+    required this.onTap,
+    this.isLastCard = false,
   });
 
   final bool isKnownAnswer;
   final String translation;
+  final VoidCallback onTap;
+  final bool isLastCard;
 
   @override
   Widget build(BuildContext context) {
@@ -18,37 +22,44 @@ class FlashcardAnswerRevealCard extends StatelessWidget {
     final tokens = theme.appTokens;
     final background = isKnownAnswer
         ? tokens.successSurface
-        : tokens.warningSurface;
+        : tokens.flashcardWrongSurface;
+    final chevronColor = theme.colorScheme.onSurface.withValues(alpha: 0.55);
 
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 180),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: background,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
         borderRadius: BorderRadius.circular(24),
-      ),
-      child: Column(
-        children: [
-          Text(
-            translation,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.w800,
-              color: theme.colorScheme.onSurface,
-            ),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 180),
+          padding: const EdgeInsetsDirectional.fromSTEB(20, 16, 12, 16),
+          decoration: BoxDecoration(
+            color: background,
+            borderRadius: BorderRadius.circular(24),
           ),
-          if (!isKnownAnswer) ...[
-            const SizedBox(height: 8),
-            Text(
-              'Нічого, повернемося до нього ще раз трохи пізніше.',
-              textAlign: TextAlign.center,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: tokens.secondaryText,
-                height: 1.45,
+          child: Row(
+            children: [
+              const SizedBox(width: 24),
+              Expanded(
+                child: Text(
+                  translation,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
               ),
-            ),
-          ],
-        ],
+              Icon(
+                isLastCard
+                    ? Icons.flag_rounded
+                    : Icons.chevron_right_rounded,
+                size: 28,
+                color: chevronColor,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

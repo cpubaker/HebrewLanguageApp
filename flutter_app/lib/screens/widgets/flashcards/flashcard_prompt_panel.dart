@@ -35,15 +35,6 @@ class FlashcardPromptPanel extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            'Спробуйте згадати переклад',
-            textAlign: TextAlign.center,
-            style: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w700,
-              color: tokens.mutedText,
-            ),
-          ),
-          const SizedBox(height: 14),
-          Text(
             hebrew,
             textDirection: TextDirection.rtl,
             textAlign: TextAlign.center,
