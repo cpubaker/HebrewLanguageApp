@@ -939,7 +939,6 @@ class _AppShellScreenState extends State<AppShellScreen> {
                           onOpenReadingLesson: _openReadingLesson,
                         ),
                         AppShellLearnWorkspace(
-                          bundle: bundle,
                           onOpenWords: _openLearnWords,
                           onOpenVerbs: _openLearnVerbs,
                           onOpenGuide: _openGuide,
