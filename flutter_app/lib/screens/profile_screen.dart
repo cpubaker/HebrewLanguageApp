@@ -58,9 +58,9 @@ class ProfileScreen extends StatelessWidget {
         32,
       ),
       children: [
-        _ProfileSummarySection(bundle: bundle),
+        _ProfileInventorySection(bundle: bundle),
         const SizedBox(height: 16),
-        _ProfileMaterialsSection(
+        _ProfileProgressSection(
           bundle: bundle,
           guideLessonStatuses: guideLessonStatuses,
           readingLessonStatuses: readingLessonStatuses,
@@ -85,36 +85,21 @@ class ProfileScreen extends StatelessWidget {
   }
 }
 
-class _ProfileSummarySection extends StatelessWidget {
-  const _ProfileSummarySection({required this.bundle});
+class _ProfileInventorySection extends StatelessWidget {
+  const _ProfileInventorySection({required this.bundle});
 
   final LearningBundle bundle;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final tokens = theme.appTokens;
-    final study = StudyProgressSnapshot.fromWords(bundle.words);
-    final flashcards = FlashcardFocusSnapshot.fromWords(bundle.words);
-    final writing = WritingProgressSnapshot.fromWords(bundle.words);
+    final tokens = Theme.of(context).appTokens;
 
     return AppSectionCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const AppPageHeader(
-            title: 'Профіль',
-            subtitle:
-                'Стислий огляд того, що є в системі, і як рухається прогрес у словах та практиці.',
-          ),
-          const SizedBox(height: 18),
-          Text(
-            'У системі',
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          const SizedBox(height: 12),
+          const AppPageHeader(title: 'У системі'),
+          const SizedBox(height: 16),
           AppActionWrap(
             spacing: 10,
             runSpacing: 10,
@@ -141,16 +126,43 @@ class _ProfileSummarySection extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 18),
-          Divider(color: tokens.outlineSoft),
+        ],
+      ),
+    );
+  }
+}
+
+class _ProfileProgressSection extends StatelessWidget {
+  const _ProfileProgressSection({
+    required this.bundle,
+    required this.guideLessonStatuses,
+    required this.readingLessonStatuses,
+  });
+
+  final LearningBundle bundle;
+  final Map<String, GuideLessonStatus> guideLessonStatuses;
+  final Map<String, GuideLessonStatus> readingLessonStatuses;
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = Theme.of(context).appTokens;
+    final study = StudyProgressSnapshot.fromWords(bundle.words);
+    final writing = WritingProgressSnapshot.fromWords(bundle.words);
+    final guide = LessonProgressSnapshot.fromLessons(
+      lessons: bundle.guideLessons,
+      lessonStatuses: guideLessonStatuses,
+    );
+    final reading = LessonProgressSnapshot.fromLessons(
+      lessons: bundle.readingLessons,
+      lessonStatuses: readingLessonStatuses,
+    );
+
+    return AppSectionCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const AppPageHeader(title: 'Прогрес'),
           const SizedBox(height: 16),
-          Text(
-            'Слова і практика',
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          const SizedBox(height: 12),
           _ProgressStrip(
             label: 'Слова відкрито',
             completedLabel: '${study.seen} із ${study.total}',
@@ -163,6 +175,20 @@ class _ProfileSummarySection extends StatelessWidget {
             completedLabel: '${writing.practiced} із ${writing.total}',
             ratio: writing.completionRatio,
             accent: tokens.aiAccent,
+          ),
+          const SizedBox(height: 12),
+          _ProgressStrip(
+            label: 'Довідник завершено',
+            completedLabel: '${guide.read} із ${guide.total}',
+            ratio: guide.completionRatio,
+            accent: tokens.warningAccent,
+          ),
+          const SizedBox(height: 12),
+          _ProgressStrip(
+            label: 'Читання завершено',
+            completedLabel: '${reading.read} із ${reading.total}',
+            ratio: reading.completionRatio,
+            accent: tokens.readingAccent,
           ),
           const SizedBox(height: 16),
           AppActionWrap(
@@ -177,92 +203,10 @@ class _ProfileSummarySection extends StatelessWidget {
                 value: study.needsReview,
                 accent: tokens.warningAccent,
               ),
-              AppMetricTile(
-                label: 'Письмо ок',
-                value: writing.known,
-                accent: tokens.aiAccent,
-              ),
-              AppMetricTile(
-                label: 'Контексти',
-                value: flashcards.withContexts,
-                accent: tokens.infoAccent,
-              ),
             ],
           ),
         ],
       ),
-    );
-  }
-}
-
-class _ProfileMaterialsSection extends StatelessWidget {
-  const _ProfileMaterialsSection({
-    required this.bundle,
-    required this.guideLessonStatuses,
-    required this.readingLessonStatuses,
-  });
-
-  final LearningBundle bundle;
-  final Map<String, GuideLessonStatus> guideLessonStatuses;
-  final Map<String, GuideLessonStatus> readingLessonStatuses;
-
-  @override
-  Widget build(BuildContext context) {
-    final tokens = Theme.of(context).appTokens;
-    final guide = LessonProgressSnapshot.fromLessons(
-      lessons: bundle.guideLessons,
-      lessonStatuses: guideLessonStatuses,
-    );
-    final reading = LessonProgressSnapshot.fromLessons(
-      lessons: bundle.readingLessons,
-      lessonStatuses: readingLessonStatuses,
-    );
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        AppSectionCard(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const AppPageHeader(
-                title: 'Матеріали',
-                subtitle:
-                    'Довідник і читання: що вже завершено, а що ще в процесі.',
-              ),
-              const SizedBox(height: 16),
-              _ProgressStrip(
-                label: 'Довідник завершено',
-                completedLabel: '${guide.read} із ${guide.total}',
-                ratio: guide.completionRatio,
-                accent: tokens.warningAccent,
-              ),
-              const SizedBox(height: 12),
-              _ProgressStrip(
-                label: 'Читання завершено',
-                completedLabel: '${reading.read} із ${reading.total}',
-                ratio: reading.completionRatio,
-                accent: tokens.readingAccent,
-              ),
-              const SizedBox(height: 16),
-              AppActionWrap(
-                children: [
-                  AppMetricTile(
-                    label: 'Теми в процесі',
-                    value: guide.studying,
-                    accent: tokens.warningAccent,
-                  ),
-                  AppMetricTile(
-                    label: 'Тексти в процесі',
-                    value: reading.studying,
-                    accent: tokens.readingAccent,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }
@@ -303,11 +247,7 @@ class _ProfileSettingsSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const AppPageHeader(
-                title: 'Налаштування',
-                subtitle:
-                    'Поведінка інтерфейсу та AI-функції застосовуються до всього застосунку.',
-              ),
+              const AppPageHeader(title: 'Налаштування'),
               const SizedBox(height: 18),
               _ThemeCycleTile(
                 key: const ValueKey('theme-mode-tile'),
@@ -327,8 +267,7 @@ class _ProfileSettingsSection extends StatelessWidget {
               const SizedBox(height: 12),
               _SettingsSwitchTile(
                 title: 'ШІ-контексти для вправ',
-                subtitle:
-                    'Добирає короткі ситуації й приклади для вправ і словника з урахуванням вашого рівня, прогресу та слів, які ви зараз вивчаєте.',
+                subtitle: 'Приклади і ситуації з урахуванням ваших слів.',
                 value: aiWordContextsEnabled,
                 onChanged: onAiWordContextsEnabledChanged,
                 isLocked: !aiWordContextsAccess.isEnabled,
@@ -336,8 +275,7 @@ class _ProfileSettingsSection extends StatelessWidget {
               const SizedBox(height: 12),
               _SettingsSwitchTile(
                 title: 'ШІ-тексти для практики',
-                subtitle:
-                    'Створює короткі тексти під ваш рівень і темп навчання, поєднуючи нові слова з уже знайомою лексикою.',
+                subtitle: 'Короткі тексти під ваш рівень.',
                 value: aiPracticeTextsEnabled,
                 onChanged: onAiPracticeTextsEnabledChanged,
                 isLocked: !aiPracticeTextsAccess.isEnabled,
