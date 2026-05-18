@@ -296,9 +296,6 @@ class _ProfileSettingsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final tokens = theme.appTokens;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -312,54 +309,11 @@ class _ProfileSettingsSection extends StatelessWidget {
                     'Поведінка інтерфейсу та AI-функції застосовуються до всього застосунку.',
               ),
               const SizedBox(height: 18),
-              Text(
-                'Тема застосунку',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                nightModeAccess.isEnabled
-                    ? 'Оберіть світлу, темну, системну або автоматичну тему. Авто вмикає темну тему з 20:00 до 07:00.'
-                    : nightModeAccess.description,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: tokens.secondaryText,
-                  height: 1.45,
-                ),
-              ),
-              const SizedBox(height: 12),
-              AppActionWrap(
-                children: [
-                  _SettingsChoiceChip(
-                    key: const ValueKey('theme-mode-light'),
-                    label: 'Світла',
-                    isSelected: themePreference == AppThemePreference.light,
-                    onTap: () =>
-                        onThemePreferenceChanged(AppThemePreference.light),
-                  ),
-                  _SettingsChoiceChip(
-                    key: const ValueKey('theme-mode-dark'),
-                    label: 'Темна',
-                    isSelected: themePreference == AppThemePreference.dark,
-                    onTap: () =>
-                        onThemePreferenceChanged(AppThemePreference.dark),
-                  ),
-                  _SettingsChoiceChip(
-                    key: const ValueKey('theme-mode-system'),
-                    label: 'Як у телефоні',
-                    isSelected: themePreference == AppThemePreference.system,
-                    onTap: () =>
-                        onThemePreferenceChanged(AppThemePreference.system),
-                  ),
-                  _SettingsChoiceChip(
-                    key: const ValueKey('theme-mode-automatic'),
-                    label: 'Авто',
-                    isSelected: themePreference == AppThemePreference.automatic,
-                    onTap: () =>
-                        onThemePreferenceChanged(AppThemePreference.automatic),
-                  ),
-                ],
+              _ThemeCycleTile(
+                key: const ValueKey('theme-mode-tile'),
+                preference: themePreference,
+                nightModeAccess: nightModeAccess,
+                onChanged: onThemePreferenceChanged,
               ),
               const SizedBox(height: 12),
               _SettingsSwitchTile(
@@ -525,50 +479,100 @@ class _SettingsSwitchTile extends StatelessWidget {
   }
 }
 
-class _SettingsChoiceChip extends StatelessWidget {
-  const _SettingsChoiceChip({
+class _ThemeCycleTile extends StatelessWidget {
+  const _ThemeCycleTile({
     super.key,
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
+    required this.preference,
+    required this.nightModeAccess,
+    required this.onChanged,
   });
 
+  final AppThemePreference preference;
+  final FeatureAccessDecision nightModeAccess;
+  final ValueChanged<AppThemePreference> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+    final isLocked = !nightModeAccess.isEnabled;
+
+    final content = Padding(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Тема',
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: isLocked ? tokens.mutedText : null,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  isLocked
+                      ? nightModeAccess.description
+                      : 'Перемикає світлу, темну та системну.',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: isLocked
+                        ? tokens.inactiveForeground(tokens.mutedText)
+                        : tokens.mutedText,
+                    height: 1.45,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 16),
+          if (isLocked) ...[
+            Icon(Icons.lock_rounded, color: tokens.mutedText, size: 20),
+            const SizedBox(width: 8),
+          ],
+          _ThemeValuePill(label: preference.label, isLocked: isLocked),
+        ],
+      ),
+    );
+
+    return Material(
+      color: tokens.subtleSurface,
+      borderRadius: BorderRadius.circular(20),
+      child: isLocked
+          ? content
+          : InkWell(
+              onTap: () => onChanged(preference.next),
+              borderRadius: BorderRadius.circular(20),
+              child: content,
+            ),
+    );
+  }
+}
+
+class _ThemeValuePill extends StatelessWidget {
+  const _ThemeValuePill({required this.label, required this.isLocked});
+
   final String label;
-  final bool isSelected;
-  final VoidCallback onTap;
+  final bool isLocked;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final tokens = theme.appTokens;
 
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+      decoration: BoxDecoration(
+        color: isLocked ? tokens.elevatedSurface : theme.colorScheme.primary,
         borderRadius: BorderRadius.circular(999),
-        child: Ink(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-          decoration: BoxDecoration(
-            color: isSelected
-                ? theme.colorScheme.primary
-                : tokens.elevatedSurface,
-            borderRadius: BorderRadius.circular(999),
-            border: Border.all(
-              color: isSelected
-                  ? theme.colorScheme.primary
-                  : tokens.outlineSoft,
-            ),
-          ),
-          child: Text(
-            label,
-            style: theme.textTheme.labelLarge?.copyWith(
-              color: isSelected
-                  ? theme.colorScheme.onPrimary
-                  : theme.colorScheme.primary,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
+      ),
+      child: Text(
+        label,
+        style: theme.textTheme.labelLarge?.copyWith(
+          color: isLocked ? tokens.mutedText : theme.colorScheme.onPrimary,
+          fontWeight: FontWeight.w700,
         ),
       ),
     );

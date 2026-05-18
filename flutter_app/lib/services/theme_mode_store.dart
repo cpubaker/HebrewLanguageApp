@@ -2,21 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum AppThemePreference {
-  light('light'),
-  dark('dark'),
-  system('system'),
-  automatic('automatic');
+  light('light', 'Світла'),
+  dark('dark', 'Темна'),
+  system('system', 'Системна');
 
-  const AppThemePreference(this.storageValue);
+  const AppThemePreference(this.storageValue, this.label);
 
   final String storageValue;
+  final String label;
 
   bool get requiresNightMode {
     return switch (this) {
       AppThemePreference.light => false,
-      AppThemePreference.dark ||
-      AppThemePreference.system ||
-      AppThemePreference.automatic => true,
+      AppThemePreference.dark || AppThemePreference.system => true,
+    };
+  }
+
+  AppThemePreference get next {
+    return switch (this) {
+      AppThemePreference.light => AppThemePreference.dark,
+      AppThemePreference.dark => AppThemePreference.system,
+      AppThemePreference.system => AppThemePreference.light,
     };
   }
 
@@ -31,8 +37,7 @@ enum AppThemePreference {
   static AppThemePreference fromStorageValue(String? value) {
     return switch (value) {
       'dark' => AppThemePreference.dark,
-      'system' => AppThemePreference.system,
-      'automatic' => AppThemePreference.automatic,
+      'system' || 'automatic' => AppThemePreference.system,
       _ => AppThemePreference.light,
     };
   }
