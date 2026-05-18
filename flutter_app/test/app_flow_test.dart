@@ -41,9 +41,12 @@ void main() {
 
     await tester.tap(find.byIcon(Icons.person_outline_rounded));
     await tester.pumpAndSettle();
-    await tester.scrollUntilVisible(find.text('Тема застосунку'), 500);
+    await tester.scrollUntilVisible(
+      find.byKey(const ValueKey('theme-mode-tile')),
+      500,
+    );
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const ValueKey('theme-mode-dark')));
+    await tester.tap(find.byKey(const ValueKey('theme-mode-tile')));
     await tester.pumpAndSettle();
 
     final app = tester.widget<MaterialApp>(find.byType(MaterialApp));

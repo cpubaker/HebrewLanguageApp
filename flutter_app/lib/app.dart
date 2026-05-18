@@ -45,7 +45,6 @@ class HebrewFlutterApp extends StatefulWidget {
     ThemeModeStore? themeModeStore,
     ThemeMode? initialThemeMode,
     AppThemePreference? initialThemePreference,
-    this.currentDateTime,
   }) : initialThemePreference =
            initialThemePreference ??
            AppThemePreference.fromThemeMode(
@@ -72,7 +71,6 @@ class HebrewFlutterApp extends StatefulWidget {
 
   final AppDependencies dependencies;
   final AppThemePreference initialThemePreference;
-  final DateTime Function()? currentDateTime;
 
   @override
   State<HebrewFlutterApp> createState() => _HebrewFlutterAppState();
@@ -80,9 +78,6 @@ class HebrewFlutterApp extends StatefulWidget {
 
 class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
   late AppThemePreference _themePreference = widget.initialThemePreference;
-  late final DateTime Function() _currentDateTime =
-      widget.currentDateTime ?? DateTime.now;
-  Timer? _automaticThemeTimer;
   late final AppDependencies _dependencies = widget.dependencies;
   late final LearningProgressRepository _progressRepository = _dependencies
       .resolveProgressRepository();
@@ -114,7 +109,6 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
     if (store != null) {
       unawaited(_restoreThemeMode(store));
     }
-    _scheduleAutomaticThemeRefresh();
   }
 
   Future<void> _restoreThemeMode(ThemeModeStore store) async {
@@ -131,7 +125,6 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
     setState(() {
       _themePreference = restoredPreference;
     });
-    _scheduleAutomaticThemeRefresh();
   }
 
   void _setThemePreference(AppThemePreference preference) {
@@ -143,7 +136,6 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
     setState(() {
       _themePreference = preference;
     });
-    _scheduleAutomaticThemeRefresh();
 
     final store = _dependencies.themeModeStore;
     if (store != null) {
@@ -156,51 +148,7 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
       AppThemePreference.light => ThemeMode.light,
       AppThemePreference.dark => ThemeMode.dark,
       AppThemePreference.system => ThemeMode.system,
-      AppThemePreference.automatic => _automaticThemeMode(_currentDateTime()),
     };
-  }
-
-  ThemeMode _automaticThemeMode(DateTime now) {
-    return now.hour >= 20 || now.hour < 7 ? ThemeMode.dark : ThemeMode.light;
-  }
-
-  void _scheduleAutomaticThemeRefresh() {
-    _automaticThemeTimer?.cancel();
-    if (_themePreference != AppThemePreference.automatic) {
-      return;
-    }
-
-    final now = _currentDateTime();
-    final transition = _nextAutomaticThemeTransition(now);
-    final delay = transition.difference(now);
-    _automaticThemeTimer = Timer(delay, () {
-      if (!mounted) {
-        return;
-      }
-
-      setState(() {});
-      _scheduleAutomaticThemeRefresh();
-    });
-  }
-
-  DateTime _nextAutomaticThemeTransition(DateTime now) {
-    final morning = DateTime(now.year, now.month, now.day, 7);
-    final evening = DateTime(now.year, now.month, now.day, 20);
-
-    if (now.isBefore(morning)) {
-      return morning;
-    }
-    if (now.isBefore(evening)) {
-      return evening;
-    }
-
-    return DateTime(now.year, now.month, now.day + 1, 7);
-  }
-
-  @override
-  void dispose() {
-    _automaticThemeTimer?.cancel();
-    super.dispose();
   }
 
   @override

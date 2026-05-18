@@ -142,7 +142,6 @@ Future<void> pumpHebrewTestApp(
   FeatureAccessService? featureAccessService,
   CreateVerbAudioPlayer? audioPlayerFactory,
   CreateAudioPlaybackAwareness? audioPlaybackAwarenessFactory,
-  DateTime Function()? currentDateTime,
 }) async {
   await useTallMobileViewport(tester);
   await tester.pumpWidget(
@@ -157,7 +156,6 @@ Future<void> pumpHebrewTestApp(
       featureAccessService: featureAccessService,
       audioPlayerFactory: audioPlayerFactory,
       audioPlaybackAwarenessFactory: audioPlaybackAwarenessFactory,
-      currentDateTime: currentDateTime,
     ),
   );
   await tester.pumpAndSettle();
