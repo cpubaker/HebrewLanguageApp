@@ -976,6 +976,10 @@ class _AppShellScreenState extends State<AppShellScreen> {
                               .accessFor(AppFeature.nightMode),
                           onThemePreferenceChanged:
                               _handleThemePreferenceChangeRequested,
+                          onOpenWords: _openLearnWords,
+                          onOpenWriting: () => _openWritingPractice(),
+                          onOpenGuide: _openGuide,
+                          onOpenReading: _openReading,
                         ),
                       ],
                     ),

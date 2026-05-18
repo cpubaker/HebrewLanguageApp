@@ -29,6 +29,10 @@ class ProfileScreen extends StatelessWidget {
     required this.themePreference,
     required this.nightModeAccess,
     required this.onThemePreferenceChanged,
+    required this.onOpenWords,
+    required this.onOpenWriting,
+    required this.onOpenGuide,
+    required this.onOpenReading,
   });
 
   final LearningBundle bundle;
@@ -45,6 +49,10 @@ class ProfileScreen extends StatelessWidget {
   final AppThemePreference themePreference;
   final FeatureAccessDecision nightModeAccess;
   final ValueChanged<AppThemePreference> onThemePreferenceChanged;
+  final VoidCallback onOpenWords;
+  final VoidCallback onOpenWriting;
+  final VoidCallback onOpenGuide;
+  final VoidCallback onOpenReading;
 
   @override
   Widget build(BuildContext context) {
@@ -58,13 +66,17 @@ class ProfileScreen extends StatelessWidget {
         32,
       ),
       children: [
-        _ProfileInventorySection(bundle: bundle),
-        const SizedBox(height: 16),
         _ProfileProgressSection(
           bundle: bundle,
           guideLessonStatuses: guideLessonStatuses,
           readingLessonStatuses: readingLessonStatuses,
+          onOpenWords: onOpenWords,
+          onOpenWriting: onOpenWriting,
+          onOpenGuide: onOpenGuide,
+          onOpenReading: onOpenReading,
         ),
+        const SizedBox(height: 16),
+        _ProfileInventorySection(bundle: bundle),
         const SizedBox(height: 16),
         _ProfileSettingsSection(
           autoHideBottomNavOnScroll: autoHideBottomNavOnScroll,
@@ -137,11 +149,19 @@ class _ProfileProgressSection extends StatelessWidget {
     required this.bundle,
     required this.guideLessonStatuses,
     required this.readingLessonStatuses,
+    required this.onOpenWords,
+    required this.onOpenWriting,
+    required this.onOpenGuide,
+    required this.onOpenReading,
   });
 
   final LearningBundle bundle;
   final Map<String, GuideLessonStatus> guideLessonStatuses;
   final Map<String, GuideLessonStatus> readingLessonStatuses;
+  final VoidCallback onOpenWords;
+  final VoidCallback onOpenWriting;
+  final VoidCallback onOpenGuide;
+  final VoidCallback onOpenReading;
 
   @override
   Widget build(BuildContext context) {
@@ -168,6 +188,7 @@ class _ProfileProgressSection extends StatelessWidget {
             completedLabel: '${study.seen} із ${study.total}',
             ratio: study.completionRatio,
             accent: tokens.successAccent,
+            onTap: onOpenWords,
           ),
           const SizedBox(height: 12),
           _ProgressStrip(
@@ -175,6 +196,7 @@ class _ProfileProgressSection extends StatelessWidget {
             completedLabel: '${writing.practiced} із ${writing.total}',
             ratio: writing.completionRatio,
             accent: tokens.aiAccent,
+            onTap: onOpenWriting,
           ),
           const SizedBox(height: 12),
           _ProgressStrip(
@@ -182,6 +204,7 @@ class _ProfileProgressSection extends StatelessWidget {
             completedLabel: '${guide.read} із ${guide.total}',
             ratio: guide.completionRatio,
             accent: tokens.warningAccent,
+            onTap: onOpenGuide,
           ),
           const SizedBox(height: 12),
           _ProgressStrip(
@@ -189,6 +212,7 @@ class _ProfileProgressSection extends StatelessWidget {
             completedLabel: '${reading.read} із ${reading.total}',
             ratio: reading.completionRatio,
             accent: tokens.readingAccent,
+            onTap: onOpenReading,
           ),
           const SizedBox(height: 16),
           AppActionWrap(
@@ -294,23 +318,21 @@ class _ProgressStrip extends StatelessWidget {
     required this.completedLabel,
     required this.ratio,
     required this.accent,
+    this.onTap,
   });
 
   final String label;
   final String completedLabel;
   final double ratio;
   final Color accent;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
 
-    return Container(
+    final content = Padding(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: tokens.subtleSurface,
-        borderRadius: BorderRadius.circular(20),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -346,6 +368,18 @@ class _ProgressStrip extends StatelessWidget {
           ),
         ],
       ),
+    );
+
+    return Material(
+      color: tokens.subtleSurface,
+      borderRadius: BorderRadius.circular(20),
+      child: onTap == null
+          ? content
+          : InkWell(
+              onTap: onTap,
+              borderRadius: BorderRadius.circular(20),
+              child: content,
+            ),
     );
   }
 }

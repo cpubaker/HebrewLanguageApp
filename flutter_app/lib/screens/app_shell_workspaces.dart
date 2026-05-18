@@ -157,6 +157,10 @@ class AppShellProfileWorkspace extends StatelessWidget {
     required this.themePreference,
     required this.nightModeAccess,
     required this.onThemePreferenceChanged,
+    required this.onOpenWords,
+    required this.onOpenWriting,
+    required this.onOpenGuide,
+    required this.onOpenReading,
   });
 
   final LearningBundle bundle;
@@ -173,6 +177,10 @@ class AppShellProfileWorkspace extends StatelessWidget {
   final AppThemePreference themePreference;
   final FeatureAccessDecision nightModeAccess;
   final ValueChanged<AppThemePreference> onThemePreferenceChanged;
+  final VoidCallback onOpenWords;
+  final VoidCallback onOpenWriting;
+  final VoidCallback onOpenGuide;
+  final VoidCallback onOpenReading;
 
   @override
   Widget build(BuildContext context) {
@@ -191,6 +199,10 @@ class AppShellProfileWorkspace extends StatelessWidget {
       themePreference: themePreference,
       nightModeAccess: nightModeAccess,
       onThemePreferenceChanged: onThemePreferenceChanged,
+      onOpenWords: onOpenWords,
+      onOpenWriting: onOpenWriting,
+      onOpenGuide: onOpenGuide,
+      onOpenReading: onOpenReading,
     );
   }
 }
