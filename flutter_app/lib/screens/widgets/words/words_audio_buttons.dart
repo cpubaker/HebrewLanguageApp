@@ -1,14 +1,9 @@
 part of '../../words_screen.dart';
 
-abstract class _WordAudioButtonState<T extends StatefulWidget>
-    extends State<T> {
-  late final LearningAudioController _audioController = LearningAudioController(
-    audioPlayerFactory: audioPlayerFactory,
-  )..addListener(_handleAudioStateChanged);
-
+abstract class _WordAudioButton<T extends StatefulWidget> extends State<T> {
   AudioPlaybackAwareness get audioPlaybackAwareness;
 
-  CreateLearningAudioPlayer get audioPlayerFactory;
+  LearningAudioController get audioController;
 
   LearningWord get word;
 
@@ -16,20 +11,31 @@ abstract class _WordAudioButtonState<T extends StatefulWidget>
 
   bool get prepareAudioBeforeEnable => false;
 
-  bool get _isAudioEnabled => _audioController.canToggle;
-
   String get _audioAssetPath => word.audioAssetPath ?? '';
 
+  bool get _hasAudio =>
+      audioController.cachedAvailabilityFor(_audioAssetPath) == true;
+
+  bool get _isProbingAudio =>
+      audioController.isProbingAvailabilityFor(_audioAssetPath) ||
+      audioController.cachedAvailabilityFor(_audioAssetPath) == null;
+
+  bool get _isAudioBusy => audioController.isBusyFor(_audioAssetPath);
+
+  bool get _isAudioPlaying => audioController.isPlayingFor(_audioAssetPath);
+
+  bool get _isAudioEnabled => _hasAudio && !_isAudioBusy;
+
   String get _audioTooltip {
-    if (_audioController.isCheckingAvailability) {
+    if (_isProbingAudio) {
       return 'Перевіряємо аудіо слова';
     }
 
-    if (!_audioController.hasAudio) {
+    if (!_hasAudio) {
       return 'Аудіо для слова ще недоступне';
     }
 
-    return _audioController.isPlaying
+    return _isAudioPlaying
         ? 'Зупинити вимову слова'
         : 'Увімкнути вимову слова';
   }
@@ -37,19 +43,32 @@ abstract class _WordAudioButtonState<T extends StatefulWidget>
   @override
   void initState() {
     super.initState();
-    unawaited(_checkAudioAvailability());
+    audioController.addListener(_handleAudioStateChanged);
+    unawaited(_probeAudioAvailability());
   }
 
-  Future<void> _checkAudioAvailability() async {
-    await _audioController.checkAvailability(
-      word.audioAssetPath,
-      prepare: prepareAudioBeforeEnable,
+  @override
+  void didUpdateWidget(covariant T oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    unawaited(_probeAudioAvailability());
+  }
+
+  Future<void> _probeAudioAvailability() async {
+    final assetPath = _audioAssetPath;
+    if (assetPath.isEmpty) {
+      return;
+    }
+    final shouldPrepare =
+        prepareAudioBeforeEnable && !audioController.isPlaying;
+    await audioController.probeAvailability(
+      assetPath,
+      prepare: shouldPrepare,
     );
   }
 
   Future<void> _togglePlayback() async {
     try {
-      await _audioController.toggle(
+      await audioController.toggle(
         _audioAssetPath,
         beforePlay: () => showAudioPlaybackHintIfNeeded(
           context: context,
@@ -73,9 +92,7 @@ abstract class _WordAudioButtonState<T extends StatefulWidget>
 
   @override
   void dispose() {
-    _audioController
-      ..removeListener(_handleAudioStateChanged)
-      ..dispose();
+    audioController.removeListener(_handleAudioStateChanged);
     super.dispose();
   }
 
@@ -91,12 +108,12 @@ abstract class _WordAudioButtonState<T extends StatefulWidget>
 class _InlineWordAudioButton extends StatefulWidget {
   const _InlineWordAudioButton({
     required this.word,
-    required this.audioPlayerFactory,
+    required this.audioController,
     required this.audioPlaybackAwareness,
   });
 
   final LearningWord word;
-  final CreateLearningAudioPlayer audioPlayerFactory;
+  final LearningAudioController audioController;
   final AudioPlaybackAwareness audioPlaybackAwareness;
 
   @override
@@ -104,27 +121,26 @@ class _InlineWordAudioButton extends StatefulWidget {
 }
 
 class _InlineWordAudioButtonState
-    extends _WordAudioButtonState<_InlineWordAudioButton> {
+    extends _WordAudioButton<_InlineWordAudioButton> {
   @override
   AudioPlaybackAwareness get audioPlaybackAwareness =>
       widget.audioPlaybackAwareness;
 
   @override
-  CreateLearningAudioPlayer get audioPlayerFactory => widget.audioPlayerFactory;
+  LearningAudioController get audioController => widget.audioController;
 
   @override
   LearningWord get word => widget.word;
 
   @override
   void updatePlaybackErrorState(Object error) {
-    _audioController.markUnavailable();
+    audioController.markUnavailableForPath(_audioAssetPath);
   }
 
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
-    final isLoading =
-        _audioController.isBusy || _audioController.isCheckingAvailability;
+    final isLoading = _isAudioBusy || _isProbingAudio;
 
     return IconButton.filledTonal(
       key: ValueKey<String>('word-list-audio-button-${word.wordId}'),
@@ -153,7 +169,7 @@ class _InlineWordAudioButtonState
               ),
             )
           : Icon(
-              _audioController.isPlaying
+              _isAudioPlaying
                   ? Icons.stop_circle_outlined
                   : Icons.volume_up_rounded,
             ),
@@ -164,12 +180,12 @@ class _InlineWordAudioButtonState
 class _WordDetailsAudioButton extends StatefulWidget {
   const _WordDetailsAudioButton({
     required this.word,
-    required this.audioPlayerFactory,
+    required this.audioController,
     required this.audioPlaybackAwareness,
   });
 
   final LearningWord word;
-  final CreateLearningAudioPlayer audioPlayerFactory;
+  final LearningAudioController audioController;
   final AudioPlaybackAwareness audioPlaybackAwareness;
 
   @override
@@ -178,13 +194,13 @@ class _WordDetailsAudioButton extends StatefulWidget {
 }
 
 class _WordDetailsAudioButtonState
-    extends _WordAudioButtonState<_WordDetailsAudioButton> {
+    extends _WordAudioButton<_WordDetailsAudioButton> {
   @override
   AudioPlaybackAwareness get audioPlaybackAwareness =>
       widget.audioPlaybackAwareness;
 
   @override
-  CreateLearningAudioPlayer get audioPlayerFactory => widget.audioPlayerFactory;
+  LearningAudioController get audioController => widget.audioController;
 
   @override
   bool get clearPlayingAfterStop => true;
@@ -197,7 +213,7 @@ class _WordDetailsAudioButtonState
 
   @override
   void updatePlaybackErrorState(Object error) {
-    _audioController.clearPlaying();
+    audioController.clearPlaying();
   }
 
   @override
@@ -220,7 +236,7 @@ class _WordDetailsAudioButtonState
         key: ValueKey<String>('word-detail-audio-button-${word.wordId}'),
         tooltip: _audioTooltip,
         onPressed: _isAudioEnabled ? _togglePlayback : null,
-        icon: _audioController.isBusy
+        icon: _isAudioBusy
             ? SizedBox(
                 width: 18,
                 height: 18,
@@ -230,10 +246,10 @@ class _WordDetailsAudioButtonState
                 ),
               )
             : Icon(
-                _audioController.isPlaying
+                _isAudioPlaying
                     ? Icons.stop_circle_outlined
                     : Icons.volume_up_rounded,
-                color: _audioController.hasAudio
+                color: _hasAudio
                     ? tokens.vocabularyAccent
                     : tokens.secondaryText,
               ),

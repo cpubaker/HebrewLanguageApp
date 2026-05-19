@@ -3,14 +3,14 @@ part of '../../words_screen.dart';
 class _WordCard extends StatelessWidget {
   const _WordCard({
     required this.word,
-    required this.audioPlayerFactory,
+    required this.audioController,
     required this.audioPlaybackAwareness,
     required this.onCycleStatus,
     required this.onOpenDetails,
   });
 
   final LearningWord word;
-  final CreateLearningAudioPlayer audioPlayerFactory;
+  final LearningAudioController audioController;
   final AudioPlaybackAwareness audioPlaybackAwareness;
   final VoidCallback onCycleStatus;
   final VoidCallback onOpenDetails;
@@ -56,7 +56,7 @@ class _WordCard extends StatelessWidget {
                     const SizedBox(width: 12),
                     _InlineWordAudioButton(
                       word: word,
-                      audioPlayerFactory: audioPlayerFactory,
+                      audioController: audioController,
                       audioPlaybackAwareness: audioPlaybackAwareness,
                     ),
                   ],

@@ -27,6 +27,8 @@ class LearningAudioController extends ChangeNotifier {
   bool _hasAudio = false;
   bool _isPlaying = false;
   bool _isBusy = false;
+  final Map<String, _AvailabilityEntry> _availabilityCache =
+      <String, _AvailabilityEntry>{};
 
   String? get activeAssetPath => _activeAssetPath;
 
@@ -39,6 +41,105 @@ class LearningAudioController extends ChangeNotifier {
   bool get isBusy => _isBusy;
 
   bool get canToggle => _hasAudio && !_isBusy;
+
+  bool isPlayingFor(String? assetPath) {
+    final normalized = _normalizeAssetPath(assetPath);
+    return normalized != null &&
+        _isPlaying &&
+        _activeAssetPath == normalized;
+  }
+
+  bool isBusyFor(String? assetPath) {
+    final normalized = _normalizeAssetPath(assetPath);
+    return normalized != null && _isBusy && _activeAssetPath == normalized;
+  }
+
+  bool? cachedAvailabilityFor(String? assetPath) {
+    final normalized = _normalizeAssetPath(assetPath);
+    if (normalized == null) {
+      return false;
+    }
+    return _availabilityCache[normalized]?.hasAudio;
+  }
+
+  bool isProbingAvailabilityFor(String? assetPath) {
+    final normalized = _normalizeAssetPath(assetPath);
+    if (normalized == null) {
+      return false;
+    }
+    return _availabilityCache[normalized]?.pendingProbe != null;
+  }
+
+  Future<bool> probeAvailability(
+    String? assetPath, {
+    bool prepare = false,
+  }) async {
+    final normalized = _normalizeAssetPath(assetPath);
+    if (normalized == null) {
+      return false;
+    }
+
+    final existing = _availabilityCache[normalized];
+    if (existing != null) {
+      if (existing.pendingProbe != null) {
+        return existing.pendingProbe!;
+      }
+      if (existing.hasAudio == false) {
+        return false;
+      }
+      if (existing.hasAudio == true && (!prepare || existing.isPrepared)) {
+        return true;
+      }
+    }
+
+    final entry = existing ?? _AvailabilityEntry();
+    _availabilityCache[normalized] = entry;
+
+    final probe = _runAvailabilityProbe(normalized, prepare: prepare);
+    entry.pendingProbe = probe;
+
+    bool resolved;
+    try {
+      resolved = await probe;
+    } catch (_) {
+      resolved = false;
+    }
+
+    if (_isDisposed) {
+      return resolved;
+    }
+
+    entry.hasAudio = resolved;
+    entry.pendingProbe = null;
+    if (resolved && prepare) {
+      entry.isPrepared = true;
+    }
+    if (_activeAssetPath == normalized) {
+      _hasAudio = resolved;
+    }
+    notifyListeners();
+    return resolved;
+  }
+
+  void markUnavailableForPath(String? assetPath) {
+    if (_isDisposed) {
+      return;
+    }
+    final normalized = _normalizeAssetPath(assetPath);
+    if (normalized == null) {
+      return;
+    }
+    final entry = _availabilityCache[normalized] ?? _AvailabilityEntry();
+    entry.hasAudio = false;
+    entry.pendingProbe = null;
+    entry.isPrepared = false;
+    _availabilityCache[normalized] = entry;
+    if (_activeAssetPath == normalized) {
+      _hasAudio = false;
+      _isCheckingAvailability = false;
+    }
+    notifyListeners();
+  }
 
   Future<void> checkAvailability(
     String? assetPath, {
@@ -126,19 +227,28 @@ class LearningAudioController extends ChangeNotifier {
     bool recheckBeforePlay = false,
   }) async {
     final normalizedAssetPath = _normalizeAssetPath(assetPath);
-    if (_isBusy || normalizedAssetPath == null || !_hasAudio) {
+    if (_isBusy || normalizedAssetPath == null) {
       return;
     }
+
+    final hasAudio = _hasAudioForPath(normalizedAssetPath);
+    if (!hasAudio) {
+      return;
+    }
+
+    final isResumingActive =
+        _activeAssetPath == normalizedAssetPath && _isPlaying;
 
     final requestToken = _startRequest(
       normalizedAssetPath,
       checkingAvailability: false,
       clearAvailability: false,
       busy: true,
+      hasAudio: true,
     );
 
     try {
-      if (_isPlaying) {
+      if (isResumingActive) {
         await _audioPlayer.stop();
         if (!_isCurrentRequest(requestToken)) {
           return;
@@ -155,8 +265,8 @@ class LearningAudioController extends ChangeNotifier {
       }
 
       if (recheckBeforePlay) {
-        final hasAudio = await _hasAvailableAudio(normalizedAssetPath);
-        if (!_isCurrentRequest(requestToken) || !hasAudio) {
+        final stillAvailable = await _hasAvailableAudio(normalizedAssetPath);
+        if (!_isCurrentRequest(requestToken) || !stillAvailable) {
           _finishRequest(requestToken, hasAudio: false);
           return;
         }
@@ -182,6 +292,13 @@ class LearningAudioController extends ChangeNotifier {
 
     _hasAudio = false;
     _isCheckingAvailability = false;
+    final activePath = _activeAssetPath;
+    if (activePath != null) {
+      final entry = _availabilityCache[activePath] ?? _AvailabilityEntry();
+      entry.hasAudio = false;
+      entry.pendingProbe = null;
+      _availabilityCache[activePath] = entry;
+    }
     notifyListeners();
   }
 
@@ -193,6 +310,7 @@ class LearningAudioController extends ChangeNotifier {
   void dispose() {
     _isDisposed = true;
     _requestToken += 1;
+    _availabilityCache.clear();
     unawaited(_playbackSubscription?.cancel());
     unawaited(_audioPlayer.stop());
     unawaited(_audioPlayer.dispose());
@@ -200,16 +318,26 @@ class LearningAudioController extends ChangeNotifier {
   }
 
   int _startRequest(
-    String? assetPath, {
-    required bool checkingAvailability,
+    String? assetPath,
+    {required bool checkingAvailability,
     required bool clearAvailability,
     bool? busy,
-  }) {
+    bool? hasAudio,
+    }) {
     final requestToken = ++_requestToken;
     _activeAssetPath = assetPath;
     _isCheckingAvailability = checkingAvailability;
     if (clearAvailability) {
       _hasAudio = false;
+      if (assetPath != null) {
+        final entry = _availabilityCache[assetPath] ?? _AvailabilityEntry();
+        entry.hasAudio = null;
+        _availabilityCache[assetPath] = entry;
+      }
+    } else if (hasAudio != null) {
+      _hasAudio = hasAudio;
+    } else if (assetPath != null) {
+      _hasAudio = _availabilityCache[assetPath]?.hasAudio ?? _hasAudio;
     }
     if (busy != null) {
       _isBusy = busy;
@@ -234,6 +362,13 @@ class LearningAudioController extends ChangeNotifier {
     }
     if (hasAudio != null) {
       _hasAudio = hasAudio;
+      final activePath = _activeAssetPath;
+      if (activePath != null) {
+        final entry = _availabilityCache[activePath] ?? _AvailabilityEntry();
+        entry.hasAudio = hasAudio;
+        entry.pendingProbe = null;
+        _availabilityCache[activePath] = entry;
+      }
     }
     if (isPlaying != null) {
       _isPlaying = isPlaying;
@@ -257,6 +392,21 @@ class LearningAudioController extends ChangeNotifier {
     } catch (_) {
       return false;
     }
+  }
+
+  Future<bool> _runAvailabilityProbe(
+    String assetPath, {
+    required bool prepare,
+  }) {
+    return _hasAvailableAudio(assetPath, prepare: prepare);
+  }
+
+  bool _hasAudioForPath(String assetPath) {
+    final cached = _availabilityCache[assetPath]?.hasAudio;
+    if (cached != null) {
+      return cached;
+    }
+    return _activeAssetPath == assetPath && _hasAudio;
   }
 
   Future<void> _stopPlayer() async {
@@ -288,4 +438,10 @@ class LearningAudioController extends ChangeNotifier {
     final normalized = assetPath?.trim();
     return normalized == null || normalized.isEmpty ? null : normalized;
   }
+}
+
+class _AvailabilityEntry {
+  bool? hasAudio;
+  bool isPrepared = false;
+  Future<bool>? pendingProbe;
 }
