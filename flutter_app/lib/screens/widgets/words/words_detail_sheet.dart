@@ -4,7 +4,7 @@ void _showWordDetailsSheet({
   required BuildContext context,
   required LearningWord initialWord,
   required Future<LearningWord> wordFuture,
-  required CreateLearningAudioPlayer audioPlayerFactory,
+  required LearningAudioController audioController,
   required AudioPlaybackAwareness audioPlaybackAwareness,
 }) {
   showModalBottomSheet<void>(
@@ -72,7 +72,7 @@ void _showWordDetailsSheet({
                           const SizedBox(width: 16),
                           _WordDetailsAudioButton(
                             word: detailWord,
-                            audioPlayerFactory: audioPlayerFactory,
+                            audioController: audioController,
                             audioPlaybackAwareness: audioPlaybackAwareness,
                           ),
                         ],

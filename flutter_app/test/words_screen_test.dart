@@ -227,6 +227,35 @@ void main() {
   });
 
   testWidgets(
+    'shares a single audio player across all word cards in the list',
+    (WidgetTester tester) async {
+      final factory = FakeLearningAudioPlayerFactory();
+      final wordsWithAudio = List<LearningWord>.generate(
+        12,
+        (index) => LearningWord(
+          wordId: 'word_$index',
+          hebrew: 'מילה $index',
+          english: 'Word $index',
+          ukrainian: 'Слово $index',
+          transcription: 'word $index',
+          audioAssetPath:
+              'assets/learning/input/audio/words/word_$index.mp3',
+          correct: 0,
+          wrong: 0,
+        ),
+      );
+
+      await _pumpWordsScreen(
+        tester,
+        words: wordsWithAudio,
+        audioPlayerFactory: factory.create,
+      );
+
+      expect(factory.players, hasLength(1));
+    },
+  );
+
+  testWidgets(
     'shows scroll-to-top action after scrolling the vocabulary list',
     (WidgetTester tester) async {
       await _pumpWordsScreen(tester, words: _manyWords());

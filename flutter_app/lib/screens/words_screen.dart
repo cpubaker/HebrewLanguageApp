@@ -54,6 +54,7 @@ class _WordsScreenState extends State<WordsScreen> {
   late final TextEditingController _searchController;
   late final ScrollController _scrollController;
   late final FocusNode _searchFocusNode;
+  late final LearningAudioController _audioController;
   Timer? _searchDebounce;
   String _query = '';
   late List<LearningWord> _words;
@@ -68,6 +69,9 @@ class _WordsScreenState extends State<WordsScreen> {
     _searchController = TextEditingController();
     _scrollController = ScrollController()..addListener(_handleScroll);
     _searchFocusNode = FocusNode();
+    _audioController = LearningAudioController(
+      audioPlayerFactory: widget.audioPlayerFactory,
+    );
     _words = List<LearningWord>.from(widget.words);
     _rebuildIndex();
   }
@@ -89,6 +93,7 @@ class _WordsScreenState extends State<WordsScreen> {
       ..removeListener(_handleScroll)
       ..dispose();
     _searchFocusNode.dispose();
+    _audioController.dispose();
     super.dispose();
   }
 
@@ -230,7 +235,7 @@ class _WordsScreenState extends State<WordsScreen> {
       context: context,
       initialWord: word,
       wordFuture: wordFuture,
-      audioPlayerFactory: widget.audioPlayerFactory,
+      audioController: _audioController,
       audioPlaybackAwareness: widget.audioPlaybackAwareness,
     );
   }
@@ -312,7 +317,7 @@ class _WordsScreenState extends State<WordsScreen> {
                       ),
                       child: _WordCard(
                         word: word,
-                        audioPlayerFactory: widget.audioPlayerFactory,
+                        audioController: _audioController,
                         audioPlaybackAwareness: widget.audioPlaybackAwareness,
                         onCycleStatus: () => _cycleWordStatus(word),
                         onOpenDetails: () => _showWordDetails(word),
