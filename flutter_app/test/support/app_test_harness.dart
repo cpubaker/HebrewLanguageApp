@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hebrew_language_flutter/app.dart';
 import 'package:hebrew_language_flutter/models/learning_bundle.dart';
 import 'package:hebrew_language_flutter/models/learning_context.dart';
@@ -144,6 +145,11 @@ Future<void> pumpHebrewTestApp(
   CreateAudioPlaybackAwareness? audioPlaybackAwarenessFactory,
 }) async {
   await useTallMobileViewport(tester);
+  // Skip the home-screen welcome state by default. Tests that want to assert
+  // the first-run experience can override these mock values before pumping.
+  SharedPreferences.setMockInitialValues(<String, Object>{
+    'home.first_action_completed': true,
+  });
   await tester.pumpWidget(
     HebrewFlutterApp(
       loader: loader,

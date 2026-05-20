@@ -14,6 +14,7 @@ import '../services/ai_practice_text_settings_store.dart';
 import '../services/ai_learning_helpers.dart';
 import '../services/app_shell_settings_store.dart';
 import '../services/audio_playback_awareness.dart';
+import '../services/bool_setting_store.dart';
 import '../services/feature_access_service.dart';
 import '../services/flashcard_session.dart';
 import '../services/latest_request_tracker.dart';
@@ -667,23 +668,6 @@ class _AppShellScreenState extends State<AppShellScreen> {
     );
   }
 
-  void _openReadingLesson(LessonEntry lesson) {
-    final lessonStatus =
-        _readingLessonStatuses[lesson.progressKey] ?? GuideLessonStatus.unread;
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => ReadingDetailScreen(
-          lesson: lesson,
-          documentLoader: widget.documentLoader,
-          initialStatus: lessonStatus,
-          onStatusChanged: (status) {
-            _handleReadingStatusChanged(lesson.progressKey, status);
-          },
-        ),
-      ),
-    );
-  }
-
   void _setBottomNavVisibility(bool isVisible) {
     if (_isBottomNavVisible == isVisible || !mounted) {
       return;
@@ -926,7 +910,6 @@ class _AppShellScreenState extends State<AppShellScreen> {
                       children: [
                         HomeScreen(
                           bundle: bundle,
-                          documentLoader: widget.documentLoader,
                           audioPlayerFactory: widget.audioPlayerFactory,
                           audioPlaybackAwareness: _audioPlaybackAwareness,
                           onOpenWords: _openLearnWords,
@@ -936,7 +919,10 @@ class _AppShellScreenState extends State<AppShellScreen> {
                           onOpenGuide: _openGuide,
                           onOpenVerbs: _openLearnVerbs,
                           onOpenReading: _openReading,
-                          onOpenReadingLesson: _openReadingLesson,
+                          firstActionCompletedStore:
+                              const SharedPreferencesBoolSettingStore(
+                            key: 'home.first_action_completed',
+                          ),
                         ),
                         AppShellLearnWorkspace(
                           onOpenWords: _openLearnWords,

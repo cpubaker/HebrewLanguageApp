@@ -2,6 +2,7 @@ part of '../../home_screen.dart';
 
 class _DashboardAction {
   const _DashboardAction({
+    required this.kind,
     required this.title,
     required this.subtitle,
     required this.buttonLabel,
@@ -10,6 +11,7 @@ class _DashboardAction {
     required this.onTap,
   });
 
+  final _DashboardActionKind kind;
   final String title;
   final String subtitle;
   final String buttonLabel;
@@ -18,8 +20,11 @@ class _DashboardAction {
   final VoidCallback onTap;
 }
 
+enum _DashboardActionKind { welcome, review, newWords, reading, fallback }
+
 _DashboardAction _buildContinueAction({
   required AppThemeTokens tokens,
+  required bool isFirstRun,
   required LearningBundle bundle,
   required StudyProgressSnapshot progress,
   required FlashcardFocusSnapshot flashcards,
@@ -27,8 +32,22 @@ _DashboardAction _buildContinueAction({
   required ValueChanged<FlashcardDeckMode> onOpenFlashcards,
   required VoidCallback onOpenReading,
 }) {
+  if (isFirstRun) {
+    return _DashboardAction(
+      kind: _DashboardActionKind.welcome,
+      title: 'Привіт! Готовий почати?',
+      subtitle:
+          'Відкрий перші картки, щоб познайомитись зі словами івриту й заробити перший день у серії.',
+      buttonLabel: 'Спробувати',
+      icon: Icons.rocket_launch_rounded,
+      accent: tokens.primaryAccent,
+      onTap: () => onOpenFlashcards(FlashcardDeckMode.allWords),
+    );
+  }
+
   if (flashcards.needsReview > 0) {
     return _DashboardAction(
+      kind: _DashboardActionKind.review,
       title: 'Продовжити повторення',
       subtitle:
           '${flashcards.needsReview} слів чекають у картках на повторення.',
@@ -41,9 +60,10 @@ _DashboardAction _buildContinueAction({
 
   if (progress.unseen > 0) {
     return _DashboardAction(
-      title: 'Почати нові слова',
-      subtitle: '${progress.unseen} слів ще не відкривали в тренуванні.',
-      buttonLabel: 'До карток',
+      kind: _DashboardActionKind.newWords,
+      title: 'Готовий до нового?',
+      subtitle: '${progress.unseen} слів ще чекають свого першого знайомства.',
+      buttonLabel: 'До нових слів',
       icon: Icons.style_rounded,
       accent: tokens.successAccent,
       onTap: () => onOpenFlashcards(FlashcardDeckMode.allWords),
@@ -52,8 +72,9 @@ _DashboardAction _buildContinueAction({
 
   if (bundle.readingLessons.isNotEmpty) {
     return _DashboardAction(
-      title: 'Почитати далі',
-      subtitle: 'У бібліотеці вже є тексти, з яких можна продовжити.',
+      kind: _DashboardActionKind.reading,
+      title: 'Усе повторено — почитаємо?',
+      subtitle: 'У бібліотеці чекають тексти, з якими можна підняти рівень.',
       buttonLabel: 'До читання',
       icon: Icons.auto_stories_rounded,
       accent: tokens.newContentAccent,
@@ -62,54 +83,12 @@ _DashboardAction _buildContinueAction({
   }
 
   return _DashboardAction(
-    title: 'Повернутися до словника',
+    kind: _DashboardActionKind.fallback,
+    title: 'Заглянь у словник',
     subtitle: 'Перегляньте слова, щоб обрати наступний напрям навчання.',
     buttonLabel: 'До слів',
     icon: Icons.translate_rounded,
     accent: tokens.primaryAccent,
     onTap: onOpenWords,
   );
-}
-
-List<_DashboardAction> _buildRecommendedActions({
-  required AppThemeTokens tokens,
-  required LearningBundle bundle,
-  required StudyProgressSnapshot progress,
-  required FlashcardFocusSnapshot flashcards,
-  required ValueChanged<FlashcardDeckMode> onOpenFlashcards,
-  required VoidCallback onOpenWriting,
-  required VoidCallback onOpenGuide,
-}) {
-  return <_DashboardAction>[
-    _DashboardAction(
-      title: 'Картки з прикладами',
-      subtitle: flashcards.withContexts > 0
-          ? '${flashcards.withContexts} слів уже мають контекст для практики.'
-          : 'Контекстні картки з’являтимуться, коли для слів буде більше прикладів.',
-      buttonLabel: 'Відкрити',
-      icon: Icons.chat_bubble_outline_rounded,
-      accent: tokens.contextAccent,
-      onTap: () => onOpenFlashcards(FlashcardDeckMode.withContexts),
-    ),
-    _DashboardAction(
-      title: 'Письмо',
-      subtitle: progress.seen > 0
-          ? 'Повторіть знайомі слова й потренуйте написання.'
-          : 'Спочатку відкрийте кілька слів у картках, а потім тренуйте їхнє написання тут.',
-      buttonLabel: 'Тренувати',
-      icon: Icons.edit_rounded,
-      accent: tokens.newContentAccent,
-      onTap: onOpenWriting,
-    ),
-    _DashboardAction(
-      title: 'Матеріали',
-      subtitle: bundle.guideLessons.isNotEmpty
-          ? 'У довіднику й читанні вже є теми для наступного кроку.'
-          : 'Матеріали з’являться тут, коли їх буде завантажено.',
-      buttonLabel: 'Відкрити',
-      icon: Icons.menu_book_rounded,
-      accent: tokens.vocabularyAccent,
-      onTap: onOpenGuide,
-    ),
-  ];
 }
