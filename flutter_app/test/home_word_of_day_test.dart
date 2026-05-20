@@ -3,9 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hebrew_language_flutter/models/learning_bundle.dart';
 import 'package:hebrew_language_flutter/models/learning_context.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
-import 'package:hebrew_language_flutter/models/lesson_document.dart';
 import 'package:hebrew_language_flutter/screens/home_screen.dart';
-import 'package:hebrew_language_flutter/services/lesson_document_loader.dart';
 import 'package:hebrew_language_flutter/theme/app_theme.dart';
 
 import 'support/fakes.dart';
@@ -51,7 +49,6 @@ void main() {
               verbLessons: [],
               readingLessons: [],
             ),
-            documentLoader: _FakeLessonDocumentLoader(),
             onOpenWords: () {},
             onOpenFlashcards: (_) {},
             onOpenWriting: () {},
@@ -59,7 +56,6 @@ void main() {
             onOpenGuide: () {},
             onOpenVerbs: () {},
             onOpenReading: () {},
-            onOpenReadingLesson: (_) {},
             audioPlayerFactory: () => audioPlayer,
             wordOfDayDateProvider: () => DateTime.utc(2026, 3, 27),
           ),
@@ -82,11 +78,4 @@ void main() {
 
     expect(find.widgetWithText(OutlinedButton, 'До карток'), findsNothing);
   });
-}
-
-class _FakeLessonDocumentLoader implements LessonDocumentLoader {
-  @override
-  Future<LessonDocument> load(String assetPath) async {
-    return const LessonDocument(title: 'Title', body: 'Body');
-  }
 }

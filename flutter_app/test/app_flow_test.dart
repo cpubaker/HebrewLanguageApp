@@ -150,13 +150,14 @@ void main() {
   ) async {
     await pumpHebrewTestApp(tester);
 
-    await tester.scrollUntilVisible(find.text('Картки на сьогодні'), 300);
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Продовжити'));
+    // Home should surface a single primary action card pointing at review,
+    // since testWomanWord has a wrong attempt recorded.
+    expect(find.text('Продовжити повторення'), findsOneWidget);
+    await tester.tap(find.widgetWithText(FilledButton, 'До повторення'));
     await tester.pumpAndSettle();
 
     expect(find.text('Знаю'), findsOneWidget);
-    expect(find.text('Продовжити'), findsNothing);
+    expect(find.text('Продовжити повторення'), findsNothing);
   });
 
   testWidgets('hydrates the word of day context after summary load', (

@@ -1,73 +1,68 @@
 part of '../../home_screen.dart';
 
-class _QuickActionStrip extends StatelessWidget {
-  const _QuickActionStrip({
-    required this.onOpenWords,
-    required this.onOpenFlashcards,
-    required this.onOpenWriting,
-    required this.onOpenSprint,
-    required this.onOpenGuide,
-    required this.onOpenVerbs,
-    required this.onOpenReading,
+class _GreetingHeaderRow extends StatelessWidget {
+  const _GreetingHeaderRow({
+    required this.greeting,
+    required this.streak,
   });
 
-  final VoidCallback onOpenWords;
-  final ValueChanged<FlashcardDeckMode> onOpenFlashcards;
-  final VoidCallback onOpenWriting;
-  final VoidCallback onOpenSprint;
-  final VoidCallback onOpenGuide;
-  final VoidCallback onOpenVerbs;
-  final VoidCallback onOpenReading;
+  final String greeting;
+  final StudyStreakSnapshot streak;
 
   @override
   Widget build(BuildContext context) {
-    return AppSectionCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    final tokens = Theme.of(context).appTokens;
+    final hasStreak = streak.currentDays > 0;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Row(
         children: [
-          const AppPageHeader(
-            title: 'Швидкі дії',
-            subtitle: 'Швидкий доступ до основних вправ і матеріалів.',
+          Expanded(
+            child: Text(
+              greeting,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w800,
+              ),
+            ),
           ),
-          const SizedBox(height: 16),
-          AppActionWrap(
-            children: [
-              FilledButton.icon(
-                onPressed: () => onOpenFlashcards(FlashcardDeckMode.allWords),
-                icon: const Icon(Icons.style_rounded),
-                label: const Text('До карток'),
-              ),
-              OutlinedButton.icon(
-                onPressed: onOpenWriting,
-                icon: const Icon(Icons.edit_rounded),
-                label: const Text('До письма'),
-              ),
-              OutlinedButton.icon(
-                onPressed: onOpenSprint,
-                icon: const Icon(Icons.timer_rounded),
-                label: const Text('До спринту'),
-              ),
-              OutlinedButton.icon(
-                onPressed: onOpenWords,
-                icon: const Icon(Icons.translate_rounded),
-                label: const Text('До слів'),
-              ),
-              OutlinedButton.icon(
-                onPressed: onOpenVerbs,
-                icon: const Icon(Icons.play_lesson_rounded),
-                label: const Text('До дієслів'),
-              ),
-              OutlinedButton.icon(
-                onPressed: onOpenGuide,
-                icon: const Icon(Icons.menu_book_rounded),
-                label: const Text('До довідника'),
-              ),
-              OutlinedButton.icon(
-                onPressed: onOpenReading,
-                icon: const Icon(Icons.auto_stories_rounded),
-                label: const Text('До читання'),
-              ),
-            ],
+          if (hasStreak) ...[
+            const SizedBox(width: 12),
+            _StreakChip(currentDays: streak.currentDays, tokens: tokens),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _StreakChip extends StatelessWidget {
+  const _StreakChip({required this.currentDays, required this.tokens});
+
+  final int currentDays;
+  final AppThemeTokens tokens;
+
+  @override
+  Widget build(BuildContext context) {
+    final accent = tokens.warningAccent;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: tokens.accentSurface(accent),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: tokens.accentSoftBorder(accent)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.local_fire_department_rounded, color: accent, size: 18),
+          const SizedBox(width: 6),
+          Text(
+            '$currentDays',
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(
+              color: accent,
+              fontWeight: FontWeight.w800,
+            ),
           ),
         ],
       ),
@@ -75,14 +70,16 @@ class _QuickActionStrip extends StatelessWidget {
   }
 }
 
-class _DashboardPrimaryActionCard extends StatelessWidget {
-  const _DashboardPrimaryActionCard({required this.action});
+class _TodayActionCard extends StatelessWidget {
+  const _TodayActionCard({required this.action});
 
   final _DashboardAction action;
 
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
+    final isWelcome = action.kind == _DashboardActionKind.welcome;
+    final eyebrow = isWelcome ? 'Перший крок' : 'Сьогодні';
 
     return AppSectionCard(
       child: Row(
@@ -103,7 +100,7 @@ class _DashboardPrimaryActionCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Продовжити',
+                  eyebrow,
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
                     color: Theme.of(context).appTokens.secondaryText,
                     fontWeight: FontWeight.w700,
@@ -132,92 +129,6 @@ class _DashboardPrimaryActionCard extends StatelessWidget {
                 ),
               ],
             ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _DashboardRecommendationsCard extends StatelessWidget {
-  const _DashboardRecommendationsCard({required this.actions});
-
-  final List<_DashboardAction> actions;
-
-  @override
-  Widget build(BuildContext context) {
-    return AppSectionCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const AppPageHeader(
-            title: 'Що далі',
-            subtitle: 'Рекомендовані вправи й матеріали для продовження.',
-          ),
-          const SizedBox(height: 16),
-          for (var index = 0; index < actions.length; index += 1) ...[
-            _DashboardRecommendationTile(action: actions[index]),
-            if (index != actions.length - 1) const SizedBox(height: 12),
-          ],
-        ],
-      ),
-    );
-  }
-}
-
-class _DashboardRecommendationTile extends StatelessWidget {
-  const _DashboardRecommendationTile({required this.action});
-
-  final _DashboardAction action;
-
-  @override
-  Widget build(BuildContext context) {
-    final tokens = Theme.of(context).appTokens;
-
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: tokens.subtleSurface,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 42,
-            height: 42,
-            decoration: BoxDecoration(
-              color: tokens.accentSurface(action.accent),
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: Icon(action.icon, color: action.accent, size: 20),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  action.title,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  action.subtitle,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).appTokens.mutedText,
-                    height: 1.4,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 12),
-          OutlinedButton(
-            onPressed: action.onTap,
-            child: Text(action.buttonLabel),
           ),
         ],
       ),
