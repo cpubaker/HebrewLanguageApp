@@ -11,9 +11,10 @@ import '../theme/app_theme.dart';
 import 'mixins/lesson_scroll_mixin.dart';
 import 'mixins/lesson_status_handler_mixin.dart';
 import 'reading_lesson_catalog.dart';
-import 'widgets/app_section_card.dart';
 import 'widgets/lesson_status_controls.dart';
 import 'widgets/markdown_lesson_body.dart';
+import 'widgets/reading/reading_empty_search_state.dart';
+import 'widgets/reading/reading_search_card.dart';
 
 class ReadingScreen extends StatefulWidget {
   const ReadingScreen({
@@ -39,9 +40,14 @@ class _ReadingScreenState extends State<ReadingScreen>
     with
         LessonScrollMixin<ReadingScreen>,
         LessonStatusHandlerMixin<ReadingScreen> {
+  late final TextEditingController _searchController;
+  late final FocusNode _searchFocusNode;
+
   final Map<String, String> _lessonTitles = <String, String>{};
 
   final Set<String> _selectedLevelKeys = <String>{};
+  String _query = '';
+  bool _searchVisible = false;
   bool _isLoadingLessonTitles = false;
 
   @override
@@ -54,7 +60,16 @@ class _ReadingScreenState extends State<ReadingScreen>
   @override
   void initState() {
     super.initState();
+    _searchController = TextEditingController();
+    _searchFocusNode = FocusNode();
     unawaited(_primeLessonTitles());
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _searchFocusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -159,6 +174,24 @@ class _ReadingScreenState extends State<ReadingScreen>
     });
   }
 
+  void _toggleSearchVisibility() {
+    setState(() {
+      if (_searchVisible) {
+        _searchVisible = false;
+        if (_query.trim().isEmpty) {
+          _searchFocusNode.unfocus();
+        }
+      } else {
+        _searchVisible = true;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            _searchFocusNode.requestFocus();
+          }
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -169,15 +202,35 @@ class _ReadingScreenState extends State<ReadingScreen>
       lessonStatuses: widget.lessonStatuses,
     );
     final lessonGroups = buildReadingLessonGroups(widget.lessons);
-    final visibleGroups = _selectedLevelKeys.isEmpty
+    final levelFilteredGroups = _selectedLevelKeys.isEmpty
         ? lessonGroups
         : lessonGroups
               .where((group) => _selectedLevelKeys.contains(group.levelKey))
+              .toList(growable: false);
+    final normalizedQuery = _query.trim().toLowerCase();
+    final visibleGroups = normalizedQuery.isEmpty
+        ? levelFilteredGroups
+        : levelFilteredGroups
+              .map(
+                (group) => ReadingLessonGroup(
+                  levelKey: group.levelKey,
+                  levelLabel: group.levelLabel,
+                  lessons: group.lessons
+                      .where(
+                        (lesson) => _resolvedLessonTitle(lesson)
+                            .toLowerCase()
+                            .contains(normalizedQuery),
+                      )
+                      .toList(growable: false),
+                ),
+              )
+              .where((group) => group.lessons.isNotEmpty)
               .toList(growable: false);
     final visibleLessonCount = visibleGroups.fold<int>(
       0,
       (count, group) => count + group.lessons.length,
     );
+    final hasResults = visibleLessonCount > 0;
 
     return Stack(
       children: [
@@ -206,52 +259,42 @@ class _ReadingScreenState extends State<ReadingScreen>
               ),
             ),
             const SizedBox(height: 18),
-            AppSectionCard(
-              padding: const EdgeInsets.all(16),
-              borderColor: tokens.accentSoftBorder(tokens.readingAccent),
-              child: Row(
-                children: [
-                  Icon(Icons.auto_stories_rounded, color: tokens.readingAccent),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          _selectedLevelKeys.isEmpty
-                              ? '\u0423\u0440\u043e\u043a\u0456\u0432: ${widget.lessons.length}'
-                              : '\u041f\u043e\u043a\u0430\u0437\u0430\u043d\u043e: $visibleLessonCount',
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(fontWeight: FontWeight.w700),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          progress.completedLabel('уроків'),
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(
-                                color: tokens.mutedText,
-                                fontWeight: FontWeight.w600,
-                              ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+            ReadingSearchCard(
+              totalCount: widget.lessons.length,
+              visibleCount: visibleLessonCount,
+              completedLabel: progress.completedLabel('\u0443\u0440\u043e\u043a\u0456\u0432'),
+              query: _query,
+              hasLevelFilter: _selectedLevelKeys.isNotEmpty,
+              isSearchVisible: _searchVisible,
+              isLoadingLessonTitles: _isLoadingLessonTitles,
+              searchController: _searchController,
+              searchFocusNode: _searchFocusNode,
+              onToggleSearch: _toggleSearchVisibility,
+              onQueryChanged: (value) {
+                setState(() {
+                  _query = value;
+                  if (value.trim().isNotEmpty) {
+                    _searchVisible = true;
+                  }
+                });
+              },
             ),
             const SizedBox(height: 18),
-            ...visibleGroups.map(
-              (group) => Padding(
-                padding: const EdgeInsets.only(bottom: 18),
-                child: _ReadingLevelSection(
-                  group: group,
-                  documentLoader: widget.documentLoader,
-                  statusFor: statusFor,
-                  onStatusChanged: handleLessonStatusSelected,
-                  titleResolver: _resolvedLessonTitle,
+            if (!hasResults)
+              const ReadingEmptySearchState()
+            else
+              ...visibleGroups.map(
+                (group) => Padding(
+                  padding: const EdgeInsets.only(bottom: 18),
+                  child: _ReadingLevelSection(
+                    group: group,
+                    documentLoader: widget.documentLoader,
+                    statusFor: statusFor,
+                    onStatusChanged: handleLessonStatusSelected,
+                    titleResolver: _resolvedLessonTitle,
+                  ),
                 ),
               ),
-            ),
           ],
         ),
         Positioned(
