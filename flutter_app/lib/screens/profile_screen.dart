@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/generated/app_localizations.dart';
 import '../models/guide_lesson_status.dart';
 import '../models/learning_bundle.dart';
+import '../services/app_locale_store.dart';
 import '../services/feature_access_service.dart';
 import '../services/progress_snapshot.dart';
 import '../services/theme_mode_store.dart';
@@ -29,6 +31,8 @@ class ProfileScreen extends StatelessWidget {
     required this.themePreference,
     required this.nightModeAccess,
     required this.onThemePreferenceChanged,
+    required this.localePreference,
+    required this.onLocalePreferenceChanged,
     required this.onOpenWords,
     required this.onOpenWriting,
     required this.onOpenGuide,
@@ -49,6 +53,8 @@ class ProfileScreen extends StatelessWidget {
   final AppThemePreference themePreference;
   final FeatureAccessDecision nightModeAccess;
   final ValueChanged<AppThemePreference> onThemePreferenceChanged;
+  final AppLocalePreference localePreference;
+  final ValueChanged<AppLocalePreference> onLocalePreferenceChanged;
   final VoidCallback onOpenWords;
   final VoidCallback onOpenWriting;
   final VoidCallback onOpenGuide;
@@ -91,6 +97,8 @@ class ProfileScreen extends StatelessWidget {
           themePreference: themePreference,
           nightModeAccess: nightModeAccess,
           onThemePreferenceChanged: onThemePreferenceChanged,
+          localePreference: localePreference,
+          onLocalePreferenceChanged: onLocalePreferenceChanged,
         ),
       ],
     );
@@ -248,6 +256,8 @@ class _ProfileSettingsSection extends StatelessWidget {
     required this.themePreference,
     required this.nightModeAccess,
     required this.onThemePreferenceChanged,
+    required this.localePreference,
+    required this.onLocalePreferenceChanged,
   });
 
   final bool autoHideBottomNavOnScroll;
@@ -261,6 +271,8 @@ class _ProfileSettingsSection extends StatelessWidget {
   final AppThemePreference themePreference;
   final FeatureAccessDecision nightModeAccess;
   final ValueChanged<AppThemePreference> onThemePreferenceChanged;
+  final AppLocalePreference localePreference;
+  final ValueChanged<AppLocalePreference> onLocalePreferenceChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -278,6 +290,12 @@ class _ProfileSettingsSection extends StatelessWidget {
                 preference: themePreference,
                 nightModeAccess: nightModeAccess,
                 onChanged: onThemePreferenceChanged,
+              ),
+              const SizedBox(height: 12),
+              _LocaleCycleTile(
+                key: const ValueKey('locale-tile'),
+                preference: localePreference,
+                onChanged: onLocalePreferenceChanged,
               ),
               const SizedBox(height: 12),
               _SettingsSwitchTile(
@@ -546,6 +564,69 @@ class _ThemeValuePill extends StatelessWidget {
           color: isLocked ? tokens.mutedText : theme.colorScheme.onPrimary,
           fontWeight: FontWeight.w700,
         ),
+      ),
+    );
+  }
+}
+
+class _LocaleCycleTile extends StatelessWidget {
+  const _LocaleCycleTile({
+    super.key,
+    required this.preference,
+    required this.onChanged,
+  });
+
+  final AppLocalePreference preference;
+  final ValueChanged<AppLocalePreference> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = theme.appTokens;
+    final localizations = AppLocalizations.of(context);
+    final label = switch (preference) {
+      AppLocalePreference.uk => localizations.localeNameUk,
+      AppLocalePreference.en => localizations.localeNameEn,
+    };
+
+    final content = Padding(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  localizations.profileLanguageTitle,
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  localizations.profileLanguageBody,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: tokens.mutedText,
+                    height: 1.45,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 16),
+          _ThemeValuePill(label: label, isLocked: false),
+        ],
+      ),
+    );
+
+    return Material(
+      color: tokens.subtleSurface,
+      borderRadius: BorderRadius.circular(20),
+      child: InkWell(
+        onTap: () => onChanged(preference.next),
+        borderRadius: BorderRadius.circular(20),
+        child: content,
       ),
     );
   }

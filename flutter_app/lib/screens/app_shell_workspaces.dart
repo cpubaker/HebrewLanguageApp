@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/guide_lesson_status.dart';
 import '../models/learning_bundle.dart';
+import '../services/app_locale_store.dart';
 import '../services/feature_access_service.dart';
 import '../services/flashcard_session.dart';
 import '../services/theme_mode_store.dart';
@@ -157,6 +158,8 @@ class AppShellProfileWorkspace extends StatelessWidget {
     required this.themePreference,
     required this.nightModeAccess,
     required this.onThemePreferenceChanged,
+    required this.localePreference,
+    required this.onLocalePreferenceChanged,
     required this.onOpenWords,
     required this.onOpenWriting,
     required this.onOpenGuide,
@@ -177,6 +180,8 @@ class AppShellProfileWorkspace extends StatelessWidget {
   final AppThemePreference themePreference;
   final FeatureAccessDecision nightModeAccess;
   final ValueChanged<AppThemePreference> onThemePreferenceChanged;
+  final AppLocalePreference localePreference;
+  final ValueChanged<AppLocalePreference> onLocalePreferenceChanged;
   final VoidCallback onOpenWords;
   final VoidCallback onOpenWriting;
   final VoidCallback onOpenGuide;
@@ -199,6 +204,8 @@ class AppShellProfileWorkspace extends StatelessWidget {
       themePreference: themePreference,
       nightModeAccess: nightModeAccess,
       onThemePreferenceChanged: onThemePreferenceChanged,
+      localePreference: localePreference,
+      onLocalePreferenceChanged: onLocalePreferenceChanged,
       onOpenWords: onOpenWords,
       onOpenWriting: onOpenWriting,
       onOpenGuide: onOpenGuide,

@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 import 'app.dart';
+import 'services/app_locale_store.dart';
 import 'services/theme_mode_store.dart';
 
 Future<void> main() async {
@@ -11,6 +12,9 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
   ]);
   runApp(
-    HebrewFlutterApp(themeModeStore: const SharedPreferencesThemeModeStore()),
+    HebrewFlutterApp(
+      themeModeStore: const SharedPreferencesThemeModeStore(),
+      localeStore: const SharedPreferencesAppLocaleStore(),
+    ),
   );
 }

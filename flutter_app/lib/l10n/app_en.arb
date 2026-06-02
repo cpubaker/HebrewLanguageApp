@@ -1,0 +1,12 @@
+{
+  "@@locale": "en",
+  "appTitle": "Learn Hebrew",
+  "localeNameUk": "Ukrainian",
+  "localeNameEn": "English",
+  "profileLanguageTitle": "Language",
+  "profileLanguageBody": "Switches the interface between Ukrainian and English.",
+  "homeGreetingNight": "Good night",
+  "homeGreetingMorning": "Good morning",
+  "homeGreetingDay": "Good afternoon",
+  "homeGreetingEvening": "Good evening"
+}
