@@ -1,0 +1,39 @@
+{
+  "@@locale": "uk",
+  "appTitle": "Вчимо іврит",
+  "@appTitle": {
+    "description": "Application title shown by the OS task switcher."
+  },
+  "localeNameUk": "Українська",
+  "@localeNameUk": {
+    "description": "Display name of the Ukrainian locale shown in the language picker."
+  },
+  "localeNameEn": "English",
+  "@localeNameEn": {
+    "description": "Display name of the English locale shown in the language picker."
+  },
+  "profileLanguageTitle": "Мова",
+  "@profileLanguageTitle": {
+    "description": "Title of the language switcher tile in the profile settings."
+  },
+  "profileLanguageBody": "Перемикає мову інтерфейсу між українською та англійською.",
+  "@profileLanguageBody": {
+    "description": "Subtitle of the language switcher tile."
+  },
+  "homeGreetingNight": "Доброї ночі",
+  "@homeGreetingNight": {
+    "description": "Greeting on the home screen between midnight and 5 AM."
+  },
+  "homeGreetingMorning": "Доброго ранку",
+  "@homeGreetingMorning": {
+    "description": "Greeting on the home screen between 5 AM and noon."
+  },
+  "homeGreetingDay": "Доброго дня",
+  "@homeGreetingDay": {
+    "description": "Greeting on the home screen between noon and 6 PM."
+  },
+  "homeGreetingEvening": "Доброго вечора",
+  "@homeGreetingEvening": {
+    "description": "Greeting on the home screen between 6 PM and midnight."
+  }
+}

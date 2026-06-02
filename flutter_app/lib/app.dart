@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'app_dependencies.dart';
+import 'l10n/generated/app_localizations.dart';
 import 'screens/app_shell_screen.dart';
 import 'services/ai_context_service.dart';
 import 'services/ai_context_settings_store.dart';
 import 'services/ai_practice_text_service.dart';
 import 'services/ai_practice_text_settings_store.dart';
+import 'services/app_locale_store.dart';
 import 'services/app_shell_settings_store.dart';
 import 'services/audio_playback_awareness.dart';
 import 'services/feature_access_service.dart';
@@ -43,13 +45,17 @@ class HebrewFlutterApp extends StatefulWidget {
     CreateVerbAudioPlayer? audioPlayerFactory,
     CreateAudioPlaybackAwareness? audioPlaybackAwarenessFactory,
     ThemeModeStore? themeModeStore,
+    AppLocaleStore? localeStore,
     ThemeMode? initialThemeMode,
     AppThemePreference? initialThemePreference,
+    AppLocalePreference? initialLocalePreference,
   }) : initialThemePreference =
            initialThemePreference ??
            AppThemePreference.fromThemeMode(
              initialThemeMode ?? ThemeMode.light,
            ),
+       initialLocalePreference =
+           initialLocalePreference ?? AppLocalePreference.uk,
        dependencies = dependencies.withOverrides(
          loader: loader,
          documentLoader: documentLoader,
@@ -67,10 +73,12 @@ class HebrewFlutterApp extends StatefulWidget {
          audioPlayerFactory: audioPlayerFactory,
          audioPlaybackAwarenessFactory: audioPlaybackAwarenessFactory,
          themeModeStore: themeModeStore,
+         localeStore: localeStore,
        );
 
   final AppDependencies dependencies;
   final AppThemePreference initialThemePreference;
+  final AppLocalePreference initialLocalePreference;
 
   @override
   State<HebrewFlutterApp> createState() => _HebrewFlutterAppState();
@@ -78,6 +86,7 @@ class HebrewFlutterApp extends StatefulWidget {
 
 class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
   late AppThemePreference _themePreference = widget.initialThemePreference;
+  late AppLocalePreference _localePreference = widget.initialLocalePreference;
   late final AppDependencies _dependencies = widget.dependencies;
   late final LearningProgressRepository _progressRepository = _dependencies
       .resolveProgressRepository();
@@ -105,9 +114,13 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
   @override
   void initState() {
     super.initState();
-    final store = _dependencies.themeModeStore;
-    if (store != null) {
-      unawaited(_restoreThemeMode(store));
+    final themeStore = _dependencies.themeModeStore;
+    if (themeStore != null) {
+      unawaited(_restoreThemeMode(themeStore));
+    }
+    final localeStore = _dependencies.localeStore;
+    if (localeStore != null) {
+      unawaited(_restoreLocale(localeStore));
     }
   }
 
@@ -127,6 +140,17 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
     });
   }
 
+  Future<void> _restoreLocale(AppLocaleStore store) async {
+    final restoredPreference = await store.load();
+    if (!mounted || restoredPreference == _localePreference) {
+      return;
+    }
+
+    setState(() {
+      _localePreference = restoredPreference;
+    });
+  }
+
   void _setThemePreference(AppThemePreference preference) {
     if (preference.requiresNightMode &&
         !_featureAccessService.isEnabled(AppFeature.nightMode)) {
@@ -143,6 +167,21 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
     }
   }
 
+  void _setLocalePreference(AppLocalePreference preference) {
+    if (preference == _localePreference) {
+      return;
+    }
+
+    setState(() {
+      _localePreference = preference;
+    });
+
+    final store = _dependencies.localeStore;
+    if (store != null) {
+      unawaited(store.save(preference));
+    }
+  }
+
   ThemeMode _effectiveThemeMode() {
     return switch (_themePreference) {
       AppThemePreference.light => ThemeMode.light,
@@ -154,11 +193,16 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Вчимо іврит',
+      onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
       debugShowCheckedModeBanner: false,
-      locale: const Locale('uk'),
-      supportedLocales: const [Locale('uk')],
-      localizationsDelegates: GlobalMaterialLocalizations.delegates,
+      locale: _localePreference.locale,
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       theme: buildLightAppTheme(),
       darkTheme: buildDarkAppTheme(),
       themeMode: _effectiveThemeMode(),
@@ -176,6 +220,8 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
         audioPlaybackAwarenessFactory: _audioPlaybackAwarenessFactory,
         themePreference: _themePreference,
         onThemePreferenceChanged: _setThemePreference,
+        localePreference: _localePreference,
+        onLocalePreferenceChanged: _setLocalePreference,
       ),
     );
   }

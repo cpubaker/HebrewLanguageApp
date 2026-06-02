@@ -12,6 +12,7 @@ import '../services/ai_context_settings_store.dart';
 import '../services/ai_practice_text_service.dart';
 import '../services/ai_practice_text_settings_store.dart';
 import '../services/ai_learning_helpers.dart';
+import '../services/app_locale_store.dart';
 import '../services/app_shell_settings_store.dart';
 import '../services/audio_playback_awareness.dart';
 import '../services/bool_setting_store.dart';
@@ -60,6 +61,8 @@ class AppShellScreen extends StatefulWidget {
     required this.audioPlayerFactory,
     required this.themePreference,
     required this.onThemePreferenceChanged,
+    required this.localePreference,
+    required this.onLocalePreferenceChanged,
     this.audioPlaybackAwarenessFactory = createAudioPlaybackAwareness,
   });
 
@@ -76,6 +79,8 @@ class AppShellScreen extends StatefulWidget {
   final CreateAudioPlaybackAwareness audioPlaybackAwarenessFactory;
   final AppThemePreference themePreference;
   final ValueChanged<AppThemePreference> onThemePreferenceChanged;
+  final AppLocalePreference localePreference;
+  final ValueChanged<AppLocalePreference> onLocalePreferenceChanged;
 
   @override
   State<AppShellScreen> createState() => _AppShellScreenState();
@@ -962,6 +967,9 @@ class _AppShellScreenState extends State<AppShellScreen> {
                               .accessFor(AppFeature.nightMode),
                           onThemePreferenceChanged:
                               _handleThemePreferenceChangeRequested,
+                          localePreference: widget.localePreference,
+                          onLocalePreferenceChanged:
+                              widget.onLocalePreferenceChanged,
                           onOpenWords: _openLearnWords,
                           onOpenWriting: () => _openWritingPractice(),
                           onOpenGuide: _openGuide,

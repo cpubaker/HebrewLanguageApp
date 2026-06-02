@@ -5,6 +5,7 @@ import 'services/ai_context_service.dart';
 import 'services/ai_context_settings_store.dart';
 import 'services/ai_practice_text_service.dart';
 import 'services/ai_practice_text_settings_store.dart';
+import 'services/app_locale_store.dart';
 import 'services/app_shell_settings_store.dart';
 import 'services/audio_playback_awareness.dart';
 import 'services/feature_access_service.dart';
@@ -37,6 +38,7 @@ class AppDependencies {
     this.audioPlayerFactory,
     this.audioPlaybackAwarenessFactory,
     this.themeModeStore,
+    this.localeStore,
   });
 
   final LearningBundleLoader? loader;
@@ -55,6 +57,7 @@ class AppDependencies {
   final CreateVerbAudioPlayer? audioPlayerFactory;
   final CreateAudioPlaybackAwareness? audioPlaybackAwarenessFactory;
   final ThemeModeStore? themeModeStore;
+  final AppLocaleStore? localeStore;
 
   LearningProgressRepository resolveProgressRepository() {
     return progressRepository ??
@@ -112,6 +115,10 @@ class AppDependencies {
     return audioPlaybackAwarenessFactory ?? createAudioPlaybackAwareness;
   }
 
+  AppLocaleStore resolveLocaleStore() {
+    return localeStore ?? const SharedPreferencesAppLocaleStore();
+  }
+
   AppDependencies withOverrides({
     LearningBundleLoader? loader,
     LessonDocumentLoader? documentLoader,
@@ -129,6 +136,7 @@ class AppDependencies {
     CreateVerbAudioPlayer? audioPlayerFactory,
     CreateAudioPlaybackAwareness? audioPlaybackAwarenessFactory,
     ThemeModeStore? themeModeStore,
+    AppLocaleStore? localeStore,
   }) {
     return AppDependencies(
       loader: loader ?? this.loader,
@@ -152,6 +160,7 @@ class AppDependencies {
       audioPlaybackAwarenessFactory:
           audioPlaybackAwarenessFactory ?? this.audioPlaybackAwarenessFactory,
       themeModeStore: themeModeStore ?? this.themeModeStore,
+      localeStore: localeStore ?? this.localeStore,
     );
   }
 }
