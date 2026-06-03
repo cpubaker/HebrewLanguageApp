@@ -12382,5 +12382,355 @@
         "ukrainian": "п’ятий",
         "transcription": "chamishi",
         "audio_file": "words/word_top625_5th.mp3"
+    },
+    {
+        "word_id": "word_freq2k_but",
+        "hebrew": "אֲבָל",
+        "english": "but",
+        "ukrainian": "але",
+        "transcription": "aval"
+    },
+    {
+        "word_id": "word_freq2k_or",
+        "hebrew": "אוֹ",
+        "english": "or",
+        "ukrainian": "або",
+        "transcription": "o"
+    },
+    {
+        "word_id": "word_freq2k_ki",
+        "hebrew": "כִּי",
+        "english": "because; that",
+        "ukrainian": "бо; що",
+        "transcription": "ki"
+    },
+    {
+        "word_id": "word_freq2k_she",
+        "hebrew": "שֶׁ",
+        "english": "that (subordinator)",
+        "ukrainian": "що",
+        "transcription": "she"
+    },
+    {
+        "word_id": "word_freq2k_gam",
+        "hebrew": "גַּם",
+        "english": "also; too",
+        "ukrainian": "теж; також",
+        "transcription": "gam"
+    },
+    {
+        "word_id": "word_freq2k_only",
+        "hebrew": "רַק",
+        "english": "only",
+        "ukrainian": "лише",
+        "transcription": "rak"
+    },
+    {
+        "word_id": "word_freq2k_od",
+        "hebrew": "עוֹד",
+        "english": "still; more",
+        "ukrainian": "ще",
+        "transcription": "od"
+    },
+    {
+        "word_id": "word_freq2k_already",
+        "hebrew": "כְּבָר",
+        "english": "already",
+        "ukrainian": "вже",
+        "transcription": "kvar"
+    },
+    {
+        "word_id": "word_freq2k_however",
+        "hebrew": "אוּלָם",
+        "english": "however",
+        "ukrainian": "проте",
+        "transcription": "ulam"
+    },
+    {
+        "word_id": "word_freq2k_bekhol_zot",
+        "hebrew": "בְּכָל זֹאת",
+        "english": "nevertheless",
+        "ukrainian": "усе ж",
+        "transcription": "bekhol zot"
+    },
+    {
+        "word_id": "word_freq2k_therefore",
+        "hebrew": "לָכֵן",
+        "english": "therefore",
+        "ukrainian": "тому",
+        "transcription": "lakhen"
+    },
+    {
+        "word_id": "word_freq2k_mipnei_she",
+        "hebrew": "מִפְּנֵי שֶׁ",
+        "english": "because",
+        "ukrainian": "через те що",
+        "transcription": "mipnei she"
+    },
+    {
+        "word_id": "word_freq2k_keivan_she",
+        "hebrew": "כֵּיוָן שֶׁ",
+        "english": "since",
+        "ukrainian": "оскільки",
+        "transcription": "keivan she"
+    },
+    {
+        "word_id": "word_freq2k_bizman_she",
+        "hebrew": "בִּזְמַן שֶׁ",
+        "english": "while",
+        "ukrainian": "поки",
+        "transcription": "bizman she"
+    },
+    {
+        "word_id": "word_freq2k_kshe",
+        "hebrew": "כְּשֶׁ",
+        "english": "when (conj.)",
+        "ukrainian": "коли",
+        "transcription": "kshe"
+    },
+    {
+        "word_id": "word_freq2k_lifnei_she",
+        "hebrew": "לִפְנֵי שֶׁ",
+        "english": "before (conj.)",
+        "ukrainian": "до того як",
+        "transcription": "lifnei she"
+    },
+    {
+        "word_id": "word_freq2k_acharei_she",
+        "hebrew": "אַחֲרֵי שֶׁ",
+        "english": "after (conj.)",
+        "ukrainian": "після того як",
+        "transcription": "acharei she"
+    },
+    {
+        "word_id": "word_freq2k_beod_she",
+        "hebrew": "בְּעוֹד שֶׁ",
+        "english": "whereas; while",
+        "ukrainian": "тоді як",
+        "transcription": "be'od she"
+    },
+    {
+        "word_id": "word_freq2k_kedei",
+        "hebrew": "כְּדֵי",
+        "english": "in order to",
+        "ukrainian": "щоб",
+        "transcription": "kedei"
+    },
+    {
+        "word_id": "word_freq2k_kedei_she",
+        "hebrew": "כְּדֵי שֶׁ",
+        "english": "so that",
+        "ukrainian": "щоб",
+        "transcription": "kedei she"
+    },
+    {
+        "word_id": "word_freq2k_beetzem",
+        "hebrew": "בְּעֶצֶם",
+        "english": "actually",
+        "ukrainian": "насправді",
+        "transcription": "be'etzem"
+    },
+    {
+        "word_id": "word_freq2k_beemet",
+        "hebrew": "בֶּאֱמֶת",
+        "english": "really",
+        "ukrainian": "справді",
+        "transcription": "be'emet"
+    },
+    {
+        "word_id": "word_freq2k_bediyuk",
+        "hebrew": "בְּדִיּוּק",
+        "english": "exactly",
+        "ukrainian": "саме; точно",
+        "transcription": "bediyuk"
+    },
+    {
+        "word_id": "word_freq2k_beikar",
+        "hebrew": "בְּעִקָּר",
+        "english": "mainly",
+        "ukrainian": "переважно",
+        "transcription": "be'ikar"
+    },
+    {
+        "word_id": "word_freq2k_bimyukhad",
+        "hebrew": "בִּמְיֻחָד",
+        "english": "especially",
+        "ukrainian": "особливо",
+        "transcription": "bimyukhad"
+    },
+    {
+        "word_id": "word_freq2k_bekhol_ofen",
+        "hebrew": "בְּכָל אֹפֶן",
+        "english": "anyway",
+        "ukrainian": "у всякому разі",
+        "transcription": "bekhol ofen"
+    },
+    {
+        "word_id": "word_freq2k_bekhol_mikre",
+        "hebrew": "בְּכָל מִקְרֶה",
+        "english": "in any case",
+        "ukrainian": "у будь-якому разі",
+        "transcription": "bekhol mikre"
+    },
+    {
+        "word_id": "word_freq2k_af_al_pi_khen",
+        "hebrew": "אַף עַל פִּי כֵן",
+        "english": "nevertheless",
+        "ukrainian": "однак",
+        "transcription": "af al pi khen"
+    },
+    {
+        "word_id": "word_freq2k_klomar",
+        "hebrew": "כְּלוֹמַר",
+        "english": "that is; meaning",
+        "ukrainian": "тобто",
+        "transcription": "klomar"
+    },
+    {
+        "word_id": "word_freq2k_lemashal",
+        "hebrew": "לְמָשָׁל",
+        "english": "for example",
+        "ukrainian": "наприклад",
+        "transcription": "lemashal"
+    },
+    {
+        "word_id": "word_freq2k_kemo_khen",
+        "hebrew": "כְּמוֹ כֵן",
+        "english": "likewise",
+        "ukrainian": "так само",
+        "transcription": "kemo khen"
+    },
+    {
+        "word_id": "word_freq2k_chutz_mi",
+        "hebrew": "חוּץ מִ",
+        "english": "except for",
+        "ukrainian": "крім",
+        "transcription": "chutz mi"
+    },
+    {
+        "word_id": "word_freq2k_milvad",
+        "hebrew": "מִלְּבַד",
+        "english": "except",
+        "ukrainian": "окрім",
+        "transcription": "milvad"
+    },
+    {
+        "word_id": "word_freq2k_leumat",
+        "hebrew": "לְעֻמַּת",
+        "english": "compared to",
+        "ukrainian": "порівняно з",
+        "transcription": "le'umat"
+    },
+    {
+        "word_id": "word_freq2k_mitokh",
+        "hebrew": "מִתּוֹךְ",
+        "english": "out of; from within",
+        "ukrainian": "із; з",
+        "transcription": "mitokh"
+    },
+    {
+        "word_id": "word_freq2k_harei",
+        "hebrew": "הֲרֵי",
+        "english": "indeed; after all",
+        "ukrainian": "адже",
+        "transcription": "harei"
+    },
+    {
+        "word_id": "word_freq2k_davka",
+        "hebrew": "דַּוְקָא",
+        "english": "specifically; just",
+        "ukrainian": "якраз",
+        "transcription": "davka"
+    },
+    {
+        "word_id": "word_freq2k_afilu",
+        "hebrew": "אֲפִילּוּ",
+        "english": "even",
+        "ukrainian": "навіть",
+        "transcription": "afilu"
+    },
+    {
+        "word_id": "word_freq2k_we",
+        "hebrew": "אֲנַחְנוּ",
+        "english": "we",
+        "ukrainian": "ми",
+        "transcription": "anachnu"
+    },
+    {
+        "word_id": "word_freq2k_this_m",
+        "hebrew": "הַזֶּה",
+        "english": "this (m)",
+        "ukrainian": "цей",
+        "transcription": "hazeh"
+    },
+    {
+        "word_id": "word_freq2k_this_f",
+        "hebrew": "הַזֹּאת",
+        "english": "this (f)",
+        "ukrainian": "ця",
+        "transcription": "hazot"
+    },
+    {
+        "word_id": "word_freq2k_that_m",
+        "hebrew": "הַהוּא",
+        "english": "that (m)",
+        "ukrainian": "той",
+        "transcription": "hahu"
+    },
+    {
+        "word_id": "word_freq2k_that_f",
+        "hebrew": "הַהִיא",
+        "english": "that (f)",
+        "ukrainian": "та",
+        "transcription": "hahi"
+    },
+    {
+        "word_id": "word_freq2k_here",
+        "hebrew": "כָּאן",
+        "english": "here",
+        "ukrainian": "тут",
+        "transcription": "kan"
+    },
+    {
+        "word_id": "word_freq2k_meayin",
+        "hebrew": "מֵאַיִן",
+        "english": "from where",
+        "ukrainian": "звідки",
+        "transcription": "me'ayin"
+    },
+    {
+        "word_id": "word_freq2k_kakha",
+        "hebrew": "כָּכָה",
+        "english": "so; like that",
+        "ukrainian": "так",
+        "transcription": "kakha"
+    },
+    {
+        "word_id": "word_freq2k_kakh",
+        "hebrew": "כָּךְ",
+        "english": "so; thus",
+        "ukrainian": "так",
+        "transcription": "kakh"
+    },
+    {
+        "word_id": "word_freq2k_other_f",
+        "hebrew": "אַחֶרֶת",
+        "english": "other (f)",
+        "ukrainian": "інша",
+        "transcription": "akheret"
+    },
+    {
+        "word_id": "word_freq2k_atzmi",
+        "hebrew": "עַצְמִי",
+        "english": "myself",
+        "ukrainian": "сам",
+        "transcription": "atzmi"
+    },
+    {
+        "word_id": "word_freq2k_mashehu",
+        "hebrew": "מַשֶּׁהוּ",
+        "english": "something",
+        "ukrainian": "щось",
+        "transcription": "mashehu"
     }
 ]

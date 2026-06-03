@@ -1,6 +1,6 @@
 # Words to add (frequency-driven)
 
-Generated from `tools/vocab_diff.py`. Existing: 1551. Candidates checked: 1068. Missing: 342.
+Generated from `tools/vocab_diff.py`. Existing: 1601. Candidates checked: 1068. Missing: 292.
 
 ## abstract_common (27)
 
@@ -265,49 +265,6 @@ Generated from `tools/vocab_diff.py`. Existing: 1551. Candidates checked: 1068. 
 | אֲרוּחָה | arucha | meal | трапеза |  |
 | מַפִּית | mapit | napkin | серветка |  |
 
-## function_words (38)
-
-| Hebrew | Transcription | English | Ukrainian | Note |
-|---|---|---|---|---|
-| אֲבָל | aval | but | але |  |
-| אוֹ | o | or | або |  |
-| כִּי | ki | because; that | бо; що |  |
-| שֶׁ | she | that (subordinator) | що |  |
-| גַּם | gam | also; too | теж; також |  |
-| רַק | rak | only | лише |  |
-| עוֹד | od | still; more | ще |  |
-| כְּבָר | kvar | already | вже |  |
-| אוּלָם | ulam | however | проте |  |
-| בְּכָל זֹאת | bekhol zot | nevertheless | усе ж |  |
-| לָכֵן | lakhen | therefore | тому |  |
-| מִפְּנֵי שֶׁ | mipnei she | because | через те що |  |
-| כֵּיוָן שֶׁ | keivan she | since | оскільки |  |
-| בִּזְמַן שֶׁ | bizman she | while | поки |  |
-| כְּשֶׁ | kshe | when (conj.) | коли |  |
-| לִפְנֵי שֶׁ | lifnei she | before (conj.) | до того як |  |
-| אַחֲרֵי שֶׁ | acharei she | after (conj.) | після того як |  |
-| בְּעוֹד שֶׁ | be'od she | whereas; while | тоді як |  |
-| כְּדֵי | kedei | in order to | щоб |  |
-| כְּדֵי שֶׁ | kedei she | so that | щоб |  |
-| בְּעֶצֶם | be'etzem | actually | насправді |  |
-| בֶּאֱמֶת | be'emet | really | справді |  |
-| בְּדִיּוּק | bediyuk | exactly | саме; точно |  |
-| בְּעִקָּר | be'ikar | mainly | переважно |  |
-| בִּמְיֻחָד | bimyukhad | especially | особливо |  |
-| בְּכָל אֹפֶן | bekhol ofen | anyway | у всякому разі |  |
-| בְּכָל מִקְרֶה | bekhol mikre | in any case | у будь-якому разі |  |
-| אַף עַל פִּי כֵן | af al pi khen | nevertheless | однак |  |
-| כְּלוֹמַר | klomar | that is; meaning | тобто |  |
-| לְמָשָׁל | lemashal | for example | наприклад |  |
-| כְּמוֹ כֵן | kemo khen | likewise | так само |  |
-| חוּץ מִ | chutz mi | except for | крім |  |
-| מִלְּבַד | milvad | except | окрім |  |
-| לְעֻמַּת | le'umat | compared to | порівняно з |  |
-| מִתּוֹךְ | mitokh | out of; from within | із; з |  |
-| הֲרֵי | harei | indeed; after all | адже |  |
-| דַּוְקָא | davka | specifically; just | якраз |  |
-| אֲפִילּוּ | afilu | even | навіть |  |
-
 ## home (10)
 
 | Hebrew | Transcription | English | Ukrainian | Note |
@@ -338,23 +295,6 @@ Generated from `tools/vocab_diff.py`. Existing: 1551. Candidates checked: 1068. 
 | חֹשֶׁךְ | choshekh | darkness | темрява |  |
 | מַעְיָן | ma'ayan | spring (water) | джерело |  |
 | שֶׁטֶף | shetef | flow; flood | потік |  |
-
-## pronouns_demonstratives (12)
-
-| Hebrew | Transcription | English | Ukrainian | Note |
-|---|---|---|---|---|
-| אֲנַחְנוּ | anachnu | we | ми |  |
-| הַזֶּה | hazeh | this (m) | цей |  |
-| הַזֹּאת | hazot | this (f) | ця |  |
-| הַהוּא | hahu | that (m) | той |  |
-| הַהִיא | hahi | that (f) | та |  |
-| כָּאן | kan | here | тут |  |
-| מֵאַיִן | me'ayin | from where | звідки |  |
-| כָּכָה | kakha | so; like that | так |  |
-| כָּךְ | kakh | so; thus | так |  |
-| אַחֶרֶת | akheret | other (f) | інша |  |
-| עַצְמִי | atzmi | myself | сам |  |
-| מַשֶּׁהוּ | mashehu | something | щось |  |
 
 ## questions_quantifiers (11)
 
