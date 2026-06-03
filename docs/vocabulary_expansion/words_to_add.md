@@ -1,44 +1,23 @@
 # Words to add (frequency-driven)
 
-Generated from `tools/vocab_diff.py`. Existing: 1601. Candidates checked: 1068. Missing: 292.
+Generated from `tools/vocab_diff.py`. Existing: 1651. Candidates checked: 1068. Missing: 241.
 
-## abstract_common (27)
+## abstract_common (7)
 
 | Hebrew | Transcription | English | Ukrainian | Note |
 |---|---|---|---|---|
-| חַיִּים | chayim | life | життя |  |
-| חֵרוּת | cherut | freedom | свобода |  |
-| יֹפִי | yofi | beauty | краса |  |
-| כֹּחַ | koach | power; strength | сила |  |
-| חֻלְשָׁה | chulsha | weakness | слабкість |  |
-| סִבָּה | siba | reason; cause | причина |  |
-| הֶבְדֵּל | hevdel | difference | різниця |  |
 | דִּמְיוֹן | dimyon | imagination; similarity | уява; схожість |  |
-| עֻבְדָּה | uvda | fact | факт |  |
-| מֵידָע | meda | information | інформація |  |
-| נְקֻדָּה | nekuda | point; period | крапка; пункт |  |
 | טוּר | tur | column; row | колонка |  |
 | שָׁלֵם | shalem | whole | ціле |  |
-| גֹּדֶל | godel | size | розмір |  |
-| גֹּבַהּ | govah | height | висота |  |
-| אֹרֶךְ | orekh | length | довжина |  |
-| מֶרְחָק | merchak | distance | відстань |  |
-| סוּג | sug | type; kind | тип |  |
-| דָּבָר | davar | thing; matter | річ |  |
-| עִנְיָן | inyan | matter; topic | справа |  |
-| נוֹשֵׂא | nose | subject; topic | тема |  |
-| מַצָּב | matzav | situation; state | ситуація |  |
 | מַחְלוֹקֶת | machloket | dispute | суперечка |  |
 | חֲשִׁיבוּת | chashivut | importance | важливість |  |
 | הֶמְשֵׁךְ | hemshekh | continuation | продовження |  |
-| שִׁנּוּי | shinui | change | зміна |  |
 | הִתְקַדְּמוּת | hitkadmut | progress | прогрес |  |
 
-## adjectives (31)
+## adjectives (30)
 
 | Hebrew | Transcription | English | Ukrainian | Note |
 |---|---|---|---|---|
-| אָרֹךְ | arokh | long | довгий |  |
 | קָרִיר | karir | cool | прохолодний |  |
 | רָטֹב | ratov | wet | мокрий |  |
 | מְלֻכְלָךְ | melukhlakh | dirty | брудний |  |
@@ -152,16 +131,6 @@ Generated from `tools/vocab_diff.py`. Existing: 1601. Candidates checked: 1068. 
 | פִּיגָ'מָה | pijama | pajamas | піжама |  |
 | חֲזִיָּה | chaziya | bra | бюстгальтер |  |
 | אֲרוֹן בְּגָדִים | aron begadim | wardrobe | шафа |  |
-
-## colors (5)
-
-| Hebrew | Transcription | English | Ukrainian | Note |
-|---|---|---|---|---|
-| אָפֹר | afor | gray | сірий |  |
-| סָגֹל | sagol | purple | фіолетовий |  |
-| בֵּז' | bezh | beige | бежевий |  |
-| טֻרְקִיז | turkiz | turquoise | бірюзовий |  |
-| בּוּרְגּוּנְדִי | burgundi | burgundy | бордовий |  |
 
 ## communication_media (11)
 
@@ -296,22 +265,6 @@ Generated from `tools/vocab_diff.py`. Existing: 1601. Candidates checked: 1068. 
 | מַעְיָן | ma'ayan | spring (water) | джерело |  |
 | שֶׁטֶף | shetef | flow; flood | потік |  |
 
-## questions_quantifiers (11)
-
-| Hebrew | Transcription | English | Ukrainian | Note |
-|---|---|---|---|---|
-| אֵיזוֹ | eizo | which (f) | яка |  |
-| הַאִם | ha'im | whether (yes/no marker) | чи |  |
-| מְעַט מְעַט | me'at me'at | little by little | потроху |  |
-| מַסְפִּיק | maspik | enough | достатньо |  |
-| יוֹתֵר | yoter | more | більше |  |
-| פָּחוֹת | pachot | less | менше |  |
-| הַכִּי | haki | the most | найбільше |  |
-| בְּיוֹתֵר | beyoter | most; extremely | найбільш |  |
-| כָּל | kol | every; all | кожен; весь |  |
-| אֵיזֶשֶׁהוּ | eizeshehu | some kind of (m) | якийсь |  |
-| אֵיזוֹשֶׁהִי | eizoshehi | some kind of (f) | якась |  |
-
 ## shopping_money (14)
 
 | Hebrew | Transcription | English | Ukrainian | Note |
@@ -330,25 +283,6 @@ Generated from `tools/vocab_diff.py`. Existing: 1601. Candidates checked: 1068. 
 | עִסְקָה | iska | deal; transaction | угода |  |
 | הוֹצָאוֹת | hotza'ot | expenses | витрати |  |
 | חִסָּכוֹן | chisachon | savings | заощадження |  |
-
-## time (14)
-
-| Hebrew | Transcription | English | Ukrainian | Note |
-|---|---|---|---|---|
-| שִׁלְשׁוֹם | shilshom | day before yesterday | позавчора |  |
-| מָחֳרָתַיִם | mochrotayim | day after tomorrow | післязавтра |  |
-| צָהֳרַיִם | tzohorayim | noon | полудень |  |
-| אַחַר הַצָּהֳרַיִם | achar hatzohorayim | afternoon | після обіду |  |
-| חֲצוֹת | chatzot | midnight | опівніч |  |
-| פַּעַם | pa'am | once; a time | раз |  |
-| אַחַר כָּךְ | achar kakh | afterwards | потім |  |
-| לִפְנֵי כֵן | lifnei khen | before that | до того |  |
-| מִיָּד | miyad | immediately | негайно |  |
-| בְּקָרוֹב | bekarov | soon | скоро |  |
-| לְאַט | le'at | slowly | повільно |  |
-| מַהֵר | maher | quickly | швидко |  |
-| שַׁבָּת | shabbat | Saturday; Sabbath | субота |  |
-| סְתָו | stav | autumn | осінь |  |
 
 ## transport_travel (15)
 

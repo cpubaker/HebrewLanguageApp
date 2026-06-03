@@ -12732,5 +12732,355 @@
         "english": "something",
         "ukrainian": "щось",
         "transcription": "mashehu"
+    },
+    {
+        "word_id": "word_freq2k_eizo",
+        "hebrew": "אֵיזוֹ",
+        "english": "which (f)",
+        "ukrainian": "яка",
+        "transcription": "eizo"
+    },
+    {
+        "word_id": "word_freq2k_haim",
+        "hebrew": "הַאִם",
+        "english": "whether (yes/no marker)",
+        "ukrainian": "чи",
+        "transcription": "ha'im"
+    },
+    {
+        "word_id": "word_freq2k_meat_meat",
+        "hebrew": "מְעַט מְעַט",
+        "english": "little by little",
+        "ukrainian": "потроху",
+        "transcription": "me'at me'at"
+    },
+    {
+        "word_id": "word_freq2k_maspik",
+        "hebrew": "מַסְפִּיק",
+        "english": "enough",
+        "ukrainian": "достатньо",
+        "transcription": "maspik"
+    },
+    {
+        "word_id": "word_freq2k_yoter",
+        "hebrew": "יוֹתֵר",
+        "english": "more",
+        "ukrainian": "більше",
+        "transcription": "yoter"
+    },
+    {
+        "word_id": "word_freq2k_pachot",
+        "hebrew": "פָּחוֹת",
+        "english": "less",
+        "ukrainian": "менше",
+        "transcription": "pachot"
+    },
+    {
+        "word_id": "word_freq2k_haki",
+        "hebrew": "הַכִּי",
+        "english": "the most",
+        "ukrainian": "найбільше",
+        "transcription": "haki"
+    },
+    {
+        "word_id": "word_freq2k_beyoter",
+        "hebrew": "בְּיוֹתֵר",
+        "english": "most; extremely",
+        "ukrainian": "найбільш",
+        "transcription": "beyoter"
+    },
+    {
+        "word_id": "word_freq2k_kol_every",
+        "hebrew": "כָּל",
+        "english": "every; all",
+        "ukrainian": "кожен; весь",
+        "transcription": "kol"
+    },
+    {
+        "word_id": "word_freq2k_eizeshehu",
+        "hebrew": "אֵיזֶשֶׁהוּ",
+        "english": "some kind of (m)",
+        "ukrainian": "якийсь",
+        "transcription": "eizeshehu"
+    },
+    {
+        "word_id": "word_freq2k_eizoshehi",
+        "hebrew": "אֵיזוֹשֶׁהִי",
+        "english": "some kind of (f)",
+        "ukrainian": "якась",
+        "transcription": "eizoshehi"
+    },
+    {
+        "word_id": "word_freq2k_gray",
+        "hebrew": "אָפֹר",
+        "english": "gray",
+        "ukrainian": "сірий",
+        "transcription": "afor"
+    },
+    {
+        "word_id": "word_freq2k_purple",
+        "hebrew": "סָגֹל",
+        "english": "purple",
+        "ukrainian": "фіолетовий",
+        "transcription": "sagol"
+    },
+    {
+        "word_id": "word_freq2k_beige",
+        "hebrew": "בֵּז'",
+        "english": "beige",
+        "ukrainian": "бежевий",
+        "transcription": "bezh"
+    },
+    {
+        "word_id": "word_freq2k_turquoise",
+        "hebrew": "טֻרְקִיז",
+        "english": "turquoise",
+        "ukrainian": "бірюзовий",
+        "transcription": "turkiz"
+    },
+    {
+        "word_id": "word_freq2k_burgundy",
+        "hebrew": "בּוּרְגּוּנְדִי",
+        "english": "burgundy",
+        "ukrainian": "бордовий",
+        "transcription": "burgundi"
+    },
+    {
+        "word_id": "word_freq2k_shilshom",
+        "hebrew": "שִׁלְשׁוֹם",
+        "english": "day before yesterday",
+        "ukrainian": "позавчора",
+        "transcription": "shilshom"
+    },
+    {
+        "word_id": "word_freq2k_mochrotayim",
+        "hebrew": "מָחֳרָתַיִם",
+        "english": "day after tomorrow",
+        "ukrainian": "післязавтра",
+        "transcription": "mochrotayim"
+    },
+    {
+        "word_id": "word_freq2k_tzohorayim",
+        "hebrew": "צָהֳרַיִם",
+        "english": "noon",
+        "ukrainian": "полудень",
+        "transcription": "tzohorayim"
+    },
+    {
+        "word_id": "word_freq2k_afternoon",
+        "hebrew": "אַחַר הַצָּהֳרַיִם",
+        "english": "afternoon",
+        "ukrainian": "після обіду",
+        "transcription": "achar hatzohorayim"
+    },
+    {
+        "word_id": "word_freq2k_chatzot",
+        "hebrew": "חֲצוֹת",
+        "english": "midnight",
+        "ukrainian": "опівніч",
+        "transcription": "chatzot"
+    },
+    {
+        "word_id": "word_freq2k_paam",
+        "hebrew": "פַּעַם",
+        "english": "once; a time",
+        "ukrainian": "раз",
+        "transcription": "pa'am"
+    },
+    {
+        "word_id": "word_freq2k_achar_kakh",
+        "hebrew": "אַחַר כָּךְ",
+        "english": "afterwards",
+        "ukrainian": "потім",
+        "transcription": "achar kakh"
+    },
+    {
+        "word_id": "word_freq2k_lifnei_khen",
+        "hebrew": "לִפְנֵי כֵן",
+        "english": "before that",
+        "ukrainian": "до того",
+        "transcription": "lifnei khen"
+    },
+    {
+        "word_id": "word_freq2k_miyad",
+        "hebrew": "מִיָּד",
+        "english": "immediately",
+        "ukrainian": "негайно",
+        "transcription": "miyad"
+    },
+    {
+        "word_id": "word_freq2k_bekarov",
+        "hebrew": "בְּקָרוֹב",
+        "english": "soon",
+        "ukrainian": "скоро",
+        "transcription": "bekarov"
+    },
+    {
+        "word_id": "word_freq2k_leat",
+        "hebrew": "לְאַט",
+        "english": "slowly",
+        "ukrainian": "повільно",
+        "transcription": "le'at"
+    },
+    {
+        "word_id": "word_freq2k_maher",
+        "hebrew": "מַהֵר",
+        "english": "quickly",
+        "ukrainian": "швидко",
+        "transcription": "maher"
+    },
+    {
+        "word_id": "word_freq2k_shabbat",
+        "hebrew": "שַׁבָּת",
+        "english": "Saturday; Sabbath",
+        "ukrainian": "субота",
+        "transcription": "shabbat"
+    },
+    {
+        "word_id": "word_freq2k_stav",
+        "hebrew": "סְתָו",
+        "english": "autumn",
+        "ukrainian": "осінь",
+        "transcription": "stav"
+    },
+    {
+        "word_id": "word_freq2k_life",
+        "hebrew": "חַיִּים",
+        "english": "life",
+        "ukrainian": "життя",
+        "transcription": "chayim"
+    },
+    {
+        "word_id": "word_freq2k_freedom",
+        "hebrew": "חֵרוּת",
+        "english": "freedom",
+        "ukrainian": "свобода",
+        "transcription": "cherut"
+    },
+    {
+        "word_id": "word_freq2k_beauty",
+        "hebrew": "יֹפִי",
+        "english": "beauty",
+        "ukrainian": "краса",
+        "transcription": "yofi"
+    },
+    {
+        "word_id": "word_freq2k_power",
+        "hebrew": "כֹּחַ",
+        "english": "power; strength",
+        "ukrainian": "сила",
+        "transcription": "koach"
+    },
+    {
+        "word_id": "word_freq2k_weakness",
+        "hebrew": "חֻלְשָׁה",
+        "english": "weakness",
+        "ukrainian": "слабкість",
+        "transcription": "chulsha"
+    },
+    {
+        "word_id": "word_freq2k_reason",
+        "hebrew": "סִבָּה",
+        "english": "reason; cause",
+        "ukrainian": "причина",
+        "transcription": "siba"
+    },
+    {
+        "word_id": "word_freq2k_difference",
+        "hebrew": "הֶבְדֵּל",
+        "english": "difference",
+        "ukrainian": "різниця",
+        "transcription": "hevdel"
+    },
+    {
+        "word_id": "word_freq2k_fact",
+        "hebrew": "עֻבְדָּה",
+        "english": "fact",
+        "ukrainian": "факт",
+        "transcription": "uvda"
+    },
+    {
+        "word_id": "word_freq2k_information",
+        "hebrew": "מֵידָע",
+        "english": "information",
+        "ukrainian": "інформація",
+        "transcription": "meda"
+    },
+    {
+        "word_id": "word_freq2k_point",
+        "hebrew": "נְקֻדָּה",
+        "english": "point; period",
+        "ukrainian": "крапка; пункт",
+        "transcription": "nekuda"
+    },
+    {
+        "word_id": "word_freq2k_size",
+        "hebrew": "גֹּדֶל",
+        "english": "size",
+        "ukrainian": "розмір",
+        "transcription": "godel"
+    },
+    {
+        "word_id": "word_freq2k_height",
+        "hebrew": "גֹּבַהּ",
+        "english": "height",
+        "ukrainian": "висота",
+        "transcription": "govah"
+    },
+    {
+        "word_id": "word_freq2k_length",
+        "hebrew": "אֹרֶךְ",
+        "english": "length",
+        "ukrainian": "довжина",
+        "transcription": "orekh"
+    },
+    {
+        "word_id": "word_freq2k_distance",
+        "hebrew": "מֶרְחָק",
+        "english": "distance",
+        "ukrainian": "відстань",
+        "transcription": "merchak"
+    },
+    {
+        "word_id": "word_freq2k_type",
+        "hebrew": "סוּג",
+        "english": "type; kind",
+        "ukrainian": "тип",
+        "transcription": "sug"
+    },
+    {
+        "word_id": "word_freq2k_thing",
+        "hebrew": "דָּבָר",
+        "english": "thing; matter",
+        "ukrainian": "річ",
+        "transcription": "davar"
+    },
+    {
+        "word_id": "word_freq2k_matter",
+        "hebrew": "עִנְיָן",
+        "english": "matter; topic",
+        "ukrainian": "справа",
+        "transcription": "inyan"
+    },
+    {
+        "word_id": "word_freq2k_subject",
+        "hebrew": "נוֹשֵׂא",
+        "english": "subject; topic",
+        "ukrainian": "тема",
+        "transcription": "nose"
+    },
+    {
+        "word_id": "word_freq2k_state",
+        "hebrew": "מַצָּב",
+        "english": "situation; state",
+        "ukrainian": "ситуація",
+        "transcription": "matzav"
+    },
+    {
+        "word_id": "word_freq2k_change",
+        "hebrew": "שִׁנּוּי",
+        "english": "change",
+        "ukrainian": "зміна",
+        "transcription": "shinui"
     }
 ]

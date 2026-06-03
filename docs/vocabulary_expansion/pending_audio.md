@@ -14,6 +14,56 @@ When adding a frequency-batch entry to `hebrew_words.json`:
 
 | Batch | Date added | word_id | Hebrew | Transcription |
 |---|---|---|---|---|
+| 2 | 2026-06-03 | word_freq2k_eizo | אֵיזוֹ | eizo |
+| 2 | 2026-06-03 | word_freq2k_haim | הַאִם | ha'im |
+| 2 | 2026-06-03 | word_freq2k_meat_meat | מְעַט מְעַט | me'at me'at |
+| 2 | 2026-06-03 | word_freq2k_maspik | מַסְפִּיק | maspik |
+| 2 | 2026-06-03 | word_freq2k_yoter | יוֹתֵר | yoter |
+| 2 | 2026-06-03 | word_freq2k_pachot | פָּחוֹת | pachot |
+| 2 | 2026-06-03 | word_freq2k_haki | הַכִּי | haki |
+| 2 | 2026-06-03 | word_freq2k_beyoter | בְּיוֹתֵר | beyoter |
+| 2 | 2026-06-03 | word_freq2k_kol_every | כָּל | kol |
+| 2 | 2026-06-03 | word_freq2k_eizeshehu | אֵיזֶשֶׁהוּ | eizeshehu |
+| 2 | 2026-06-03 | word_freq2k_eizoshehi | אֵיזוֹשֶׁהִי | eizoshehi |
+| 2 | 2026-06-03 | word_freq2k_gray | אָפֹר | afor |
+| 2 | 2026-06-03 | word_freq2k_purple | סָגֹל | sagol |
+| 2 | 2026-06-03 | word_freq2k_beige | בֵּז' | bezh |
+| 2 | 2026-06-03 | word_freq2k_turquoise | טֻרְקִיז | turkiz |
+| 2 | 2026-06-03 | word_freq2k_burgundy | בּוּרְגּוּנְדִי | burgundi |
+| 2 | 2026-06-03 | word_freq2k_shilshom | שִׁלְשׁוֹם | shilshom |
+| 2 | 2026-06-03 | word_freq2k_mochrotayim | מָחֳרָתַיִם | mochrotayim |
+| 2 | 2026-06-03 | word_freq2k_tzohorayim | צָהֳרַיִם | tzohorayim |
+| 2 | 2026-06-03 | word_freq2k_afternoon | אַחַר הַצָּהֳרַיִם | achar hatzohorayim |
+| 2 | 2026-06-03 | word_freq2k_chatzot | חֲצוֹת | chatzot |
+| 2 | 2026-06-03 | word_freq2k_paam | פַּעַם | pa'am |
+| 2 | 2026-06-03 | word_freq2k_achar_kakh | אַחַר כָּךְ | achar kakh |
+| 2 | 2026-06-03 | word_freq2k_lifnei_khen | לִפְנֵי כֵן | lifnei khen |
+| 2 | 2026-06-03 | word_freq2k_miyad | מִיָּד | miyad |
+| 2 | 2026-06-03 | word_freq2k_bekarov | בְּקָרוֹב | bekarov |
+| 2 | 2026-06-03 | word_freq2k_leat | לְאַט | le'at |
+| 2 | 2026-06-03 | word_freq2k_maher | מַהֵר | maher |
+| 2 | 2026-06-03 | word_freq2k_shabbat | שַׁבָּת | shabbat |
+| 2 | 2026-06-03 | word_freq2k_stav | סְתָו | stav |
+| 2 | 2026-06-03 | word_freq2k_life | חַיִּים | chayim |
+| 2 | 2026-06-03 | word_freq2k_freedom | חֵרוּת | cherut |
+| 2 | 2026-06-03 | word_freq2k_beauty | יֹפִי | yofi |
+| 2 | 2026-06-03 | word_freq2k_power | כֹּחַ | koach |
+| 2 | 2026-06-03 | word_freq2k_weakness | חֻלְשָׁה | chulsha |
+| 2 | 2026-06-03 | word_freq2k_reason | סִבָּה | siba |
+| 2 | 2026-06-03 | word_freq2k_difference | הֶבְדֵּל | hevdel |
+| 2 | 2026-06-03 | word_freq2k_fact | עֻבְדָּה | uvda |
+| 2 | 2026-06-03 | word_freq2k_information | מֵידָע | meda |
+| 2 | 2026-06-03 | word_freq2k_point | נְקֻדָּה | nekuda |
+| 2 | 2026-06-03 | word_freq2k_size | גֹּדֶל | godel |
+| 2 | 2026-06-03 | word_freq2k_height | גֹּבַהּ | govah |
+| 2 | 2026-06-03 | word_freq2k_length | אֹרֶךְ | orekh |
+| 2 | 2026-06-03 | word_freq2k_distance | מֶרְחָק | merchak |
+| 2 | 2026-06-03 | word_freq2k_type | סוּג | sug |
+| 2 | 2026-06-03 | word_freq2k_thing | דָּבָר | davar |
+| 2 | 2026-06-03 | word_freq2k_matter | עִנְיָן | inyan |
+| 2 | 2026-06-03 | word_freq2k_subject | נוֹשֵׂא | nose |
+| 2 | 2026-06-03 | word_freq2k_state | מַצָּב | matzav |
+| 2 | 2026-06-03 | word_freq2k_change | שִׁנּוּי | shinui |
 | 1 | 2026-06-03 | word_freq2k_but | אֲבָל | aval |
 | 1 | 2026-06-03 | word_freq2k_or | אוֹ | o |
 | 1 | 2026-06-03 | word_freq2k_ki | כִּי | ki |

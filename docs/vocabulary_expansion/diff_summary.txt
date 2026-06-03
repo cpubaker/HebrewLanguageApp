@@ -1,17 +1,16 @@
-Existing entries: 1601 unique stripped Hebrew forms
+Existing entries: 1651 unique stripped Hebrew forms
 Candidates evaluated: 1068
 Excluded (in separate modules, e.g. verbs): 145
-Already present: 631
-Missing (to add): 292
+Already present: 682
+Missing (to add): 241
 
 Missing per category:
-  abstract_common: 27
-  adjectives: 31
+  abstract_common: 7
+  adjectives: 30
   animals: 16
   body_health: 18
   city_places: 13
   clothing: 16
-  colors: 5
   communication_media: 11
   education: 13
   emotions_states: 20
@@ -19,8 +18,6 @@ Missing per category:
   food: 17
   home: 10
   nature_weather: 11
-  questions_quantifiers: 11
   shopping_money: 14
-  time: 14
   transport_travel: 15
   work: 14
