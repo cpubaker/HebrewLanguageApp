@@ -1,46 +1,13 @@
 # Words to add (frequency-driven)
 
-Generated from `tools/vocab_diff.py`. Existing: 1751. Candidates checked: 1068. Missing: 140.
+Generated from `tools/vocab_diff.py`. Existing: 1799. Candidates checked: 1068. Missing: 91.
 
-## abstract_common (6)
-
-| Hebrew | Transcription | English | Ukrainian | Note |
-|---|---|---|---|---|
-| דִּמְיוֹן | dimyon | imagination; similarity | уява; схожість |  |
-| טוּר | tur | column; row | колонка |  |
-| מַחְלוֹקֶת | machloket | dispute | суперечка |  |
-| חֲשִׁיבוּת | chashivut | importance | важливість |  |
-| הֶמְשֵׁךְ | hemshekh | continuation | продовження |  |
-| הִתְקַדְּמוּת | hitkadmut | progress | прогрес |  |
-
-## animals (16)
-
-| Hebrew | Transcription | English | Ukrainian | Note |
-|---|---|---|---|---|
-| שׁוֹר | shor | ox | бик |  |
-| כֶּבֶשׂ | keves | sheep | вівця |  |
-| חֲמוֹר | chamor | donkey | осел |  |
-| ארנב | arnav | rabbit | кролик |  |
-| חֻלְדָּה | chulda | rat | щур |  |
-| נֶשֶׁר | nesher | eagle | орел |  |
-| עוֹף | of | fowl | птиця |  |
-| תַּרְנְגוֹל | tarnegol | rooster | півень |  |
-| תַּרְנְגֹלֶת | tarnegolet | hen | курка |  |
-| דָּגִים | dagim | fish (pl.) | риби |  |
-| נָחָשׁ | nachash | snake | змія |  |
-| יַתּוּשׁ | yatush | mosquito | комар |  |
-| זְבוּב | zvuv | fly | муха |  |
-| עַכָּבִישׁ | akavish | spider | павук |  |
-| צָב | tzav | turtle | черепаха |  |
-| נָמֵר | namer | leopard | леопард |  |
-
-## city_places (13)
+## city_places (12)
 
 | Hebrew | Transcription | English | Ukrainian | Note |
 |---|---|---|---|---|
 | שְׂדֵרָה | sdera | avenue | проспект |  |
 | גִּשְׁרוֹן | gishron | small bridge | місточок |  |
-| סוּפֶּרְמַרְקֶט | supermarket | supermarket | супермаркет |  |
 | קַנְיוֹן | kanyon | mall | торговий центр |  |
 | בֵּית קָפֶה | beit kafe | café | кав'ярня |  |
 | דֹּאַר | do'ar | post (mail) | пошта |  |
@@ -86,27 +53,12 @@ Generated from `tools/vocab_diff.py`. Existing: 1751. Candidates checked: 1068. 
 | שִׁעוּר פְּרָטִי | shi'ur prati | private lesson | приватний урок |  |
 | מַרְצֶה | martze | lecturer | лектор |  |
 
-## food (17)
+## food (2)
 
 | Hebrew | Transcription | English | Ukrainian | Note |
 |---|---|---|---|---|
-| שַׁמֶּנֶת | shamenet | sour cream | сметана |  |
-| אֹרֶז | orez | rice | рис |  |
-| עוֹף | of | chicken | курка |  |
-| בְּשַׂר טָלֶה | bsar tale | lamb | ягнятина |  |
-| נַקְנִיק | naknik | sausage | ковбаса |  |
-| דָּג מָלוּחַ | dag maluach | salted fish | солона риба |  |
-| פֵּרוֹת | perot | fruits | фрукти |  |
-| יְרָקוֹת | yerakot | vegetables | овочі |  |
-| עֲנָבִים | anavim | grapes | виноград |  |
-| דֻּבְדְּבָן | duvdevan | cherry | вишня |  |
-| תּוּת | tut | strawberry | полуниця |  |
 | פֵּרֵר | perer | berry | ягода |  |
-| חַסָּה | chasa | lettuce | салат-латук |  |
-| פִּלְפֵּל יָרֹק | pilpel yarok | green pepper | зелений перець |  |
 | קוּלִי | kuli | kohlrabi | кольрабі |  |
-| אֲרוּחָה | arucha | meal | трапеза |  |
-| מַפִּית | mapit | napkin | серветка |  |
 
 ## home (10)
 
@@ -122,22 +74,6 @@ Generated from `tools/vocab_diff.py`. Existing: 1751. Candidates checked: 1068. 
 | מְכוֹנַת כְּבִיסָה | mekhonat kvisa | washing machine | пральна машина |  |
 | מִכְשִׁיר | makhshir | device | пристрій |  |
 | חַלּוֹן רָאֲוָה | chalon ra'ava | shop window | вітрина |  |
-
-## nature_weather (11)
-
-| Hebrew | Transcription | English | Ukrainian | Note |
-|---|---|---|---|---|
-| עָנָנִים | ananim | clouds | хмари |  |
-| בָּרָד | barad | hail | град |  |
-| מַעֲלָה | ma'ala | degree | градус |  |
-| חַשְׁמַל | chashmal | electricity | електрика |  |
-| שֹׁרֶשׁ | shoresh | root | корінь |  |
-| יָרֹק | yarok | green | зелений |  |
-| נוֹף | nof | landscape; view | пейзаж |  |
-| דּוֹמֵם | domem | inanimate | неживий |  |
-| חֹשֶׁךְ | choshekh | darkness | темрява |  |
-| מַעְיָן | ma'ayan | spring (water) | джерело |  |
-| שֶׁטֶף | shetef | flow; flood | потік |  |
 
 ## shopping_money (14)
 

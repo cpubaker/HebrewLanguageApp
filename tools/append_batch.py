@@ -14,64 +14,68 @@ ROOT = Path(__file__).resolve().parent.parent
 TARGET = ROOT / "flutter_app" / "assets" / "learning" / "input" / "hebrew_words.json"
 PENDING_AUDIO = ROOT / "docs" / "vocabulary_expansion" / "pending_audio.md"
 
-BATCH_NUMBER = 4
+BATCH_NUMBER = 5
 BATCH_DATE = "2026-06-03"
 
-# 16 family + 18 body_health + 16 clothing = 50 entries. Clears 3 categories.
+# 16 food + 16 animals + 11 nature_weather + 6 abstract_common + 1 city = 50.
+# Skipped from food: פֵּרֵר (not a standard Hebrew word for "berry") and
+# קוּלִי (non-standard spelling for "kohlrabi"). Replaced with one city_places
+# entry to keep the batch at 50.
 ENTRIES = [
-    # family (clears category)
-    ("word_freq2k_grandson", "נֶכֶד", "grandson", "онук", "nekhed"),
-    ("word_freq2k_granddaughter", "נֶכְדָּה", "granddaughter", "онука", "nekhda"),
-    ("word_freq2k_nephew", "אַחְיָן", "nephew", "племінник", "achyan"),
-    ("word_freq2k_niece", "אַחְיָנִית", "niece", "племінниця", "achyanit"),
-    ("word_freq2k_cousin_m", "בֶּן דּוֹד", "cousin (m)", "двоюрідний брат", "ben dod"),
-    ("word_freq2k_cousin_f", "בַּת דּוֹדָה", "cousin (f)", "двоюрідна сестра", "bat doda"),
-    ("word_freq2k_groom", "חָתָן", "groom; son-in-law", "наречений; зять", "chatan"),
-    ("word_freq2k_bride", "כַּלָּה", "bride; daughter-in-law", "наречена; невістка", "kala"),
-    ("word_freq2k_mother_in_law", "חָמוֹת", "mother-in-law", "теща; свекруха", "chamot"),
-    ("word_freq2k_parents", "הוֹרִים", "parents", "батьки", "horim"),
-    ("word_freq2k_baby_girl", "תִּינוֹקֶת", "baby girl", "немовля (ж.)", "tinoket"),
-    ("word_freq2k_naara", "נַעֲרָה", "girl; youth", "дівчина", "na'ara"),
-    ("word_freq2k_neighbor_f", "שְׁכֵנָה", "neighbor (f)", "сусідка", "shkhena"),
-    ("word_freq2k_relative", "קְרוֹב מִשְׁפָּחָה", "relative", "родич", "krov mishpacha"),
-    ("word_freq2k_widow", "אַלְמָנָה", "widow", "вдова", "almana"),
-    ("word_freq2k_divorced", "גָּרוּשׁ", "divorced", "розлучений", "garush"),
-    # body_health (clears category)
-    ("word_freq2k_nail", "צִפֹּרֶן", "nail", "ніготь", "tziporen"),
-    ("word_freq2k_hips", "מָתְנַיִם", "hips; waist", "стегна; талія", "motnayim"),
-    ("word_freq2k_ankle", "קַרְסֹל", "ankle", "щиколотка", "karsol"),
-    ("word_freq2k_lung", "רֵאָה", "lung", "легеня", "rea"),
-    ("word_freq2k_kidney", "כִּלְיָה", "kidney", "нирка", "kilya"),
-    ("word_freq2k_stomach", "קֵבָה", "stomach (organ)", "шлунок", "keva"),
-    ("word_freq2k_muscle", "שְׁרִיר", "muscle", "м'яз", "shrir"),
-    ("word_freq2k_brain", "מֹחַ", "brain", "мозок", "moach"),
-    ("word_freq2k_flu", "שַׁפַּעַת", "flu", "грип", "shapaat"),
-    ("word_freq2k_cold_illness", "צִנּוּן", "cold (illness)", "застуда", "tzinun"),
-    ("word_freq2k_headache", "כְּאֵב רֹאשׁ", "headache", "головний біль", "ke'ev rosh"),
-    ("word_freq2k_cough", "שִׁעוּל", "cough", "кашель", "shi'ul"),
-    ("word_freq2k_nausea", "בְּחִילָה", "nausea", "нудота", "bechila"),
-    ("word_freq2k_fracture", "שֶׁבֶר", "fracture", "перелом", "shever"),
-    ("word_freq2k_pharmacy", "בֵּית מִרְקַחַת", "pharmacy", "аптека", "beit mirkachat"),
-    ("word_freq2k_syringe", "מַזְרֵק", "syringe", "шприц", "mazrek"),
-    ("word_freq2k_vaccination", "חִסּוּן", "vaccination", "щеплення", "chisun"),
-    ("word_freq2k_diet", "דִּיאֵטָה", "diet", "дієта", "dieta"),
-    # clothing (clears category)
-    ("word_freq2k_shirt", "חֻלְצָה", "shirt", "сорочка", "chultza"),
-    ("word_freq2k_jeans", "מִכְנְסֵי גִּ'ינְס", "jeans", "джинси", "mikhnesei jeans"),
-    ("word_freq2k_tshirt", "חֻלְצַת טְרִיקוֹ", "T-shirt", "футболка", "chultzat triko"),
-    ("word_freq2k_jacket", "גֶּ'קֶט", "jacket", "куртка", "jeket"),
-    ("word_freq2k_boots", "מַגָּפַיִם", "boots", "чоботи", "magafayim"),
-    ("word_freq2k_sandals", "סַנְדָּלִים", "sandals", "сандалі", "sandalim"),
-    ("word_freq2k_sneakers", "נַעֲלֵי סְפּוֹרְט", "sneakers", "кросівки", "na'alei sport"),
-    ("word_freq2k_tights", "גַּרְבּוֹנִים", "tights", "колготки", "garbonim"),
-    ("word_freq2k_tie", "עֲנִיבָה", "tie", "краватка", "aniva"),
-    ("word_freq2k_sunglasses", "מִשְׁקְפֵי שֶׁמֶשׁ", "sunglasses", "сонячні окуляри", "mishkefei shemesh"),
-    ("word_freq2k_earring", "עָגִיל", "earring", "сережка", "agil"),
-    ("word_freq2k_wristwatch", "שָׁעוֹן יָד", "wristwatch", "наручний годинник", "sha'on yad"),
-    ("word_freq2k_swimsuit", "חֲלִיפַת יָם", "swimsuit", "купальник", "chalifat yam"),
-    ("word_freq2k_pajamas", "פִּיגָ'מָה", "pajamas", "піжама", "pijama"),
-    ("word_freq2k_bra", "חֲזִיָּה", "bra", "бюстгальтер", "chaziya"),
-    ("word_freq2k_wardrobe", "אֲרוֹן בְּגָדִים", "wardrobe", "шафа", "aron begadim"),
+    # food (16 of 17 — see header note)
+    ("word_freq2k_sour_cream", "שַׁמֶּנֶת", "sour cream", "сметана", "shamenet"),
+    ("word_freq2k_rice", "אֹרֶז", "rice", "рис", "orez"),
+    ("word_freq2k_chicken", "עוֹף", "chicken", "курка", "of"),
+    ("word_freq2k_lamb", "בְּשַׂר טָלֶה", "lamb", "ягнятина", "bsar tale"),
+    ("word_freq2k_sausage", "נַקְנִיק", "sausage", "ковбаса", "naknik"),
+    ("word_freq2k_salted_fish", "דָּג מָלוּחַ", "salted fish", "солона риба", "dag maluach"),
+    ("word_freq2k_fruits", "פֵּרוֹת", "fruits", "фрукти", "perot"),
+    ("word_freq2k_vegetables", "יְרָקוֹת", "vegetables", "овочі", "yerakot"),
+    ("word_freq2k_grapes", "עֲנָבִים", "grapes", "виноград", "anavim"),
+    ("word_freq2k_cherry", "דֻּבְדְּבָן", "cherry", "вишня", "duvdevan"),
+    ("word_freq2k_strawberry", "תּוּת", "strawberry", "полуниця", "tut"),
+    ("word_freq2k_lettuce", "חַסָּה", "lettuce", "салат-латук", "chasa"),
+    ("word_freq2k_green_pepper", "פִּלְפֵּל יָרֹק", "green pepper", "зелений перець", "pilpel yarok"),
+    ("word_freq2k_meal", "אֲרוּחָה", "meal", "трапеза", "arucha"),
+    ("word_freq2k_napkin", "מַפִּית", "napkin", "серветка", "mapit"),
+    # animals (clears category)
+    ("word_freq2k_ox", "שׁוֹר", "ox", "бик", "shor"),
+    ("word_freq2k_sheep", "כֶּבֶשׂ", "sheep", "вівця", "keves"),
+    ("word_freq2k_donkey", "חֲמוֹר", "donkey", "осел", "chamor"),
+    ("word_freq2k_rabbit", "ארנב", "rabbit", "кролик", "arnav"),
+    ("word_freq2k_rat", "חֻלְדָּה", "rat", "щур", "chulda"),
+    ("word_freq2k_eagle", "נֶשֶׁר", "eagle", "орел", "nesher"),
+    ("word_freq2k_fowl", "עוֹף", "fowl", "птиця", "of"),
+    ("word_freq2k_rooster", "תַּרְנְגוֹל", "rooster", "півень", "tarnegol"),
+    ("word_freq2k_hen", "תַּרְנְגֹלֶת", "hen", "курка", "tarnegolet"),
+    ("word_freq2k_fish_pl", "דָּגִים", "fish (pl.)", "риби", "dagim"),
+    ("word_freq2k_snake", "נָחָשׁ", "snake", "змія", "nachash"),
+    ("word_freq2k_mosquito", "יַתּוּשׁ", "mosquito", "комар", "yatush"),
+    ("word_freq2k_fly", "זְבוּב", "fly", "муха", "zvuv"),
+    ("word_freq2k_spider", "עַכָּבִישׁ", "spider", "павук", "akavish"),
+    ("word_freq2k_turtle", "צָב", "turtle", "черепаха", "tzav"),
+    ("word_freq2k_leopard", "נָמֵר", "leopard", "леопард", "namer"),
+    # nature_weather (clears category)
+    ("word_freq2k_clouds", "עָנָנִים", "clouds", "хмари", "ananim"),
+    ("word_freq2k_hail", "בָּרָד", "hail", "град", "barad"),
+    ("word_freq2k_degree", "מַעֲלָה", "degree", "градус", "ma'ala"),
+    ("word_freq2k_electricity", "חַשְׁמַל", "electricity", "електрика", "chashmal"),
+    ("word_freq2k_root", "שֹׁרֶשׁ", "root", "корінь", "shoresh"),
+    ("word_freq2k_green", "יָרֹק", "green", "зелений", "yarok"),
+    ("word_freq2k_landscape", "נוֹף", "landscape; view", "пейзаж", "nof"),
+    ("word_freq2k_inanimate", "דּוֹמֵם", "inanimate", "неживий", "domem"),
+    ("word_freq2k_darkness", "חֹשֶׁךְ", "darkness", "темрява", "choshekh"),
+    ("word_freq2k_spring_water", "מַעְיָן", "spring (water)", "джерело", "ma'ayan"),
+    ("word_freq2k_flow", "שֶׁטֶף", "flow; flood", "потік", "shetef"),
+    # abstract_common (clears category)
+    ("word_freq2k_imagination", "דִּמְיוֹן", "imagination; similarity", "уява; схожість", "dimyon"),
+    ("word_freq2k_column", "טוּר", "column; row", "колонка", "tur"),
+    ("word_freq2k_dispute", "מַחְלוֹקֶת", "dispute", "суперечка", "machloket"),
+    ("word_freq2k_importance", "חֲשִׁיבוּת", "importance", "важливість", "chashivut"),
+    ("word_freq2k_continuation", "הֶמְשֵׁךְ", "continuation", "продовження", "hemshekh"),
+    ("word_freq2k_progress", "הִתְקַדְּמוּת", "progress", "прогрес", "hitkadmut"),
+    # city_places (1 entry to round to 50)
+    ("word_freq2k_supermarket", "סוּפֶּרְמַרְקֶט", "supermarket", "супермаркет", "supermarket"),
 ]
 
 

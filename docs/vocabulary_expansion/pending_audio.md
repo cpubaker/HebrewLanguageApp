@@ -14,6 +14,55 @@ When adding a frequency-batch entry to `hebrew_words.json`:
 
 | Batch | Date added | word_id | Hebrew | Transcription |
 |---|---|---|---|---|
+| 5 | 2026-06-03 | word_freq2k_sour_cream | שַׁמֶּנֶת | shamenet |
+| 5 | 2026-06-03 | word_freq2k_rice | אֹרֶז | orez |
+| 5 | 2026-06-03 | word_freq2k_chicken | עוֹף | of |
+| 5 | 2026-06-03 | word_freq2k_lamb | בְּשַׂר טָלֶה | bsar tale |
+| 5 | 2026-06-03 | word_freq2k_sausage | נַקְנִיק | naknik |
+| 5 | 2026-06-03 | word_freq2k_salted_fish | דָּג מָלוּחַ | dag maluach |
+| 5 | 2026-06-03 | word_freq2k_fruits | פֵּרוֹת | perot |
+| 5 | 2026-06-03 | word_freq2k_vegetables | יְרָקוֹת | yerakot |
+| 5 | 2026-06-03 | word_freq2k_grapes | עֲנָבִים | anavim |
+| 5 | 2026-06-03 | word_freq2k_cherry | דֻּבְדְּבָן | duvdevan |
+| 5 | 2026-06-03 | word_freq2k_strawberry | תּוּת | tut |
+| 5 | 2026-06-03 | word_freq2k_lettuce | חַסָּה | chasa |
+| 5 | 2026-06-03 | word_freq2k_green_pepper | פִּלְפֵּל יָרֹק | pilpel yarok |
+| 5 | 2026-06-03 | word_freq2k_meal | אֲרוּחָה | arucha |
+| 5 | 2026-06-03 | word_freq2k_napkin | מַפִּית | mapit |
+| 5 | 2026-06-03 | word_freq2k_ox | שׁוֹר | shor |
+| 5 | 2026-06-03 | word_freq2k_sheep | כֶּבֶשׂ | keves |
+| 5 | 2026-06-03 | word_freq2k_donkey | חֲמוֹר | chamor |
+| 5 | 2026-06-03 | word_freq2k_rabbit | ארנב | arnav |
+| 5 | 2026-06-03 | word_freq2k_rat | חֻלְדָּה | chulda |
+| 5 | 2026-06-03 | word_freq2k_eagle | נֶשֶׁר | nesher |
+| 5 | 2026-06-03 | word_freq2k_fowl | עוֹף | of |
+| 5 | 2026-06-03 | word_freq2k_rooster | תַּרְנְגוֹל | tarnegol |
+| 5 | 2026-06-03 | word_freq2k_hen | תַּרְנְגֹלֶת | tarnegolet |
+| 5 | 2026-06-03 | word_freq2k_fish_pl | דָּגִים | dagim |
+| 5 | 2026-06-03 | word_freq2k_snake | נָחָשׁ | nachash |
+| 5 | 2026-06-03 | word_freq2k_mosquito | יַתּוּשׁ | yatush |
+| 5 | 2026-06-03 | word_freq2k_fly | זְבוּב | zvuv |
+| 5 | 2026-06-03 | word_freq2k_spider | עַכָּבִישׁ | akavish |
+| 5 | 2026-06-03 | word_freq2k_turtle | צָב | tzav |
+| 5 | 2026-06-03 | word_freq2k_leopard | נָמֵר | namer |
+| 5 | 2026-06-03 | word_freq2k_clouds | עָנָנִים | ananim |
+| 5 | 2026-06-03 | word_freq2k_hail | בָּרָד | barad |
+| 5 | 2026-06-03 | word_freq2k_degree | מַעֲלָה | ma'ala |
+| 5 | 2026-06-03 | word_freq2k_electricity | חַשְׁמַל | chashmal |
+| 5 | 2026-06-03 | word_freq2k_root | שֹׁרֶשׁ | shoresh |
+| 5 | 2026-06-03 | word_freq2k_green | יָרֹק | yarok |
+| 5 | 2026-06-03 | word_freq2k_landscape | נוֹף | nof |
+| 5 | 2026-06-03 | word_freq2k_inanimate | דּוֹמֵם | domem |
+| 5 | 2026-06-03 | word_freq2k_darkness | חֹשֶׁךְ | choshekh |
+| 5 | 2026-06-03 | word_freq2k_spring_water | מַעְיָן | ma'ayan |
+| 5 | 2026-06-03 | word_freq2k_flow | שֶׁטֶף | shetef |
+| 5 | 2026-06-03 | word_freq2k_imagination | דִּמְיוֹן | dimyon |
+| 5 | 2026-06-03 | word_freq2k_column | טוּר | tur |
+| 5 | 2026-06-03 | word_freq2k_dispute | מַחְלוֹקֶת | machloket |
+| 5 | 2026-06-03 | word_freq2k_importance | חֲשִׁיבוּת | chashivut |
+| 5 | 2026-06-03 | word_freq2k_continuation | הֶמְשֵׁךְ | hemshekh |
+| 5 | 2026-06-03 | word_freq2k_progress | הִתְקַדְּמוּת | hitkadmut |
+| 5 | 2026-06-03 | word_freq2k_supermarket | סוּפֶּרְמַרְקֶט | supermarket |
 | 4 | 2026-06-03 | word_freq2k_grandson | נֶכֶד | nekhed |
 | 4 | 2026-06-03 | word_freq2k_granddaughter | נֶכְדָּה | nekhda |
 | 4 | 2026-06-03 | word_freq2k_nephew | אַחְיָן | achyan |

@@ -13782,5 +13782,348 @@
         "english": "wardrobe",
         "ukrainian": "шафа",
         "transcription": "aron begadim"
+    },
+    {
+        "word_id": "word_freq2k_sour_cream",
+        "hebrew": "שַׁמֶּנֶת",
+        "english": "sour cream",
+        "ukrainian": "сметана",
+        "transcription": "shamenet"
+    },
+    {
+        "word_id": "word_freq2k_rice",
+        "hebrew": "אֹרֶז",
+        "english": "rice",
+        "ukrainian": "рис",
+        "transcription": "orez"
+    },
+    {
+        "word_id": "word_freq2k_chicken",
+        "hebrew": "עוֹף",
+        "english": "chicken",
+        "ukrainian": "курка",
+        "transcription": "of"
+    },
+    {
+        "word_id": "word_freq2k_lamb",
+        "hebrew": "בְּשַׂר טָלֶה",
+        "english": "lamb",
+        "ukrainian": "ягнятина",
+        "transcription": "bsar tale"
+    },
+    {
+        "word_id": "word_freq2k_sausage",
+        "hebrew": "נַקְנִיק",
+        "english": "sausage",
+        "ukrainian": "ковбаса",
+        "transcription": "naknik"
+    },
+    {
+        "word_id": "word_freq2k_salted_fish",
+        "hebrew": "דָּג מָלוּחַ",
+        "english": "salted fish",
+        "ukrainian": "солона риба",
+        "transcription": "dag maluach"
+    },
+    {
+        "word_id": "word_freq2k_fruits",
+        "hebrew": "פֵּרוֹת",
+        "english": "fruits",
+        "ukrainian": "фрукти",
+        "transcription": "perot"
+    },
+    {
+        "word_id": "word_freq2k_vegetables",
+        "hebrew": "יְרָקוֹת",
+        "english": "vegetables",
+        "ukrainian": "овочі",
+        "transcription": "yerakot"
+    },
+    {
+        "word_id": "word_freq2k_grapes",
+        "hebrew": "עֲנָבִים",
+        "english": "grapes",
+        "ukrainian": "виноград",
+        "transcription": "anavim"
+    },
+    {
+        "word_id": "word_freq2k_cherry",
+        "hebrew": "דֻּבְדְּבָן",
+        "english": "cherry",
+        "ukrainian": "вишня",
+        "transcription": "duvdevan"
+    },
+    {
+        "word_id": "word_freq2k_strawberry",
+        "hebrew": "תּוּת",
+        "english": "strawberry",
+        "ukrainian": "полуниця",
+        "transcription": "tut"
+    },
+    {
+        "word_id": "word_freq2k_lettuce",
+        "hebrew": "חַסָּה",
+        "english": "lettuce",
+        "ukrainian": "салат-латук",
+        "transcription": "chasa"
+    },
+    {
+        "word_id": "word_freq2k_green_pepper",
+        "hebrew": "פִּלְפֵּל יָרֹק",
+        "english": "green pepper",
+        "ukrainian": "зелений перець",
+        "transcription": "pilpel yarok"
+    },
+    {
+        "word_id": "word_freq2k_meal",
+        "hebrew": "אֲרוּחָה",
+        "english": "meal",
+        "ukrainian": "трапеза",
+        "transcription": "arucha"
+    },
+    {
+        "word_id": "word_freq2k_napkin",
+        "hebrew": "מַפִּית",
+        "english": "napkin",
+        "ukrainian": "серветка",
+        "transcription": "mapit"
+    },
+    {
+        "word_id": "word_freq2k_ox",
+        "hebrew": "שׁוֹר",
+        "english": "ox",
+        "ukrainian": "бик",
+        "transcription": "shor"
+    },
+    {
+        "word_id": "word_freq2k_sheep",
+        "hebrew": "כֶּבֶשׂ",
+        "english": "sheep",
+        "ukrainian": "вівця",
+        "transcription": "keves"
+    },
+    {
+        "word_id": "word_freq2k_donkey",
+        "hebrew": "חֲמוֹר",
+        "english": "donkey",
+        "ukrainian": "осел",
+        "transcription": "chamor"
+    },
+    {
+        "word_id": "word_freq2k_rabbit",
+        "hebrew": "ארנב",
+        "english": "rabbit",
+        "ukrainian": "кролик",
+        "transcription": "arnav"
+    },
+    {
+        "word_id": "word_freq2k_rat",
+        "hebrew": "חֻלְדָּה",
+        "english": "rat",
+        "ukrainian": "щур",
+        "transcription": "chulda"
+    },
+    {
+        "word_id": "word_freq2k_eagle",
+        "hebrew": "נֶשֶׁר",
+        "english": "eagle",
+        "ukrainian": "орел",
+        "transcription": "nesher"
+    },
+    {
+        "word_id": "word_freq2k_fowl",
+        "hebrew": "עוֹף",
+        "english": "fowl",
+        "ukrainian": "птиця",
+        "transcription": "of"
+    },
+    {
+        "word_id": "word_freq2k_rooster",
+        "hebrew": "תַּרְנְגוֹל",
+        "english": "rooster",
+        "ukrainian": "півень",
+        "transcription": "tarnegol"
+    },
+    {
+        "word_id": "word_freq2k_hen",
+        "hebrew": "תַּרְנְגֹלֶת",
+        "english": "hen",
+        "ukrainian": "курка",
+        "transcription": "tarnegolet"
+    },
+    {
+        "word_id": "word_freq2k_fish_pl",
+        "hebrew": "דָּגִים",
+        "english": "fish (pl.)",
+        "ukrainian": "риби",
+        "transcription": "dagim"
+    },
+    {
+        "word_id": "word_freq2k_snake",
+        "hebrew": "נָחָשׁ",
+        "english": "snake",
+        "ukrainian": "змія",
+        "transcription": "nachash"
+    },
+    {
+        "word_id": "word_freq2k_mosquito",
+        "hebrew": "יַתּוּשׁ",
+        "english": "mosquito",
+        "ukrainian": "комар",
+        "transcription": "yatush"
+    },
+    {
+        "word_id": "word_freq2k_fly",
+        "hebrew": "זְבוּב",
+        "english": "fly",
+        "ukrainian": "муха",
+        "transcription": "zvuv"
+    },
+    {
+        "word_id": "word_freq2k_spider",
+        "hebrew": "עַכָּבִישׁ",
+        "english": "spider",
+        "ukrainian": "павук",
+        "transcription": "akavish"
+    },
+    {
+        "word_id": "word_freq2k_turtle",
+        "hebrew": "צָב",
+        "english": "turtle",
+        "ukrainian": "черепаха",
+        "transcription": "tzav"
+    },
+    {
+        "word_id": "word_freq2k_leopard",
+        "hebrew": "נָמֵר",
+        "english": "leopard",
+        "ukrainian": "леопард",
+        "transcription": "namer"
+    },
+    {
+        "word_id": "word_freq2k_clouds",
+        "hebrew": "עָנָנִים",
+        "english": "clouds",
+        "ukrainian": "хмари",
+        "transcription": "ananim"
+    },
+    {
+        "word_id": "word_freq2k_hail",
+        "hebrew": "בָּרָד",
+        "english": "hail",
+        "ukrainian": "град",
+        "transcription": "barad"
+    },
+    {
+        "word_id": "word_freq2k_degree",
+        "hebrew": "מַעֲלָה",
+        "english": "degree",
+        "ukrainian": "градус",
+        "transcription": "ma'ala"
+    },
+    {
+        "word_id": "word_freq2k_electricity",
+        "hebrew": "חַשְׁמַל",
+        "english": "electricity",
+        "ukrainian": "електрика",
+        "transcription": "chashmal"
+    },
+    {
+        "word_id": "word_freq2k_root",
+        "hebrew": "שֹׁרֶשׁ",
+        "english": "root",
+        "ukrainian": "корінь",
+        "transcription": "shoresh"
+    },
+    {
+        "word_id": "word_freq2k_green",
+        "hebrew": "יָרֹק",
+        "english": "green",
+        "ukrainian": "зелений",
+        "transcription": "yarok"
+    },
+    {
+        "word_id": "word_freq2k_landscape",
+        "hebrew": "נוֹף",
+        "english": "landscape; view",
+        "ukrainian": "пейзаж",
+        "transcription": "nof"
+    },
+    {
+        "word_id": "word_freq2k_inanimate",
+        "hebrew": "דּוֹמֵם",
+        "english": "inanimate",
+        "ukrainian": "неживий",
+        "transcription": "domem"
+    },
+    {
+        "word_id": "word_freq2k_darkness",
+        "hebrew": "חֹשֶׁךְ",
+        "english": "darkness",
+        "ukrainian": "темрява",
+        "transcription": "choshekh"
+    },
+    {
+        "word_id": "word_freq2k_spring_water",
+        "hebrew": "מַעְיָן",
+        "english": "spring (water)",
+        "ukrainian": "джерело",
+        "transcription": "ma'ayan"
+    },
+    {
+        "word_id": "word_freq2k_flow",
+        "hebrew": "שֶׁטֶף",
+        "english": "flow; flood",
+        "ukrainian": "потік",
+        "transcription": "shetef"
+    },
+    {
+        "word_id": "word_freq2k_imagination",
+        "hebrew": "דִּמְיוֹן",
+        "english": "imagination; similarity",
+        "ukrainian": "уява; схожість",
+        "transcription": "dimyon"
+    },
+    {
+        "word_id": "word_freq2k_column",
+        "hebrew": "טוּר",
+        "english": "column; row",
+        "ukrainian": "колонка",
+        "transcription": "tur"
+    },
+    {
+        "word_id": "word_freq2k_dispute",
+        "hebrew": "מַחְלוֹקֶת",
+        "english": "dispute",
+        "ukrainian": "суперечка",
+        "transcription": "machloket"
+    },
+    {
+        "word_id": "word_freq2k_importance",
+        "hebrew": "חֲשִׁיבוּת",
+        "english": "importance",
+        "ukrainian": "важливість",
+        "transcription": "chashivut"
+    },
+    {
+        "word_id": "word_freq2k_continuation",
+        "hebrew": "הֶמְשֵׁךְ",
+        "english": "continuation",
+        "ukrainian": "продовження",
+        "transcription": "hemshekh"
+    },
+    {
+        "word_id": "word_freq2k_progress",
+        "hebrew": "הִתְקַדְּמוּת",
+        "english": "progress",
+        "ukrainian": "прогрес",
+        "transcription": "hitkadmut"
+    },
+    {
+        "word_id": "word_freq2k_supermarket",
+        "hebrew": "סוּפֶּרְמַרְקֶט",
+        "english": "supermarket",
+        "ukrainian": "супермаркет",
+        "transcription": "supermarket"
     }
 ]
