@@ -1,53 +1,17 @@
 # Words to add (frequency-driven)
 
-Generated from `tools/vocab_diff.py`. Existing: 1651. Candidates checked: 1068. Missing: 241.
+Generated from `tools/vocab_diff.py`. Existing: 1701. Candidates checked: 1068. Missing: 190.
 
-## abstract_common (7)
+## abstract_common (6)
 
 | Hebrew | Transcription | English | Ukrainian | Note |
 |---|---|---|---|---|
 | דִּמְיוֹן | dimyon | imagination; similarity | уява; схожість |  |
 | טוּר | tur | column; row | колонка |  |
-| שָׁלֵם | shalem | whole | ціле |  |
 | מַחְלוֹקֶת | machloket | dispute | суперечка |  |
 | חֲשִׁיבוּת | chashivut | importance | важливість |  |
 | הֶמְשֵׁךְ | hemshekh | continuation | продовження |  |
 | הִתְקַדְּמוּת | hitkadmut | progress | прогрес |  |
-
-## adjectives (30)
-
-| Hebrew | Transcription | English | Ukrainian | Note |
-|---|---|---|---|---|
-| קָרִיר | karir | cool | прохолодний |  |
-| רָטֹב | ratov | wet | мокрий |  |
-| מְלֻכְלָךְ | melukhlakh | dirty | брудний |  |
-| מְבֻלְבָּל | mevulbal | confused | розгублений |  |
-| מְשַׁעֲמֵם | mesha'amem | boring | нудний |  |
-| מְסֻבָּךְ | mesubakh | complicated | складний |  |
-| מְפֻרְסָם | mefursam | famous | відомий |  |
-| אֲמִיתִי | amiti | real; true | справжній |  |
-| מַתְאִים | matim | suitable | придатний |  |
-| דּוֹמֶה | domeh | similar | схожий |  |
-| מְשֻׁתָּף | meshutaf | shared; common | спільний |  |
-| שָׁלֵם | shalem | whole | цілий |  |
-| שָׁבוּר | shavur | broken | зламаний |  |
-| חָפְשִׁי | chofshi | free | вільний |  |
-| תָּפוּס | tafus | occupied | зайнятий |  |
-| טָעִים | ta'im | delicious | смачний |  |
-| בָּשֵׁל | bashel | ripe | стиглий |  |
-| אַדִּיב | adiv | polite | ввічливий |  |
-| גַּס | gas | rude | грубий |  |
-| קַמְצָן | kamtzan | stingy | скнара |  |
-| פַּחְדָן | pachdan | coward | боягуз |  |
-| מְסֻכָּן | mesukan | dangerous | небезпечний |  |
-| מַצְחִיק | matzchik | funny | смішний |  |
-| גַּס רוּחַ | gas ruach | rude (in spirit) | хам |  |
-| עָקֵב | aqev | stubborn | впертий |  |
-| עַצְלָן | atzlan | lazy | лінивий |  |
-| חָרוּץ | charutz | diligent | старанний |  |
-| עִקָּרִי | ikari | main; principal | головний |  |
-| מְיֻחָד | meyuchad | special | особливий |  |
-| נֶהְדָּר | nehedar | wonderful | чудовий |  |
 
 ## animals (16)
 
@@ -165,31 +129,6 @@ Generated from `tools/vocab_diff.py`. Existing: 1651. Candidates checked: 1068. 
 | מַחַק | machak | eraser | гумка |  |
 | שִׁעוּר פְּרָטִי | shi'ur prati | private lesson | приватний урок |  |
 | מַרְצֶה | martze | lecturer | лектор |  |
-
-## emotions_states (20)
-
-| Hebrew | Transcription | English | Ukrainian | Note |
-|---|---|---|---|---|
-| שִׂנְאָה | sina | hatred | ненависть |  |
-| שִׂמְחָה | simcha | joy | радість |  |
-| עֶצֶב | etzev | sadness | сум |  |
-| כַּעַס | ka'as | anger | гнів |  |
-| חֲרָדָה | charada | anxiety | тривога |  |
-| דְּאָגָה | de'aga | worry | турбота |  |
-| אֱמוּנָה | emuna | faith; belief | віра |  |
-| בִּטָּחוֹן | bitachon | confidence; security | впевненість |  |
-| גַּאֲוָה | ga'ava | pride | гордість |  |
-| בּוּשָׁה | busha | shame | сором |  |
-| חֶרְפָּה | cherpa | disgrace | ганьба |  |
-| הִתְלַהֲבוּת | hitlahavut | enthusiasm | захоплення |  |
-| הַרְגָּשָׁה | hargasha | feeling | відчуття |  |
-| יְגִיעוּת | yegi'ut | fatigue | втома |  |
-| מְנוּחָה | menucha | rest | відпочинок |  |
-| רָצוֹן | ratzon | desire; will | бажання |  |
-| צַעַר | tza'ar | sorrow | горе |  |
-| רַחֲמִים | rachamim | compassion | співчуття |  |
-| סַבְלָנוּת | savlanut | patience | терпіння |  |
-| שַׁלְוָה | shalva | tranquility | спокій |  |
 
 ## family (16)
 

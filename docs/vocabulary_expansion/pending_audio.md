@@ -14,6 +14,56 @@ When adding a frequency-batch entry to `hebrew_words.json`:
 
 | Batch | Date added | word_id | Hebrew | Transcription |
 |---|---|---|---|---|
+| 3 | 2026-06-03 | word_freq2k_cool_adj | קָרִיר | karir |
+| 3 | 2026-06-03 | word_freq2k_wet | רָטֹב | ratov |
+| 3 | 2026-06-03 | word_freq2k_dirty | מְלֻכְלָךְ | melukhlakh |
+| 3 | 2026-06-03 | word_freq2k_confused | מְבֻלְבָּל | mevulbal |
+| 3 | 2026-06-03 | word_freq2k_boring | מְשַׁעֲמֵם | mesha'amem |
+| 3 | 2026-06-03 | word_freq2k_complicated | מְסֻבָּךְ | mesubakh |
+| 3 | 2026-06-03 | word_freq2k_famous | מְפֻרְסָם | mefursam |
+| 3 | 2026-06-03 | word_freq2k_real | אֲמִיתִי | amiti |
+| 3 | 2026-06-03 | word_freq2k_suitable | מַתְאִים | matim |
+| 3 | 2026-06-03 | word_freq2k_similar | דּוֹמֶה | domeh |
+| 3 | 2026-06-03 | word_freq2k_shared | מְשֻׁתָּף | meshutaf |
+| 3 | 2026-06-03 | word_freq2k_whole_adj | שָׁלֵם | shalem |
+| 3 | 2026-06-03 | word_freq2k_broken | שָׁבוּר | shavur |
+| 3 | 2026-06-03 | word_freq2k_free_adj | חָפְשִׁי | chofshi |
+| 3 | 2026-06-03 | word_freq2k_occupied | תָּפוּס | tafus |
+| 3 | 2026-06-03 | word_freq2k_delicious | טָעִים | ta'im |
+| 3 | 2026-06-03 | word_freq2k_ripe | בָּשֵׁל | bashel |
+| 3 | 2026-06-03 | word_freq2k_polite | אַדִּיב | adiv |
+| 3 | 2026-06-03 | word_freq2k_rude | גַּס | gas |
+| 3 | 2026-06-03 | word_freq2k_stingy | קַמְצָן | kamtzan |
+| 3 | 2026-06-03 | word_freq2k_coward | פַּחְדָן | pachdan |
+| 3 | 2026-06-03 | word_freq2k_dangerous | מְסֻכָּן | mesukan |
+| 3 | 2026-06-03 | word_freq2k_funny | מַצְחִיק | matzchik |
+| 3 | 2026-06-03 | word_freq2k_rude_spirit | גַּס רוּחַ | gas ruach |
+| 3 | 2026-06-03 | word_freq2k_stubborn | עָקֵב | aqev |
+| 3 | 2026-06-03 | word_freq2k_lazy | עַצְלָן | atzlan |
+| 3 | 2026-06-03 | word_freq2k_diligent | חָרוּץ | charutz |
+| 3 | 2026-06-03 | word_freq2k_main_adj | עִקָּרִי | ikari |
+| 3 | 2026-06-03 | word_freq2k_special | מְיֻחָד | meyuchad |
+| 3 | 2026-06-03 | word_freq2k_wonderful | נֶהְדָּר | nehedar |
+| 3 | 2026-06-03 | word_freq2k_hatred | שִׂנְאָה | sina |
+| 3 | 2026-06-03 | word_freq2k_joy | שִׂמְחָה | simcha |
+| 3 | 2026-06-03 | word_freq2k_sadness | עֶצֶב | etzev |
+| 3 | 2026-06-03 | word_freq2k_anger | כַּעַס | ka'as |
+| 3 | 2026-06-03 | word_freq2k_anxiety | חֲרָדָה | charada |
+| 3 | 2026-06-03 | word_freq2k_worry | דְּאָגָה | de'aga |
+| 3 | 2026-06-03 | word_freq2k_faith | אֱמוּנָה | emuna |
+| 3 | 2026-06-03 | word_freq2k_confidence | בִּטָּחוֹן | bitachon |
+| 3 | 2026-06-03 | word_freq2k_pride | גַּאֲוָה | ga'ava |
+| 3 | 2026-06-03 | word_freq2k_shame | בּוּשָׁה | busha |
+| 3 | 2026-06-03 | word_freq2k_disgrace | חֶרְפָּה | cherpa |
+| 3 | 2026-06-03 | word_freq2k_enthusiasm | הִתְלַהֲבוּת | hitlahavut |
+| 3 | 2026-06-03 | word_freq2k_feeling | הַרְגָּשָׁה | hargasha |
+| 3 | 2026-06-03 | word_freq2k_fatigue | יְגִיעוּת | yegi'ut |
+| 3 | 2026-06-03 | word_freq2k_rest | מְנוּחָה | menucha |
+| 3 | 2026-06-03 | word_freq2k_desire | רָצוֹן | ratzon |
+| 3 | 2026-06-03 | word_freq2k_sorrow | צַעַר | tza'ar |
+| 3 | 2026-06-03 | word_freq2k_compassion | רַחֲמִים | rachamim |
+| 3 | 2026-06-03 | word_freq2k_patience | סַבְלָנוּת | savlanut |
+| 3 | 2026-06-03 | word_freq2k_tranquility | שַׁלְוָה | shalva |
 | 2 | 2026-06-03 | word_freq2k_eizo | אֵיזוֹ | eizo |
 | 2 | 2026-06-03 | word_freq2k_haim | הַאִם | ha'im |
 | 2 | 2026-06-03 | word_freq2k_meat_meat | מְעַט מְעַט | me'at me'at |
