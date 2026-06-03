@@ -1,0 +1,7478 @@
+[
+  {
+    "hebrew": "אֲבָל",
+    "transcription": "aval",
+    "english": "but",
+    "ukrainian": "але",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "אוֹ",
+    "transcription": "o",
+    "english": "or",
+    "ukrainian": "або",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "כִּי",
+    "transcription": "ki",
+    "english": "because; that",
+    "ukrainian": "бо; що",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "אִם",
+    "transcription": "im",
+    "english": "if",
+    "ukrainian": "якщо",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "שֶׁ",
+    "transcription": "she",
+    "english": "that (subordinator)",
+    "ukrainian": "що",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "גַּם",
+    "transcription": "gam",
+    "english": "also; too",
+    "ukrainian": "теж; також",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "רַק",
+    "transcription": "rak",
+    "english": "only",
+    "ukrainian": "лише",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "עוֹד",
+    "transcription": "od",
+    "english": "still; more",
+    "ukrainian": "ще",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "כְּבָר",
+    "transcription": "kvar",
+    "english": "already",
+    "ukrainian": "вже",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "אוּלָם",
+    "transcription": "ulam",
+    "english": "however",
+    "ukrainian": "проте",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "בְּכָל זֹאת",
+    "transcription": "bekhol zot",
+    "english": "nevertheless",
+    "ukrainian": "усе ж",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "לָכֵן",
+    "transcription": "lakhen",
+    "english": "therefore",
+    "ukrainian": "тому",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "בִּגְלַל",
+    "transcription": "biglal",
+    "english": "because of",
+    "ukrainian": "через",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "מִפְּנֵי שֶׁ",
+    "transcription": "mipnei she",
+    "english": "because",
+    "ukrainian": "через те що",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "כֵּיוָן שֶׁ",
+    "transcription": "keivan she",
+    "english": "since",
+    "ukrainian": "оскільки",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "בִּזְמַן שֶׁ",
+    "transcription": "bizman she",
+    "english": "while",
+    "ukrainian": "поки",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "כְּשֶׁ",
+    "transcription": "kshe",
+    "english": "when (conj.)",
+    "ukrainian": "коли",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "לִפְנֵי שֶׁ",
+    "transcription": "lifnei she",
+    "english": "before (conj.)",
+    "ukrainian": "до того як",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "אַחֲרֵי שֶׁ",
+    "transcription": "acharei she",
+    "english": "after (conj.)",
+    "ukrainian": "після того як",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "בְּעוֹד שֶׁ",
+    "transcription": "be'od she",
+    "english": "whereas; while",
+    "ukrainian": "тоді як",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "כְּדֵי",
+    "transcription": "kedei",
+    "english": "in order to",
+    "ukrainian": "щоб",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "כְּדֵי שֶׁ",
+    "transcription": "kedei she",
+    "english": "so that",
+    "ukrainian": "щоб",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "בִּשְׁבִיל",
+    "transcription": "bishvil",
+    "english": "for; for the sake of",
+    "ukrainian": "для",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "בְּעֶצֶם",
+    "transcription": "be'etzem",
+    "english": "actually",
+    "ukrainian": "насправді",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "בֶּאֱמֶת",
+    "transcription": "be'emet",
+    "english": "really",
+    "ukrainian": "справді",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "בְּדִיּוּק",
+    "transcription": "bediyuk",
+    "english": "exactly",
+    "ukrainian": "саме; точно",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "בְּעִקָּר",
+    "transcription": "be'ikar",
+    "english": "mainly",
+    "ukrainian": "переважно",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "בִּמְיֻחָד",
+    "transcription": "bimyukhad",
+    "english": "especially",
+    "ukrainian": "особливо",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "בְּדֶרֶךְ כְּלָל",
+    "transcription": "bederekh klal",
+    "english": "usually",
+    "ukrainian": "зазвичай",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "בְּכָל אֹפֶן",
+    "transcription": "bekhol ofen",
+    "english": "anyway",
+    "ukrainian": "у всякому разі",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "בְּכָל מִקְרֶה",
+    "transcription": "bekhol mikre",
+    "english": "in any case",
+    "ukrainian": "у будь-якому разі",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "אַף עַל פִּי כֵן",
+    "transcription": "af al pi khen",
+    "english": "nevertheless",
+    "ukrainian": "однак",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "כְּלוֹמַר",
+    "transcription": "klomar",
+    "english": "that is; meaning",
+    "ukrainian": "тобто",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "לְמָשָׁל",
+    "transcription": "lemashal",
+    "english": "for example",
+    "ukrainian": "наприклад",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "כְּמוֹ",
+    "transcription": "kemo",
+    "english": "like; as",
+    "ukrainian": "як",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "כְּמוֹ כֵן",
+    "transcription": "kemo khen",
+    "english": "likewise",
+    "ukrainian": "так само",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "חוּץ מִ",
+    "transcription": "chutz mi",
+    "english": "except for",
+    "ukrainian": "крім",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "מִלְּבַד",
+    "transcription": "milvad",
+    "english": "except",
+    "ukrainian": "окрім",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "בִּמְקוֹם",
+    "transcription": "bimkom",
+    "english": "instead of",
+    "ukrainian": "замість",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "לְעֻמַּת",
+    "transcription": "le'umat",
+    "english": "compared to",
+    "ukrainian": "порівняно з",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "נֶגֶד",
+    "transcription": "neged",
+    "english": "against",
+    "ukrainian": "проти",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "בְּעַד",
+    "transcription": "be'ad",
+    "english": "in favor of",
+    "ukrainian": "за",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "לְפִי",
+    "transcription": "lefi",
+    "english": "according to",
+    "ukrainian": "згідно з",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "עַל פִּי",
+    "transcription": "al pi",
+    "english": "according to",
+    "ukrainian": "згідно",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "מִתּוֹךְ",
+    "transcription": "mitokh",
+    "english": "out of; from within",
+    "ukrainian": "із; з",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "בְּאֶמְצָעוּת",
+    "transcription": "be'emtsa'ut",
+    "english": "by means of",
+    "ukrainian": "за допомогою",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "עַל יְדֵי",
+    "transcription": "al yedei",
+    "english": "by; through",
+    "ukrainian": "через",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "אַף",
+    "transcription": "af",
+    "english": "even",
+    "ukrainian": "навіть",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "הֲרֵי",
+    "transcription": "harei",
+    "english": "indeed; after all",
+    "ukrainian": "адже",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "דַּוְקָא",
+    "transcription": "davka",
+    "english": "specifically; just",
+    "ukrainian": "якраз",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "אֲפִילּוּ",
+    "transcription": "afilu",
+    "english": "even",
+    "ukrainian": "навіть",
+    "category": "function_words"
+  },
+  {
+    "hebrew": "אֲנִי",
+    "transcription": "ani",
+    "english": "I",
+    "ukrainian": "я",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "אַתָּה",
+    "transcription": "ata",
+    "english": "you (m.sg)",
+    "ukrainian": "ти (ч.)",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "אַתְּ",
+    "transcription": "at",
+    "english": "you (f.sg)",
+    "ukrainian": "ти (ж.)",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "הוּא",
+    "transcription": "hu",
+    "english": "he",
+    "ukrainian": "він",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "הִיא",
+    "transcription": "hi",
+    "english": "she",
+    "ukrainian": "вона",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "אֲנַחְנוּ",
+    "transcription": "anachnu",
+    "english": "we",
+    "ukrainian": "ми",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "אַתֶּם",
+    "transcription": "atem",
+    "english": "you (m.pl)",
+    "ukrainian": "ви (ч.)",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "אַתֶּן",
+    "transcription": "aten",
+    "english": "you (f.pl)",
+    "ukrainian": "ви (ж.)",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "הֵם",
+    "transcription": "hem",
+    "english": "they (m)",
+    "ukrainian": "вони (ч.)",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "הֵן",
+    "transcription": "hen",
+    "english": "they (f)",
+    "ukrainian": "вони (ж.)",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "אֵלֶּה",
+    "transcription": "ele",
+    "english": "these",
+    "ukrainian": "ці",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "אֵלּוּ",
+    "transcription": "elu",
+    "english": "these (f)",
+    "ukrainian": "ці",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "הַזֶּה",
+    "transcription": "hazeh",
+    "english": "this (m)",
+    "ukrainian": "цей",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "הַזֹּאת",
+    "transcription": "hazot",
+    "english": "this (f)",
+    "ukrainian": "ця",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "הַהוּא",
+    "transcription": "hahu",
+    "english": "that (m)",
+    "ukrainian": "той",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "הַהִיא",
+    "transcription": "hahi",
+    "english": "that (f)",
+    "ukrainian": "та",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "כָּאן",
+    "transcription": "kan",
+    "english": "here",
+    "ukrainian": "тут",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "פֹּה",
+    "transcription": "po",
+    "english": "here",
+    "ukrainian": "тут",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "שָׁם",
+    "transcription": "sham",
+    "english": "there",
+    "ukrainian": "там",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "אֵיפֹה",
+    "transcription": "eifo",
+    "english": "where",
+    "ukrainian": "де",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "לְאָן",
+    "transcription": "le'an",
+    "english": "where to",
+    "ukrainian": "куди",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "מֵאַיִן",
+    "transcription": "me'ayin",
+    "english": "from where",
+    "ukrainian": "звідки",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "כָּכָה",
+    "transcription": "kakha",
+    "english": "so; like that",
+    "ukrainian": "так",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "כָּךְ",
+    "transcription": "kakh",
+    "english": "so; thus",
+    "ukrainian": "так",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "אַחֵר",
+    "transcription": "akher",
+    "english": "other (m)",
+    "ukrainian": "інший",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "אַחֶרֶת",
+    "transcription": "akheret",
+    "english": "other (f)",
+    "ukrainian": "інша",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "עַצְמִי",
+    "transcription": "atzmi",
+    "english": "myself",
+    "ukrainian": "сам",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "מִישֶׁהוּ",
+    "transcription": "mishehu",
+    "english": "someone",
+    "ukrainian": "хтось",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "מַשֶּׁהוּ",
+    "transcription": "mashehu",
+    "english": "something",
+    "ukrainian": "щось",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "אַף אֶחָד",
+    "transcription": "af echad",
+    "english": "nobody",
+    "ukrainian": "ніхто",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "שׁוּם דָּבָר",
+    "transcription": "shum davar",
+    "english": "nothing",
+    "ukrainian": "нічого",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "כֻּלָּם",
+    "transcription": "kulam",
+    "english": "everyone",
+    "ukrainian": "всі",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "הַכֹּל",
+    "transcription": "hakol",
+    "english": "everything",
+    "ukrainian": "все",
+    "category": "pronouns_demonstratives"
+  },
+  {
+    "hebrew": "מַה",
+    "transcription": "ma",
+    "english": "what",
+    "ukrainian": "що",
+    "category": "questions_quantifiers"
+  },
+  {
+    "hebrew": "מָה",
+    "transcription": "ma",
+    "english": "what",
+    "ukrainian": "що",
+    "category": "questions_quantifiers"
+  },
+  {
+    "hebrew": "מִי",
+    "transcription": "mi",
+    "english": "who",
+    "ukrainian": "хто",
+    "category": "questions_quantifiers"
+  },
+  {
+    "hebrew": "אֵיךְ",
+    "transcription": "eikh",
+    "english": "how",
+    "ukrainian": "як",
+    "category": "questions_quantifiers"
+  },
+  {
+    "hebrew": "מָתַי",
+    "transcription": "matai",
+    "english": "when",
+    "ukrainian": "коли",
+    "category": "questions_quantifiers"
+  },
+  {
+    "hebrew": "לָמָּה",
+    "transcription": "lama",
+    "english": "why",
+    "ukrainian": "чому",
+    "category": "questions_quantifiers"
+  },
+  {
+    "hebrew": "מַדּוּעַ",
+    "transcription": "madua",
+    "english": "why",
+    "ukrainian": "чому",
+    "category": "questions_quantifiers"
+  },
+  {
+    "hebrew": "אֵיזֶה",
+    "transcription": "eizeh",
+    "english": "which (m)",
+    "ukrainian": "який",
+    "category": "questions_quantifiers"
+  },
+  {
+    "hebrew": "אֵיזוֹ",
+    "transcription": "eizo",
+    "english": "which (f)",
+    "ukrainian": "яка",
+    "category": "questions_quantifiers"
+  },
+  {
+    "hebrew": "הַאִם",
+    "transcription": "ha'im",
+    "english": "whether (yes/no marker)",
+    "ukrainian": "чи",
+    "category": "questions_quantifiers"
+  },
+  {
+    "hebrew": "הַרְבֵּה",
+    "transcription": "harbe",
+    "english": "many; a lot",
+    "ukrainian": "багато",
+    "category": "questions_quantifiers"
+  },
+  {
+    "hebrew": "מְעַט",
+    "transcription": "me'at",
+    "english": "few; little",
+    "ukrainian": "мало",
+    "category": "questions_quantifiers"
+  },
+  {
+    "hebrew": "מְעַט מְעַט",
+    "transcription": "me'at me'at",
+    "english": "little by little",
+    "ukrainian": "потроху",
+    "category": "questions_quantifiers"
+  },
+  {
+    "hebrew": "מַסְפִּיק",
+    "transcription": "maspik",
+    "english": "enough",
+    "ukrainian": "достатньо",
+    "category": "questions_quantifiers"
+  },
+  {
+    "hebrew": "יוֹתֵר",
+    "transcription": "yoter",
+    "english": "more",
+    "ukrainian": "більше",
+    "category": "questions_quantifiers"
+  },
+  {
+    "hebrew": "פָּחוֹת",
+    "transcription": "pachot",
+    "english": "less",
+    "ukrainian": "менше",
+    "category": "questions_quantifiers"
+  },
+  {
+    "hebrew": "הַכִּי",
+    "transcription": "haki",
+    "english": "the most",
+    "ukrainian": "найбільше",
+    "category": "questions_quantifiers"
+  },
+  {
+    "hebrew": "בְּיוֹתֵר",
+    "transcription": "beyoter",
+    "english": "most; extremely",
+    "ukrainian": "найбільш",
+    "category": "questions_quantifiers"
+  },
+  {
+    "hebrew": "כָּל",
+    "transcription": "kol",
+    "english": "every; all",
+    "ukrainian": "кожен; весь",
+    "category": "questions_quantifiers"
+  },
+  {
+    "hebrew": "שׁוּם",
+    "transcription": "shum",
+    "english": "any; no",
+    "ukrainian": "жоден",
+    "category": "questions_quantifiers"
+  },
+  {
+    "hebrew": "אֵיזֶשֶׁהוּ",
+    "transcription": "eizeshehu",
+    "english": "some kind of (m)",
+    "ukrainian": "якийсь",
+    "category": "questions_quantifiers"
+  },
+  {
+    "hebrew": "אֵיזוֹשֶׁהִי",
+    "transcription": "eizoshehi",
+    "english": "some kind of (f)",
+    "ukrainian": "якась",
+    "category": "questions_quantifiers"
+  },
+  {
+    "hebrew": "לִהְיוֹת",
+    "transcription": "lihyot",
+    "english": "to be",
+    "ukrainian": "бути",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "יָכוֹל",
+    "transcription": "yakhol",
+    "english": "can; able",
+    "ukrainian": "можу; можливий",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לָבוֹא",
+    "transcription": "lavo",
+    "english": "to come",
+    "ukrainian": "приходити",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לָלֶכֶת",
+    "transcription": "lalekhet",
+    "english": "to go; walk",
+    "ukrainian": "іти",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהִיכָּנֵס",
+    "transcription": "lehikanes",
+    "english": "to enter",
+    "ukrainian": "входити",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לָצֵאת",
+    "transcription": "latzet",
+    "english": "to exit",
+    "ukrainian": "виходити",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לַעֲלוֹת",
+    "transcription": "la'alot",
+    "english": "to go up",
+    "ukrainian": "підніматися",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לָרֶדֶת",
+    "transcription": "laredet",
+    "english": "to go down",
+    "ukrainian": "спускатися",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִרְאוֹת",
+    "transcription": "lirot",
+    "english": "to see",
+    "ukrainian": "бачити",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִשְׁמֹעַ",
+    "transcription": "lishmoa",
+    "english": "to hear",
+    "ukrainian": "чути",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהִסְתַּכֵּל",
+    "transcription": "lehistakel",
+    "english": "to look at",
+    "ukrainian": "дивитися",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהַקְשִׁיב",
+    "transcription": "lehakshiv",
+    "english": "to listen",
+    "ukrainian": "слухати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְדַבֵּר",
+    "transcription": "ledaber",
+    "english": "to speak",
+    "ukrainian": "говорити",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לוֹמַר",
+    "transcription": "lomar",
+    "english": "to say",
+    "ukrainian": "казати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהַגִּיד",
+    "transcription": "lehagid",
+    "english": "to say; tell",
+    "ukrainian": "сказати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לַעֲנוֹת",
+    "transcription": "la'anot",
+    "english": "to answer",
+    "ukrainian": "відповідати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִשְׁאֹל",
+    "transcription": "lish'ol",
+    "english": "to ask",
+    "ukrainian": "питати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִקְרֹא",
+    "transcription": "likro",
+    "english": "to read; call",
+    "ukrainian": "читати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִכְתֹּב",
+    "transcription": "likhtov",
+    "english": "to write",
+    "ukrainian": "писати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְחַפֵּשׂ",
+    "transcription": "lechapes",
+    "english": "to search",
+    "ukrainian": "шукати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִמְצֹא",
+    "transcription": "limtzo",
+    "english": "to find",
+    "ukrainian": "знаходити",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לַעֲשׂוֹת",
+    "transcription": "la'asot",
+    "english": "to do; make",
+    "ukrainian": "робити",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לָדַעַת",
+    "transcription": "lada'at",
+    "english": "to know (fact)",
+    "ukrainian": "знати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהַכִּיר",
+    "transcription": "lehakir",
+    "english": "to be acquainted with",
+    "ukrainian": "знати (когось)",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהָבִין",
+    "transcription": "lehavin",
+    "english": "to understand",
+    "ukrainian": "розуміти",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לַחְשֹׁב",
+    "transcription": "lachshov",
+    "english": "to think",
+    "ukrainian": "думати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהַרְגִּישׁ",
+    "transcription": "lehargish",
+    "english": "to feel",
+    "ukrainian": "відчувати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִזְכֹּר",
+    "transcription": "lizkor",
+    "english": "to remember",
+    "ukrainian": "пам'ятати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִשְׁכֹּחַ",
+    "transcription": "lishkoach",
+    "english": "to forget",
+    "ukrainian": "забувати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִלְמֹד",
+    "transcription": "lilmod",
+    "english": "to study; learn",
+    "ukrainian": "вчити",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְלַמֵּד",
+    "transcription": "lelamed",
+    "english": "to teach",
+    "ukrainian": "вчити (когось)",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לֶאֱכֹל",
+    "transcription": "le'echol",
+    "english": "to eat",
+    "ukrainian": "їсти",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִשְׁתּוֹת",
+    "transcription": "lishtot",
+    "english": "to drink",
+    "ukrainian": "пити",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִישֹׁן",
+    "transcription": "lishon",
+    "english": "to sleep",
+    "ukrainian": "спати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לָקוּם",
+    "transcription": "lakum",
+    "english": "to get up",
+    "ukrainian": "вставати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִשְׁכַּב",
+    "transcription": "lishkav",
+    "english": "to lie down",
+    "ukrainian": "лежати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לָשֶׁבֶת",
+    "transcription": "lashevet",
+    "english": "to sit",
+    "ukrainian": "сидіти",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לַעֲמֹד",
+    "transcription": "la'amod",
+    "english": "to stand",
+    "ukrainian": "стояти",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לָרוּץ",
+    "transcription": "larutz",
+    "english": "to run",
+    "ukrainian": "бігти",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְבַשֵּׁל",
+    "transcription": "levashel",
+    "english": "to cook",
+    "ukrainian": "готувати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לֶאֱפוֹת",
+    "transcription": "le'efot",
+    "english": "to bake",
+    "ukrainian": "пекти",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִקְנוֹת",
+    "transcription": "liknot",
+    "english": "to buy",
+    "ukrainian": "купувати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִמְכֹּר",
+    "transcription": "limkor",
+    "english": "to sell",
+    "ukrainian": "продавати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְשַׁלֵּם",
+    "transcription": "leshalem",
+    "english": "to pay",
+    "ukrainian": "платити",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לָתֵת",
+    "transcription": "latet",
+    "english": "to give",
+    "ukrainian": "давати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לָקַחַת",
+    "transcription": "lakachat",
+    "english": "to take",
+    "ukrainian": "брати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְקַבֵּל",
+    "transcription": "lekabel",
+    "english": "to receive",
+    "ukrainian": "отримувати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהָבִיא",
+    "transcription": "lehavi",
+    "english": "to bring",
+    "ukrainian": "приносити",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהַחֲזִיר",
+    "transcription": "lehachzir",
+    "english": "to return (something)",
+    "ukrainian": "повертати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לַעֲזֹר",
+    "transcription": "la'azor",
+    "english": "to help",
+    "ukrainian": "допомагати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְבַקֵּשׁ",
+    "transcription": "levakesh",
+    "english": "to request",
+    "ukrainian": "просити",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהַזְמִין",
+    "transcription": "lehazmin",
+    "english": "to invite; order",
+    "ukrainian": "запрошувати; замовляти",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לֶאֱהֹב",
+    "transcription": "le'ehov",
+    "english": "to love",
+    "ukrainian": "любити",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִשְׂנֹא",
+    "transcription": "lisno",
+    "english": "to hate",
+    "ukrainian": "ненавидіти",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִצְחֹק",
+    "transcription": "litzchok",
+    "english": "to laugh",
+    "ukrainian": "сміятися",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִבְכּוֹת",
+    "transcription": "livkot",
+    "english": "to cry",
+    "ukrainian": "плакати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְחַיֵּךְ",
+    "transcription": "lechayekh",
+    "english": "to smile",
+    "ukrainian": "усміхатися",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהִתְרַגֵּשׁ",
+    "transcription": "lehitragesh",
+    "english": "to get excited",
+    "ukrainian": "хвилюватися",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהִתְעַצְבֵּן",
+    "transcription": "lehit'atzben",
+    "english": "to get annoyed",
+    "ukrainian": "дратуватися",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִכְעֹס",
+    "transcription": "lich'os",
+    "english": "to be angry",
+    "ukrainian": "сердитися",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְבַקֵּר",
+    "transcription": "levaker",
+    "english": "to visit",
+    "ukrainian": "відвідувати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִפְגֹּשׁ",
+    "transcription": "lifgosh",
+    "english": "to meet",
+    "ukrainian": "зустрічати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהִתְקַשֵּׁר",
+    "transcription": "lehitkasher",
+    "english": "to call (phone)",
+    "ukrainian": "дзвонити",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְשַׂחֵק",
+    "transcription": "lesachek",
+    "english": "to play (game)",
+    "ukrainian": "грати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְנַגֵּן",
+    "transcription": "lenagen",
+    "english": "to play (instrument)",
+    "ukrainian": "грати (на)",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לָשִׁיר",
+    "transcription": "lashir",
+    "english": "to sing",
+    "ukrainian": "співати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִרְקֹד",
+    "transcription": "lirkod",
+    "english": "to dance",
+    "ukrainian": "танцювати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִשְׂחוֹת",
+    "transcription": "liskhot",
+    "english": "to swim",
+    "ukrainian": "плавати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִנְסֹעַ",
+    "transcription": "linsoa",
+    "english": "to travel; drive",
+    "ukrainian": "їхати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לָטוּס",
+    "transcription": "latus",
+    "english": "to fly",
+    "ukrainian": "літати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לַחֲזֹר",
+    "transcription": "lachazor",
+    "english": "to return; come back",
+    "ukrainian": "повертатися",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְחַכּוֹת",
+    "transcription": "lechakot",
+    "english": "to wait",
+    "ukrainian": "чекати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהַתְחִיל",
+    "transcription": "lehat'chil",
+    "english": "to begin",
+    "ukrainian": "починати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִגְמֹר",
+    "transcription": "ligmor",
+    "english": "to finish",
+    "ukrainian": "закінчувати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְסַיֵּם",
+    "transcription": "lesayem",
+    "english": "to conclude",
+    "ukrainian": "завершувати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהַמְשִׁיךְ",
+    "transcription": "lehamshikh",
+    "english": "to continue",
+    "ukrainian": "продовжувати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהַפְסִיק",
+    "transcription": "lehafsik",
+    "english": "to stop",
+    "ukrainian": "переставати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לַעֲצֹר",
+    "transcription": "la'atzor",
+    "english": "to halt; arrest",
+    "ukrainian": "зупиняти",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִפְתֹּחַ",
+    "transcription": "liftoach",
+    "english": "to open",
+    "ukrainian": "відкривати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִסְגֹּר",
+    "transcription": "lisgor",
+    "english": "to close",
+    "ukrainian": "закривати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִשְׁבֹּר",
+    "transcription": "lishbor",
+    "english": "to break",
+    "ukrainian": "ламати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְתַקֵּן",
+    "transcription": "letaken",
+    "english": "to repair",
+    "ukrainian": "лагодити",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִבְנוֹת",
+    "transcription": "livnot",
+    "english": "to build",
+    "ukrainian": "будувати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לַהֲרֹס",
+    "transcription": "laharos",
+    "english": "to destroy",
+    "ukrainian": "руйнувати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְנַקּוֹת",
+    "transcription": "lenakot",
+    "english": "to clean",
+    "ukrainian": "прибирати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִשְׁטֹף",
+    "transcription": "lishtof",
+    "english": "to rinse; wash",
+    "ukrainian": "мити",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְכַבֵּס",
+    "transcription": "lechabes",
+    "english": "to launder",
+    "ukrainian": "прати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְגַהֵץ",
+    "transcription": "legahetz",
+    "english": "to iron",
+    "ukrainian": "прасувати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לַחְתֹּךְ",
+    "transcription": "lachtokh",
+    "english": "to cut",
+    "ukrainian": "різати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִתְפֹּר",
+    "transcription": "litpor",
+    "english": "to sew",
+    "ukrainian": "шити",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְצַיֵּר",
+    "transcription": "letzayer",
+    "english": "to draw",
+    "ukrainian": "малювати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְצַלֵּם",
+    "transcription": "letzalem",
+    "english": "to photograph",
+    "ukrainian": "фотографувати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהַסְבִּיר",
+    "transcription": "lehasbir",
+    "english": "to explain",
+    "ukrainian": "пояснювати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְסַפֵּר",
+    "transcription": "lesaper",
+    "english": "to tell",
+    "ukrainian": "розповідати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לַחֲלֹם",
+    "transcription": "lachalom",
+    "english": "to dream",
+    "ukrainian": "мріяти; снити",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְקַוּוֹת",
+    "transcription": "lekavot",
+    "english": "to hope",
+    "ukrainian": "сподіватися",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהַאֲמִין",
+    "transcription": "leha'amin",
+    "english": "to believe",
+    "ukrainian": "вірити",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְשַׁכְנֵעַ",
+    "transcription": "leshakhneya",
+    "english": "to convince",
+    "ukrainian": "переконувати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהַחְלִיט",
+    "transcription": "lehachlit",
+    "english": "to decide",
+    "ukrainian": "вирішувати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְנַסּוֹת",
+    "transcription": "lenasot",
+    "english": "to try",
+    "ukrainian": "пробувати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהַצְלִיחַ",
+    "transcription": "lehatzliach",
+    "english": "to succeed",
+    "ukrainian": "досягати успіху",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהִתְכּוֹנֵן",
+    "transcription": "lehitkonen",
+    "english": "to prepare",
+    "ukrainian": "готуватися",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהַזְכִּיר",
+    "transcription": "lehazkir",
+    "english": "to mention; remind",
+    "ukrainian": "нагадувати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהַצִּיעַ",
+    "transcription": "lehatzia",
+    "english": "to offer; suggest",
+    "ukrainian": "пропонувати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהַזְהִיר",
+    "transcription": "lehazhir",
+    "english": "to warn",
+    "ukrainian": "попереджати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהַסְכִּים",
+    "transcription": "lehaskim",
+    "english": "to agree",
+    "ukrainian": "погоджуватися",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהִתְנַגֵּד",
+    "transcription": "lehitnaged",
+    "english": "to oppose",
+    "ukrainian": "заперечувати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִרְצוֹת",
+    "transcription": "lirtzot",
+    "english": "to want",
+    "ukrainian": "хотіти",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִצְרֹךְ",
+    "transcription": "litzrokh",
+    "english": "to need",
+    "ukrainian": "потребувати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "צָרִיךְ",
+    "transcription": "tzarikh",
+    "english": "needs; should",
+    "ukrainian": "треба",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "מֻכְרָח",
+    "transcription": "mukhrach",
+    "english": "must",
+    "ukrainian": "мусить",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "אָסוּר",
+    "transcription": "asur",
+    "english": "forbidden",
+    "ukrainian": "заборонено",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "מֻתָּר",
+    "transcription": "mutar",
+    "english": "permitted",
+    "ukrainian": "дозволено",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהַרְשׁוֹת",
+    "transcription": "leharshot",
+    "english": "to permit",
+    "ukrainian": "дозволяти",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לֶאֱסֹר",
+    "transcription": "le'esor",
+    "english": "to forbid",
+    "ukrainian": "забороняти",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהִתְלַבֵּשׁ",
+    "transcription": "lehitlabesh",
+    "english": "to get dressed",
+    "ukrainian": "одягатися",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהִתְפַּשֵּׁט",
+    "transcription": "lehitpashet",
+    "english": "to undress",
+    "ukrainian": "роздягатися",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהִתְרַחֵץ",
+    "transcription": "lehitrachetz",
+    "english": "to bathe",
+    "ukrainian": "митися",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהִתְקַלֵּחַ",
+    "transcription": "lehitkaleach",
+    "english": "to shower",
+    "ukrainian": "приймати душ",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהִשְׁתַּמֵּשׁ",
+    "transcription": "lehishtamesh",
+    "english": "to use",
+    "ukrainian": "користуватися",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהַשְׁכִּיר",
+    "transcription": "lehaskir",
+    "english": "to rent out",
+    "ukrainian": "здавати в оренду",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִשְׂכֹּר",
+    "transcription": "liskor",
+    "english": "to rent",
+    "ukrainian": "винаймати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְקַבֵּל הַחְלָטָה",
+    "transcription": "lekabel hachlata",
+    "english": "to make a decision",
+    "ukrainian": "ухвалювати рішення",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהוֹדִיעַ",
+    "transcription": "lehodia",
+    "english": "to inform",
+    "ukrainian": "повідомляти",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהוֹדוֹת",
+    "transcription": "lehodot",
+    "english": "to thank; admit",
+    "ukrainian": "дякувати; визнавати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהִתְנַצֵּל",
+    "transcription": "lehitnatzel",
+    "english": "to apologize",
+    "ukrainian": "вибачатися",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִסְלֹחַ",
+    "transcription": "lisloach",
+    "english": "to forgive",
+    "ukrainian": "пробачати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהַרְוִיחַ",
+    "transcription": "leharviach",
+    "english": "to earn",
+    "ukrainian": "заробляти",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהוֹצִיא",
+    "transcription": "lehotzi",
+    "english": "to take out; spend",
+    "ukrainian": "виносити; витрачати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהַכְנִיס",
+    "transcription": "lehakhnis",
+    "english": "to bring in",
+    "ukrainian": "вносити",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְעַזֹב",
+    "transcription": "la'azov",
+    "english": "to leave",
+    "ukrainian": "залишати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לַחֲגֹג",
+    "transcription": "lachagog",
+    "english": "to celebrate",
+    "ukrainian": "святкувати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהַזְמִין אוֹרְחִים",
+    "transcription": "lehazmin orchim",
+    "english": "to host guests",
+    "ukrainian": "запрошувати гостей",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהִתְנַהֵג",
+    "transcription": "lehitnaheg",
+    "english": "to behave",
+    "ukrainian": "поводитися",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהַחְלִיף",
+    "transcription": "lehachlif",
+    "english": "to change; exchange",
+    "ukrainian": "змінювати; обмінювати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְשַׁנּוֹת",
+    "transcription": "leshanot",
+    "english": "to change",
+    "ukrainian": "змінювати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהִשְׁתַּנּוֹת",
+    "transcription": "lehishtanot",
+    "english": "to change (intr.)",
+    "ukrainian": "змінюватися",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִגְדֹּל",
+    "transcription": "ligdol",
+    "english": "to grow",
+    "ukrainian": "рости",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהִתְפַּתֵּחַ",
+    "transcription": "lehitpateach",
+    "english": "to develop (intr.)",
+    "ukrainian": "розвиватися",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְפַתֵּחַ",
+    "transcription": "lefateach",
+    "english": "to develop (tr.)",
+    "ukrainian": "розвивати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְבַלּוֹת",
+    "transcription": "levalot",
+    "english": "to spend time",
+    "ukrainian": "проводити час",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לִמְהֹר",
+    "transcription": "limhor",
+    "english": "to hurry",
+    "ukrainian": "поспішати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְמַהֵר",
+    "transcription": "lemaher",
+    "english": "to hurry",
+    "ukrainian": "поспішати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְאַחֵר",
+    "transcription": "le'acher",
+    "english": "to be late",
+    "ukrainian": "запізнюватися",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהַסְפִּיק",
+    "transcription": "lehaspik",
+    "english": "to manage in time",
+    "ukrainian": "встигати",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "טוֹב",
+    "transcription": "tov",
+    "english": "good",
+    "ukrainian": "хороший",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "רַע",
+    "transcription": "ra",
+    "english": "bad",
+    "ukrainian": "поганий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "יָפֶה",
+    "transcription": "yafe",
+    "english": "beautiful",
+    "ukrainian": "гарний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "מְכֹעָר",
+    "transcription": "mekho'ar",
+    "english": "ugly",
+    "ukrainian": "потворний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "חָדָשׁ",
+    "transcription": "chadash",
+    "english": "new",
+    "ukrainian": "новий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "יָשָׁן",
+    "transcription": "yashan",
+    "english": "old (thing)",
+    "ukrainian": "старий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "זָקֵן",
+    "transcription": "zaken",
+    "english": "old (person)",
+    "ukrainian": "літній",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "צָעִיר",
+    "transcription": "tza'ir",
+    "english": "young",
+    "ukrainian": "молодий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "גָּדוֹל",
+    "transcription": "gadol",
+    "english": "big",
+    "ukrainian": "великий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "קָטָן",
+    "transcription": "katan",
+    "english": "small",
+    "ukrainian": "малий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "אָרֹךְ",
+    "transcription": "arokh",
+    "english": "long",
+    "ukrainian": "довгий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "קָצָר",
+    "transcription": "katzar",
+    "english": "short",
+    "ukrainian": "короткий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "גָּבוֹהַּ",
+    "transcription": "gavoah",
+    "english": "tall; high",
+    "ukrainian": "високий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "נָמוּךְ",
+    "transcription": "namukh",
+    "english": "short; low",
+    "ukrainian": "низький",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "רָחָב",
+    "transcription": "rachav",
+    "english": "wide",
+    "ukrainian": "широкий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "צַר",
+    "transcription": "tzar",
+    "english": "narrow",
+    "ukrainian": "вузький",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "עָבֶה",
+    "transcription": "aveh",
+    "english": "thick",
+    "ukrainian": "товстий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "דַּק",
+    "transcription": "dak",
+    "english": "thin",
+    "ukrainian": "тонкий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "כָּבֵד",
+    "transcription": "kaved",
+    "english": "heavy",
+    "ukrainian": "важкий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "קַל",
+    "transcription": "kal",
+    "english": "light; easy",
+    "ukrainian": "легкий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "חָזָק",
+    "transcription": "chazak",
+    "english": "strong",
+    "ukrainian": "сильний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "חַלָּשׁ",
+    "transcription": "chalash",
+    "english": "weak",
+    "ukrainian": "слабкий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "מָלֵא",
+    "transcription": "male",
+    "english": "full",
+    "ukrainian": "повний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "רֵיק",
+    "transcription": "reik",
+    "english": "empty",
+    "ukrainian": "порожній",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "חַם",
+    "transcription": "cham",
+    "english": "hot",
+    "ukrainian": "гарячий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "קַר",
+    "transcription": "kar",
+    "english": "cold",
+    "ukrainian": "холодний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "חָמִים",
+    "transcription": "chamim",
+    "english": "warm",
+    "ukrainian": "теплий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "קָרִיר",
+    "transcription": "karir",
+    "english": "cool",
+    "ukrainian": "прохолодний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "יָבֵשׁ",
+    "transcription": "yavesh",
+    "english": "dry",
+    "ukrainian": "сухий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "רָטֹב",
+    "transcription": "ratov",
+    "english": "wet",
+    "ukrainian": "мокрий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "נָקִי",
+    "transcription": "naki",
+    "english": "clean",
+    "ukrainian": "чистий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "מְלֻכְלָךְ",
+    "transcription": "melukhlakh",
+    "english": "dirty",
+    "ukrainian": "брудний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "מָהִיר",
+    "transcription": "mahir",
+    "english": "fast",
+    "ukrainian": "швидкий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "אִטִּי",
+    "transcription": "iti",
+    "english": "slow",
+    "ukrainian": "повільний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "שָׂמֵחַ",
+    "transcription": "sameach",
+    "english": "happy",
+    "ukrainian": "веселий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "עָצוּב",
+    "transcription": "atzuv",
+    "english": "sad",
+    "ukrainian": "сумний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "כּוֹעֵס",
+    "transcription": "ko'es",
+    "english": "angry",
+    "ukrainian": "сердитий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "מְבֻלְבָּל",
+    "transcription": "mevulbal",
+    "english": "confused",
+    "ukrainian": "розгублений",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "עָיֵף",
+    "transcription": "ayef",
+    "english": "tired",
+    "ukrainian": "втомлений",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "רָעֵב",
+    "transcription": "ra'ev",
+    "english": "hungry",
+    "ukrainian": "голодний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "צָמֵא",
+    "transcription": "tzame",
+    "english": "thirsty",
+    "ukrainian": "спраглий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "שָׂבֵעַ",
+    "transcription": "savea",
+    "english": "full (after food)",
+    "ukrainian": "ситий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "חוֹלֶה",
+    "transcription": "choleh",
+    "english": "sick",
+    "ukrainian": "хворий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "בָּרִיא",
+    "transcription": "bari",
+    "english": "healthy",
+    "ukrainian": "здоровий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "חָשׁוּב",
+    "transcription": "chashuv",
+    "english": "important",
+    "ukrainian": "важливий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "מְעַנְיֵן",
+    "transcription": "me'anyen",
+    "english": "interesting",
+    "ukrainian": "цікавий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "מְשַׁעֲמֵם",
+    "transcription": "mesha'amem",
+    "english": "boring",
+    "ukrainian": "нудний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "קָשֶׁה",
+    "transcription": "kashe",
+    "english": "difficult",
+    "ukrainian": "важкий (тяжкий)",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "פָּשׁוּט",
+    "transcription": "pashut",
+    "english": "simple",
+    "ukrainian": "простий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "מְסֻבָּךְ",
+    "transcription": "mesubakh",
+    "english": "complicated",
+    "ukrainian": "складний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "מְפֻרְסָם",
+    "transcription": "mefursam",
+    "english": "famous",
+    "ukrainian": "відомий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "עָשִׁיר",
+    "transcription": "ashir",
+    "english": "rich",
+    "ukrainian": "багатий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "עָנִי",
+    "transcription": "ani",
+    "english": "poor",
+    "ukrainian": "бідний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "אֲמִיתִי",
+    "transcription": "amiti",
+    "english": "real; true",
+    "ukrainian": "справжній",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "שֶׁקֶר",
+    "transcription": "sheker",
+    "english": "false; a lie",
+    "ukrainian": "брехня",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "נָכוֹן",
+    "transcription": "nakhon",
+    "english": "correct",
+    "ukrainian": "правильний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "שָׁגוּי",
+    "transcription": "shagui",
+    "english": "wrong",
+    "ukrainian": "хибний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "מַתְאִים",
+    "transcription": "matim",
+    "english": "suitable",
+    "ukrainian": "придатний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "שָׁוֶה",
+    "transcription": "shave",
+    "english": "equal; worth",
+    "ukrainian": "рівний; вартий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "שׁוֹנֶה",
+    "transcription": "shoneh",
+    "english": "different",
+    "ukrainian": "різний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "דּוֹמֶה",
+    "transcription": "domeh",
+    "english": "similar",
+    "ukrainian": "схожий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "מְשֻׁתָּף",
+    "transcription": "meshutaf",
+    "english": "shared; common",
+    "ukrainian": "спільний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "חַי",
+    "transcription": "chai",
+    "english": "alive",
+    "ukrainian": "живий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "מֵת",
+    "transcription": "met",
+    "english": "dead",
+    "ukrainian": "мертвий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "שָׁלֵם",
+    "transcription": "shalem",
+    "english": "whole",
+    "ukrainian": "цілий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "שָׁבוּר",
+    "transcription": "shavur",
+    "english": "broken",
+    "ukrainian": "зламаний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "חָפְשִׁי",
+    "transcription": "chofshi",
+    "english": "free",
+    "ukrainian": "вільний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "תָּפוּס",
+    "transcription": "tafus",
+    "english": "occupied",
+    "ukrainian": "зайнятий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "מָתוֹק",
+    "transcription": "matok",
+    "english": "sweet",
+    "ukrainian": "солодкий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "מַר",
+    "transcription": "mar",
+    "english": "bitter",
+    "ukrainian": "гіркий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "חָמוּץ",
+    "transcription": "chamutz",
+    "english": "sour",
+    "ukrainian": "кислий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "חָרִיף",
+    "transcription": "charif",
+    "english": "spicy",
+    "ukrainian": "гострий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "טָעִים",
+    "transcription": "ta'im",
+    "english": "delicious",
+    "ukrainian": "смачний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "בָּשֵׁל",
+    "transcription": "bashel",
+    "english": "ripe",
+    "ukrainian": "стиглий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "שָׁקֵט",
+    "transcription": "shaket",
+    "english": "quiet",
+    "ukrainian": "тихий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "רוֹעֵשׁ",
+    "transcription": "ro'esh",
+    "english": "noisy",
+    "ukrainian": "шумний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "בָּהִיר",
+    "transcription": "bahir",
+    "english": "bright",
+    "ukrainian": "світлий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "כֵּהֶה",
+    "transcription": "keheh",
+    "english": "dark (color)",
+    "ukrainian": "темний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "חָכָם",
+    "transcription": "chakham",
+    "english": "smart",
+    "ukrainian": "розумний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "טִפֵּשׁ",
+    "transcription": "tipesh",
+    "english": "stupid",
+    "ukrainian": "дурний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "נֶחְמָד",
+    "transcription": "nechmad",
+    "english": "nice",
+    "ukrainian": "милий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "אַדִּיב",
+    "transcription": "adiv",
+    "english": "polite",
+    "ukrainian": "ввічливий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "גַּס",
+    "transcription": "gas",
+    "english": "rude",
+    "ukrainian": "грубий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "נָדִיב",
+    "transcription": "nadiv",
+    "english": "generous",
+    "ukrainian": "щедрий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "קַמְצָן",
+    "transcription": "kamtzan",
+    "english": "stingy",
+    "ukrainian": "скнара",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "אַמִּיץ",
+    "transcription": "amitz",
+    "english": "brave",
+    "ukrainian": "сміливий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "פַּחְדָן",
+    "transcription": "pachdan",
+    "english": "coward",
+    "ukrainian": "боягуз",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "בָּטוּחַ",
+    "transcription": "batuach",
+    "english": "safe; certain",
+    "ukrainian": "безпечний; впевнений",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "מְסֻכָּן",
+    "transcription": "mesukan",
+    "english": "dangerous",
+    "ukrainian": "небезпечний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "רָצִינִי",
+    "transcription": "retzini",
+    "english": "serious",
+    "ukrainian": "серйозний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "מַצְחִיק",
+    "transcription": "matzchik",
+    "english": "funny",
+    "ukrainian": "смішний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "עֲדִין",
+    "transcription": "adin",
+    "english": "gentle; delicate",
+    "ukrainian": "ніжний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "גַּס רוּחַ",
+    "transcription": "gas ruach",
+    "english": "rude (in spirit)",
+    "ukrainian": "хам",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "עָקֵב",
+    "transcription": "aqev",
+    "english": "stubborn",
+    "ukrainian": "впертий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "עַצְלָן",
+    "transcription": "atzlan",
+    "english": "lazy",
+    "ukrainian": "лінивий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "חָרוּץ",
+    "transcription": "charutz",
+    "english": "diligent",
+    "ukrainian": "старанний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "מְעַט",
+    "transcription": "me'at",
+    "english": "few",
+    "ukrainian": "мало",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "רַבִּים",
+    "transcription": "rabim",
+    "english": "many",
+    "ukrainian": "багато",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "עִקָּרִי",
+    "transcription": "ikari",
+    "english": "main; principal",
+    "ukrainian": "головний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "רָגִיל",
+    "transcription": "ragil",
+    "english": "usual; ordinary",
+    "ukrainian": "звичайний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "מְיֻחָד",
+    "transcription": "meyuchad",
+    "english": "special",
+    "ukrainian": "особливий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "נוֹרָא",
+    "transcription": "nora",
+    "english": "terrible",
+    "ukrainian": "жахливий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "נֶהְדָּר",
+    "transcription": "nehedar",
+    "english": "wonderful",
+    "ukrainian": "чудовий",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "נָדִיר",
+    "transcription": "nadir",
+    "english": "rare",
+    "ukrainian": "рідкісний",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "שָׁכִיחַ",
+    "transcription": "shakhiach",
+    "english": "common; frequent",
+    "ukrainian": "поширений",
+    "category": "adjectives"
+  },
+  {
+    "hebrew": "כָּתֹם",
+    "transcription": "katom",
+    "english": "orange",
+    "ukrainian": "помаранчевий",
+    "category": "colors"
+  },
+  {
+    "hebrew": "וָרֹד",
+    "transcription": "varod",
+    "english": "pink",
+    "ukrainian": "рожевий",
+    "category": "colors"
+  },
+  {
+    "hebrew": "אָפֹר",
+    "transcription": "afor",
+    "english": "gray",
+    "ukrainian": "сірий",
+    "category": "colors"
+  },
+  {
+    "hebrew": "חוּם",
+    "transcription": "chum",
+    "english": "brown",
+    "ukrainian": "коричневий",
+    "category": "colors"
+  },
+  {
+    "hebrew": "סָגֹל",
+    "transcription": "sagol",
+    "english": "purple",
+    "ukrainian": "фіолетовий",
+    "category": "colors"
+  },
+  {
+    "hebrew": "זָהָב",
+    "transcription": "zahav",
+    "english": "gold",
+    "ukrainian": "золотий",
+    "category": "colors"
+  },
+  {
+    "hebrew": "שָׁקוּף",
+    "transcription": "shakuf",
+    "english": "transparent",
+    "ukrainian": "прозорий",
+    "category": "colors"
+  },
+  {
+    "hebrew": "בֵּז'",
+    "transcription": "bezh",
+    "english": "beige",
+    "ukrainian": "бежевий",
+    "category": "colors"
+  },
+  {
+    "hebrew": "טֻרְקִיז",
+    "transcription": "turkiz",
+    "english": "turquoise",
+    "ukrainian": "бірюзовий",
+    "category": "colors"
+  },
+  {
+    "hebrew": "בּוּרְגּוּנְדִי",
+    "transcription": "burgundi",
+    "english": "burgundy",
+    "ukrainian": "бордовий",
+    "category": "colors"
+  },
+  {
+    "hebrew": "אֶתְמוֹל",
+    "transcription": "etmol",
+    "english": "yesterday",
+    "ukrainian": "вчора",
+    "category": "time"
+  },
+  {
+    "hebrew": "הַיּוֹם",
+    "transcription": "hayom",
+    "english": "today",
+    "ukrainian": "сьогодні",
+    "category": "time"
+  },
+  {
+    "hebrew": "מָחָר",
+    "transcription": "machar",
+    "english": "tomorrow",
+    "ukrainian": "завтра",
+    "category": "time"
+  },
+  {
+    "hebrew": "שִׁלְשׁוֹם",
+    "transcription": "shilshom",
+    "english": "day before yesterday",
+    "ukrainian": "позавчора",
+    "category": "time"
+  },
+  {
+    "hebrew": "מָחֳרָתַיִם",
+    "transcription": "mochrotayim",
+    "english": "day after tomorrow",
+    "ukrainian": "післязавтра",
+    "category": "time"
+  },
+  {
+    "hebrew": "בֹּקֶר",
+    "transcription": "boker",
+    "english": "morning",
+    "ukrainian": "ранок",
+    "category": "time"
+  },
+  {
+    "hebrew": "צָהֳרַיִם",
+    "transcription": "tzohorayim",
+    "english": "noon",
+    "ukrainian": "полудень",
+    "category": "time"
+  },
+  {
+    "hebrew": "אַחַר הַצָּהֳרַיִם",
+    "transcription": "achar hatzohorayim",
+    "english": "afternoon",
+    "ukrainian": "після обіду",
+    "category": "time"
+  },
+  {
+    "hebrew": "עֶרֶב",
+    "transcription": "erev",
+    "english": "evening",
+    "ukrainian": "вечір",
+    "category": "time"
+  },
+  {
+    "hebrew": "לַיְלָה",
+    "transcription": "layla",
+    "english": "night",
+    "ukrainian": "ніч",
+    "category": "time"
+  },
+  {
+    "hebrew": "חֲצוֹת",
+    "transcription": "chatzot",
+    "english": "midnight",
+    "ukrainian": "опівніч",
+    "category": "time"
+  },
+  {
+    "hebrew": "שָׁבוּעַ",
+    "transcription": "shavua",
+    "english": "week",
+    "ukrainian": "тиждень",
+    "category": "time"
+  },
+  {
+    "hebrew": "חֹדֶשׁ",
+    "transcription": "chodesh",
+    "english": "month",
+    "ukrainian": "місяць",
+    "category": "time"
+  },
+  {
+    "hebrew": "שָׁנָה",
+    "transcription": "shana",
+    "english": "year",
+    "ukrainian": "рік",
+    "category": "time"
+  },
+  {
+    "hebrew": "שָׁעָה",
+    "transcription": "sha'a",
+    "english": "hour",
+    "ukrainian": "година",
+    "category": "time"
+  },
+  {
+    "hebrew": "דַּקָּה",
+    "transcription": "daka",
+    "english": "minute",
+    "ukrainian": "хвилина",
+    "category": "time"
+  },
+  {
+    "hebrew": "שְׁנִיָּה",
+    "transcription": "shniya",
+    "english": "second",
+    "ukrainian": "секунда",
+    "category": "time"
+  },
+  {
+    "hebrew": "רֶגַע",
+    "transcription": "rega",
+    "english": "moment",
+    "ukrainian": "мить",
+    "category": "time"
+  },
+  {
+    "hebrew": "זְמַן",
+    "transcription": "zman",
+    "english": "time",
+    "ukrainian": "час",
+    "category": "time"
+  },
+  {
+    "hebrew": "תָּמִיד",
+    "transcription": "tamid",
+    "english": "always",
+    "ukrainian": "завжди",
+    "category": "time"
+  },
+  {
+    "hebrew": "אַף פַּעַם",
+    "transcription": "af pa'am",
+    "english": "never",
+    "ukrainian": "ніколи",
+    "category": "time"
+  },
+  {
+    "hebrew": "לִפְעָמִים",
+    "transcription": "lif'amim",
+    "english": "sometimes",
+    "ukrainian": "іноді",
+    "category": "time"
+  },
+  {
+    "hebrew": "פַּעַם",
+    "transcription": "pa'am",
+    "english": "once; a time",
+    "ukrainian": "раз",
+    "category": "time"
+  },
+  {
+    "hebrew": "פַּעֲמַיִם",
+    "transcription": "pa'amayim",
+    "english": "twice",
+    "ukrainian": "двічі",
+    "category": "time"
+  },
+  {
+    "hebrew": "אֶמְצַע",
+    "transcription": "emtza",
+    "english": "middle",
+    "ukrainian": "середина",
+    "category": "time"
+  },
+  {
+    "hebrew": "סוֹף",
+    "transcription": "sof",
+    "english": "end",
+    "ukrainian": "кінець",
+    "category": "time"
+  },
+  {
+    "hebrew": "הַתְחָלָה",
+    "transcription": "hatchala",
+    "english": "beginning",
+    "ukrainian": "початок",
+    "category": "time"
+  },
+  {
+    "hebrew": "מֻקְדָּם",
+    "transcription": "mukdam",
+    "english": "early",
+    "ukrainian": "рано",
+    "category": "time"
+  },
+  {
+    "hebrew": "מְאֻחָר",
+    "transcription": "me'uchar",
+    "english": "late",
+    "ukrainian": "пізно",
+    "category": "time"
+  },
+  {
+    "hebrew": "עַכְשָׁו",
+    "transcription": "akhshav",
+    "english": "now",
+    "ukrainian": "зараз",
+    "category": "time"
+  },
+  {
+    "hebrew": "אַחַר כָּךְ",
+    "transcription": "achar kakh",
+    "english": "afterwards",
+    "ukrainian": "потім",
+    "category": "time"
+  },
+  {
+    "hebrew": "לִפְנֵי כֵן",
+    "transcription": "lifnei khen",
+    "english": "before that",
+    "ukrainian": "до того",
+    "category": "time"
+  },
+  {
+    "hebrew": "מִיָּד",
+    "transcription": "miyad",
+    "english": "immediately",
+    "ukrainian": "негайно",
+    "category": "time"
+  },
+  {
+    "hebrew": "בְּקָרוֹב",
+    "transcription": "bekarov",
+    "english": "soon",
+    "ukrainian": "скоро",
+    "category": "time"
+  },
+  {
+    "hebrew": "לְאַט",
+    "transcription": "le'at",
+    "english": "slowly",
+    "ukrainian": "повільно",
+    "category": "time"
+  },
+  {
+    "hebrew": "מַהֵר",
+    "transcription": "maher",
+    "english": "quickly",
+    "ukrainian": "швидко",
+    "category": "time"
+  },
+  {
+    "hebrew": "יוֹם רִאשׁוֹן",
+    "transcription": "yom rishon",
+    "english": "Sunday",
+    "ukrainian": "неділя",
+    "category": "time"
+  },
+  {
+    "hebrew": "יוֹם שֵׁנִי",
+    "transcription": "yom sheni",
+    "english": "Monday",
+    "ukrainian": "понеділок",
+    "category": "time"
+  },
+  {
+    "hebrew": "יוֹם שְׁלִישִׁי",
+    "transcription": "yom shlishi",
+    "english": "Tuesday",
+    "ukrainian": "вівторок",
+    "category": "time"
+  },
+  {
+    "hebrew": "יוֹם רְבִיעִי",
+    "transcription": "yom revii",
+    "english": "Wednesday",
+    "ukrainian": "середа",
+    "category": "time"
+  },
+  {
+    "hebrew": "יוֹם חֲמִישִׁי",
+    "transcription": "yom chamishi",
+    "english": "Thursday",
+    "ukrainian": "четвер",
+    "category": "time"
+  },
+  {
+    "hebrew": "יוֹם שִׁשִּׁי",
+    "transcription": "yom shishi",
+    "english": "Friday",
+    "ukrainian": "п'ятниця",
+    "category": "time"
+  },
+  {
+    "hebrew": "שַׁבָּת",
+    "transcription": "shabbat",
+    "english": "Saturday; Sabbath",
+    "ukrainian": "субота",
+    "category": "time"
+  },
+  {
+    "hebrew": "אָבִיב",
+    "transcription": "aviv",
+    "english": "spring",
+    "ukrainian": "весна",
+    "category": "time"
+  },
+  {
+    "hebrew": "קַיִץ",
+    "transcription": "kayitz",
+    "english": "summer",
+    "ukrainian": "літо",
+    "category": "time"
+  },
+  {
+    "hebrew": "סְתָו",
+    "transcription": "stav",
+    "english": "autumn",
+    "ukrainian": "осінь",
+    "category": "time"
+  },
+  {
+    "hebrew": "חֹרֶף",
+    "transcription": "choref",
+    "english": "winter",
+    "ukrainian": "зима",
+    "category": "time"
+  },
+  {
+    "hebrew": "יָנוּאָר",
+    "transcription": "yanuar",
+    "english": "January",
+    "ukrainian": "січень",
+    "category": "time"
+  },
+  {
+    "hebrew": "פֶבְּרוּאָר",
+    "transcription": "februar",
+    "english": "February",
+    "ukrainian": "лютий",
+    "category": "time"
+  },
+  {
+    "hebrew": "מֶרְץ",
+    "transcription": "merts",
+    "english": "March",
+    "ukrainian": "березень",
+    "category": "time"
+  },
+  {
+    "hebrew": "אַפְּרִיל",
+    "transcription": "april",
+    "english": "April",
+    "ukrainian": "квітень",
+    "category": "time"
+  },
+  {
+    "hebrew": "מַאי",
+    "transcription": "mai",
+    "english": "May",
+    "ukrainian": "травень",
+    "category": "time"
+  },
+  {
+    "hebrew": "יוּנִי",
+    "transcription": "yuni",
+    "english": "June",
+    "ukrainian": "червень",
+    "category": "time"
+  },
+  {
+    "hebrew": "יוּלִי",
+    "transcription": "yuli",
+    "english": "July",
+    "ukrainian": "липень",
+    "category": "time"
+  },
+  {
+    "hebrew": "אוֹגוּסְט",
+    "transcription": "ogust",
+    "english": "August",
+    "ukrainian": "серпень",
+    "category": "time"
+  },
+  {
+    "hebrew": "סֶפְּטֶמְבֶּר",
+    "transcription": "september",
+    "english": "September",
+    "ukrainian": "вересень",
+    "category": "time"
+  },
+  {
+    "hebrew": "אוֹקְטוֹבֶּר",
+    "transcription": "oktober",
+    "english": "October",
+    "ukrainian": "жовтень",
+    "category": "time"
+  },
+  {
+    "hebrew": "נוֹבֶמְבֶּר",
+    "transcription": "november",
+    "english": "November",
+    "ukrainian": "листопад",
+    "category": "time"
+  },
+  {
+    "hebrew": "דֶּצֶמְבֶּר",
+    "transcription": "detsember",
+    "english": "December",
+    "ukrainian": "грудень",
+    "category": "time"
+  },
+  {
+    "hebrew": "חַג",
+    "transcription": "chag",
+    "english": "holiday",
+    "ukrainian": "свято",
+    "category": "time"
+  },
+  {
+    "hebrew": "יוֹם הֻלֶּדֶת",
+    "transcription": "yom huledet",
+    "english": "birthday",
+    "ukrainian": "день народження",
+    "category": "time"
+  },
+  {
+    "hebrew": "שָׁעוֹן",
+    "transcription": "sha'on",
+    "english": "clock; watch",
+    "ukrainian": "годинник",
+    "category": "time"
+  },
+  {
+    "hebrew": "לוּחַ שָׁנָה",
+    "transcription": "luach shana",
+    "english": "calendar",
+    "ukrainian": "календар",
+    "category": "time"
+  },
+  {
+    "hebrew": "אָב",
+    "transcription": "av",
+    "english": "father",
+    "ukrainian": "батько",
+    "category": "family"
+  },
+  {
+    "hebrew": "אֵם",
+    "transcription": "em",
+    "english": "mother",
+    "ukrainian": "мати",
+    "category": "family"
+  },
+  {
+    "hebrew": "בֵּן",
+    "transcription": "ben",
+    "english": "son",
+    "ukrainian": "син",
+    "category": "family"
+  },
+  {
+    "hebrew": "בַּת",
+    "transcription": "bat",
+    "english": "daughter",
+    "ukrainian": "донька",
+    "category": "family"
+  },
+  {
+    "hebrew": "אָח",
+    "transcription": "ach",
+    "english": "brother",
+    "ukrainian": "брат",
+    "category": "family"
+  },
+  {
+    "hebrew": "אָחוֹת",
+    "transcription": "achot",
+    "english": "sister",
+    "ukrainian": "сестра",
+    "category": "family"
+  },
+  {
+    "hebrew": "סָבָא",
+    "transcription": "saba",
+    "english": "grandfather",
+    "ukrainian": "дідусь",
+    "category": "family"
+  },
+  {
+    "hebrew": "סָבְתָּא",
+    "transcription": "savta",
+    "english": "grandmother",
+    "ukrainian": "бабуся",
+    "category": "family"
+  },
+  {
+    "hebrew": "נֶכֶד",
+    "transcription": "nekhed",
+    "english": "grandson",
+    "ukrainian": "онук",
+    "category": "family"
+  },
+  {
+    "hebrew": "נֶכְדָּה",
+    "transcription": "nekhda",
+    "english": "granddaughter",
+    "ukrainian": "онука",
+    "category": "family"
+  },
+  {
+    "hebrew": "דּוֹד",
+    "transcription": "dod",
+    "english": "uncle",
+    "ukrainian": "дядько",
+    "category": "family"
+  },
+  {
+    "hebrew": "דּוֹדָה",
+    "transcription": "doda",
+    "english": "aunt",
+    "ukrainian": "тітка",
+    "category": "family"
+  },
+  {
+    "hebrew": "אַחְיָן",
+    "transcription": "achyan",
+    "english": "nephew",
+    "ukrainian": "племінник",
+    "category": "family"
+  },
+  {
+    "hebrew": "אַחְיָנִית",
+    "transcription": "achyanit",
+    "english": "niece",
+    "ukrainian": "племінниця",
+    "category": "family"
+  },
+  {
+    "hebrew": "בֶּן דּוֹד",
+    "transcription": "ben dod",
+    "english": "cousin (m)",
+    "ukrainian": "двоюрідний брат",
+    "category": "family"
+  },
+  {
+    "hebrew": "בַּת דּוֹדָה",
+    "transcription": "bat doda",
+    "english": "cousin (f)",
+    "ukrainian": "двоюрідна сестра",
+    "category": "family"
+  },
+  {
+    "hebrew": "חָתָן",
+    "transcription": "chatan",
+    "english": "groom; son-in-law",
+    "ukrainian": "наречений; зять",
+    "category": "family"
+  },
+  {
+    "hebrew": "כַּלָּה",
+    "transcription": "kala",
+    "english": "bride; daughter-in-law",
+    "ukrainian": "наречена; невістка",
+    "category": "family"
+  },
+  {
+    "hebrew": "חָמוֹת",
+    "transcription": "chamot",
+    "english": "mother-in-law",
+    "ukrainian": "теща; свекруха",
+    "category": "family"
+  },
+  {
+    "hebrew": "חָם",
+    "transcription": "cham",
+    "english": "father-in-law",
+    "ukrainian": "тесть; свекор",
+    "category": "family"
+  },
+  {
+    "hebrew": "בַּעַל",
+    "transcription": "ba'al",
+    "english": "husband",
+    "ukrainian": "чоловік",
+    "category": "family"
+  },
+  {
+    "hebrew": "הוֹרֶה",
+    "transcription": "horeh",
+    "english": "parent",
+    "ukrainian": "батько/мати",
+    "category": "family"
+  },
+  {
+    "hebrew": "הוֹרִים",
+    "transcription": "horim",
+    "english": "parents",
+    "ukrainian": "батьки",
+    "category": "family"
+  },
+  {
+    "hebrew": "תִּינוֹק",
+    "transcription": "tinok",
+    "english": "baby",
+    "ukrainian": "немовля",
+    "category": "family"
+  },
+  {
+    "hebrew": "תִּינוֹקֶת",
+    "transcription": "tinoket",
+    "english": "baby girl",
+    "ukrainian": "немовля (ж.)",
+    "category": "family"
+  },
+  {
+    "hebrew": "נַעַר",
+    "transcription": "na'ar",
+    "english": "boy; youth",
+    "ukrainian": "хлопець",
+    "category": "family"
+  },
+  {
+    "hebrew": "נַעֲרָה",
+    "transcription": "na'ara",
+    "english": "girl; youth",
+    "ukrainian": "дівчина",
+    "category": "family"
+  },
+  {
+    "hebrew": "חָבֵר",
+    "transcription": "chaver",
+    "english": "friend (m)",
+    "ukrainian": "друг",
+    "category": "family"
+  },
+  {
+    "hebrew": "חֲבֵרָה",
+    "transcription": "chavera",
+    "english": "friend (f)",
+    "ukrainian": "подруга",
+    "category": "family"
+  },
+  {
+    "hebrew": "שָׁכֵן",
+    "transcription": "shakhen",
+    "english": "neighbor",
+    "ukrainian": "сусід",
+    "category": "family"
+  },
+  {
+    "hebrew": "שְׁכֵנָה",
+    "transcription": "shkhena",
+    "english": "neighbor (f)",
+    "ukrainian": "сусідка",
+    "category": "family"
+  },
+  {
+    "hebrew": "מִשְׁפָּחָה",
+    "transcription": "mishpacha",
+    "english": "family",
+    "ukrainian": "родина",
+    "category": "family"
+  },
+  {
+    "hebrew": "קְרוֹב מִשְׁפָּחָה",
+    "transcription": "krov mishpacha",
+    "english": "relative",
+    "ukrainian": "родич",
+    "category": "family"
+  },
+  {
+    "hebrew": "יָתוֹם",
+    "transcription": "yatom",
+    "english": "orphan",
+    "ukrainian": "сирота",
+    "category": "family"
+  },
+  {
+    "hebrew": "אַלְמָנָה",
+    "transcription": "almana",
+    "english": "widow",
+    "ukrainian": "вдова",
+    "category": "family"
+  },
+  {
+    "hebrew": "גָּרוּשׁ",
+    "transcription": "garush",
+    "english": "divorced",
+    "ukrainian": "розлучений",
+    "category": "family"
+  },
+  {
+    "hebrew": "רַוָּק",
+    "transcription": "ravak",
+    "english": "bachelor",
+    "ukrainian": "холостяк",
+    "category": "family"
+  },
+  {
+    "hebrew": "זוּג",
+    "transcription": "zug",
+    "english": "couple; pair",
+    "ukrainian": "пара",
+    "category": "family"
+  },
+  {
+    "hebrew": "פָּנִים",
+    "transcription": "panim",
+    "english": "face",
+    "ukrainian": "обличчя",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "עַיִן",
+    "transcription": "ayin",
+    "english": "eye",
+    "ukrainian": "око",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "אֹזֶן",
+    "transcription": "ozen",
+    "english": "ear",
+    "ukrainian": "вухо",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "אַף",
+    "transcription": "af",
+    "english": "nose",
+    "ukrainian": "ніс",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "פֶּה",
+    "transcription": "pe",
+    "english": "mouth",
+    "ukrainian": "рот",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "שָׂפָה",
+    "transcription": "safa",
+    "english": "lip; language",
+    "ukrainian": "губа; мова",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "לָשׁוֹן",
+    "transcription": "lashon",
+    "english": "tongue",
+    "ukrainian": "язик",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "שֵׁן",
+    "transcription": "shen",
+    "english": "tooth",
+    "ukrainian": "зуб",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "שִׁנַּיִם",
+    "transcription": "shinayim",
+    "english": "teeth",
+    "ukrainian": "зуби",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "כָּתֵף",
+    "transcription": "katef",
+    "english": "shoulder",
+    "ukrainian": "плече",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "זְרוֹעַ",
+    "transcription": "zroa",
+    "english": "arm",
+    "ukrainian": "рука (плече)",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "יָד",
+    "transcription": "yad",
+    "english": "hand",
+    "ukrainian": "рука",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "אֶצְבַּע",
+    "transcription": "etzba",
+    "english": "finger",
+    "ukrainian": "палець",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "מַרְפֵּק",
+    "transcription": "marpek",
+    "english": "elbow",
+    "ukrainian": "лікоть",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "אֲגוּדָל",
+    "transcription": "agudal",
+    "english": "thumb",
+    "ukrainian": "великий палець",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "צִפֹּרֶן",
+    "transcription": "tziporen",
+    "english": "nail",
+    "ukrainian": "ніготь",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "חָזֶה",
+    "transcription": "chazeh",
+    "english": "chest",
+    "ukrainian": "груди",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "גַּב",
+    "transcription": "gav",
+    "english": "back",
+    "ukrainian": "спина",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "בֶּטֶן",
+    "transcription": "beten",
+    "english": "belly",
+    "ukrainian": "живіт",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "מָתְנַיִם",
+    "transcription": "motnayim",
+    "english": "hips; waist",
+    "ukrainian": "стегна; талія",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "רֶגֶל",
+    "transcription": "regel",
+    "english": "leg; foot",
+    "ukrainian": "нога",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "בֶּרֶךְ",
+    "transcription": "berekh",
+    "english": "knee",
+    "ukrainian": "коліно",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "קַרְסֹל",
+    "transcription": "karsol",
+    "english": "ankle",
+    "ukrainian": "щиколотка",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "כַּף רֶגֶל",
+    "transcription": "kaf regel",
+    "english": "foot (sole)",
+    "ukrainian": "стопа",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "לֵב",
+    "transcription": "lev",
+    "english": "heart",
+    "ukrainian": "серце",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "רֵאָה",
+    "transcription": "rea",
+    "english": "lung",
+    "ukrainian": "легеня",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "כִּלְיָה",
+    "transcription": "kilya",
+    "english": "kidney",
+    "ukrainian": "нирка",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "קֵבָה",
+    "transcription": "keva",
+    "english": "stomach (organ)",
+    "ukrainian": "шлунок",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "שֵׂעָר",
+    "transcription": "se'ar",
+    "english": "hair",
+    "ukrainian": "волосся",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "עוֹר",
+    "transcription": "or",
+    "english": "skin",
+    "ukrainian": "шкіра",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "עֶצֶם",
+    "transcription": "etzem",
+    "english": "bone",
+    "ukrainian": "кістка",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "שְׁרִיר",
+    "transcription": "shrir",
+    "english": "muscle",
+    "ukrainian": "м'яз",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "דָּם",
+    "transcription": "dam",
+    "english": "blood",
+    "ukrainian": "кров",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "מֹחַ",
+    "transcription": "moach",
+    "english": "brain",
+    "ukrainian": "мозок",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "מַחֲלָה",
+    "transcription": "machala",
+    "english": "disease",
+    "ukrainian": "хвороба",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "שַׁפַּעַת",
+    "transcription": "shapaat",
+    "english": "flu",
+    "ukrainian": "грип",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "צִנּוּן",
+    "transcription": "tzinun",
+    "english": "cold (illness)",
+    "ukrainian": "застуда",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "חֹם",
+    "transcription": "chom",
+    "english": "fever; heat",
+    "ukrainian": "температура",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "כְּאֵב",
+    "transcription": "ke'ev",
+    "english": "pain",
+    "ukrainian": "біль",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "כְּאֵב רֹאשׁ",
+    "transcription": "ke'ev rosh",
+    "english": "headache",
+    "ukrainian": "головний біль",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "שִׁעוּל",
+    "transcription": "shi'ul",
+    "english": "cough",
+    "ukrainian": "кашель",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "בְּחִילָה",
+    "transcription": "bechila",
+    "english": "nausea",
+    "ukrainian": "нудота",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "פֶּצַע",
+    "transcription": "petza",
+    "english": "wound",
+    "ukrainian": "рана",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "שֶׁבֶר",
+    "transcription": "shever",
+    "english": "fracture",
+    "ukrainian": "перелом",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "רוֹפֵא",
+    "transcription": "rofe",
+    "english": "doctor",
+    "ukrainian": "лікар",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "בֵּית חוֹלִים",
+    "transcription": "beit cholim",
+    "english": "hospital",
+    "ukrainian": "лікарня",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "מִרְפָּאָה",
+    "transcription": "mirpa'a",
+    "english": "clinic",
+    "ukrainian": "клініка",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "תְּרוּפָה",
+    "transcription": "terufa",
+    "english": "medicine",
+    "ukrainian": "ліки",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "בֵּית מִרְקַחַת",
+    "transcription": "beit mirkachat",
+    "english": "pharmacy",
+    "ukrainian": "аптека",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "מַזְרֵק",
+    "transcription": "mazrek",
+    "english": "syringe",
+    "ukrainian": "шприц",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "חִסּוּן",
+    "transcription": "chisun",
+    "english": "vaccination",
+    "ukrainian": "щеплення",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "דִּיאֵטָה",
+    "transcription": "dieta",
+    "english": "diet",
+    "ukrainian": "дієта",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "בְּרִיאוּת",
+    "transcription": "bri'ut",
+    "english": "health",
+    "ukrainian": "здоров'я",
+    "category": "body_health"
+  },
+  {
+    "hebrew": "לֶחֶם",
+    "transcription": "lechem",
+    "english": "bread",
+    "ukrainian": "хліб",
+    "category": "food"
+  },
+  {
+    "hebrew": "חֶמְאָה",
+    "transcription": "chem'a",
+    "english": "butter",
+    "ukrainian": "масло",
+    "category": "food"
+  },
+  {
+    "hebrew": "גְּבִינָה",
+    "transcription": "gvina",
+    "english": "cheese",
+    "ukrainian": "сир",
+    "category": "food"
+  },
+  {
+    "hebrew": "בֵּיצָה",
+    "transcription": "beitza",
+    "english": "egg",
+    "ukrainian": "яйце",
+    "category": "food"
+  },
+  {
+    "hebrew": "חָלָב",
+    "transcription": "chalav",
+    "english": "milk",
+    "ukrainian": "молоко",
+    "category": "food"
+  },
+  {
+    "hebrew": "יוֹגוּרְט",
+    "transcription": "yogurt",
+    "english": "yogurt",
+    "ukrainian": "йогурт",
+    "category": "food"
+  },
+  {
+    "hebrew": "שַׁמֶּנֶת",
+    "transcription": "shamenet",
+    "english": "sour cream",
+    "ukrainian": "сметана",
+    "category": "food"
+  },
+  {
+    "hebrew": "שֶׁמֶן",
+    "transcription": "shemen",
+    "english": "oil",
+    "ukrainian": "олія",
+    "category": "food"
+  },
+  {
+    "hebrew": "מֶלַח",
+    "transcription": "melach",
+    "english": "salt",
+    "ukrainian": "сіль",
+    "category": "food"
+  },
+  {
+    "hebrew": "פִּלְפֵּל",
+    "transcription": "pilpel",
+    "english": "pepper",
+    "ukrainian": "перець",
+    "category": "food"
+  },
+  {
+    "hebrew": "סֻכָּר",
+    "transcription": "sukar",
+    "english": "sugar",
+    "ukrainian": "цукор",
+    "category": "food"
+  },
+  {
+    "hebrew": "קֶמַח",
+    "transcription": "kemach",
+    "english": "flour",
+    "ukrainian": "борошно",
+    "category": "food"
+  },
+  {
+    "hebrew": "אֹרֶז",
+    "transcription": "orez",
+    "english": "rice",
+    "ukrainian": "рис",
+    "category": "food"
+  },
+  {
+    "hebrew": "פַּסְטָה",
+    "transcription": "pasta",
+    "english": "pasta",
+    "ukrainian": "макарони",
+    "category": "food"
+  },
+  {
+    "hebrew": "מָרָק",
+    "transcription": "marak",
+    "english": "soup",
+    "ukrainian": "суп",
+    "category": "food"
+  },
+  {
+    "hebrew": "סָלָט",
+    "transcription": "salat",
+    "english": "salad",
+    "ukrainian": "салат",
+    "category": "food"
+  },
+  {
+    "hebrew": "בָּשָׂר",
+    "transcription": "basar",
+    "english": "meat",
+    "ukrainian": "м'ясо",
+    "category": "food"
+  },
+  {
+    "hebrew": "עוֹף",
+    "transcription": "of",
+    "english": "chicken",
+    "ukrainian": "курка",
+    "category": "food"
+  },
+  {
+    "hebrew": "בְּשַׂר בָּקָר",
+    "transcription": "bsar bakar",
+    "english": "beef",
+    "ukrainian": "яловичина",
+    "category": "food"
+  },
+  {
+    "hebrew": "בְּשַׂר טָלֶה",
+    "transcription": "bsar tale",
+    "english": "lamb",
+    "ukrainian": "ягнятина",
+    "category": "food"
+  },
+  {
+    "hebrew": "נַקְנִיק",
+    "transcription": "naknik",
+    "english": "sausage",
+    "ukrainian": "ковбаса",
+    "category": "food"
+  },
+  {
+    "hebrew": "דָּג מָלוּחַ",
+    "transcription": "dag maluach",
+    "english": "salted fish",
+    "ukrainian": "солона риба",
+    "category": "food"
+  },
+  {
+    "hebrew": "פֵּרוֹת",
+    "transcription": "perot",
+    "english": "fruits",
+    "ukrainian": "фрукти",
+    "category": "food"
+  },
+  {
+    "hebrew": "יְרָקוֹת",
+    "transcription": "yerakot",
+    "english": "vegetables",
+    "ukrainian": "овочі",
+    "category": "food"
+  },
+  {
+    "hebrew": "תַּפּוּחַ",
+    "transcription": "tapuach",
+    "english": "apple",
+    "ukrainian": "яблуко",
+    "category": "food"
+  },
+  {
+    "hebrew": "בָּנָנָה",
+    "transcription": "banana",
+    "english": "banana",
+    "ukrainian": "банан",
+    "category": "food"
+  },
+  {
+    "hebrew": "תַּפּוּז",
+    "transcription": "tapuz",
+    "english": "orange",
+    "ukrainian": "апельсин",
+    "category": "food"
+  },
+  {
+    "hebrew": "לִימוֹן",
+    "transcription": "limon",
+    "english": "lemon",
+    "ukrainian": "лимон",
+    "category": "food"
+  },
+  {
+    "hebrew": "עֲנָבִים",
+    "transcription": "anavim",
+    "english": "grapes",
+    "ukrainian": "виноград",
+    "category": "food"
+  },
+  {
+    "hebrew": "אֲבַטִּיחַ",
+    "transcription": "avatiach",
+    "english": "watermelon",
+    "ukrainian": "кавун",
+    "category": "food"
+  },
+  {
+    "hebrew": "מֵלוֹן",
+    "transcription": "melon",
+    "english": "melon",
+    "ukrainian": "диня",
+    "category": "food"
+  },
+  {
+    "hebrew": "אֲגָס",
+    "transcription": "agas",
+    "english": "pear",
+    "ukrainian": "груша",
+    "category": "food"
+  },
+  {
+    "hebrew": "אֲפַרְסֵק",
+    "transcription": "afarsek",
+    "english": "peach",
+    "ukrainian": "персик",
+    "category": "food"
+  },
+  {
+    "hebrew": "שְׁזִיף",
+    "transcription": "shezif",
+    "english": "plum",
+    "ukrainian": "слива",
+    "category": "food"
+  },
+  {
+    "hebrew": "דֻּבְדְּבָן",
+    "transcription": "duvdevan",
+    "english": "cherry",
+    "ukrainian": "вишня",
+    "category": "food"
+  },
+  {
+    "hebrew": "תּוּת",
+    "transcription": "tut",
+    "english": "strawberry",
+    "ukrainian": "полуниця",
+    "category": "food"
+  },
+  {
+    "hebrew": "פֵּרֵר",
+    "transcription": "perer",
+    "english": "berry",
+    "ukrainian": "ягода",
+    "category": "food"
+  },
+  {
+    "hebrew": "עַגְבָנִיָּה",
+    "transcription": "agvaniya",
+    "english": "tomato",
+    "ukrainian": "помідор",
+    "category": "food"
+  },
+  {
+    "hebrew": "מְלָפְפוֹן",
+    "transcription": "melafefon",
+    "english": "cucumber",
+    "ukrainian": "огірок",
+    "category": "food"
+  },
+  {
+    "hebrew": "גֶּזֶר",
+    "transcription": "gezer",
+    "english": "carrot",
+    "ukrainian": "морква",
+    "category": "food"
+  },
+  {
+    "hebrew": "בָּצָל",
+    "transcription": "batzal",
+    "english": "onion",
+    "ukrainian": "цибуля",
+    "category": "food"
+  },
+  {
+    "hebrew": "שׁוּם",
+    "transcription": "shum",
+    "english": "garlic",
+    "ukrainian": "часник",
+    "category": "food"
+  },
+  {
+    "hebrew": "תַּפּוּחַ אֲדָמָה",
+    "transcription": "tapuach adama",
+    "english": "potato",
+    "ukrainian": "картопля",
+    "category": "food"
+  },
+  {
+    "hebrew": "פִּטְרִיָּה",
+    "transcription": "pitriya",
+    "english": "mushroom",
+    "ukrainian": "гриб",
+    "category": "food"
+  },
+  {
+    "hebrew": "חַסָּה",
+    "transcription": "chasa",
+    "english": "lettuce",
+    "ukrainian": "салат-латук",
+    "category": "food"
+  },
+  {
+    "hebrew": "כְּרוּב",
+    "transcription": "kruv",
+    "english": "cabbage",
+    "ukrainian": "капуста",
+    "category": "food"
+  },
+  {
+    "hebrew": "פִּלְפֵּל יָרֹק",
+    "transcription": "pilpel yarok",
+    "english": "green pepper",
+    "ukrainian": "зелений перець",
+    "category": "food"
+  },
+  {
+    "hebrew": "חָצִיל",
+    "transcription": "chatzil",
+    "english": "eggplant",
+    "ukrainian": "баклажан",
+    "category": "food"
+  },
+  {
+    "hebrew": "קוּלִי",
+    "transcription": "kuli",
+    "english": "kohlrabi",
+    "ukrainian": "кольрабі",
+    "category": "food"
+  },
+  {
+    "hebrew": "עוּגָה",
+    "transcription": "uga",
+    "english": "cake",
+    "ukrainian": "торт",
+    "category": "food"
+  },
+  {
+    "hebrew": "עוּגִיָּה",
+    "transcription": "ugiya",
+    "english": "cookie",
+    "ukrainian": "печиво",
+    "category": "food"
+  },
+  {
+    "hebrew": "גְּלִידָה",
+    "transcription": "glida",
+    "english": "ice cream",
+    "ukrainian": "морозиво",
+    "category": "food"
+  },
+  {
+    "hebrew": "שׁוֹקוֹלָד",
+    "transcription": "shokolad",
+    "english": "chocolate",
+    "ukrainian": "шоколад",
+    "category": "food"
+  },
+  {
+    "hebrew": "דְּבַשׁ",
+    "transcription": "dvash",
+    "english": "honey",
+    "ukrainian": "мед",
+    "category": "food"
+  },
+  {
+    "hebrew": "רִבָּה",
+    "transcription": "riba",
+    "english": "jam",
+    "ukrainian": "варення",
+    "category": "food"
+  },
+  {
+    "hebrew": "מַיִם",
+    "transcription": "mayim",
+    "english": "water",
+    "ukrainian": "вода",
+    "category": "food"
+  },
+  {
+    "hebrew": "מִיץ",
+    "transcription": "mitz",
+    "english": "juice",
+    "ukrainian": "сік",
+    "category": "food"
+  },
+  {
+    "hebrew": "קָפֶה",
+    "transcription": "kafeh",
+    "english": "coffee",
+    "ukrainian": "кава",
+    "category": "food"
+  },
+  {
+    "hebrew": "תֵּה",
+    "transcription": "te",
+    "english": "tea",
+    "ukrainian": "чай",
+    "category": "food"
+  },
+  {
+    "hebrew": "יַיִן",
+    "transcription": "yayin",
+    "english": "wine",
+    "ukrainian": "вино",
+    "category": "food"
+  },
+  {
+    "hebrew": "בִּירָה",
+    "transcription": "bira",
+    "english": "beer",
+    "ukrainian": "пиво",
+    "category": "food"
+  },
+  {
+    "hebrew": "מַשְׁקֶה",
+    "transcription": "mashkeh",
+    "english": "drink",
+    "ukrainian": "напій",
+    "category": "food"
+  },
+  {
+    "hebrew": "אֲרוּחָה",
+    "transcription": "arucha",
+    "english": "meal",
+    "ukrainian": "трапеза",
+    "category": "food"
+  },
+  {
+    "hebrew": "אֲרוּחַת בֹּקֶר",
+    "transcription": "aruchat boker",
+    "english": "breakfast",
+    "ukrainian": "сніданок",
+    "category": "food"
+  },
+  {
+    "hebrew": "אֲרוּחַת צָהֳרַיִם",
+    "transcription": "aruchat tzohorayim",
+    "english": "lunch",
+    "ukrainian": "обід",
+    "category": "food"
+  },
+  {
+    "hebrew": "אֲרוּחַת עֶרֶב",
+    "transcription": "aruchat erev",
+    "english": "dinner",
+    "ukrainian": "вечеря",
+    "category": "food"
+  },
+  {
+    "hebrew": "מַתָּנָה",
+    "transcription": "matana",
+    "english": "gift",
+    "ukrainian": "подарунок",
+    "category": "food"
+  },
+  {
+    "hebrew": "צַלַּחַת",
+    "transcription": "tzalachat",
+    "english": "plate",
+    "ukrainian": "тарілка",
+    "category": "food"
+  },
+  {
+    "hebrew": "כּוֹס",
+    "transcription": "kos",
+    "english": "cup",
+    "ukrainian": "склянка",
+    "category": "food"
+  },
+  {
+    "hebrew": "סַכִּין",
+    "transcription": "sakin",
+    "english": "knife",
+    "ukrainian": "ніж",
+    "category": "food"
+  },
+  {
+    "hebrew": "מַזְלֵג",
+    "transcription": "mazleg",
+    "english": "fork",
+    "ukrainian": "виделка",
+    "category": "food"
+  },
+  {
+    "hebrew": "כַּף",
+    "transcription": "kaf",
+    "english": "spoon",
+    "ukrainian": "ложка",
+    "category": "food"
+  },
+  {
+    "hebrew": "מַפִּית",
+    "transcription": "mapit",
+    "english": "napkin",
+    "ukrainian": "серветка",
+    "category": "food"
+  },
+  {
+    "hebrew": "מַגֶּבֶת",
+    "transcription": "magevet",
+    "english": "towel",
+    "ukrainian": "рушник",
+    "category": "food"
+  },
+  {
+    "hebrew": "בְּגָדִים",
+    "transcription": "begadim",
+    "english": "clothes",
+    "ukrainian": "одяг",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "חֻלְצָה",
+    "transcription": "chultza",
+    "english": "shirt",
+    "ukrainian": "сорочка",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "מִכְנָסַיִם",
+    "transcription": "mikhnasayim",
+    "english": "pants",
+    "ukrainian": "штани",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "מִכְנְסֵי גִּ'ינְס",
+    "transcription": "mikhnesei jeans",
+    "english": "jeans",
+    "ukrainian": "джинси",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "חֲצָאִית",
+    "transcription": "chatza'it",
+    "english": "skirt",
+    "ukrainian": "спідниця",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "שִׂמְלָה",
+    "transcription": "simla",
+    "english": "dress",
+    "ukrainian": "сукня",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "חֻלְצַת טְרִיקוֹ",
+    "transcription": "chultzat triko",
+    "english": "T-shirt",
+    "ukrainian": "футболка",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "סְוֶדֶר",
+    "transcription": "sveder",
+    "english": "sweater",
+    "ukrainian": "светр",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "מְעִיל",
+    "transcription": "me'il",
+    "english": "coat",
+    "ukrainian": "пальто",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "גֶּ'קֶט",
+    "transcription": "jeket",
+    "english": "jacket",
+    "ukrainian": "куртка",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "נַעֲלַיִם",
+    "transcription": "na'alayim",
+    "english": "shoes",
+    "ukrainian": "взуття",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "מַגָּפַיִם",
+    "transcription": "magafayim",
+    "english": "boots",
+    "ukrainian": "чоботи",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "סַנְדָּלִים",
+    "transcription": "sandalim",
+    "english": "sandals",
+    "ukrainian": "сандалі",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "נַעֲלֵי סְפּוֹרְט",
+    "transcription": "na'alei sport",
+    "english": "sneakers",
+    "ukrainian": "кросівки",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "גַּרְבַּיִם",
+    "transcription": "garbayim",
+    "english": "socks",
+    "ukrainian": "шкарпетки",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "גַּרְבּוֹנִים",
+    "transcription": "garbonim",
+    "english": "tights",
+    "ukrainian": "колготки",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "חֲגוֹרָה",
+    "transcription": "chagora",
+    "english": "belt",
+    "ukrainian": "пояс",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "עֲנִיבָה",
+    "transcription": "aniva",
+    "english": "tie",
+    "ukrainian": "краватка",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "צָעִיף",
+    "transcription": "tza'if",
+    "english": "scarf",
+    "ukrainian": "шарф",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "כּוֹבַע",
+    "transcription": "kova",
+    "english": "hat",
+    "ukrainian": "капелюх",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "כְּפָפוֹת",
+    "transcription": "kfafot",
+    "english": "gloves",
+    "ukrainian": "рукавички",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "מִשְׁקָפַיִם",
+    "transcription": "mishkafayim",
+    "english": "glasses",
+    "ukrainian": "окуляри",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "מִשְׁקְפֵי שֶׁמֶשׁ",
+    "transcription": "mishkefei shemesh",
+    "english": "sunglasses",
+    "ukrainian": "сонячні окуляри",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "טַבַּעַת",
+    "transcription": "taba'at",
+    "english": "ring",
+    "ukrainian": "перстень",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "שַׁרְשֶׁרֶת",
+    "transcription": "sharsheret",
+    "english": "necklace; chain",
+    "ukrainian": "ланцюжок",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "עָגִיל",
+    "transcription": "agil",
+    "english": "earring",
+    "ukrainian": "сережка",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "שָׁעוֹן יָד",
+    "transcription": "sha'on yad",
+    "english": "wristwatch",
+    "ukrainian": "наручний годинник",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "חֲלִיפַת יָם",
+    "transcription": "chalifat yam",
+    "english": "swimsuit",
+    "ukrainian": "купальник",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "פִּיגָ'מָה",
+    "transcription": "pijama",
+    "english": "pajamas",
+    "ukrainian": "піжама",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "גּוּפִיָּה",
+    "transcription": "gufiya",
+    "english": "undershirt",
+    "ukrainian": "майка",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "תַּחְתּוֹנִים",
+    "transcription": "tachtonim",
+    "english": "underwear",
+    "ukrainian": "білизна",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "חֲזִיָּה",
+    "transcription": "chaziya",
+    "english": "bra",
+    "ukrainian": "бюстгальтер",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "מַגֶּבֶת",
+    "transcription": "magevet",
+    "english": "towel",
+    "ukrainian": "рушник",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "אֲרוֹן בְּגָדִים",
+    "transcription": "aron begadim",
+    "english": "wardrobe",
+    "ukrainian": "шафа",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "מַטְרִיָּה",
+    "transcription": "matriya",
+    "english": "umbrella",
+    "ukrainian": "парасоля",
+    "category": "clothing"
+  },
+  {
+    "hebrew": "חֶדֶר",
+    "transcription": "cheder",
+    "english": "room",
+    "ukrainian": "кімната",
+    "category": "home"
+  },
+  {
+    "hebrew": "חֲדַר שֵׁנָה",
+    "transcription": "chadar shena",
+    "english": "bedroom",
+    "ukrainian": "спальня",
+    "category": "home"
+  },
+  {
+    "hebrew": "חֲדַר אֹכֶל",
+    "transcription": "chadar okhel",
+    "english": "dining room",
+    "ukrainian": "їдальня",
+    "category": "home"
+  },
+  {
+    "hebrew": "סָלוֹן",
+    "transcription": "salon",
+    "english": "living room",
+    "ukrainian": "вітальня",
+    "category": "home"
+  },
+  {
+    "hebrew": "מִטְבָּח",
+    "transcription": "mitbach",
+    "english": "kitchen",
+    "ukrainian": "кухня",
+    "category": "home"
+  },
+  {
+    "hebrew": "חֲדַר אַמְבַּטְיָה",
+    "transcription": "chadar ambatya",
+    "english": "bathroom",
+    "ukrainian": "ванна кімната",
+    "category": "home"
+  },
+  {
+    "hebrew": "שֵׁרוּתִים",
+    "transcription": "sherutim",
+    "english": "toilet",
+    "ukrainian": "туалет",
+    "category": "home"
+  },
+  {
+    "hebrew": "מִרְפֶּסֶת",
+    "transcription": "mirpeset",
+    "english": "balcony",
+    "ukrainian": "балкон",
+    "category": "home"
+  },
+  {
+    "hebrew": "מַסְדְּרוֹן",
+    "transcription": "masderon",
+    "english": "corridor",
+    "ukrainian": "коридор",
+    "category": "home"
+  },
+  {
+    "hebrew": "מַדְרֵגוֹת",
+    "transcription": "madregot",
+    "english": "stairs",
+    "ukrainian": "сходи",
+    "category": "home"
+  },
+  {
+    "hebrew": "מַעֲלִית",
+    "transcription": "ma'alit",
+    "english": "elevator",
+    "ukrainian": "ліфт",
+    "category": "home"
+  },
+  {
+    "hebrew": "דֶּלֶת",
+    "transcription": "delet",
+    "english": "door",
+    "ukrainian": "двері",
+    "category": "home"
+  },
+  {
+    "hebrew": "חַלּוֹן",
+    "transcription": "chalon",
+    "english": "window",
+    "ukrainian": "вікно",
+    "category": "home"
+  },
+  {
+    "hebrew": "רִצְפָּה",
+    "transcription": "ritzpa",
+    "english": "floor",
+    "ukrainian": "підлога",
+    "category": "home"
+  },
+  {
+    "hebrew": "תִּקְרָה",
+    "transcription": "tikra",
+    "english": "ceiling",
+    "ukrainian": "стеля",
+    "category": "home"
+  },
+  {
+    "hebrew": "קִיר",
+    "transcription": "kir",
+    "english": "wall",
+    "ukrainian": "стіна",
+    "category": "home"
+  },
+  {
+    "hebrew": "גָּג",
+    "transcription": "gag",
+    "english": "roof",
+    "ukrainian": "дах",
+    "category": "home"
+  },
+  {
+    "hebrew": "מִטָּה",
+    "transcription": "mita",
+    "english": "bed",
+    "ukrainian": "ліжко",
+    "category": "home"
+  },
+  {
+    "hebrew": "כִּסֵּא",
+    "transcription": "kise",
+    "english": "chair",
+    "ukrainian": "стілець",
+    "category": "home"
+  },
+  {
+    "hebrew": "שֻׁלְחָן",
+    "transcription": "shulchan",
+    "english": "table",
+    "ukrainian": "стіл",
+    "category": "home"
+  },
+  {
+    "hebrew": "סַפָּה",
+    "transcription": "sapa",
+    "english": "sofa",
+    "ukrainian": "диван",
+    "category": "home"
+  },
+  {
+    "hebrew": "כֻּרְסָה",
+    "transcription": "kursa",
+    "english": "armchair",
+    "ukrainian": "крісло",
+    "category": "home"
+  },
+  {
+    "hebrew": "מַדָּף",
+    "transcription": "madaf",
+    "english": "shelf",
+    "ukrainian": "полиця",
+    "category": "home"
+  },
+  {
+    "hebrew": "אֲרוֹן",
+    "transcription": "aron",
+    "english": "cabinet; closet",
+    "ukrainian": "шафа",
+    "category": "home"
+  },
+  {
+    "hebrew": "מְגֵרָה",
+    "transcription": "megera",
+    "english": "drawer",
+    "ukrainian": "шухляда",
+    "category": "home"
+  },
+  {
+    "hebrew": "שָׁטִיחַ",
+    "transcription": "shatiach",
+    "english": "rug",
+    "ukrainian": "килим",
+    "category": "home"
+  },
+  {
+    "hebrew": "וִילוֹן",
+    "transcription": "vilon",
+    "english": "curtain",
+    "ukrainian": "штора",
+    "category": "home"
+  },
+  {
+    "hebrew": "כָּרִית",
+    "transcription": "karit",
+    "english": "pillow",
+    "ukrainian": "подушка",
+    "category": "home"
+  },
+  {
+    "hebrew": "שְׂמִיכָה",
+    "transcription": "smikha",
+    "english": "blanket",
+    "ukrainian": "ковдра",
+    "category": "home"
+  },
+  {
+    "hebrew": "סָדִין",
+    "transcription": "sadin",
+    "english": "sheet",
+    "ukrainian": "простирадло",
+    "category": "home"
+  },
+  {
+    "hebrew": "מְנוֹרָה",
+    "transcription": "menora",
+    "english": "lamp",
+    "ukrainian": "лампа",
+    "category": "home"
+  },
+  {
+    "hebrew": "נוּרָה",
+    "transcription": "nura",
+    "english": "lightbulb",
+    "ukrainian": "лампочка",
+    "category": "home"
+  },
+  {
+    "hebrew": "מַזְגָּן",
+    "transcription": "mazgan",
+    "english": "air conditioner",
+    "ukrainian": "кондиціонер",
+    "category": "home"
+  },
+  {
+    "hebrew": "מְאַוְרֵר",
+    "transcription": "me'avrer",
+    "english": "fan",
+    "ukrainian": "вентилятор",
+    "category": "home"
+  },
+  {
+    "hebrew": "תַּנּוּר",
+    "transcription": "tanur",
+    "english": "oven",
+    "ukrainian": "пічка",
+    "category": "home"
+  },
+  {
+    "hebrew": "כִּירַיִם",
+    "transcription": "kirayim",
+    "english": "stove burners",
+    "ukrainian": "плита",
+    "category": "home"
+  },
+  {
+    "hebrew": "מִקְרָר",
+    "transcription": "mikrar",
+    "english": "refrigerator",
+    "ukrainian": "холодильник",
+    "category": "home"
+  },
+  {
+    "hebrew": "מַדִּיחַ כֵּלִים",
+    "transcription": "madiach kelim",
+    "english": "dishwasher",
+    "ukrainian": "посудомийка",
+    "category": "home"
+  },
+  {
+    "hebrew": "מְכוֹנַת כְּבִיסָה",
+    "transcription": "mekhonat kvisa",
+    "english": "washing machine",
+    "ukrainian": "пральна машина",
+    "category": "home"
+  },
+  {
+    "hebrew": "מִכְשִׁיר",
+    "transcription": "makhshir",
+    "english": "device",
+    "ukrainian": "пристрій",
+    "category": "home"
+  },
+  {
+    "hebrew": "טֶלֶוִיזְיָה",
+    "transcription": "televizya",
+    "english": "television",
+    "ukrainian": "телевізор",
+    "category": "home"
+  },
+  {
+    "hebrew": "רַדְיוֹ",
+    "transcription": "radyo",
+    "english": "radio",
+    "ukrainian": "радіо",
+    "category": "home"
+  },
+  {
+    "hebrew": "מַחְשֵׁב נַיָּד",
+    "transcription": "mach'shev nayad",
+    "english": "laptop",
+    "ukrainian": "ноутбук",
+    "category": "home"
+  },
+  {
+    "hebrew": "מַדְפֶּסֶת",
+    "transcription": "madpeset",
+    "english": "printer",
+    "ukrainian": "принтер",
+    "category": "home"
+  },
+  {
+    "hebrew": "כֶּבֶל",
+    "transcription": "kevel",
+    "english": "cable",
+    "ukrainian": "кабель",
+    "category": "home"
+  },
+  {
+    "hebrew": "מַטְעֵן",
+    "transcription": "mat'en",
+    "english": "charger",
+    "ukrainian": "зарядка",
+    "category": "home"
+  },
+  {
+    "hebrew": "חַלּוֹן רָאֲוָה",
+    "transcription": "chalon ra'ava",
+    "english": "shop window",
+    "ukrainian": "вітрина",
+    "category": "home"
+  },
+  {
+    "hebrew": "רְחוֹב",
+    "transcription": "rechov",
+    "english": "street",
+    "ukrainian": "вулиця",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "שְׂדֵרָה",
+    "transcription": "sdera",
+    "english": "avenue",
+    "ukrainian": "проспект",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "כִּכָּר",
+    "transcription": "kikar",
+    "english": "square",
+    "ukrainian": "площа",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "גִּשְׁרוֹן",
+    "transcription": "gishron",
+    "english": "small bridge",
+    "ukrainian": "місточок",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "גֶּשֶׁר",
+    "transcription": "gesher",
+    "english": "bridge",
+    "ukrainian": "міст",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "פַּארְק",
+    "transcription": "park",
+    "english": "park",
+    "ukrainian": "парк",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "גַּן",
+    "transcription": "gan",
+    "english": "garden; kindergarten",
+    "ukrainian": "сад",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "שׁוּק",
+    "transcription": "shuk",
+    "english": "market",
+    "ukrainian": "ринок",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "חֲנוּת",
+    "transcription": "chanut",
+    "english": "shop",
+    "ukrainian": "магазин",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "סוּפֶּרְמַרְקֶט",
+    "transcription": "supermarket",
+    "english": "supermarket",
+    "ukrainian": "супермаркет",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "קַנְיוֹן",
+    "transcription": "kanyon",
+    "english": "mall",
+    "ukrainian": "торговий центр",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "בֵּית קָפֶה",
+    "transcription": "beit kafe",
+    "english": "café",
+    "ukrainian": "кав'ярня",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "מִסְעָדָה",
+    "transcription": "mis'ada",
+    "english": "restaurant",
+    "ukrainian": "ресторан",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "מָלוֹן",
+    "transcription": "malon",
+    "english": "hotel",
+    "ukrainian": "готель",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "דֹּאַר",
+    "transcription": "do'ar",
+    "english": "post (mail)",
+    "ukrainian": "пошта",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "בַּנְק",
+    "transcription": "bank",
+    "english": "bank",
+    "ukrainian": "банк",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "בֵּית סֵפֶר",
+    "transcription": "beit sefer",
+    "english": "school",
+    "ukrainian": "школа",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "גַּן יְלָדִים",
+    "transcription": "gan yeladim",
+    "english": "kindergarten",
+    "ukrainian": "дитсадок",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "אוּנִיבֶרְסִיטָה",
+    "transcription": "universita",
+    "english": "university",
+    "ukrainian": "університет",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "סִפְרִיָּה",
+    "transcription": "sifriya",
+    "english": "library",
+    "ukrainian": "бібліотека",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "מוּזֵיאוֹן",
+    "transcription": "muzeon",
+    "english": "museum",
+    "ukrainian": "музей",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "תֵּאַטְרוֹן",
+    "transcription": "teatron",
+    "english": "theater",
+    "ukrainian": "театр",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "קוֹלְנוֹעַ",
+    "transcription": "kolnoa",
+    "english": "cinema",
+    "ukrainian": "кіно",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "אִצְטַדְיוֹן",
+    "transcription": "itztadyon",
+    "english": "stadium",
+    "ukrainian": "стадіон",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "בְּרֵכָה",
+    "transcription": "brekha",
+    "english": "pool",
+    "ukrainian": "басейн",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "חוֹף",
+    "transcription": "chof",
+    "english": "beach; shore",
+    "ukrainian": "пляж",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "יָם",
+    "transcription": "yam",
+    "english": "sea",
+    "ukrainian": "море",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "אֲגַם",
+    "transcription": "agam",
+    "english": "lake",
+    "ukrainian": "озеро",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "נָהָר",
+    "transcription": "nahar",
+    "english": "river",
+    "ukrainian": "ріка",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "הָר",
+    "transcription": "har",
+    "english": "mountain",
+    "ukrainian": "гора",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "יַעַר",
+    "transcription": "ya'ar",
+    "english": "forest",
+    "ukrainian": "ліс",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "שָׂדֶה",
+    "transcription": "sade",
+    "english": "field",
+    "ukrainian": "поле",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "מִדְבָּר",
+    "transcription": "midbar",
+    "english": "desert",
+    "ukrainian": "пустеля",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "עֵמֶק",
+    "transcription": "emek",
+    "english": "valley",
+    "ukrainian": "долина",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "כְּפָר",
+    "transcription": "kfar",
+    "english": "village",
+    "ukrainian": "село",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "מְקוֹם עֲבוֹדָה",
+    "transcription": "mekom avoda",
+    "english": "workplace",
+    "ukrainian": "робоче місце",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "מִשְׂרָד",
+    "transcription": "misrad",
+    "english": "office",
+    "ukrainian": "офіс",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "מִפְעָל",
+    "transcription": "mif'al",
+    "english": "factory",
+    "ukrainian": "фабрика",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "תַּחֲנַת אוֹטוֹבּוּס",
+    "transcription": "tachanat otobus",
+    "english": "bus stop",
+    "ukrainian": "автобусна зупинка",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "שְׂדֵה תְּעוּפָה",
+    "transcription": "sde te'ufa",
+    "english": "airport",
+    "ukrainian": "аеропорт",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "נָמֵל",
+    "transcription": "namel",
+    "english": "port",
+    "ukrainian": "порт",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "מִשְׁטָרָה",
+    "transcription": "mishtara",
+    "english": "police",
+    "ukrainian": "поліція",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "מַכַּבֵּי אֵשׁ",
+    "transcription": "mekabei esh",
+    "english": "firefighters",
+    "ukrainian": "пожежники",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "בֵּית כְּנֶסֶת",
+    "transcription": "beit knesset",
+    "english": "synagogue",
+    "ukrainian": "синагога",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "כְּנֵסִיָּה",
+    "transcription": "kenesiya",
+    "english": "church",
+    "ukrainian": "церква",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "מִסְגָּד",
+    "transcription": "misgad",
+    "english": "mosque",
+    "ukrainian": "мечеть",
+    "category": "city_places"
+  },
+  {
+    "hebrew": "שֶׁמֶשׁ",
+    "transcription": "shemesh",
+    "english": "sun",
+    "ukrainian": "сонце",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "יָרֵחַ",
+    "transcription": "yareach",
+    "english": "moon",
+    "ukrainian": "місяць",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "כּוֹכָב",
+    "transcription": "kokhav",
+    "english": "star",
+    "ukrainian": "зірка",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "שָׁמַיִם",
+    "transcription": "shamayim",
+    "english": "sky",
+    "ukrainian": "небо",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "עָנָן",
+    "transcription": "anan",
+    "english": "cloud",
+    "ukrainian": "хмара",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "גֶּשֶׁם",
+    "transcription": "geshem",
+    "english": "rain",
+    "ukrainian": "дощ",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "שֶׁלֶג",
+    "transcription": "sheleg",
+    "english": "snow",
+    "ukrainian": "сніг",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "בָּרָק",
+    "transcription": "barak",
+    "english": "lightning",
+    "ukrainian": "блискавка",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "רַעַם",
+    "transcription": "ra'am",
+    "english": "thunder",
+    "ukrainian": "грім",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "רוּחַ",
+    "transcription": "ruach",
+    "english": "wind; spirit",
+    "ukrainian": "вітер",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "עָנָנִים",
+    "transcription": "ananim",
+    "english": "clouds",
+    "ukrainian": "хмари",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "עָרְפֶל",
+    "transcription": "arpel",
+    "english": "fog",
+    "ukrainian": "туман",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "טַל",
+    "transcription": "tal",
+    "english": "dew",
+    "ukrainian": "роса",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "בָּרָד",
+    "transcription": "barad",
+    "english": "hail",
+    "ukrainian": "град",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "מֶזֶג אֲוִיר",
+    "transcription": "mezeg avir",
+    "english": "weather",
+    "ukrainian": "погода",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "אֲוִיר",
+    "transcription": "avir",
+    "english": "air",
+    "ukrainian": "повітря",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "טֶמְפֶּרָטוּרָה",
+    "transcription": "temperatura",
+    "english": "temperature",
+    "ukrainian": "температура",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "מַעֲלָה",
+    "transcription": "ma'ala",
+    "english": "degree",
+    "ukrainian": "градус",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "חַשְׁמַל",
+    "transcription": "chashmal",
+    "english": "electricity",
+    "ukrainian": "електрика",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "אֵשׁ",
+    "transcription": "esh",
+    "english": "fire",
+    "ukrainian": "вогонь",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "עָשָׁן",
+    "transcription": "ashan",
+    "english": "smoke",
+    "ukrainian": "дим",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "אֲדָמָה",
+    "transcription": "adama",
+    "english": "earth; soil",
+    "ukrainian": "земля; ґрунт",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "חוֹל",
+    "transcription": "chol",
+    "english": "sand",
+    "ukrainian": "пісок",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "אֶבֶן",
+    "transcription": "even",
+    "english": "stone",
+    "ukrainian": "камінь",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "עֵץ",
+    "transcription": "etz",
+    "english": "tree; wood",
+    "ukrainian": "дерево",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "עָלֶה",
+    "transcription": "ale",
+    "english": "leaf",
+    "ukrainian": "лист (рослини)",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "פֶּרַח",
+    "transcription": "perach",
+    "english": "flower",
+    "ukrainian": "квітка",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "שֹׁרֶשׁ",
+    "transcription": "shoresh",
+    "english": "root",
+    "ukrainian": "корінь",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "עָנָף",
+    "transcription": "anaf",
+    "english": "branch",
+    "ukrainian": "гілка",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "דֶּשֶׁא",
+    "transcription": "deshe",
+    "english": "grass",
+    "ukrainian": "трава",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "צֶמַח",
+    "transcription": "tzemach",
+    "english": "plant",
+    "ukrainian": "рослина",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "יָרֹק",
+    "transcription": "yarok",
+    "english": "green",
+    "ukrainian": "зелений",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "נוֹף",
+    "transcription": "nof",
+    "english": "landscape; view",
+    "ukrainian": "пейзаж",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "טֶבַע",
+    "transcription": "teva",
+    "english": "nature",
+    "ukrainian": "природа",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "חַי",
+    "transcription": "chai",
+    "english": "living",
+    "ukrainian": "живий",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "דּוֹמֵם",
+    "transcription": "domem",
+    "english": "inanimate",
+    "ukrainian": "неживий",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "רַעַשׁ",
+    "transcription": "ra'ash",
+    "english": "noise",
+    "ukrainian": "шум",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "צֵל",
+    "transcription": "tzel",
+    "english": "shadow; shade",
+    "ukrainian": "тінь",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "אוֹר",
+    "transcription": "or",
+    "english": "light",
+    "ukrainian": "світло",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "חֹשֶׁךְ",
+    "transcription": "choshekh",
+    "english": "darkness",
+    "ukrainian": "темрява",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "מַעְיָן",
+    "transcription": "ma'ayan",
+    "english": "spring (water)",
+    "ukrainian": "джерело",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "שֶׁטֶף",
+    "transcription": "shetef",
+    "english": "flow; flood",
+    "ukrainian": "потік",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "גַּל",
+    "transcription": "gal",
+    "english": "wave",
+    "ukrainian": "хвиля",
+    "category": "nature_weather"
+  },
+  {
+    "hebrew": "פָּרָה",
+    "transcription": "para",
+    "english": "cow",
+    "ukrainian": "корова",
+    "category": "animals"
+  },
+  {
+    "hebrew": "שׁוֹר",
+    "transcription": "shor",
+    "english": "ox",
+    "ukrainian": "бик",
+    "category": "animals"
+  },
+  {
+    "hebrew": "עֵז",
+    "transcription": "ez",
+    "english": "goat",
+    "ukrainian": "коза",
+    "category": "animals"
+  },
+  {
+    "hebrew": "כֶּבֶשׂ",
+    "transcription": "keves",
+    "english": "sheep",
+    "ukrainian": "вівця",
+    "category": "animals"
+  },
+  {
+    "hebrew": "חֲזִיר",
+    "transcription": "chazir",
+    "english": "pig",
+    "ukrainian": "свиня",
+    "category": "animals"
+  },
+  {
+    "hebrew": "סוּס",
+    "transcription": "sus",
+    "english": "horse",
+    "ukrainian": "кінь",
+    "category": "animals"
+  },
+  {
+    "hebrew": "חֲמוֹר",
+    "transcription": "chamor",
+    "english": "donkey",
+    "ukrainian": "осел",
+    "category": "animals"
+  },
+  {
+    "hebrew": "גָּמָל",
+    "transcription": "gamal",
+    "english": "camel",
+    "ukrainian": "верблюд",
+    "category": "animals"
+  },
+  {
+    "hebrew": "ארנב",
+    "transcription": "arnav",
+    "english": "rabbit",
+    "ukrainian": "кролик",
+    "category": "animals"
+  },
+  {
+    "hebrew": "עַכְבָּר",
+    "transcription": "akhbar",
+    "english": "mouse",
+    "ukrainian": "миша",
+    "category": "animals"
+  },
+  {
+    "hebrew": "חֻלְדָּה",
+    "transcription": "chulda",
+    "english": "rat",
+    "ukrainian": "щур",
+    "category": "animals"
+  },
+  {
+    "hebrew": "צִפּוֹר",
+    "transcription": "tzipor",
+    "english": "bird",
+    "ukrainian": "птах",
+    "category": "animals"
+  },
+  {
+    "hebrew": "יוֹנָה",
+    "transcription": "yona",
+    "english": "dove",
+    "ukrainian": "голуб",
+    "category": "animals"
+  },
+  {
+    "hebrew": "נֶשֶׁר",
+    "transcription": "nesher",
+    "english": "eagle",
+    "ukrainian": "орел",
+    "category": "animals"
+  },
+  {
+    "hebrew": "עוֹף",
+    "transcription": "of",
+    "english": "fowl",
+    "ukrainian": "птиця",
+    "category": "animals"
+  },
+  {
+    "hebrew": "תַּרְנְגוֹל",
+    "transcription": "tarnegol",
+    "english": "rooster",
+    "ukrainian": "півень",
+    "category": "animals"
+  },
+  {
+    "hebrew": "תַּרְנְגֹלֶת",
+    "transcription": "tarnegolet",
+    "english": "hen",
+    "ukrainian": "курка",
+    "category": "animals"
+  },
+  {
+    "hebrew": "בַּרְבּוּר",
+    "transcription": "barbur",
+    "english": "swan",
+    "ukrainian": "лебідь",
+    "category": "animals"
+  },
+  {
+    "hebrew": "דָּגִים",
+    "transcription": "dagim",
+    "english": "fish (pl.)",
+    "ukrainian": "риби",
+    "category": "animals"
+  },
+  {
+    "hebrew": "נָחָשׁ",
+    "transcription": "nachash",
+    "english": "snake",
+    "ukrainian": "змія",
+    "category": "animals"
+  },
+  {
+    "hebrew": "דְּבוֹרָה",
+    "transcription": "dvora",
+    "english": "bee",
+    "ukrainian": "бджола",
+    "category": "animals"
+  },
+  {
+    "hebrew": "פַּרְפַּר",
+    "transcription": "parpar",
+    "english": "butterfly",
+    "ukrainian": "метелик",
+    "category": "animals"
+  },
+  {
+    "hebrew": "יַתּוּשׁ",
+    "transcription": "yatush",
+    "english": "mosquito",
+    "ukrainian": "комар",
+    "category": "animals"
+  },
+  {
+    "hebrew": "זְבוּב",
+    "transcription": "zvuv",
+    "english": "fly",
+    "ukrainian": "муха",
+    "category": "animals"
+  },
+  {
+    "hebrew": "נְמָלָה",
+    "transcription": "nemala",
+    "english": "ant",
+    "ukrainian": "мураха",
+    "category": "animals"
+  },
+  {
+    "hebrew": "עַכָּבִישׁ",
+    "transcription": "akavish",
+    "english": "spider",
+    "ukrainian": "павук",
+    "category": "animals"
+  },
+  {
+    "hebrew": "צְפַרְדֵּעַ",
+    "transcription": "tzfardea",
+    "english": "frog",
+    "ukrainian": "жаба",
+    "category": "animals"
+  },
+  {
+    "hebrew": "צָב",
+    "transcription": "tzav",
+    "english": "turtle",
+    "ukrainian": "черепаха",
+    "category": "animals"
+  },
+  {
+    "hebrew": "פִּיל",
+    "transcription": "pil",
+    "english": "elephant",
+    "ukrainian": "слон",
+    "category": "animals"
+  },
+  {
+    "hebrew": "דֻּב",
+    "transcription": "dov",
+    "english": "bear",
+    "ukrainian": "ведмідь",
+    "category": "animals"
+  },
+  {
+    "hebrew": "זְאֵב",
+    "transcription": "ze'ev",
+    "english": "wolf",
+    "ukrainian": "вовк",
+    "category": "animals"
+  },
+  {
+    "hebrew": "שׁוּעָל",
+    "transcription": "shu'al",
+    "english": "fox",
+    "ukrainian": "лисиця",
+    "category": "animals"
+  },
+  {
+    "hebrew": "אַרְיֵה",
+    "transcription": "aryeh",
+    "english": "lion",
+    "ukrainian": "лев",
+    "category": "animals"
+  },
+  {
+    "hebrew": "נָמֵר",
+    "transcription": "namer",
+    "english": "leopard",
+    "ukrainian": "леопард",
+    "category": "animals"
+  },
+  {
+    "hebrew": "קוֹף",
+    "transcription": "kof",
+    "english": "monkey",
+    "ukrainian": "мавпа",
+    "category": "animals"
+  },
+  {
+    "hebrew": "גִּ'ירָפָה",
+    "transcription": "jirafa",
+    "english": "giraffe",
+    "ukrainian": "жираф",
+    "category": "animals"
+  },
+  {
+    "hebrew": "עֲבוֹדָה",
+    "transcription": "avoda",
+    "english": "work",
+    "ukrainian": "робота",
+    "category": "work"
+  },
+  {
+    "hebrew": "עוֹבֵד",
+    "transcription": "oved",
+    "english": "worker; employee (m)",
+    "ukrainian": "робітник",
+    "category": "work"
+  },
+  {
+    "hebrew": "עוֹבֶדֶת",
+    "transcription": "ovedet",
+    "english": "worker; employee (f)",
+    "ukrainian": "робітниця",
+    "category": "work"
+  },
+  {
+    "hebrew": "מְנַהֵל",
+    "transcription": "menahel",
+    "english": "manager",
+    "ukrainian": "керівник",
+    "category": "work"
+  },
+  {
+    "hebrew": "מְנַהֶלֶת",
+    "transcription": "menahelet",
+    "english": "manager (f)",
+    "ukrainian": "керівниця",
+    "category": "work"
+  },
+  {
+    "hebrew": "בַּעַל הַבַּיִת",
+    "transcription": "ba'al habayit",
+    "english": "owner; landlord",
+    "ukrainian": "власник",
+    "category": "work"
+  },
+  {
+    "hebrew": "מַעֲבִיד",
+    "transcription": "ma'avid",
+    "english": "employer",
+    "ukrainian": "роботодавець",
+    "category": "work"
+  },
+  {
+    "hebrew": "עָמִית",
+    "transcription": "amit",
+    "english": "colleague",
+    "ukrainian": "колега",
+    "category": "work"
+  },
+  {
+    "hebrew": "מַשְׂכֹּרֶת",
+    "transcription": "maskoret",
+    "english": "salary",
+    "ukrainian": "зарплата",
+    "category": "work"
+  },
+  {
+    "hebrew": "שָׂכָר",
+    "transcription": "sakhar",
+    "english": "wage; pay",
+    "ukrainian": "оплата",
+    "category": "work"
+  },
+  {
+    "hebrew": "מַס",
+    "transcription": "mas",
+    "english": "tax",
+    "ukrainian": "податок",
+    "category": "work"
+  },
+  {
+    "hebrew": "חוֹזֶה",
+    "transcription": "chozeh",
+    "english": "contract",
+    "ukrainian": "договір",
+    "category": "work"
+  },
+  {
+    "hebrew": "מִכְתָּב",
+    "transcription": "michtav",
+    "english": "letter",
+    "ukrainian": "лист",
+    "category": "work"
+  },
+  {
+    "hebrew": "פְּגִישָׁה",
+    "transcription": "pgisha",
+    "english": "meeting",
+    "ukrainian": "зустріч",
+    "category": "work"
+  },
+  {
+    "hebrew": "יְשִׁיבָה",
+    "transcription": "yeshiva",
+    "english": "session; meeting",
+    "ukrainian": "засідання",
+    "category": "work"
+  },
+  {
+    "hebrew": "פְּרוֹיֶקְט",
+    "transcription": "proyekt",
+    "english": "project",
+    "ukrainian": "проєкт",
+    "category": "work"
+  },
+  {
+    "hebrew": "מַטָּרָה",
+    "transcription": "matara",
+    "english": "goal",
+    "ukrainian": "мета",
+    "category": "work"
+  },
+  {
+    "hebrew": "תַּפְקִיד",
+    "transcription": "tafkid",
+    "english": "role; position",
+    "ukrainian": "посада",
+    "category": "work"
+  },
+  {
+    "hebrew": "מִקְצוֹעַ",
+    "transcription": "miktzoa",
+    "english": "profession",
+    "ukrainian": "професія",
+    "category": "work"
+  },
+  {
+    "hebrew": "חַקְלָאוּת",
+    "transcription": "chakla'ut",
+    "english": "agriculture",
+    "ukrainian": "сільське господарство",
+    "category": "work"
+  },
+  {
+    "hebrew": "תַּעֲשִׂיָּה",
+    "transcription": "ta'asiya",
+    "english": "industry",
+    "ukrainian": "промисловість",
+    "category": "work"
+  },
+  {
+    "hebrew": "מִסְחָר",
+    "transcription": "mischar",
+    "english": "commerce",
+    "ukrainian": "торгівля",
+    "category": "work"
+  },
+  {
+    "hebrew": "בַּנְקַאי",
+    "transcription": "bankai",
+    "english": "banker",
+    "ukrainian": "банкір",
+    "category": "work"
+  },
+  {
+    "hebrew": "עוֹרֵךְ דִּין",
+    "transcription": "orekh din",
+    "english": "lawyer",
+    "ukrainian": "адвокат",
+    "category": "work"
+  },
+  {
+    "hebrew": "שׁוֹפֵט",
+    "transcription": "shofet",
+    "english": "judge",
+    "ukrainian": "суддя",
+    "category": "work"
+  },
+  {
+    "hebrew": "מַהֲנְדֵּס",
+    "transcription": "mahandes",
+    "english": "engineer",
+    "ukrainian": "інженер",
+    "category": "work"
+  },
+  {
+    "hebrew": "טֶכְנַאי",
+    "transcription": "tekhnai",
+    "english": "technician",
+    "ukrainian": "технік",
+    "category": "work"
+  },
+  {
+    "hebrew": "מַדְעָן",
+    "transcription": "mad'an",
+    "english": "scientist",
+    "ukrainian": "вчений",
+    "category": "work"
+  },
+  {
+    "hebrew": "חוֹקֵר",
+    "transcription": "choker",
+    "english": "researcher",
+    "ukrainian": "дослідник",
+    "category": "work"
+  },
+  {
+    "hebrew": "אוֹמָן",
+    "transcription": "oman",
+    "english": "artist; craftsman",
+    "ukrainian": "майстер",
+    "category": "work"
+  },
+  {
+    "hebrew": "שַׂחְקָן",
+    "transcription": "sachkan",
+    "english": "actor; player",
+    "ukrainian": "актор; гравець",
+    "category": "work"
+  },
+  {
+    "hebrew": "זַמָּר",
+    "transcription": "zamar",
+    "english": "singer",
+    "ukrainian": "співак",
+    "category": "work"
+  },
+  {
+    "hebrew": "מוּזִיקַאי",
+    "transcription": "muzikai",
+    "english": "musician",
+    "ukrainian": "музикант",
+    "category": "work"
+  },
+  {
+    "hebrew": "צַלָּם",
+    "transcription": "tzalam",
+    "english": "photographer",
+    "ukrainian": "фотограф",
+    "category": "work"
+  },
+  {
+    "hebrew": "עִתּוֹנַאי",
+    "transcription": "itonai",
+    "english": "journalist",
+    "ukrainian": "журналіст",
+    "category": "work"
+  },
+  {
+    "hebrew": "סוֹפֵר",
+    "transcription": "sofer",
+    "english": "writer",
+    "ukrainian": "письменник",
+    "category": "work"
+  },
+  {
+    "hebrew": "מְשׁוֹרֵר",
+    "transcription": "meshorer",
+    "english": "poet",
+    "ukrainian": "поет",
+    "category": "work"
+  },
+  {
+    "hebrew": "מוֹרֶה",
+    "transcription": "moreh",
+    "english": "teacher (m)",
+    "ukrainian": "вчитель",
+    "category": "work"
+  },
+  {
+    "hebrew": "מוֹרָה",
+    "transcription": "mora",
+    "english": "teacher (f)",
+    "ukrainian": "вчителька",
+    "category": "work"
+  },
+  {
+    "hebrew": "מַרְצֶה",
+    "transcription": "martze",
+    "english": "lecturer",
+    "ukrainian": "лектор",
+    "category": "work"
+  },
+  {
+    "hebrew": "מַזְכִּיר",
+    "transcription": "mazkir",
+    "english": "secretary",
+    "ukrainian": "секретар",
+    "category": "work"
+  },
+  {
+    "hebrew": "נֶהָג",
+    "transcription": "nehag",
+    "english": "driver",
+    "ukrainian": "водій",
+    "category": "work"
+  },
+  {
+    "hebrew": "טַבָּח",
+    "transcription": "tabach",
+    "english": "cook",
+    "ukrainian": "кухар",
+    "category": "work"
+  },
+  {
+    "hebrew": "מֶלְצָר",
+    "transcription": "meltzar",
+    "english": "waiter",
+    "ukrainian": "офіціант",
+    "category": "work"
+  },
+  {
+    "hebrew": "מֶלְצָרִית",
+    "transcription": "meltzarit",
+    "english": "waitress",
+    "ukrainian": "офіціантка",
+    "category": "work"
+  },
+  {
+    "hebrew": "חַיָּל",
+    "transcription": "chayal",
+    "english": "soldier",
+    "ukrainian": "солдат",
+    "category": "work"
+  },
+  {
+    "hebrew": "שׁוֹטֵר",
+    "transcription": "shoter",
+    "english": "policeman",
+    "ukrainian": "поліцейський",
+    "category": "work"
+  },
+  {
+    "hebrew": "גַּנָּן",
+    "transcription": "ganan",
+    "english": "gardener",
+    "ukrainian": "садівник",
+    "category": "work"
+  },
+  {
+    "hebrew": "דָּוָּר",
+    "transcription": "davar",
+    "english": "postman",
+    "ukrainian": "листоноша",
+    "category": "work"
+  },
+  {
+    "hebrew": "לִמּוּד",
+    "transcription": "limud",
+    "english": "study; learning",
+    "ukrainian": "навчання",
+    "category": "education"
+  },
+  {
+    "hebrew": "שִׁעוּר",
+    "transcription": "shi'ur",
+    "english": "lesson",
+    "ukrainian": "урок",
+    "category": "education"
+  },
+  {
+    "hebrew": "מִבְחָן",
+    "transcription": "mivchan",
+    "english": "test",
+    "ukrainian": "тест",
+    "category": "education"
+  },
+  {
+    "hebrew": "בְּחִינָה",
+    "transcription": "bechina",
+    "english": "exam",
+    "ukrainian": "іспит",
+    "category": "education"
+  },
+  {
+    "hebrew": "שִׁעוּרֵי בַּיִת",
+    "transcription": "shi'urei bayit",
+    "english": "homework",
+    "ukrainian": "домашнє завдання",
+    "category": "education"
+  },
+  {
+    "hebrew": "תַּלְמִיד",
+    "transcription": "talmid",
+    "english": "student (m)",
+    "ukrainian": "учень",
+    "category": "education"
+  },
+  {
+    "hebrew": "תַּלְמִידָה",
+    "transcription": "talmida",
+    "english": "student (f)",
+    "ukrainian": "учениця",
+    "category": "education"
+  },
+  {
+    "hebrew": "סְטוּדֶנְט",
+    "transcription": "student",
+    "english": "university student",
+    "ukrainian": "студент",
+    "category": "education"
+  },
+  {
+    "hebrew": "כִּתָּה",
+    "transcription": "kita",
+    "english": "class; classroom",
+    "ukrainian": "клас",
+    "category": "education"
+  },
+  {
+    "hebrew": "שִׂכְלוֹת",
+    "transcription": "skhelot",
+    "english": "abilities",
+    "ukrainian": "здібності",
+    "category": "education"
+  },
+  {
+    "hebrew": "יְדִיעָה",
+    "transcription": "yedi'a",
+    "english": "knowledge item; news item",
+    "ukrainian": "знання; повідомлення",
+    "category": "education"
+  },
+  {
+    "hebrew": "יֶדַע",
+    "transcription": "yeda",
+    "english": "knowledge",
+    "ukrainian": "знання",
+    "category": "education"
+  },
+  {
+    "hebrew": "חָכְמָה",
+    "transcription": "chokhma",
+    "english": "wisdom",
+    "ukrainian": "мудрість",
+    "category": "education"
+  },
+  {
+    "hebrew": "שָׂפָה",
+    "transcription": "safa",
+    "english": "language",
+    "ukrainian": "мова",
+    "category": "education"
+  },
+  {
+    "hebrew": "דִּקְדּוּק",
+    "transcription": "dikduk",
+    "english": "grammar",
+    "ukrainian": "граматика",
+    "category": "education"
+  },
+  {
+    "hebrew": "מִלָּה",
+    "transcription": "mila",
+    "english": "word",
+    "ukrainian": "слово",
+    "category": "education"
+  },
+  {
+    "hebrew": "מִשְׁפָּט",
+    "transcription": "mishpat",
+    "english": "sentence",
+    "ukrainian": "речення",
+    "category": "education"
+  },
+  {
+    "hebrew": "מַחְבֶּרֶת",
+    "transcription": "machberet",
+    "english": "notebook",
+    "ukrainian": "зошит",
+    "category": "education"
+  },
+  {
+    "hebrew": "עִפָּרוֹן",
+    "transcription": "iparon",
+    "english": "pencil",
+    "ukrainian": "олівець",
+    "category": "education"
+  },
+  {
+    "hebrew": "עֵט",
+    "transcription": "et",
+    "english": "pen",
+    "ukrainian": "ручка",
+    "category": "education"
+  },
+  {
+    "hebrew": "מַחַק",
+    "transcription": "machak",
+    "english": "eraser",
+    "ukrainian": "гумка",
+    "category": "education"
+  },
+  {
+    "hebrew": "סַרְגֵּל",
+    "transcription": "sargel",
+    "english": "ruler",
+    "ukrainian": "лінійка",
+    "category": "education"
+  },
+  {
+    "hebrew": "מִסְפָּרַיִם",
+    "transcription": "misparayim",
+    "english": "scissors",
+    "ukrainian": "ножиці",
+    "category": "education"
+  },
+  {
+    "hebrew": "דֶּבֶק",
+    "transcription": "devek",
+    "english": "glue",
+    "ukrainian": "клей",
+    "category": "education"
+  },
+  {
+    "hebrew": "נְיָר",
+    "transcription": "neyar",
+    "english": "paper",
+    "ukrainian": "папір",
+    "category": "education"
+  },
+  {
+    "hebrew": "דַּף",
+    "transcription": "daf",
+    "english": "page; sheet",
+    "ukrainian": "аркуш",
+    "category": "education"
+  },
+  {
+    "hebrew": "עַמּוּד",
+    "transcription": "amud",
+    "english": "page; column",
+    "ukrainian": "сторінка",
+    "category": "education"
+  },
+  {
+    "hebrew": "פֶּרֶק",
+    "transcription": "perek",
+    "english": "chapter",
+    "ukrainian": "розділ",
+    "category": "education"
+  },
+  {
+    "hebrew": "שִׁעוּר פְּרָטִי",
+    "transcription": "shi'ur prati",
+    "english": "private lesson",
+    "ukrainian": "приватний урок",
+    "category": "education"
+  },
+  {
+    "hebrew": "מַרְצֶה",
+    "transcription": "martze",
+    "english": "lecturer",
+    "ukrainian": "лектор",
+    "category": "education"
+  },
+  {
+    "hebrew": "הַרְצָאָה",
+    "transcription": "hartza'a",
+    "english": "lecture",
+    "ukrainian": "лекція",
+    "category": "education"
+  },
+  {
+    "hebrew": "תְּעוּדָה",
+    "transcription": "te'uda",
+    "english": "certificate",
+    "ukrainian": "свідоцтво",
+    "category": "education"
+  },
+  {
+    "hebrew": "תּוֹאַר",
+    "transcription": "to'ar",
+    "english": "degree; title",
+    "ukrainian": "ступінь",
+    "category": "education"
+  },
+  {
+    "hebrew": "מַחְלָקָה",
+    "transcription": "machlaka",
+    "english": "department",
+    "ukrainian": "відділ",
+    "category": "education"
+  },
+  {
+    "hebrew": "מְחִיר",
+    "transcription": "mechir",
+    "english": "price",
+    "ukrainian": "ціна",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "עוֹלֶה",
+    "transcription": "oleh",
+    "english": "costs; rises",
+    "ukrainian": "коштує",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "יָקָר",
+    "transcription": "yakar",
+    "english": "expensive; dear",
+    "ukrainian": "дорогий",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "זוֹל",
+    "transcription": "zol",
+    "english": "cheap",
+    "ukrainian": "дешевий",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "הַנְחָה",
+    "transcription": "hanacha",
+    "english": "discount",
+    "ukrainian": "знижка",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "מִבְצָע",
+    "transcription": "mivtza",
+    "english": "sale; operation",
+    "ukrainian": "акція",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "חֶשְׁבּוֹן",
+    "transcription": "cheshbon",
+    "english": "bill; account",
+    "ukrainian": "рахунок",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "קַבָּלָה",
+    "transcription": "kabala",
+    "english": "receipt",
+    "ukrainian": "квитанція",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "שֶׁטָר",
+    "transcription": "shetar",
+    "english": "banknote",
+    "ukrainian": "купюра",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "מַטְבֵּעַ",
+    "transcription": "matbea",
+    "english": "coin",
+    "ukrainian": "монета",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "עוֹדֶף",
+    "transcription": "odef",
+    "english": "change (money)",
+    "ukrainian": "решта",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "אַשְׁרַאי",
+    "transcription": "ashrai",
+    "english": "credit",
+    "ukrainian": "кредит",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "כַּרְטִיס אַשְׁרַאי",
+    "transcription": "kartis ashrai",
+    "english": "credit card",
+    "ukrainian": "кредитна картка",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "מְזֻמָּן",
+    "transcription": "mezuman",
+    "english": "cash",
+    "ukrainian": "готівка",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "חֶבְרָה",
+    "transcription": "chevra",
+    "english": "company; society",
+    "ukrainian": "компанія",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "עֵסֶק",
+    "transcription": "esek",
+    "english": "business",
+    "ukrainian": "бізнес",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "לָקוֹחַ",
+    "transcription": "lakoach",
+    "english": "customer",
+    "ukrainian": "клієнт",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "שֵׁרוּת",
+    "transcription": "sherut",
+    "english": "service",
+    "ukrainian": "обслуговування",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "מַעֲבָר",
+    "transcription": "ma'avar",
+    "english": "transition; crossing",
+    "ukrainian": "перехід",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "כֶּסֶף קָטָן",
+    "transcription": "kesef katan",
+    "english": "small change",
+    "ukrainian": "дрібні гроші",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "שְׁטָר חוֹב",
+    "transcription": "shtar chov",
+    "english": "promissory note",
+    "ukrainian": "вексель",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "חוֹב",
+    "transcription": "chov",
+    "english": "debt",
+    "ukrainian": "борг",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "הַלְוָאָה",
+    "transcription": "halva'a",
+    "english": "loan",
+    "ukrainian": "позика",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "עִסְקָה",
+    "transcription": "iska",
+    "english": "deal; transaction",
+    "ukrainian": "угода",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "הוֹצָאוֹת",
+    "transcription": "hotza'ot",
+    "english": "expenses",
+    "ukrainian": "витрати",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "הַכְנָסָה",
+    "transcription": "hachnasa",
+    "english": "income",
+    "ukrainian": "доход",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "חִסָּכוֹן",
+    "transcription": "chisachon",
+    "english": "savings",
+    "ukrainian": "заощадження",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "הַשְׁקָעָה",
+    "transcription": "hashka'a",
+    "english": "investment",
+    "ukrainian": "інвестиція",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "רֶוַח",
+    "transcription": "revach",
+    "english": "profit",
+    "ukrainian": "прибуток",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "הֶפְסֵד",
+    "transcription": "hefsed",
+    "english": "loss",
+    "ukrainian": "збиток",
+    "category": "shopping_money"
+  },
+  {
+    "hebrew": "רֶכֶב",
+    "transcription": "rekhev",
+    "english": "vehicle",
+    "ukrainian": "автомобіль",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "אוֹטוֹבּוּס",
+    "transcription": "otobus",
+    "english": "bus",
+    "ukrainian": "автобус",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "רַכֶּבֶת",
+    "transcription": "rakevet",
+    "english": "train",
+    "ukrainian": "потяг",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "מוֹנִית",
+    "transcription": "monit",
+    "english": "taxi",
+    "ukrainian": "таксі",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "אוֹפַנּוֹעַ",
+    "transcription": "ofnoa",
+    "english": "motorcycle",
+    "ukrainian": "мотоцикл",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "אוֹפַנַּיִם",
+    "transcription": "ofanayim",
+    "english": "bicycle",
+    "ukrainian": "велосипед",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "מָטוֹס",
+    "transcription": "matos",
+    "english": "airplane",
+    "ukrainian": "літак",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "סְפִינָה",
+    "transcription": "sfina",
+    "english": "ship",
+    "ukrainian": "корабель",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "סִירָה",
+    "transcription": "sira",
+    "english": "boat",
+    "ukrainian": "човен",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "מַעְבֹּרֶת",
+    "transcription": "ma'aboret",
+    "english": "ferry",
+    "ukrainian": "пором",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "מַחְסוֹם",
+    "transcription": "machsom",
+    "english": "barrier",
+    "ukrainian": "перепона",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "כְּבִישׁ",
+    "transcription": "kvish",
+    "english": "road",
+    "ukrainian": "дорога",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "מַסְלוּל",
+    "transcription": "maslul",
+    "english": "route; track",
+    "ukrainian": "маршрут",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "רַמְזוֹר",
+    "transcription": "ramzor",
+    "english": "traffic light",
+    "ukrainian": "світлофор",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "תִּמְרוּר",
+    "transcription": "timrur",
+    "english": "road sign",
+    "ukrainian": "дорожній знак",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "חֲנָיָה",
+    "transcription": "chanaya",
+    "english": "parking",
+    "ukrainian": "паркування",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "נְהִיגָה",
+    "transcription": "nehiga",
+    "english": "driving",
+    "ukrainian": "водіння",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "רִשָּׁיוֹן",
+    "transcription": "rishayon",
+    "english": "license",
+    "ukrainian": "ліцензія",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "דַּרְכּוֹן",
+    "transcription": "darkon",
+    "english": "passport",
+    "ukrainian": "паспорт",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "וִיזָה",
+    "transcription": "viza",
+    "english": "visa",
+    "ukrainian": "віза",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "מִזְוָדָה",
+    "transcription": "mizvada",
+    "english": "suitcase",
+    "ukrainian": "валіза",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "תִּיק",
+    "transcription": "tik",
+    "english": "bag",
+    "ukrainian": "сумка",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "גַּב תִּיק",
+    "transcription": "gav tik",
+    "english": "backpack",
+    "ukrainian": "рюкзак",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "נְסִיעָה",
+    "transcription": "nesia",
+    "english": "trip; journey",
+    "ukrainian": "поїздка",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "טִיּוּל",
+    "transcription": "tiyul",
+    "english": "excursion; tour",
+    "ukrainian": "екскурсія",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "מַפָּה",
+    "transcription": "mapa",
+    "english": "map",
+    "ukrainian": "карта",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "כְּתוֹבֶת",
+    "transcription": "ktovet",
+    "english": "address",
+    "ukrainian": "адреса",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "מַזְכֶּרֶת",
+    "transcription": "mazkeret",
+    "english": "souvenir",
+    "ukrainian": "сувенір",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "מַצְלֵמָה",
+    "transcription": "matzlema",
+    "english": "camera",
+    "ukrainian": "камера",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "שִׁלְטוֹן",
+    "transcription": "shilton",
+    "english": "regime; authority",
+    "ukrainian": "влада",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "דֶּגֶל",
+    "transcription": "degel",
+    "english": "flag",
+    "ukrainian": "прапор",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "חוּץ לָאָרֶץ",
+    "transcription": "chutz la'aretz",
+    "english": "abroad",
+    "ukrainian": "за кордоном",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "מַעֲבָר חֲצִיָּה",
+    "transcription": "ma'avar chatziya",
+    "english": "crosswalk",
+    "ukrainian": "пішохідний перехід",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "מַעְפִּיל",
+    "transcription": "ma'apil",
+    "english": "passenger",
+    "ukrainian": "пасажир",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "נוֹסֵעַ",
+    "transcription": "nose'a",
+    "english": "passenger; traveler",
+    "ukrainian": "пасажир",
+    "category": "transport_travel"
+  },
+  {
+    "hebrew": "טֶלֶפוֹן",
+    "transcription": "telefon",
+    "english": "phone",
+    "ukrainian": "телефон",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "נַיָּד",
+    "transcription": "nayad",
+    "english": "mobile",
+    "ukrainian": "мобільний",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "הוֹדָעָה",
+    "transcription": "hoda'a",
+    "english": "message",
+    "ukrainian": "повідомлення",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "שִׂיחָה",
+    "transcription": "sicha",
+    "english": "conversation; call",
+    "ukrainian": "розмова",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "דֹּאַר אֶלֶקְטְרוֹנִי",
+    "transcription": "do'ar elektroni",
+    "english": "email",
+    "ukrainian": "електронна пошта",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "אִינְטֶרְנֶט",
+    "transcription": "internet",
+    "english": "internet",
+    "ukrainian": "інтернет",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "אֲתָר",
+    "transcription": "atar",
+    "english": "website; site",
+    "ukrainian": "сайт",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "עִתּוֹן",
+    "transcription": "iton",
+    "english": "newspaper",
+    "ukrainian": "газета",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "כַּתָּב",
+    "transcription": "katav",
+    "english": "reporter",
+    "ukrainian": "репортер",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "חֲדָשׁוֹת",
+    "transcription": "chadashot",
+    "english": "news",
+    "ukrainian": "новини",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "מַאֲמָר",
+    "transcription": "ma'amar",
+    "english": "article",
+    "ukrainian": "стаття",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "פִּרְסוּם",
+    "transcription": "pirsum",
+    "english": "advertisement; publication",
+    "ukrainian": "реклама",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "שִׁדּוּר",
+    "transcription": "shidur",
+    "english": "broadcast",
+    "ukrainian": "трансляція",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "תָּכְנִית",
+    "transcription": "tochnit",
+    "english": "program; plan",
+    "ukrainian": "програма",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "סֵרֶט",
+    "transcription": "seret",
+    "english": "film",
+    "ukrainian": "фільм",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "סִדְרָה",
+    "transcription": "sidra",
+    "english": "series",
+    "ukrainian": "серіал",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "שִׁיר",
+    "transcription": "shir",
+    "english": "song; poem",
+    "ukrainian": "пісня",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "מוּזִיקָה",
+    "transcription": "muzika",
+    "english": "music",
+    "ukrainian": "музика",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "הַקְלָטָה",
+    "transcription": "haklata",
+    "english": "recording",
+    "ukrainian": "запис",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "רָאַיוֹן",
+    "transcription": "raayon",
+    "english": "interview",
+    "ukrainian": "інтерв'ю",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "שְׁאֵלָה",
+    "transcription": "she'ela",
+    "english": "question",
+    "ukrainian": "питання",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "תְּשׁוּבָה",
+    "transcription": "teshuva",
+    "english": "answer",
+    "ukrainian": "відповідь",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "עֵדוּת",
+    "transcription": "edut",
+    "english": "testimony",
+    "ukrainian": "свідчення",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "דַּעַת",
+    "transcription": "da'at",
+    "english": "opinion",
+    "ukrainian": "думка",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "דַּעַת קָהָל",
+    "transcription": "da'at kahal",
+    "english": "public opinion",
+    "ukrainian": "громадська думка",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "מַחֲשָׁבָה",
+    "transcription": "machshava",
+    "english": "thought",
+    "ukrainian": "думка",
+    "category": "communication_media"
+  },
+  {
+    "hebrew": "אַהֲבָה",
+    "transcription": "ahava",
+    "english": "love",
+    "ukrainian": "любов",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "שִׂנְאָה",
+    "transcription": "sina",
+    "english": "hatred",
+    "ukrainian": "ненависть",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "שִׂמְחָה",
+    "transcription": "simcha",
+    "english": "joy",
+    "ukrainian": "радість",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "עֶצֶב",
+    "transcription": "etzev",
+    "english": "sadness",
+    "ukrainian": "сум",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "כַּעַס",
+    "transcription": "ka'as",
+    "english": "anger",
+    "ukrainian": "гнів",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "פַּחַד",
+    "transcription": "pachad",
+    "english": "fear",
+    "ukrainian": "страх",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "חֲרָדָה",
+    "transcription": "charada",
+    "english": "anxiety",
+    "ukrainian": "тривога",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "דְּאָגָה",
+    "transcription": "de'aga",
+    "english": "worry",
+    "ukrainian": "турбота",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "תִּקְוָה",
+    "transcription": "tikva",
+    "english": "hope",
+    "ukrainian": "надія",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "אֱמוּנָה",
+    "transcription": "emuna",
+    "english": "faith; belief",
+    "ukrainian": "віра",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "בִּטָּחוֹן",
+    "transcription": "bitachon",
+    "english": "confidence; security",
+    "ukrainian": "впевненість",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "גַּאֲוָה",
+    "transcription": "ga'ava",
+    "english": "pride",
+    "ukrainian": "гордість",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "בּוּשָׁה",
+    "transcription": "busha",
+    "english": "shame",
+    "ukrainian": "сором",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "חֶרְפָּה",
+    "transcription": "cherpa",
+    "english": "disgrace",
+    "ukrainian": "ганьба",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "הַפְתָּעָה",
+    "transcription": "hafta'a",
+    "english": "surprise",
+    "ukrainian": "несподіванка",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "הִתְלַהֲבוּת",
+    "transcription": "hitlahavut",
+    "english": "enthusiasm",
+    "ukrainian": "захоплення",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "הַרְגָּשָׁה",
+    "transcription": "hargasha",
+    "english": "feeling",
+    "ukrainian": "відчуття",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "רֶגֶשׁ",
+    "transcription": "regesh",
+    "english": "emotion",
+    "ukrainian": "емоція",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "מַצַּב רוּחַ",
+    "transcription": "matzav ruach",
+    "english": "mood",
+    "ukrainian": "настрій",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "יְגִיעוּת",
+    "transcription": "yegi'ut",
+    "english": "fatigue",
+    "ukrainian": "втома",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "מְנוּחָה",
+    "transcription": "menucha",
+    "english": "rest",
+    "ukrainian": "відпочинок",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "שֵׁנָה",
+    "transcription": "shena",
+    "english": "sleep",
+    "ukrainian": "сон",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "חֲלוֹם",
+    "transcription": "chalom",
+    "english": "dream",
+    "ukrainian": "сон; мрія",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "רָצוֹן",
+    "transcription": "ratzon",
+    "english": "desire; will",
+    "ukrainian": "бажання",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "מַטָּרָה",
+    "transcription": "matara",
+    "english": "goal; target",
+    "ukrainian": "мета",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "הַצְלָחָה",
+    "transcription": "hatzlacha",
+    "english": "success",
+    "ukrainian": "успіх",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "כִּשָּׁלוֹן",
+    "transcription": "kishalon",
+    "english": "failure",
+    "ukrainian": "невдача",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "מַזָּל",
+    "transcription": "mazal",
+    "english": "luck",
+    "ukrainian": "удача",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "בְּעָיָה",
+    "transcription": "be'aya",
+    "english": "problem",
+    "ukrainian": "проблема",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "פִּתָּרוֹן",
+    "transcription": "pitaron",
+    "english": "solution",
+    "ukrainian": "розв'язання",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "צַעַר",
+    "transcription": "tza'ar",
+    "english": "sorrow",
+    "ukrainian": "горе",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "רַחֲמִים",
+    "transcription": "rachamim",
+    "english": "compassion",
+    "ukrainian": "співчуття",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "סַבְלָנוּת",
+    "transcription": "savlanut",
+    "english": "patience",
+    "ukrainian": "терпіння",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "שַׁלְוָה",
+    "transcription": "shalva",
+    "english": "tranquility",
+    "ukrainian": "спокій",
+    "category": "emotions_states"
+  },
+  {
+    "hebrew": "עוֹלָם",
+    "transcription": "olam",
+    "english": "world",
+    "ukrainian": "світ",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "חַיִּים",
+    "transcription": "chayim",
+    "english": "life",
+    "ukrainian": "життя",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "מָוֶת",
+    "transcription": "mavet",
+    "english": "death",
+    "ukrainian": "смерть",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "שָׁלוֹם",
+    "transcription": "shalom",
+    "english": "peace",
+    "ukrainian": "мир",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "מִלְחָמָה",
+    "transcription": "milchama",
+    "english": "war",
+    "ukrainian": "війна",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "חוֹק",
+    "transcription": "chok",
+    "english": "law",
+    "ukrainian": "закон",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "זְכוּת",
+    "transcription": "zekhut",
+    "english": "right (entitlement)",
+    "ukrainian": "право",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "חוֹבָה",
+    "transcription": "chova",
+    "english": "duty",
+    "ukrainian": "обов'язок",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "חֵרוּת",
+    "transcription": "cherut",
+    "english": "freedom",
+    "ukrainian": "свобода",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "צֶדֶק",
+    "transcription": "tzedek",
+    "english": "justice",
+    "ukrainian": "справедливість",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "אֱמֶת",
+    "transcription": "emet",
+    "english": "truth",
+    "ukrainian": "правда",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "שֶׁקֶר",
+    "transcription": "sheker",
+    "english": "lie; falsehood",
+    "ukrainian": "брехня",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "יֹפִי",
+    "transcription": "yofi",
+    "english": "beauty",
+    "ukrainian": "краса",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "כֹּחַ",
+    "transcription": "koach",
+    "english": "power; strength",
+    "ukrainian": "сила",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "חֻלְשָׁה",
+    "transcription": "chulsha",
+    "english": "weakness",
+    "ukrainian": "слабкість",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "דֶּרֶךְ",
+    "transcription": "derekh",
+    "english": "way; path",
+    "ukrainian": "шлях",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "שִׁיטָה",
+    "transcription": "shita",
+    "english": "method",
+    "ukrainian": "метод",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "מַטָּרָה",
+    "transcription": "matara",
+    "english": "purpose",
+    "ukrainian": "мета",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "סִבָּה",
+    "transcription": "siba",
+    "english": "reason; cause",
+    "ukrainian": "причина",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "תּוֹצָאָה",
+    "transcription": "totza'a",
+    "english": "result",
+    "ukrainian": "результат",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "הֶבְדֵּל",
+    "transcription": "hevdel",
+    "english": "difference",
+    "ukrainian": "різниця",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "דִּמְיוֹן",
+    "transcription": "dimyon",
+    "english": "imagination; similarity",
+    "ukrainian": "уява; схожість",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "רַעְיוֹן",
+    "transcription": "ra'ayon",
+    "english": "idea",
+    "ukrainian": "ідея",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "דּוּגְמָה",
+    "transcription": "dugma",
+    "english": "example",
+    "ukrainian": "приклад",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "עֻבְדָּה",
+    "transcription": "uvda",
+    "english": "fact",
+    "ukrainian": "факт",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "מֵידָע",
+    "transcription": "meda",
+    "english": "information",
+    "ukrainian": "інформація",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "נְקֻדָּה",
+    "transcription": "nekuda",
+    "english": "point; period",
+    "ukrainian": "крапка; пункт",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "שׁוּרָה",
+    "transcription": "shura",
+    "english": "line; row",
+    "ukrainian": "рядок",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "טוּר",
+    "transcription": "tur",
+    "english": "column; row",
+    "ukrainian": "колонка",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "צַד",
+    "transcription": "tzad",
+    "english": "side",
+    "ukrainian": "бік",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "חֵלֶק",
+    "transcription": "chelek",
+    "english": "part",
+    "ukrainian": "частина",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "שָׁלֵם",
+    "transcription": "shalem",
+    "english": "whole",
+    "ukrainian": "ціле",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "כְּמוּת",
+    "transcription": "kamut",
+    "english": "quantity",
+    "ukrainian": "кількість",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "אֵיכוּת",
+    "transcription": "eikhut",
+    "english": "quality",
+    "ukrainian": "якість",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "גֹּדֶל",
+    "transcription": "godel",
+    "english": "size",
+    "ukrainian": "розмір",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "מִשְׁקָל",
+    "transcription": "mishkal",
+    "english": "weight",
+    "ukrainian": "вага",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "גֹּבַהּ",
+    "transcription": "govah",
+    "english": "height",
+    "ukrainian": "висота",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "רֹחַב",
+    "transcription": "rochav",
+    "english": "width",
+    "ukrainian": "ширина",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "אֹרֶךְ",
+    "transcription": "orekh",
+    "english": "length",
+    "ukrainian": "довжина",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "עֹמֶק",
+    "transcription": "omek",
+    "english": "depth",
+    "ukrainian": "глибина",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "מֶרְחָק",
+    "transcription": "merchak",
+    "english": "distance",
+    "ukrainian": "відстань",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "מָקוֹם",
+    "transcription": "makom",
+    "english": "place",
+    "ukrainian": "місце",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "שֵׁם",
+    "transcription": "shem",
+    "english": "name",
+    "ukrainian": "ім'я",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "מִסְפָּר",
+    "transcription": "mispar",
+    "english": "number",
+    "ukrainian": "число",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "סוּג",
+    "transcription": "sug",
+    "english": "type; kind",
+    "ukrainian": "тип",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "מִין",
+    "transcription": "min",
+    "english": "kind; gender",
+    "ukrainian": "вид; стать",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "צוּרָה",
+    "transcription": "tzura",
+    "english": "shape; form",
+    "ukrainian": "форма",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "דָּבָר",
+    "transcription": "davar",
+    "english": "thing; matter",
+    "ukrainian": "річ",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "עִנְיָן",
+    "transcription": "inyan",
+    "english": "matter; topic",
+    "ukrainian": "справа",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "נוֹשֵׂא",
+    "transcription": "nose",
+    "english": "subject; topic",
+    "ukrainian": "тема",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "מַצָּב",
+    "transcription": "matzav",
+    "english": "situation; state",
+    "ukrainian": "ситуація",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "דּוּגְמָה",
+    "transcription": "dugma",
+    "english": "example",
+    "ukrainian": "приклад",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "אֶפְשָׁרוּת",
+    "transcription": "efsharut",
+    "english": "possibility",
+    "ukrainian": "можливість",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "מַחְלוֹקֶת",
+    "transcription": "machloket",
+    "english": "dispute",
+    "ukrainian": "суперечка",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "חֲשִׁיבוּת",
+    "transcription": "chashivut",
+    "english": "importance",
+    "ukrainian": "важливість",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "הֶמְשֵׁךְ",
+    "transcription": "hemshekh",
+    "english": "continuation",
+    "ukrainian": "продовження",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "שִׁנּוּי",
+    "transcription": "shinui",
+    "english": "change",
+    "ukrainian": "зміна",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "פִּתּוּחַ",
+    "transcription": "pituach",
+    "english": "development",
+    "ukrainian": "розвиток",
+    "category": "abstract_common"
+  },
+  {
+    "hebrew": "הִתְקַדְּמוּת",
+    "transcription": "hitkadmut",
+    "english": "progress",
+    "ukrainian": "прогрес",
+    "category": "abstract_common"
+  }
+]

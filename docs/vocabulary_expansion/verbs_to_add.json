@@ -1,0 +1,51 @@
+[
+  {
+    "hebrew": "יָכוֹל",
+    "transcription": "yakhol",
+    "english": "can; able",
+    "ukrainian": "можу; можливий",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "צָרִיךְ",
+    "transcription": "tzarikh",
+    "english": "needs; should",
+    "ukrainian": "треба",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "מֻכְרָח",
+    "transcription": "mukhrach",
+    "english": "must",
+    "ukrainian": "мусить",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "אָסוּר",
+    "transcription": "asur",
+    "english": "forbidden",
+    "ukrainian": "заборонено",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "מֻתָּר",
+    "transcription": "mutar",
+    "english": "permitted",
+    "ukrainian": "дозволено",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְקַבֵּל הַחְלָטָה",
+    "transcription": "lekabel hachlata",
+    "english": "to make a decision",
+    "ukrainian": "ухвалювати рішення",
+    "category": "verbs"
+  },
+  {
+    "hebrew": "לְהַזְמִין אוֹרְחִים",
+    "transcription": "lehazmin orchim",
+    "english": "to host guests",
+    "ukrainian": "запрошувати гостей",
+    "category": "verbs"
+  }
+]
