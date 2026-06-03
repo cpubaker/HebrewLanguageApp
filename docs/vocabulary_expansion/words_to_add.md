@@ -1,6 +1,6 @@
 # Words to add (frequency-driven)
 
-Generated from `tools/vocab_diff.py`. Existing: 1701. Candidates checked: 1068. Missing: 190.
+Generated from `tools/vocab_diff.py`. Existing: 1751. Candidates checked: 1068. Missing: 140.
 
 ## abstract_common (6)
 
@@ -34,29 +34,6 @@ Generated from `tools/vocab_diff.py`. Existing: 1701. Candidates checked: 1068. 
 | צָב | tzav | turtle | черепаха |  |
 | נָמֵר | namer | leopard | леопард |  |
 
-## body_health (18)
-
-| Hebrew | Transcription | English | Ukrainian | Note |
-|---|---|---|---|---|
-| צִפֹּרֶן | tziporen | nail | ніготь |  |
-| מָתְנַיִם | motnayim | hips; waist | стегна; талія |  |
-| קַרְסֹל | karsol | ankle | щиколотка |  |
-| רֵאָה | rea | lung | легеня |  |
-| כִּלְיָה | kilya | kidney | нирка |  |
-| קֵבָה | keva | stomach (organ) | шлунок |  |
-| שְׁרִיר | shrir | muscle | м'яз |  |
-| מֹחַ | moach | brain | мозок |  |
-| שַׁפַּעַת | shapaat | flu | грип |  |
-| צִנּוּן | tzinun | cold (illness) | застуда |  |
-| כְּאֵב רֹאשׁ | ke'ev rosh | headache | головний біль |  |
-| שִׁעוּל | shi'ul | cough | кашель |  |
-| בְּחִילָה | bechila | nausea | нудота |  |
-| שֶׁבֶר | shever | fracture | перелом |  |
-| בֵּית מִרְקַחַת | beit mirkachat | pharmacy | аптека |  |
-| מַזְרֵק | mazrek | syringe | шприц |  |
-| חִסּוּן | chisun | vaccination | щеплення |  |
-| דִּיאֵטָה | dieta | diet | дієта |  |
-
 ## city_places (13)
 
 | Hebrew | Transcription | English | Ukrainian | Note |
@@ -74,27 +51,6 @@ Generated from `tools/vocab_diff.py`. Existing: 1701. Candidates checked: 1068. 
 | מַכַּבֵּי אֵשׁ | mekabei esh | firefighters | пожежники |  |
 | בֵּית כְּנֶסֶת | beit knesset | synagogue | синагога |  |
 | מִסְגָּד | misgad | mosque | мечеть |  |
-
-## clothing (16)
-
-| Hebrew | Transcription | English | Ukrainian | Note |
-|---|---|---|---|---|
-| חֻלְצָה | chultza | shirt | сорочка |  |
-| מִכְנְסֵי גִּ'ינְס | mikhnesei jeans | jeans | джинси |  |
-| חֻלְצַת טְרִיקוֹ | chultzat triko | T-shirt | футболка |  |
-| גֶּ'קֶט | jeket | jacket | куртка |  |
-| מַגָּפַיִם | magafayim | boots | чоботи |  |
-| סַנְדָּלִים | sandalim | sandals | сандалі |  |
-| נַעֲלֵי סְפּוֹרְט | na'alei sport | sneakers | кросівки |  |
-| גַּרְבּוֹנִים | garbonim | tights | колготки |  |
-| עֲנִיבָה | aniva | tie | краватка |  |
-| מִשְׁקְפֵי שֶׁמֶשׁ | mishkefei shemesh | sunglasses | сонячні окуляри |  |
-| עָגִיל | agil | earring | сережка |  |
-| שָׁעוֹן יָד | sha'on yad | wristwatch | наручний годинник |  |
-| חֲלִיפַת יָם | chalifat yam | swimsuit | купальник |  |
-| פִּיגָ'מָה | pijama | pajamas | піжама |  |
-| חֲזִיָּה | chaziya | bra | бюстгальтер |  |
-| אֲרוֹן בְּגָדִים | aron begadim | wardrobe | шафа |  |
 
 ## communication_media (11)
 
@@ -129,27 +85,6 @@ Generated from `tools/vocab_diff.py`. Existing: 1701. Candidates checked: 1068. 
 | מַחַק | machak | eraser | гумка |  |
 | שִׁעוּר פְּרָטִי | shi'ur prati | private lesson | приватний урок |  |
 | מַרְצֶה | martze | lecturer | лектор |  |
-
-## family (16)
-
-| Hebrew | Transcription | English | Ukrainian | Note |
-|---|---|---|---|---|
-| נֶכֶד | nekhed | grandson | онук |  |
-| נֶכְדָּה | nekhda | granddaughter | онука |  |
-| אַחְיָן | achyan | nephew | племінник |  |
-| אַחְיָנִית | achyanit | niece | племінниця |  |
-| בֶּן דּוֹד | ben dod | cousin (m) | двоюрідний брат |  |
-| בַּת דּוֹדָה | bat doda | cousin (f) | двоюрідна сестра |  |
-| חָתָן | chatan | groom; son-in-law | наречений; зять |  |
-| כַּלָּה | kala | bride; daughter-in-law | наречена; невістка |  |
-| חָמוֹת | chamot | mother-in-law | теща; свекруха |  |
-| הוֹרִים | horim | parents | батьки |  |
-| תִּינוֹקֶת | tinoket | baby girl | немовля (ж.) |  |
-| נַעֲרָה | na'ara | girl; youth | дівчина |  |
-| שְׁכֵנָה | shkhena | neighbor (f) | сусідка |  |
-| קְרוֹב מִשְׁפָּחָה | krov mishpacha | relative | родич |  |
-| אַלְמָנָה | almana | widow | вдова |  |
-| גָּרוּשׁ | garush | divorced | розлучений |  |
 
 ## food (17)
 

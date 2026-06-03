@@ -13432,5 +13432,355 @@
         "english": "tranquility",
         "ukrainian": "спокій",
         "transcription": "shalva"
+    },
+    {
+        "word_id": "word_freq2k_grandson",
+        "hebrew": "נֶכֶד",
+        "english": "grandson",
+        "ukrainian": "онук",
+        "transcription": "nekhed"
+    },
+    {
+        "word_id": "word_freq2k_granddaughter",
+        "hebrew": "נֶכְדָּה",
+        "english": "granddaughter",
+        "ukrainian": "онука",
+        "transcription": "nekhda"
+    },
+    {
+        "word_id": "word_freq2k_nephew",
+        "hebrew": "אַחְיָן",
+        "english": "nephew",
+        "ukrainian": "племінник",
+        "transcription": "achyan"
+    },
+    {
+        "word_id": "word_freq2k_niece",
+        "hebrew": "אַחְיָנִית",
+        "english": "niece",
+        "ukrainian": "племінниця",
+        "transcription": "achyanit"
+    },
+    {
+        "word_id": "word_freq2k_cousin_m",
+        "hebrew": "בֶּן דּוֹד",
+        "english": "cousin (m)",
+        "ukrainian": "двоюрідний брат",
+        "transcription": "ben dod"
+    },
+    {
+        "word_id": "word_freq2k_cousin_f",
+        "hebrew": "בַּת דּוֹדָה",
+        "english": "cousin (f)",
+        "ukrainian": "двоюрідна сестра",
+        "transcription": "bat doda"
+    },
+    {
+        "word_id": "word_freq2k_groom",
+        "hebrew": "חָתָן",
+        "english": "groom; son-in-law",
+        "ukrainian": "наречений; зять",
+        "transcription": "chatan"
+    },
+    {
+        "word_id": "word_freq2k_bride",
+        "hebrew": "כַּלָּה",
+        "english": "bride; daughter-in-law",
+        "ukrainian": "наречена; невістка",
+        "transcription": "kala"
+    },
+    {
+        "word_id": "word_freq2k_mother_in_law",
+        "hebrew": "חָמוֹת",
+        "english": "mother-in-law",
+        "ukrainian": "теща; свекруха",
+        "transcription": "chamot"
+    },
+    {
+        "word_id": "word_freq2k_parents",
+        "hebrew": "הוֹרִים",
+        "english": "parents",
+        "ukrainian": "батьки",
+        "transcription": "horim"
+    },
+    {
+        "word_id": "word_freq2k_baby_girl",
+        "hebrew": "תִּינוֹקֶת",
+        "english": "baby girl",
+        "ukrainian": "немовля (ж.)",
+        "transcription": "tinoket"
+    },
+    {
+        "word_id": "word_freq2k_naara",
+        "hebrew": "נַעֲרָה",
+        "english": "girl; youth",
+        "ukrainian": "дівчина",
+        "transcription": "na'ara"
+    },
+    {
+        "word_id": "word_freq2k_neighbor_f",
+        "hebrew": "שְׁכֵנָה",
+        "english": "neighbor (f)",
+        "ukrainian": "сусідка",
+        "transcription": "shkhena"
+    },
+    {
+        "word_id": "word_freq2k_relative",
+        "hebrew": "קְרוֹב מִשְׁפָּחָה",
+        "english": "relative",
+        "ukrainian": "родич",
+        "transcription": "krov mishpacha"
+    },
+    {
+        "word_id": "word_freq2k_widow",
+        "hebrew": "אַלְמָנָה",
+        "english": "widow",
+        "ukrainian": "вдова",
+        "transcription": "almana"
+    },
+    {
+        "word_id": "word_freq2k_divorced",
+        "hebrew": "גָּרוּשׁ",
+        "english": "divorced",
+        "ukrainian": "розлучений",
+        "transcription": "garush"
+    },
+    {
+        "word_id": "word_freq2k_nail",
+        "hebrew": "צִפֹּרֶן",
+        "english": "nail",
+        "ukrainian": "ніготь",
+        "transcription": "tziporen"
+    },
+    {
+        "word_id": "word_freq2k_hips",
+        "hebrew": "מָתְנַיִם",
+        "english": "hips; waist",
+        "ukrainian": "стегна; талія",
+        "transcription": "motnayim"
+    },
+    {
+        "word_id": "word_freq2k_ankle",
+        "hebrew": "קַרְסֹל",
+        "english": "ankle",
+        "ukrainian": "щиколотка",
+        "transcription": "karsol"
+    },
+    {
+        "word_id": "word_freq2k_lung",
+        "hebrew": "רֵאָה",
+        "english": "lung",
+        "ukrainian": "легеня",
+        "transcription": "rea"
+    },
+    {
+        "word_id": "word_freq2k_kidney",
+        "hebrew": "כִּלְיָה",
+        "english": "kidney",
+        "ukrainian": "нирка",
+        "transcription": "kilya"
+    },
+    {
+        "word_id": "word_freq2k_stomach",
+        "hebrew": "קֵבָה",
+        "english": "stomach (organ)",
+        "ukrainian": "шлунок",
+        "transcription": "keva"
+    },
+    {
+        "word_id": "word_freq2k_muscle",
+        "hebrew": "שְׁרִיר",
+        "english": "muscle",
+        "ukrainian": "м'яз",
+        "transcription": "shrir"
+    },
+    {
+        "word_id": "word_freq2k_brain",
+        "hebrew": "מֹחַ",
+        "english": "brain",
+        "ukrainian": "мозок",
+        "transcription": "moach"
+    },
+    {
+        "word_id": "word_freq2k_flu",
+        "hebrew": "שַׁפַּעַת",
+        "english": "flu",
+        "ukrainian": "грип",
+        "transcription": "shapaat"
+    },
+    {
+        "word_id": "word_freq2k_cold_illness",
+        "hebrew": "צִנּוּן",
+        "english": "cold (illness)",
+        "ukrainian": "застуда",
+        "transcription": "tzinun"
+    },
+    {
+        "word_id": "word_freq2k_headache",
+        "hebrew": "כְּאֵב רֹאשׁ",
+        "english": "headache",
+        "ukrainian": "головний біль",
+        "transcription": "ke'ev rosh"
+    },
+    {
+        "word_id": "word_freq2k_cough",
+        "hebrew": "שִׁעוּל",
+        "english": "cough",
+        "ukrainian": "кашель",
+        "transcription": "shi'ul"
+    },
+    {
+        "word_id": "word_freq2k_nausea",
+        "hebrew": "בְּחִילָה",
+        "english": "nausea",
+        "ukrainian": "нудота",
+        "transcription": "bechila"
+    },
+    {
+        "word_id": "word_freq2k_fracture",
+        "hebrew": "שֶׁבֶר",
+        "english": "fracture",
+        "ukrainian": "перелом",
+        "transcription": "shever"
+    },
+    {
+        "word_id": "word_freq2k_pharmacy",
+        "hebrew": "בֵּית מִרְקַחַת",
+        "english": "pharmacy",
+        "ukrainian": "аптека",
+        "transcription": "beit mirkachat"
+    },
+    {
+        "word_id": "word_freq2k_syringe",
+        "hebrew": "מַזְרֵק",
+        "english": "syringe",
+        "ukrainian": "шприц",
+        "transcription": "mazrek"
+    },
+    {
+        "word_id": "word_freq2k_vaccination",
+        "hebrew": "חִסּוּן",
+        "english": "vaccination",
+        "ukrainian": "щеплення",
+        "transcription": "chisun"
+    },
+    {
+        "word_id": "word_freq2k_diet",
+        "hebrew": "דִּיאֵטָה",
+        "english": "diet",
+        "ukrainian": "дієта",
+        "transcription": "dieta"
+    },
+    {
+        "word_id": "word_freq2k_shirt",
+        "hebrew": "חֻלְצָה",
+        "english": "shirt",
+        "ukrainian": "сорочка",
+        "transcription": "chultza"
+    },
+    {
+        "word_id": "word_freq2k_jeans",
+        "hebrew": "מִכְנְסֵי גִּ'ינְס",
+        "english": "jeans",
+        "ukrainian": "джинси",
+        "transcription": "mikhnesei jeans"
+    },
+    {
+        "word_id": "word_freq2k_tshirt",
+        "hebrew": "חֻלְצַת טְרִיקוֹ",
+        "english": "T-shirt",
+        "ukrainian": "футболка",
+        "transcription": "chultzat triko"
+    },
+    {
+        "word_id": "word_freq2k_jacket",
+        "hebrew": "גֶּ'קֶט",
+        "english": "jacket",
+        "ukrainian": "куртка",
+        "transcription": "jeket"
+    },
+    {
+        "word_id": "word_freq2k_boots",
+        "hebrew": "מַגָּפַיִם",
+        "english": "boots",
+        "ukrainian": "чоботи",
+        "transcription": "magafayim"
+    },
+    {
+        "word_id": "word_freq2k_sandals",
+        "hebrew": "סַנְדָּלִים",
+        "english": "sandals",
+        "ukrainian": "сандалі",
+        "transcription": "sandalim"
+    },
+    {
+        "word_id": "word_freq2k_sneakers",
+        "hebrew": "נַעֲלֵי סְפּוֹרְט",
+        "english": "sneakers",
+        "ukrainian": "кросівки",
+        "transcription": "na'alei sport"
+    },
+    {
+        "word_id": "word_freq2k_tights",
+        "hebrew": "גַּרְבּוֹנִים",
+        "english": "tights",
+        "ukrainian": "колготки",
+        "transcription": "garbonim"
+    },
+    {
+        "word_id": "word_freq2k_tie",
+        "hebrew": "עֲנִיבָה",
+        "english": "tie",
+        "ukrainian": "краватка",
+        "transcription": "aniva"
+    },
+    {
+        "word_id": "word_freq2k_sunglasses",
+        "hebrew": "מִשְׁקְפֵי שֶׁמֶשׁ",
+        "english": "sunglasses",
+        "ukrainian": "сонячні окуляри",
+        "transcription": "mishkefei shemesh"
+    },
+    {
+        "word_id": "word_freq2k_earring",
+        "hebrew": "עָגִיל",
+        "english": "earring",
+        "ukrainian": "сережка",
+        "transcription": "agil"
+    },
+    {
+        "word_id": "word_freq2k_wristwatch",
+        "hebrew": "שָׁעוֹן יָד",
+        "english": "wristwatch",
+        "ukrainian": "наручний годинник",
+        "transcription": "sha'on yad"
+    },
+    {
+        "word_id": "word_freq2k_swimsuit",
+        "hebrew": "חֲלִיפַת יָם",
+        "english": "swimsuit",
+        "ukrainian": "купальник",
+        "transcription": "chalifat yam"
+    },
+    {
+        "word_id": "word_freq2k_pajamas",
+        "hebrew": "פִּיגָ'מָה",
+        "english": "pajamas",
+        "ukrainian": "піжама",
+        "transcription": "pijama"
+    },
+    {
+        "word_id": "word_freq2k_bra",
+        "hebrew": "חֲזִיָּה",
+        "english": "bra",
+        "ukrainian": "бюстгальтер",
+        "transcription": "chaziya"
+    },
+    {
+        "word_id": "word_freq2k_wardrobe",
+        "hebrew": "אֲרוֹן בְּגָדִים",
+        "english": "wardrobe",
+        "ukrainian": "шафа",
+        "transcription": "aron begadim"
     }
 ]

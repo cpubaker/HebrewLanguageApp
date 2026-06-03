@@ -14,6 +14,56 @@ When adding a frequency-batch entry to `hebrew_words.json`:
 
 | Batch | Date added | word_id | Hebrew | Transcription |
 |---|---|---|---|---|
+| 4 | 2026-06-03 | word_freq2k_grandson | נֶכֶד | nekhed |
+| 4 | 2026-06-03 | word_freq2k_granddaughter | נֶכְדָּה | nekhda |
+| 4 | 2026-06-03 | word_freq2k_nephew | אַחְיָן | achyan |
+| 4 | 2026-06-03 | word_freq2k_niece | אַחְיָנִית | achyanit |
+| 4 | 2026-06-03 | word_freq2k_cousin_m | בֶּן דּוֹד | ben dod |
+| 4 | 2026-06-03 | word_freq2k_cousin_f | בַּת דּוֹדָה | bat doda |
+| 4 | 2026-06-03 | word_freq2k_groom | חָתָן | chatan |
+| 4 | 2026-06-03 | word_freq2k_bride | כַּלָּה | kala |
+| 4 | 2026-06-03 | word_freq2k_mother_in_law | חָמוֹת | chamot |
+| 4 | 2026-06-03 | word_freq2k_parents | הוֹרִים | horim |
+| 4 | 2026-06-03 | word_freq2k_baby_girl | תִּינוֹקֶת | tinoket |
+| 4 | 2026-06-03 | word_freq2k_naara | נַעֲרָה | na'ara |
+| 4 | 2026-06-03 | word_freq2k_neighbor_f | שְׁכֵנָה | shkhena |
+| 4 | 2026-06-03 | word_freq2k_relative | קְרוֹב מִשְׁפָּחָה | krov mishpacha |
+| 4 | 2026-06-03 | word_freq2k_widow | אַלְמָנָה | almana |
+| 4 | 2026-06-03 | word_freq2k_divorced | גָּרוּשׁ | garush |
+| 4 | 2026-06-03 | word_freq2k_nail | צִפֹּרֶן | tziporen |
+| 4 | 2026-06-03 | word_freq2k_hips | מָתְנַיִם | motnayim |
+| 4 | 2026-06-03 | word_freq2k_ankle | קַרְסֹל | karsol |
+| 4 | 2026-06-03 | word_freq2k_lung | רֵאָה | rea |
+| 4 | 2026-06-03 | word_freq2k_kidney | כִּלְיָה | kilya |
+| 4 | 2026-06-03 | word_freq2k_stomach | קֵבָה | keva |
+| 4 | 2026-06-03 | word_freq2k_muscle | שְׁרִיר | shrir |
+| 4 | 2026-06-03 | word_freq2k_brain | מֹחַ | moach |
+| 4 | 2026-06-03 | word_freq2k_flu | שַׁפַּעַת | shapaat |
+| 4 | 2026-06-03 | word_freq2k_cold_illness | צִנּוּן | tzinun |
+| 4 | 2026-06-03 | word_freq2k_headache | כְּאֵב רֹאשׁ | ke'ev rosh |
+| 4 | 2026-06-03 | word_freq2k_cough | שִׁעוּל | shi'ul |
+| 4 | 2026-06-03 | word_freq2k_nausea | בְּחִילָה | bechila |
+| 4 | 2026-06-03 | word_freq2k_fracture | שֶׁבֶר | shever |
+| 4 | 2026-06-03 | word_freq2k_pharmacy | בֵּית מִרְקַחַת | beit mirkachat |
+| 4 | 2026-06-03 | word_freq2k_syringe | מַזְרֵק | mazrek |
+| 4 | 2026-06-03 | word_freq2k_vaccination | חִסּוּן | chisun |
+| 4 | 2026-06-03 | word_freq2k_diet | דִּיאֵטָה | dieta |
+| 4 | 2026-06-03 | word_freq2k_shirt | חֻלְצָה | chultza |
+| 4 | 2026-06-03 | word_freq2k_jeans | מִכְנְסֵי גִּ'ינְס | mikhnesei jeans |
+| 4 | 2026-06-03 | word_freq2k_tshirt | חֻלְצַת טְרִיקוֹ | chultzat triko |
+| 4 | 2026-06-03 | word_freq2k_jacket | גֶּ'קֶט | jeket |
+| 4 | 2026-06-03 | word_freq2k_boots | מַגָּפַיִם | magafayim |
+| 4 | 2026-06-03 | word_freq2k_sandals | סַנְדָּלִים | sandalim |
+| 4 | 2026-06-03 | word_freq2k_sneakers | נַעֲלֵי סְפּוֹרְט | na'alei sport |
+| 4 | 2026-06-03 | word_freq2k_tights | גַּרְבּוֹנִים | garbonim |
+| 4 | 2026-06-03 | word_freq2k_tie | עֲנִיבָה | aniva |
+| 4 | 2026-06-03 | word_freq2k_sunglasses | מִשְׁקְפֵי שֶׁמֶשׁ | mishkefei shemesh |
+| 4 | 2026-06-03 | word_freq2k_earring | עָגִיל | agil |
+| 4 | 2026-06-03 | word_freq2k_wristwatch | שָׁעוֹן יָד | sha'on yad |
+| 4 | 2026-06-03 | word_freq2k_swimsuit | חֲלִיפַת יָם | chalifat yam |
+| 4 | 2026-06-03 | word_freq2k_pajamas | פִּיגָ'מָה | pijama |
+| 4 | 2026-06-03 | word_freq2k_bra | חֲזִיָּה | chaziya |
+| 4 | 2026-06-03 | word_freq2k_wardrobe | אֲרוֹן בְּגָדִים | aron begadim |
 | 3 | 2026-06-03 | word_freq2k_cool_adj | קָרִיר | karir |
 | 3 | 2026-06-03 | word_freq2k_wet | רָטֹב | ratov |
 | 3 | 2026-06-03 | word_freq2k_dirty | מְלֻכְלָךְ | melukhlakh |
