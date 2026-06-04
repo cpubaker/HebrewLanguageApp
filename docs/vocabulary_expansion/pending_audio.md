@@ -14,257 +14,257 @@ When adding a frequency-batch entry to `hebrew_words.json`:
 
 | Batch | Date added | word_id | Hebrew | Transcription |
 |---|---|---|---|---|
-| 5 | 2026-06-03 | word_freq2k_sour_cream | שַׁמֶּנֶת | shamenet |
-| 5 | 2026-06-03 | word_freq2k_rice | אֹרֶז | orez |
-| 5 | 2026-06-03 | word_freq2k_chicken | עוֹף | of |
-| 5 | 2026-06-03 | word_freq2k_lamb | בְּשַׂר טָלֶה | bsar tale |
-| 5 | 2026-06-03 | word_freq2k_sausage | נַקְנִיק | naknik |
-| 5 | 2026-06-03 | word_freq2k_salted_fish | דָּג מָלוּחַ | dag maluach |
-| 5 | 2026-06-03 | word_freq2k_fruits | פֵּרוֹת | perot |
-| 5 | 2026-06-03 | word_freq2k_vegetables | יְרָקוֹת | yerakot |
-| 5 | 2026-06-03 | word_freq2k_grapes | עֲנָבִים | anavim |
-| 5 | 2026-06-03 | word_freq2k_cherry | דֻּבְדְּבָן | duvdevan |
-| 5 | 2026-06-03 | word_freq2k_strawberry | תּוּת | tut |
-| 5 | 2026-06-03 | word_freq2k_lettuce | חַסָּה | chasa |
-| 5 | 2026-06-03 | word_freq2k_green_pepper | פִּלְפֵּל יָרֹק | pilpel yarok |
-| 5 | 2026-06-03 | word_freq2k_meal | אֲרוּחָה | arucha |
-| 5 | 2026-06-03 | word_freq2k_napkin | מַפִּית | mapit |
-| 5 | 2026-06-03 | word_freq2k_ox | שׁוֹר | shor |
-| 5 | 2026-06-03 | word_freq2k_sheep | כֶּבֶשׂ | keves |
-| 5 | 2026-06-03 | word_freq2k_donkey | חֲמוֹר | chamor |
-| 5 | 2026-06-03 | word_freq2k_rabbit | ארנב | arnav |
-| 5 | 2026-06-03 | word_freq2k_rat | חֻלְדָּה | chulda |
-| 5 | 2026-06-03 | word_freq2k_eagle | נֶשֶׁר | nesher |
-| 5 | 2026-06-03 | word_freq2k_fowl | עוֹף | of |
-| 5 | 2026-06-03 | word_freq2k_rooster | תַּרְנְגוֹל | tarnegol |
-| 5 | 2026-06-03 | word_freq2k_hen | תַּרְנְגֹלֶת | tarnegolet |
-| 5 | 2026-06-03 | word_freq2k_fish_pl | דָּגִים | dagim |
-| 5 | 2026-06-03 | word_freq2k_snake | נָחָשׁ | nachash |
-| 5 | 2026-06-03 | word_freq2k_mosquito | יַתּוּשׁ | yatush |
-| 5 | 2026-06-03 | word_freq2k_fly | זְבוּב | zvuv |
-| 5 | 2026-06-03 | word_freq2k_spider | עַכָּבִישׁ | akavish |
-| 5 | 2026-06-03 | word_freq2k_turtle | צָב | tzav |
-| 5 | 2026-06-03 | word_freq2k_leopard | נָמֵר | namer |
-| 5 | 2026-06-03 | word_freq2k_clouds | עָנָנִים | ananim |
-| 5 | 2026-06-03 | word_freq2k_hail | בָּרָד | barad |
-| 5 | 2026-06-03 | word_freq2k_degree | מַעֲלָה | ma'ala |
-| 5 | 2026-06-03 | word_freq2k_electricity | חַשְׁמַל | chashmal |
-| 5 | 2026-06-03 | word_freq2k_root | שֹׁרֶשׁ | shoresh |
-| 5 | 2026-06-03 | word_freq2k_green | יָרֹק | yarok |
-| 5 | 2026-06-03 | word_freq2k_landscape | נוֹף | nof |
-| 5 | 2026-06-03 | word_freq2k_inanimate | דּוֹמֵם | domem |
-| 5 | 2026-06-03 | word_freq2k_darkness | חֹשֶׁךְ | choshekh |
-| 5 | 2026-06-03 | word_freq2k_spring_water | מַעְיָן | ma'ayan |
-| 5 | 2026-06-03 | word_freq2k_flow | שֶׁטֶף | shetef |
-| 5 | 2026-06-03 | word_freq2k_imagination | דִּמְיוֹן | dimyon |
-| 5 | 2026-06-03 | word_freq2k_column | טוּר | tur |
-| 5 | 2026-06-03 | word_freq2k_dispute | מַחְלוֹקֶת | machloket |
-| 5 | 2026-06-03 | word_freq2k_importance | חֲשִׁיבוּת | chashivut |
-| 5 | 2026-06-03 | word_freq2k_continuation | הֶמְשֵׁךְ | hemshekh |
-| 5 | 2026-06-03 | word_freq2k_progress | הִתְקַדְּמוּת | hitkadmut |
-| 5 | 2026-06-03 | word_freq2k_supermarket | סוּפֶּרְמַרְקֶט | supermarket |
-| 4 | 2026-06-03 | word_freq2k_grandson | נֶכֶד | nekhed |
-| 4 | 2026-06-03 | word_freq2k_granddaughter | נֶכְדָּה | nekhda |
-| 4 | 2026-06-03 | word_freq2k_nephew | אַחְיָן | achyan |
-| 4 | 2026-06-03 | word_freq2k_niece | אַחְיָנִית | achyanit |
-| 4 | 2026-06-03 | word_freq2k_cousin_m | בֶּן דּוֹד | ben dod |
-| 4 | 2026-06-03 | word_freq2k_cousin_f | בַּת דּוֹדָה | bat doda |
-| 4 | 2026-06-03 | word_freq2k_groom | חָתָן | chatan |
-| 4 | 2026-06-03 | word_freq2k_bride | כַּלָּה | kala |
-| 4 | 2026-06-03 | word_freq2k_mother_in_law | חָמוֹת | chamot |
-| 4 | 2026-06-03 | word_freq2k_parents | הוֹרִים | horim |
-| 4 | 2026-06-03 | word_freq2k_baby_girl | תִּינוֹקֶת | tinoket |
-| 4 | 2026-06-03 | word_freq2k_naara | נַעֲרָה | na'ara |
-| 4 | 2026-06-03 | word_freq2k_neighbor_f | שְׁכֵנָה | shkhena |
-| 4 | 2026-06-03 | word_freq2k_relative | קְרוֹב מִשְׁפָּחָה | krov mishpacha |
-| 4 | 2026-06-03 | word_freq2k_widow | אַלְמָנָה | almana |
-| 4 | 2026-06-03 | word_freq2k_divorced | גָּרוּשׁ | garush |
-| 4 | 2026-06-03 | word_freq2k_nail | צִפֹּרֶן | tziporen |
-| 4 | 2026-06-03 | word_freq2k_hips | מָתְנַיִם | motnayim |
-| 4 | 2026-06-03 | word_freq2k_ankle | קַרְסֹל | karsol |
-| 4 | 2026-06-03 | word_freq2k_lung | רֵאָה | rea |
-| 4 | 2026-06-03 | word_freq2k_kidney | כִּלְיָה | kilya |
-| 4 | 2026-06-03 | word_freq2k_stomach | קֵבָה | keva |
-| 4 | 2026-06-03 | word_freq2k_muscle | שְׁרִיר | shrir |
-| 4 | 2026-06-03 | word_freq2k_brain | מֹחַ | moach |
-| 4 | 2026-06-03 | word_freq2k_flu | שַׁפַּעַת | shapaat |
-| 4 | 2026-06-03 | word_freq2k_cold_illness | צִנּוּן | tzinun |
-| 4 | 2026-06-03 | word_freq2k_headache | כְּאֵב רֹאשׁ | ke'ev rosh |
-| 4 | 2026-06-03 | word_freq2k_cough | שִׁעוּל | shi'ul |
-| 4 | 2026-06-03 | word_freq2k_nausea | בְּחִילָה | bechila |
-| 4 | 2026-06-03 | word_freq2k_fracture | שֶׁבֶר | shever |
-| 4 | 2026-06-03 | word_freq2k_pharmacy | בֵּית מִרְקַחַת | beit mirkachat |
-| 4 | 2026-06-03 | word_freq2k_syringe | מַזְרֵק | mazrek |
-| 4 | 2026-06-03 | word_freq2k_vaccination | חִסּוּן | chisun |
-| 4 | 2026-06-03 | word_freq2k_diet | דִּיאֵטָה | dieta |
-| 4 | 2026-06-03 | word_freq2k_shirt | חֻלְצָה | chultza |
-| 4 | 2026-06-03 | word_freq2k_jeans | מִכְנְסֵי גִּ'ינְס | mikhnesei jeans |
-| 4 | 2026-06-03 | word_freq2k_tshirt | חֻלְצַת טְרִיקוֹ | chultzat triko |
-| 4 | 2026-06-03 | word_freq2k_jacket | גֶּ'קֶט | jeket |
-| 4 | 2026-06-03 | word_freq2k_boots | מַגָּפַיִם | magafayim |
-| 4 | 2026-06-03 | word_freq2k_sandals | סַנְדָּלִים | sandalim |
-| 4 | 2026-06-03 | word_freq2k_sneakers | נַעֲלֵי סְפּוֹרְט | na'alei sport |
-| 4 | 2026-06-03 | word_freq2k_tights | גַּרְבּוֹנִים | garbonim |
-| 4 | 2026-06-03 | word_freq2k_tie | עֲנִיבָה | aniva |
-| 4 | 2026-06-03 | word_freq2k_sunglasses | מִשְׁקְפֵי שֶׁמֶשׁ | mishkefei shemesh |
-| 4 | 2026-06-03 | word_freq2k_earring | עָגִיל | agil |
-| 4 | 2026-06-03 | word_freq2k_wristwatch | שָׁעוֹן יָד | sha'on yad |
-| 4 | 2026-06-03 | word_freq2k_swimsuit | חֲלִיפַת יָם | chalifat yam |
-| 4 | 2026-06-03 | word_freq2k_pajamas | פִּיגָ'מָה | pijama |
-| 4 | 2026-06-03 | word_freq2k_bra | חֲזִיָּה | chaziya |
-| 4 | 2026-06-03 | word_freq2k_wardrobe | אֲרוֹן בְּגָדִים | aron begadim |
-| 3 | 2026-06-03 | word_freq2k_cool_adj | קָרִיר | karir |
-| 3 | 2026-06-03 | word_freq2k_wet | רָטֹב | ratov |
-| 3 | 2026-06-03 | word_freq2k_dirty | מְלֻכְלָךְ | melukhlakh |
-| 3 | 2026-06-03 | word_freq2k_confused | מְבֻלְבָּל | mevulbal |
-| 3 | 2026-06-03 | word_freq2k_boring | מְשַׁעֲמֵם | mesha'amem |
-| 3 | 2026-06-03 | word_freq2k_complicated | מְסֻבָּךְ | mesubakh |
-| 3 | 2026-06-03 | word_freq2k_famous | מְפֻרְסָם | mefursam |
-| 3 | 2026-06-03 | word_freq2k_real | אֲמִיתִי | amiti |
-| 3 | 2026-06-03 | word_freq2k_suitable | מַתְאִים | matim |
-| 3 | 2026-06-03 | word_freq2k_similar | דּוֹמֶה | domeh |
-| 3 | 2026-06-03 | word_freq2k_shared | מְשֻׁתָּף | meshutaf |
-| 3 | 2026-06-03 | word_freq2k_whole_adj | שָׁלֵם | shalem |
-| 3 | 2026-06-03 | word_freq2k_broken | שָׁבוּר | shavur |
-| 3 | 2026-06-03 | word_freq2k_free_adj | חָפְשִׁי | chofshi |
-| 3 | 2026-06-03 | word_freq2k_occupied | תָּפוּס | tafus |
-| 3 | 2026-06-03 | word_freq2k_delicious | טָעִים | ta'im |
-| 3 | 2026-06-03 | word_freq2k_ripe | בָּשֵׁל | bashel |
-| 3 | 2026-06-03 | word_freq2k_polite | אַדִּיב | adiv |
-| 3 | 2026-06-03 | word_freq2k_rude | גַּס | gas |
-| 3 | 2026-06-03 | word_freq2k_stingy | קַמְצָן | kamtzan |
-| 3 | 2026-06-03 | word_freq2k_coward | פַּחְדָן | pachdan |
-| 3 | 2026-06-03 | word_freq2k_dangerous | מְסֻכָּן | mesukan |
-| 3 | 2026-06-03 | word_freq2k_funny | מַצְחִיק | matzchik |
-| 3 | 2026-06-03 | word_freq2k_rude_spirit | גַּס רוּחַ | gas ruach |
-| 3 | 2026-06-03 | word_freq2k_stubborn | עָקֵב | aqev |
-| 3 | 2026-06-03 | word_freq2k_lazy | עַצְלָן | atzlan |
-| 3 | 2026-06-03 | word_freq2k_diligent | חָרוּץ | charutz |
-| 3 | 2026-06-03 | word_freq2k_main_adj | עִקָּרִי | ikari |
-| 3 | 2026-06-03 | word_freq2k_special | מְיֻחָד | meyuchad |
-| 3 | 2026-06-03 | word_freq2k_wonderful | נֶהְדָּר | nehedar |
-| 3 | 2026-06-03 | word_freq2k_hatred | שִׂנְאָה | sina |
-| 3 | 2026-06-03 | word_freq2k_joy | שִׂמְחָה | simcha |
-| 3 | 2026-06-03 | word_freq2k_sadness | עֶצֶב | etzev |
-| 3 | 2026-06-03 | word_freq2k_anger | כַּעַס | ka'as |
-| 3 | 2026-06-03 | word_freq2k_anxiety | חֲרָדָה | charada |
-| 3 | 2026-06-03 | word_freq2k_worry | דְּאָגָה | de'aga |
-| 3 | 2026-06-03 | word_freq2k_faith | אֱמוּנָה | emuna |
-| 3 | 2026-06-03 | word_freq2k_confidence | בִּטָּחוֹן | bitachon |
-| 3 | 2026-06-03 | word_freq2k_pride | גַּאֲוָה | ga'ava |
-| 3 | 2026-06-03 | word_freq2k_shame | בּוּשָׁה | busha |
-| 3 | 2026-06-03 | word_freq2k_disgrace | חֶרְפָּה | cherpa |
-| 3 | 2026-06-03 | word_freq2k_enthusiasm | הִתְלַהֲבוּת | hitlahavut |
-| 3 | 2026-06-03 | word_freq2k_feeling | הַרְגָּשָׁה | hargasha |
-| 3 | 2026-06-03 | word_freq2k_fatigue | יְגִיעוּת | yegi'ut |
-| 3 | 2026-06-03 | word_freq2k_rest | מְנוּחָה | menucha |
-| 3 | 2026-06-03 | word_freq2k_desire | רָצוֹן | ratzon |
-| 3 | 2026-06-03 | word_freq2k_sorrow | צַעַר | tza'ar |
-| 3 | 2026-06-03 | word_freq2k_compassion | רַחֲמִים | rachamim |
-| 3 | 2026-06-03 | word_freq2k_patience | סַבְלָנוּת | savlanut |
-| 3 | 2026-06-03 | word_freq2k_tranquility | שַׁלְוָה | shalva |
-| 2 | 2026-06-03 | word_freq2k_eizo | אֵיזוֹ | eizo |
-| 2 | 2026-06-03 | word_freq2k_haim | הַאִם | ha'im |
-| 2 | 2026-06-03 | word_freq2k_meat_meat | מְעַט מְעַט | me'at me'at |
-| 2 | 2026-06-03 | word_freq2k_maspik | מַסְפִּיק | maspik |
-| 2 | 2026-06-03 | word_freq2k_yoter | יוֹתֵר | yoter |
-| 2 | 2026-06-03 | word_freq2k_pachot | פָּחוֹת | pachot |
-| 2 | 2026-06-03 | word_freq2k_haki | הַכִּי | haki |
-| 2 | 2026-06-03 | word_freq2k_beyoter | בְּיוֹתֵר | beyoter |
-| 2 | 2026-06-03 | word_freq2k_kol_every | כָּל | kol |
-| 2 | 2026-06-03 | word_freq2k_eizeshehu | אֵיזֶשֶׁהוּ | eizeshehu |
-| 2 | 2026-06-03 | word_freq2k_eizoshehi | אֵיזוֹשֶׁהִי | eizoshehi |
-| 2 | 2026-06-03 | word_freq2k_gray | אָפֹר | afor |
-| 2 | 2026-06-03 | word_freq2k_purple | סָגֹל | sagol |
-| 2 | 2026-06-03 | word_freq2k_beige | בֵּז' | bezh |
-| 2 | 2026-06-03 | word_freq2k_turquoise | טֻרְקִיז | turkiz |
-| 2 | 2026-06-03 | word_freq2k_burgundy | בּוּרְגּוּנְדִי | burgundi |
-| 2 | 2026-06-03 | word_freq2k_shilshom | שִׁלְשׁוֹם | shilshom |
-| 2 | 2026-06-03 | word_freq2k_mochrotayim | מָחֳרָתַיִם | mochrotayim |
-| 2 | 2026-06-03 | word_freq2k_tzohorayim | צָהֳרַיִם | tzohorayim |
-| 2 | 2026-06-03 | word_freq2k_afternoon | אַחַר הַצָּהֳרַיִם | achar hatzohorayim |
-| 2 | 2026-06-03 | word_freq2k_chatzot | חֲצוֹת | chatzot |
-| 2 | 2026-06-03 | word_freq2k_paam | פַּעַם | pa'am |
-| 2 | 2026-06-03 | word_freq2k_achar_kakh | אַחַר כָּךְ | achar kakh |
-| 2 | 2026-06-03 | word_freq2k_lifnei_khen | לִפְנֵי כֵן | lifnei khen |
-| 2 | 2026-06-03 | word_freq2k_miyad | מִיָּד | miyad |
-| 2 | 2026-06-03 | word_freq2k_bekarov | בְּקָרוֹב | bekarov |
-| 2 | 2026-06-03 | word_freq2k_leat | לְאַט | le'at |
-| 2 | 2026-06-03 | word_freq2k_maher | מַהֵר | maher |
-| 2 | 2026-06-03 | word_freq2k_shabbat | שַׁבָּת | shabbat |
-| 2 | 2026-06-03 | word_freq2k_stav | סְתָו | stav |
-| 2 | 2026-06-03 | word_freq2k_life | חַיִּים | chayim |
-| 2 | 2026-06-03 | word_freq2k_freedom | חֵרוּת | cherut |
-| 2 | 2026-06-03 | word_freq2k_beauty | יֹפִי | yofi |
-| 2 | 2026-06-03 | word_freq2k_power | כֹּחַ | koach |
-| 2 | 2026-06-03 | word_freq2k_weakness | חֻלְשָׁה | chulsha |
-| 2 | 2026-06-03 | word_freq2k_reason | סִבָּה | siba |
-| 2 | 2026-06-03 | word_freq2k_difference | הֶבְדֵּל | hevdel |
-| 2 | 2026-06-03 | word_freq2k_fact | עֻבְדָּה | uvda |
-| 2 | 2026-06-03 | word_freq2k_information | מֵידָע | meda |
-| 2 | 2026-06-03 | word_freq2k_point | נְקֻדָּה | nekuda |
-| 2 | 2026-06-03 | word_freq2k_size | גֹּדֶל | godel |
-| 2 | 2026-06-03 | word_freq2k_height | גֹּבַהּ | govah |
-| 2 | 2026-06-03 | word_freq2k_length | אֹרֶךְ | orekh |
-| 2 | 2026-06-03 | word_freq2k_distance | מֶרְחָק | merchak |
-| 2 | 2026-06-03 | word_freq2k_type | סוּג | sug |
-| 2 | 2026-06-03 | word_freq2k_thing | דָּבָר | davar |
-| 2 | 2026-06-03 | word_freq2k_matter | עִנְיָן | inyan |
-| 2 | 2026-06-03 | word_freq2k_subject | נוֹשֵׂא | nose |
-| 2 | 2026-06-03 | word_freq2k_state | מַצָּב | matzav |
-| 2 | 2026-06-03 | word_freq2k_change | שִׁנּוּי | shinui |
-| 1 | 2026-06-03 | word_freq2k_but | אֲבָל | aval |
-| 1 | 2026-06-03 | word_freq2k_or | אוֹ | o |
-| 1 | 2026-06-03 | word_freq2k_ki | כִּי | ki |
-| 1 | 2026-06-03 | word_freq2k_she | שֶׁ | she |
-| 1 | 2026-06-03 | word_freq2k_gam | גַּם | gam |
-| 1 | 2026-06-03 | word_freq2k_only | רַק | rak |
-| 1 | 2026-06-03 | word_freq2k_od | עוֹד | od |
-| 1 | 2026-06-03 | word_freq2k_already | כְּבָר | kvar |
-| 1 | 2026-06-03 | word_freq2k_however | אוּלָם | ulam |
-| 1 | 2026-06-03 | word_freq2k_bekhol_zot | בְּכָל זֹאת | bekhol zot |
-| 1 | 2026-06-03 | word_freq2k_therefore | לָכֵן | lakhen |
-| 1 | 2026-06-03 | word_freq2k_mipnei_she | מִפְּנֵי שֶׁ | mipnei she |
-| 1 | 2026-06-03 | word_freq2k_keivan_she | כֵּיוָן שֶׁ | keivan she |
-| 1 | 2026-06-03 | word_freq2k_bizman_she | בִּזְמַן שֶׁ | bizman she |
-| 1 | 2026-06-03 | word_freq2k_kshe | כְּשֶׁ | kshe |
-| 1 | 2026-06-03 | word_freq2k_lifnei_she | לִפְנֵי שֶׁ | lifnei she |
-| 1 | 2026-06-03 | word_freq2k_acharei_she | אַחֲרֵי שֶׁ | acharei she |
-| 1 | 2026-06-03 | word_freq2k_beod_she | בְּעוֹד שֶׁ | be'od she |
-| 1 | 2026-06-03 | word_freq2k_kedei | כְּדֵי | kedei |
-| 1 | 2026-06-03 | word_freq2k_kedei_she | כְּדֵי שֶׁ | kedei she |
-| 1 | 2026-06-03 | word_freq2k_beetzem | בְּעֶצֶם | be'etzem |
-| 1 | 2026-06-03 | word_freq2k_beemet | בֶּאֱמֶת | be'emet |
-| 1 | 2026-06-03 | word_freq2k_bediyuk | בְּדִיּוּק | bediyuk |
-| 1 | 2026-06-03 | word_freq2k_beikar | בְּעִקָּר | be'ikar |
-| 1 | 2026-06-03 | word_freq2k_bimyukhad | בִּמְיֻחָד | bimyukhad |
-| 1 | 2026-06-03 | word_freq2k_bekhol_ofen | בְּכָל אֹפֶן | bekhol ofen |
-| 1 | 2026-06-03 | word_freq2k_bekhol_mikre | בְּכָל מִקְרֶה | bekhol mikre |
-| 1 | 2026-06-03 | word_freq2k_af_al_pi_khen | אַף עַל פִּי כֵן | af al pi khen |
-| 1 | 2026-06-03 | word_freq2k_klomar | כְּלוֹמַר | klomar |
-| 1 | 2026-06-03 | word_freq2k_lemashal | לְמָשָׁל | lemashal |
-| 1 | 2026-06-03 | word_freq2k_kemo_khen | כְּמוֹ כֵן | kemo khen |
-| 1 | 2026-06-03 | word_freq2k_chutz_mi | חוּץ מִ | chutz mi |
-| 1 | 2026-06-03 | word_freq2k_milvad | מִלְּבַד | milvad |
-| 1 | 2026-06-03 | word_freq2k_leumat | לְעֻמַּת | le'umat |
-| 1 | 2026-06-03 | word_freq2k_mitokh | מִתּוֹךְ | mitokh |
-| 1 | 2026-06-03 | word_freq2k_harei | הֲרֵי | harei |
-| 1 | 2026-06-03 | word_freq2k_davka | דַּוְקָא | davka |
-| 1 | 2026-06-03 | word_freq2k_afilu | אֲפִילּוּ | afilu |
-| 1 | 2026-06-03 | word_freq2k_we | אֲנַחְנוּ | anachnu |
-| 1 | 2026-06-03 | word_freq2k_this_m | הַזֶּה | hazeh |
-| 1 | 2026-06-03 | word_freq2k_this_f | הַזֹּאת | hazot |
-| 1 | 2026-06-03 | word_freq2k_that_m | הַהוּא | hahu |
-| 1 | 2026-06-03 | word_freq2k_that_f | הַהִיא | hahi |
-| 1 | 2026-06-03 | word_freq2k_here | כָּאן | kan |
-| 1 | 2026-06-03 | word_freq2k_meayin | מֵאַיִן | me'ayin |
-| 1 | 2026-06-03 | word_freq2k_kakha | כָּכָה | kakha |
-| 1 | 2026-06-03 | word_freq2k_kakh | כָּךְ | kakh |
-| 1 | 2026-06-03 | word_freq2k_other_f | אַחֶרֶת | akheret |
-| 1 | 2026-06-03 | word_freq2k_atzmi | עַצְמִי | atzmi |
-| 1 | 2026-06-03 | word_freq2k_mashehu | מַשֶּׁהוּ | mashehu |
 
 ## Done
 
 | Batch | Date generated | word_id | audio_file |
 |---|---|---|---|
+| 5 | 2026-06-04 | word_freq2k_sour_cream | words/word_freq2k_sour_cream.mp3 |
+| 5 | 2026-06-04 | word_freq2k_rice | words/word_freq2k_rice.mp3 |
+| 5 | 2026-06-04 | word_freq2k_chicken | words/word_freq2k_chicken.mp3 |
+| 5 | 2026-06-04 | word_freq2k_lamb | words/word_freq2k_lamb.mp3 |
+| 5 | 2026-06-04 | word_freq2k_sausage | words/word_freq2k_sausage.mp3 |
+| 5 | 2026-06-04 | word_freq2k_salted_fish | words/word_freq2k_salted_fish.mp3 |
+| 5 | 2026-06-04 | word_freq2k_fruits | words/word_freq2k_fruits.mp3 |
+| 5 | 2026-06-04 | word_freq2k_vegetables | words/word_freq2k_vegetables.mp3 |
+| 5 | 2026-06-04 | word_freq2k_grapes | words/word_freq2k_grapes.mp3 |
+| 5 | 2026-06-04 | word_freq2k_cherry | words/word_freq2k_cherry.mp3 |
+| 5 | 2026-06-04 | word_freq2k_strawberry | words/word_freq2k_strawberry.mp3 |
+| 5 | 2026-06-04 | word_freq2k_lettuce | words/word_freq2k_lettuce.mp3 |
+| 5 | 2026-06-04 | word_freq2k_green_pepper | words/word_freq2k_green_pepper.mp3 |
+| 5 | 2026-06-04 | word_freq2k_meal | words/word_freq2k_meal.mp3 |
+| 5 | 2026-06-04 | word_freq2k_napkin | words/word_freq2k_napkin.mp3 |
+| 5 | 2026-06-04 | word_freq2k_ox | words/word_freq2k_ox.mp3 |
+| 5 | 2026-06-04 | word_freq2k_sheep | words/word_freq2k_sheep.mp3 |
+| 5 | 2026-06-04 | word_freq2k_donkey | words/word_freq2k_donkey.mp3 |
+| 5 | 2026-06-04 | word_freq2k_rabbit | words/word_freq2k_rabbit.mp3 |
+| 5 | 2026-06-04 | word_freq2k_rat | words/word_freq2k_rat.mp3 |
+| 5 | 2026-06-04 | word_freq2k_eagle | words/word_freq2k_eagle.mp3 |
+| 5 | 2026-06-04 | word_freq2k_fowl | words/word_freq2k_fowl.mp3 |
+| 5 | 2026-06-04 | word_freq2k_rooster | words/word_freq2k_rooster.mp3 |
+| 5 | 2026-06-04 | word_freq2k_hen | words/word_freq2k_hen.mp3 |
+| 5 | 2026-06-04 | word_freq2k_fish_pl | words/word_freq2k_fish_pl.mp3 |
+| 5 | 2026-06-04 | word_freq2k_snake | words/word_freq2k_snake.mp3 |
+| 5 | 2026-06-04 | word_freq2k_mosquito | words/word_freq2k_mosquito.mp3 |
+| 5 | 2026-06-04 | word_freq2k_fly | words/word_freq2k_fly.mp3 |
+| 5 | 2026-06-04 | word_freq2k_spider | words/word_freq2k_spider.mp3 |
+| 5 | 2026-06-04 | word_freq2k_turtle | words/word_freq2k_turtle.mp3 |
+| 5 | 2026-06-04 | word_freq2k_leopard | words/word_freq2k_leopard.mp3 |
+| 5 | 2026-06-04 | word_freq2k_clouds | words/word_freq2k_clouds.mp3 |
+| 5 | 2026-06-04 | word_freq2k_hail | words/word_freq2k_hail.mp3 |
+| 5 | 2026-06-04 | word_freq2k_degree | words/word_freq2k_degree.mp3 |
+| 5 | 2026-06-04 | word_freq2k_electricity | words/word_freq2k_electricity.mp3 |
+| 5 | 2026-06-04 | word_freq2k_root | words/word_freq2k_root.mp3 |
+| 5 | 2026-06-04 | word_freq2k_green | words/word_freq2k_green.mp3 |
+| 5 | 2026-06-04 | word_freq2k_landscape | words/word_freq2k_landscape.mp3 |
+| 5 | 2026-06-04 | word_freq2k_inanimate | words/word_freq2k_inanimate.mp3 |
+| 5 | 2026-06-04 | word_freq2k_darkness | words/word_freq2k_darkness.mp3 |
+| 5 | 2026-06-04 | word_freq2k_spring_water | words/word_freq2k_spring_water.mp3 |
+| 5 | 2026-06-04 | word_freq2k_flow | words/word_freq2k_flow.mp3 |
+| 5 | 2026-06-04 | word_freq2k_imagination | words/word_freq2k_imagination.mp3 |
+| 5 | 2026-06-04 | word_freq2k_column | words/word_freq2k_column.mp3 |
+| 5 | 2026-06-04 | word_freq2k_dispute | words/word_freq2k_dispute.mp3 |
+| 5 | 2026-06-04 | word_freq2k_importance | words/word_freq2k_importance.mp3 |
+| 5 | 2026-06-04 | word_freq2k_continuation | words/word_freq2k_continuation.mp3 |
+| 5 | 2026-06-04 | word_freq2k_progress | words/word_freq2k_progress.mp3 |
+| 5 | 2026-06-04 | word_freq2k_supermarket | words/word_freq2k_supermarket.mp3 |
+| 4 | 2026-06-04 | word_freq2k_grandson | words/word_freq2k_grandson.mp3 |
+| 4 | 2026-06-04 | word_freq2k_granddaughter | words/word_freq2k_granddaughter.mp3 |
+| 4 | 2026-06-04 | word_freq2k_nephew | words/word_freq2k_nephew.mp3 |
+| 4 | 2026-06-04 | word_freq2k_niece | words/word_freq2k_niece.mp3 |
+| 4 | 2026-06-04 | word_freq2k_cousin_m | words/word_freq2k_cousin_m.mp3 |
+| 4 | 2026-06-04 | word_freq2k_cousin_f | words/word_freq2k_cousin_f.mp3 |
+| 4 | 2026-06-04 | word_freq2k_groom | words/word_freq2k_groom.mp3 |
+| 4 | 2026-06-04 | word_freq2k_bride | words/word_freq2k_bride.mp3 |
+| 4 | 2026-06-04 | word_freq2k_mother_in_law | words/word_freq2k_mother_in_law.mp3 |
+| 4 | 2026-06-04 | word_freq2k_parents | words/word_freq2k_parents.mp3 |
+| 4 | 2026-06-04 | word_freq2k_baby_girl | words/word_freq2k_baby_girl.mp3 |
+| 4 | 2026-06-04 | word_freq2k_naara | words/word_freq2k_naara.mp3 |
+| 4 | 2026-06-04 | word_freq2k_neighbor_f | words/word_freq2k_neighbor_f.mp3 |
+| 4 | 2026-06-04 | word_freq2k_relative | words/word_freq2k_relative.mp3 |
+| 4 | 2026-06-04 | word_freq2k_widow | words/word_freq2k_widow.mp3 |
+| 4 | 2026-06-04 | word_freq2k_divorced | words/word_freq2k_divorced.mp3 |
+| 4 | 2026-06-04 | word_freq2k_nail | words/word_freq2k_nail.mp3 |
+| 4 | 2026-06-04 | word_freq2k_hips | words/word_freq2k_hips.mp3 |
+| 4 | 2026-06-04 | word_freq2k_ankle | words/word_freq2k_ankle.mp3 |
+| 4 | 2026-06-04 | word_freq2k_lung | words/word_freq2k_lung.mp3 |
+| 4 | 2026-06-04 | word_freq2k_kidney | words/word_freq2k_kidney.mp3 |
+| 4 | 2026-06-04 | word_freq2k_stomach | words/word_freq2k_stomach.mp3 |
+| 4 | 2026-06-04 | word_freq2k_muscle | words/word_freq2k_muscle.mp3 |
+| 4 | 2026-06-04 | word_freq2k_brain | words/word_freq2k_brain.mp3 |
+| 4 | 2026-06-04 | word_freq2k_flu | words/word_freq2k_flu.mp3 |
+| 4 | 2026-06-04 | word_freq2k_cold_illness | words/word_freq2k_cold_illness.mp3 |
+| 4 | 2026-06-04 | word_freq2k_headache | words/word_freq2k_headache.mp3 |
+| 4 | 2026-06-04 | word_freq2k_cough | words/word_freq2k_cough.mp3 |
+| 4 | 2026-06-04 | word_freq2k_nausea | words/word_freq2k_nausea.mp3 |
+| 4 | 2026-06-04 | word_freq2k_fracture | words/word_freq2k_fracture.mp3 |
+| 4 | 2026-06-04 | word_freq2k_pharmacy | words/word_freq2k_pharmacy.mp3 |
+| 4 | 2026-06-04 | word_freq2k_syringe | words/word_freq2k_syringe.mp3 |
+| 4 | 2026-06-04 | word_freq2k_vaccination | words/word_freq2k_vaccination.mp3 |
+| 4 | 2026-06-04 | word_freq2k_diet | words/word_freq2k_diet.mp3 |
+| 4 | 2026-06-04 | word_freq2k_shirt | words/word_freq2k_shirt.mp3 |
+| 4 | 2026-06-04 | word_freq2k_jeans | words/word_freq2k_jeans.mp3 |
+| 4 | 2026-06-04 | word_freq2k_tshirt | words/word_freq2k_tshirt.mp3 |
+| 4 | 2026-06-04 | word_freq2k_jacket | words/word_freq2k_jacket.mp3 |
+| 4 | 2026-06-04 | word_freq2k_boots | words/word_freq2k_boots.mp3 |
+| 4 | 2026-06-04 | word_freq2k_sandals | words/word_freq2k_sandals.mp3 |
+| 4 | 2026-06-04 | word_freq2k_sneakers | words/word_freq2k_sneakers.mp3 |
+| 4 | 2026-06-04 | word_freq2k_tights | words/word_freq2k_tights.mp3 |
+| 4 | 2026-06-04 | word_freq2k_tie | words/word_freq2k_tie.mp3 |
+| 4 | 2026-06-04 | word_freq2k_sunglasses | words/word_freq2k_sunglasses.mp3 |
+| 4 | 2026-06-04 | word_freq2k_earring | words/word_freq2k_earring.mp3 |
+| 4 | 2026-06-04 | word_freq2k_wristwatch | words/word_freq2k_wristwatch.mp3 |
+| 4 | 2026-06-04 | word_freq2k_swimsuit | words/word_freq2k_swimsuit.mp3 |
+| 4 | 2026-06-04 | word_freq2k_pajamas | words/word_freq2k_pajamas.mp3 |
+| 4 | 2026-06-04 | word_freq2k_bra | words/word_freq2k_bra.mp3 |
+| 4 | 2026-06-04 | word_freq2k_wardrobe | words/word_freq2k_wardrobe.mp3 |
+| 3 | 2026-06-04 | word_freq2k_cool_adj | words/word_freq2k_cool_adj.mp3 |
+| 3 | 2026-06-04 | word_freq2k_wet | words/word_freq2k_wet.mp3 |
+| 3 | 2026-06-04 | word_freq2k_dirty | words/word_freq2k_dirty.mp3 |
+| 3 | 2026-06-04 | word_freq2k_confused | words/word_freq2k_confused.mp3 |
+| 3 | 2026-06-04 | word_freq2k_boring | words/word_freq2k_boring.mp3 |
+| 3 | 2026-06-04 | word_freq2k_complicated | words/word_freq2k_complicated.mp3 |
+| 3 | 2026-06-04 | word_freq2k_famous | words/word_freq2k_famous.mp3 |
+| 3 | 2026-06-04 | word_freq2k_real | words/word_freq2k_real.mp3 |
+| 3 | 2026-06-04 | word_freq2k_suitable | words/word_freq2k_suitable.mp3 |
+| 3 | 2026-06-04 | word_freq2k_similar | words/word_freq2k_similar.mp3 |
+| 3 | 2026-06-04 | word_freq2k_shared | words/word_freq2k_shared.mp3 |
+| 3 | 2026-06-04 | word_freq2k_whole_adj | words/word_freq2k_whole_adj.mp3 |
+| 3 | 2026-06-04 | word_freq2k_broken | words/word_freq2k_broken.mp3 |
+| 3 | 2026-06-04 | word_freq2k_free_adj | words/word_freq2k_free_adj.mp3 |
+| 3 | 2026-06-04 | word_freq2k_occupied | words/word_freq2k_occupied.mp3 |
+| 3 | 2026-06-04 | word_freq2k_delicious | words/word_freq2k_delicious.mp3 |
+| 3 | 2026-06-04 | word_freq2k_ripe | words/word_freq2k_ripe.mp3 |
+| 3 | 2026-06-04 | word_freq2k_polite | words/word_freq2k_polite.mp3 |
+| 3 | 2026-06-04 | word_freq2k_rude | words/word_freq2k_rude.mp3 |
+| 3 | 2026-06-04 | word_freq2k_stingy | words/word_freq2k_stingy.mp3 |
+| 3 | 2026-06-04 | word_freq2k_coward | words/word_freq2k_coward.mp3 |
+| 3 | 2026-06-04 | word_freq2k_dangerous | words/word_freq2k_dangerous.mp3 |
+| 3 | 2026-06-04 | word_freq2k_funny | words/word_freq2k_funny.mp3 |
+| 3 | 2026-06-04 | word_freq2k_rude_spirit | words/word_freq2k_rude_spirit.mp3 |
+| 3 | 2026-06-04 | word_freq2k_stubborn | words/word_freq2k_stubborn.mp3 |
+| 3 | 2026-06-04 | word_freq2k_lazy | words/word_freq2k_lazy.mp3 |
+| 3 | 2026-06-04 | word_freq2k_diligent | words/word_freq2k_diligent.mp3 |
+| 3 | 2026-06-04 | word_freq2k_main_adj | words/word_freq2k_main_adj.mp3 |
+| 3 | 2026-06-04 | word_freq2k_special | words/word_freq2k_special.mp3 |
+| 3 | 2026-06-04 | word_freq2k_wonderful | words/word_freq2k_wonderful.mp3 |
+| 3 | 2026-06-04 | word_freq2k_hatred | words/word_freq2k_hatred.mp3 |
+| 3 | 2026-06-04 | word_freq2k_joy | words/word_freq2k_joy.mp3 |
+| 3 | 2026-06-04 | word_freq2k_sadness | words/word_freq2k_sadness.mp3 |
+| 3 | 2026-06-04 | word_freq2k_anger | words/word_freq2k_anger.mp3 |
+| 3 | 2026-06-04 | word_freq2k_anxiety | words/word_freq2k_anxiety.mp3 |
+| 3 | 2026-06-04 | word_freq2k_worry | words/word_freq2k_worry.mp3 |
+| 3 | 2026-06-04 | word_freq2k_faith | words/word_freq2k_faith.mp3 |
+| 3 | 2026-06-04 | word_freq2k_confidence | words/word_freq2k_confidence.mp3 |
+| 3 | 2026-06-04 | word_freq2k_pride | words/word_freq2k_pride.mp3 |
+| 3 | 2026-06-04 | word_freq2k_shame | words/word_freq2k_shame.mp3 |
+| 3 | 2026-06-04 | word_freq2k_disgrace | words/word_freq2k_disgrace.mp3 |
+| 3 | 2026-06-04 | word_freq2k_enthusiasm | words/word_freq2k_enthusiasm.mp3 |
+| 3 | 2026-06-04 | word_freq2k_feeling | words/word_freq2k_feeling.mp3 |
+| 3 | 2026-06-04 | word_freq2k_fatigue | words/word_freq2k_fatigue.mp3 |
+| 3 | 2026-06-04 | word_freq2k_rest | words/word_freq2k_rest.mp3 |
+| 3 | 2026-06-04 | word_freq2k_desire | words/word_freq2k_desire.mp3 |
+| 3 | 2026-06-04 | word_freq2k_sorrow | words/word_freq2k_sorrow.mp3 |
+| 3 | 2026-06-04 | word_freq2k_compassion | words/word_freq2k_compassion.mp3 |
+| 3 | 2026-06-04 | word_freq2k_patience | words/word_freq2k_patience.mp3 |
+| 3 | 2026-06-04 | word_freq2k_tranquility | words/word_freq2k_tranquility.mp3 |
+| 2 | 2026-06-04 | word_freq2k_eizo | words/word_freq2k_eizo.mp3 |
+| 2 | 2026-06-04 | word_freq2k_haim | words/word_freq2k_haim.mp3 |
+| 2 | 2026-06-04 | word_freq2k_meat_meat | words/word_freq2k_meat_meat.mp3 |
+| 2 | 2026-06-04 | word_freq2k_maspik | words/word_freq2k_maspik.mp3 |
+| 2 | 2026-06-04 | word_freq2k_yoter | words/word_freq2k_yoter.mp3 |
+| 2 | 2026-06-04 | word_freq2k_pachot | words/word_freq2k_pachot.mp3 |
+| 2 | 2026-06-04 | word_freq2k_haki | words/word_freq2k_haki.mp3 |
+| 2 | 2026-06-04 | word_freq2k_beyoter | words/word_freq2k_beyoter.mp3 |
+| 2 | 2026-06-04 | word_freq2k_kol_every | words/word_freq2k_kol_every.mp3 |
+| 2 | 2026-06-04 | word_freq2k_eizeshehu | words/word_freq2k_eizeshehu.mp3 |
+| 2 | 2026-06-04 | word_freq2k_eizoshehi | words/word_freq2k_eizoshehi.mp3 |
+| 2 | 2026-06-04 | word_freq2k_gray | words/word_freq2k_gray.mp3 |
+| 2 | 2026-06-04 | word_freq2k_purple | words/word_freq2k_purple.mp3 |
+| 2 | 2026-06-04 | word_freq2k_beige | words/word_freq2k_beige.mp3 |
+| 2 | 2026-06-04 | word_freq2k_turquoise | words/word_freq2k_turquoise.mp3 |
+| 2 | 2026-06-04 | word_freq2k_burgundy | words/word_freq2k_burgundy.mp3 |
+| 2 | 2026-06-04 | word_freq2k_shilshom | words/word_freq2k_shilshom.mp3 |
+| 2 | 2026-06-04 | word_freq2k_mochrotayim | words/word_freq2k_mochrotayim.mp3 |
+| 2 | 2026-06-04 | word_freq2k_tzohorayim | words/word_freq2k_tzohorayim.mp3 |
+| 2 | 2026-06-04 | word_freq2k_afternoon | words/word_freq2k_afternoon.mp3 |
+| 2 | 2026-06-04 | word_freq2k_chatzot | words/word_freq2k_chatzot.mp3 |
+| 2 | 2026-06-04 | word_freq2k_paam | words/word_freq2k_paam.mp3 |
+| 2 | 2026-06-04 | word_freq2k_achar_kakh | words/word_freq2k_achar_kakh.mp3 |
+| 2 | 2026-06-04 | word_freq2k_lifnei_khen | words/word_freq2k_lifnei_khen.mp3 |
+| 2 | 2026-06-04 | word_freq2k_miyad | words/word_freq2k_miyad.mp3 |
+| 2 | 2026-06-04 | word_freq2k_bekarov | words/word_freq2k_bekarov.mp3 |
+| 2 | 2026-06-04 | word_freq2k_leat | words/word_freq2k_leat.mp3 |
+| 2 | 2026-06-04 | word_freq2k_maher | words/word_freq2k_maher.mp3 |
+| 2 | 2026-06-04 | word_freq2k_shabbat | words/word_freq2k_shabbat.mp3 |
+| 2 | 2026-06-04 | word_freq2k_stav | words/word_freq2k_stav.mp3 |
+| 2 | 2026-06-04 | word_freq2k_life | words/word_freq2k_life.mp3 |
+| 2 | 2026-06-04 | word_freq2k_freedom | words/word_freq2k_freedom.mp3 |
+| 2 | 2026-06-04 | word_freq2k_beauty | words/word_freq2k_beauty.mp3 |
+| 2 | 2026-06-04 | word_freq2k_power | words/word_freq2k_power.mp3 |
+| 2 | 2026-06-04 | word_freq2k_weakness | words/word_freq2k_weakness.mp3 |
+| 2 | 2026-06-04 | word_freq2k_reason | words/word_freq2k_reason.mp3 |
+| 2 | 2026-06-04 | word_freq2k_difference | words/word_freq2k_difference.mp3 |
+| 2 | 2026-06-04 | word_freq2k_fact | words/word_freq2k_fact.mp3 |
+| 2 | 2026-06-04 | word_freq2k_information | words/word_freq2k_information.mp3 |
+| 2 | 2026-06-04 | word_freq2k_point | words/word_freq2k_point.mp3 |
+| 2 | 2026-06-04 | word_freq2k_size | words/word_freq2k_size.mp3 |
+| 2 | 2026-06-04 | word_freq2k_height | words/word_freq2k_height.mp3 |
+| 2 | 2026-06-04 | word_freq2k_length | words/word_freq2k_length.mp3 |
+| 2 | 2026-06-04 | word_freq2k_distance | words/word_freq2k_distance.mp3 |
+| 2 | 2026-06-04 | word_freq2k_type | words/word_freq2k_type.mp3 |
+| 2 | 2026-06-04 | word_freq2k_thing | words/word_freq2k_thing.mp3 |
+| 2 | 2026-06-04 | word_freq2k_matter | words/word_freq2k_matter.mp3 |
+| 2 | 2026-06-04 | word_freq2k_subject | words/word_freq2k_subject.mp3 |
+| 2 | 2026-06-04 | word_freq2k_state | words/word_freq2k_state.mp3 |
+| 2 | 2026-06-04 | word_freq2k_change | words/word_freq2k_change.mp3 |
+| 1 | 2026-06-04 | word_freq2k_but | words/word_freq2k_but.mp3 |
+| 1 | 2026-06-04 | word_freq2k_or | words/word_freq2k_or.mp3 |
+| 1 | 2026-06-04 | word_freq2k_ki | words/word_freq2k_ki.mp3 |
+| 1 | 2026-06-04 | word_freq2k_she | words/word_freq2k_she.mp3 |
+| 1 | 2026-06-04 | word_freq2k_gam | words/word_freq2k_gam.mp3 |
+| 1 | 2026-06-04 | word_freq2k_only | words/word_freq2k_only.mp3 |
+| 1 | 2026-06-04 | word_freq2k_od | words/word_freq2k_od.mp3 |
+| 1 | 2026-06-04 | word_freq2k_already | words/word_freq2k_already.mp3 |
+| 1 | 2026-06-04 | word_freq2k_however | words/word_freq2k_however.mp3 |
+| 1 | 2026-06-04 | word_freq2k_bekhol_zot | words/word_freq2k_bekhol_zot.mp3 |
+| 1 | 2026-06-04 | word_freq2k_therefore | words/word_freq2k_therefore.mp3 |
+| 1 | 2026-06-04 | word_freq2k_mipnei_she | words/word_freq2k_mipnei_she.mp3 |
+| 1 | 2026-06-04 | word_freq2k_keivan_she | words/word_freq2k_keivan_she.mp3 |
+| 1 | 2026-06-04 | word_freq2k_bizman_she | words/word_freq2k_bizman_she.mp3 |
+| 1 | 2026-06-04 | word_freq2k_kshe | words/word_freq2k_kshe.mp3 |
+| 1 | 2026-06-04 | word_freq2k_lifnei_she | words/word_freq2k_lifnei_she.mp3 |
+| 1 | 2026-06-04 | word_freq2k_acharei_she | words/word_freq2k_acharei_she.mp3 |
+| 1 | 2026-06-04 | word_freq2k_beod_she | words/word_freq2k_beod_she.mp3 |
+| 1 | 2026-06-04 | word_freq2k_kedei | words/word_freq2k_kedei.mp3 |
+| 1 | 2026-06-04 | word_freq2k_kedei_she | words/word_freq2k_kedei_she.mp3 |
+| 1 | 2026-06-04 | word_freq2k_beetzem | words/word_freq2k_beetzem.mp3 |
+| 1 | 2026-06-04 | word_freq2k_beemet | words/word_freq2k_beemet.mp3 |
+| 1 | 2026-06-04 | word_freq2k_bediyuk | words/word_freq2k_bediyuk.mp3 |
+| 1 | 2026-06-04 | word_freq2k_beikar | words/word_freq2k_beikar.mp3 |
+| 1 | 2026-06-04 | word_freq2k_bimyukhad | words/word_freq2k_bimyukhad.mp3 |
+| 1 | 2026-06-04 | word_freq2k_bekhol_ofen | words/word_freq2k_bekhol_ofen.mp3 |
+| 1 | 2026-06-04 | word_freq2k_bekhol_mikre | words/word_freq2k_bekhol_mikre.mp3 |
+| 1 | 2026-06-04 | word_freq2k_af_al_pi_khen | words/word_freq2k_af_al_pi_khen.mp3 |
+| 1 | 2026-06-04 | word_freq2k_klomar | words/word_freq2k_klomar.mp3 |
+| 1 | 2026-06-04 | word_freq2k_lemashal | words/word_freq2k_lemashal.mp3 |
+| 1 | 2026-06-04 | word_freq2k_kemo_khen | words/word_freq2k_kemo_khen.mp3 |
+| 1 | 2026-06-04 | word_freq2k_chutz_mi | words/word_freq2k_chutz_mi.mp3 |
+| 1 | 2026-06-04 | word_freq2k_milvad | words/word_freq2k_milvad.mp3 |
+| 1 | 2026-06-04 | word_freq2k_leumat | words/word_freq2k_leumat.mp3 |
+| 1 | 2026-06-04 | word_freq2k_mitokh | words/word_freq2k_mitokh.mp3 |
+| 1 | 2026-06-04 | word_freq2k_harei | words/word_freq2k_harei.mp3 |
+| 1 | 2026-06-04 | word_freq2k_davka | words/word_freq2k_davka.mp3 |
+| 1 | 2026-06-04 | word_freq2k_afilu | words/word_freq2k_afilu.mp3 |
+| 1 | 2026-06-04 | word_freq2k_we | words/word_freq2k_we.mp3 |
+| 1 | 2026-06-04 | word_freq2k_this_m | words/word_freq2k_this_m.mp3 |
+| 1 | 2026-06-04 | word_freq2k_this_f | words/word_freq2k_this_f.mp3 |
+| 1 | 2026-06-04 | word_freq2k_that_m | words/word_freq2k_that_m.mp3 |
+| 1 | 2026-06-04 | word_freq2k_that_f | words/word_freq2k_that_f.mp3 |
+| 1 | 2026-06-04 | word_freq2k_here | words/word_freq2k_here.mp3 |
+| 1 | 2026-06-04 | word_freq2k_meayin | words/word_freq2k_meayin.mp3 |
+| 1 | 2026-06-04 | word_freq2k_kakha | words/word_freq2k_kakha.mp3 |
+| 1 | 2026-06-04 | word_freq2k_kakh | words/word_freq2k_kakh.mp3 |
+| 1 | 2026-06-04 | word_freq2k_other_f | words/word_freq2k_other_f.mp3 |
+| 1 | 2026-06-04 | word_freq2k_atzmi | words/word_freq2k_atzmi.mp3 |
+| 1 | 2026-06-04 | word_freq2k_mashehu | words/word_freq2k_mashehu.mp3 |
