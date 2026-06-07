@@ -1164,6 +1164,61 @@
                 "formal_followups_status_attachments",
                 "position_argument_stance_markers"
             ]
+        },
+        "77_reported_speech.md": {
+            "id": "reported_speech",
+            "order": 77,
+            "section": "grammar",
+            "aliases": [
+                "непряма мова",
+                "він сказав що",
+                "вона спитала чи",
+                "אמר ש",
+                "שאל אם",
+                "ביקש ש"
+            ],
+            "related_ids": [
+                "perception_thought_speech",
+                "subordinate_clauses_basics",
+                "future_tense_intro"
+            ]
+        },
+        "78_manner_adverbs.md": {
+            "id": "manner_adverbs",
+            "order": 78,
+            "section": "grammar",
+            "aliases": [
+                "прислівники",
+                "способу дії",
+                "як саме",
+                "בשקט",
+                "בזהירות",
+                "מהר"
+            ],
+            "related_ids": [
+                "adverbs_particles",
+                "agreement",
+                "gender_sound_changes"
+            ]
+        },
+        "79_jewish_calendar_and_holidays.md": {
+            "id": "jewish_calendar_holidays",
+            "order": 79,
+            "section": "communication",
+            "aliases": [
+                "єврейський календар",
+                "свята",
+                "ראש השנה",
+                "פסח",
+                "חנוכה",
+                "שבת",
+                "תשרי"
+            ],
+            "related_ids": [
+                "time_dates",
+                "extended_numbers_ordinals",
+                "social_formulas_everyday_politeness"
+            ]
         }
     }
 }
