@@ -224,10 +224,24 @@ class EndpointAiPracticeTextBackendClient
   }
 }
 
-AiPracticeTextService createDefaultAiPracticeTextService() {
-  const endpointValue = String.fromEnvironment('AI_PRACTICE_TEXTS_ENDPOINT');
-  final endpoint = Uri.tryParse(endpointValue);
+const String _kAiPracticeTextsEndpointEnv = String.fromEnvironment(
+  'AI_PRACTICE_TEXTS_ENDPOINT',
+);
+
+Uri? _resolveAiPracticeTextsEndpoint() {
+  final endpoint = Uri.tryParse(_kAiPracticeTextsEndpointEnv);
   if (endpoint == null || !endpoint.hasScheme || !endpoint.hasAuthority) {
+    return null;
+  }
+  return endpoint;
+}
+
+bool get isAiPracticeTextsEndpointConfigured =>
+    _resolveAiPracticeTextsEndpoint() != null;
+
+AiPracticeTextService createDefaultAiPracticeTextService() {
+  final endpoint = _resolveAiPracticeTextsEndpoint();
+  if (endpoint == null) {
     return CachedAiPracticeTextService(
       cacheStore: SharedPreferencesAiPracticeTextCacheStore(),
       backendClient: const NoopAiPracticeTextBackendClient(),

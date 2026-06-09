@@ -215,10 +215,23 @@ class EndpointAiContextBackendClient implements AiContextBackendClient {
   }
 }
 
-AiContextService createDefaultAiContextService() {
-  const endpointValue = String.fromEnvironment('AI_CONTEXTS_ENDPOINT');
-  final endpoint = Uri.tryParse(endpointValue);
+const String _kAiContextsEndpointEnv = String.fromEnvironment(
+  'AI_CONTEXTS_ENDPOINT',
+);
+
+Uri? _resolveAiContextsEndpoint() {
+  final endpoint = Uri.tryParse(_kAiContextsEndpointEnv);
   if (endpoint == null || !endpoint.hasScheme || !endpoint.hasAuthority) {
+    return null;
+  }
+  return endpoint;
+}
+
+bool get isAiContextsEndpointConfigured => _resolveAiContextsEndpoint() != null;
+
+AiContextService createDefaultAiContextService() {
+  final endpoint = _resolveAiContextsEndpoint();
+  if (endpoint == null) {
     return CachedAiContextService(
       cacheStore: SharedPreferencesAiContextCacheStore(),
       backendClient: const NoopAiContextBackendClient(),

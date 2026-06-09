@@ -77,7 +77,12 @@ class AppDependencies {
   }
 
   FeatureAccessService resolveFeatureAccessService() {
-    return featureAccessService ?? const StaticFeatureAccessService();
+    return featureAccessService ??
+        StaticFeatureAccessService(
+          aiContextsEndpointConfigured: isAiContextsEndpointConfigured,
+          aiPracticeTextsEndpointConfigured:
+              isAiPracticeTextsEndpointConfigured,
+        );
   }
 
   SprintStatsStore resolveSprintStatsStore() {

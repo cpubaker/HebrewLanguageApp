@@ -866,15 +866,18 @@ class _AppShellScreenState extends State<AppShellScreen> {
 
   void _showFeatureLocked(FeatureAccessDecision decision) {
     final messenger = ScaffoldMessenger.maybeOf(context);
+    final hasUpgradePath = decision.upgradeLabel.trim().isNotEmpty;
     messenger
       ?..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
           content: Text('${decision.title}: ${decision.description}'),
-          action: SnackBarAction(
-            label: decision.upgradeLabel,
-            onPressed: () {},
-          ),
+          action: hasUpgradePath
+              ? SnackBarAction(
+                  label: decision.upgradeLabel,
+                  onPressed: () {},
+                )
+              : null,
         ),
       );
   }
