@@ -15,7 +15,7 @@ class FeatureAccessDecision {
     required this.isEnabled,
     required this.title,
     required this.description,
-    this.upgradeLabel = 'Перейти на Pro',
+    this.upgradeLabel = '',
   });
 
   final AppFeature feature;
@@ -32,32 +32,46 @@ abstract interface class FeatureAccessService {
 }
 
 class StaticFeatureAccessService implements FeatureAccessService {
-  const StaticFeatureAccessService({
-    this.enabledFeatures = const <AppFeature>{
-      AppFeature.nightMode,
-      AppFeature.advancedPractice,
-      AppFeature.extraLessons,
-      AppFeature.aiWordContexts,
-      AppFeature.aiPracticeTexts,
-    },
-  });
+  StaticFeatureAccessService({
+    Set<AppFeature>? enabledFeatures,
+    this.aiContextsEndpointConfigured = false,
+    this.aiPracticeTextsEndpointConfigured = false,
+  }) : _baseEnabledFeatures = enabledFeatures ?? _kBaseEnabledFeatures;
 
-  final Set<AppFeature> enabledFeatures;
+  static const Set<AppFeature> _kBaseEnabledFeatures = <AppFeature>{
+    AppFeature.nightMode,
+    AppFeature.advancedPractice,
+    AppFeature.extraLessons,
+    AppFeature.aiWordContexts,
+    AppFeature.aiPracticeTexts,
+  };
+
+  final Set<AppFeature> _baseEnabledFeatures;
+  final bool aiContextsEndpointConfigured;
+  final bool aiPracticeTextsEndpointConfigured;
 
   @override
   FeatureAccessDecision accessFor(AppFeature feature) {
     final metadata = _metadataFor(feature);
     return FeatureAccessDecision(
       feature: feature,
-      isEnabled: enabledFeatures.contains(feature),
+      isEnabled: isEnabled(feature),
       title: metadata.title,
       description: metadata.description,
+      upgradeLabel: metadata.upgradeLabel,
     );
   }
 
   @override
   bool isEnabled(AppFeature feature) {
-    return enabledFeatures.contains(feature);
+    if (!_baseEnabledFeatures.contains(feature)) {
+      return false;
+    }
+    return switch (feature) {
+      AppFeature.aiWordContexts => aiContextsEndpointConfigured,
+      AppFeature.aiPracticeTexts => aiPracticeTextsEndpointConfigured,
+      _ => true,
+    };
   }
 
   _FeatureAccessMetadata _metadataFor(AppFeature feature) {
@@ -65,22 +79,25 @@ class StaticFeatureAccessService implements FeatureAccessService {
       AppFeature.nightMode => const _FeatureAccessMetadata(
         title: 'Нічний режим',
         description: 'Нічний режим доступний у Pro-версії.',
+        upgradeLabel: 'Перейти на Pro',
       ),
       AppFeature.advancedPractice => const _FeatureAccessMetadata(
         title: 'Розширена практика',
         description: 'Розширені режими практики доступні у Pro-версії.',
+        upgradeLabel: 'Перейти на Pro',
       ),
       AppFeature.extraLessons => const _FeatureAccessMetadata(
         title: 'Додаткові уроки',
         description: 'Додаткові набори уроків доступні у Pro-версії.',
+        upgradeLabel: 'Перейти на Pro',
       ),
       AppFeature.aiWordContexts => const _FeatureAccessMetadata(
         title: 'ШІ-контексти слів',
-        description: 'ШІ-контексти для слів доступні у Pro-версії.',
+        description: 'AI-функції готуються до запуску. Скоро з\'являться.',
       ),
       AppFeature.aiPracticeTexts => const _FeatureAccessMetadata(
         title: 'ШІ-тексти для практики',
-        description: 'ШІ-тексти для практики доступні у Pro-версії.',
+        description: 'AI-функції готуються до запуску. Скоро з\'являться.',
       ),
     };
   }
@@ -90,8 +107,10 @@ class _FeatureAccessMetadata {
   const _FeatureAccessMetadata({
     required this.title,
     required this.description,
+    this.upgradeLabel = '',
   });
 
   final String title;
   final String description;
+  final String upgradeLabel;
 }

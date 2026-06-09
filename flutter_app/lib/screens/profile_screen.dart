@@ -310,6 +310,7 @@ class _ProfileSettingsSection extends StatelessWidget {
               _SettingsSwitchTile(
                 title: 'ШІ-контексти для вправ',
                 subtitle: 'Приклади і ситуації з урахуванням ваших слів.',
+                lockedSubtitle: aiWordContextsAccess.description,
                 value: aiWordContextsEnabled,
                 onChanged: onAiWordContextsEnabledChanged,
                 isLocked: !aiWordContextsAccess.isEnabled,
@@ -318,6 +319,7 @@ class _ProfileSettingsSection extends StatelessWidget {
               _SettingsSwitchTile(
                 title: 'ШІ-тексти для практики',
                 subtitle: 'Короткі тексти під ваш рівень.',
+                lockedSubtitle: aiPracticeTextsAccess.description,
                 value: aiPracticeTextsEnabled,
                 onChanged: onAiPracticeTextsEnabledChanged,
                 isLocked: !aiPracticeTextsAccess.isEnabled,
@@ -409,6 +411,7 @@ class _SettingsSwitchTile extends StatelessWidget {
     required this.value,
     this.onChanged,
     this.isLocked = false,
+    this.lockedSubtitle,
     this.switchKey,
   });
 
@@ -417,13 +420,18 @@ class _SettingsSwitchTile extends StatelessWidget {
   final bool value;
   final ValueChanged<bool>? onChanged;
   final bool isLocked;
+  final String? lockedSubtitle;
   final Key? switchKey;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final tokens = theme.appTokens;
-    final isEnabled = onChanged != null;
+    final isInteractive = !isLocked && onChanged != null;
+    final effectiveSubtitle =
+        isLocked && lockedSubtitle != null && lockedSubtitle!.trim().isNotEmpty
+        ? lockedSubtitle!
+        : subtitle;
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -441,14 +449,14 @@ class _SettingsSwitchTile extends StatelessWidget {
                   title,
                   style: theme.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w700,
-                    color: isEnabled ? null : tokens.mutedText,
+                    color: isInteractive ? null : tokens.mutedText,
                   ),
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  subtitle,
+                  effectiveSubtitle,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: isEnabled
+                    color: isInteractive
                         ? tokens.mutedText
                         : tokens.inactiveForeground(tokens.mutedText),
                     height: 1.45,
@@ -462,7 +470,11 @@ class _SettingsSwitchTile extends StatelessWidget {
             Icon(Icons.lock_rounded, color: tokens.mutedText, size: 20),
             const SizedBox(width: 8),
           ],
-          Switch.adaptive(key: switchKey, value: value, onChanged: onChanged),
+          Switch.adaptive(
+            key: switchKey,
+            value: value,
+            onChanged: isInteractive ? onChanged : null,
+          ),
         ],
       ),
     );
