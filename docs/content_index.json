@@ -2,11 +2,11 @@
   "schema_version": 1,
   "source_root": "flutter_app/assets/learning/input",
   "counts": {
-    "vocabulary": 1548,
+    "vocabulary": 1797,
     "context_sentences": 1524,
-    "guide_lessons": 76,
+    "guide_lessons": 79,
     "reading_lessons": 502,
-    "verb_lessons": 519
+    "verb_lessons": 534
   },
   "guide_sections": {
     "script": "Письмо і читання",
@@ -92,7 +92,7 @@
     {
       "path": "guide/05_gender_number.md",
       "id": "gender_number",
-      "title": "Рід, число і нетипові закінчення іменників",
+      "title": "Рід і число",
       "section": "foundations",
       "section_label": "Базові моделі",
       "order": 5,
@@ -111,7 +111,7 @@
     {
       "path": "guide/06_agreement.md",
       "id": "agreement",
-      "title": "Узгодження прикметника з іменником",
+      "title": "Узгодження",
       "section": "foundations",
       "section_label": "Базові моделі",
       "order": 6,
@@ -348,7 +348,7 @@
     {
       "path": "guide/20_verbs_intro.md",
       "id": "verbs_intro",
-      "title": "Інфінітив дієслова",
+      "title": "Вступ до дієслів",
       "section": "verbs",
       "section_label": "Дієслівна система",
       "order": 24,
@@ -821,7 +821,7 @@
     {
       "path": "guide/47_dative_experiencer_patterns.md",
       "id": "dative_experiencer_patterns",
-      "title": "Стани з ל־: קר לי, נראה לי, מותר לי",
+      "title": "Стани з ל: קר לי, נראה לי, מותר לי",
       "section": "grammar",
       "section_label": "Розширена граматика",
       "order": 52,
@@ -1077,7 +1077,7 @@
     {
       "path": "guide/60_bookish_vs_natural_syntax.md",
       "id": "bookish_vs_natural_syntax",
-      "title": "Книжково правильно і живо по-людськи",
+      "title": "Книжно правильно і живо по-людськи",
       "section": "communication",
       "section_label": "Живе спілкування",
       "order": 64,
@@ -1400,6 +1400,70 @@
         "formal_writing_email_requests",
         "formal_followups_status_attachments",
         "position_argument_stance_markers"
+      ]
+    },
+    {
+      "path": "guide/77_reported_speech.md",
+      "id": "reported_speech",
+      "title": "Непряма мова",
+      "section": "grammar",
+      "section_label": "Розширена граматика",
+      "order": 77,
+      "aliases": [
+        "непряма мова",
+        "він сказав що",
+        "вона спитала чи",
+        "אמר ש",
+        "שאל אם",
+        "ביקש ש"
+      ],
+      "related_ids": [
+        "perception_thought_speech",
+        "subordinate_clauses_basics",
+        "future_tense_intro"
+      ]
+    },
+    {
+      "path": "guide/78_manner_adverbs.md",
+      "id": "manner_adverbs",
+      "title": "Прислівники способу дії",
+      "section": "grammar",
+      "section_label": "Розширена граматика",
+      "order": 78,
+      "aliases": [
+        "прислівники",
+        "способу дії",
+        "як саме",
+        "בשקט",
+        "בזהירות",
+        "מהר"
+      ],
+      "related_ids": [
+        "adverbs_particles",
+        "agreement",
+        "gender_sound_changes"
+      ]
+    },
+    {
+      "path": "guide/79_jewish_calendar_and_holidays.md",
+      "id": "jewish_calendar_holidays",
+      "title": "Єврейський календар і свята",
+      "section": "communication",
+      "section_label": "Живе спілкування",
+      "order": 79,
+      "aliases": [
+        "єврейський календар",
+        "свята",
+        "ראש השנה",
+        "פסח",
+        "חנוכה",
+        "שבת",
+        "תשרי"
+      ],
+      "related_ids": [
+        "time_dates",
+        "extended_numbers_ordinals",
+        "social_formulas_everyday_politeness"
       ]
     }
   ],
@@ -7221,11 +7285,116 @@
       "transcription": "лехакóт"
     },
     {
+      "path": "verbs/520_wrap_up.md",
+      "id": "wrap_up",
+      "title": "Завершувати",
+      "infinitive": "לִגְמוֹר",
+      "transcription": "лігмóр"
+    },
+    {
+      "path": "verbs/521_be_angry.md",
+      "id": "be_angry",
+      "title": "Сердитися",
+      "infinitive": "לִכְעוֹס",
+      "transcription": "ліхóс"
+    },
+    {
+      "path": "verbs/522_play_instrument.md",
+      "id": "play_instrument",
+      "title": "Грати (на інструменті)",
+      "infinitive": "לְנַגֵּן",
+      "transcription": "ленагéн"
+    },
+    {
+      "path": "verbs/523_spend_time.md",
+      "id": "spend_time",
+      "title": "Проводити час",
+      "infinitive": "לְבַלּוֹת",
+      "transcription": "левалóт"
+    },
+    {
+      "path": "verbs/524_be_late.md",
+      "id": "be_late",
+      "title": "Запізнюватися",
+      "infinitive": "לְאַחֵר",
+      "transcription": "леахéр"
+    },
+    {
+      "path": "verbs/525_cease.md",
+      "id": "cease",
+      "title": "Припиняти",
+      "infinitive": "לְהַפְסִיק",
+      "transcription": "легафсíк"
+    },
+    {
+      "path": "verbs/526_rent_out.md",
+      "id": "rent_out",
+      "title": "Здавати в оренду",
+      "infinitive": "לְהַשְׂכִּיר",
+      "transcription": "легаскíр"
+    },
+    {
+      "path": "verbs/527_bring_in.md",
+      "id": "bring_in",
+      "title": "Заносити",
+      "infinitive": "לְהַכְנִיס",
+      "transcription": "легахнíс"
+    },
+    {
+      "path": "verbs/528_manage_time.md",
+      "id": "manage_time",
+      "title": "Встигати",
+      "infinitive": "לְהַסְפִּיק",
+      "transcription": "легаспíк"
+    },
+    {
+      "path": "verbs/529_get_annoyed.md",
+      "id": "get_annoyed",
+      "title": "Дратуватися",
+      "infinitive": "לְהִתְעַצְבֵּן",
+      "transcription": "легітацбéн"
+    },
+    {
       "path": "verbs/53_get_up.md",
       "id": "get_up",
       "title": "Вставати",
       "infinitive": "לָקוּם",
       "transcription": "лакýм"
+    },
+    {
+      "path": "verbs/530_prepare_self.md",
+      "id": "prepare_self",
+      "title": "Готуватися",
+      "infinitive": "לְהִתְכּוֹנֵן",
+      "transcription": "легітконéн"
+    },
+    {
+      "path": "verbs/531_oppose.md",
+      "id": "oppose",
+      "title": "Заперечувати",
+      "infinitive": "לְהִתְנַגֵּד",
+      "transcription": "легітнагéд"
+    },
+    {
+      "path": "verbs/532_undress.md",
+      "id": "undress",
+      "title": "Роздягатися",
+      "infinitive": "לְהִתְפַּשֵּׁט",
+      "transcription": "легітпашéт"
+    },
+    {
+      "path": "verbs/533_bathe.md",
+      "id": "bathe",
+      "title": "Купатися",
+      "infinitive": "לְהִתְרַחֵץ",
+      "transcription": "легітрахéц"
+    },
+    {
+      "path": "verbs/534_shower.md",
+      "id": "shower",
+      "title": "Митися душем",
+      "infinitive": "לְהִתְקַלֵּחַ",
+      "transcription": "легіткалéах"
     },
     {
       "path": "verbs/54_choose.md",
@@ -16838,6 +17007,1500 @@
       "hebrew": "חֲמִישִׁי",
       "ukrainian": "п’ятий",
       "transcription": "chamishi"
+    },
+    {
+      "word_id": "word_freq2k_but",
+      "hebrew": "אֲבָל",
+      "ukrainian": "але",
+      "transcription": "aval"
+    },
+    {
+      "word_id": "word_freq2k_or",
+      "hebrew": "אוֹ",
+      "ukrainian": "або",
+      "transcription": "o"
+    },
+    {
+      "word_id": "word_freq2k_ki",
+      "hebrew": "כִּי",
+      "ukrainian": "бо; що",
+      "transcription": "ki"
+    },
+    {
+      "word_id": "word_freq2k_she",
+      "hebrew": "שֶׁ",
+      "ukrainian": "що",
+      "transcription": "she"
+    },
+    {
+      "word_id": "word_freq2k_gam",
+      "hebrew": "גַּם",
+      "ukrainian": "теж; також",
+      "transcription": "gam"
+    },
+    {
+      "word_id": "word_freq2k_only",
+      "hebrew": "רַק",
+      "ukrainian": "лише",
+      "transcription": "rak"
+    },
+    {
+      "word_id": "word_freq2k_od",
+      "hebrew": "עוֹד",
+      "ukrainian": "ще",
+      "transcription": "od"
+    },
+    {
+      "word_id": "word_freq2k_already",
+      "hebrew": "כְּבָר",
+      "ukrainian": "вже",
+      "transcription": "kvar"
+    },
+    {
+      "word_id": "word_freq2k_however",
+      "hebrew": "אוּלָם",
+      "ukrainian": "проте",
+      "transcription": "ulam"
+    },
+    {
+      "word_id": "word_freq2k_bekhol_zot",
+      "hebrew": "בְּכָל זֹאת",
+      "ukrainian": "усе ж",
+      "transcription": "bekhol zot"
+    },
+    {
+      "word_id": "word_freq2k_therefore",
+      "hebrew": "לָכֵן",
+      "ukrainian": "тому",
+      "transcription": "lakhen"
+    },
+    {
+      "word_id": "word_freq2k_mipnei_she",
+      "hebrew": "מִפְּנֵי שֶׁ",
+      "ukrainian": "через те що",
+      "transcription": "mipnei she"
+    },
+    {
+      "word_id": "word_freq2k_keivan_she",
+      "hebrew": "כֵּיוָן שֶׁ",
+      "ukrainian": "оскільки",
+      "transcription": "keivan she"
+    },
+    {
+      "word_id": "word_freq2k_bizman_she",
+      "hebrew": "בִּזְמַן שֶׁ",
+      "ukrainian": "поки",
+      "transcription": "bizman she"
+    },
+    {
+      "word_id": "word_freq2k_kshe",
+      "hebrew": "כְּשֶׁ",
+      "ukrainian": "коли",
+      "transcription": "kshe"
+    },
+    {
+      "word_id": "word_freq2k_lifnei_she",
+      "hebrew": "לִפְנֵי שֶׁ",
+      "ukrainian": "до того як",
+      "transcription": "lifnei she"
+    },
+    {
+      "word_id": "word_freq2k_acharei_she",
+      "hebrew": "אַחֲרֵי שֶׁ",
+      "ukrainian": "після того як",
+      "transcription": "acharei she"
+    },
+    {
+      "word_id": "word_freq2k_beod_she",
+      "hebrew": "בְּעוֹד שֶׁ",
+      "ukrainian": "тоді як",
+      "transcription": "be'od she"
+    },
+    {
+      "word_id": "word_freq2k_kedei",
+      "hebrew": "כְּדֵי",
+      "ukrainian": "щоб",
+      "transcription": "kedei"
+    },
+    {
+      "word_id": "word_freq2k_kedei_she",
+      "hebrew": "כְּדֵי שֶׁ",
+      "ukrainian": "щоб",
+      "transcription": "kedei she"
+    },
+    {
+      "word_id": "word_freq2k_beetzem",
+      "hebrew": "בְּעֶצֶם",
+      "ukrainian": "насправді",
+      "transcription": "be'etzem"
+    },
+    {
+      "word_id": "word_freq2k_beemet",
+      "hebrew": "בֶּאֱמֶת",
+      "ukrainian": "справді",
+      "transcription": "be'emet"
+    },
+    {
+      "word_id": "word_freq2k_bediyuk",
+      "hebrew": "בְּדִיּוּק",
+      "ukrainian": "саме; точно",
+      "transcription": "bediyuk"
+    },
+    {
+      "word_id": "word_freq2k_beikar",
+      "hebrew": "בְּעִקָּר",
+      "ukrainian": "переважно",
+      "transcription": "be'ikar"
+    },
+    {
+      "word_id": "word_freq2k_bimyukhad",
+      "hebrew": "בִּמְיֻחָד",
+      "ukrainian": "особливо",
+      "transcription": "bimyukhad"
+    },
+    {
+      "word_id": "word_freq2k_bekhol_ofen",
+      "hebrew": "בְּכָל אֹפֶן",
+      "ukrainian": "у всякому разі",
+      "transcription": "bekhol ofen"
+    },
+    {
+      "word_id": "word_freq2k_bekhol_mikre",
+      "hebrew": "בְּכָל מִקְרֶה",
+      "ukrainian": "у будь-якому разі",
+      "transcription": "bekhol mikre"
+    },
+    {
+      "word_id": "word_freq2k_af_al_pi_khen",
+      "hebrew": "אַף עַל פִּי כֵן",
+      "ukrainian": "однак",
+      "transcription": "af al pi khen"
+    },
+    {
+      "word_id": "word_freq2k_klomar",
+      "hebrew": "כְּלוֹמַר",
+      "ukrainian": "тобто",
+      "transcription": "klomar"
+    },
+    {
+      "word_id": "word_freq2k_lemashal",
+      "hebrew": "לְמָשָׁל",
+      "ukrainian": "наприклад",
+      "transcription": "lemashal"
+    },
+    {
+      "word_id": "word_freq2k_kemo_khen",
+      "hebrew": "כְּמוֹ כֵן",
+      "ukrainian": "так само",
+      "transcription": "kemo khen"
+    },
+    {
+      "word_id": "word_freq2k_chutz_mi",
+      "hebrew": "חוּץ מִ",
+      "ukrainian": "крім",
+      "transcription": "chutz mi"
+    },
+    {
+      "word_id": "word_freq2k_milvad",
+      "hebrew": "מִלְּבַד",
+      "ukrainian": "окрім",
+      "transcription": "milvad"
+    },
+    {
+      "word_id": "word_freq2k_leumat",
+      "hebrew": "לְעֻמַּת",
+      "ukrainian": "порівняно з",
+      "transcription": "le'umat"
+    },
+    {
+      "word_id": "word_freq2k_mitokh",
+      "hebrew": "מִתּוֹךְ",
+      "ukrainian": "із; з",
+      "transcription": "mitokh"
+    },
+    {
+      "word_id": "word_freq2k_harei",
+      "hebrew": "הֲרֵי",
+      "ukrainian": "адже",
+      "transcription": "harei"
+    },
+    {
+      "word_id": "word_freq2k_davka",
+      "hebrew": "דַּוְקָא",
+      "ukrainian": "якраз",
+      "transcription": "davka"
+    },
+    {
+      "word_id": "word_freq2k_afilu",
+      "hebrew": "אֲפִילּוּ",
+      "ukrainian": "навіть",
+      "transcription": "afilu"
+    },
+    {
+      "word_id": "word_freq2k_we",
+      "hebrew": "אֲנַחְנוּ",
+      "ukrainian": "ми",
+      "transcription": "anachnu"
+    },
+    {
+      "word_id": "word_freq2k_this_m",
+      "hebrew": "הַזֶּה",
+      "ukrainian": "цей",
+      "transcription": "hazeh"
+    },
+    {
+      "word_id": "word_freq2k_this_f",
+      "hebrew": "הַזֹּאת",
+      "ukrainian": "ця",
+      "transcription": "hazot"
+    },
+    {
+      "word_id": "word_freq2k_that_m",
+      "hebrew": "הַהוּא",
+      "ukrainian": "той",
+      "transcription": "hahu"
+    },
+    {
+      "word_id": "word_freq2k_that_f",
+      "hebrew": "הַהִיא",
+      "ukrainian": "та",
+      "transcription": "hahi"
+    },
+    {
+      "word_id": "word_freq2k_here",
+      "hebrew": "כָּאן",
+      "ukrainian": "тут",
+      "transcription": "kan"
+    },
+    {
+      "word_id": "word_freq2k_meayin",
+      "hebrew": "מֵאַיִן",
+      "ukrainian": "звідки",
+      "transcription": "me'ayin"
+    },
+    {
+      "word_id": "word_freq2k_kakha",
+      "hebrew": "כָּכָה",
+      "ukrainian": "так",
+      "transcription": "kakha"
+    },
+    {
+      "word_id": "word_freq2k_kakh",
+      "hebrew": "כָּךְ",
+      "ukrainian": "так",
+      "transcription": "kakh"
+    },
+    {
+      "word_id": "word_freq2k_other_f",
+      "hebrew": "אַחֶרֶת",
+      "ukrainian": "інша",
+      "transcription": "akheret"
+    },
+    {
+      "word_id": "word_freq2k_atzmi",
+      "hebrew": "עַצְמִי",
+      "ukrainian": "сам",
+      "transcription": "atzmi"
+    },
+    {
+      "word_id": "word_freq2k_mashehu",
+      "hebrew": "מַשֶּׁהוּ",
+      "ukrainian": "щось",
+      "transcription": "mashehu"
+    },
+    {
+      "word_id": "word_freq2k_eizo",
+      "hebrew": "אֵיזוֹ",
+      "ukrainian": "яка",
+      "transcription": "eizo"
+    },
+    {
+      "word_id": "word_freq2k_haim",
+      "hebrew": "הַאִם",
+      "ukrainian": "чи",
+      "transcription": "ha'im"
+    },
+    {
+      "word_id": "word_freq2k_meat_meat",
+      "hebrew": "מְעַט מְעַט",
+      "ukrainian": "потроху",
+      "transcription": "me'at me'at"
+    },
+    {
+      "word_id": "word_freq2k_maspik",
+      "hebrew": "מַסְפִּיק",
+      "ukrainian": "достатньо",
+      "transcription": "maspik"
+    },
+    {
+      "word_id": "word_freq2k_yoter",
+      "hebrew": "יוֹתֵר",
+      "ukrainian": "більше",
+      "transcription": "yoter"
+    },
+    {
+      "word_id": "word_freq2k_pachot",
+      "hebrew": "פָּחוֹת",
+      "ukrainian": "менше",
+      "transcription": "pachot"
+    },
+    {
+      "word_id": "word_freq2k_haki",
+      "hebrew": "הַכִּי",
+      "ukrainian": "найбільше",
+      "transcription": "haki"
+    },
+    {
+      "word_id": "word_freq2k_beyoter",
+      "hebrew": "בְּיוֹתֵר",
+      "ukrainian": "найбільш",
+      "transcription": "beyoter"
+    },
+    {
+      "word_id": "word_freq2k_kol_every",
+      "hebrew": "כָּל",
+      "ukrainian": "кожен; весь",
+      "transcription": "kol"
+    },
+    {
+      "word_id": "word_freq2k_eizeshehu",
+      "hebrew": "אֵיזֶשֶׁהוּ",
+      "ukrainian": "якийсь",
+      "transcription": "eizeshehu"
+    },
+    {
+      "word_id": "word_freq2k_eizoshehi",
+      "hebrew": "אֵיזוֹשֶׁהִי",
+      "ukrainian": "якась",
+      "transcription": "eizoshehi"
+    },
+    {
+      "word_id": "word_freq2k_gray",
+      "hebrew": "אָפֹר",
+      "ukrainian": "сірий",
+      "transcription": "afor"
+    },
+    {
+      "word_id": "word_freq2k_purple",
+      "hebrew": "סָגֹל",
+      "ukrainian": "фіолетовий",
+      "transcription": "sagol"
+    },
+    {
+      "word_id": "word_freq2k_beige",
+      "hebrew": "בֵּז'",
+      "ukrainian": "бежевий",
+      "transcription": "bezh"
+    },
+    {
+      "word_id": "word_freq2k_turquoise",
+      "hebrew": "טֻרְקִיז",
+      "ukrainian": "бірюзовий",
+      "transcription": "turkiz"
+    },
+    {
+      "word_id": "word_freq2k_burgundy",
+      "hebrew": "בּוּרְגּוּנְדִי",
+      "ukrainian": "бордовий",
+      "transcription": "burgundi"
+    },
+    {
+      "word_id": "word_freq2k_shilshom",
+      "hebrew": "שִׁלְשׁוֹם",
+      "ukrainian": "позавчора",
+      "transcription": "shilshom"
+    },
+    {
+      "word_id": "word_freq2k_mochrotayim",
+      "hebrew": "מָחֳרָתַיִם",
+      "ukrainian": "післязавтра",
+      "transcription": "mochrotayim"
+    },
+    {
+      "word_id": "word_freq2k_tzohorayim",
+      "hebrew": "צָהֳרַיִם",
+      "ukrainian": "полудень",
+      "transcription": "tzohorayim"
+    },
+    {
+      "word_id": "word_freq2k_afternoon",
+      "hebrew": "אַחַר הַצָּהֳרַיִם",
+      "ukrainian": "після обіду",
+      "transcription": "achar hatzohorayim"
+    },
+    {
+      "word_id": "word_freq2k_chatzot",
+      "hebrew": "חֲצוֹת",
+      "ukrainian": "опівніч",
+      "transcription": "chatzot"
+    },
+    {
+      "word_id": "word_freq2k_paam",
+      "hebrew": "פַּעַם",
+      "ukrainian": "раз",
+      "transcription": "pa'am"
+    },
+    {
+      "word_id": "word_freq2k_achar_kakh",
+      "hebrew": "אַחַר כָּךְ",
+      "ukrainian": "потім",
+      "transcription": "achar kakh"
+    },
+    {
+      "word_id": "word_freq2k_lifnei_khen",
+      "hebrew": "לִפְנֵי כֵן",
+      "ukrainian": "до того",
+      "transcription": "lifnei khen"
+    },
+    {
+      "word_id": "word_freq2k_miyad",
+      "hebrew": "מִיָּד",
+      "ukrainian": "негайно",
+      "transcription": "miyad"
+    },
+    {
+      "word_id": "word_freq2k_bekarov",
+      "hebrew": "בְּקָרוֹב",
+      "ukrainian": "скоро",
+      "transcription": "bekarov"
+    },
+    {
+      "word_id": "word_freq2k_leat",
+      "hebrew": "לְאַט",
+      "ukrainian": "повільно",
+      "transcription": "le'at"
+    },
+    {
+      "word_id": "word_freq2k_maher",
+      "hebrew": "מַהֵר",
+      "ukrainian": "швидко",
+      "transcription": "maher"
+    },
+    {
+      "word_id": "word_freq2k_shabbat",
+      "hebrew": "שַׁבָּת",
+      "ukrainian": "субота",
+      "transcription": "shabbat"
+    },
+    {
+      "word_id": "word_freq2k_stav",
+      "hebrew": "סְתָו",
+      "ukrainian": "осінь",
+      "transcription": "stav"
+    },
+    {
+      "word_id": "word_freq2k_life",
+      "hebrew": "חַיִּים",
+      "ukrainian": "життя",
+      "transcription": "chayim"
+    },
+    {
+      "word_id": "word_freq2k_freedom",
+      "hebrew": "חֵרוּת",
+      "ukrainian": "свобода",
+      "transcription": "cherut"
+    },
+    {
+      "word_id": "word_freq2k_beauty",
+      "hebrew": "יֹפִי",
+      "ukrainian": "краса",
+      "transcription": "yofi"
+    },
+    {
+      "word_id": "word_freq2k_power",
+      "hebrew": "כֹּחַ",
+      "ukrainian": "сила",
+      "transcription": "koach"
+    },
+    {
+      "word_id": "word_freq2k_weakness",
+      "hebrew": "חֻלְשָׁה",
+      "ukrainian": "слабкість",
+      "transcription": "chulsha"
+    },
+    {
+      "word_id": "word_freq2k_reason",
+      "hebrew": "סִבָּה",
+      "ukrainian": "причина",
+      "transcription": "siba"
+    },
+    {
+      "word_id": "word_freq2k_difference",
+      "hebrew": "הֶבְדֵּל",
+      "ukrainian": "різниця",
+      "transcription": "hevdel"
+    },
+    {
+      "word_id": "word_freq2k_fact",
+      "hebrew": "עֻבְדָּה",
+      "ukrainian": "факт",
+      "transcription": "uvda"
+    },
+    {
+      "word_id": "word_freq2k_information",
+      "hebrew": "מֵידָע",
+      "ukrainian": "інформація",
+      "transcription": "meda"
+    },
+    {
+      "word_id": "word_freq2k_point",
+      "hebrew": "נְקֻדָּה",
+      "ukrainian": "крапка; пункт",
+      "transcription": "nekuda"
+    },
+    {
+      "word_id": "word_freq2k_size",
+      "hebrew": "גֹּדֶל",
+      "ukrainian": "розмір",
+      "transcription": "godel"
+    },
+    {
+      "word_id": "word_freq2k_height",
+      "hebrew": "גֹּבַהּ",
+      "ukrainian": "висота",
+      "transcription": "govah"
+    },
+    {
+      "word_id": "word_freq2k_length",
+      "hebrew": "אֹרֶךְ",
+      "ukrainian": "довжина",
+      "transcription": "orekh"
+    },
+    {
+      "word_id": "word_freq2k_distance",
+      "hebrew": "מֶרְחָק",
+      "ukrainian": "відстань",
+      "transcription": "merchak"
+    },
+    {
+      "word_id": "word_freq2k_type",
+      "hebrew": "סוּג",
+      "ukrainian": "тип",
+      "transcription": "sug"
+    },
+    {
+      "word_id": "word_freq2k_thing",
+      "hebrew": "דָּבָר",
+      "ukrainian": "річ",
+      "transcription": "davar"
+    },
+    {
+      "word_id": "word_freq2k_matter",
+      "hebrew": "עִנְיָן",
+      "ukrainian": "справа",
+      "transcription": "inyan"
+    },
+    {
+      "word_id": "word_freq2k_subject",
+      "hebrew": "נוֹשֵׂא",
+      "ukrainian": "тема",
+      "transcription": "nose"
+    },
+    {
+      "word_id": "word_freq2k_state",
+      "hebrew": "מַצָּב",
+      "ukrainian": "ситуація",
+      "transcription": "matzav"
+    },
+    {
+      "word_id": "word_freq2k_change",
+      "hebrew": "שִׁנּוּי",
+      "ukrainian": "зміна",
+      "transcription": "shinui"
+    },
+    {
+      "word_id": "word_freq2k_cool_adj",
+      "hebrew": "קָרִיר",
+      "ukrainian": "прохолодний",
+      "transcription": "karir"
+    },
+    {
+      "word_id": "word_freq2k_wet",
+      "hebrew": "רָטֹב",
+      "ukrainian": "мокрий",
+      "transcription": "ratov"
+    },
+    {
+      "word_id": "word_freq2k_dirty",
+      "hebrew": "מְלֻכְלָךְ",
+      "ukrainian": "брудний",
+      "transcription": "melukhlakh"
+    },
+    {
+      "word_id": "word_freq2k_confused",
+      "hebrew": "מְבֻלְבָּל",
+      "ukrainian": "розгублений",
+      "transcription": "mevulbal"
+    },
+    {
+      "word_id": "word_freq2k_boring",
+      "hebrew": "מְשַׁעֲמֵם",
+      "ukrainian": "нудний",
+      "transcription": "mesha'amem"
+    },
+    {
+      "word_id": "word_freq2k_complicated",
+      "hebrew": "מְסֻבָּךְ",
+      "ukrainian": "складний",
+      "transcription": "mesubakh"
+    },
+    {
+      "word_id": "word_freq2k_famous",
+      "hebrew": "מְפֻרְסָם",
+      "ukrainian": "відомий",
+      "transcription": "mefursam"
+    },
+    {
+      "word_id": "word_freq2k_real",
+      "hebrew": "אֲמִיתִי",
+      "ukrainian": "справжній",
+      "transcription": "amiti"
+    },
+    {
+      "word_id": "word_freq2k_suitable",
+      "hebrew": "מַתְאִים",
+      "ukrainian": "придатний",
+      "transcription": "matim"
+    },
+    {
+      "word_id": "word_freq2k_similar",
+      "hebrew": "דּוֹמֶה",
+      "ukrainian": "схожий",
+      "transcription": "domeh"
+    },
+    {
+      "word_id": "word_freq2k_shared",
+      "hebrew": "מְשֻׁתָּף",
+      "ukrainian": "спільний",
+      "transcription": "meshutaf"
+    },
+    {
+      "word_id": "word_freq2k_whole_adj",
+      "hebrew": "שָׁלֵם",
+      "ukrainian": "цілий",
+      "transcription": "shalem"
+    },
+    {
+      "word_id": "word_freq2k_broken",
+      "hebrew": "שָׁבוּר",
+      "ukrainian": "зламаний",
+      "transcription": "shavur"
+    },
+    {
+      "word_id": "word_freq2k_free_adj",
+      "hebrew": "חָפְשִׁי",
+      "ukrainian": "вільний",
+      "transcription": "chofshi"
+    },
+    {
+      "word_id": "word_freq2k_occupied",
+      "hebrew": "תָּפוּס",
+      "ukrainian": "зайнятий",
+      "transcription": "tafus"
+    },
+    {
+      "word_id": "word_freq2k_delicious",
+      "hebrew": "טָעִים",
+      "ukrainian": "смачний",
+      "transcription": "ta'im"
+    },
+    {
+      "word_id": "word_freq2k_ripe",
+      "hebrew": "בָּשֵׁל",
+      "ukrainian": "стиглий",
+      "transcription": "bashel"
+    },
+    {
+      "word_id": "word_freq2k_polite",
+      "hebrew": "אַדִּיב",
+      "ukrainian": "ввічливий",
+      "transcription": "adiv"
+    },
+    {
+      "word_id": "word_freq2k_rude",
+      "hebrew": "גַּס",
+      "ukrainian": "грубий",
+      "transcription": "gas"
+    },
+    {
+      "word_id": "word_freq2k_stingy",
+      "hebrew": "קַמְצָן",
+      "ukrainian": "скнара",
+      "transcription": "kamtzan"
+    },
+    {
+      "word_id": "word_freq2k_coward",
+      "hebrew": "פַּחְדָן",
+      "ukrainian": "боягуз",
+      "transcription": "pachdan"
+    },
+    {
+      "word_id": "word_freq2k_dangerous",
+      "hebrew": "מְסֻכָּן",
+      "ukrainian": "небезпечний",
+      "transcription": "mesukan"
+    },
+    {
+      "word_id": "word_freq2k_funny",
+      "hebrew": "מַצְחִיק",
+      "ukrainian": "смішний",
+      "transcription": "matzchik"
+    },
+    {
+      "word_id": "word_freq2k_rude_spirit",
+      "hebrew": "גַּס רוּחַ",
+      "ukrainian": "хам",
+      "transcription": "gas ruach"
+    },
+    {
+      "word_id": "word_freq2k_stubborn",
+      "hebrew": "עָקֵב",
+      "ukrainian": "впертий",
+      "transcription": "aqev"
+    },
+    {
+      "word_id": "word_freq2k_lazy",
+      "hebrew": "עַצְלָן",
+      "ukrainian": "лінивий",
+      "transcription": "atzlan"
+    },
+    {
+      "word_id": "word_freq2k_diligent",
+      "hebrew": "חָרוּץ",
+      "ukrainian": "старанний",
+      "transcription": "charutz"
+    },
+    {
+      "word_id": "word_freq2k_main_adj",
+      "hebrew": "עִקָּרִי",
+      "ukrainian": "головний",
+      "transcription": "ikari"
+    },
+    {
+      "word_id": "word_freq2k_special",
+      "hebrew": "מְיֻחָד",
+      "ukrainian": "особливий",
+      "transcription": "meyuchad"
+    },
+    {
+      "word_id": "word_freq2k_wonderful",
+      "hebrew": "נֶהְדָּר",
+      "ukrainian": "чудовий",
+      "transcription": "nehedar"
+    },
+    {
+      "word_id": "word_freq2k_hatred",
+      "hebrew": "שִׂנְאָה",
+      "ukrainian": "ненависть",
+      "transcription": "sina"
+    },
+    {
+      "word_id": "word_freq2k_joy",
+      "hebrew": "שִׂמְחָה",
+      "ukrainian": "радість",
+      "transcription": "simcha"
+    },
+    {
+      "word_id": "word_freq2k_sadness",
+      "hebrew": "עֶצֶב",
+      "ukrainian": "сум",
+      "transcription": "etzev"
+    },
+    {
+      "word_id": "word_freq2k_anger",
+      "hebrew": "כַּעַס",
+      "ukrainian": "гнів",
+      "transcription": "ka'as"
+    },
+    {
+      "word_id": "word_freq2k_anxiety",
+      "hebrew": "חֲרָדָה",
+      "ukrainian": "тривога",
+      "transcription": "charada"
+    },
+    {
+      "word_id": "word_freq2k_worry",
+      "hebrew": "דְּאָגָה",
+      "ukrainian": "турбота",
+      "transcription": "de'aga"
+    },
+    {
+      "word_id": "word_freq2k_faith",
+      "hebrew": "אֱמוּנָה",
+      "ukrainian": "віра",
+      "transcription": "emuna"
+    },
+    {
+      "word_id": "word_freq2k_confidence",
+      "hebrew": "בִּטָּחוֹן",
+      "ukrainian": "впевненість",
+      "transcription": "bitachon"
+    },
+    {
+      "word_id": "word_freq2k_pride",
+      "hebrew": "גַּאֲוָה",
+      "ukrainian": "гордість",
+      "transcription": "ga'ava"
+    },
+    {
+      "word_id": "word_freq2k_shame",
+      "hebrew": "בּוּשָׁה",
+      "ukrainian": "сором",
+      "transcription": "busha"
+    },
+    {
+      "word_id": "word_freq2k_disgrace",
+      "hebrew": "חֶרְפָּה",
+      "ukrainian": "ганьба",
+      "transcription": "cherpa"
+    },
+    {
+      "word_id": "word_freq2k_enthusiasm",
+      "hebrew": "הִתְלַהֲבוּת",
+      "ukrainian": "захоплення",
+      "transcription": "hitlahavut"
+    },
+    {
+      "word_id": "word_freq2k_feeling",
+      "hebrew": "הַרְגָּשָׁה",
+      "ukrainian": "відчуття",
+      "transcription": "hargasha"
+    },
+    {
+      "word_id": "word_freq2k_fatigue",
+      "hebrew": "יְגִיעוּת",
+      "ukrainian": "втома",
+      "transcription": "yegi'ut"
+    },
+    {
+      "word_id": "word_freq2k_rest",
+      "hebrew": "מְנוּחָה",
+      "ukrainian": "відпочинок",
+      "transcription": "menucha"
+    },
+    {
+      "word_id": "word_freq2k_desire",
+      "hebrew": "רָצוֹן",
+      "ukrainian": "бажання",
+      "transcription": "ratzon"
+    },
+    {
+      "word_id": "word_freq2k_sorrow",
+      "hebrew": "צַעַר",
+      "ukrainian": "горе",
+      "transcription": "tza'ar"
+    },
+    {
+      "word_id": "word_freq2k_compassion",
+      "hebrew": "רַחֲמִים",
+      "ukrainian": "співчуття",
+      "transcription": "rachamim"
+    },
+    {
+      "word_id": "word_freq2k_patience",
+      "hebrew": "סַבְלָנוּת",
+      "ukrainian": "терпіння",
+      "transcription": "savlanut"
+    },
+    {
+      "word_id": "word_freq2k_tranquility",
+      "hebrew": "שַׁלְוָה",
+      "ukrainian": "спокій",
+      "transcription": "shalva"
+    },
+    {
+      "word_id": "word_freq2k_grandson",
+      "hebrew": "נֶכֶד",
+      "ukrainian": "онук",
+      "transcription": "nekhed"
+    },
+    {
+      "word_id": "word_freq2k_granddaughter",
+      "hebrew": "נֶכְדָּה",
+      "ukrainian": "онука",
+      "transcription": "nekhda"
+    },
+    {
+      "word_id": "word_freq2k_nephew",
+      "hebrew": "אַחְיָן",
+      "ukrainian": "племінник",
+      "transcription": "achyan"
+    },
+    {
+      "word_id": "word_freq2k_niece",
+      "hebrew": "אַחְיָנִית",
+      "ukrainian": "племінниця",
+      "transcription": "achyanit"
+    },
+    {
+      "word_id": "word_freq2k_cousin_m",
+      "hebrew": "בֶּן דּוֹד",
+      "ukrainian": "двоюрідний брат",
+      "transcription": "ben dod"
+    },
+    {
+      "word_id": "word_freq2k_cousin_f",
+      "hebrew": "בַּת דּוֹדָה",
+      "ukrainian": "двоюрідна сестра",
+      "transcription": "bat doda"
+    },
+    {
+      "word_id": "word_freq2k_groom",
+      "hebrew": "חָתָן",
+      "ukrainian": "наречений; зять",
+      "transcription": "chatan"
+    },
+    {
+      "word_id": "word_freq2k_bride",
+      "hebrew": "כַּלָּה",
+      "ukrainian": "наречена; невістка",
+      "transcription": "kala"
+    },
+    {
+      "word_id": "word_freq2k_mother_in_law",
+      "hebrew": "חָמוֹת",
+      "ukrainian": "теща; свекруха",
+      "transcription": "chamot"
+    },
+    {
+      "word_id": "word_freq2k_parents",
+      "hebrew": "הוֹרִים",
+      "ukrainian": "батьки",
+      "transcription": "horim"
+    },
+    {
+      "word_id": "word_freq2k_baby_girl",
+      "hebrew": "תִּינוֹקֶת",
+      "ukrainian": "немовля (ж.)",
+      "transcription": "tinoket"
+    },
+    {
+      "word_id": "word_freq2k_naara",
+      "hebrew": "נַעֲרָה",
+      "ukrainian": "дівчина",
+      "transcription": "na'ara"
+    },
+    {
+      "word_id": "word_freq2k_neighbor_f",
+      "hebrew": "שְׁכֵנָה",
+      "ukrainian": "сусідка",
+      "transcription": "shkhena"
+    },
+    {
+      "word_id": "word_freq2k_relative",
+      "hebrew": "קְרוֹב מִשְׁפָּחָה",
+      "ukrainian": "родич",
+      "transcription": "krov mishpacha"
+    },
+    {
+      "word_id": "word_freq2k_widow",
+      "hebrew": "אַלְמָנָה",
+      "ukrainian": "вдова",
+      "transcription": "almana"
+    },
+    {
+      "word_id": "word_freq2k_divorced",
+      "hebrew": "גָּרוּשׁ",
+      "ukrainian": "розлучений",
+      "transcription": "garush"
+    },
+    {
+      "word_id": "word_freq2k_nail",
+      "hebrew": "צִפֹּרֶן",
+      "ukrainian": "ніготь",
+      "transcription": "tziporen"
+    },
+    {
+      "word_id": "word_freq2k_hips",
+      "hebrew": "מָתְנַיִם",
+      "ukrainian": "стегна; талія",
+      "transcription": "motnayim"
+    },
+    {
+      "word_id": "word_freq2k_ankle",
+      "hebrew": "קַרְסֹל",
+      "ukrainian": "щиколотка",
+      "transcription": "karsol"
+    },
+    {
+      "word_id": "word_freq2k_lung",
+      "hebrew": "רֵאָה",
+      "ukrainian": "легеня",
+      "transcription": "rea"
+    },
+    {
+      "word_id": "word_freq2k_kidney",
+      "hebrew": "כִּלְיָה",
+      "ukrainian": "нирка",
+      "transcription": "kilya"
+    },
+    {
+      "word_id": "word_freq2k_stomach",
+      "hebrew": "קֵבָה",
+      "ukrainian": "шлунок",
+      "transcription": "keva"
+    },
+    {
+      "word_id": "word_freq2k_muscle",
+      "hebrew": "שְׁרִיר",
+      "ukrainian": "м'яз",
+      "transcription": "shrir"
+    },
+    {
+      "word_id": "word_freq2k_brain",
+      "hebrew": "מֹחַ",
+      "ukrainian": "мозок",
+      "transcription": "moach"
+    },
+    {
+      "word_id": "word_freq2k_flu",
+      "hebrew": "שַׁפַּעַת",
+      "ukrainian": "грип",
+      "transcription": "shapaat"
+    },
+    {
+      "word_id": "word_freq2k_cold_illness",
+      "hebrew": "צִנּוּן",
+      "ukrainian": "застуда",
+      "transcription": "tzinun"
+    },
+    {
+      "word_id": "word_freq2k_headache",
+      "hebrew": "כְּאֵב רֹאשׁ",
+      "ukrainian": "головний біль",
+      "transcription": "ke'ev rosh"
+    },
+    {
+      "word_id": "word_freq2k_cough",
+      "hebrew": "שִׁעוּל",
+      "ukrainian": "кашель",
+      "transcription": "shi'ul"
+    },
+    {
+      "word_id": "word_freq2k_nausea",
+      "hebrew": "בְּחִילָה",
+      "ukrainian": "нудота",
+      "transcription": "bechila"
+    },
+    {
+      "word_id": "word_freq2k_fracture",
+      "hebrew": "שֶׁבֶר",
+      "ukrainian": "перелом",
+      "transcription": "shever"
+    },
+    {
+      "word_id": "word_freq2k_pharmacy",
+      "hebrew": "בֵּית מִרְקַחַת",
+      "ukrainian": "аптека",
+      "transcription": "beit mirkachat"
+    },
+    {
+      "word_id": "word_freq2k_syringe",
+      "hebrew": "מַזְרֵק",
+      "ukrainian": "шприц",
+      "transcription": "mazrek"
+    },
+    {
+      "word_id": "word_freq2k_vaccination",
+      "hebrew": "חִסּוּן",
+      "ukrainian": "щеплення",
+      "transcription": "chisun"
+    },
+    {
+      "word_id": "word_freq2k_diet",
+      "hebrew": "דִּיאֵטָה",
+      "ukrainian": "дієта",
+      "transcription": "dieta"
+    },
+    {
+      "word_id": "word_freq2k_shirt",
+      "hebrew": "חֻלְצָה",
+      "ukrainian": "сорочка",
+      "transcription": "chultza"
+    },
+    {
+      "word_id": "word_freq2k_jeans",
+      "hebrew": "מִכְנְסֵי גִּ'ינְס",
+      "ukrainian": "джинси",
+      "transcription": "mikhnesei jeans"
+    },
+    {
+      "word_id": "word_freq2k_tshirt",
+      "hebrew": "חֻלְצַת טְרִיקוֹ",
+      "ukrainian": "футболка",
+      "transcription": "chultzat triko"
+    },
+    {
+      "word_id": "word_freq2k_jacket",
+      "hebrew": "גֶּ'קֶט",
+      "ukrainian": "куртка",
+      "transcription": "jeket"
+    },
+    {
+      "word_id": "word_freq2k_boots",
+      "hebrew": "מַגָּפַיִם",
+      "ukrainian": "чоботи",
+      "transcription": "magafayim"
+    },
+    {
+      "word_id": "word_freq2k_sandals",
+      "hebrew": "סַנְדָּלִים",
+      "ukrainian": "сандалі",
+      "transcription": "sandalim"
+    },
+    {
+      "word_id": "word_freq2k_sneakers",
+      "hebrew": "נַעֲלֵי סְפּוֹרְט",
+      "ukrainian": "кросівки",
+      "transcription": "na'alei sport"
+    },
+    {
+      "word_id": "word_freq2k_tights",
+      "hebrew": "גַּרְבּוֹנִים",
+      "ukrainian": "колготки",
+      "transcription": "garbonim"
+    },
+    {
+      "word_id": "word_freq2k_tie",
+      "hebrew": "עֲנִיבָה",
+      "ukrainian": "краватка",
+      "transcription": "aniva"
+    },
+    {
+      "word_id": "word_freq2k_sunglasses",
+      "hebrew": "מִשְׁקְפֵי שֶׁמֶשׁ",
+      "ukrainian": "сонячні окуляри",
+      "transcription": "mishkefei shemesh"
+    },
+    {
+      "word_id": "word_freq2k_earring",
+      "hebrew": "עָגִיל",
+      "ukrainian": "сережка",
+      "transcription": "agil"
+    },
+    {
+      "word_id": "word_freq2k_wristwatch",
+      "hebrew": "שָׁעוֹן יָד",
+      "ukrainian": "наручний годинник",
+      "transcription": "sha'on yad"
+    },
+    {
+      "word_id": "word_freq2k_swimsuit",
+      "hebrew": "חֲלִיפַת יָם",
+      "ukrainian": "купальник",
+      "transcription": "chalifat yam"
+    },
+    {
+      "word_id": "word_freq2k_pajamas",
+      "hebrew": "פִּיגָ'מָה",
+      "ukrainian": "піжама",
+      "transcription": "pijama"
+    },
+    {
+      "word_id": "word_freq2k_bra",
+      "hebrew": "חֲזִיָּה",
+      "ukrainian": "бюстгальтер",
+      "transcription": "chaziya"
+    },
+    {
+      "word_id": "word_freq2k_wardrobe",
+      "hebrew": "אֲרוֹן בְּגָדִים",
+      "ukrainian": "шафа",
+      "transcription": "aron begadim"
+    },
+    {
+      "word_id": "word_freq2k_sour_cream",
+      "hebrew": "שַׁמֶּנֶת",
+      "ukrainian": "сметана",
+      "transcription": "shamenet"
+    },
+    {
+      "word_id": "word_freq2k_rice",
+      "hebrew": "אֹרֶז",
+      "ukrainian": "рис",
+      "transcription": "orez"
+    },
+    {
+      "word_id": "word_freq2k_chicken",
+      "hebrew": "עוֹף",
+      "ukrainian": "курка",
+      "transcription": "of"
+    },
+    {
+      "word_id": "word_freq2k_lamb",
+      "hebrew": "בְּשַׂר טָלֶה",
+      "ukrainian": "ягнятина",
+      "transcription": "bsar tale"
+    },
+    {
+      "word_id": "word_freq2k_sausage",
+      "hebrew": "נַקְנִיק",
+      "ukrainian": "ковбаса",
+      "transcription": "naknik"
+    },
+    {
+      "word_id": "word_freq2k_salted_fish",
+      "hebrew": "דָּג מָלוּחַ",
+      "ukrainian": "солона риба",
+      "transcription": "dag maluach"
+    },
+    {
+      "word_id": "word_freq2k_fruits",
+      "hebrew": "פֵּרוֹת",
+      "ukrainian": "фрукти",
+      "transcription": "perot"
+    },
+    {
+      "word_id": "word_freq2k_vegetables",
+      "hebrew": "יְרָקוֹת",
+      "ukrainian": "овочі",
+      "transcription": "yerakot"
+    },
+    {
+      "word_id": "word_freq2k_grapes",
+      "hebrew": "עֲנָבִים",
+      "ukrainian": "виноград",
+      "transcription": "anavim"
+    },
+    {
+      "word_id": "word_freq2k_cherry",
+      "hebrew": "דֻּבְדְּבָן",
+      "ukrainian": "вишня",
+      "transcription": "duvdevan"
+    },
+    {
+      "word_id": "word_freq2k_strawberry",
+      "hebrew": "תּוּת",
+      "ukrainian": "полуниця",
+      "transcription": "tut"
+    },
+    {
+      "word_id": "word_freq2k_lettuce",
+      "hebrew": "חַסָּה",
+      "ukrainian": "салат-латук",
+      "transcription": "chasa"
+    },
+    {
+      "word_id": "word_freq2k_green_pepper",
+      "hebrew": "פִּלְפֵּל יָרֹק",
+      "ukrainian": "зелений перець",
+      "transcription": "pilpel yarok"
+    },
+    {
+      "word_id": "word_freq2k_meal",
+      "hebrew": "אֲרוּחָה",
+      "ukrainian": "трапеза",
+      "transcription": "arucha"
+    },
+    {
+      "word_id": "word_freq2k_napkin",
+      "hebrew": "מַפִּית",
+      "ukrainian": "серветка",
+      "transcription": "mapit"
+    },
+    {
+      "word_id": "word_freq2k_ox",
+      "hebrew": "שׁוֹר",
+      "ukrainian": "бик",
+      "transcription": "shor"
+    },
+    {
+      "word_id": "word_freq2k_sheep",
+      "hebrew": "כֶּבֶשׂ",
+      "ukrainian": "вівця",
+      "transcription": "keves"
+    },
+    {
+      "word_id": "word_freq2k_donkey",
+      "hebrew": "חֲמוֹר",
+      "ukrainian": "осел",
+      "transcription": "chamor"
+    },
+    {
+      "word_id": "word_freq2k_rabbit",
+      "hebrew": "ארנב",
+      "ukrainian": "кролик",
+      "transcription": "arnav"
+    },
+    {
+      "word_id": "word_freq2k_rat",
+      "hebrew": "חֻלְדָּה",
+      "ukrainian": "щур",
+      "transcription": "chulda"
+    },
+    {
+      "word_id": "word_freq2k_eagle",
+      "hebrew": "נֶשֶׁר",
+      "ukrainian": "орел",
+      "transcription": "nesher"
+    },
+    {
+      "word_id": "word_freq2k_fowl",
+      "hebrew": "עוֹף",
+      "ukrainian": "птиця",
+      "transcription": "of"
+    },
+    {
+      "word_id": "word_freq2k_rooster",
+      "hebrew": "תַּרְנְגוֹל",
+      "ukrainian": "півень",
+      "transcription": "tarnegol"
+    },
+    {
+      "word_id": "word_freq2k_hen",
+      "hebrew": "תַּרְנְגֹלֶת",
+      "ukrainian": "курка",
+      "transcription": "tarnegolet"
+    },
+    {
+      "word_id": "word_freq2k_fish_pl",
+      "hebrew": "דָּגִים",
+      "ukrainian": "риби",
+      "transcription": "dagim"
+    },
+    {
+      "word_id": "word_freq2k_snake",
+      "hebrew": "נָחָשׁ",
+      "ukrainian": "змія",
+      "transcription": "nachash"
+    },
+    {
+      "word_id": "word_freq2k_mosquito",
+      "hebrew": "יַתּוּשׁ",
+      "ukrainian": "комар",
+      "transcription": "yatush"
+    },
+    {
+      "word_id": "word_freq2k_fly",
+      "hebrew": "זְבוּב",
+      "ukrainian": "муха",
+      "transcription": "zvuv"
+    },
+    {
+      "word_id": "word_freq2k_spider",
+      "hebrew": "עַכָּבִישׁ",
+      "ukrainian": "павук",
+      "transcription": "akavish"
+    },
+    {
+      "word_id": "word_freq2k_turtle",
+      "hebrew": "צָב",
+      "ukrainian": "черепаха",
+      "transcription": "tzav"
+    },
+    {
+      "word_id": "word_freq2k_leopard",
+      "hebrew": "נָמֵר",
+      "ukrainian": "леопард",
+      "transcription": "namer"
+    },
+    {
+      "word_id": "word_freq2k_clouds",
+      "hebrew": "עָנָנִים",
+      "ukrainian": "хмари",
+      "transcription": "ananim"
+    },
+    {
+      "word_id": "word_freq2k_hail",
+      "hebrew": "בָּרָד",
+      "ukrainian": "град",
+      "transcription": "barad"
+    },
+    {
+      "word_id": "word_freq2k_degree",
+      "hebrew": "מַעֲלָה",
+      "ukrainian": "градус",
+      "transcription": "ma'ala"
+    },
+    {
+      "word_id": "word_freq2k_electricity",
+      "hebrew": "חַשְׁמַל",
+      "ukrainian": "електрика",
+      "transcription": "chashmal"
+    },
+    {
+      "word_id": "word_freq2k_root",
+      "hebrew": "שֹׁרֶשׁ",
+      "ukrainian": "корінь",
+      "transcription": "shoresh"
+    },
+    {
+      "word_id": "word_freq2k_green",
+      "hebrew": "יָרֹק",
+      "ukrainian": "зелений",
+      "transcription": "yarok"
+    },
+    {
+      "word_id": "word_freq2k_landscape",
+      "hebrew": "נוֹף",
+      "ukrainian": "пейзаж",
+      "transcription": "nof"
+    },
+    {
+      "word_id": "word_freq2k_inanimate",
+      "hebrew": "דּוֹמֵם",
+      "ukrainian": "неживий",
+      "transcription": "domem"
+    },
+    {
+      "word_id": "word_freq2k_darkness",
+      "hebrew": "חֹשֶׁךְ",
+      "ukrainian": "темрява",
+      "transcription": "choshekh"
+    },
+    {
+      "word_id": "word_freq2k_spring_water",
+      "hebrew": "מַעְיָן",
+      "ukrainian": "джерело",
+      "transcription": "ma'ayan"
+    },
+    {
+      "word_id": "word_freq2k_flow",
+      "hebrew": "שֶׁטֶף",
+      "ukrainian": "потік",
+      "transcription": "shetef"
+    },
+    {
+      "word_id": "word_freq2k_imagination",
+      "hebrew": "דִּמְיוֹן",
+      "ukrainian": "уява; схожість",
+      "transcription": "dimyon"
+    },
+    {
+      "word_id": "word_freq2k_column",
+      "hebrew": "טוּר",
+      "ukrainian": "колонка",
+      "transcription": "tur"
+    },
+    {
+      "word_id": "word_freq2k_dispute",
+      "hebrew": "מַחְלוֹקֶת",
+      "ukrainian": "суперечка",
+      "transcription": "machloket"
+    },
+    {
+      "word_id": "word_freq2k_importance",
+      "hebrew": "חֲשִׁיבוּת",
+      "ukrainian": "важливість",
+      "transcription": "chashivut"
+    },
+    {
+      "word_id": "word_freq2k_continuation",
+      "hebrew": "הֶמְשֵׁךְ",
+      "ukrainian": "продовження",
+      "transcription": "hemshekh"
+    },
+    {
+      "word_id": "word_freq2k_progress",
+      "hebrew": "הִתְקַדְּמוּת",
+      "ukrainian": "прогрес",
+      "transcription": "hitkadmut"
+    },
+    {
+      "word_id": "word_freq2k_supermarket",
+      "hebrew": "סוּפֶּרְמַרְקֶט",
+      "ukrainian": "супермаркет",
+      "transcription": "supermarket"
     }
   ]
 }
