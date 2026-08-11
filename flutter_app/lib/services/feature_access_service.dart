@@ -13,16 +13,10 @@ class FeatureAccessDecision {
   const FeatureAccessDecision({
     required this.feature,
     required this.isEnabled,
-    required this.title,
-    required this.description,
-    this.upgradeLabel = '',
   });
 
   final AppFeature feature;
   final bool isEnabled;
-  final String title;
-  final String description;
-  final String upgradeLabel;
 }
 
 abstract interface class FeatureAccessService {
@@ -52,13 +46,9 @@ class StaticFeatureAccessService implements FeatureAccessService {
 
   @override
   FeatureAccessDecision accessFor(AppFeature feature) {
-    final metadata = _metadataFor(feature);
     return FeatureAccessDecision(
       feature: feature,
       isEnabled: isEnabled(feature),
-      title: metadata.title,
-      description: metadata.description,
-      upgradeLabel: metadata.upgradeLabel,
     );
   }
 
@@ -74,43 +64,4 @@ class StaticFeatureAccessService implements FeatureAccessService {
     };
   }
 
-  _FeatureAccessMetadata _metadataFor(AppFeature feature) {
-    return switch (feature) {
-      AppFeature.nightMode => const _FeatureAccessMetadata(
-        title: 'Нічний режим',
-        description: 'Нічний режим доступний у Pro-версії.',
-        upgradeLabel: 'Перейти на Pro',
-      ),
-      AppFeature.advancedPractice => const _FeatureAccessMetadata(
-        title: 'Розширена практика',
-        description: 'Розширені режими практики доступні у Pro-версії.',
-        upgradeLabel: 'Перейти на Pro',
-      ),
-      AppFeature.extraLessons => const _FeatureAccessMetadata(
-        title: 'Додаткові уроки',
-        description: 'Додаткові набори уроків доступні у Pro-версії.',
-        upgradeLabel: 'Перейти на Pro',
-      ),
-      AppFeature.aiWordContexts => const _FeatureAccessMetadata(
-        title: 'ШІ-контексти слів',
-        description: 'AI-функції готуються до запуску. Скоро з\'являться.',
-      ),
-      AppFeature.aiPracticeTexts => const _FeatureAccessMetadata(
-        title: 'ШІ-тексти для практики',
-        description: 'AI-функції готуються до запуску. Скоро з\'являться.',
-      ),
-    };
-  }
-}
-
-class _FeatureAccessMetadata {
-  const _FeatureAccessMetadata({
-    required this.title,
-    required this.description,
-    this.upgradeLabel = '',
-  });
-
-  final String title;
-  final String description;
-  final String upgradeLabel;
 }

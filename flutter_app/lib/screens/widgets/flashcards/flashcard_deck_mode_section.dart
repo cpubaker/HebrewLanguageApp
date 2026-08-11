@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/generated/app_localizations.dart';
 import '../../../services/flashcard_session.dart';
 import '../../../theme/app_theme.dart';
 
@@ -15,11 +16,12 @@ class FlashcardDeckModeSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Режим',
+          localizations.flashcardsDeckMode,
           style: Theme.of(
             context,
           ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
@@ -30,17 +32,17 @@ class FlashcardDeckModeSection extends StatelessWidget {
           runSpacing: 10,
           children: [
             _FlashcardDeckChoiceChip(
-              label: 'Усі',
+              label: localizations.flashcardsDeckAll,
               isSelected: selectedMode == FlashcardDeckMode.allWords,
               onTap: () => onChanged(FlashcardDeckMode.allWords),
             ),
             _FlashcardDeckChoiceChip(
-              label: 'Контекст',
+              label: localizations.flashcardsDeckContexts,
               isSelected: selectedMode == FlashcardDeckMode.withContexts,
               onTap: () => onChanged(FlashcardDeckMode.withContexts),
             ),
             _FlashcardDeckChoiceChip(
-              label: 'Повторення',
+              label: localizations.flashcardsDeckReview,
               isSelected: selectedMode == FlashcardDeckMode.needsReview,
               onTap: () => onChanged(FlashcardDeckMode.needsReview),
             ),

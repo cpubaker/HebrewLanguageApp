@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/generated/app_localizations.dart';
 import '../models/guide_lesson_status.dart';
 import '../models/learning_bundle.dart';
 import '../services/app_locale_store.dart';
@@ -27,34 +28,35 @@ class AppShellLearnWorkspace extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
+    final localizations = AppLocalizations.of(context);
 
     return WorkspaceHubScreen(
-      subtitle: 'Оберіть, з чого продовжити навчання.',
+      subtitle: localizations.learnWorkspaceSubtitle,
       shortcuts: [
         WorkspaceShortcut(
-          title: 'Слова',
-          subtitle: 'Словник з пошуком, фільтрами й прогресом.',
+          title: localizations.workspaceWordsTitle,
+          subtitle: localizations.workspaceWordsSubtitle,
           icon: Icons.translate_rounded,
           accent: tokens.primaryAccent,
           onTap: onOpenWords,
         ),
         WorkspaceShortcut(
-          title: 'Дієслова',
-          subtitle: 'Уроки з поясненнями та озвученням.',
+          title: localizations.workspaceVerbsTitle,
+          subtitle: localizations.workspaceVerbsSubtitle,
           icon: Icons.play_lesson_rounded,
           accent: tokens.verbAccent,
           onTap: onOpenVerbs,
         ),
         WorkspaceShortcut(
-          title: 'Довідник',
-          subtitle: 'Граматика з поясненнями та прикладами.',
+          title: localizations.workspaceGuideTitle,
+          subtitle: localizations.workspaceGuideSubtitle,
           icon: Icons.menu_book_rounded,
           accent: tokens.guideAccent,
           onTap: onOpenGuide,
         ),
         WorkspaceShortcut(
-          title: 'Читання',
-          subtitle: 'Тексти за рівнями складності.',
+          title: localizations.workspaceReadingTitle,
+          subtitle: localizations.workspaceReadingSubtitle,
           icon: Icons.auto_stories_rounded,
           accent: tokens.readingAccent,
           onTap: onOpenReading,
@@ -85,53 +87,50 @@ class AppShellPracticeWorkspace extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
+    final localizations = AppLocalizations.of(context);
 
     return WorkspaceHubScreen(
-      title: 'Практика',
-      subtitle:
-          'Оберіть формат тренування і відкрийте його окремим повноекранним сеансом.',
+      title: localizations.navPractice,
+      subtitle: localizations.practiceWorkspaceSubtitle,
       shortcuts: [
         WorkspaceShortcut(
-          title: 'Повторення',
-          subtitle: 'Нові слова й останні помилки для спокійного повторення.',
+          title: localizations.workspaceReviewTitle,
+          subtitle: localizations.workspaceReviewSubtitle,
           icon: Icons.refresh_rounded,
           accent: tokens.vocabularyAccent,
           onTap: onOpenRepetition,
         ),
         WorkspaceShortcut(
-          title: 'Картки',
-          subtitle:
-              'Швидке повторення перекладу, контексту і наборів на повторення.',
+          title: localizations.workspaceFlashcardsTitle,
+          subtitle: localizations.workspaceFlashcardsSubtitle,
           icon: Icons.style_rounded,
           accent: tokens.successAccent,
           onTap: () => onOpenFlashcards(FlashcardDeckMode.allWords),
         ),
         WorkspaceShortcut(
-          title: 'Написання',
-          subtitle: 'Написання слів івритом без підказок.',
+          title: localizations.workspaceWritingTitle,
+          subtitle: localizations.workspaceWritingSubtitle,
           icon: Icons.edit_rounded,
           accent: tokens.primaryAccent,
           onTap: onOpenWriting,
         ),
         WorkspaceShortcut(
-          title: 'Конструктор',
-          subtitle: 'Складання слова з блоків у правильному порядку.',
+          title: localizations.workspaceConstructorTitle,
+          subtitle: localizations.workspaceConstructorSubtitle,
           icon: Icons.extension_rounded,
           accent: tokens.guideAccent,
           onTap: onOpenWritingConstructor,
         ),
         WorkspaceShortcut(
-          title: 'Спринт',
-          subtitle:
-              'Хвилинний режим на швидкість: для кожного слова є два варіанти перекладу.',
+          title: localizations.workspaceSprintTitle,
+          subtitle: localizations.workspaceSprintSubtitle,
           icon: Icons.timer_rounded,
           accent: tokens.dangerAccent,
           onTap: onOpenSprint,
         ),
         WorkspaceShortcut(
-          title: 'Текст зі словами',
-          subtitle:
-              'Короткий ШІ-текст з вашими словами, перекладом і швидким переходом до практики.',
+          title: localizations.workspaceAiTextTitle,
+          subtitle: localizations.workspaceAiTextSubtitle,
           icon: Icons.auto_awesome_rounded,
           accent: tokens.aiAccent,
           onTap: onOpenAiPracticeText,

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hebrew_language_flutter/l10n/generated/app_localizations.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/screens/sprint_screen.dart';
 import 'package:hebrew_language_flutter/services/learning_audio_player.dart';
@@ -169,6 +170,9 @@ Future<void> _pumpSprintScreen(
 }) async {
   await tester.pumpWidget(
     MaterialApp(
+      locale: const Locale('uk'),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: Scaffold(
         body: SprintScreen(
           words: words,

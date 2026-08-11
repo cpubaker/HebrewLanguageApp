@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/generated/app_localizations.dart';
 import '../../../models/guide_lesson_status.dart';
 import '../../../models/learning_bundle.dart';
 import '../../../services/progress_snapshot.dart';
@@ -28,7 +29,11 @@ class GuideLessonCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
-    final statusTheme = lessonStatusVisuals(status, tokens: tokens);
+    final statusTheme = lessonStatusVisuals(
+      status,
+      tokens: tokens,
+      localizations: AppLocalizations.of(context),
+    );
     final orderMatch = RegExp(r'^(\d+)').firstMatch(lesson.displayName);
     final orderLabel = orderMatch?.group(1) ?? '*';
 

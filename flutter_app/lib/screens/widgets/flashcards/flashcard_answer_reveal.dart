@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/generated/app_localizations.dart';
 import '../../../theme/app_theme.dart';
 
 class FlashcardAnswerRevealCard extends StatelessWidget {
@@ -85,7 +86,7 @@ class FlashcardSwipeHintStrip extends StatelessWidget {
           child: _FlashcardSwipeHintCard(
             alignment: CrossAxisAlignment.start,
             icon: Icons.arrow_back_rounded,
-            label: 'Ще раз',
+            label: AppLocalizations.of(context).flashcardsRepeat,
             accent: tokens.warningAccent,
             onTap: onRepeatTap,
           ),
@@ -95,7 +96,7 @@ class FlashcardSwipeHintStrip extends StatelessWidget {
           child: _FlashcardSwipeHintCard(
             alignment: CrossAxisAlignment.end,
             icon: Icons.arrow_forward_rounded,
-            label: 'Знаю',
+            label: AppLocalizations.of(context).wordStatusKnown,
             accent: tokens.successAccent,
             onTap: onKnowTap,
           ),

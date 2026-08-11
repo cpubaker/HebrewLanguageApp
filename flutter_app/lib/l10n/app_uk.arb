@@ -35,5 +35,201 @@
   "homeGreetingEvening": "Доброго вечора",
   "@homeGreetingEvening": {
     "description": "Greeting on the home screen between 6 PM and midnight."
-  }
+  },
+  "navHome": "Головна",
+  "navLearn": "Вчитись",
+  "navPractice": "Практика",
+  "navProfile": "Профіль",
+  "learnWorkspaceSubtitle": "Оберіть, з чого продовжити навчання.",
+  "workspaceWordsTitle": "Слова",
+  "workspaceWordsSubtitle": "Словник з пошуком, фільтрами й прогресом.",
+  "workspaceVerbsTitle": "Дієслова",
+  "workspaceVerbsSubtitle": "Уроки з поясненнями та озвученням.",
+  "workspaceGuideTitle": "Довідник",
+  "workspaceGuideSubtitle": "Граматика з поясненнями та прикладами.",
+  "workspaceReadingTitle": "Читання",
+  "workspaceReadingSubtitle": "Тексти за рівнями складності.",
+  "practiceWorkspaceSubtitle": "Оберіть формат тренування і відкрийте його окремим повноекранним сеансом.",
+  "workspaceReviewTitle": "Повторення",
+  "workspaceReviewSubtitle": "Нові слова й останні помилки для спокійного повторення.",
+  "workspaceFlashcardsTitle": "Картки",
+  "workspaceFlashcardsSubtitle": "Швидке повторення перекладу, контексту і наборів на повторення.",
+  "workspaceWritingTitle": "Написання",
+  "workspaceWritingSubtitle": "Написання слів івритом без підказок.",
+  "workspaceConstructorTitle": "Конструктор",
+  "workspaceConstructorSubtitle": "Складання слова з блоків у правильному порядку.",
+  "workspaceSprintTitle": "Спринт",
+  "workspaceSprintSubtitle": "Хвилинний режим на швидкість: для кожного слова є два варіанти перекладу.",
+  "workspaceAiTextTitle": "Текст зі словами",
+  "workspaceAiTextSubtitle": "Короткий ШІ-текст з вашими словами, перекладом і швидким переходом до практики.",
+  "wordOfDay": "Слово дня",
+  "wordOfDayAudioChecking": "Перевіряємо озвучку",
+  "wordOfDayAudioStop": "Зупинити озвучку",
+  "wordOfDayAudioPlay": "Увімкнути озвучку",
+  "wordOfDayAudioUnavailable": "Озвучка ще недоступна",
+  "wordOfDayAudioFailure": "Не вдалося відтворити озвучку слова.",
+  "wordOfDayEmpty": "Слова з’являться після завантаження навчальної бази.",
+  "homeActionFirstStep": "Перший крок",
+  "homeActionToday": "Сьогодні",
+  "homeActionWelcomeTitle": "Привіт! Готовий почати?",
+  "homeActionWelcomeSubtitle": "Відкрий перші картки, щоб познайомитись зі словами івриту й заробити перший день у серії.",
+  "homeActionTry": "Спробувати",
+  "homeActionReviewTitle": "Продовжити повторення",
+  "homeActionReviewSubtitle": "{count} слів чекають у картках на повторення.",
+  "@homeActionReviewSubtitle": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "homeActionGoToReview": "До повторення",
+  "homeActionNewWordsTitle": "Готовий до нового?",
+  "homeActionNewWordsSubtitle": "{count} слів ще чекають свого першого знайомства.",
+  "@homeActionNewWordsSubtitle": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "homeActionGoToNewWords": "До нових слів",
+  "homeActionReadingTitle": "Усе повторено — почитаємо?",
+  "homeActionReadingSubtitle": "У бібліотеці чекають тексти, з якими можна підняти рівень.",
+  "homeActionGoToReading": "До читання",
+  "homeActionFallbackTitle": "Заглянь у словник",
+  "homeActionFallbackSubtitle": "Перегляньте слова, щоб обрати наступний напрям навчання.",
+  "homeActionGoToWords": "До слів",
+  "wordsTitle": "Слова",
+  "wordsSubtitle": "Шукайте українською, англійською, івритом або за транскрипцією.",
+  "wordsSearchHint": "Шукати слова",
+  "wordsFilterAll": "Усі",
+  "wordsFilterNew": "Нові",
+  "wordsFilterLearned": "Вивчені",
+  "wordsFilterReview": "Повторити",
+  "wordsVisible": "Видимі",
+  "wordsTotal": "Усього",
+  "wordsSearchTooltip": "Пошук по словнику",
+  "wordsNoResultsTitle": "Нічого не знайдено",
+  "wordsNoResultsAll": "Спробуйте інший запит: слово українською чи англійською, форму івритом або транскрипцію.",
+  "wordsNoResultsFilter": "У поточному зрізі «{filter}» поки немає результатів. Спробуйте інший фільтр або запит.",
+  "@wordsNoResultsFilter": {
+    "placeholders": {
+      "filter": {"type": "String"}
+    }
+  },
+  "wordOpenTooltip": "Відкрити слово",
+  "wordChangeStatusTooltip": "Змінити статус слова",
+  "wordStatusUnknown": "Не знаю",
+  "wordStatusLearning": "Вчу",
+  "wordStatusKnown": "Знаю",
+  "wordStatCorrect": "Правильно",
+  "wordStatMistakes": "Помилки",
+  "wordContexts": "Контексти",
+  "wordContextLoading": "Шукаємо новий контекст...",
+  "wordContextEmpty": "Для цього слова ще немає контексту.",
+  "wordAudioChecking": "Перевіряємо аудіо слова",
+  "wordAudioUnavailable": "Аудіо для слова ще недоступне",
+  "wordAudioStop": "Зупинити вимову слова",
+  "wordAudioPlay": "Увімкнути вимову слова",
+  "wordAudioPlaybackFailure": "Не вдалося відтворити вимову слова.",
+  "flashcardsTitle": "Картки",
+  "flashcardsDeckMode": "Режим",
+  "flashcardsDeckAll": "Усі",
+  "flashcardsDeckContexts": "Контекст",
+  "flashcardsDeckReview": "Повторення",
+  "flashcardsEmptySubtitle": "Зараз тут порожньо. Оберіть інший режим або поверніться трохи пізніше.",
+  "flashcardsEmptyAllTitle": "Слова ще не завантажені.",
+  "flashcardsEmptyAllBody": "Щойно слова з’являться, тут можна буде почати тренування.",
+  "flashcardsEmptyContextsTitle": "Карток із прикладами поки немає.",
+  "flashcardsEmptyContextsBody": "Коли для слів з’являться приклади, цей режим стане доступним.",
+  "flashcardsEmptyReviewTitle": "На повторенні поки порожньо.",
+  "flashcardsEmptyReviewBody": "Позначайте слова як «Ще раз», і вони з’являться тут окремо.",
+  "flashcardsCompletedSubtitle": "Цю колоду вже пройдено. Можна почати ще раз або перейти далі.",
+  "flashcardsDone": "Готово",
+  "flashcardsCompletedTitle": "{count} карток пройдено",
+  "@flashcardsCompletedTitle": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "flashcardsRepeat": "Ще раз",
+  "flashcardsRestart": "Почати ще раз",
+  "flashcardsGoToReview": "До повторення",
+  "flashcardsCompletionAllWithReview": "На повторення чекають {count} карток.",
+  "@flashcardsCompletionAllWithReview": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "flashcardsCompletionAll": "Усі слова з цієї колоди вже переглянуті.",
+  "flashcardsCompletionContextsWithReview": "Після цього проходу {count} карток перейшли на повторення.",
+  "@flashcardsCompletionContextsWithReview": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "flashcardsCompletionContexts": "Усі картки з прикладами вже пройдені.",
+  "flashcardsCompletionReview": "Ви вже все повторили.",
+  "flashcardsContextEmpty": "Для цього слова ще немає прикладу в реченні.",
+  "flashcardsContextTitle": "Контекст",
+  "aiContextNew": "Нове!",
+  "aiContext": "ШІ",
+  "repetitionTitle": "Повторення",
+  "repetitionEmptySubtitle": "Коли з’являться нові слова або останні помилки, вони будуть тут.",
+  "repetitionCompletedSubtitle": "Сесію завершено. Можна одразу пройти її ще раз.",
+  "repetitionActiveSubtitle": "Одне слово на екран, без таймера і без варіантів.",
+  "repetitionNext": "Далі",
+  "repetitionFinish": "Завершити",
+  "repetitionEmptyTitle": "Список повторення поки порожній.",
+  "repetitionEmptyBody": "Спочатку відкрийте нові слова або зробіть кілька спроб у практиці.",
+  "repetitionDone": "Готово",
+  "repetitionCompletedTitle": "{count} слів переглянуто",
+  "@repetitionCompletedTitle": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "repetitionAfterMistake": "Після помилки",
+  "repetitionReinforcement": "Закріплення пройденого",
+  "repetitionRestart": "Почати ще раз",
+  "repetitionTranslation": "Переклад",
+  "repetitionLastMistake": "Остання спроба з помилкою",
+  "repetitionReinforcementWord": "Слово для закріплення",
+  "repetitionContextEmpty": "Контекст для цього слова ще не додано.",
+  "repetitionContextTitle": "Контекст",
+  "writingTitle": "Написання",
+  "writingPromptTitle": "Слово для перекладу",
+  "writingNoHints": "Без підказок: спробуйте пригадати слово самостійно.",
+  "writingAnswerHint": "Введіть слово івритом",
+  "writingFillAllTiles": "Заповніть усі склади, а потім перевіряйте відповідь.",
+  "writingEnterAnswer": "Введіть слово івритом, щоб перевірити відповідь.",
+  "writingBuildAnswer": "Складіть слово з блоків, щоб перевірити відповідь.",
+  "writingReadyToCheck": "Натисніть «Перевірити», коли будете готові.",
+  "writingCurrentSession": "Поточна сесія",
+  "writingCheckedAnswers": "Перевірено відповідей: {count}",
+  "@writingCheckedAnswers": {"placeholders": {"count": {"type": "int"}}},
+  "writingAvailableWords": "{count} слів доступні для письма на цьому пристрої",
+  "@writingAvailableWords": {"placeholders": {"count": {"type": "int"}}},
+  "writingCorrect": "Правильно",
+  "writingCorrectAnswer": "Ось правильний варіант",
+  "writingCorrectBody": "Слово записано правильно. Можна переходити далі.",
+  "writingIncorrectBody": "Нічого страшного. Повернемось до цього слова пізніше.",
+  "writingUnknown": "Не знаю",
+  "writingCheck": "Перевірити",
+  "writingNext": "Далі",
+  "writingEmptySubtitle": "Коли слова завантажаться, тут можна буде тренувати написання івритом або складати слова з блоків.",
+  "writingEmptyBody": "Щойно у наборі з’являться доступні слова, тут можна буде тренувати письмо окремою сесією.",
+  "writingBuildWord": "Складіть слово",
+  "writingBuildWordSubtitle": "Перетягніть блоки у правильному порядку. Натискання на блок теж працює.",
+  "writingAvailableTiles": "Доступні блоки"
+  ,"readingLevelBeginner":"Початковий","readingLevelPreIntermediate":"Нижче середнього","readingLevelIntermediate":"Середній","readingLevelUpperIntermediate":"Вище середнього","readingLevelAdvanced":"Просунутий","readingLevelProficient":"Вільний","readingLevelFallback":"Читання"
+  ,"audioPlay":"Озвучка"
+  ,"featureNightModeTitle":"Нічний режим","featureAdvancedPracticeTitle":"Розширена практика","featureExtraLessonsTitle":"Додаткові уроки","featureAiContextsTitle":"ШІ-контексти слів","featureAiTextsTitle":"ШІ-тексти для практики","featureNightModeDescription":"Нічний режим доступний у Pro-версії.","featureAdvancedPracticeDescription":"Розширені режими практики доступні у Pro-версії.","featureExtraLessonsDescription":"Додаткові набори уроків доступні у Pro-версії.","featureAiDescription":"AI-функції готуються до запуску. Скоро з'являться.","featureUpgradePro":"Перейти на Pro","audioVolumeMuted":"Звук вимкнений. Підніміть гучність медіа кнопками збоку."
+  ,"guidePreviousTopic":"Попередня тема","guideNextTopic":"Наступна тема","guideNoTopic":"Немає","guideRelatedLoading":"Підбираємо пов’язані теми для швидких переходів.","guideRelatedTitle":"Пов’язані теми","guideRelatedEmpty":"Усі найближчі пов’язані теми вже є в навігації вище.","guideOutlineTitle":"У цій статті","themeLight":"Світла","themeDark":"Темна","themeSystem":"Системна"
+  ,"shellGuideSaveFailure":"Не вдалося зберегти прогрес довідника. Спробуйте ще раз.","shellReadingSaveFailure":"Не вдалося зберегти прогрес читання. Спробуйте ще раз.","shellContextsLoadFailure":"Не вдалося завантажити контексти слів. Спробуйте ще раз.","shellAiTextsDisabled":"Увімкніть ШІ-тексти для практики в налаштуваннях.","shellNoWordsForText":"Поки немає слів для генерації тексту.","shellWordSaveFailure":"Не вдалося зберегти прогрес слова. Спробуйте ще раз.","shellLoadingMaterials":"Завантажуємо навчальні матеріали...","shellMaterialsLoadFailure":"Не вдалося завантажити навчальні матеріали.","retry":"Спробувати ще раз"
+  ,"readingTitle":"Читання","readingSubtitle":"Тексти для читання, розкладені за рівнями."
+  ,"verbsTitle":"Дієслова","verbsSubtitle":"Основні дієслова з поясненнями, вимовою та ілюстраціями.","verbsOpenSearch":"Показати пошук","verbsOpenFailure":"Не вдалося відкрити цей урок.","verbsSearchHint":"Шукайте за назвою уроку","verbsFound":"Знайдено","verbsLessons":"Уроків","verbsTotal":"Усього","verbsLoadingTitles":"Оновлюємо назви","verbsEmptyTitle":"Нічого не знайдено.","verbsEmptyBody":"Спробуйте інший запит: назву дієслова або тему уроку.","verbsAudioFailure":"Не вдалося відтворити вимову.","verbsCheckingAudio":"Перевіряємо аудіо","verbsStopAudio":"Зупинити вимову","verbsPlayAudio":"Увімкнути вимову","verbsAudioUnavailable":"Аудіо поки недоступне","verbsImageUnavailable":"Ілюстрацію для цього дієслова ще не додано.","sprintAvailableWords":"Слів на вивченні для спринту: {count}","sprintCorrectAnswers":"Правильних відповідей: {count}","sprintWrongAnswers":"Неправильних відповідей: {count}"
+  ,"guideTitle":"Довідник","guideSectionFilterTitle":"Секція довідника","guideSectionFilterBody":"Можна лишити весь каталог або вибрати кілька секцій.","guideAllTopics":"Усі теми","guideOpenFailure":"Не вдалося відкрити цей урок.","readingOpenFilter":"Відкрити фільтр","readingChangeFilter":"Змінити фільтр","readingLevelFilterTitle":"Рівень читання","readingLevelFilterBody":"Можна лишити весь каталог або вибрати один рівень.","readingAllLevels":"Усі рівні","readingLevel":"Рівень","readingLessonsCount":"{count} уроків"
+  ,"catalogFound":"Знайдено: {visible} із {total}","catalogGuideCount":"Тем: {count}","catalogReadingCount":"Уроків: {count}","catalogReadCount":"Прочитано {read} із {total} тем","catalogSection":"Секція: {section} · Прочитано {read} із {total}","catalogSections":"Секції: {count} · Прочитано {read} із {total}","catalogOpenSectionFilter":"Відкрити фільтр секцій","catalogChangeSectionFilter":"Змінити фільтр секцій","catalogHideSearch":"Сховати пошук","catalogShowSearch":"Показати пошук","catalogGuideSearchHint":"Шукати тему в довіднику","catalogReadingSearchHint":"Шукати урок за назвою","catalogLoadingGuideTitles":"Підтягуємо короткі описи та заголовки для точнішого пошуку.","catalogLoadingReadingTitles":"Підтягуємо заголовки уроків для точнішого пошуку.","catalogTopicsCount":"{count} тем","catalogNothingFound":"Нічого не знайдено.","catalogGuideEmpty":"Спробуйте інший запит або скиньте фільтр секції.","catalogReadingEmpty":"Спробуйте інший запит або скиньте фільтр рівня."
+  ,"lessonStatusUnread":"Не прочитано","lessonStatusLearning":"Вивчається","lessonStatusRead":"Прочитано","lessonStatusChange":"Змінити статус уроку"
+  ,"aiTextTitle":"Текст зі словами","aiTextSubtitle":"Короткий текст на івриті з поточними словами, перекладом і переходом до вправ.","aiTextWords":"Слова для тексту","aiTextFallbackTitle":"Текст для практики","aiTextInText":"У тексті","aiTextFlashcards":"Картки","aiTextWriting":"Написання","aiTextRefresh":"Оновити текст","aiTextNew":"Нове!","aiTextNotGenerated":"Текст ще не згенеровано","aiTextNotGeneratedBody":"Не вдалося оновити текст. Спробуйте ще раз пізніше.","aiTextRetry":"Спробувати ще раз","aiTextFailure":"Не вдалося отримати текст","aiTextFailureBody":"Збережена практика лишається доступною. Спробуйте ще раз.","aiTextRepeat":"Повторити"
+  ,"profileSystem":"У системі","profileProgress":"Прогрес","profileSettings":"Налаштування","profileWords":"Слова","profileGuide":"Довідник","profileReading":"Читання","profileVerbs":"Дієслова","profileWordsOpened":"Слова відкрито","profileWritingPracticed":"Письмо відпрацьовано","profileGuideCompleted":"Довідник завершено","profileReadingCompleted":"Читання завершено","profileKnownWords":"Знайомі слова","profileReview":"Повторити","profileAutoHideNav":"Автоматично ховати нижню панель","profileAutoHideNavBody":"Під час довгого перегляду сторінки вниз нижня панель тимчасово ховається, щоб звільнити більше місця на екрані.","profileAiContexts":"ШІ-контексти для вправ","profileAiContextsBody":"Приклади і ситуації з урахуванням ваших слів.","profileAiTexts":"ШІ-тексти для практики","profileAiTextsBody":"Короткі тексти під ваш рівень.","profileTheme":"Тема","profileThemeBody":"Перемикає світлу, темну та системну."
+  ,"sprintTitle":"Спринт","sprintUnavailableTitle":"Спринт поки недоступний","sprintUnavailableBody":"Для цієї вправи потрібно щонайменше два слова на вивченні з різними перекладами. Зараз доступно {count} слів.","sprintIntroUnavailable":"Хвилинна вправа з двома варіантами перекладу. Потрібно хоча б два слова на вивченні з різними перекладами.","sprintIntro":"За 60 секунд потрібно вибрати якомога більше правильних перекладів. Кожне слово на вивченні трапляється один раз.","sprintTimeStarted":"Час пішов. Обирайте правильний переклад якомога швидше.","sprintFirstPromptFailure":"Не вдалося підготувати перше завдання для спринту.","sprintStatsSaveFailure":"Не вдалося зберегти статистику спринту.","sprintAnswerCorrect":"Правильно: {translation}","sprintAnswerWrong":"Неправильно. Правильна відповідь: {translation}","sprintEarlyCompletion":"Усі слова на вивченні пройдено. Спринт завершено достроково, гарний темп.","sprintCompleted":"Спринт завершено. Можна одразу почати нову хвилину.","sprintSession":"Поточна сесія","sprintLoadingStats":"Статистика спринту завантажується...","sprintNoStats":"Рекорд і середній результат зʼявляться після першого завершеного спринту.","sprintBest":"Найкращий результат: {count} вірних відповідей","sprintAverage":"Середній результат: {count} вірних відповідей","sprintAttempts":"{count} відповідей","sprintRestart":"Почати спочатку","sprintChoose":"Оберіть правильний переклад","sprintAwaitingAnswer":"Після відповіді тут одразу з’явиться короткий результат.","sprintCorrect":"Правильно","sprintMistakes":"Помилки","sprintTimeUp":"Час вийшов","sprintCorrectCount":"{count} вірних відповідей","sprintTotal":"Всього","sprintRecord":"Рекорд","sprintStartAgain":"Почати ще раз","sprintFirstRecord":"Перший рекорд","sprintNewRecord":"Новий рекорд","sprintRecordMatched":"Рекорд досягнуто","sprintAboveAverage":"Це на {count} вище вашого середнього.","sprintFirstRecordBody":"Перший рекорд: {count} вірних відповідей.","sprintNewRecordBody":"Ви побили рекорд: {count} вірних відповідей. Попередній був {previous}.","sprintRecordMatchedBody":"Ви досягли свого рекорду: {count} вірних відповідей."
 }

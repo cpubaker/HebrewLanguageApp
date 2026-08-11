@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../l10n/generated/app_localizations.dart';
 import '../models/learning_word.dart';
 import '../services/audio_playback_awareness.dart';
 import '../services/flashcard_session.dart';
@@ -160,7 +161,9 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
       }
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Не вдалося відтворити озвучку слова.')),
+        SnackBar(
+          content: Text(AppLocalizations.of(context).wordOfDayAudioFailure),
+        ),
       );
     }
   }

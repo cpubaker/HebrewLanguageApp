@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/generated/app_localizations.dart';
 import '../theme/app_theme.dart';
 
 enum AppRootArea { home, learn, practice, profile }
@@ -64,38 +65,38 @@ class _ExpandedBottomNavigationBar extends StatelessWidget {
   final int selectedIndex;
   final ValueChanged<int> onDestinationSelected;
 
-  static const List<_BottomNavigationItem> _items = [
-    _BottomNavigationItem(
-      area: AppRootArea.home,
-      icon: Icons.home_outlined,
-      selectedIcon: Icons.home_rounded,
-      label: 'Головна',
-    ),
-    _BottomNavigationItem(
-      area: AppRootArea.learn,
-      icon: Icons.school_outlined,
-      selectedIcon: Icons.school_rounded,
-      label: 'Вчитись',
-    ),
-    _BottomNavigationItem(
-      area: AppRootArea.practice,
-      icon: Icons.bolt_outlined,
-      selectedIcon: Icons.bolt_rounded,
-      label: 'Практика',
-    ),
-    _BottomNavigationItem(
-      area: AppRootArea.profile,
-      icon: Icons.person_outline_rounded,
-      selectedIcon: Icons.person_rounded,
-      label: 'Профіль',
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final tokens = theme.appTokens;
     final navigationBarTheme = theme.navigationBarTheme;
+    final localizations = AppLocalizations.of(context);
+    final items = [
+      _BottomNavigationItem(
+        area: AppRootArea.home,
+        icon: Icons.home_outlined,
+        selectedIcon: Icons.home_rounded,
+        label: localizations.navHome,
+      ),
+      _BottomNavigationItem(
+        area: AppRootArea.learn,
+        icon: Icons.school_outlined,
+        selectedIcon: Icons.school_rounded,
+        label: localizations.navLearn,
+      ),
+      _BottomNavigationItem(
+        area: AppRootArea.practice,
+        icon: Icons.bolt_outlined,
+        selectedIcon: Icons.bolt_rounded,
+        label: localizations.navPractice,
+      ),
+      _BottomNavigationItem(
+        area: AppRootArea.profile,
+        icon: Icons.person_outline_rounded,
+        selectedIcon: Icons.person_rounded,
+        label: localizations.navProfile,
+      ),
+    ];
 
     return Material(
       color: navigationBarTheme.backgroundColor ?? tokens.navBarBackground,
@@ -108,7 +109,7 @@ class _ExpandedBottomNavigationBar extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                for (final item in _items)
+                for (final item in items)
                   Expanded(
                     child: _BottomNavigationDestinationButton(
                       item: item,

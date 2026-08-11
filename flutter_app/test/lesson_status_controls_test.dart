@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hebrew_language_flutter/l10n/generated/app_localizations.dart';
 import 'package:hebrew_language_flutter/models/guide_lesson_status.dart';
 import 'package:hebrew_language_flutter/screens/widgets/lesson_status_controls.dart';
 import 'package:hebrew_language_flutter/theme/app_theme.dart';
@@ -27,6 +28,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        locale: const Locale('uk'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         theme: buildDarkAppTheme(),
         home: Scaffold(
           body: LessonStatusToggleButton(

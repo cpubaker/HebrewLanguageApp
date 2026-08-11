@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hebrew_language_flutter/l10n/generated/app_localizations.dart';
 import 'package:hebrew_language_flutter/models/guide_lesson_status.dart';
 import 'package:hebrew_language_flutter/models/learning_bundle.dart';
 import 'package:hebrew_language_flutter/models/lesson_document.dart';
@@ -43,6 +44,9 @@ void main() {
   ) async {
     await tester.pumpWidget(
       MaterialApp(
+        locale: const Locale('uk'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(
           body: ReadingScreen(
             lessons: const [
@@ -79,13 +83,7 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.tap(
-      find
-          .text(
-            readingLevelLabelFromAssetPath(
-              'assets/learning/input/reading/beginner/01_yosi_goes_to_school.md',
-            ),
-          )
-          .last,
+      find.text('Початковий').last,
     );
     await tester.pump();
 
@@ -101,6 +99,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        locale: const Locale('uk'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: ReadingDetailScreen(
           lesson: const LessonEntry(
             assetPath:
@@ -127,6 +128,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        locale: const Locale('uk'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: ReadingDetailScreen(
           lesson: const LessonEntry(
             assetPath:
@@ -158,6 +162,9 @@ void main() {
   ) async {
     await tester.pumpWidget(
       MaterialApp(
+        locale: const Locale('uk'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: ReadingDetailScreen(
           lesson: const LessonEntry(
             assetPath:

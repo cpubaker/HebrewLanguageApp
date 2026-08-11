@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/generated/app_localizations.dart';
 import '../services/audio_playback_awareness.dart';
 
 Future<void> showAudioPlaybackHintIfNeeded({
@@ -16,7 +17,12 @@ Future<void> showAudioPlaybackHintIfNeeded({
     ?..hideCurrentSnackBar()
     ..showSnackBar(
       SnackBar(
-        content: Text(hint.message),
+        content: Text(
+          switch (hint.kind) {
+            AudioPlaybackHintKind.mediaVolumeMuted =>
+              AppLocalizations.of(context).audioVolumeMuted,
+          },
+        ),
         duration: const Duration(seconds: 2),
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/generated/app_localizations.dart';
 import '../../models/guide_lesson_status.dart';
 import '../../theme/app_theme.dart';
 
@@ -18,25 +19,26 @@ class LessonStatusVisuals {
 LessonStatusVisuals lessonStatusVisuals(
   GuideLessonStatus status, {
   AppThemeTokens? tokens,
+  AppLocalizations? localizations,
 }) {
   final resolvedTokens = tokens ?? const AppThemeTokens.fallback();
 
   switch (status) {
     case GuideLessonStatus.unread:
       return LessonStatusVisuals(
-        label: 'Не прочитано',
+        label: localizations?.lessonStatusUnread ?? 'Unread',
         icon: Icons.radio_button_unchecked_rounded,
         color: resolvedTokens.warningAccent,
       );
     case GuideLessonStatus.studying:
       return LessonStatusVisuals(
-        label: 'Вивчається',
+        label: localizations?.lessonStatusLearning ?? 'Learning',
         icon: Icons.timelapse_rounded,
         color: resolvedTokens.infoAccent,
       );
     case GuideLessonStatus.read:
       return LessonStatusVisuals(
-        label: 'Прочитано',
+        label: localizations?.lessonStatusRead ?? 'Read',
         icon: Icons.check_circle_rounded,
         color: resolvedTokens.successAccent,
       );
@@ -62,11 +64,15 @@ class LessonStatusToggleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
-    final visuals = lessonStatusVisuals(status, tokens: tokens);
+    final visuals = lessonStatusVisuals(
+      status,
+      tokens: tokens,
+      localizations: AppLocalizations.of(context),
+    );
     final resolvedForegroundColor = foregroundColor ?? visuals.color;
 
     return Tooltip(
-      message: 'Змінити статус уроку',
+      message: AppLocalizations.of(context).lessonStatusChange,
       child: Material(
         color: Colors.transparent,
         child: InkWell(

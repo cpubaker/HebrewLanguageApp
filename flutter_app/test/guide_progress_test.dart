@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hebrew_language_flutter/l10n/generated/app_localizations.dart';
 import 'package:hebrew_language_flutter/models/guide_lesson_status.dart';
 import 'package:hebrew_language_flutter/models/learning_bundle.dart';
 import 'package:hebrew_language_flutter/models/lesson_document.dart';
@@ -332,7 +333,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text(_wholeAlphabetTitle), findsWidgets);
-      await tester.pageBack();
+      Navigator.of(tester.element(find.byType(GuideDetailScreen))).pop();
       await tester.pumpAndSettle();
 
       expect(find.text(_guideTitle), findsOneWidget);
@@ -353,6 +354,9 @@ Future<void> _pumpGuideScreen(
 }) async {
   await tester.pumpWidget(
     MaterialApp(
+      locale: const Locale('uk'),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: Scaffold(
         body: GuideScreen(
           lessons: lessons,
@@ -376,6 +380,9 @@ Future<void> _pumpGuideDetail(
 }) async {
   await tester.pumpWidget(
     MaterialApp(
+      locale: const Locale('uk'),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: GuideDetailScreen(
         lesson: lesson,
         allLessons: allLessons,

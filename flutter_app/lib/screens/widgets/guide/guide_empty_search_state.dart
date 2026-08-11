@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/generated/app_localizations.dart';
 import '../../../theme/app_theme.dart';
 import '../app_section_card.dart';
 
@@ -17,14 +18,14 @@ class GuideEmptySearchState extends StatelessWidget {
           Icon(Icons.search_off_rounded, size: 32, color: tokens.guideAccent),
           const SizedBox(height: 12),
           Text(
-            'Нічого не знайдено.',
+            AppLocalizations.of(context).catalogNothingFound,
             style: Theme.of(
               context,
             ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 6),
           Text(
-            'Спробуйте інший запит або скиньте фільтр секції.',
+            AppLocalizations.of(context).catalogGuideEmpty,
             textAlign: TextAlign.center,
             style: Theme.of(
               context,

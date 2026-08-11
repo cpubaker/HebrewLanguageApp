@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/generated/app_localizations.dart';
 import '../../../services/flashcard_session.dart';
 import '../../../theme/app_theme.dart';
 import '../practice_completion_card.dart';
@@ -19,13 +20,13 @@ class FlashcardEmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
+    final localizations = AppLocalizations.of(context);
     return ListView(
       padding: tokens.pagePadding.copyWith(bottom: 32),
       children: [
-        const PracticeHeader(
-          title: 'Картки',
-          subtitle:
-              'Зараз тут порожньо. Оберіть інший режим або поверніться трохи пізніше.',
+        PracticeHeader(
+          title: localizations.flashcardsTitle,
+          subtitle: localizations.flashcardsEmptySubtitle,
         ),
         FlashcardDeckModeSection(selectedMode: mode, onChanged: onChanged),
         const SizedBox(height: 18),
@@ -38,7 +39,7 @@ class FlashcardEmptyState extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                _emptyTitle(mode),
+                _emptyTitle(mode, localizations),
                 textAlign: TextAlign.center,
                 style: Theme.of(
                   context,
@@ -46,7 +47,7 @@ class FlashcardEmptyState extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                _emptyBody(mode),
+                _emptyBody(mode, localizations),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: tokens.secondaryText,
@@ -60,25 +61,31 @@ class FlashcardEmptyState extends StatelessWidget {
     );
   }
 
-  String _emptyTitle(FlashcardDeckMode mode) {
+  String _emptyTitle(
+    FlashcardDeckMode mode,
+    AppLocalizations localizations,
+  ) {
     switch (mode) {
       case FlashcardDeckMode.allWords:
-        return 'Слова ще не завантажені.';
+        return localizations.flashcardsEmptyAllTitle;
       case FlashcardDeckMode.withContexts:
-        return 'Карток із прикладами поки немає.';
+        return localizations.flashcardsEmptyContextsTitle;
       case FlashcardDeckMode.needsReview:
-        return 'На повторенні поки порожньо.';
+        return localizations.flashcardsEmptyReviewTitle;
     }
   }
 
-  String _emptyBody(FlashcardDeckMode mode) {
+  String _emptyBody(
+    FlashcardDeckMode mode,
+    AppLocalizations localizations,
+  ) {
     switch (mode) {
       case FlashcardDeckMode.allWords:
-        return 'Щойно слова з’являться, тут можна буде почати тренування.';
+        return localizations.flashcardsEmptyAllBody;
       case FlashcardDeckMode.withContexts:
-        return 'Коли для слів з’являться приклади, цей режим стане доступним.';
+        return localizations.flashcardsEmptyContextsBody;
       case FlashcardDeckMode.needsReview:
-        return 'Позначайте слова як «Ще раз», і вони з’являться тут окремо.';
+        return localizations.flashcardsEmptyReviewBody;
     }
   }
 }
@@ -106,43 +113,43 @@ class FlashcardCompletedState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
+    final localizations = AppLocalizations.of(context);
     return ListView(
       padding: tokens.pagePadding.copyWith(bottom: 32),
       children: [
-        const PracticeHeader(
-          title: 'Картки',
-          subtitle:
-              'Цю колоду вже пройдено. Можна почати ще раз або перейти далі.',
+        PracticeHeader(
+          title: localizations.flashcardsTitle,
+          subtitle: localizations.flashcardsCompletedSubtitle,
         ),
         FlashcardDeckModeSection(selectedMode: mode, onChanged: onChanged),
         const SizedBox(height: 18),
         PracticeCompletionCard(
-          badgeLabel: 'Готово',
-          title: '$wordCount карток пройдено',
-          body: _completionBody(mode, reviewWordCount),
+          badgeLabel: localizations.flashcardsDone,
+          title: localizations.flashcardsCompletedTitle(wordCount),
+          body: _completionBody(mode, reviewWordCount, localizations),
           stats: [
             PracticeCompletionStat(
-              label: 'Знаю',
+              label: localizations.wordStatusKnown,
               value: correctAnswers,
               icon: Icons.check_rounded,
               accent: tokens.successAccent,
             ),
             PracticeCompletionStat(
-              label: 'Повторити',
+              label: localizations.flashcardsRepeat,
               value: repeatAnswers,
               icon: Icons.refresh_rounded,
               accent: tokens.warningAccent,
             ),
           ],
           primaryAction: PracticeCompletionAction(
-            label: 'Почати ще раз',
+            label: localizations.flashcardsRestart,
             icon: Icons.refresh_rounded,
             onPressed: () => onRestartDeck(),
           ),
           secondaryAction:
               mode != FlashcardDeckMode.needsReview && reviewWordCount > 0
               ? PracticeCompletionAction(
-                  label: 'До повторення',
+                  label: localizations.flashcardsGoToReview,
                   icon: Icons.rule_rounded,
                   onPressed: () => onRestartDeck(FlashcardDeckMode.needsReview),
                   style: PracticeCompletionActionStyle.outlined,
@@ -153,20 +160,28 @@ class FlashcardCompletedState extends StatelessWidget {
     );
   }
 
-  String _completionBody(FlashcardDeckMode mode, int reviewWordCount) {
+  String _completionBody(
+    FlashcardDeckMode mode,
+    int reviewWordCount,
+    AppLocalizations localizations,
+  ) {
     switch (mode) {
       case FlashcardDeckMode.allWords:
         if (reviewWordCount > 0) {
-          return 'На повторення чекають $reviewWordCount карток.';
+          return localizations.flashcardsCompletionAllWithReview(
+            reviewWordCount,
+          );
         }
-        return 'Усі слова з цієї колоди вже переглянуті.';
+        return localizations.flashcardsCompletionAll;
       case FlashcardDeckMode.withContexts:
         if (reviewWordCount > 0) {
-          return 'Після цього проходу $reviewWordCount карток перейшли на повторення.';
+          return localizations.flashcardsCompletionContextsWithReview(
+            reviewWordCount,
+          );
         }
-        return 'Усі картки з прикладами вже пройдені.';
+        return localizations.flashcardsCompletionContexts;
       case FlashcardDeckMode.needsReview:
-        return 'Ви вже все повторили.';
+        return localizations.flashcardsCompletionReview;
     }
   }
 }

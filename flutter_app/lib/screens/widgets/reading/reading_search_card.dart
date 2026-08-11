@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/generated/app_localizations.dart';
 import '../../../theme/app_theme.dart';
 
 class ReadingSearchCard extends StatelessWidget {
@@ -33,11 +34,12 @@ class ReadingSearchCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
+    final localizations = AppLocalizations.of(context);
     final hasQuery = query.trim().isNotEmpty;
     final hasAnyFilter = hasQuery || hasLevelFilter;
     final title = hasAnyFilter
-        ? 'Знайдено: $visibleCount із $totalCount'
-        : 'Уроків: $totalCount';
+        ? localizations.catalogFound(totalCount, visibleCount)
+        : localizations.catalogReadingCount(totalCount);
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 220),
@@ -91,7 +93,9 @@ class ReadingSearchCard extends StatelessWidget {
                 ),
               ),
               IconButton(
-                tooltip: isSearchVisible ? 'Сховати пошук' : 'Показати пошук',
+                tooltip: isSearchVisible
+                    ? localizations.catalogHideSearch
+                    : localizations.catalogShowSearch,
                 onPressed: onToggleSearch,
                 icon: Icon(
                   isSearchVisible ? Icons.close_rounded : Icons.search_rounded,
@@ -111,7 +115,7 @@ class ReadingSearchCard extends StatelessWidget {
               child: _ReadingSearchField(
                 controller: searchController,
                 focusNode: searchFocusNode,
-                hintText: 'Шукати урок за назвою',
+                hintText: localizations.catalogReadingSearchHint,
                 onChanged: onQueryChanged,
                 onClear: hasQuery
                     ? () {
@@ -137,7 +141,7 @@ class ReadingSearchCard extends StatelessWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    'Підтягуємо заголовки уроків для точнішого пошуку.',
+                    localizations.catalogLoadingReadingTitles,
                     style: Theme.of(
                       context,
                     ).textTheme.bodySmall?.copyWith(color: tokens.mutedText),

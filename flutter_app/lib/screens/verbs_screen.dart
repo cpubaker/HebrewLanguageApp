@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../l10n/generated/app_localizations.dart';
 import '../models/learning_bundle.dart';
 import '../models/lesson_document.dart';
 import '../services/audio_playback_awareness.dart';
@@ -189,6 +190,7 @@ class _VerbsScreenState extends State<VerbsScreen>
     final theme = Theme.of(context);
     final tokens = theme.appTokens;
     final accentForeground = tokens.heroText;
+    final localizations = AppLocalizations.of(context);
     final filteredLessons = _filteredLessons;
     final hasResults = filteredLessons.isNotEmpty;
 
@@ -206,10 +208,9 @@ class _VerbsScreenState extends State<VerbsScreen>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const AppPageHeader(
-                    title: 'Дієслова',
-                    subtitle:
-                        'Основні дієслова з поясненнями, вимовою та ілюстраціями.',
+                  AppPageHeader(
+                    title: localizations.verbsTitle,
+                    subtitle: localizations.verbsSubtitle,
                   ),
                   const SizedBox(height: 18),
                   _VerbSearchCard(
@@ -287,7 +288,7 @@ class _VerbsScreenState extends State<VerbsScreen>
               FloatingActionButton.small(
                 heroTag: 'verbsSearch',
                 onPressed: _openSearch,
-                tooltip: 'Показати пошук',
+                tooltip: localizations.verbsOpenSearch,
                 backgroundColor: tokens.verbAccent,
                 foregroundColor: accentForeground,
                 child: const Icon(Icons.search_rounded),
@@ -332,7 +333,7 @@ class VerbDetailScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(24),
                 child: Text(
-                  'Не вдалося відкрити цей урок.',
+                  AppLocalizations.of(context).verbsOpenFailure,
                   style: Theme.of(context).textTheme.titleMedium,
                   textAlign: TextAlign.center,
                 ),
@@ -387,6 +388,7 @@ class _VerbSearchCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasQuery = query.trim().isNotEmpty;
+    final localizations = AppLocalizations.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -394,7 +396,7 @@ class _VerbSearchCard extends StatelessWidget {
         AppSearchField(
           controller: searchController,
           focusNode: searchFocusNode,
-          hintText: 'Шукайте за назвою уроку',
+          hintText: localizations.verbsSearchHint,
           onChanged: onQueryChanged,
           onClear: hasQuery
               ? () {
@@ -407,12 +409,12 @@ class _VerbSearchCard extends StatelessWidget {
         AppActionWrap(
           children: [
             AppStatChip(
-              label: hasQuery ? 'Знайдено' : 'Уроків',
+              label: hasQuery ? localizations.verbsFound : localizations.verbsLessons,
               value: hasQuery ? visibleCount : totalCount,
               accent: Theme.of(context).appTokens.verbAccent,
             ),
             AppStatChip(
-              label: 'Усього',
+              label: localizations.verbsTotal,
               value: totalCount,
               accent: Theme.of(context).appTokens.vocabularyAccent,
             ),
@@ -451,7 +453,7 @@ class _LoadingTitlesChip extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           Text(
-            'Оновлюємо назви',
+            AppLocalizations.of(context).verbsLoadingTitles,
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
               color: tokens.verbAccent,
               fontWeight: FontWeight.w700,
@@ -551,14 +553,14 @@ class _EmptyVerbSearchState extends StatelessWidget {
           Icon(Icons.search_off_rounded, size: 32, color: tokens.verbAccent),
           const SizedBox(height: 12),
           Text(
-            'Нічого не знайдено.',
+            AppLocalizations.of(context).verbsEmptyTitle,
             style: Theme.of(
               context,
             ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 6),
           Text(
-            'Спробуйте інший запит: назву дієслова або тему уроку.',
+            AppLocalizations.of(context).verbsEmptyBody,
             textAlign: TextAlign.center,
             style: Theme.of(
               context,
@@ -660,7 +662,7 @@ class _VerbHeroCardState extends State<_VerbHeroCard> {
         _isPlaying = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Не вдалося відтворити вимову.')),
+        SnackBar(content: Text(AppLocalizations.of(context).verbsAudioFailure)),
       );
     } finally {
       if (mounted) {
@@ -725,10 +727,12 @@ class _VerbHeroCardState extends State<_VerbHeroCard> {
             ),
             child: IconButton(
               tooltip: _isCheckingAvailability
-                  ? 'Перевіряємо аудіо'
+                  ? AppLocalizations.of(context).verbsCheckingAudio
                   : _hasAudio
-                  ? (_isPlaying ? 'Зупинити вимову' : 'Увімкнути вимову')
-                  : 'Аудіо поки недоступне',
+                  ? (_isPlaying
+                        ? AppLocalizations.of(context).verbsStopAudio
+                        : AppLocalizations.of(context).verbsPlayAudio)
+                  : AppLocalizations.of(context).verbsAudioUnavailable,
               onPressed: _hasAudio && !_isBusy ? _togglePlayback : null,
               icon: _isBusy
                   ? SizedBox(
@@ -816,7 +820,7 @@ class _VerbImageCard extends StatelessWidget {
                           ),
                           const SizedBox(height: 12),
                           Text(
-                            'Ілюстрацію для цього дієслова ще не додано.',
+                            AppLocalizations.of(context).verbsImageUnavailable,
                             style: Theme.of(context).textTheme.titleMedium
                                 ?.copyWith(fontWeight: FontWeight.w700),
                             textAlign: TextAlign.center,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/generated/app_localizations.dart';
 import '../../../theme/app_theme.dart';
 
 class GuideSearchCard extends StatelessWidget {
@@ -35,21 +36,22 @@ class GuideSearchCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
+    final localizations = AppLocalizations.of(context);
     final hasQuery = query.trim().isNotEmpty;
     final hasSectionFilter = selectedSectionLabels.isNotEmpty;
     final title = hasQuery || hasSectionFilter
-        ? 'Знайдено: $visibleCount із $totalCount'
-        : 'Тем: $totalCount';
+        ? localizations.catalogFound(totalCount, visibleCount)
+        : localizations.catalogGuideCount(totalCount);
     final readCount =
         int.tryParse(
           RegExp(r'\d+').firstMatch(completedLabel)?.group(0) ?? '',
         ) ??
         0;
     final subtitle = !hasSectionFilter
-        ? 'Прочитано $readCount із $totalCount тем'
+        ? localizations.catalogReadCount(readCount, totalCount)
         : selectedSectionLabels.length == 1
-        ? 'Секція: ${selectedSectionLabels.first} · Прочитано $readCount із $totalCount'
-        : 'Секції: ${selectedSectionLabels.length} · Прочитано $readCount із $totalCount';
+        ? localizations.catalogSection(readCount, selectedSectionLabels.first, totalCount)
+        : localizations.catalogSections(selectedSectionLabels.length, readCount, totalCount);
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 220),
@@ -102,8 +104,8 @@ class GuideSearchCard extends StatelessWidget {
                   if (onOpenSectionPicker != null)
                     IconButton(
                       tooltip: !hasSectionFilter
-                          ? 'Відкрити фільтр секцій'
-                          : 'Змінити фільтр секцій',
+                          ? localizations.catalogOpenSectionFilter
+                          : localizations.catalogChangeSectionFilter,
                       onPressed: onOpenSectionPicker,
                       icon: Icon(
                         !hasSectionFilter
@@ -114,8 +116,8 @@ class GuideSearchCard extends StatelessWidget {
                     ),
                   IconButton(
                     tooltip: isSearchVisible
-                        ? 'Сховати пошук'
-                        : 'Показати пошук',
+                        ? localizations.catalogHideSearch
+                        : localizations.catalogShowSearch,
                     onPressed: onToggleSearch,
                     icon: Icon(
                       isSearchVisible
@@ -167,7 +169,7 @@ class GuideSearchCard extends StatelessWidget {
               child: _GuideSearchField(
                 controller: searchController,
                 focusNode: searchFocusNode,
-                hintText: 'Шукати тему в довіднику',
+                hintText: localizations.catalogGuideSearchHint,
                 onChanged: onQueryChanged,
                 onClear: hasQuery
                     ? () {
@@ -193,7 +195,7 @@ class GuideSearchCard extends StatelessWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    'Підтягуємо короткі описи та заголовки для точнішого пошуку.',
+                    localizations.catalogLoadingGuideTitles,
                     style: Theme.of(
                       context,
                     ).textTheme.bodySmall?.copyWith(color: tokens.mutedText),
@@ -312,7 +314,7 @@ class GuideSectionOptionTile extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '$count тем',
+                      AppLocalizations.of(context).catalogTopicsCount(count),
                       style: Theme.of(
                         context,
                       ).textTheme.bodyMedium?.copyWith(color: tokens.mutedText),

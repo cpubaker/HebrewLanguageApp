@@ -33,9 +33,9 @@ void main() {
     now = now.add(const Duration(minutes: 6));
     final thirdHint = await awareness.checkBeforePlayback();
 
-    expect(firstHint?.message, AudioPlaybackHint.mediaVolumeMuted.message);
+    expect(firstHint?.kind, AudioPlaybackHintKind.mediaVolumeMuted);
     expect(secondHint, isNull);
-    expect(thirdHint?.message, AudioPlaybackHint.mediaVolumeMuted.message);
+    expect(thirdHint?.kind, AudioPlaybackHintKind.mediaVolumeMuted);
   });
 
   test('returns null when media volume is available', () async {

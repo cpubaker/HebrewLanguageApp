@@ -23,6 +23,7 @@ class _DashboardAction {
 enum _DashboardActionKind { welcome, review, newWords, reading, fallback }
 
 _DashboardAction _buildContinueAction({
+  required AppLocalizations localizations,
   required AppThemeTokens tokens,
   required bool isFirstRun,
   required LearningBundle bundle,
@@ -35,10 +36,9 @@ _DashboardAction _buildContinueAction({
   if (isFirstRun) {
     return _DashboardAction(
       kind: _DashboardActionKind.welcome,
-      title: 'Привіт! Готовий почати?',
-      subtitle:
-          'Відкрий перші картки, щоб познайомитись зі словами івриту й заробити перший день у серії.',
-      buttonLabel: 'Спробувати',
+      title: localizations.homeActionWelcomeTitle,
+      subtitle: localizations.homeActionWelcomeSubtitle,
+      buttonLabel: localizations.homeActionTry,
       icon: Icons.rocket_launch_rounded,
       accent: tokens.primaryAccent,
       onTap: () => onOpenFlashcards(FlashcardDeckMode.allWords),
@@ -48,10 +48,9 @@ _DashboardAction _buildContinueAction({
   if (flashcards.needsReview > 0) {
     return _DashboardAction(
       kind: _DashboardActionKind.review,
-      title: 'Продовжити повторення',
-      subtitle:
-          '${flashcards.needsReview} слів чекають у картках на повторення.',
-      buttonLabel: 'До повторення',
+      title: localizations.homeActionReviewTitle,
+      subtitle: localizations.homeActionReviewSubtitle(flashcards.needsReview),
+      buttonLabel: localizations.homeActionGoToReview,
       icon: Icons.refresh_rounded,
       accent: tokens.warningAccent,
       onTap: () => onOpenFlashcards(FlashcardDeckMode.needsReview),
@@ -61,9 +60,9 @@ _DashboardAction _buildContinueAction({
   if (progress.unseen > 0) {
     return _DashboardAction(
       kind: _DashboardActionKind.newWords,
-      title: 'Готовий до нового?',
-      subtitle: '${progress.unseen} слів ще чекають свого першого знайомства.',
-      buttonLabel: 'До нових слів',
+      title: localizations.homeActionNewWordsTitle,
+      subtitle: localizations.homeActionNewWordsSubtitle(progress.unseen),
+      buttonLabel: localizations.homeActionGoToNewWords,
       icon: Icons.style_rounded,
       accent: tokens.successAccent,
       onTap: () => onOpenFlashcards(FlashcardDeckMode.allWords),
@@ -73,9 +72,9 @@ _DashboardAction _buildContinueAction({
   if (bundle.readingLessons.isNotEmpty) {
     return _DashboardAction(
       kind: _DashboardActionKind.reading,
-      title: 'Усе повторено — почитаємо?',
-      subtitle: 'У бібліотеці чекають тексти, з якими можна підняти рівень.',
-      buttonLabel: 'До читання',
+      title: localizations.homeActionReadingTitle,
+      subtitle: localizations.homeActionReadingSubtitle,
+      buttonLabel: localizations.homeActionGoToReading,
       icon: Icons.auto_stories_rounded,
       accent: tokens.newContentAccent,
       onTap: onOpenReading,
@@ -84,9 +83,9 @@ _DashboardAction _buildContinueAction({
 
   return _DashboardAction(
     kind: _DashboardActionKind.fallback,
-    title: 'Заглянь у словник',
-    subtitle: 'Перегляньте слова, щоб обрати наступний напрям навчання.',
-    buttonLabel: 'До слів',
+    title: localizations.homeActionFallbackTitle,
+    subtitle: localizations.homeActionFallbackSubtitle,
+    buttonLabel: localizations.homeActionGoToWords,
     icon: Icons.translate_rounded,
     accent: tokens.primaryAccent,
     onTap: onOpenWords,

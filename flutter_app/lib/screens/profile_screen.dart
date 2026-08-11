@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../l10n/generated/app_localizations.dart';
+import '../l10n/feature_access_localizations.dart';
 import '../models/guide_lesson_status.dart';
 import '../models/learning_bundle.dart';
 import '../services/app_locale_store.dart';
@@ -63,7 +64,6 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
-
     return ListView(
       padding: EdgeInsets.fromLTRB(
         tokens.pagePadding.left,
@@ -113,34 +113,35 @@ class _ProfileInventorySection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
+    final localizations = AppLocalizations.of(context);
 
     return AppSectionCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const AppPageHeader(title: 'У системі'),
+          AppPageHeader(title: localizations.profileSystem),
           const SizedBox(height: 16),
           AppActionWrap(
             spacing: 10,
             runSpacing: 10,
             children: [
               AppStatChip(
-                label: 'Слова',
+                label: localizations.profileWords,
                 value: bundle.words.length,
                 accent: tokens.successAccent,
               ),
               AppStatChip(
-                label: 'Довідник',
+                label: localizations.profileGuide,
                 value: bundle.guideLessons.length,
                 accent: tokens.warningAccent,
               ),
               AppStatChip(
-                label: 'Читання',
+                label: localizations.profileReading,
                 value: bundle.readingLessons.length,
                 accent: tokens.readingAccent,
               ),
               AppStatChip(
-                label: 'Дієслова',
+                label: localizations.profileVerbs,
                 value: bundle.verbLessons.length,
                 accent: tokens.vocabularyAccent,
               ),
@@ -174,6 +175,7 @@ class _ProfileProgressSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
+    final localizations = AppLocalizations.of(context);
     final study = StudyProgressSnapshot.fromWords(bundle.words);
     final writing = WritingProgressSnapshot.fromWords(bundle.words);
     final guide = LessonProgressSnapshot.fromLessons(
@@ -189,35 +191,35 @@ class _ProfileProgressSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const AppPageHeader(title: 'Прогрес'),
+          AppPageHeader(title: localizations.profileProgress),
           const SizedBox(height: 16),
           _ProgressStrip(
-            label: 'Слова відкрито',
-            completedLabel: '${study.seen} із ${study.total}',
+            label: localizations.profileWordsOpened,
+            completedLabel: '${study.seen}/${study.total}',
             ratio: study.completionRatio,
             accent: tokens.successAccent,
             onTap: onOpenWords,
           ),
           const SizedBox(height: 12),
           _ProgressStrip(
-            label: 'Письмо відпрацьовано',
-            completedLabel: '${writing.practiced} із ${writing.total}',
+            label: localizations.profileWritingPracticed,
+            completedLabel: '${writing.practiced}/${writing.total}',
             ratio: writing.completionRatio,
             accent: tokens.aiAccent,
             onTap: onOpenWriting,
           ),
           const SizedBox(height: 12),
           _ProgressStrip(
-            label: 'Довідник завершено',
-            completedLabel: '${guide.read} із ${guide.total}',
+            label: localizations.profileGuideCompleted,
+            completedLabel: '${guide.read}/${guide.total}',
             ratio: guide.completionRatio,
             accent: tokens.warningAccent,
             onTap: onOpenGuide,
           ),
           const SizedBox(height: 12),
           _ProgressStrip(
-            label: 'Читання завершено',
-            completedLabel: '${reading.read} із ${reading.total}',
+            label: localizations.profileReadingCompleted,
+            completedLabel: '${reading.read}/${reading.total}',
             ratio: reading.completionRatio,
             accent: tokens.readingAccent,
             onTap: onOpenReading,
@@ -226,12 +228,12 @@ class _ProfileProgressSection extends StatelessWidget {
           AppActionWrap(
             children: [
               AppMetricTile(
-                label: 'Знайомі слова',
+                label: localizations.profileKnownWords,
                 value: study.known,
                 accent: tokens.successAccent,
               ),
               AppMetricTile(
-                label: 'Повторити',
+                label: localizations.profileReview,
                 value: study.needsReview,
                 accent: tokens.warningAccent,
               ),
@@ -276,6 +278,7 @@ class _ProfileSettingsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -283,7 +286,7 @@ class _ProfileSettingsSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const AppPageHeader(title: 'Налаштування'),
+              AppPageHeader(title: localizations.profileSettings),
               const SizedBox(height: 18),
               _ThemeCycleTile(
                 key: const ValueKey('theme-mode-tile'),
@@ -299,27 +302,30 @@ class _ProfileSettingsSection extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               _SettingsSwitchTile(
-                title: 'Автоматично ховати нижню панель',
-                subtitle:
-                    'Під час довгого перегляду сторінки вниз нижня панель тимчасово ховається, щоб звільнити більше місця на екрані.',
+                title: localizations.profileAutoHideNav,
+                subtitle: localizations.profileAutoHideNavBody,
                 value: autoHideBottomNavOnScroll,
                 onChanged: onAutoHideBottomNavOnScrollChanged,
                 switchKey: const ValueKey('auto-hide-bottom-nav-switch'),
               ),
               const SizedBox(height: 12),
               _SettingsSwitchTile(
-                title: 'ШІ-контексти для вправ',
-                subtitle: 'Приклади і ситуації з урахуванням ваших слів.',
-                lockedSubtitle: aiWordContextsAccess.description,
+                title: localizations.profileAiContexts,
+                subtitle: localizations.profileAiContextsBody,
+                lockedSubtitle: aiWordContextsAccess.localizedDescription(
+                  localizations,
+                ),
                 value: aiWordContextsEnabled,
                 onChanged: onAiWordContextsEnabledChanged,
                 isLocked: !aiWordContextsAccess.isEnabled,
               ),
               const SizedBox(height: 12),
               _SettingsSwitchTile(
-                title: 'ШІ-тексти для практики',
-                subtitle: 'Короткі тексти під ваш рівень.',
-                lockedSubtitle: aiPracticeTextsAccess.description,
+                title: localizations.profileAiTexts,
+                subtitle: localizations.profileAiTextsBody,
+                lockedSubtitle: aiPracticeTextsAccess.localizedDescription(
+                  localizations,
+                ),
                 value: aiPracticeTextsEnabled,
                 onChanged: onAiPracticeTextsEnabledChanged,
                 isLocked: !aiPracticeTextsAccess.isEnabled,
@@ -508,7 +514,7 @@ class _ThemeCycleTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Тема',
+                  AppLocalizations.of(context).profileTheme,
                   style: theme.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w700,
                     color: isLocked ? tokens.mutedText : null,
@@ -517,8 +523,10 @@ class _ThemeCycleTile extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   isLocked
-                      ? nightModeAccess.description
-                      : 'Перемикає світлу, темну та системну.',
+                      ? nightModeAccess.localizedDescription(
+                          AppLocalizations.of(context),
+                        )
+                      : AppLocalizations.of(context).profileThemeBody,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: isLocked
                         ? tokens.inactiveForeground(tokens.mutedText)
@@ -534,7 +542,14 @@ class _ThemeCycleTile extends StatelessWidget {
             Icon(Icons.lock_rounded, color: tokens.mutedText, size: 20),
             const SizedBox(width: 8),
           ],
-          _ThemeValuePill(label: preference.label, isLocked: isLocked),
+          _ThemeValuePill(
+            label: switch (preference) {
+              AppThemePreference.light => AppLocalizations.of(context).themeLight,
+              AppThemePreference.dark => AppLocalizations.of(context).themeDark,
+              AppThemePreference.system => AppLocalizations.of(context).themeSystem,
+            },
+            isLocked: isLocked,
+          ),
         ],
       ),
     );

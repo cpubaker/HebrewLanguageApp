@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/generated/app_localizations.dart';
 import '../../../models/learning_context.dart';
 import '../../../theme/app_theme.dart';
 import '../context_source_badge.dart';
@@ -27,7 +28,7 @@ class FlashcardContextPanel extends StatelessWidget {
           borderRadius: BorderRadius.circular(24),
         ),
         child: Text(
-          'Для цього слова ще немає прикладу в реченні.',
+          AppLocalizations.of(context).flashcardsContextEmpty,
           textAlign: TextAlign.center,
           style: theme.textTheme.bodyLarge?.copyWith(
             color: tokens.secondaryText,
@@ -52,7 +53,7 @@ class FlashcardContextPanel extends StatelessWidget {
           Row(
             children: [
               Text(
-                'Контекст',
+                AppLocalizations.of(context).flashcardsContextTitle,
                 style: theme.textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w700,
                   color: tokens.mutedText,

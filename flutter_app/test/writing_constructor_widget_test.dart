@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hebrew_language_flutter/l10n/generated/app_localizations.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/screens/writing_screen.dart';
 
@@ -15,6 +16,9 @@ void main() {
 
       await tester.pumpWidget(
         MaterialApp(
+          locale: const Locale('uk'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
           home: Scaffold(
             body: WritingScreen(
               initialMode: WritingPracticeMode.constructor,
@@ -54,7 +58,7 @@ void main() {
       expect(find.widgetWithText(FilledButton, 'Перевірити'), findsNothing);
 
       final errorsLeft = tester.getTopLeft(find.textContaining('Помилки')).dx;
-      final correctLeft = tester.getTopLeft(find.textContaining('Вірно')).dx;
+      final correctLeft = tester.getTopLeft(find.textContaining('Правильно')).dx;
       expect(errorsLeft, lessThan(correctLeft));
 
       await tester.tap(find.widgetWithText(OutlinedButton, 'Перевірити'));
@@ -90,7 +94,10 @@ void main() {
     addTearDown(tester.view.resetDevicePixelRatio);
 
     await tester.pumpWidget(
-      MaterialApp(
+        MaterialApp(
+          locale: const Locale('uk'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(
           body: WritingScreen(
             initialMode: WritingPracticeMode.constructor,

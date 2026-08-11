@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hebrew_language_flutter/l10n/generated/app_localizations.dart';
 import 'package:hebrew_language_flutter/models/generated_practice_text.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/screens/ai_practice_text_screen.dart';
@@ -13,6 +14,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        locale: const Locale('uk'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         theme: buildLightAppTheme(),
         home: Scaffold(
           body: AiPracticeTextScreen(
@@ -70,6 +74,9 @@ void main() {
   testWidgets('shows empty state when service returns no text', (tester) async {
     await tester.pumpWidget(
       MaterialApp(
+        locale: const Locale('uk'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         theme: buildLightAppTheme(),
         home: Scaffold(
           body: AiPracticeTextScreen(

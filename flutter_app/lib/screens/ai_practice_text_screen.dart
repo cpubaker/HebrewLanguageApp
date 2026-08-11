@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/generated/app_localizations.dart';
 import '../models/generated_practice_text.dart';
 import '../models/learning_word.dart';
 import '../services/ai_practice_text_service.dart';
@@ -67,10 +68,9 @@ class _AiPracticeTextScreenState extends State<AiPracticeTextScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const AppPageHeader(
-                    title: 'Текст зі словами',
-                    subtitle:
-                        'Короткий текст на івриті з поточними словами, перекладом і переходом до вправ.',
+                  AppPageHeader(
+                    title: AppLocalizations.of(context).aiTextTitle,
+                    subtitle: AppLocalizations.of(context).aiTextSubtitle,
                   ),
                   const SizedBox(height: 18),
                   _TargetWordsPanel(words: widget.words),
@@ -114,7 +114,7 @@ class _TargetWordsPanel extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Слова для тексту',
+          AppLocalizations.of(context).aiTextWords,
           style: theme.textTheme.titleSmall?.copyWith(
             fontWeight: FontWeight.w800,
           ),
@@ -180,7 +180,9 @@ class _GeneratedTextPanel extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  text.title.trim().isEmpty ? 'Текст для практики' : text.title,
+                  text.title.trim().isEmpty
+                      ? AppLocalizations.of(context).aiTextFallbackTitle
+                      : text.title,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w800,
                   ),
@@ -218,7 +220,7 @@ class _GeneratedTextPanel extends StatelessWidget {
           if (usedWords.isNotEmpty) ...[
             const SizedBox(height: 16),
             Text(
-              'У тексті',
+              AppLocalizations.of(context).aiTextInText,
               style: theme.textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.w800,
               ),
@@ -242,17 +244,17 @@ class _GeneratedTextPanel extends StatelessWidget {
               FilledButton.icon(
                 onPressed: onOpenFlashcards,
                 icon: const Icon(Icons.style_rounded),
-                label: const Text('Картки'),
+                label: Text(AppLocalizations.of(context).aiTextFlashcards),
               ),
               OutlinedButton.icon(
                 onPressed: onOpenWriting,
                 icon: const Icon(Icons.edit_rounded),
-                label: const Text('Написання'),
+                label: Text(AppLocalizations.of(context).aiTextWriting),
               ),
               IconButton.filledTonal(
                 onPressed: onRefresh,
                 icon: const Icon(Icons.refresh_rounded),
-                tooltip: 'Оновити текст',
+                tooltip: AppLocalizations.of(context).aiTextRefresh,
               ),
             ],
           ),
@@ -292,7 +294,7 @@ class _NewTextBadge extends StatelessWidget {
           Icon(Icons.auto_awesome_rounded, size: 14, color: color),
           const SizedBox(width: 5),
           Text(
-            'Нове!',
+            AppLocalizations.of(context).aiTextNew,
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
               color: color,
               fontWeight: FontWeight.w800,
@@ -325,10 +327,10 @@ class _EmptyPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _StatePanel(
-      title: 'Текст ще не згенеровано',
-      message: 'Не вдалося оновити текст. Спробуйте ще раз пізніше.',
+      title: AppLocalizations.of(context).aiTextNotGenerated,
+      message: AppLocalizations.of(context).aiTextNotGeneratedBody,
       icon: Icons.auto_awesome_outlined,
-      actionLabel: 'Спробувати ще раз',
+      actionLabel: AppLocalizations.of(context).aiTextRetry,
       onAction: onRetry,
     );
   }
@@ -342,10 +344,10 @@ class _ErrorPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _StatePanel(
-      title: 'Не вдалося отримати текст',
-      message: 'Збережена практика лишається доступною. Спробуйте ще раз.',
+      title: AppLocalizations.of(context).aiTextFailure,
+      message: AppLocalizations.of(context).aiTextFailureBody,
       icon: Icons.cloud_off_rounded,
-      actionLabel: 'Повторити',
+      actionLabel: AppLocalizations.of(context).aiTextRepeat,
       onAction: onRetry,
     );
   }

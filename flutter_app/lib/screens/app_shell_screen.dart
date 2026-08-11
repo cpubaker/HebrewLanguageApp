@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
+import '../l10n/generated/app_localizations.dart';
+import '../l10n/feature_access_localizations.dart';
 import '../models/guide_lesson_status.dart';
 import '../models/learning_bundle.dart';
 import '../models/learning_word.dart';
@@ -400,7 +402,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
         _guideLessonStatuses = statuses;
       },
       progressLabel: 'guide',
-      errorMessage: 'Не вдалося зберегти прогрес довідника. Спробуйте ще раз.',
+      errorMessage: AppLocalizations.of(context).shellGuideSaveFailure,
     );
   }
 
@@ -431,7 +433,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
         _readingLessonStatuses = statuses;
       },
       progressLabel: 'reading',
-      errorMessage: 'Не вдалося зберегти прогрес читання. Спробуйте ще раз.',
+      errorMessage: AppLocalizations.of(context).shellReadingSaveFailure,
     );
   }
 
@@ -456,7 +458,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
         return;
       }
       _showPersistenceError(
-        'Не вдалося завантажити контексти слів. Спробуйте ще раз.',
+        AppLocalizations.of(context).shellContextsLoadFailure,
       );
       return;
     }
@@ -510,7 +512,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
       debugPrint('Failed to load word contexts for flashcards: $error');
       if (mounted) {
         _showPersistenceError(
-          'РќРµ РІРґР°Р»РѕСЃСЏ Р·Р°РІР°РЅС‚Р°Р¶РёС‚Рё РєРѕРЅС‚РµРєСЃС‚Рё СЃР»С–РІ. РЎРїСЂРѕР±СѓР№С‚Рµ С‰Рµ СЂР°Р·.',
+          AppLocalizations.of(context).shellContextsLoadFailure,
         );
       }
       return;
@@ -578,7 +580,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
 
     if (!_aiPracticeTextsEnabled) {
       _showPersistenceError(
-        'Увімкніть ШІ-тексти для практики в налаштуваннях.',
+        AppLocalizations.of(context).shellAiTextsDisabled,
       );
       return;
     }
@@ -587,7 +589,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
       _bundle?.words ?? const <LearningWord>[],
     );
     if (scopeWords.isEmpty) {
-      _showPersistenceError('Поки немає слів для генерації тексту.');
+      _showPersistenceError(AppLocalizations.of(context).shellNoWordsForText);
       return;
     }
 
@@ -621,7 +623,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
       debugPrint('Failed to load word contexts for repetition: $error');
       if (mounted) {
         _showPersistenceError(
-          'РќРµ РІРґР°Р»РѕСЃСЏ Р·Р°РІР°РЅС‚Р°Р¶РёС‚Рё РєРѕРЅС‚РµРєСЃС‚Рё СЃР»С–РІ. РЎРїСЂРѕР±СѓР№С‚Рµ С‰Рµ СЂР°Р·.',
+          AppLocalizations.of(context).shellContextsLoadFailure,
         );
       }
       return;
@@ -820,7 +822,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
       }
 
       _showPersistenceError(
-        'Не вдалося зберегти прогрес слова. Спробуйте ще раз.',
+        AppLocalizations.of(context).shellWordSaveFailure,
       );
     }
   }
@@ -865,16 +867,19 @@ class _AppShellScreenState extends State<AppShellScreen> {
   }
 
   void _showFeatureLocked(FeatureAccessDecision decision) {
+    final localizations = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.maybeOf(context);
-    final hasUpgradePath = decision.upgradeLabel.trim().isNotEmpty;
+    final hasUpgradePath = decision.localizedUpgradeKey.isNotEmpty;
     messenger
       ?..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
-          content: Text('${decision.title}: ${decision.description}'),
+          content: Text(
+            '${decision.localizedTitle(localizations)}: ${decision.localizedDescription(localizations)}',
+          ),
           action: hasUpgradePath
               ? SnackBarAction(
-                  label: decision.upgradeLabel,
+                  label: localizations.featureUpgradePro,
                   onPressed: () {},
                 )
               : null,
@@ -1017,14 +1022,14 @@ class _LoadingState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             CircularProgressIndicator(),
             SizedBox(height: 14),
-            Text('Завантажуємо навчальні матеріали...'),
+            Text(AppLocalizations.of(context).shellLoadingMaterials),
           ],
         ),
       ),
@@ -1048,7 +1053,7 @@ class _ErrorState extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Не вдалося завантажити навчальні матеріали.',
+                AppLocalizations.of(context).shellMaterialsLoadFailure,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
@@ -1065,7 +1070,7 @@ class _ErrorState extends StatelessWidget {
                 onPressed: () {
                   onRetry();
                 },
-                child: const Text('Спробувати ще раз'),
+                child: Text(AppLocalizations.of(context).retry),
               ),
             ],
           ),

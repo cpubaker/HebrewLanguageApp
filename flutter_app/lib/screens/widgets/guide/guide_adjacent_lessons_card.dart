@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/generated/app_localizations.dart';
 import '../../../theme/app_theme.dart';
 
 class GuideAdjacentLessonsCard extends StatelessWidget {
@@ -22,7 +23,7 @@ class GuideAdjacentLessonsCard extends StatelessWidget {
       children: [
         Expanded(
           child: GuideNavigationButton(
-            label: 'Попередня тема',
+            label: AppLocalizations.of(context).guidePreviousTopic,
             title: previousLessonTitle,
             icon: Icons.arrow_back_rounded,
             onPressed: onOpenPrevious,
@@ -31,7 +32,7 @@ class GuideAdjacentLessonsCard extends StatelessWidget {
         const SizedBox(width: 12),
         Expanded(
           child: GuideNavigationButton(
-            label: 'Наступна тема',
+            label: AppLocalizations.of(context).guideNextTopic,
             title: nextLessonTitle,
             icon: Icons.arrow_forward_rounded,
             iconTrailing: true,
@@ -97,7 +98,7 @@ class GuideNavigationButton extends StatelessWidget {
                   if (!iconTrailing) const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      title ?? 'Немає',
+                      title ?? AppLocalizations.of(context).guideNoTopic,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
