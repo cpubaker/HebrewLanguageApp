@@ -1,4 +1,5 @@
 import '../models/learning_bundle.dart';
+import '../l10n/generated/app_localizations.dart';
 
 class ReadingLessonGroup {
   const ReadingLessonGroup({
@@ -31,23 +32,26 @@ String readingLevelKeyFromAssetPath(String assetPath) {
   return parts[readingIndex + 1];
 }
 
-String readingLevelLabelFromAssetPath(String assetPath) {
+String readingLevelLabelFromAssetPath(
+  String assetPath, {
+  AppLocalizations? localizations,
+}) {
   final rawLevel = readingLevelKeyFromAssetPath(assetPath);
   switch (rawLevel) {
     case 'beginner':
-      return 'Початковий';
+      return localizations?.readingLevelBeginner ?? 'Beginner';
     case 'pre-intermediate':
-      return 'Нижче середнього';
+      return localizations?.readingLevelPreIntermediate ?? 'Pre-intermediate';
     case 'intermediate':
-      return 'Середній';
+      return localizations?.readingLevelIntermediate ?? 'Intermediate';
     case 'upper-intermediate':
-      return 'Вище середнього';
+      return localizations?.readingLevelUpperIntermediate ?? 'Upper-intermediate';
     case 'advanced':
-      return 'Просунутий';
+      return localizations?.readingLevelAdvanced ?? 'Advanced';
     case 'proficient':
-      return 'Вільний';
+      return localizations?.readingLevelProficient ?? 'Proficient';
     case 'reading':
-      return 'Читання';
+      return localizations?.readingLevelFallback ?? 'Reading';
   }
 
   return rawLevel
@@ -73,8 +77,9 @@ List<LessonEntry> sortReadingLessons(Iterable<LessonEntry> lessons) {
 }
 
 List<ReadingLessonGroup> buildReadingLessonGroups(
-  Iterable<LessonEntry> lessons,
-) {
+  Iterable<LessonEntry> lessons, {
+  AppLocalizations? localizations,
+}) {
   final groupedLessons = <String, List<LessonEntry>>{};
 
   for (final lesson in sortReadingLessons(lessons)) {
@@ -91,6 +96,7 @@ List<ReadingLessonGroup> buildReadingLessonGroups(
           levelKey: levelKey,
           levelLabel: readingLevelLabelFromAssetPath(
             groupedLessons[levelKey]!.first.assetPath,
+            localizations: localizations,
           ),
           lessons: List<LessonEntry>.unmodifiable(groupedLessons[levelKey]!),
         ),

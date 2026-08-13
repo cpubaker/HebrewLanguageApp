@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../l10n/generated/app_localizations.dart';
 import '../models/learning_context.dart';
 import '../models/learning_word.dart';
 import '../services/audio_playback_awareness.dart';

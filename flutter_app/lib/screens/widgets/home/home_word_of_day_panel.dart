@@ -69,8 +69,8 @@ class _WordOfDayHeroPanelState extends State<_WordOfDayHeroPanel> {
         messenger
           ?..hideCurrentSnackBar()
           ..showSnackBar(
-            const SnackBar(
-              content: Text('Не вдалося відтворити озвучку слова.'),
+            SnackBar(
+              content: Text(AppLocalizations.of(context).wordOfDayAudioFailure),
             ),
           );
       }
@@ -97,6 +97,7 @@ class _WordOfDayHeroPanelState extends State<_WordOfDayHeroPanel> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final tokens = theme.appTokens;
+    final localizations = AppLocalizations.of(context);
     final contextSentence = widget.entry.context;
     final isCheckingAudio = _audioController.isCheckingAvailability;
     final hasAudio = _audioController.hasAudio;
@@ -140,7 +141,7 @@ class _WordOfDayHeroPanelState extends State<_WordOfDayHeroPanel> {
                   borderRadius: BorderRadius.circular(999),
                 ),
                 child: Text(
-                  'Слово дня',
+                  localizations.wordOfDay,
                   style: theme.textTheme.labelLarge?.copyWith(
                     color: tokens.heroText,
                     fontWeight: FontWeight.w700,
@@ -151,12 +152,12 @@ class _WordOfDayHeroPanelState extends State<_WordOfDayHeroPanel> {
               const Spacer(),
               Tooltip(
                 message: isCheckingAudio
-                    ? 'Перевіряємо озвучку'
+                    ? localizations.wordOfDayAudioChecking
                     : hasAudio
                     ? (isAudioPlaying
-                          ? 'Зупинити озвучку'
-                          : 'Увімкнути озвучку')
-                    : 'Озвучка ще недоступна',
+                          ? localizations.wordOfDayAudioStop
+                          : localizations.wordOfDayAudioPlay)
+                    : localizations.wordOfDayAudioUnavailable,
                 child: Material(
                   color: tokens.heroChipBackground,
                   shape: const CircleBorder(),
@@ -275,6 +276,7 @@ class _EmptyWordOfDayHeroPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final tokens = theme.appTokens;
+    final localizations = AppLocalizations.of(context);
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -307,7 +309,7 @@ class _EmptyWordOfDayHeroPanel extends StatelessWidget {
               borderRadius: BorderRadius.circular(999),
             ),
             child: Text(
-              'Слово дня',
+              localizations.wordOfDay,
               style: theme.textTheme.labelLarge?.copyWith(
                 color: tokens.heroText,
                 fontWeight: FontWeight.w700,
@@ -316,7 +318,7 @@ class _EmptyWordOfDayHeroPanel extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            'Слова з’являться після завантаження навчальної бази.',
+            localizations.wordOfDayEmpty,
             style: theme.textTheme.titleLarge?.copyWith(
               color: tokens.heroText,
               fontWeight: FontWeight.w800,

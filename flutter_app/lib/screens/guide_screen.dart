@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../l10n/generated/app_localizations.dart';
 import '../models/guide_lesson_status.dart';
 import '../models/learning_bundle.dart';
 import '../models/lesson_document.dart';
@@ -208,14 +209,14 @@ class _GuideScreenState extends State<GuideScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Секція довідника',
+                    AppLocalizations.of(context).guideSectionFilterTitle,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w800,
                     ),
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    'Можна лишити весь каталог або вибрати кілька секцій.',
+                    AppLocalizations.of(context).guideSectionFilterBody,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: tokens.mutedText,
                       height: 1.45,
@@ -223,7 +224,7 @@ class _GuideScreenState extends State<GuideScreen>
                   ),
                   const SizedBox(height: 16),
                   GuideSectionOptionTile(
-                    label: 'Усі теми',
+                    label: AppLocalizations.of(context).guideAllTopics,
                     count: widget.lessons.length,
                     selected: _selectedSectionIds.isEmpty,
                     onTap: () {
@@ -378,7 +379,7 @@ class _GuideScreenState extends State<GuideScreen>
               const SizedBox(height: 18),
             ],
             Text(
-              'Довідник',
+              AppLocalizations.of(context).guideTitle,
               style: Theme.of(
                 context,
               ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
@@ -387,7 +388,7 @@ class _GuideScreenState extends State<GuideScreen>
             AppSectionCard(
               child: GuideSearchCard(
                 totalCount: widget.lessons.length,
-                completedLabel: progress.completedLabel('тем'),
+                completedLabel: '${progress.read}/${progress.total}',
                 visibleCount: filteredLessons.length,
                 query: _query,
                 selectedSectionLabels: selectedSectionLabels,
@@ -611,7 +612,7 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(24),
                   child: Text(
-                    'Не вдалося відкрити цей урок.',
+                    AppLocalizations.of(context).guideOpenFailure,
                     style: Theme.of(context).textTheme.titleMedium,
                     textAlign: TextAlign.center,
                   ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hebrew_language_flutter/l10n/generated/app_localizations.dart';
 import 'package:hebrew_language_flutter/models/learning_context.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/screens/words_screen.dart';
@@ -78,7 +79,7 @@ void main() {
       await tester.pump();
 
       expect(
-        find.text(AudioPlaybackHint.mediaVolumeMuted.message),
+        find.text('Звук вимкнений. Підніміть гучність медіа кнопками збоку.'),
         findsOneWidget,
       );
       expect(audioPlayer.playedAssets, [_wordAudioAsset]);
@@ -299,6 +300,9 @@ Future<void> _pumpWordsScreen(
 }) async {
   await tester.pumpWidget(
     MaterialApp(
+      locale: const Locale('uk'),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: Scaffold(
         body: WordsScreen(
           words: words,

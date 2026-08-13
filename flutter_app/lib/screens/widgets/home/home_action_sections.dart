@@ -79,7 +79,10 @@ class _TodayActionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
     final isWelcome = action.kind == _DashboardActionKind.welcome;
-    final eyebrow = isWelcome ? 'Перший крок' : 'Сьогодні';
+    final localizations = AppLocalizations.of(context);
+    final eyebrow = isWelcome
+        ? localizations.homeActionFirstStep
+        : localizations.homeActionToday;
 
     return AppSectionCard(
       child: Row(

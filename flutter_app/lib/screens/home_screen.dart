@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../l10n/generated/app_localizations.dart';
 import '../models/learning_bundle.dart';
 import '../services/audio_playback_awareness.dart';
 import '../services/bool_setting_store.dart';
@@ -96,12 +97,12 @@ class _HomeScreenState extends State<HomeScreen> {
     action.onTap();
   }
 
-  String _greetingFor(DateTime now) {
+  String _greetingFor(AppLocalizations localizations, DateTime now) {
     final hour = now.hour;
-    if (hour < 5) return 'Доброї ночі';
-    if (hour < 12) return 'Доброго ранку';
-    if (hour < 18) return 'Доброго дня';
-    return 'Доброго вечора';
+    if (hour < 5) return localizations.homeGreetingNight;
+    if (hour < 12) return localizations.homeGreetingMorning;
+    if (hour < 18) return localizations.homeGreetingDay;
+    return localizations.homeGreetingEvening;
   }
 
   @override
@@ -110,7 +111,9 @@ class _HomeScreenState extends State<HomeScreen> {
     final progress = StudyProgressSnapshot.fromWords(widget.bundle.words);
     final streak = StudyStreakSnapshot.fromWords(widget.bundle.words);
     final flashcards = FlashcardFocusSnapshot.fromWords(widget.bundle.words);
+    final localizations = AppLocalizations.of(context);
     final action = _buildContinueAction(
+      localizations: localizations,
       tokens: tokens,
       isFirstRun: !_firstActionCompleted,
       bundle: widget.bundle,
@@ -125,6 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
       date: (widget.wordOfDayDateProvider ?? DateTime.now)(),
     );
     final greeting = _greetingFor(
+      localizations,
       (widget.greetingClock ?? DateTime.now)(),
     );
 

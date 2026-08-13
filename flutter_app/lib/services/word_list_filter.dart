@@ -1,16 +1,7 @@
 import '../models/learning_word.dart';
 import 'progress_snapshot.dart';
 
-enum WordsFilter {
-  all('Усі'),
-  newWords('Нові'),
-  learned('Вивчені'),
-  review('Повторити');
-
-  const WordsFilter(this.label);
-
-  final String label;
-}
+enum WordsFilter { all, newWords, learned, review }
 
 class IndexedWord {
   const IndexedWord({

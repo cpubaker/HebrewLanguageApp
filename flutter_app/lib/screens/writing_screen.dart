@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../l10n/generated/app_localizations.dart';
 import '../models/learning_word.dart';
 import '../services/audio_playback_awareness.dart';
 import '../services/flashcard_session.dart';
@@ -96,7 +97,7 @@ class _WritingScreenState extends State<WritingScreen> {
     if (_mode == WritingPracticeMode.constructor &&
         _selectedBlocks.any((block) => block == null)) {
       setState(() {
-        _inlineMessage = 'Заповніть усі склади, а потім перевіряйте відповідь.';
+        _inlineMessage = AppLocalizations.of(context).writingFillAllTiles;
       });
       return;
     }
@@ -109,8 +110,8 @@ class _WritingScreenState extends State<WritingScreen> {
     if (result.status == WritingAnswerStatus.empty) {
       setState(() {
         _inlineMessage = _mode == WritingPracticeMode.typing
-            ? 'Введіть слово івритом, щоб перевірити відповідь.'
-            : 'Складіть слово з блоків, щоб перевірити відповідь.';
+            ? AppLocalizations.of(context).writingEnterAnswer
+            : AppLocalizations.of(context).writingBuildAnswer;
       });
       return;
     }
@@ -178,7 +179,9 @@ class _WritingScreenState extends State<WritingScreen> {
       }
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Не вдалося відтворити озвучку слова.')),
+        SnackBar(
+          content: Text(AppLocalizations.of(context).wordOfDayAudioFailure),
+        ),
       );
     }
   }
@@ -240,7 +243,7 @@ class _WritingScreenState extends State<WritingScreen> {
                 child: Column(
                   children: [
                     Text(
-                      'Слово для перекладу',
+                      AppLocalizations.of(context).writingPromptTitle,
                       textAlign: TextAlign.center,
                       style: theme.textTheme.titleSmall?.copyWith(
                         color: tokens.mutedText,
@@ -271,7 +274,7 @@ class _WritingScreenState extends State<WritingScreen> {
                     if (_mode == WritingPracticeMode.typing) ...[
                       const SizedBox(height: 8),
                       Text(
-                        'Без підказок: спробуйте пригадати слово самостійно.',
+                        AppLocalizations.of(context).writingNoHints,
                         textAlign: TextAlign.center,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: tokens.secondaryText,
@@ -292,7 +295,7 @@ class _WritingScreenState extends State<WritingScreen> {
                   textInputAction: TextInputAction.done,
                   onSubmitted: (_) => _submitAnswer(),
                   decoration: InputDecoration(
-                    hintText: 'Введіть слово івритом',
+                    hintText: AppLocalizations.of(context).writingAnswerHint,
                     prefixIcon: const Icon(Icons.edit_rounded),
                     filled: true,
                     fillColor: tokens.subtleSurface,
@@ -368,7 +371,7 @@ class _WritingScreenState extends State<WritingScreen> {
                 const SizedBox(height: 18),
               ] else if (_mode == WritingPracticeMode.typing) ...[
                 Text(
-                  'Натисніть «Перевірити», коли будете готові.',
+                  AppLocalizations.of(context).writingReadyToCheck,
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: tokens.secondaryText,
@@ -380,24 +383,24 @@ class _WritingScreenState extends State<WritingScreen> {
                 stats: _mode == WritingPracticeMode.constructor
                     ? [
                         PracticeStatItem(
-                          label: 'Помилки',
+                          label: AppLocalizations.of(context).wordStatMistakes,
                           value: stats.wrong,
                           accent: tokens.dangerAccent,
                         ),
                         PracticeStatItem(
-                          label: 'Вірно',
+                          label: AppLocalizations.of(context).writingCorrect,
                           value: stats.correct,
                           accent: tokens.successAccent,
                         ),
                       ]
                     : [
                         PracticeStatItem(
-                          label: 'Вірно',
+                          label: AppLocalizations.of(context).writingCorrect,
                           value: stats.correct,
                           accent: tokens.successAccent,
                         ),
                         PracticeStatItem(
-                          label: 'Помилки',
+                          label: AppLocalizations.of(context).wordStatMistakes,
                           value: stats.wrong,
                           accent: tokens.dangerAccent,
                         ),
@@ -414,10 +417,14 @@ class _WritingScreenState extends State<WritingScreen> {
               if (_mode == WritingPracticeMode.typing) ...[
                 const SizedBox(height: 16),
                 PracticeSessionSummary(
-                  title: 'Поточна сесія',
+                  title: AppLocalizations.of(context).writingCurrentSession,
                   lines: [
-                    'Перевірено відповідей: ${_session.answeredCount}',
-                    '${widget.words.length} слів доступні для письма на цьому пристрої',
+                    AppLocalizations.of(
+                      context,
+                    ).writingCheckedAnswers(_session.answeredCount),
+                    AppLocalizations.of(
+                      context,
+                    ).writingAvailableWords(widget.words.length),
                   ],
                 ),
               ],
@@ -437,13 +444,15 @@ class _WritingScreenState extends State<WritingScreen> {
       tone: isCorrect
           ? PracticeFeedbackTone.success
           : PracticeFeedbackTone.error,
-      title: isCorrect ? 'Правильно' : 'Ось правильний варіант',
+      title: isCorrect
+          ? AppLocalizations.of(context).writingCorrect
+          : AppLocalizations.of(context).writingCorrectAnswer,
       primaryText: correctAnswer,
       primaryTextDirection: TextDirection.rtl,
       extraContent: audioButton,
       message: isCorrect
-          ? 'Слово записано правильно. Можна переходити далі.'
-          : 'Нічого страшного. Повернемось до цього слова пізніше.',
+          ? AppLocalizations.of(context).writingCorrectBody
+          : AppLocalizations.of(context).writingIncorrectBody,
       showMessage: !isCorrect,
     );
   }
@@ -585,14 +594,18 @@ class _WritingActionButtons extends StatelessWidget {
           FilledButton.icon(
             onPressed: hasAnswered ? null : onUnknown,
             icon: const Icon(Icons.help_outline_rounded),
-            label: const Text('Не знаю'),
+            label: Text(AppLocalizations.of(context).writingUnknown),
           ),
           OutlinedButton.icon(
             onPressed: hasAnswered ? onNext : onSubmit,
             icon: Icon(
               hasAnswered ? Icons.arrow_forward_rounded : Icons.check_rounded,
             ),
-            label: Text(hasAnswered ? 'Далі' : 'Перевірити'),
+            label: Text(
+              hasAnswered
+                  ? AppLocalizations.of(context).writingNext
+                  : AppLocalizations.of(context).writingCheck,
+            ),
           ),
         ],
       );
@@ -606,12 +619,12 @@ class _WritingActionButtons extends StatelessWidget {
         FilledButton.icon(
           onPressed: hasAnswered ? null : onSubmit,
           icon: const Icon(Icons.check_rounded),
-          label: const Text('Перевірити'),
+          label: Text(AppLocalizations.of(context).writingCheck),
         ),
         OutlinedButton.icon(
           onPressed: hasAnswered ? onNext : null,
           icon: const Icon(Icons.arrow_forward_rounded),
-          label: const Text('Далі'),
+          label: Text(AppLocalizations.of(context).writingNext),
         ),
       ],
     );
@@ -627,10 +640,9 @@ class _EmptyWritingState extends StatelessWidget {
     return ListView(
       padding: tokens.pagePadding.copyWith(bottom: 32),
       children: [
-        const PracticeHeader(
-          title: 'Написання',
-          subtitle:
-              'Коли слова завантажаться, тут можна буде тренувати написання івритом або складати слова з блоків.',
+        PracticeHeader(
+          title: AppLocalizations.of(context).writingTitle,
+          subtitle: AppLocalizations.of(context).writingEmptySubtitle,
         ),
         const SizedBox(height: 18),
         Container(
@@ -640,7 +652,7 @@ class _EmptyWritingState extends StatelessWidget {
             borderRadius: BorderRadius.circular(28),
           ),
           child: Text(
-            'Щойно у наборі з’являться доступні слова, тут можна буде тренувати письмо окремою сесією.',
+            AppLocalizations.of(context).writingEmptyBody,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               color: tokens.mutedText,
@@ -693,7 +705,7 @@ class _ConstructorComposer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'Складіть слово',
+                AppLocalizations.of(context).writingBuildWord,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w800,
@@ -702,7 +714,7 @@ class _ConstructorComposer extends StatelessWidget {
               ),
               const SizedBox(height: 6),
               Text(
-                'Перетягніть блоки у правильному порядку. Натискання на блок теж працює.',
+                AppLocalizations.of(context).writingBuildWordSubtitle,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: tokens.secondaryText,
@@ -760,7 +772,7 @@ class _ConstructorComposer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
-                      'Доступні блоки',
+                      AppLocalizations.of(context).writingAvailableTiles,
                       textAlign: TextAlign.center,
                       style: theme.textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w800,

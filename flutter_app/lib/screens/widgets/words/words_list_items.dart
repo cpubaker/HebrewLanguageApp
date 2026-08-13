@@ -104,7 +104,7 @@ class _WordCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       IconButton(
-                        tooltip: 'Відкрити слово',
+                        tooltip: AppLocalizations.of(context).wordOpenTooltip,
                         onPressed: onOpenDetails,
                         visualDensity: VisualDensity.compact,
                         padding: EdgeInsets.zero,
@@ -139,7 +139,11 @@ class _WordStatusActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
-    final presentation = _WordStatusPresentation.fromState(state, tokens);
+    final presentation = _WordStatusPresentation.fromState(
+      state,
+      tokens,
+      AppLocalizations.of(context),
+    );
     final foreground = presentation.accent;
     return Material(
       color: tokens.accentSurface(presentation.accent),
@@ -148,7 +152,7 @@ class _WordStatusActionButton extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(999),
         child: Tooltip(
-          message: 'Змінити статус слова',
+          message: AppLocalizations.of(context).wordChangeStatusTooltip,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
@@ -188,20 +192,21 @@ class _WordStatusPresentation {
   factory _WordStatusPresentation.fromState(
     WordLearningState state,
     AppThemeTokens tokens,
+    AppLocalizations localizations,
   ) {
     return switch (state) {
       WordLearningState.unseen => _WordStatusPresentation(
-        label: 'Не знаю',
+        label: localizations.wordStatusUnknown,
         icon: Icons.help_outline_rounded,
         accent: tokens.vocabularyAccent,
       ),
       WordLearningState.needsReview => _WordStatusPresentation(
-        label: 'Вчу',
+        label: localizations.wordStatusLearning,
         icon: Icons.school_rounded,
         accent: tokens.vocabularyAccent,
       ),
       WordLearningState.known => _WordStatusPresentation(
-        label: 'Знаю',
+        label: localizations.wordStatusKnown,
         icon: Icons.check_rounded,
         accent: tokens.successAccent,
       ),

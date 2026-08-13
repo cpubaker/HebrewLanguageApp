@@ -28,21 +28,21 @@ class _WordsFilterHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
+    final localizations = AppLocalizations.of(context);
 
     return AppSectionCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const AppPageHeader(
-            title: 'Слова',
-            subtitle:
-                'Шукайте українською, англійською, івритом або за транскрипцією.',
+          AppPageHeader(
+            title: localizations.wordsTitle,
+            subtitle: localizations.wordsSubtitle,
           ),
           const SizedBox(height: 18),
           AppSearchField(
             controller: searchController,
             focusNode: searchFocusNode,
-            hintText: 'Шукати слова',
+            hintText: localizations.wordsSearchHint,
             onChanged: onSearchChanged,
             onClear: query.isEmpty && searchController.text.isEmpty
                 ? null
@@ -53,7 +53,7 @@ class _WordsFilterHeader extends StatelessWidget {
             children: [
               for (final filter in WordsFilter.values)
                 _WordsFilterChip(
-                  label: filter.label,
+                  label: _labelForFilter(filter, localizations),
                   value: filterSummaries[filter] ?? 0,
                   isSelected: selectedFilter == filter,
                   onTap: () => onFilterSelected(filter),
@@ -64,12 +64,12 @@ class _WordsFilterHeader extends StatelessWidget {
           AppActionWrap(
             children: [
               AppStatChip(
-                label: 'Видимі',
+                label: localizations.wordsVisible,
                 value: visibleWordCount,
                 accent: tokens.infoAccent,
               ),
               AppStatChip(
-                label: 'Усього',
+                label: localizations.wordsTotal,
                 value: totalWordCount,
                 accent: tokens.vocabularyAccent,
               ),
@@ -126,7 +126,7 @@ class _WordsFloatingActions extends StatelessWidget {
           ),
           FloatingActionButton.small(
             heroTag: 'wordsSearch',
-            tooltip: 'Пошук по словнику',
+            tooltip: AppLocalizations.of(context).wordsSearchTooltip,
             onPressed: onOpenSearch,
             backgroundColor: tokens.vocabularyAccent,
             foregroundColor: tokens.heroText,
@@ -196,6 +196,7 @@ class _EmptySearchState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
+    final localizations = AppLocalizations.of(context);
     return AppSectionCard(
       child: Column(
         children: [
@@ -206,7 +207,7 @@ class _EmptySearchState extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'Нічого не знайдено',
+            localizations.wordsNoResultsTitle,
             style: Theme.of(
               context,
             ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
@@ -214,8 +215,10 @@ class _EmptySearchState extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             filter == WordsFilter.all
-                ? 'Спробуйте інший запит: слово українською чи англійською, форму івритом або транскрипцію.'
-                : 'У поточному зрізі «${filter.label.toLowerCase()}» поки немає результатів. Спробуйте інший фільтр або запит.',
+                ? localizations.wordsNoResultsAll
+                : localizations.wordsNoResultsFilter(
+                    _labelForFilter(filter, localizations).toLowerCase(),
+                  ),
             textAlign: TextAlign.center,
             style: Theme.of(
               context,
@@ -225,4 +228,13 @@ class _EmptySearchState extends StatelessWidget {
       ),
     );
   }
+}
+
+String _labelForFilter(WordsFilter filter, AppLocalizations localizations) {
+  return switch (filter) {
+    WordsFilter.all => localizations.wordsFilterAll,
+    WordsFilter.newWords => localizations.wordsFilterNew,
+    WordsFilter.learned => localizations.wordsFilterLearned,
+    WordsFilter.review => localizations.wordsFilterReview,
+  };
 }

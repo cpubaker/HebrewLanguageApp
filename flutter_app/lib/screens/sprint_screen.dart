@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../l10n/generated/app_localizations.dart';
 import '../models/learning_word.dart';
 import '../services/flashcard_session.dart';
 import '../services/learning_audio_controller.dart';
@@ -61,8 +62,13 @@ class _SprintScreenState extends State<SprintScreen> {
   @override
   void initState() {
     super.initState();
+    _session = SprintSession(widget.words, rng: widget.rng, now: widget.now);
     unawaited(_restoreSprintStats());
-    _startSprint();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _startSprint();
+      }
+    });
   }
 
   @override
@@ -97,14 +103,14 @@ class _SprintScreenState extends State<SprintScreen> {
       _remainingSeconds = widget.duration.inSeconds;
       _currentPrompt = firstPrompt;
       _feedbackMessage =
-          'Час пішов. Обирайте правильний переклад якомога швидше.';
+          AppLocalizations.of(context).sprintTimeStarted;
       _lastAnswerCorrect = null;
       _completionMessage = null;
       _lastRunFeedback = null;
     });
 
     if (firstPrompt == null) {
-      _finishSprint('Не вдалося підготувати перше завдання для спринту.');
+      _finishSprint(AppLocalizations.of(context).sprintFirstPromptFailure);
       return;
     }
 
@@ -190,9 +196,7 @@ class _SprintScreenState extends State<SprintScreen> {
         messenger
           ?..hideCurrentSnackBar()
           ..showSnackBar(
-            const SnackBar(
-              content: Text('Не вдалося зберегти статистику спринту.'),
-            ),
+            SnackBar(content: Text(AppLocalizations.of(context).sprintStatsSaveFailure)),
           );
       }
     }
@@ -213,8 +217,8 @@ class _SprintScreenState extends State<SprintScreen> {
     final nextPrompt = _session.nextPrompt();
     setState(() {
       _feedbackMessage = result.isCorrect
-          ? 'Правильно: ${result.correctTranslation}'
-          : 'Неправильно. Правильна відповідь: ${result.correctTranslation}';
+          ? AppLocalizations.of(context).sprintAnswerCorrect(result.correctTranslation)
+          : AppLocalizations.of(context).sprintAnswerWrong(result.correctTranslation);
       _lastAnswerCorrect = result.isCorrect;
       _currentPrompt = nextPrompt;
     });
@@ -222,7 +226,7 @@ class _SprintScreenState extends State<SprintScreen> {
 
     if (nextPrompt == null) {
       _finishSprint(
-        'Усі слова на вивченні пройдено. Спринт завершено достроково, гарний темп.',
+        AppLocalizations.of(context).sprintEarlyCompletion,
       );
     }
   }
@@ -234,15 +238,15 @@ class _SprintScreenState extends State<SprintScreen> {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
+    final localizations = AppLocalizations.of(context);
 
     if (!_session.canStart) {
       return ListView(
         padding: tokens.pagePadding.copyWith(bottom: 32),
         children: [
-          const PracticeHeader(
-            title: 'Спринт',
-            subtitle:
-                'Хвилинна вправа з двома варіантами перекладу. Потрібно хоча б два слова на вивченні з різними перекладами.',
+          PracticeHeader(
+            title: localizations.sprintTitle,
+            subtitle: localizations.sprintIntroUnavailable,
           ),
           const SizedBox(height: 18),
           _SprintUnavailableCard(wordCount: _session.availableWordCount),
@@ -253,10 +257,9 @@ class _SprintScreenState extends State<SprintScreen> {
     return ListView(
       padding: tokens.pagePadding.copyWith(bottom: 32),
       children: [
-        const PracticeHeader(
-          title: 'Спринт',
-          subtitle:
-              'За 60 секунд потрібно вибрати якомога більше правильних перекладів. Кожне слово на вивченні трапляється один раз.',
+        PracticeHeader(
+          title: localizations.sprintTitle,
+          subtitle: localizations.sprintIntro,
         ),
         const SizedBox(height: 18),
         if (_isActive && _currentPrompt != null)
@@ -275,7 +278,7 @@ class _SprintScreenState extends State<SprintScreen> {
           _SprintCompletedCard(
             completionMessage:
                 _completionMessage ??
-                'Спринт завершено. Можна одразу почати нову хвилину.',
+                localizations.sprintCompleted,
             correctCount: _session.correctCount,
             wrongCount: _session.wrongCount,
             attempts: _session.attempts,
@@ -287,12 +290,12 @@ class _SprintScreenState extends State<SprintScreen> {
         if (!_isActive) ...[
           const SizedBox(height: 16),
           PracticeSessionSummary(
-            title: 'Поточна сесія',
+            title: localizations.sprintSession,
             lines: [
-              'Слів на вивченні для спринту: ${_session.availableWordCount}',
-              'Правильних відповідей: ${_session.correctCount}',
-              'Неправильних відповідей: ${_session.wrongCount}',
-              ..._sprintHistoryLines(_stats, _statsLoaded),
+              localizations.sprintAvailableWords(_session.availableWordCount),
+              localizations.sprintCorrectAnswers(_session.correctCount),
+              localizations.sprintWrongAnswers(_session.wrongCount),
+              ..._sprintHistoryLines(_stats, _statsLoaded, localizations),
             ],
           ),
         ],
@@ -300,20 +303,18 @@ class _SprintScreenState extends State<SprintScreen> {
     );
   }
 
-  List<String> _sprintHistoryLines(SprintStats stats, bool statsLoaded) {
+  List<String> _sprintHistoryLines(SprintStats stats, bool statsLoaded, AppLocalizations localizations) {
     if (!statsLoaded) {
-      return const <String>['Статистика спринту завантажується...'];
+      return <String>[localizations.sprintLoadingStats];
     }
 
     if (!stats.hasResults) {
-      return const <String>[
-        'Рекорд і середній результат зʼявляться після першого завершеного спринту.',
-      ];
+      return <String>[localizations.sprintNoStats];
     }
 
     return <String>[
-      'Найкращий результат: ${stats.bestCorrect} вірних відповідей',
-      'Середній результат: ${_formatSprintScore(stats.averageCorrect)} вірних відповідей',
+      localizations.sprintBest(stats.bestCorrect),
+      localizations.sprintAverage(_formatSprintScore(stats.averageCorrect)),
     ];
   }
 }
@@ -360,6 +361,7 @@ class _ActiveSprintCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final tokens = theme.appTokens;
+    final localizations = AppLocalizations.of(context);
 
     return GestureDetector(
       key: const ValueKey('sprint-active-card'),
@@ -394,12 +396,12 @@ class _ActiveSprintCard extends StatelessWidget {
                 ),
                 _SprintMetaChip(
                   icon: Icons.bolt_rounded,
-                  label: '$attempts відповідей',
+                  label: localizations.sprintAttempts(attempts),
                   background: tokens.warningSurface,
                   foreground: tokens.warningAccent,
                 ),
                 IconButton(
-                  tooltip: 'Почати спочатку',
+                  tooltip: localizations.sprintRestart,
                   onPressed: onRestart,
                   icon: const Icon(Icons.replay_rounded),
                 ),
@@ -422,7 +424,7 @@ class _ActiveSprintCard extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    'Оберіть правильний переклад',
+                    localizations.sprintChoose,
                     textAlign: TextAlign.center,
                     style: theme.textTheme.titleSmall?.copyWith(
                       color: tokens.mutedText,
@@ -477,7 +479,7 @@ class _ActiveSprintCard extends StatelessWidget {
             PracticeFeedbackCard(
               message:
                   feedbackMessage ??
-                  'Після відповіді тут одразу з’явиться короткий результат.',
+                  localizations.sprintAwaitingAnswer,
               tone: switch (lastAnswerCorrect) {
                 true => PracticeFeedbackTone.success,
                 false => PracticeFeedbackTone.error,
@@ -489,13 +491,13 @@ class _ActiveSprintCard extends StatelessWidget {
             PracticeStatsRow(
               stats: [
                 PracticeStatItem(
-                  label: 'Правильно',
+                  label: localizations.sprintCorrect,
                   value: correctCount,
                   icon: Icons.check_rounded,
                   accent: tokens.successAccent,
                 ),
                 PracticeStatItem(
-                  label: 'Помилки',
+                  label: localizations.sprintMistakes,
                   value: wrongCount,
                   icon: Icons.close_rounded,
                   accent: tokens.dangerAccent,
@@ -539,46 +541,48 @@ class _SprintCompletedCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
+    final localizations = AppLocalizations.of(context);
     final body = _completionBody(
       completionMessage: completionMessage,
       stats: stats,
       statsLoaded: statsLoaded,
       runFeedback: runFeedback,
+      localizations: localizations,
     );
 
     return PracticeCompletionCard(
-      badgeLabel: runFeedback?.badgeLabel ?? 'Час вийшов',
-      title: '$correctCount вірних відповідей',
+      badgeLabel: runFeedback?.badgeLabel(localizations) ?? localizations.sprintTimeUp,
+      title: localizations.sprintCorrectCount(correctCount),
       body: body,
       stats: [
         PracticeCompletionStat(
-          label: 'Вірно',
+          label: localizations.sprintCorrect,
           value: correctCount,
           icon: Icons.check_rounded,
           accent: tokens.successAccent,
         ),
         PracticeCompletionStat(
-          label: 'Помилки',
+          label: localizations.sprintMistakes,
           value: wrongCount,
           icon: Icons.close_rounded,
           accent: tokens.dangerAccent,
         ),
         PracticeCompletionStat(
-          label: 'Всього',
+          label: localizations.sprintTotal,
           value: attempts,
           icon: Icons.bolt_rounded,
           accent: tokens.infoAccent,
         ),
         if (statsLoaded && stats.hasResults)
           PracticeCompletionStat(
-            label: 'Рекорд',
+            label: localizations.sprintRecord,
             value: stats.bestCorrect,
             icon: Icons.emoji_events_rounded,
             accent: tokens.warningAccent,
           ),
       ],
       primaryAction: PracticeCompletionAction(
-        label: 'Почати ще раз',
+        label: localizations.sprintStartAgain,
         icon: Icons.replay_rounded,
         onPressed: onRestart,
       ),
@@ -590,12 +594,13 @@ class _SprintCompletedCard extends StatelessWidget {
     required SprintStats stats,
     required bool statsLoaded,
     required _SprintRunFeedback? runFeedback,
+    required AppLocalizations localizations,
   }) {
     final lines = <String>[
       if (completionMessage.trim().isNotEmpty) completionMessage.trim(),
-      ...?runFeedback?.messageLines,
+      ...?runFeedback?.messageLines(localizations),
       if (statsLoaded && stats.hasResults)
-        'Середній результат: ${_formatSprintScore(stats.averageCorrect)} вірних відповідей.',
+        '${localizations.sprintAverage(_formatSprintScore(stats.averageCorrect))}.',
     ];
 
     if (lines.isEmpty) {
@@ -647,32 +652,32 @@ class _SprintRunFeedback {
   final int previousBest;
   final double aboveAverageBy;
 
-  String? get badgeLabel {
+  String? badgeLabel(AppLocalizations localizations) {
     return switch (recordStatus) {
-      _SprintRecordStatus.first => 'Перший рекорд',
-      _SprintRecordStatus.broken => 'Новий рекорд',
-      _SprintRecordStatus.tied => 'Рекорд досягнуто',
+      _SprintRecordStatus.first => localizations.sprintFirstRecord,
+      _SprintRecordStatus.broken => localizations.sprintNewRecord,
+      _SprintRecordStatus.tied => localizations.sprintRecordMatched,
       _SprintRecordStatus.none => null,
     };
   }
 
-  List<String> get messageLines {
-    final recordLine = _recordLine;
+  List<String> messageLines(AppLocalizations localizations) {
+    final recordLine = _recordLine(localizations);
     return <String>[
       ?recordLine,
       if (aboveAverageBy >= 0.5)
-        'Це на ${_formatSprintScore(aboveAverageBy)} вище вашого середнього.',
+        localizations.sprintAboveAverage(_formatSprintScore(aboveAverageBy)),
     ];
   }
 
-  String? get _recordLine {
+  String? _recordLine(AppLocalizations localizations) {
     return switch (recordStatus) {
       _SprintRecordStatus.first =>
-        'Перший рекорд: $correctCount вірних відповідей.',
+        localizations.sprintFirstRecordBody(correctCount),
       _SprintRecordStatus.broken =>
-        'Ви побили рекорд: $correctCount вірних відповідей. Попередній був $previousBest.',
+        localizations.sprintNewRecordBody(correctCount, previousBest),
       _SprintRecordStatus.tied =>
-        'Ви досягли свого рекорду: $correctCount вірних відповідей.',
+        localizations.sprintRecordMatchedBody(correctCount),
       _SprintRecordStatus.none => null,
     };
   }
@@ -696,7 +701,7 @@ class _SprintUnavailableCard extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            'Спринт поки недоступний',
+            AppLocalizations.of(context).sprintUnavailableTitle,
             textAlign: TextAlign.center,
             style: Theme.of(
               context,
@@ -704,7 +709,7 @@ class _SprintUnavailableCard extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            'Для цієї вправи потрібно щонайменше два слова на вивченні з різними перекладами. Зараз доступно $wordCount слів.',
+            AppLocalizations.of(context).sprintUnavailableBody(wordCount),
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               color: tokens.secondaryText,

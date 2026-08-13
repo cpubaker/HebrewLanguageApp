@@ -32,28 +32,26 @@ void main() {
       expect(service.isEnabled(AppFeature.aiPracticeTexts), isFalse);
     });
 
-    test('accessFor returns informational description when AI is locked', () {
+    test('accessFor identifies a locked AI feature', () {
       final service = StaticFeatureAccessService();
 
       final contextsDecision = service.accessFor(AppFeature.aiWordContexts);
       expect(contextsDecision.isEnabled, isFalse);
-      expect(contextsDecision.title, 'ШІ-контексти слів');
-      expect(contextsDecision.description, contains('готуються'));
-      expect(contextsDecision.upgradeLabel, isEmpty);
+      expect(contextsDecision.feature, AppFeature.aiWordContexts);
 
       final textsDecision = service.accessFor(AppFeature.aiPracticeTexts);
       expect(textsDecision.isEnabled, isFalse);
-      expect(textsDecision.upgradeLabel, isEmpty);
+      expect(textsDecision.feature, AppFeature.aiPracticeTexts);
     });
 
-    test('accessFor still surfaces Pro upgrade label for non-AI features', () {
+    test('accessFor identifies a locked Pro feature', () {
       final service = StaticFeatureAccessService(
         enabledFeatures: const <AppFeature>{},
       );
 
       final decision = service.accessFor(AppFeature.nightMode);
       expect(decision.isEnabled, isFalse);
-      expect(decision.upgradeLabel, 'Перейти на Pro');
+      expect(decision.feature, AppFeature.nightMode);
     });
 
     test('respects explicit enabledFeatures override even when endpoint set', () {

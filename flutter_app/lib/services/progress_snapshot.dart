@@ -309,7 +309,6 @@ class LessonProgressSnapshot {
 
   double get completionRatio => total == 0 ? 0 : read / total;
 
-  String completedLabel(String noun) => 'Прочитано $read із $total $noun';
 }
 
 DateTime? _parseActivityTimestamp(String? value) {

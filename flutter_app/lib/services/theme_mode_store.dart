@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum AppThemePreference {
-  light('light', 'Світла'),
-  dark('dark', 'Темна'),
-  system('system', 'Системна');
+  light('light'),
+  dark('dark'),
+  system('system');
 
-  const AppThemePreference(this.storageValue, this.label);
+  const AppThemePreference(this.storageValue);
 
   final String storageValue;
-  final String label;
 
   bool get requiresNightMode {
     return switch (this) {

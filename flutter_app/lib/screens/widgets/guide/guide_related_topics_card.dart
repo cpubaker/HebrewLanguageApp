@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/generated/app_localizations.dart';
 import '../../../models/learning_bundle.dart';
 import '../../../services/guide_detail_links.dart';
 import '../../../theme/app_theme.dart';
@@ -30,7 +31,7 @@ class GuideRelatedTopicsLoadingCard extends StatelessWidget {
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              'Підбираємо пов’язані теми для швидких переходів.',
+              AppLocalizations.of(context).guideRelatedLoading,
               style: Theme.of(
                 context,
               ).textTheme.bodyMedium?.copyWith(color: tokens.mutedText),
@@ -66,7 +67,7 @@ class GuideRelatedTopicsCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Пов’язані теми',
+            AppLocalizations.of(context).guideRelatedTitle,
             style: Theme.of(
               context,
             ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
@@ -74,7 +75,7 @@ class GuideRelatedTopicsCard extends StatelessWidget {
           const SizedBox(height: 10),
           if (resolution.resolvedTopics.isEmpty)
             Text(
-              'Усі найближчі пов\'язані теми вже є в навігації вище.',
+              AppLocalizations.of(context).guideRelatedEmpty,
               style: Theme.of(
                 context,
               ).textTheme.bodyMedium?.copyWith(color: tokens.mutedText),

@@ -83,7 +83,7 @@ void _showWordDetailsSheet({
                       children: [
                         Expanded(
                           child: _StatPill(
-                            label: 'Правильно',
+                            label: AppLocalizations.of(context).wordStatCorrect,
                             value: detailWord.correct,
                             accent: tokens.successAccent,
                           ),
@@ -91,7 +91,7 @@ void _showWordDetailsSheet({
                         const SizedBox(width: 12),
                         Expanded(
                           child: _StatPill(
-                            label: 'Помилки',
+                            label: AppLocalizations.of(context).wordStatMistakes,
                             value: detailWord.wrong,
                             accent: tokens.dangerAccent,
                           ),
@@ -131,6 +131,7 @@ class _WordContextsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final tokens = theme.appTokens;
+    final localizations = AppLocalizations.of(context);
     final visibleContexts = contexts
         .where(
           (entry) =>
@@ -145,7 +146,7 @@ class _WordContextsSection extends StatelessWidget {
         Row(
           children: [
             Text(
-              'Контексти',
+              localizations.wordContexts,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w800,
               ),
@@ -167,8 +168,8 @@ class _WordContextsSection extends StatelessWidget {
         if (visibleContexts.isEmpty)
           Text(
             isLoading
-                ? 'Шукаємо новий контекст...'
-                : 'Для цього слова ще немає контексту.',
+                ? localizations.wordContextLoading
+                : localizations.wordContextEmpty,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: tokens.secondaryText,
               height: 1.45,

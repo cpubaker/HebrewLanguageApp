@@ -2,15 +2,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 class AudioPlaybackHint {
-  const AudioPlaybackHint({required this.message});
+  const AudioPlaybackHint({required this.kind});
 
   static const AudioPlaybackHint mediaVolumeMuted = AudioPlaybackHint(
-    message:
-        'Звук вимкнений. Підніміть гучність медіа кнопками збоку.',
+    kind: AudioPlaybackHintKind.mediaVolumeMuted,
   );
 
-  final String message;
+  final AudioPlaybackHintKind kind;
 }
+
+enum AudioPlaybackHintKind { mediaVolumeMuted }
 
 abstract class AudioPlaybackAwareness {
   Future<AudioPlaybackHint?> checkBeforePlayback();

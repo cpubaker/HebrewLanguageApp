@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/generated/app_localizations.dart';
 import '../../models/learning_context.dart';
 import '../../theme/app_theme.dart';
 
@@ -30,7 +31,9 @@ class ContextSourceBadge extends StatelessWidget {
           Icon(Icons.auto_awesome_rounded, size: 14, color: color),
           const SizedBox(width: 5),
           Text(
-            this.context.isNew ? 'Нове!' : 'ШІ',
+            this.context.isNew
+                ? AppLocalizations.of(context).aiContextNew
+                : AppLocalizations.of(context).aiContext,
             style: theme.textTheme.labelMedium?.copyWith(
               color: color,
               fontWeight: FontWeight.w800,

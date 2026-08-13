@@ -28,16 +28,16 @@ abstract class _WordAudioButton<T extends StatefulWidget> extends State<T> {
 
   String get _audioTooltip {
     if (_isProbingAudio) {
-      return 'Перевіряємо аудіо слова';
+      return AppLocalizations.of(context).wordAudioChecking;
     }
 
     if (!_hasAudio) {
-      return 'Аудіо для слова ще недоступне';
+      return AppLocalizations.of(context).wordAudioUnavailable;
     }
 
     return _isAudioPlaying
-        ? 'Зупинити вимову слова'
-        : 'Увімкнути вимову слова';
+        ? AppLocalizations.of(context).wordAudioStop
+        : AppLocalizations.of(context).wordAudioPlay;
   }
 
   @override
@@ -219,7 +219,9 @@ class _WordDetailsAudioButtonState
   @override
   void showPlaybackErrorFeedback(Object error) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Не вдалося відтворити вимову слова.')),
+      SnackBar(
+        content: Text(AppLocalizations.of(context).wordAudioPlaybackFailure),
+      ),
     );
   }
 

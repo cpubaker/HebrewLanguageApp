@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../l10n/generated/app_localizations.dart';
 import '../models/learning_context.dart';
 import '../models/learning_word.dart';
 import '../services/audio_playback_awareness.dart';
@@ -100,18 +101,18 @@ class _RepetitionScreenState extends State<RepetitionScreen> {
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
     final theme = Theme.of(context);
+    final localizations = AppLocalizations.of(context);
     final currentEntry = _currentEntry;
 
     if (_queue.isEmpty) {
       return Padding(
         padding: tokens.pagePadding.copyWith(bottom: 32),
-        child: const Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _CompactHeader(
-              title: 'Повторення',
-              subtitle:
-                  'Коли з’являться нові слова або останні помилки, вони будуть тут.',
+              title: localizations.repetitionTitle,
+              subtitle: localizations.repetitionEmptySubtitle,
             ),
             SizedBox(height: 16),
             Expanded(child: _EmptyState()),
@@ -126,9 +127,9 @@ class _RepetitionScreenState extends State<RepetitionScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const _CompactHeader(
-              title: 'Повторення',
-              subtitle: 'Сесію завершено. Можна одразу пройти її ще раз.',
+            _CompactHeader(
+              title: localizations.repetitionTitle,
+              subtitle: localizations.repetitionCompletedSubtitle,
             ),
             const SizedBox(height: 16),
             Expanded(
@@ -150,8 +151,8 @@ class _RepetitionScreenState extends State<RepetitionScreen> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _CompactHeader(
-            title: 'Повторення',
-            subtitle: 'Одне слово на екран, без таймера і без варіантів.',
+            title: localizations.repetitionTitle,
+            subtitle: localizations.repetitionActiveSubtitle,
             trailing: Text(
               '${_currentIndex + 1}/${_entries.length}',
               style: theme.textTheme.titleMedium?.copyWith(
@@ -186,7 +187,11 @@ class _RepetitionScreenState extends State<RepetitionScreen> {
                   ? Icons.check_circle_outline_rounded
                   : Icons.arrow_forward_rounded,
             ),
-            label: Text(isLastCard ? 'Завершити' : 'Далі'),
+            label: Text(
+              isLastCard
+                  ? localizations.repetitionFinish
+                  : localizations.repetitionNext,
+            ),
           ),
         ],
       ),
@@ -247,6 +252,7 @@ class _EmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
+    final localizations = AppLocalizations.of(context);
 
     return PracticePanel(
       backgroundColor: tokens.elevatedSurface,
@@ -262,7 +268,7 @@ class _EmptyState extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           Text(
-            'Список повторення поки порожній.',
+            localizations.repetitionEmptyTitle,
             textAlign: TextAlign.center,
             style: Theme.of(
               context,
@@ -270,7 +276,7 @@ class _EmptyState extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Спочатку відкрийте нові слова або зробіть кілька спроб у практиці.',
+            localizations.repetitionEmptyBody,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: tokens.secondaryText,
@@ -292,27 +298,28 @@ class _CompletedState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
+    final localizations = AppLocalizations.of(context);
 
     return PracticeCompletionCard(
-      badgeLabel: 'Готово',
-      title: '${queue.total} слів переглянуто',
+      badgeLabel: localizations.repetitionDone,
+      title: localizations.repetitionCompletedTitle(queue.total),
       padding: const EdgeInsets.all(24),
       stats: [
         PracticeCompletionStat(
-          label: 'Після помилки',
+          label: localizations.repetitionAfterMistake,
           value: queue.lastMistakeCount,
           icon: Icons.error_outline_rounded,
           accent: tokens.warningAccent,
         ),
         PracticeCompletionStat(
-          label: 'Закріплення пройденого',
+          label: localizations.repetitionReinforcement,
           value: queue.recentStartCount,
           icon: Icons.new_releases_outlined,
           accent: tokens.infoAccent,
         ),
       ],
       primaryAction: PracticeCompletionAction(
-        label: 'Почати ще раз',
+        label: localizations.repetitionRestart,
         icon: Icons.refresh_rounded,
         onPressed: onRestart,
       ),
@@ -405,7 +412,7 @@ class _RepetitionCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Переклад',
+                      AppLocalizations.of(context).repetitionTranslation,
                       style: theme.textTheme.labelLarge?.copyWith(
                         fontWeight: FontWeight.w700,
                         color: tokens.secondaryText,
@@ -480,14 +487,15 @@ class _ReasonChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
+    final localizations = AppLocalizations.of(context);
     final (label, accent, icon) = switch (kind) {
       RepetitionKind.lastMistake => (
-        'Остання спроба з помилкою',
+        localizations.repetitionLastMistake,
         tokens.warningAccent,
         Icons.error_outline_rounded,
       ),
       RepetitionKind.recentStart => (
-        'Слово для закріплення',
+        localizations.repetitionReinforcementWord,
         tokens.infoAccent,
         Icons.new_releases_outlined,
       ),
@@ -560,13 +568,14 @@ class _ContextPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final tokens = theme.appTokens;
+    final localizations = AppLocalizations.of(context);
 
     if (contextEntry == null) {
       return PracticePanel(
         backgroundColor: tokens.subtleSurface,
         child: Center(
           child: Text(
-            'Контекст для цього слова ще не додано.',
+            localizations.repetitionContextEmpty,
             textAlign: TextAlign.center,
             style: theme.textTheme.bodyLarge?.copyWith(
               color: tokens.secondaryText,
@@ -590,7 +599,7 @@ class _ContextPanel extends StatelessWidget {
           Row(
             children: [
               Text(
-                'Контекст',
+                localizations.repetitionContextTitle,
                 style: theme.textTheme.labelLarge?.copyWith(
                   fontWeight: FontWeight.w700,
                   color: tokens.secondaryText,
@@ -690,7 +699,9 @@ class _RepetitionAudioButtonState extends State<_RepetitionAudioButton> {
       }
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Не вдалося відтворити озвучку слова.')),
+        SnackBar(
+          content: Text(AppLocalizations.of(context).wordOfDayAudioFailure),
+        ),
       );
     }
   }
@@ -714,13 +725,14 @@ class _RepetitionAudioButtonState extends State<_RepetitionAudioButton> {
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
+    final localizations = AppLocalizations.of(context);
     final tooltip = _audioController.isCheckingAvailability
-        ? 'Перевіряємо озвучку'
+        ? localizations.wordOfDayAudioChecking
         : _audioController.hasAudio
         ? (_audioController.isPlaying
-              ? 'Зупинити озвучку'
-              : 'Увімкнути озвучку')
-        : 'Озвучка ще недоступна';
+              ? localizations.wordOfDayAudioStop
+              : localizations.wordOfDayAudioPlay)
+        : localizations.wordOfDayAudioUnavailable;
 
     return Container(
       decoration: BoxDecoration(

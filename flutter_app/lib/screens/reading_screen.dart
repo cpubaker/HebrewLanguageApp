@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../l10n/generated/app_localizations.dart';
 import '../models/guide_lesson_status.dart';
 import '../models/learning_bundle.dart';
 import '../models/lesson_document.dart';
@@ -201,7 +202,11 @@ class _ReadingScreenState extends State<ReadingScreen>
       lessons: widget.lessons,
       lessonStatuses: widget.lessonStatuses,
     );
-    final lessonGroups = buildReadingLessonGroups(widget.lessons);
+    final localizations = AppLocalizations.of(context);
+    final lessonGroups = buildReadingLessonGroups(
+      widget.lessons,
+      localizations: localizations,
+    );
     final levelFilteredGroups = _selectedLevelKeys.isEmpty
         ? lessonGroups
         : lessonGroups
@@ -243,7 +248,7 @@ class _ReadingScreenState extends State<ReadingScreen>
               const SizedBox(height: 18),
             ],
             Text(
-              '\u0427\u0438\u0442\u0430\u043d\u043d\u044f',
+              localizations.readingTitle,
               style: Theme.of(
                 context,
               ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
@@ -251,7 +256,7 @@ class _ReadingScreenState extends State<ReadingScreen>
             Padding(
               padding: const EdgeInsets.only(top: 8),
               child: Text(
-                '\u0422\u0435\u043a\u0441\u0442\u0438 \u0434\u043b\u044f \u0447\u0438\u0442\u0430\u043d\u043d\u044f, \u0440\u043e\u0437\u043a\u043b\u0430\u0434\u0435\u043d\u0456 \u0437\u0430 \u0440\u0456\u0432\u043d\u044f\u043c\u0438.',
+                localizations.readingSubtitle,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   color: tokens.mutedText,
                   height: 1.4,
@@ -262,7 +267,7 @@ class _ReadingScreenState extends State<ReadingScreen>
             ReadingSearchCard(
               totalCount: widget.lessons.length,
               visibleCount: visibleLessonCount,
-              completedLabel: progress.completedLabel('\u0443\u0440\u043e\u043a\u0456\u0432'),
+              completedLabel: '${progress.read}/${progress.total}',
               query: _query,
               hasLevelFilter: _selectedLevelKeys.isNotEmpty,
               isSearchVisible: _searchVisible,
@@ -329,8 +334,8 @@ class _ReadingScreenState extends State<ReadingScreen>
                 heroTag: 'readingFilter',
                 onPressed: () => _showLevelPicker(context, lessonGroups),
                 tooltip: _selectedLevelKeys.isEmpty
-                    ? 'Відкрити фільтр'
-                    : 'Змінити фільтр',
+                    ? AppLocalizations.of(context).readingOpenFilter
+                    : AppLocalizations.of(context).readingChangeFilter,
                 backgroundColor: tokens.readingAccent,
                 foregroundColor: accentForeground,
                 child: Icon(
@@ -364,14 +369,14 @@ class _ReadingScreenState extends State<ReadingScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Рівень читання',
+                    AppLocalizations.of(context).readingLevelFilterTitle,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w800,
                     ),
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    'Можна лишити весь каталог або вибрати один рівень.',
+                    AppLocalizations.of(context).readingLevelFilterBody,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: tokens.mutedText,
                       height: 1.45,
@@ -379,7 +384,7 @@ class _ReadingScreenState extends State<ReadingScreen>
                   ),
                   const SizedBox(height: 16),
                   _ReadingLevelOption(
-                    label: 'Усі рівні',
+                    label: AppLocalizations.of(context).readingAllLevels,
                     count: widget.lessons.length,
                     selected: _selectedLevelKeys.isEmpty,
                     onTap: () {
@@ -485,7 +490,10 @@ class _ReadingDetailScreenState extends State<ReadingDetailScreen> {
     final theme = Theme.of(context);
     final tokens = theme.appTokens;
     final heroForeground = tokens.heroText;
-    final level = readingLevelLabelFromAssetPath(widget.lesson.assetPath);
+    final level = readingLevelLabelFromAssetPath(
+      widget.lesson.assetPath,
+      localizations: AppLocalizations.of(context),
+    );
 
     return Scaffold(
       appBar: AppBar(),
@@ -501,7 +509,7 @@ class _ReadingDetailScreenState extends State<ReadingDetailScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(24),
                 child: Text(
-                  'Не вдалося відкрити цей урок.',
+                  AppLocalizations.of(context).guideOpenFailure,
                   style: Theme.of(context).textTheme.titleMedium,
                   textAlign: TextAlign.center,
                 ),
@@ -609,10 +617,17 @@ class _ReadingLessonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final level = readingLevelLabelFromAssetPath(lesson.assetPath);
+    final level = readingLevelLabelFromAssetPath(
+      lesson.assetPath,
+      localizations: AppLocalizations.of(context),
+    );
     final orderLabel = readingLessonOrderLabel(lesson);
     final tokens = Theme.of(context).appTokens;
-    final statusTheme = lessonStatusVisuals(status, tokens: tokens);
+    final statusTheme = lessonStatusVisuals(
+      status,
+      tokens: tokens,
+      localizations: AppLocalizations.of(context),
+    );
 
     return Material(
       color: Colors.transparent,
@@ -842,7 +857,7 @@ class ReadingLevelSelector extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Рівень',
+                      AppLocalizations.of(context).readingLevel,
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
                         color: tokens.secondaryText,
                         fontWeight: FontWeight.w700,
@@ -918,7 +933,7 @@ class _ReadingLevelOption extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '$count уроків',
+                      AppLocalizations.of(context).readingLessonsCount(count),
                       style: Theme.of(
                         context,
                       ).textTheme.bodyMedium?.copyWith(color: tokens.mutedText),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hebrew_language_flutter/l10n/generated/app_localizations.dart';
 import 'package:hebrew_language_flutter/models/learning_word.dart';
 import 'package:hebrew_language_flutter/screens/flashcards_screen.dart';
 import 'package:hebrew_language_flutter/screens/widgets/flashcards/flashcard_answer_reveal.dart';
@@ -150,6 +151,27 @@ void main() {
     expect(find.text('Почати ще раз'), findsOneWidget);
     expect(find.byType(FlashcardPromptPanel), findsNothing);
   });
+
+  testWidgets('uses English labels when English is selected', (tester) async {
+    await _pumpFlashcardsScreen(
+      tester,
+      locale: const Locale('en'),
+      words: const [
+        LearningWord(
+          wordId: 'word_peace',
+          hebrew: 'שלום',
+          english: 'peace',
+          ukrainian: 'мир',
+          transcription: 'shalom',
+          correct: 0,
+          wrong: 0,
+        ),
+      ],
+    );
+
+    expect(find.text('Know it'), findsOneWidget);
+    expect(find.text('Again'), findsOneWidget);
+  });
 }
 
 Future<void> _pumpFlashcardsScreen(
@@ -157,10 +179,14 @@ Future<void> _pumpFlashcardsScreen(
   required List<LearningWord> words,
   void Function(LearningWord word)? onWordProgressChanged,
   CreateLearningAudioPlayer? audioPlayerFactory,
+  Locale locale = const Locale('uk'),
 }) async {
   await useTallMobileViewport(tester);
   await tester.pumpWidget(
     MaterialApp(
+      locale: locale,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: Scaffold(
         body: FlashcardsScreen(
           words: words,
