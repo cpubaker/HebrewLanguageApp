@@ -57,6 +57,7 @@ flutter:
     - assets/learning/input/contexts/
     - assets/learning/input/guide/
     - assets/learning/localized/en/guide/
+    - assets/learning/localized/en/reading/beginner/
     - assets/learning/input/verbs/
     - assets/learning/input/reading/
     - assets/learning/input/reading/advanced/
