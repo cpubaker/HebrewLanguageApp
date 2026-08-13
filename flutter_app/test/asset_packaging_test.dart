@@ -18,6 +18,7 @@ void main() {
       'assets/learning/input/guide/',
       'assets/learning/localized/en/guide/',
       'assets/learning/localized/en/reading/beginner/',
+      'assets/learning/localized/en/reading/pre-intermediate/',
       'assets/learning/input/verbs/',
       'assets/learning/input/reading/',
       'assets/learning/input/reading/advanced/',

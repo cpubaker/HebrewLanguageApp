@@ -82,9 +82,9 @@ In brief: A short English summary.
   test('loads an English reading when a localized asset is available', () async {
     final baseLoader = AssetLessonDocumentLoader(
       assetBundle: _MapAssetBundle(<String, String>{
-        'assets/learning/input/reading/beginner/01_lesson.md':
+        'assets/learning/input/reading/pre-intermediate/01_lesson.md':
             '# Український текст',
-        'assets/learning/localized/en/reading/beginner/01_lesson.md':
+        'assets/learning/localized/en/reading/pre-intermediate/01_lesson.md':
             '# English reading',
       }),
     );
@@ -94,7 +94,7 @@ In brief: A short English summary.
     );
 
     final document = await loader.load(
-      'assets/learning/input/reading/beginner/01_lesson.md',
+      'assets/learning/input/reading/pre-intermediate/01_lesson.md',
     );
 
     expect(document.title, 'English reading');
