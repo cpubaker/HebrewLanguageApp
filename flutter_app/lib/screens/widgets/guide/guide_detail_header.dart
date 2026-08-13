@@ -12,6 +12,7 @@ class GuideDetailHeader extends StatelessWidget {
     required this.lesson,
     required this.title,
     required this.summary,
+    required this.sectionLabel,
     required this.status,
     required this.onStatusPressed,
   });
@@ -19,6 +20,7 @@ class GuideDetailHeader extends StatelessWidget {
   final LessonEntry lesson;
   final String title;
   final String summary;
+  final String? sectionLabel;
   final GuideLessonStatus status;
   final VoidCallback onStatusPressed;
 
@@ -46,9 +48,9 @@ class GuideDetailHeader extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              if (lesson.sectionLabel != null)
+              if (sectionLabel != null)
                 GuideSectionPill(
-                  label: lesson.sectionLabel!,
+                  label: sectionLabel!,
                   foregroundColor: heroForeground,
                   backgroundColor: tokens.heroControlSurface(heroForeground),
                 ),

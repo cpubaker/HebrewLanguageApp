@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import '../models/lesson_document.dart';
@@ -6,10 +7,53 @@ abstract class LessonDocumentLoader {
   Future<LessonDocument> load(String assetPath);
 }
 
+class LocalizedLessonDocumentLoader implements LessonDocumentLoader {
+  const LocalizedLessonDocumentLoader({
+    required this.delegate,
+    required this.languageCode,
+  });
+
+  final LessonDocumentLoader delegate;
+  final String languageCode;
+
+  @override
+  Future<LessonDocument> load(String assetPath) async {
+    final localizedAssetPath = _localizedAssetPath(assetPath);
+    if (localizedAssetPath == null) {
+      return delegate.load(assetPath);
+    }
+
+    try {
+      return await delegate.load(localizedAssetPath);
+    } on FlutterError {
+      return delegate.load(assetPath);
+    }
+  }
+
+  String? _localizedAssetPath(String assetPath) {
+    if (languageCode == 'uk' || languageCode.trim().isEmpty) {
+      return null;
+    }
+
+    const canonicalPrefix = 'assets/learning/input/';
+    if (!assetPath.startsWith(canonicalPrefix)) {
+      return null;
+    }
+
+    final relativePath = assetPath.substring(canonicalPrefix.length);
+    if (!relativePath.startsWith('guide/') &&
+        !relativePath.startsWith('reading/') &&
+        !relativePath.startsWith('verbs/')) {
+      return null;
+    }
+
+    return 'assets/learning/localized/$languageCode/$relativePath';
+  }
+}
+
 class AssetLessonDocumentLoader implements LessonDocumentLoader {
-  AssetLessonDocumentLoader({
-    AssetBundle? assetBundle,
-  }) : assetBundle = assetBundle ?? rootBundle;
+  AssetLessonDocumentLoader({AssetBundle? assetBundle})
+    : assetBundle = assetBundle ?? rootBundle;
 
   final AssetBundle assetBundle;
   final Map<String, Future<LessonDocument>> _cache =
@@ -49,10 +93,7 @@ class AssetLessonDocumentLoader implements LessonDocumentLoader {
         );
       }
 
-      return (
-        strippedLine,
-        lines.sublist(index + 1).join('\n').trim(),
-      );
+      return (strippedLine, lines.sublist(index + 1).join('\n').trim());
     }
 
     return ('', '');
@@ -75,9 +116,7 @@ class AssetLessonDocumentLoader implements LessonDocumentLoader {
 
       final source = item.substring(0, separatorIndex).trim();
       final translation = item.substring(separatorIndex + 3).trim();
-      if (source.isEmpty ||
-          translation.isEmpty ||
-          !_containsHebrew(source)) {
+      if (source.isEmpty || translation.isEmpty || !_containsHebrew(source)) {
         continue;
       }
 
@@ -92,12 +131,13 @@ class AssetLessonDocumentLoader implements LessonDocumentLoader {
 
     for (var index = 0; index < lines.length; index++) {
       final line = lines[index].trim();
-      if (!line.startsWith('Коротко:')) {
+      final summaryPrefix = _summaryPrefixFor(line);
+      if (summaryPrefix == null) {
         continue;
       }
 
       final summaryLines = <String>[];
-      final inlineSummary = line.substring('Коротко:'.length).trim();
+      final inlineSummary = line.substring(summaryPrefix.length).trim();
       if (inlineSummary.isNotEmpty) {
         summaryLines.add(inlineSummary);
       }
@@ -131,10 +171,7 @@ class AssetLessonDocumentLoader implements LessonDocumentLoader {
         .whereType<RegExpMatch>()
         .map((match) => match.group(1)!.trim())
         .where(
-          (heading) =>
-              heading.isNotEmpty &&
-              heading != 'Пов’язані теми' &&
-              heading != "Пов'язані теми",
+          (heading) => heading.isNotEmpty && !_isRelatedTopicsHeading(heading),
         )
         .toList(growable: false);
   }
@@ -153,9 +190,7 @@ class AssetLessonDocumentLoader implements LessonDocumentLoader {
       final headingMatch = RegExp(r'^##\s+(.*)$').firstMatch(line);
       if (headingMatch != null) {
         final heading = headingMatch.group(1)!.trim();
-        final isRelatedHeading =
-            heading == 'Пов’язані теми' || heading == "Пов'язані теми";
-        if (isRelatedHeading) {
+        if (_isRelatedTopicsHeading(heading)) {
           inRelatedTopics = true;
           continue;
         }
@@ -188,9 +223,7 @@ class AssetLessonDocumentLoader implements LessonDocumentLoader {
       final headingMatch = RegExp(r'^##\s+(.*)$').firstMatch(line);
       if (headingMatch != null) {
         final heading = headingMatch.group(1)!.trim();
-        final isRelatedHeading =
-            heading == 'Пов’язані теми' || heading == "Пов'язані теми";
-        if (isRelatedHeading) {
+        if (_isRelatedTopicsHeading(heading)) {
           inRelatedTopics = true;
           continue;
         }
@@ -212,5 +245,22 @@ class AssetLessonDocumentLoader implements LessonDocumentLoader {
 
   bool _containsHebrew(String text) {
     return RegExp(r'[\u0590-\u05FF]').hasMatch(text);
+  }
+
+  String? _summaryPrefixFor(String line) {
+    for (final prefix in const <String>['Коротко:', 'In brief:']) {
+      if (line.startsWith(prefix)) {
+        return prefix;
+      }
+    }
+    return null;
+  }
+
+  bool _isRelatedTopicsHeading(String heading) {
+    return const <String>[
+      'Пов’язані теми',
+      "Пов'язані теми",
+      'Related topics',
+    ].contains(heading);
   }
 }

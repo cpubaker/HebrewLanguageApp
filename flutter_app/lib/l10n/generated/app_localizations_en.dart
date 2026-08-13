@@ -746,6 +746,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get guideOpenFailure => 'Could not open this lesson.';
 
   @override
+  String get guideSectionScript => 'Writing and reading';
+
+  @override
+  String get guideSectionFoundations => 'Core patterns';
+
+  @override
+  String get guideSectionVerbs => 'Verb system';
+
+  @override
+  String get guideSectionGrammar => 'Advanced grammar';
+
+  @override
+  String get guideSectionCommunication => 'Everyday communication';
+
+  @override
+  String get guideSectionDiscourse => 'Argumentation and writing';
+
+  @override
   String get readingOpenFilter => 'Open filter';
 
   @override

@@ -200,7 +200,7 @@ void main() {
     await tester.tap(find.byTooltip(_openSectionFilterTooltip));
     await tester.pumpAndSettle();
 
-    for (final section in ['Verbs', 'Spoken']) {
+    for (final section in ['Дієслівна система', 'Spoken']) {
       final option = find.text(section).last;
       await tester.ensureVisible(option);
       await tester.tap(option);

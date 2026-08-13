@@ -15,6 +15,7 @@ class GuideLessonCard extends StatelessWidget {
     required this.status,
     required this.resolvedTitle,
     required this.resolvedSummary,
+    required this.sectionLabel,
     required this.onTap,
     required this.onStatusSelected,
   });
@@ -23,6 +24,7 @@ class GuideLessonCard extends StatelessWidget {
   final GuideLessonStatus status;
   final String resolvedTitle;
   final String resolvedSummary;
+  final String? sectionLabel;
   final VoidCallback onTap;
   final ValueChanged<GuideLessonStatus> onStatusSelected;
 
@@ -79,8 +81,8 @@ class GuideLessonCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (lesson.sectionLabel != null) ...[
-                      GuideSectionPill(label: lesson.sectionLabel!),
+                    if (sectionLabel != null) ...[
+                      GuideSectionPill(label: sectionLabel!),
                       const SizedBox(height: 8),
                     ],
                     Text(

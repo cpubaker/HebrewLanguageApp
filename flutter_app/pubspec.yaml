@@ -56,6 +56,7 @@ flutter:
     - assets/learning/input/lesson_catalog.json
     - assets/learning/input/contexts/
     - assets/learning/input/guide/
+    - assets/learning/localized/en/guide/
     - assets/learning/input/verbs/
     - assets/learning/input/reading/
     - assets/learning/input/reading/advanced/

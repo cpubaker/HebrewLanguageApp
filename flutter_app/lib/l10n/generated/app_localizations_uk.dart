@@ -746,6 +746,24 @@ class AppLocalizationsUk extends AppLocalizations {
   String get guideOpenFailure => 'Не вдалося відкрити цей урок.';
 
   @override
+  String get guideSectionScript => 'Письмо і читання';
+
+  @override
+  String get guideSectionFoundations => 'Базові моделі';
+
+  @override
+  String get guideSectionVerbs => 'Дієслівна система';
+
+  @override
+  String get guideSectionGrammar => 'Розширена граматика';
+
+  @override
+  String get guideSectionCommunication => 'Живе спілкування';
+
+  @override
+  String get guideSectionDiscourse => 'Аргументація і письмо';
+
+  @override
   String get readingOpenFilter => 'Відкрити фільтр';
 
   @override

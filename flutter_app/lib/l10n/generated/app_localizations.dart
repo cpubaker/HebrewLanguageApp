@@ -1418,6 +1418,42 @@ abstract class AppLocalizations {
   /// **'Не вдалося відкрити цей урок.'**
   String get guideOpenFailure;
 
+  /// No description provided for @guideSectionScript.
+  ///
+  /// In uk, this message translates to:
+  /// **'Письмо і читання'**
+  String get guideSectionScript;
+
+  /// No description provided for @guideSectionFoundations.
+  ///
+  /// In uk, this message translates to:
+  /// **'Базові моделі'**
+  String get guideSectionFoundations;
+
+  /// No description provided for @guideSectionVerbs.
+  ///
+  /// In uk, this message translates to:
+  /// **'Дієслівна система'**
+  String get guideSectionVerbs;
+
+  /// No description provided for @guideSectionGrammar.
+  ///
+  /// In uk, this message translates to:
+  /// **'Розширена граматика'**
+  String get guideSectionGrammar;
+
+  /// No description provided for @guideSectionCommunication.
+  ///
+  /// In uk, this message translates to:
+  /// **'Живе спілкування'**
+  String get guideSectionCommunication;
+
+  /// No description provided for @guideSectionDiscourse.
+  ///
+  /// In uk, this message translates to:
+  /// **'Аргументація і письмо'**
+  String get guideSectionDiscourse;
+
   /// No description provided for @readingOpenFilter.
   ///
   /// In uk, this message translates to:

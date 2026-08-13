@@ -92,6 +92,8 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
       .resolveProgressRepository();
   late final LessonDocumentLoader _documentLoader = _dependencies
       .resolveDocumentLoader();
+  final Map<String, LessonDocumentLoader> _localizedDocumentLoaders =
+      <String, LessonDocumentLoader>{};
   late final FeatureAccessService _featureAccessService = _dependencies
       .resolveFeatureAccessService();
   late final AiContextService _aiContextService = _dependencies
@@ -190,6 +192,17 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
     };
   }
 
+  LessonDocumentLoader _documentLoaderForLocale() {
+    final languageCode = _localePreference.locale.languageCode;
+    return _localizedDocumentLoaders.putIfAbsent(
+      languageCode,
+      () => LocalizedLessonDocumentLoader(
+        delegate: _documentLoader,
+        languageCode: languageCode,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -208,7 +221,7 @@ class _HebrewFlutterAppState extends State<HebrewFlutterApp> {
       themeMode: _effectiveThemeMode(),
       home: AppShellScreen(
         progressRepository: _progressRepository,
-        documentLoader: _documentLoader,
+        documentLoader: _documentLoaderForLocale(),
         featureAccessService: _featureAccessService,
         aiContextService: _aiContextService,
         aiContextSettingsStore: _aiContextSettingsStore,

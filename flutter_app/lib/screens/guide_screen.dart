@@ -43,9 +43,7 @@ class GuideScreen extends StatefulWidget {
 }
 
 class _GuideScreenState extends State<GuideScreen>
-    with
-        LessonScrollMixin<GuideScreen>,
-        LessonStatusHandlerMixin<GuideScreen> {
+    with LessonScrollMixin<GuideScreen>, LessonStatusHandlerMixin<GuideScreen> {
   late final TextEditingController _searchController;
   late final FocusNode _searchFocusNode;
 
@@ -75,10 +73,14 @@ class _GuideScreenState extends State<GuideScreen>
   @override
   void didUpdateWidget(covariant GuideScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.lessons != widget.lessons) {
-      final availableSectionIds = _availableSections
-          .map((section) => section.id)
-          .toSet();
+    if (oldWidget.lessons != widget.lessons ||
+        oldWidget.documentLoader != widget.documentLoader) {
+      if (oldWidget.documentLoader != widget.documentLoader) {
+        _lessonDocuments.clear();
+      }
+      final availableSectionIds = _availableSections(
+        AppLocalizations.of(context),
+      ).map((section) => section.id).toSet();
       final invalidSectionIds = _selectedSectionIds
           .where((sectionId) => !availableSectionIds.contains(sectionId))
           .toList(growable: false);
@@ -297,12 +299,12 @@ class _GuideScreenState extends State<GuideScreen>
     return _lessonDocuments[lesson.assetPath]?.summary.trim() ?? '';
   }
 
-  List<_GuideSectionOption> get _availableSections {
+  List<_GuideSectionOption> _availableSections(AppLocalizations localizations) {
     final sections = <String, _GuideSectionOption>{};
 
     for (final lesson in widget.lessons) {
       final sectionId = lesson.sectionId;
-      final sectionLabel = lesson.sectionLabel;
+      final sectionLabel = localizedGuideSectionLabel(lesson, localizations);
       if (sectionId == null ||
           sectionId.trim().isEmpty ||
           sectionLabel == null ||
@@ -322,7 +324,7 @@ class _GuideScreenState extends State<GuideScreen>
     return sections.values.toList(growable: false);
   }
 
-  List<LessonEntry> get _filteredLessons {
+  List<LessonEntry> _filteredLessons(AppLocalizations localizations) {
     final normalizedQuery = _query.trim().toLowerCase();
 
     return widget.lessons
@@ -341,7 +343,7 @@ class _GuideScreenState extends State<GuideScreen>
             _resolvedLessonTitle(lesson),
             lesson.displayName,
             lesson.assetPath.split('/').last,
-            lesson.sectionLabel ?? '',
+            localizedGuideSectionLabel(lesson, localizations) ?? '',
             ...lesson.aliases,
             document?.summary ?? '',
             ...?document?.headings,
@@ -356,13 +358,14 @@ class _GuideScreenState extends State<GuideScreen>
   @override
   Widget build(BuildContext context) {
     final tokens = Theme.of(context).appTokens;
+    final localizations = AppLocalizations.of(context);
     final progress = LessonProgressSnapshot.fromLessons(
       lessons: widget.lessons,
       lessonStatuses: widget.lessonStatuses,
     );
-    final filteredLessons = _filteredLessons;
+    final filteredLessons = _filteredLessons(localizations);
     final hasResults = filteredLessons.isNotEmpty;
-    final availableSections = _availableSections;
+    final availableSections = _availableSections(localizations);
     final selectedSectionLabels = availableSections
         .where((section) => _selectedSectionIds.contains(section.id))
         .map((section) => section.label)
@@ -379,7 +382,7 @@ class _GuideScreenState extends State<GuideScreen>
               const SizedBox(height: 18),
             ],
             Text(
-              AppLocalizations.of(context).guideTitle,
+              localizations.guideTitle,
               style: Theme.of(
                 context,
               ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
@@ -422,6 +425,10 @@ class _GuideScreenState extends State<GuideScreen>
                     status: statusFor(lesson),
                     resolvedTitle: _resolvedLessonTitle(lesson),
                     resolvedSummary: _resolvedLessonSummary(lesson),
+                    sectionLabel: localizedGuideSectionLabel(
+                      lesson,
+                      localizations,
+                    ),
                     onStatusSelected: (status) {
                       unawaited(handleLessonStatusSelected(lesson, status));
                     },
@@ -630,6 +637,10 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
                     lesson: widget.lesson,
                     title: document.title,
                     summary: document.summary,
+                    sectionLabel: localizedGuideSectionLabel(
+                      widget.lesson,
+                      AppLocalizations.of(context),
+                    ),
                     status: _status,
                     onStatusPressed: () {
                       _updateStatus(nextLessonProgressStatus(_status));
@@ -700,6 +711,21 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
       ),
     );
   }
+}
+
+String? localizedGuideSectionLabel(
+  LessonEntry lesson,
+  AppLocalizations localizations,
+) {
+  return switch (lesson.sectionId) {
+    'script' => localizations.guideSectionScript,
+    'foundations' => localizations.guideSectionFoundations,
+    'verbs' => localizations.guideSectionVerbs,
+    'grammar' => localizations.guideSectionGrammar,
+    'communication' => localizations.guideSectionCommunication,
+    'discourse' => localizations.guideSectionDiscourse,
+    _ => lesson.sectionLabel,
+  };
 }
 
 class _GuideSectionOption {
